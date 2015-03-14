@@ -64,33 +64,38 @@
 
 - (void)suspendSubscription
 {
+    AKAKVOPublisher* publisher = self.publisher;
     if (self.isActive)
     {
-        [self.publisher suspendSubscription:self];
+        [publisher suspendSubscription:self];
     }
 }
 
 - (void)resumeSubscription
 {
+    AKAKVOPublisher* publisher = self.publisher;
     if (!self.isActive)
     {
-        [self.publisher resumeSubscription:self];
+        [publisher resumeSubscription:self];
     }
 }
 
 - (void)cancelSubscription
 {
-    [self.publisher cancelSubscription:self];
+    AKAKVOPublisher* publisher = self.publisher;
+    [publisher cancelSubscription:self];
 }
 
 - (id)value
 {
-    return [self.publisher.target valueForKeyPath:self.keyPath];
+    AKAKVOPublisher* publisher = self.publisher;
+    return [publisher.target valueForKeyPath:self.keyPath];
 }
 
 - (void)setValue:(id)value
 {
-    [self.publisher.target setValue:value forKeyPath:self.keyPath];
+    AKAKVOPublisher* publisher = self.publisher;
+    [publisher.target setValue:value forKeyPath:self.keyPath];
 }
 
 #pragma mark - Subscription status updates

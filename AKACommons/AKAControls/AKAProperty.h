@@ -19,10 +19,10 @@
 /**
  * Creates a new custom property with the specified block implementations.
  *
- * Please note that the observationStarter is responsible of both notifying the
- * property of value changes (required for dependent properties) and to notify
- * interested parties about changes (to prevent the implementation from
- * unnecessarily having to store and retain another block)
+ * Please note that the observationStarter is responsible to call
+ * notifiyPropertyValueDidChangeFrom:to: (required for dependent properties) and to notify
+ * interested parties about changes. This is a bit clumsy, but we didn't find a
+ * safer and more elegant interface for custom properties.
  *
  * @param getter a block returning the value of the property
  * @param setter a block changing the value of the property
@@ -33,7 +33,7 @@
  */
 + (AKAProperty*)propertyWithGetter:(id(^)())getter
                             setter:(void(^)(id value))setter
-                observationStarter:(BOOL(^)(void(^notifyPropertyOfChange)(id oldValue, id newValue)))observationStarter
+                observationStarter:(BOOL(^)())observationStarter
                 observationStopper:(BOOL(^)())observationStopper;
 
 #pragma mark - Value Access
@@ -47,6 +47,12 @@
 - (BOOL)startObservingChanges;
 
 - (BOOL)stopObservingChanges;
+
+/**
+ * Notifies the property, that its value changed. This is only used for custom properties
+ * (those using getters and setters) and has no effect for other property types.
+ */
+- (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue;
 
 #pragma mark - Dependent Properties
 

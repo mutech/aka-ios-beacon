@@ -32,7 +32,7 @@
     self.model = [NSMutableDictionary dictionaryWithDictionary:model];
     self.textField1ModelValue =
         [AKAProperty propertyOfKeyValueTarget:self.model
-                                      keyPath:self.textField.textKeyPath
+                                      keyPath:self.textField.valueKeyPath
                                changeObserver:^(id oldValue, id newValue)
                                  {
                                      self.modelValueLabel.text = newValue;

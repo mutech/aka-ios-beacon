@@ -39,6 +39,7 @@
             self.label.text = [NSString stringWithFormat:@"%@", value];
         }
     } observationStarter:^BOOL (void(^notifyPropertyOnChange)(id, id)) {
+        (void)notifyPropertyOnChange; // Not used, view value is not updated by UI and we do not notify on programmatic changes (analogue to UIKit)
         return YES;
     } observationStopper:^BOOL {
         return YES;
@@ -65,11 +66,12 @@
 
 - (AKAControlViewBinding *)bindToControl:(AKAControl *)control
 {
+    AKAControlViewBinding* currentBinding = self.controlBinding;
     AKALabelControlViewBinding* result;
-    if (self.controlBinding != nil)
+    if (currentBinding != nil)
     {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, self.controlBinding]
+                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, currentBinding]
                                      userInfo:nil];
     }
     _controlBinding = result =

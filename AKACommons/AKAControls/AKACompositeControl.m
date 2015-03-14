@@ -51,6 +51,7 @@
 {
     NSUInteger __block count = 0;
     [rootView enumerateSubviewsUsingBlock:^(UIView *view, BOOL *stop, BOOL *doNotDescend) {
+        (void)stop; // not used
         if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
         {
             UIView<AKAControlViewProtocol>* controlView = (id)view;
@@ -113,13 +114,16 @@
 
 - (BOOL)shouldAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    AKACompositeControl* owner = control.owner;
     return (index <= self.controlsStorage.count &&
-            (control.owner == nil || control.owner == self) &&
+            (owner == nil || owner == self) &&
             ![self.controlsStorage containsObject:control]);
 }
 
 - (void)willAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    (void)index; // not used
+
     // If by some ugly means the control changed ownership after we
     // tested it in shouldAddControl, this should throw an exception:
     [control setOwner:self];
@@ -127,6 +131,8 @@
 
 - (void)didAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    (void)control; // not used
+    (void)index; // not used
 }
 
 - (BOOL)shouldRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
@@ -138,10 +144,14 @@
 
 - (void)willRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    (void)control; // not used
+    (void)index; // not used
 }
 
 - (void)didRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    (void)index; // not used
+
     [control setOwner:nil];
 }
 

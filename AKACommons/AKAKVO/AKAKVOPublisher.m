@@ -97,6 +97,7 @@
 - (void)suspendAllActiveSubscriptions
 {
     [self enumerateActiveSubscriptionsUsingBlock:^(AKAKVOSubscription *subscription, BOOL *stop) {
+        (void)stop; // not needed
         [self suspendSubscription:subscription];
     }];
 }
@@ -114,6 +115,7 @@
 - (void)resumeAllSuspendedSubscriptions
 {
     [self enumerateSuspendedSubscriptionsUsingBlock:^(AKAKVOSubscription *subscription, BOOL *stop) {
+        (void)stop; // not needed
         [self resumeSubscription:subscription];
     }];
 }
@@ -132,6 +134,7 @@
 - (void)cancelAllSubscriptions
 {
     [self enumerateSubscriptionsUsingBlock:^(AKAKVOSubscription *subscription, BOOL *stop) {
+        (void)stop; // not needed
         [self cancelSubscription:subscription];
     }];
 }
@@ -283,6 +286,7 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
+    (void)keyPath; // not needed
     if (object == self.target)
     {
         id contextItem = (__bridge id)(context);
@@ -300,7 +304,7 @@
 {
     AKAKVOChangeEvent* event = [[AKAKVOChangeEvent alloc] initWithSubscription:subscription
                                                                         change:change];
-    event.subscription.valueWillChangeHandler(event);
+    subscription.valueWillChangeHandler(event);
 }
 
 @end

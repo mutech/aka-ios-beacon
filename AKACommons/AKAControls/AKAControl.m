@@ -66,12 +66,13 @@
 
 - (void)setOwner:(AKACompositeControl *)owner
 {
-    if (_owner != owner)
+    AKACompositeControl* currentOwner = _owner;
+    if (currentOwner != owner)
     {
-        if (_owner != nil)
+        if (currentOwner != nil)
         {
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                          reason:[NSString stringWithFormat:@"Invalid attempt to set owner of control %@ to %@: control already owned by %@", self, owner, _owner] userInfo:nil];
+                                          reason:[NSString stringWithFormat:@"Invalid attempt to set owner of control %@ to %@: control already owned by %@", self, owner, currentOwner] userInfo:nil];
         }
         _owner = owner;
     }
@@ -120,11 +121,13 @@
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
+    (void)oldValue; // not used.
     [self updateModelValueForViewValueChangeTo:newValue];
 }
 
 - (void)modelValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
+    (void)oldValue; // not used.
     if ([NSThread isMainThread])
     {
         [self updateViewValueForModelValueChangeTo:newValue];

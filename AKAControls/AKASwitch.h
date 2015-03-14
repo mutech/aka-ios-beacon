@@ -12,10 +12,10 @@
 #import "AKAControlViewProtocol.h"
 
 IB_DESIGNABLE
-@interface AKASwitch: UISwitch<AKAControlViewProtocol>
+@interface AKASwitch: UISwitch<AKAEditingControlViewProtocol>
 
 #pragma mark - Interface Builder Properties
 
-@property(nonatomic) IBInspectable NSString* textKeyPath;
+@property(nonatomic) IBInspectable NSString* valueKeyPath;
 
 @end

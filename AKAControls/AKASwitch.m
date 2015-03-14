@@ -31,15 +31,14 @@
 
 - (AKAProperty *)createViewValueProperty
 {
-    AKAProperty* result;
-    result = [AKAProperty propertyWithGetter:^id {
+    AKAProperty* property = [AKAProperty propertyWithGetter:^id {
         return @(self.switchView.on);
     } setter:^(id value) {
         if ([value isKindOfClass:[NSNumber class]])
         {
             self.switchView.on = ((NSNumber*)value).boolValue;
         }
-    } observationStarter:^BOOL (void(^notifyPropertyOnChange)(id, id)) {
+    } observationStarter:^BOOL () {
         BOOL result = self.switchView != nil;
         if (result)
         {
@@ -58,7 +57,7 @@
         }
         return result;
     }];
-    return result;
+    return property;
 }
 
 
@@ -74,6 +73,8 @@
     [self           controlView:view
       didChangeValueChangedFrom:@(!view.on)
                              to:@(view.on)];
+    [self.viewValueProperty notifyPropertyValueDidChangeFrom:@(!view.on)
+                                                          to:@(view.on)];
 }
 
 @end
@@ -89,28 +90,30 @@
 - (AKAControlViewBinding *)bindToControl:(AKAControl *)control
 {
     AKASwitchControlViewBinding* result;
-    if (self.controlBinding != nil)
+    AKAControlViewBinding* currentControlViewBinding = self.controlBinding;
+
+    if (currentControlViewBinding != nil)
     {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, self.controlBinding]
+                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, currentControlViewBinding]
                                      userInfo:nil];
     }
     _controlBinding = result =
-    [[AKASwitchControlViewBinding alloc] initWithControl:control
-                                                       view:self];
+        [[AKASwitchControlViewBinding alloc] initWithControl:control
+                                                        view:self];
     return result;
 }
 
 - (AKAControl*)createControlWithDataContext:(id)dataContext
 {
-    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.textKeyPath];
+    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.valueKeyPath];
     result.viewBinding = [self bindToControl:result];
     return result;
 }
 
 - (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner
 {
-    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.textKeyPath];
+    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.valueKeyPath];
     result.viewBinding = [self bindToControl:result];
     return result;
 }

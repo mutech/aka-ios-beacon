@@ -46,7 +46,7 @@
         {
             self.textField.text = [NSString stringWithFormat:@"%@", value];
         }
-    } observationStarter:^BOOL (void(^notifyPropertyOnChange)(id, id)) {
+    } observationStarter:^BOOL () {
         self.originalText = self.textField.text;
         self.savedTextViewDelegate = self.textField.delegate;
         self.textField.delegate = self;
@@ -71,10 +71,12 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     BOOL result = YES;
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldShouldBeginEditing:)])
+    if ([secondary respondsToSelector:@selector(textFieldShouldBeginEditing:)])
     {
-        result = [self.savedTextViewDelegate textFieldShouldBeginEditing:textField];
+        result = [secondary textFieldShouldBeginEditing:textField];
     }
     if (result)
     {
@@ -86,21 +88,25 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     NSParameterAssert(textField == self.textField);
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     [self updateOriginalTextBeforeEditing];
     [self controlViewDidActivate:self.textField];
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldDidBeginEditing:)])
+    if ([secondary respondsToSelector:@selector(textFieldDidBeginEditing:)])
     {
-        [self.savedTextViewDelegate textFieldDidBeginEditing:textField];
+        [secondary textFieldDidBeginEditing:textField];
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     NSParameterAssert(textField == self.textField);
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     BOOL result = YES;
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldShouldReturn:)])
+    if ([secondary respondsToSelector:@selector(textFieldShouldReturn:)])
     {
-        result = [self.savedTextViewDelegate textFieldShouldReturn:self.textField];
+        result = [secondary textFieldShouldReturn:self.textField];
     }
     if (result)
     {
@@ -129,10 +135,12 @@
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
     NSParameterAssert(textField == self.textField);
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     BOOL result = YES;
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldShouldClear:)])
+    if ([secondary respondsToSelector:@selector(textFieldShouldClear:)])
     {
-        result = [self.savedTextViewDelegate textFieldShouldClear:self.textField];
+        result = [secondary textFieldShouldClear:self.textField];
     }
     if (result)
     {
@@ -149,10 +157,12 @@
                replacementString:(NSString *)string
 {
     NSParameterAssert(textField == self.textField);
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     BOOL result = YES;
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)])
+    if ([secondary respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)])
     {
-        result = [self.savedTextViewDelegate textField:textField
+        result = [secondary textField:textField
                      shouldChangeCharactersInRange:range
                                  replacementString:string];
     }
@@ -169,7 +179,7 @@
 
         // Correct cursor position:
         UITextPosition *start = [textField positionFromPosition:[textField beginningOfDocument]
-                                                         offset:range.location + string.length];
+                                                         offset:(NSInteger)(range.location + string.length)];
         UITextPosition *end = [textField positionFromPosition:start
                                                        offset:0];
         [textField setSelectedTextRange:[textField textRangeFromPosition:start toPosition:end]];
@@ -184,6 +194,9 @@
                 replacementString:(NSString*)string
 {
     NSParameterAssert(textField == self.textField);
+    (void)range; // not used
+    (void)string; // not used
+
     if (self.textField.liveModelUpdates)
     {
         [self viewValueDidChangeFrom:self.originalText to:self.textField.text];
@@ -193,22 +206,26 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     NSParameterAssert(textField == self.textField);
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     BOOL result = YES;
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldShouldEndEditing:)])
+    if ([secondary respondsToSelector:@selector(textFieldShouldEndEditing:)])
     {
-        result = [self.savedTextViewDelegate textFieldShouldEndEditing:textField];
+        result &= [secondary textFieldShouldEndEditing:textField];
     }
-    result = [self controlViewShouldDeactivate:self.textField];
+    result &= [self controlViewShouldDeactivate:self.textField];
     return result;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
+
     NSParameterAssert(textField == self.textField);
     // Call delegate first to give it a change to change the value
-    if ([self.savedTextViewDelegate respondsToSelector:@selector(textFieldDidEndEditing:)])
+    if ([secondary respondsToSelector:@selector(textFieldDidEndEditing:)])
     {
-        [self.savedTextViewDelegate textFieldDidEndEditing:textField];
+        [secondary textFieldDidEndEditing:textField];
     }
     if (!self.textField.liveModelUpdates)
     {
@@ -230,13 +247,21 @@
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
+    (void)oldValue; // prefer live values
+    (void)newValue; // prefer live values
+
+    NSString* previousValue = self.originalText;
+    NSString* value = self.textField.text;
+
     // Send change notification
-    if (self.textField.text != self.originalText && ![self.textField.text isEqualToString:self.originalText])
+    if (value != previousValue && ![value isEqualToString:previousValue])
     {
         [self           controlView:self.textField
-          didChangeValueChangedFrom:self.originalText
-                                 to:self.textField.text];
+          didChangeValueChangedFrom:previousValue
+                                 to:value];
+        value = self.textField.text; // update just in case handler did change the value
     }
+    [self.viewValueProperty notifyPropertyValueDidChangeFrom:previousValue to:value];
     self.originalText = self.textField.text;
 }
 
@@ -245,18 +270,24 @@
 
 @interface AKATextField() {
     AKATextFieldControlViewBinding* _controlBinding;
+    NSString* _valueKeyPath;
 }
 @end
 
 @implementation AKATextField
 
+- (NSString *)valueKeyPath { return _valueKeyPath; }
+- (void)setValueKeyPath:(NSString *)valueKeyPath { _valueKeyPath = valueKeyPath; }
+
 - (AKAControlViewBinding *)bindToControl:(AKAControl *)control
 {
     AKATextFieldControlViewBinding* result;
-    if (self.controlBinding != nil)
+    AKAControlViewBinding* controlViewBinding = self.controlBinding;
+
+    if (controlViewBinding != nil)
     {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, self.controlBinding]
+                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, controlViewBinding]
                                      userInfo:nil];
     }
     _controlBinding = result =
@@ -267,14 +298,14 @@
 
 - (AKAControl*)createControlWithDataContext:(id)dataContext
 {
-    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.textKeyPath];
+    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.valueKeyPath];
     result.viewBinding = [self bindToControl:result];
     return result;
 }
 
 - (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner
 {
-    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.textKeyPath];
+    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.valueKeyPath];
     result.viewBinding = [self bindToControl:result];
     return result;
 }

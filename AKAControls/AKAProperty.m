@@ -24,7 +24,7 @@
 
 - (instancetype)initWithGetter:(id(^)())getter
                         setter:(void(^)(id value))setter
-            observationStarter:(BOOL(^)(void(^valueDidChange)(id oldValue, id newValue)))observationStarter
+            observationStarter:(BOOL(^)())observationStarter
             observationStopper:(BOOL(^)())observationStopper;
 
 @end
@@ -62,7 +62,7 @@
 
 + (AKAProperty*)propertyWithGetter:(id(^)())getter
                             setter:(void(^)(id value))setter
-                observationStarter:(BOOL(^)(void(^notifyPropertyOfChange)(id oldValue, id newValue)))observationStarter
+                observationStarter:(BOOL(^)())observationStarter
                          observationStopper:(BOOL(^)())observationStopper
 {
     return [[AKACustomProperty alloc] initWithGetter:getter
@@ -102,6 +102,7 @@
 - (AKAProperty *)propertyComputedBy:(id (^)(id))computation
 {
     // TODO: implement computed property
+    (void)computation;
     return nil;
 }
 
@@ -116,6 +117,7 @@
 
 - (void)setValue:(id)value
 {
+    (void)value; // not used, throwing exception
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
                                  userInfo:nil];
@@ -142,6 +144,21 @@
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
                                  userInfo:nil];
+}
+
+- (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    (void)oldValue; // not used.
+    (void)newValue; // not used.
+    // Nothing to do, subclasses which do not manage notifications will need this to notify dependant properties.
+}
+
+- (void)notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    for (AKAProperty* property in self.dependentProperties)
+    {
+        [property dependencyDidChangeValueFrom:oldValue to:newValue];
+    }
 }
 
 #pragma mark - Dependent Properties
@@ -207,6 +224,9 @@
 
 - (void)dependencyDidChangeValueFrom:(id)oldValue to:(id)newValue
 {
+    (void)oldValue; // not used, throwing exception
+    (void)newValue; // not used, throwing exception
+
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
                                  userInfo:nil];
@@ -275,20 +295,20 @@
 
 - (BOOL)startObservingChanges
 {
-    BOOL result = self.isObservingChanges;
-    if (!result)
+    if (!self.isObservingChanges)
     {
         if (self.keyPath.length == 0)
         {
             // target without keypath, in this case value wraps the target and
             // changing value <-> changing target, setter will send notification
-            result = YES;
+            _isObservingChanges = YES;
         }
         else if (self.changeObserver)
         {
             [self.target addObserver:self
                           forKeyPath:self.keyPath
-                             options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                             options:(NSKeyValueObservingOptions)
+                                     (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                              context:(__bridge void *)(self)];
             _isObservingChanges = YES;
         }
@@ -298,15 +318,14 @@
 
 - (BOOL)stopObservingChanges
 {
-    BOOL result = self.isObservingChanges;
-    if (!result)
+    if (self.isObservingChanges)
     {
         [self.target removeObserver:self
                          forKeyPath:self.keyPath
                             context:(__bridge void *)(self)];
         _isObservingChanges = NO;
     }
-    return result;
+    return !self.isObservingChanges;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -314,11 +333,17 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if (self.changeObserver && context == (__bridge void *)(self))
+    if ((self.changeObserver || self.dependentProperties.count > 0) &&
+        context == (__bridge void *)(self) &&
+        object == self.target &&
+        [keyPath isEqualToString:self.keyPath])
     {
         id oldValue = change[NSKeyValueChangeOldKey];
         id newValue = change[NSKeyValueChangeNewKey];
-        self.changeObserver(oldValue, newValue);
+        if (self.changeObserver)
+        {
+            self.changeObserver(oldValue, newValue);
+        }
     }
 }
 
@@ -364,7 +389,7 @@
 
 - (instancetype)initWithGetter:(id (^)())getter
                         setter:(void (^)(id))setter
-            observationStarter:(BOOL(^)(void(^notifyPropertyOfChange)(id oldValue, id newValue)))observationStarter
+            observationStarter:(BOOL(^)())observationStarter
             observationStopper:(BOOL (^)())observationStopper
 {
     self = [super init];
@@ -415,6 +440,10 @@
     return result;
 }
 
+- (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    [self notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue];
+}
 
 
 @end

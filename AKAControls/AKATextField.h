@@ -11,11 +11,11 @@
 #import "AKAControlViewProtocol.h"
 
 IB_DESIGNABLE
-@interface AKATextField : UITextField<AKAControlViewProtocol>
+@interface AKATextField : UITextField<AKAEditingControlViewProtocol>
 
 #pragma mark - Interface Builder Properties
 
-@property(nonatomic) IBInspectable NSString* textKeyPath;
+@property(nonatomic) IBInspectable NSString* valueKeyPath;
 @property(nonatomic) IBInspectable BOOL liveModelUpdates;
 
 @end

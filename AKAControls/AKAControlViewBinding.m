@@ -53,9 +53,10 @@
 
 - (void)setControl:(AKAControl*)control
 {
-    if (_control != control)
+    AKAControl* currentControl = _control;
+    if (currentControl != control)
     {
-        if (_control != nil && control != nil)
+        if (currentControl != nil && control != nil)
         {
             @throw [NSException exceptionWithName:NSInvalidArgumentException
                                            reason:[NSString stringWithFormat:@"%@'s control reference is already defined (%@).", self, self.control] userInfo:nil];
@@ -70,40 +71,50 @@
           didChangeValueChangedFrom:(id)oldValue
                                  to:(id)newValue
 {
-    [self.control viewValueDidChangeFrom:oldValue to:newValue];
+    if (controlView == self.view)
+    {
+        AKAControl* control = self.control;
+        [control viewValueDidChangeFrom:oldValue to:newValue];
+    }
 }
 
 #pragma mark - Activation
 
 - (BOOL)controlViewShouldActivate:(UIView*)controlView
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
     BOOL result = YES;
     return result;
 }
 
 - (void)controlViewDidActivate:(UIView *)controlView
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
 }
 
 - (BOOL)controlViewShouldDeactivate:(UIView*)controlView
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
     BOOL result = YES;
     return result;
 }
 
 - (void)controlViewDidDeactivate:(UIView *)controlView
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
 }
 
 - (BOOL)controlViewShouldActivateNextControl:(UIView*)controlView
 
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
     BOOL result = YES;
     return result;
 }
 
 - (void)controlViewRequestsActivateNextControl:(UIView*)controlView
 {
+    (void)controlView; // TODO: refactor this, controlView is useless.
 }
 
 @end

@@ -1,0 +1,17 @@
+PODS:
+  - CocoaLumberjack (2.0.0-rc2):
+    - CocoaLumberjack/Default (= 2.0.0-rc2)
+    - CocoaLumberjack/Extensions (= 2.0.0-rc2)
+  - CocoaLumberjack/Core (2.0.0-rc2)
+  - CocoaLumberjack/Default (2.0.0-rc2):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.0-rc2):
+    - CocoaLumberjack/Default
+
+DEPENDENCIES:
+  - CocoaLumberjack (~> 2.0.0-rc)
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: 6027cd9a0665203a7df456c526e137f02cd547e1
+
+COCOAPODS: 0.36.0

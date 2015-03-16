@@ -40,6 +40,11 @@
 
 @property(nonatomic) id value;
 
+#pragma mark - Validation
+
+- (BOOL)    validateValue:(inout __autoreleasing id *)ioValue
+                    error:(out NSError *__autoreleasing *)outError;
+
 #pragma mark - Notifications
 
 @property(nonatomic, readonly) BOOL isObservingChanges;

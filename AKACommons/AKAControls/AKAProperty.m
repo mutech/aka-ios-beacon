@@ -123,6 +123,16 @@
                                  userInfo:nil];
 }
 
+#pragma mark - Validation
+
+- (BOOL)    validateValue:(inout __autoreleasing id *)ioValue
+                    error:(out NSError *__autoreleasing *)outError
+{
+    (void)ioValue; // not used
+    (void)outError; // not used
+    return YES;
+}
+
 #pragma mark - Notifications
 
 - (BOOL)isObservingChanges
@@ -284,6 +294,21 @@
         _target = value;
         self.changeObserver(oldValue, value);
     }
+}
+
+#pragma mark - Validation
+
+- (BOOL)    validateValue:(inout __autoreleasing id *)ioValue
+                    error:(out NSError *__autoreleasing *)outError
+{
+    BOOL result = YES;
+    if (self.keyPath.length > 0)
+    {
+        result = [self.target validateValue:ioValue
+                                 forKeyPath:self.keyPath
+                                      error:outError];
+    }
+    return result;
 }
 
 #pragma mark - Notifications

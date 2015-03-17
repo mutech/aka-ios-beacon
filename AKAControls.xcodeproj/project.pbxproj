@@ -1,0 +1,515 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8EF2519D1AB849E8005CDE34 /* AKAControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF2519C1AB849E8005CDE34 /* AKAControls.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EF251A31AB849E8005CDE34 /* AKAControls.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EF251971AB849E8005CDE34 /* AKAControls.framework */; };
+		8EF251AA1AB849E8005CDE34 /* AKAControlsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251A91AB849E8005CDE34 /* AKAControlsTests.m */; };
+		8EF251CD1AB84AF2005CDE34 /* AKAEditorControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251B31AB84AF2005CDE34 /* AKAEditorControlView.m */; };
+		8EF251CE1AB84AF2005CDE34 /* AKAEditorControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251B41AB84AF2005CDE34 /* AKAEditorControlView.h */; };
+		8EF251CF1AB84AF2005CDE34 /* AKASwitch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251B51AB84AF2005CDE34 /* AKASwitch.h */; };
+		8EF251D01AB84AF2005CDE34 /* AKALabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251B61AB84AF2005CDE34 /* AKALabel.h */; };
+		8EF251D11AB84AF2005CDE34 /* AKATextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251B71AB84AF2005CDE34 /* AKATextField.h */; };
+		8EF251D21AB84AF2005CDE34 /* AKAProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251B81AB84AF2005CDE34 /* AKAProperty.h */; };
+		8EF251D31AB84AF2005CDE34 /* AKAProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251B91AB84AF2005CDE34 /* AKAProperty.m */; };
+		8EF251D41AB84AF2005CDE34 /* AKAControlViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251BA1AB84AF2005CDE34 /* AKAControlViewProtocol.h */; };
+		8EF251D51AB84AF2005CDE34 /* AKATextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251BB1AB84AF2005CDE34 /* AKATextField.m */; };
+		8EF251D61AB84AF2005CDE34 /* AKASwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251BC1AB84AF2005CDE34 /* AKASwitch.m */; };
+		8EF251D71AB84AF2005CDE34 /* AKACompositeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251BD1AB84AF2005CDE34 /* AKACompositeControl.m */; };
+		8EF251D81AB84AF2005CDE34 /* AKALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251BE1AB84AF2005CDE34 /* AKALabel.m */; };
+		8EF251D91AB84AF2005CDE34 /* AKAControlViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251BF1AB84AF2005CDE34 /* AKAControlViewBinding.m */; };
+		8EF251DA1AB84AF2005CDE34 /* AKAControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251C01AB84AF2005CDE34 /* AKAControl.m */; };
+		8EF251DB1AB84AF2005CDE34 /* AKACompositeControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C11AB84AF2005CDE34 /* AKACompositeControl.h */; };
+		8EF251DC1AB84AF2005CDE34 /* AKAControl_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C21AB84AF2005CDE34 /* AKAControl_Internal.h */; };
+		8EF251DD1AB84AF2005CDE34 /* AKAControl_Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C31AB84AF2005CDE34 /* AKAControl_Protected.h */; };
+		8EF251DE1AB84AF2005CDE34 /* AKAControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C41AB84AF2005CDE34 /* AKAControl.h */; };
+		8EF251DF1AB84AF2005CDE34 /* AKAControlViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C51AB84AF2005CDE34 /* AKAControlViewBinding.h */; };
+		8EF251E01AB84AF2005CDE34 /* AKAControlViewDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C61AB84AF2005CDE34 /* AKAControlViewDelegate.h */; };
+		8EF251E11AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C71AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h */; };
+		8EF251E21AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C81AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h */; };
+		8EF251E31AB84AF2005CDE34 /* AKAControlsErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251C91AB84AF2005CDE34 /* AKAControlsErrors.h */; };
+		8EF251E41AB84AF2005CDE34 /* AKAControlsErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251CA1AB84AF2005CDE34 /* AKAControlsErrors.m */; };
+		8EF251E51AB84AF2005CDE34 /* AKAControlValidatorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251CB1AB84AF2005CDE34 /* AKAControlValidatorProtocol.h */; };
+		8EF251E61AB84AF2005CDE34 /* AKAControlConverterProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EF251CC1AB84AF2005CDE34 /* AKAControlConverterProtocol.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8EF251A41AB849E8005CDE34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8EF2518E1AB849E8005CDE34 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EF251961AB849E8005CDE34;
+			remoteInfo = AKAControls;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8EF251971AB849E8005CDE34 /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKAControls.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EF2519B1AB849E8005CDE34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EF2519C1AB849E8005CDE34 /* AKAControls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKAControls.h; sourceTree = "<group>"; };
+		8EF251A21AB849E8005CDE34 /* AKAControlsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EF251A81AB849E8005CDE34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EF251A91AB849E8005CDE34 /* AKAControlsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsTests.m; sourceTree = "<group>"; };
+		8EF251B31AB84AF2005CDE34 /* AKAEditorControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAEditorControlView.m; path = Classes/AKAEditorControlView.m; sourceTree = "<group>"; };
+		8EF251B41AB84AF2005CDE34 /* AKAEditorControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAEditorControlView.h; path = Classes/AKAEditorControlView.h; sourceTree = "<group>"; };
+		8EF251B51AB84AF2005CDE34 /* AKASwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKASwitch.h; path = Classes/AKASwitch.h; sourceTree = "<group>"; };
+		8EF251B61AB84AF2005CDE34 /* AKALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKALabel.h; path = Classes/AKALabel.h; sourceTree = "<group>"; };
+		8EF251B71AB84AF2005CDE34 /* AKATextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATextField.h; path = Classes/AKATextField.h; sourceTree = "<group>"; };
+		8EF251B81AB84AF2005CDE34 /* AKAProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAProperty.h; path = Classes/AKAProperty.h; sourceTree = "<group>"; };
+		8EF251B91AB84AF2005CDE34 /* AKAProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAProperty.m; path = Classes/AKAProperty.m; sourceTree = "<group>"; };
+		8EF251BA1AB84AF2005CDE34 /* AKAControlViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewProtocol.h; path = Classes/AKAControlViewProtocol.h; sourceTree = "<group>"; };
+		8EF251BB1AB84AF2005CDE34 /* AKATextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATextField.m; path = Classes/AKATextField.m; sourceTree = "<group>"; };
+		8EF251BC1AB84AF2005CDE34 /* AKASwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKASwitch.m; path = Classes/AKASwitch.m; sourceTree = "<group>"; };
+		8EF251BD1AB84AF2005CDE34 /* AKACompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKACompositeControl.m; path = Classes/AKACompositeControl.m; sourceTree = "<group>"; };
+		8EF251BE1AB84AF2005CDE34 /* AKALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKALabel.m; path = Classes/AKALabel.m; sourceTree = "<group>"; };
+		8EF251BF1AB84AF2005CDE34 /* AKAControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAControlViewBinding.m; path = Classes/AKAControlViewBinding.m; sourceTree = "<group>"; };
+		8EF251C01AB84AF2005CDE34 /* AKAControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAControl.m; path = Classes/AKAControl.m; sourceTree = "<group>"; };
+		8EF251C11AB84AF2005CDE34 /* AKACompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKACompositeControl.h; path = Classes/AKACompositeControl.h; sourceTree = "<group>"; };
+		8EF251C21AB84AF2005CDE34 /* AKAControl_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControl_Internal.h; path = Classes/AKAControl_Internal.h; sourceTree = "<group>"; };
+		8EF251C31AB84AF2005CDE34 /* AKAControl_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControl_Protected.h; path = Classes/AKAControl_Protected.h; sourceTree = "<group>"; };
+		8EF251C41AB84AF2005CDE34 /* AKAControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControl.h; path = Classes/AKAControl.h; sourceTree = "<group>"; };
+		8EF251C51AB84AF2005CDE34 /* AKAControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewBinding.h; path = Classes/AKAControlViewBinding.h; sourceTree = "<group>"; };
+		8EF251C61AB84AF2005CDE34 /* AKAControlViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewDelegate.h; path = Classes/AKAControlViewDelegate.h; sourceTree = "<group>"; };
+		8EF251C71AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewBinding_Protected.h; path = Classes/AKAControlViewBinding_Protected.h; sourceTree = "<group>"; };
+		8EF251C81AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewBinding_Internal.h; path = Classes/AKAControlViewBinding_Internal.h; sourceTree = "<group>"; };
+		8EF251C91AB84AF2005CDE34 /* AKAControlsErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlsErrors.h; path = Classes/AKAControlsErrors.h; sourceTree = "<group>"; };
+		8EF251CA1AB84AF2005CDE34 /* AKAControlsErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAControlsErrors.m; path = Classes/AKAControlsErrors.m; sourceTree = "<group>"; };
+		8EF251CB1AB84AF2005CDE34 /* AKAControlValidatorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlValidatorProtocol.h; path = Classes/AKAControlValidatorProtocol.h; sourceTree = "<group>"; };
+		8EF251CC1AB84AF2005CDE34 /* AKAControlConverterProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlConverterProtocol.h; path = Classes/AKAControlConverterProtocol.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8EF251931AB849E8005CDE34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EF2519F1AB849E8005CDE34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EF251A31AB849E8005CDE34 /* AKAControls.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8EF2518D1AB849E8005CDE34 = {
+			isa = PBXGroup;
+			children = (
+				8EF251991AB849E8005CDE34 /* AKAControls */,
+				8EF251A61AB849E8005CDE34 /* AKAControlsTests */,
+				8EF251981AB849E8005CDE34 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8EF251981AB849E8005CDE34 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8EF251971AB849E8005CDE34 /* AKAControls.framework */,
+				8EF251A21AB849E8005CDE34 /* AKAControlsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8EF251991AB849E8005CDE34 /* AKAControls */ = {
+			isa = PBXGroup;
+			children = (
+				8EF251B31AB84AF2005CDE34 /* AKAEditorControlView.m */,
+				8EF251B41AB84AF2005CDE34 /* AKAEditorControlView.h */,
+				8EF251B51AB84AF2005CDE34 /* AKASwitch.h */,
+				8EF251B61AB84AF2005CDE34 /* AKALabel.h */,
+				8EF251B71AB84AF2005CDE34 /* AKATextField.h */,
+				8EF251B81AB84AF2005CDE34 /* AKAProperty.h */,
+				8EF251B91AB84AF2005CDE34 /* AKAProperty.m */,
+				8EF251BA1AB84AF2005CDE34 /* AKAControlViewProtocol.h */,
+				8EF251BB1AB84AF2005CDE34 /* AKATextField.m */,
+				8EF251BC1AB84AF2005CDE34 /* AKASwitch.m */,
+				8EF251BD1AB84AF2005CDE34 /* AKACompositeControl.m */,
+				8EF251BE1AB84AF2005CDE34 /* AKALabel.m */,
+				8EF251BF1AB84AF2005CDE34 /* AKAControlViewBinding.m */,
+				8EF251C01AB84AF2005CDE34 /* AKAControl.m */,
+				8EF251C11AB84AF2005CDE34 /* AKACompositeControl.h */,
+				8EF251C21AB84AF2005CDE34 /* AKAControl_Internal.h */,
+				8EF251C31AB84AF2005CDE34 /* AKAControl_Protected.h */,
+				8EF251C41AB84AF2005CDE34 /* AKAControl.h */,
+				8EF251C51AB84AF2005CDE34 /* AKAControlViewBinding.h */,
+				8EF251C61AB84AF2005CDE34 /* AKAControlViewDelegate.h */,
+				8EF251C71AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h */,
+				8EF251C81AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h */,
+				8EF251C91AB84AF2005CDE34 /* AKAControlsErrors.h */,
+				8EF251CA1AB84AF2005CDE34 /* AKAControlsErrors.m */,
+				8EF251CB1AB84AF2005CDE34 /* AKAControlValidatorProtocol.h */,
+				8EF251CC1AB84AF2005CDE34 /* AKAControlConverterProtocol.h */,
+				8EF2519C1AB849E8005CDE34 /* AKAControls.h */,
+				8EF2519A1AB849E8005CDE34 /* Supporting Files */,
+			);
+			path = AKAControls;
+			sourceTree = "<group>";
+		};
+		8EF2519A1AB849E8005CDE34 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8EF2519B1AB849E8005CDE34 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8EF251A61AB849E8005CDE34 /* AKAControlsTests */ = {
+			isa = PBXGroup;
+			children = (
+				8EF251A91AB849E8005CDE34 /* AKAControlsTests.m */,
+				8EF251A71AB849E8005CDE34 /* Supporting Files */,
+			);
+			path = AKAControlsTests;
+			sourceTree = "<group>";
+		};
+		8EF251A71AB849E8005CDE34 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8EF251A81AB849E8005CDE34 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8EF251941AB849E8005CDE34 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EF251D11AB84AF2005CDE34 /* AKATextField.h in Headers */,
+				8EF251E21AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h in Headers */,
+				8EF251DF1AB84AF2005CDE34 /* AKAControlViewBinding.h in Headers */,
+				8EF251DC1AB84AF2005CDE34 /* AKAControl_Internal.h in Headers */,
+				8EF251CE1AB84AF2005CDE34 /* AKAEditorControlView.h in Headers */,
+				8EF251E01AB84AF2005CDE34 /* AKAControlViewDelegate.h in Headers */,
+				8EF251D01AB84AF2005CDE34 /* AKALabel.h in Headers */,
+				8EF251E31AB84AF2005CDE34 /* AKAControlsErrors.h in Headers */,
+				8EF251E11AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h in Headers */,
+				8EF251D41AB84AF2005CDE34 /* AKAControlViewProtocol.h in Headers */,
+				8EF251DB1AB84AF2005CDE34 /* AKACompositeControl.h in Headers */,
+				8EF251DE1AB84AF2005CDE34 /* AKAControl.h in Headers */,
+				8EF251D21AB84AF2005CDE34 /* AKAProperty.h in Headers */,
+				8EF251DD1AB84AF2005CDE34 /* AKAControl_Protected.h in Headers */,
+				8EF2519D1AB849E8005CDE34 /* AKAControls.h in Headers */,
+				8EF251E51AB84AF2005CDE34 /* AKAControlValidatorProtocol.h in Headers */,
+				8EF251CF1AB84AF2005CDE34 /* AKASwitch.h in Headers */,
+				8EF251E61AB84AF2005CDE34 /* AKAControlConverterProtocol.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8EF251961AB849E8005CDE34 /* AKAControls */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EF251AD1AB849E8005CDE34 /* Build configuration list for PBXNativeTarget "AKAControls" */;
+			buildPhases = (
+				8EF251921AB849E8005CDE34 /* Sources */,
+				8EF251931AB849E8005CDE34 /* Frameworks */,
+				8EF251941AB849E8005CDE34 /* Headers */,
+				8EF251951AB849E8005CDE34 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AKAControls;
+			productName = AKAControls;
+			productReference = 8EF251971AB849E8005CDE34 /* AKAControls.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8EF251A11AB849E8005CDE34 /* AKAControlsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EF251B01AB849E8005CDE34 /* Build configuration list for PBXNativeTarget "AKAControlsTests" */;
+			buildPhases = (
+				8EF2519E1AB849E8005CDE34 /* Sources */,
+				8EF2519F1AB849E8005CDE34 /* Frameworks */,
+				8EF251A01AB849E8005CDE34 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8EF251A51AB849E8005CDE34 /* PBXTargetDependency */,
+			);
+			name = AKAControlsTests;
+			productName = AKAControlsTests;
+			productReference = 8EF251A21AB849E8005CDE34 /* AKAControlsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8EF2518E1AB849E8005CDE34 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "AKA Sarl";
+				TargetAttributes = {
+					8EF251961AB849E8005CDE34 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					8EF251A11AB849E8005CDE34 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+				};
+			};
+			buildConfigurationList = 8EF251911AB849E8005CDE34 /* Build configuration list for PBXProject "AKAControls" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8EF2518D1AB849E8005CDE34;
+			productRefGroup = 8EF251981AB849E8005CDE34 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8EF251961AB849E8005CDE34 /* AKAControls */,
+				8EF251A11AB849E8005CDE34 /* AKAControlsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8EF251951AB849E8005CDE34 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EF251A01AB849E8005CDE34 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8EF251921AB849E8005CDE34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EF251E41AB84AF2005CDE34 /* AKAControlsErrors.m in Sources */,
+				8EF251D81AB84AF2005CDE34 /* AKALabel.m in Sources */,
+				8EF251D31AB84AF2005CDE34 /* AKAProperty.m in Sources */,
+				8EF251D61AB84AF2005CDE34 /* AKASwitch.m in Sources */,
+				8EF251D91AB84AF2005CDE34 /* AKAControlViewBinding.m in Sources */,
+				8EF251D71AB84AF2005CDE34 /* AKACompositeControl.m in Sources */,
+				8EF251DA1AB84AF2005CDE34 /* AKAControl.m in Sources */,
+				8EF251D51AB84AF2005CDE34 /* AKATextField.m in Sources */,
+				8EF251CD1AB84AF2005CDE34 /* AKAEditorControlView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EF2519E1AB849E8005CDE34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EF251AA1AB849E8005CDE34 /* AKAControlsTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8EF251A51AB849E8005CDE34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EF251961AB849E8005CDE34 /* AKAControls */;
+			targetProxy = 8EF251A41AB849E8005CDE34 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8EF251AB1AB849E8005CDE34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8EF251AC1AB849E8005CDE34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		8EF251AE1AB849E8005CDE34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = AKAControls/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8EF251AF1AB849E8005CDE34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = AKAControls/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8EF251B11AB849E8005CDE34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AKAControlsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8EF251B21AB849E8005CDE34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AKAControlsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8EF251911AB849E8005CDE34 /* Build configuration list for PBXProject "AKAControls" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EF251AB1AB849E8005CDE34 /* Debug */,
+				8EF251AC1AB849E8005CDE34 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EF251AD1AB849E8005CDE34 /* Build configuration list for PBXNativeTarget "AKAControls" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EF251AE1AB849E8005CDE34 /* Debug */,
+				8EF251AF1AB849E8005CDE34 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EF251B01AB849E8005CDE34 /* Build configuration list for PBXNativeTarget "AKAControlsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EF251B11AB849E8005CDE34 /* Debug */,
+				8EF251B21AB849E8005CDE34 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8EF2518E1AB849E8005CDE34 /* Project object */;
+}

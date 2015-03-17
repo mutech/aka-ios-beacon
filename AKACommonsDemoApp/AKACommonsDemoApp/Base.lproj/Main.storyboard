@@ -163,7 +163,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oiO-iC-xVG" customClass="AKAEditorControlView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oiO-iC-xVG" customClass="AKAEditorControlView">
                                 <rect key="frame" x="16" y="72" width="343" height="52"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Placeholder text" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bf8-HF-Ue7" customClass="AKATextField">
@@ -183,7 +183,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="enablePreview" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s9c-nH-fO0" customClass="AKAEditorControlView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s9c-nH-fO0" customClass="AKAEditorControlView">
                                 <rect key="frame" x="16" y="132" width="343" height="53"/>
                                 <subviews>
                                     <switch opaque="NO" tag="20" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qgK-ew-Xyo">
@@ -196,7 +196,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="enablePreview" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-cT-YJq" customClass="AKAEditorControlView">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mqv-cT-YJq" customClass="AKAEditorControlView">
                                 <rect key="frame" x="16" y="193" width="343" height="53"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Label"/>
@@ -224,7 +224,17 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="qZR-Is-17o" secondAttribute="trailing" constant="16" id="JHr-7u-Gzx"/>
+                            <constraint firstItem="oiO-iC-xVG" firstAttribute="leading" secondItem="zmV-bb-cee" secondAttribute="leadingMargin" id="QfY-cL-tA7"/>
+                            <constraint firstItem="oiO-iC-xVG" firstAttribute="top" secondItem="Aqk-oS-k54" secondAttribute="bottom" constant="8" id="Wsz-T6-q9F"/>
+                            <constraint firstItem="s9c-nH-fO0" firstAttribute="trailing" secondItem="zmV-bb-cee" secondAttribute="trailingMargin" id="a7q-Mw-SMW"/>
                             <constraint firstItem="qZR-Is-17o" firstAttribute="top" secondItem="Mqv-cT-YJq" secondAttribute="bottom" constant="8" id="dKX-K5-sIj"/>
+                            <constraint firstItem="Mqv-cT-YJq" firstAttribute="trailing" secondItem="zmV-bb-cee" secondAttribute="trailingMargin" id="gh4-I9-QfE"/>
+                            <constraint firstItem="nWB-Tk-Vt3" firstAttribute="top" secondItem="qZR-Is-17o" secondAttribute="bottom" constant="360" id="iGS-yw-KLQ"/>
+                            <constraint firstItem="s9c-nH-fO0" firstAttribute="top" secondItem="oiO-iC-xVG" secondAttribute="bottom" constant="8" id="j7V-N4-6BP"/>
+                            <constraint firstItem="s9c-nH-fO0" firstAttribute="leading" secondItem="zmV-bb-cee" secondAttribute="leadingMargin" id="kIX-ce-qa9"/>
+                            <constraint firstItem="Mqv-cT-YJq" firstAttribute="top" secondItem="s9c-nH-fO0" secondAttribute="bottom" constant="8" id="oAl-e3-iGx"/>
+                            <constraint firstItem="Mqv-cT-YJq" firstAttribute="leading" secondItem="zmV-bb-cee" secondAttribute="leadingMargin" id="rQU-Ry-H0G"/>
+                            <constraint firstItem="oiO-iC-xVG" firstAttribute="trailing" secondItem="zmV-bb-cee" secondAttribute="trailingMargin" id="sOj-Ox-yQy"/>
                             <constraint firstItem="qZR-Is-17o" firstAttribute="leading" secondItem="zmV-bb-cee" secondAttribute="leading" constant="16" id="wSh-UQ-fnb"/>
                         </constraints>
                     </view>

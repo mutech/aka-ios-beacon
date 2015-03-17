@@ -91,80 +91,27 @@
     }
 }
 
-#pragma mark - Analyze Subview Structure
+#pragma mark - Configuration
 
 - (NSDictionary*)roleMapping
 {
     NSDictionary* roleMapping = @{ @"label":
                                        @{ @"required":      @(YES),
-                                          @"autoCreate":    ^UIView*() {
-                                              UILabel* label = UILabel.new;
-                                              label.text = self.labelText;
-                                              if (self.labelFont)
-                                              {
-                                                  label.font = self.labelFont;
-                                              }
-                                              else
-                                              {
-                                                  label.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight];
-                                              }
-                                              if (self.labelTextColor)
-                                              {
-                                                  label.textColor = self.labelTextColor;
-                                              }
-                                              label.translatesAutoresizingMaskIntoConstraints = NO;
-                                              return label;
-                                          },
-                                          @"outlet":        [AKAProperty propertyOfKeyValueTarget:self keyPath:@"label" changeObserver:nil],
+                                          @"outletKeyPath": @"label",
                                           @"validTypes":    @[ [UILabel class] ],
-                                          @"viewTag":       @(10) },
+                                          @"viewTag":       @(10)
+                                          },
                                    @"editor":
                                        @{ @"required":      @(YES),
-                                          @"autoCreate":    ^UIView*() {
-                                              UILabel* editor;
-                                              if (self.enablePreview)
-                                              {
-                                                  editor = UILabel.new;
-                                                  editor.text = @"Please add an editor view. For AKA control views, set role to \"editor\", for other views set tag to 20. Positioning and constraints do not matter.";
-                                                  editor.lineBreakMode = NSLineBreakByWordWrapping;
-                                                  editor.numberOfLines = 5;
-                                                  //editor.preferredMaxLayoutWidth = 200.0;
-                                                  editor.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightRegular];
-                                                  editor.textColor = [UIColor whiteColor];
-                                                  editor.backgroundColor = [UIColor lightGrayColor];
-                                                  //editor.textAlignment = NSTextAlignmentCenter;
-                                                  editor.translatesAutoresizingMaskIntoConstraints = NO;
-                                                  //[editor sizeToFit];
-
-                                              }
-                                              return editor;
+                                          @"outletKeyPath": @"editor",
+                                          @"viewTag":       @(20)
                                           },
-                                          @"outlet":        [AKAProperty propertyOfKeyValueTarget:self keyPath:@"editor" changeObserver:nil],
-                                          @"viewTag":       @(20) },
                                    @"errorMessageLabel":
                                        @{ @"required":      @(NO),
-                                          @"autoCreate":    ^UIView*() {
-                                              UILabel* errorMessageLabel = [[UILabel alloc] init];
-                                              errorMessageLabel.text = self.errorText;
-                                              if (self.errorTextColor)
-                                              {
-                                                  errorMessageLabel.textColor = self.errorTextColor;
-                                              }
-                                              if (self.errorFont)
-                                              {
-                                                  errorMessageLabel.font = self.errorFont;
-                                              }
-                                              else
-                                              {
-                                                  errorMessageLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight];
-                                              }
-                                              errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-                                              [errorMessageLabel sizeToFit];
-                                              return errorMessageLabel;
-                                          },
-                                          @"outlet":        [AKAProperty propertyOfKeyValueTarget:self keyPath:@"errorMessageLabel" changeObserver:nil],
+                                          @"outletKeyPath": @"errorMessageLabel",
                                           @"validTypes":    @[ [UILabel class] ],
-                                          @"viewTag":       @(30) },
+                                          @"viewTag":       @(30)
+                                          },
                                    };
     return roleMapping;
 }
@@ -184,6 +131,59 @@
     return result;
 }
 
+- (NSArray*)layoutSpecifications
+{
+    return @[ @{ @"requiredRoles": @[ @"editor", @"label", @"errorMessageLabel" ],
+                 @"metrics":
+                     @{ @"padTop": @(4),
+                        @"padRight": @(4),
+                        @"padBottom": @(4),
+                        @"padLeft": @(4),
+                        @"vSpace": @(2),
+                        @"hSpace": @(8),
+                        @"labelWidth": @(60)
+                        },
+                 @"constraints":
+                     @[  @{ @"format": @"V:|-(>=padTop)-[label]-(>=padBottom)-|" },
+                         @{ @"format": @"H:|-(padLeft)-[label(labelWidth)]-(hSpace)-[editor]-(padRight@750)-|", @"options": @(NSLayoutFormatAlignAllBaseline) },
+                         @{ @"format": @"V:|-(padTop)-[editor]-(vSpace)-[errorMessageLabel]-(padBottom)-|", @"options": @(NSLayoutFormatAlignAllLeft|NSLayoutFormatAlignAllRight) },
+                         /*
+                          @{ @"custom":
+                          @{ @"item": @"editor",
+                          @"attribute":  @(NSLayoutAttributeFirstBaseline),
+                          @"relatedBy":  @(NSLayoutRelationEqual),
+                          @"multiplier": @(1),
+                          @"constant":   @(0),
+                          @"priority":   @(1000)
+                          },
+                          @"items":
+                          @[ @{ @"item": @"label",
+                          @"attribute": @(NSLayoutAttributeFirstBaseline)
+                          }
+                          ]
+                          }*/
+                         ]
+                 },/*
+                    @{ @"requiredRoles": @[ @"editor", @"label" ],
+                    @"metrics":
+                    @{ @"padTop": @(0),
+                    @"padRight": @(0),
+                    @"padBottom": @(0),
+                    @"padLeft": @(0),
+                    @"vSpace": @(2),
+                    @"hSpace": @(8),
+                    },
+                    @"constraints":
+                    @[ @{ @"format": @"V:|-(padTop)-[editor]-(padBottom)-|"  },
+                    @{ @"format": @"V:[label]-(>=padBottom)-|" },
+                    @{ @"format": @"H:|-(padLeft)-[label]-(hSpace)-[editor]-(padRight)-|" }
+                    ]
+                    },*/
+              ];
+}
+
+#pragma mark - Analyze Subview Structure
+
 - (NSDictionary*)analyzeSubviewStructure
 {
     NSDictionary* roleMapping = [self roleMapping];
@@ -193,24 +193,8 @@
                                     viewTagToRoleMapping:viewTagToRoleMapping];
 }
 
-- (UIView*)subviewContainingOrEqualTo:(UIView*)view
-{
-    UIView* result = nil;
-    UIView* previous = view;
-    UIView* v = view.superview;
-    for (; v != nil && v != self; v = v.superview)
-    {
-        previous = v;
-    }
-    if (v == self)
-    {
-        result = previous;
-    }
-    return result;
-}
-
 - (NSDictionary*)analyzeSubviewStrunctureWithRoleMapping:(NSDictionary*)roleMapping
-                           viewTagToRoleMapping:(NSDictionary*)viewTagToRoleMapping
+                                    viewTagToRoleMapping:(NSDictionary*)viewTagToRoleMapping
 {
     NSMutableDictionary* assignments = NSMutableDictionary.new;
     NSMutableDictionary* conflictingAssignments = NSMutableDictionary.new;
@@ -363,6 +347,22 @@
                                           viewTagToRoleMapping);
 }
 
+- (UIView*)subviewContainingOrEqualTo:(UIView*)view
+{
+    UIView* result = nil;
+    UIView* previous = view;
+    UIView* v = view.superview;
+    for (; v != nil && v != self; v = v.superview)
+    {
+        previous = v;
+    }
+    if (v == self)
+    {
+        result = previous;
+    }
+    return result;
+}
+
 #pragma mark - Setup Subviews
 
 - (void)modifyViewHierarchy:(void(^)())block
@@ -378,28 +378,29 @@
                                  errors:(NSMutableArray*)errors
 {
     (void)errors; // not used. TODO: error handling if nonrecoverable error was found
-    [self createMissingSubviews:analysisResults];
+    [self createMissingSubviews:analysisResults[@"vacantRoles"]
+           andUpdateAssignments:analysisResults[@"assignments"]];
     return YES;
 }
 
-- (void)createMissingSubviews:(NSDictionary*)analysisResults
+- (void)createMissingSubviews:(NSMutableDictionary*)vacantRoles
+         andUpdateAssignments:(NSMutableDictionary*)assignments
 {
-    NSLog(@"%@", analysisResults.description);
-
-    NSMutableDictionary* vacantRoles = analysisResults[@"vacantRoles"];
-    NSMutableDictionary* assignments = analysisResults[@"assignments"];
-
     for (NSString* role in vacantRoles.allKeys)
     {
         NSDictionary* roleSpec = vacantRoles[role];
-        UIView*(^autoCreate)() = roleSpec[@"autoCreate"];
-        AKAProperty* outlet = roleSpec[@"outlet"];
-        if (autoCreate)
+        SEL autoCreateSelector = NSSelectorFromString([NSString stringWithFormat:@"autoCreateViewForRole_%@", role]);
+        if ([self respondsToSelector:autoCreateSelector])
         {
-            UIView* view = autoCreate();
+            UIView* view = [self performSelector:autoCreateSelector];
             if (view)
             {
                 BOOL added = NO;
+                AKAProperty* outlet = nil;
+                if (roleSpec[@"outletKeyPath"])
+                {
+                    outlet = [AKAProperty propertyOfKeyValueTarget:self keyPath:roleSpec[@"outletKeyPath"] changeObserver:nil];
+                }
                 if (outlet)
                 {
                     UIView* viewOrReplacement = view;
@@ -439,62 +440,15 @@
 {
     NSDictionary* analysisResults = [self analyzeSubviewStructure];
     [self setupSubviewsForAnalysisResults:analysisResults errors:nil];
-    [self setupConstraintsWithRoleAssignment:analysisResults[@"assignments"]];
+    [self setupConstraintsWithRoleAssignments:analysisResults[@"assignments"]];
     [super updateConstraints];
 }
 
-- (void)setupConstraintsWithRoleAssignment:(NSDictionary*)assignments
+- (void)setupConstraintsWithRoleAssignments:(NSDictionary*)assignments
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSArray* layouts =
-    @[ @{ @"requiredRoles": @[ @"editor", @"label", @"errorMessageLabel" ],
-          @"metrics":
-              @{ @"padTop": @(4),
-                 @"padRight": @(4),
-                 @"padBottom": @(4),
-                 @"padLeft": @(4),
-                 @"vSpace": @(2),
-                 @"hSpace": @(8),
-                 @"labelWidth": @(60)
-                 },
-          @"constraints":
-              @[  @{ @"format": @"V:|-(>=padTop)-[label]-(>=padBottom)-|" },
-                  @{ @"format": @"H:|-(padLeft)-[label(labelWidth)]-(hSpace)-[editor]-(padRight@750)-|", @"options": @(NSLayoutFormatAlignAllBaseline) },
-                  @{ @"format": @"V:|-(padTop)-[editor]-(vSpace)-[errorMessageLabel]-(padBottom)-|", @"options": @(NSLayoutFormatAlignAllLeft|NSLayoutFormatAlignAllRight) },
-                 /*
-                 @{ @"custom":
-                        @{ @"item": @"editor",
-                           @"attribute":  @(NSLayoutAttributeFirstBaseline),
-                           @"relatedBy":  @(NSLayoutRelationEqual),
-                           @"multiplier": @(1),
-                           @"constant":   @(0),
-                           @"priority":   @(1000)
-                           },
-                    @"items":
-                        @[ @{ @"item": @"label",
-                              @"attribute": @(NSLayoutAttributeFirstBaseline)
-                              }
-                           ]
-                    }*/
-                 ]
-          },/*
-       @{ @"requiredRoles": @[ @"editor", @"label" ],
-          @"metrics":
-              @{ @"padTop": @(0),
-                 @"padRight": @(0),
-                 @"padBottom": @(0),
-                 @"padLeft": @(0),
-                 @"vSpace": @(2),
-                 @"hSpace": @(8),
-                 },
-          @"constraints":
-              @[ @{ @"format": @"V:|-(padTop)-[editor]-(padBottom)-|"  },
-                 @{ @"format": @"V:[label]-(>=padBottom)-|" },
-                 @{ @"format": @"H:|-(padLeft)-[label]-(hSpace)-[editor]-(padRight)-|" }
-                 ]
-          },*/
-      ];
+    NSArray* layouts = [self layoutSpecifications];
 
     for (NSDictionary* layout in layouts)
     {
@@ -588,6 +542,70 @@
 }
 
 #pragma mark - Outlets
+
+#pragma mark Auto Creation
+
+- (UILabel*)autoCreateViewForRole_label
+{
+    UILabel* label = UILabel.new;
+    label.text = self.labelText;
+    if (self.labelFont)
+    {
+        label.font = self.labelFont;
+    }
+    else
+    {
+        label.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight];
+    }
+    if (self.labelTextColor)
+    {
+        label.textColor = self.labelTextColor;
+    }
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    return label;
+}
+
+- (UILabel*)autoCreateViewForRole_errorMessageLabel
+{
+    UILabel* errorMessageLabel = [[UILabel alloc] init];
+    errorMessageLabel.text = self.errorText;
+    if (self.errorTextColor)
+    {
+        errorMessageLabel.textColor = self.errorTextColor;
+    }
+    if (self.errorFont)
+    {
+        errorMessageLabel.font = self.errorFont;
+    }
+    else
+    {
+        errorMessageLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight];
+    }
+    errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [errorMessageLabel sizeToFit];
+    return errorMessageLabel;
+}
+
+- (UIView*)autoCreateViewForRole_editor
+{
+    UILabel* editor;
+    if (self.enablePreview)
+    {
+        editor = UILabel.new;
+        editor.text = @"Please add an editor view. For AKA control views, set role to \"editor\", for other views set tag to 20. Positioning and constraints do not matter.";
+        editor.lineBreakMode = NSLineBreakByWordWrapping;
+        editor.numberOfLines = 5;
+        //editor.preferredMaxLayoutWidth = 200.0;
+        editor.font = [UIFont systemFontOfSize:14.0 weight:UIFontWeightRegular];
+        editor.textColor = [UIColor whiteColor];
+        editor.backgroundColor = [UIColor lightGrayColor];
+        //editor.textAlignment = NSTextAlignmentCenter;
+        editor.translatesAutoresizingMaskIntoConstraints = NO;
+        //[editor sizeToFit];
+
+    }
+    return editor;
+}
 
 #pragma mark Validation
 

@@ -1,5 +1,10 @@
-Pods
-AKACommonsDemoApp/AKACommonsDemoApp.xcodeproj/xcuserdata
-AKACommons.xcworkspace/xcuserdata/*
-AKACommons.xcodeproj/xcuserdata/*
 .DS_Store
+AKACommons/AKACommons.xcworkspace/xcuserdata
+AKACommons/AKACommons.xcodeproj/xcuserdata
+AKACommons/AKACommonsDemoApp/AKACommonsDemoApp.xcodeproj/xcuserdata
+AKACommonsDemoApp/AKACommonsDemoApp.xcodeproj/xcuserdata
+AKAControls/Pods
+AKAControls/Podfile.lock
+AKAControls/AKAControls.xcworkspace/xcuserdata
+AKAControls/AKAControls.xcodeproj/project.xcworkspace/xcuserdata
+Pods

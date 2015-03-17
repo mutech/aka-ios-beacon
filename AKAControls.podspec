@@ -11,12 +11,13 @@ Pod::Spec.new do |spec|
     spec.summary       = 'Form controls library with binding support and live rendering'
     spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.1' }
 
-    spec.source_files  = 'AKACommons/AKAControls/*.{h,m}'
+    spec.source_files  = 'AKAControls/AKAControls/Classes/*.{h,m}'
     spec.private_header_files = '**/*_Internal.h'
 
     spec.platform      = :ios, "8.0"
     spec.ios.deployment_target = "8.0"
 
+    spec.dependency    'AKACommons', '~> 0.0.1'
     spec.framework     = 'Foundation'
     spec.module_name   = 'AKAControls'
 

@@ -1,0 +1,7 @@
+source 'https://github.com/artsy/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://sources.aka-labs.com/scm/git/cocoapods'
+
+platform :ios, '8.0'
+
+pod 'AKACommons', :path => '..'

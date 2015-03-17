@@ -8,12 +8,12 @@ Pod::Spec.new do |spec|
                }
     spec.homepage      = 'https://www-akalabs.rhcloud.com/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
-    spec.summary       = 'Reusable components packaged with a control binding library.'
+    spec.summary       = 'Reusable components.'
     spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.1' }
 
-    spec.source_files  = 'AKACommons/**/*.{h,m}'
-    spec.exclude_files = 'AKACommons/{AKAControls,AKAKVO}/**/*'
-    #spec.private_header_files = 'AKACommons/**/*_Internal.h'
+    spec.source_files  = 'AKACommons/AKACommons/**/*.{h,m}'
+    spec.exclude_files = 'AKACommons/AKACommons/AKAKVO/**/*'
+    #spec.private_header_files = 'AKACommons/AKACommons/**/*_Internal.h'
 
     spec.platform      = :ios, "8.0"
     spec.ios.deployment_target = "8.0"

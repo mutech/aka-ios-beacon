@@ -14,11 +14,11 @@
 		<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>AKAControls.xcodeproj</string>
+	<string>AKAControls/AKAControls.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</key>
-		<string>../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>

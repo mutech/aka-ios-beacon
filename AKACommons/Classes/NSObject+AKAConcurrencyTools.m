@@ -9,7 +9,7 @@
 
 @implementation NSObject (AKAConcurrencyTools)
 
-- (void)performBlockInMainThreadOrQueue:(void (^)())block
+- (void)aka_performBlockInMainThreadOrQueue:(void (^)())block
 {
     if ([NSThread isMainThread])
     {

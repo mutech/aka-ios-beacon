@@ -10,7 +10,7 @@
 
 @implementation UIView (AKAConstraintTools)
 
-- (NSArray *)removeConstraintsAffecting:(UIView *)view
+- (NSArray *)aka_removeConstraintsAffecting:(UIView *)view
 {
     NSMutableArray* constraintsToRemove = NSMutableArray.new;
 

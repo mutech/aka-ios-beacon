@@ -10,7 +10,7 @@
 
 @interface NSObject()
 
-@property (atomic, readonly) NSMutableDictionary* associatedValues;
+@property (atomic, readonly) NSMutableDictionary* aka_associatedValues;
 
 @end
 
@@ -18,17 +18,17 @@
 
 static char associationKey;
 
-- (BOOL)hasAssociatesValues
+- (BOOL)aka_hasAssociatesValues
 {
-    return self.associatedValues != nil;
+    return [self aka_associatedValues] != nil;
 }
 
-- (NSMutableDictionary*)associatedValues
+- (NSMutableDictionary*)aka_associatedValues
 {
-    return [self associatedValuesCreateIfMissing:NO];
+    return [self aka_associatedValuesCreateIfMissing:NO];
 }
 
-- (NSMutableDictionary*)associatedValuesCreateIfMissing:(BOOL)createIfMissing
+- (NSMutableDictionary*)aka_associatedValuesCreateIfMissing:(BOOL)createIfMissing
 {
     id result = objc_getAssociatedObject(self, &associationKey);
     if (result == nil)
@@ -42,16 +42,16 @@ static char associationKey;
     return result;
 }
 
-- (void)setAssociatedValues:(NSDictionary*)values
+- (void)aka_setAssociatedValues:(NSDictionary*)values
 {
     NSMutableDictionary* storage = [NSMutableDictionary dictionaryWithDictionary:values];
     objc_setAssociatedObject(self, &associationKey, storage, OBJC_ASSOCIATION_RETAIN);
 }
 
-- (id)associatedValueForKey:(id)key
+- (id)aka_associatedValueForKey:(id)key
 {
     id result = nil;
-    id associatedValues = [self associatedValues];
+    id associatedValues = [self aka_associatedValues];
     if ([associatedValues isKindOfClass:[NSDictionary class]])
     {
         result = [((NSDictionary*)associatedValues) objectForKey:key];
@@ -59,9 +59,9 @@ static char associationKey;
     return result;
 }
 
-- (void)setAssociatedValue:(id)value forKey:(NSString*)key
+- (void)aka_setAssociatedValue:(id)value forKey:(NSString*)key
 {
-    id associatedValues = [self associatedValuesCreateIfMissing:YES];
+    id associatedValues = [self aka_associatedValuesCreateIfMissing:YES];
     if ([associatedValues isKindOfClass:[NSMutableDictionary class]])
     {
         [((NSMutableDictionary*)associatedValues) setObject:value forKey:key];
@@ -69,9 +69,9 @@ static char associationKey;
     return;
 }
 
-- (void)removeValueAssociatedWithKey:(NSString*)key
+- (void)aka_removeValueAssociatedWithKey:(NSString*)key
 {
-    id associatedValues = [self associatedValuesCreateIfMissing:YES];
+    id associatedValues = [self aka_associatedValuesCreateIfMissing:YES];
     if ([associatedValues isKindOfClass:[NSMutableDictionary class]])
     {
         [((NSMutableDictionary*)associatedValues) removeObjectForKey:key];
@@ -79,9 +79,51 @@ static char associationKey;
     return;
 }
 
-- (void)removeAllAssociatedValues
+- (void)aka_removeAllAssociatedValues
 {
-    [self setAssociatedValues:nil];
+    [self aka_setAssociatedValues:nil];
+}
+
+
+- (void)aka_savePropertyValues:(NSArray*)propertyNames
+{
+    for (NSString* key in propertyNames)
+    {
+        if ([self aka_associatedValueForKey:key] == nil)
+        {
+            id value = [self valueForKey:key];
+            if (value == nil)
+            {
+                value = [NSNull null];
+            }
+            [self aka_setAssociatedValue:value forKey:key];
+        }
+    }
+}
+
+- (void)aka_restoreSavedPropertyValues:(NSArray*)propertyNames
+{
+    for (NSString* key in propertyNames)
+    {
+        id value = [self aka_associatedValueForKey:key];
+        if (value == [NSNull null])
+        {
+            [self setValue:nil forKey:key];
+        }
+        else if (value != nil)
+        {
+            [self setValue:value forKey:key];
+        }
+    }
+}
+
+- (void)aka_removeSavedPropertyValues:(NSArray*)propertyNames
+{
+    for (NSString* key in propertyNames)
+    {
+        [self aka_removeValueAssociatedWithKey:key];
+    }
 }
 
 @end
+

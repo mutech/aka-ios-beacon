@@ -9,7 +9,7 @@
 
 @implementation UIView (AKAReusableViewsSupport)
 
-- (instancetype)viewFromNibOrSelf
+- (instancetype)aka_viewFromNibOrSelf
 {
     id result = self;
     if (self.subviews.count == 0)

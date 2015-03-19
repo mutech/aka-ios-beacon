@@ -1,0 +1,8 @@
+source 'https://github.com/artsy/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://sources.aka-labs.com/scm/git/cocoapods'
+
+use_frameworks!
+
+platform :ios, '8.0'
+pod 'AKAControls', '~> 0.0.3'

@@ -1,0 +1,515 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8EBA332C1ABAFA82007436AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332B1ABAFA82007436AA /* main.m */; };
+		8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332E1ABAFA82007436AA /* AppDelegate.m */; };
+		8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */; };
+		8EBA33351ABAFA82007436AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33331ABAFA82007436AA /* Main.storyboard */; };
+		8EBA33371ABAFA82007436AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33361ABAFA82007436AA /* Images.xcassets */; };
+		8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33381ABAFA82007436AA /* LaunchScreen.xib */; };
+		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
+		FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD591E74E4A6B018CDD9320 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8EBA33401ABAFA82007436AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8EBA331E1ABAFA82007436AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8EBA33251ABAFA82007436AA;
+			remoteInfo = AKAControlsDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		8EBA33261ABAFA82007436AA /* AKAControlsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKAControlsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EBA332A1ABAFA82007436AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EBA332B1ABAFA82007436AA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8EBA332D1ABAFA82007436AA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8EBA332E1ABAFA82007436AA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8EBA33301ABAFA82007436AA /* AKAControlsDemoBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKAControlsDemoBaseViewController.h; sourceTree = "<group>"; };
+		8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsDemoBaseViewController.m; sourceTree = "<group>"; };
+		8EBA33341ABAFA82007436AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8EBA33361ABAFA82007436AA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		8EBA33391ABAFA82007436AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		8EBA333F1ABAFA82007436AA /* AKAControlsDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8EBA33441ABAFA82007436AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsDemoTests.m; sourceTree = "<group>"; };
+		9AD591E74E4A6B018CDD9320 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8EBA33231ABAFA82007436AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EBA333C1ABAFA82007436AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2827A9E4C05D558919AF730C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */,
+				AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8A2220E4A0C31716F48B2522 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9AD591E74E4A6B018CDD9320 /* Pods.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8EBA331D1ABAFA82007436AA = {
+			isa = PBXGroup;
+			children = (
+				8EBA33281ABAFA82007436AA /* AKAControlsDemo */,
+				8EBA33421ABAFA82007436AA /* AKAControlsDemoTests */,
+				8EBA33271ABAFA82007436AA /* Products */,
+				2827A9E4C05D558919AF730C /* Pods */,
+				8A2220E4A0C31716F48B2522 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		8EBA33271ABAFA82007436AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8EBA33261ABAFA82007436AA /* AKAControlsDemo.app */,
+				8EBA333F1ABAFA82007436AA /* AKAControlsDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8EBA33281ABAFA82007436AA /* AKAControlsDemo */ = {
+			isa = PBXGroup;
+			children = (
+				8EBA332D1ABAFA82007436AA /* AppDelegate.h */,
+				8EBA332E1ABAFA82007436AA /* AppDelegate.m */,
+				8EBA33301ABAFA82007436AA /* AKAControlsDemoBaseViewController.h */,
+				8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */,
+				8EBA33331ABAFA82007436AA /* Main.storyboard */,
+				8EBA33361ABAFA82007436AA /* Images.xcassets */,
+				8EBA33381ABAFA82007436AA /* LaunchScreen.xib */,
+				8EBA33291ABAFA82007436AA /* Supporting Files */,
+			);
+			path = AKAControlsDemo;
+			sourceTree = "<group>";
+		};
+		8EBA33291ABAFA82007436AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8EBA332A1ABAFA82007436AA /* Info.plist */,
+				8EBA332B1ABAFA82007436AA /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8EBA33421ABAFA82007436AA /* AKAControlsDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */,
+				8EBA33431ABAFA82007436AA /* Supporting Files */,
+			);
+			path = AKAControlsDemoTests;
+			sourceTree = "<group>";
+		};
+		8EBA33431ABAFA82007436AA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8EBA33441ABAFA82007436AA /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8EBA33251ABAFA82007436AA /* AKAControlsDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EBA33491ABAFA82007436AA /* Build configuration list for PBXNativeTarget "AKAControlsDemo" */;
+			buildPhases = (
+				7F220329D4020F957C315627 /* Check Pods Manifest.lock */,
+				8EBA33221ABAFA82007436AA /* Sources */,
+				8EBA33231ABAFA82007436AA /* Frameworks */,
+				8EBA33241ABAFA82007436AA /* Resources */,
+				4695536667FA0B004631F92D /* Copy Pods Resources */,
+				47FB53A0AC811FC79A57050F /* Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AKAControlsDemo;
+			productName = AKAControlsDemo;
+			productReference = 8EBA33261ABAFA82007436AA /* AKAControlsDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8EBA333E1ABAFA82007436AA /* AKAControlsDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8EBA334C1ABAFA82007436AA /* Build configuration list for PBXNativeTarget "AKAControlsDemoTests" */;
+			buildPhases = (
+				8EBA333B1ABAFA82007436AA /* Sources */,
+				8EBA333C1ABAFA82007436AA /* Frameworks */,
+				8EBA333D1ABAFA82007436AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8EBA33411ABAFA82007436AA /* PBXTargetDependency */,
+			);
+			name = AKAControlsDemoTests;
+			productName = AKAControlsDemoTests;
+			productReference = 8EBA333F1ABAFA82007436AA /* AKAControlsDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8EBA331E1ABAFA82007436AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "AKA Sarl";
+				TargetAttributes = {
+					8EBA33251ABAFA82007436AA = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = PUB728ZT9Y;
+					};
+					8EBA333E1ABAFA82007436AA = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 8EBA33251ABAFA82007436AA;
+					};
+				};
+			};
+			buildConfigurationList = 8EBA33211ABAFA82007436AA /* Build configuration list for PBXProject "AKAControlsDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8EBA331D1ABAFA82007436AA;
+			productRefGroup = 8EBA33271ABAFA82007436AA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8EBA33251ABAFA82007436AA /* AKAControlsDemo */,
+				8EBA333E1ABAFA82007436AA /* AKAControlsDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8EBA33241ABAFA82007436AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EBA33351ABAFA82007436AA /* Main.storyboard in Resources */,
+				8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */,
+				8EBA33371ABAFA82007436AA /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EBA333D1ABAFA82007436AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4695536667FA0B004631F92D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		47FB53A0AC811FC79A57050F /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7F220329D4020F957C315627 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8EBA33221ABAFA82007436AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */,
+				8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */,
+				8EBA332C1ABAFA82007436AA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8EBA333B1ABAFA82007436AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8EBA33411ABAFA82007436AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8EBA33251ABAFA82007436AA /* AKAControlsDemo */;
+			targetProxy = 8EBA33401ABAFA82007436AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8EBA33331ABAFA82007436AA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8EBA33341ABAFA82007436AA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8EBA33381ABAFA82007436AA /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8EBA33391ABAFA82007436AA /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8EBA33471ABAFA82007436AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8EBA33481ABAFA82007436AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8EBA334A1ABAFA82007436AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = AKAControlsDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		8EBA334B1ABAFA82007436AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = AKAControlsDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		8EBA334D1ABAFA82007436AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AKAControlsDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AKAControlsDemo.app/AKAControlsDemo";
+			};
+			name = Debug;
+		};
+		8EBA334E1ABAFA82007436AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = AKAControlsDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AKAControlsDemo.app/AKAControlsDemo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8EBA33211ABAFA82007436AA /* Build configuration list for PBXProject "AKAControlsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EBA33471ABAFA82007436AA /* Debug */,
+				8EBA33481ABAFA82007436AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EBA33491ABAFA82007436AA /* Build configuration list for PBXNativeTarget "AKAControlsDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EBA334A1ABAFA82007436AA /* Debug */,
+				8EBA334B1ABAFA82007436AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8EBA334C1ABAFA82007436AA /* Build configuration list for PBXNativeTarget "AKAControlsDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EBA334D1ABAFA82007436AA /* Debug */,
+				8EBA334E1ABAFA82007436AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8EBA331E1ABAFA82007436AA /* Project object */;
+}

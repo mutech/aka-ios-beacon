@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7515D2D4-5726-4B79-9FFE-156CCE708BE3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AKAControlsDemo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</key>
+		<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AKAControlsDemo/AKAControlsDemo.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</string>
+			<key>IDESourceControlWCCName</key>
+			<string>aka.commons</string>
+		</dict>
+	</array>
+</dict>
+</plist>

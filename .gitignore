@@ -11,3 +11,5 @@ Pods
 AKACommons/Podfile.lock
 .git
 .*.swp
+Podfile.lock
+xcuserdata/*

@@ -65,7 +65,7 @@
     {
         NSRange range = NSMakeRange(startIndex, self.controlsStorage.count - startIndex);
         NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-        NSEnumerationOptions options;
+        NSEnumerationOptions options = 0;
         [self.controlsStorage enumerateObjectsAtIndexes:indexSet
                                                 options:options
                                              usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

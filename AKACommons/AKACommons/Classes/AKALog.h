@@ -11,7 +11,7 @@
 // Implementation notes: do/while to make it a statement requiring a semicolon; ## to remove the
 // preceeding comma if no variadic args are given.
 #define AKALogLevel(level, format, ...)\
-    do{ NSString* msg = [level stringByAppendingString:[NSString stringWithFormat:(format),##__VA_ARGS__]];\
+    do{ NSString* msg = [[level stringByAppendingString:@": "] stringByAppendingString:[NSString stringWithFormat:(format),##__VA_ARGS__]];\
         NSLog(@"%@",msg); } while(0)
 
 #define AKALogDebug(format, ...)  AKALogLevel(@"DEBUG", (format),##__VA_ARGS__)

@@ -21,5 +21,5 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 
 // Categories/
 #import <AKACommons/UIView+AKAHierarchyVisitor.h>
-#import <AKACommons/UIView+AKAReusableViews.h>
+#import <AKACommons/UIView+AKAReusableViewsSupport.h>
 #import <AKACommons/UIView+AKAConstraintTools.h>

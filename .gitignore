@@ -13,3 +13,6 @@ AKACommons/Podfile.lock
 .*.swp
 Podfile.lock
 xcuserdata/*
+AKAControlsDemo/AKAControlsDemo.xcodeproj/project.xcworkspace/xcuserdata
+AKAControlsDemo/AKAControlsDemo.xcodeproj/xcuserdata
+AKAControlsDemo/AKAControlsDemo.xcworkspace/xcuserdata

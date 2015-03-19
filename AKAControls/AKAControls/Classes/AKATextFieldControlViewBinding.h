@@ -7,8 +7,8 @@
 //
 
 #import "AKAControlViewBinding.h"
-#import "AKATextField.h"
 
+@class AKATextField;
 @interface AKATextFieldControlViewBinding: AKAControlViewBinding
 
 #pragma mark - Initialization

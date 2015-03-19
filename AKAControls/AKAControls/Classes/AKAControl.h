@@ -20,7 +20,9 @@
 
 #pragma mark - Initialization
 
++ (instancetype)controlWithOwner:(AKACompositeControl*)owner;
 + (instancetype)controlWithOwner:(AKACompositeControl*)owner keyPath:(NSString*)keyPath;
++ (instancetype)controlWithDataContext:(id)dataContext;
 + (instancetype)controlWithDataContext:(id)dataContext keyPath:(NSString*)keyPath;
 
 #pragma mark - Configuration
@@ -31,12 +33,9 @@
 
 @property(nonatomic, readonly, weak)AKACompositeControl* owner;
 
-#pragma mark - View Binding
-
-@property(nonatomic, strong) AKAControlViewBinding* viewBinding;
-
 #pragma mark - Value Access
 
+@property(nonatomic, readonly) UIView* view;
 @property(nonatomic) id viewValue;
 @property(nonatomic) id modelValue;
 

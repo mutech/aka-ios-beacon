@@ -19,6 +19,14 @@
 
 + (BOOL)attemptRecoveryActions;
 
+#pragma mark - Control Ownership
+
++ (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control
+                                  ownedBy:(AKACompositeControl*)currentOwner
+                               toNewOwner:(AKACompositeControl*)owner;
+
+#pragma mark - Composite Control Member Activation
+
 + (void)invalidAttemptToActivate:(AKAControl*)control
                      inComposite:(AKACompositeControl*)composite
  whileAnotherMemberIsStillActive:(AKAControl*)oldActive

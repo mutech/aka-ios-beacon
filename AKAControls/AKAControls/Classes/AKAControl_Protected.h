@@ -8,12 +8,25 @@
 
 #import "AKAControl.h"
 
+/**
+ * Provides functionality that is reserved for classes implementing controls.
+ *
+ * Please note that you should not need to subclass controls.
+ */
 @interface AKAControl (Protected)
 
-@property(nonatomic, strong) AKAProperty* modelValueProperty;
-@property(nonatomic, readonly) AKAProperty* viewValueProperty;
+#pragma mark - Initialization
 
 - (instancetype)initWithOwner:(AKACompositeControl*)owner keyPath:(NSString*)keyPath;
 - (instancetype)initWithDataContext:(id)dataContext keyPath:(NSString*)keyPath;
+
+#pragma mark - View Binding
+
+@property(nonatomic, strong) AKAControlViewBinding* viewBinding;
+
+#pragma mark - Value Properties
+
+@property(nonatomic, strong) AKAProperty* modelValueProperty;
+@property(nonatomic, readonly) AKAProperty* viewValueProperty;
 
 @end

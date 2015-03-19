@@ -10,6 +10,7 @@
 
 #import "AKAControl_Internal.h"
 #import "AKAControlViewBinding_Internal.h"
+#import "AKAControlViewProtocol.h"
 
 @implementation AKAControlViewBinding: NSObject
 
@@ -18,6 +19,67 @@
 @synthesize control = _control;
 
 #pragma mark - Initialization
+
++ (Class)resolveBindingType:(Class)preferredBindingType
+{
+    Class result = preferredBindingType;
+    if (preferredBindingType == nil)
+    {
+        result = [AKAControlViewBinding class];
+    }
+    else if (![preferredBindingType isSubclassOfClass:[AKAControlViewBinding class]])
+    {
+        // TODO: error handling
+    }
+    return result;
+}
+
++ (Class)resolveControlTypeForView:(id)view
+{
+    Class result = nil;
+    if ([view isKindOfClass:[UIView class]])
+    {
+        UIView* uiView = view;
+        if (uiView.subviews.count > 0)
+        {
+            result = [AKAControl class];
+        }
+    }
+    return result;
+}
+
++ (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
+                        withControlView:(UIView<AKAControlViewProtocol>*)view
+                           controlOwner:(AKACompositeControl*)owner
+{
+    return [self bindingOfType:preferredBindingType
+             withConfiguration:view
+                          view:view
+                  controlOwner:owner];
+}
+
++ (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
+                      withConfiguration:(id<AKAControlViewBindingConfigurationProtocol>)configuration
+                                   view:(UIView*)view
+                           controlOwner:(AKACompositeControl*)owner
+{
+    AKAControlViewBinding* result = nil;
+
+    Class bindingType = [self resolveBindingType:preferredBindingType];
+    Class controlType = [bindingType resolveControlTypeForView:view];
+    if (controlType)
+    {
+        AKAControl* control = [[controlType alloc] initWithOwner:owner
+                                                         keyPath:configuration.valueKeyPath];
+        if (control != nil)
+        {
+            result = [bindingType alloc];
+            result = [result initWithControl:control
+                                        view:view];
+        }
+    }
+    return result;
+}
 
 - (instancetype)initWithControl:(AKAControl*)control
                            view:(UIView*)view

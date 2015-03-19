@@ -23,13 +23,33 @@
 
 #pragma mark - Initialization
 
++ (instancetype)controlWithDataContext:(id)dataContext
+{
+    NSParameterAssert(dataContext != nil);
+
+    return [[self alloc] initWithDataContext:dataContext keyPath:nil];
+}
+
 + (instancetype)controlWithDataContext:(id)dataContext keyPath:(NSString *)keyPath
 {
+    NSParameterAssert(dataContext != nil);
+    NSParameterAssert(keyPath.length > 0);
+
     return [[self alloc] initWithDataContext:dataContext keyPath:keyPath];
+}
+
++ (instancetype)controlWithOwner:(AKACompositeControl *)owner
+{
+    NSParameterAssert(owner != nil);
+
+    return [[self alloc] initWithOwner:owner keyPath:nil];
 }
 
 + (instancetype)controlWithOwner:(AKACompositeControl *)owner keyPath:(NSString *)keyPath
 {
+    NSParameterAssert(owner != nil);
+    NSParameterAssert(keyPath.length > 0);
+
     return [[self alloc] initWithOwner:owner keyPath:keyPath];
 }
 
@@ -74,8 +94,9 @@
     {
         if (currentOwner != nil)
         {
-            @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                          reason:[NSString stringWithFormat:@"Invalid attempt to set owner of control %@ to %@: control already owned by %@", self, owner, currentOwner] userInfo:nil];
+            [AKAControlsErrors invalidAttemptToSetOwnerOfControl:self
+                                                        ownedBy:currentOwner
+                                                     toNewOwner:owner];
         }
         _owner = owner;
     }

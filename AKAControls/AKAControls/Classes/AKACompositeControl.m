@@ -141,7 +141,15 @@
         if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
         {
             UIView<AKAControlViewProtocol>* controlView = (id)view;
-            AKAControl* control = [controlView createControlWithOwner:self];
+            UIView<AKAControlViewBindingConfigurationProtocol>* configuration = controlView;
+            Class bindingType = controlView.preferredBindingType;
+
+            AKAControlViewBinding* binding =
+            [AKAControlViewBinding bindingOfType:bindingType
+                               withConfiguration:configuration
+                                            view:view
+                                    controlOwner:self];
+            AKAControl* control = binding.control;
             if ([self insertControl:control atIndex:index + count])
             {
                 ++count;

@@ -33,7 +33,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        [self initializeDefaultValues];
+        [self setupDefaultValues];
     }
     return self;
 }
@@ -43,12 +43,12 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self initializeDefaultValues];
+        [self setupDefaultValues];
     }
     return self;
 }
 
-- (void)initializeDefaultValues
+- (void)setupDefaultValues
 {
     self.labelText = @"Please change";
     self.errorText = @"-";

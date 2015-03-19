@@ -8,6 +8,18 @@
 
 #import "AKAControlViewBinding_Protected.h"
 
+@protocol AKAControlViewProtocol;
+@protocol AKAControlViewBindingConfigurationProtocol;
+
 @interface AKAControlViewBinding (Internal)
+
++ (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
+                        withControlView:(UIView<AKAControlViewProtocol>*)view
+                           controlOwner:(AKACompositeControl*)owner;
+
++ (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
+                      withConfiguration:(id<AKAControlViewBindingConfigurationProtocol>)configuration
+                                   view:(UIView*)view
+                           controlOwner:(AKACompositeControl*)owner;
 
 @end

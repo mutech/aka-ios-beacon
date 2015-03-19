@@ -60,7 +60,6 @@
     return property;
 }
 
-
 #pragma mark - Convenience
 
 - (AKASwitch*)switchView
@@ -80,47 +79,14 @@
 @end
 
 
-@interface AKASwitch() {
-    AKASwitchControlViewBinding* _controlBinding;
-}
+@interface AKASwitch()
 @end
 
 @implementation AKASwitch
 
-- (AKAControlViewBinding *)bindToControl:(AKAControl *)control
+- (Class)preferredBindingType
 {
-    AKASwitchControlViewBinding* result;
-    AKAControlViewBinding* currentControlViewBinding = self.controlBinding;
-
-    if (currentControlViewBinding != nil)
-    {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, currentControlViewBinding]
-                                     userInfo:nil];
-    }
-    _controlBinding = result =
-        [[AKASwitchControlViewBinding alloc] initWithControl:control
-                                                        view:self];
-    return result;
-}
-
-- (AKAControl*)createControlWithDataContext:(id)dataContext
-{
-    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.valueKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner
-{
-    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.valueKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControlViewBinding *)controlBinding
-{
-    return _controlBinding;
+    return [AKASwitchControlViewBinding class];
 }
 
 @end

@@ -11,10 +11,7 @@
 
 #import "AKAControl.h"
 
-@interface AKATextField() {
-    AKATextFieldControlViewBinding* _controlBinding;
-    NSString* _valueKeyPath;
-}
+@interface AKATextField()
 @end
 
 @implementation AKATextField
@@ -51,46 +48,20 @@
 
 - (void)setupDefaultValues
 {
+    self.controlName = nil;
+    self.role = nil;
     self.valueKeyPath = nil;
+
     self.liveModelUpdates = YES;
     self.KBActivationSequence = YES;
     self.autoActivate = YES;
 }
 
-- (AKAControlViewBinding *)bindToControl:(AKAControl *)control
-{
-    AKATextFieldControlViewBinding* result;
-    AKAControlViewBinding* controlViewBinding = self.controlBinding;
+#pragma mark - Control View Protocol
 
-    if (controlViewBinding != nil)
-    {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, controlViewBinding]
-                                     userInfo:nil];
-    }
-    _controlBinding = result =
-        [[AKATextFieldControlViewBinding alloc] initWithControl:control
-                                                           view:self];
-    return result;
-}
-
-- (AKAControl*)createControlWithDataContext:(id)dataContext
+- (Class)preferredBindingType
 {
-    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.valueKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner
-{
-    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.valueKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControlViewBinding *)controlBinding
-{
-    return _controlBinding;
+    return [AKATextFieldControlViewBinding class];
 }
 
 @end

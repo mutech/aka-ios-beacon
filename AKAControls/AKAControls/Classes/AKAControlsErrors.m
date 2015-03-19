@@ -53,6 +53,16 @@ static BOOL _attemptRecoveryActions = YES;
     }
 }
 
+#pragma mark - Control Ownership
+
++ (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control
+                                  ownedBy:(AKACompositeControl*)currentOwner
+                               toNewOwner:(AKACompositeControl*)owner
+{
+    NSString* message = [NSString stringWithFormat:@"Invalid attempt to set owner of control %@ to %@: control already owned by %@", control, owner, currentOwner];
+    [self handleErrorWithMessage:message recovery:nil];
+}
+
 #pragma mark - Composite Control Member Activation
 
 + (void)invalidAttemptToActivateNonMemberControl:(AKAControl *)control

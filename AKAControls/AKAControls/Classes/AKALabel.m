@@ -8,7 +8,7 @@
 
 #import "AKALabel.h"
 
-#import "AKAControl.h"
+#import "AKAControl_Protected.h"
 #import "AKAControlViewBinding_Protected.h"
 #import "AKAProperty.h"
 
@@ -57,46 +57,14 @@
 @end
 
 
-@interface AKALabel() {
-    AKALabelControlViewBinding* _controlBinding;
-}
+@interface AKALabel()
 @end
 
 @implementation AKALabel
 
-- (AKAControlViewBinding *)bindToControl:(AKAControl *)control
+- (Class)preferredBindingType
 {
-    AKAControlViewBinding* currentBinding = self.controlBinding;
-    AKALabelControlViewBinding* result;
-    if (currentBinding != nil)
-    {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"Invalid attempt to bind %@ to %@: Already bound: %@", self, control, currentBinding]
-                                     userInfo:nil];
-    }
-    _controlBinding = result =
-    [[AKALabelControlViewBinding alloc] initWithControl:control
-                                                   view:self];
-    return result;
-}
-
-- (AKAControl*)createControlWithDataContext:(id)dataContext
-{
-    AKAControl* result = [AKAControl controlWithDataContext:dataContext keyPath:self.textKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner
-{
-    AKAControl* result = [AKAControl controlWithOwner:owner keyPath:self.textKeyPath];
-    result.viewBinding = [self bindToControl:result];
-    return result;
-}
-
-- (AKAControlViewBinding *)controlBinding
-{
-    return _controlBinding;
+    return [AKALabelControlViewBinding class];
 }
 
 @end

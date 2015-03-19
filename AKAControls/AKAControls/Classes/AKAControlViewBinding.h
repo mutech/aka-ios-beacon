@@ -8,13 +8,39 @@
 
 #import <Foundation/Foundation.h>
 
+#import "AKAControlViewBindingConfigurationProtocol.h"
 #import "AKAControlViewDelegate.h"
 
 @class UIView;
 @class AKAControl;
+@class AKACompositeControl;
 @class AKAProperty;
 
+
+
+@interface AKAControlViewBindingConfiguration: NSObject<AKAControlViewBindingConfigurationProtocol>
+
+@property(nonatomic)Class     preferredBindingType;
+@property(nonatomic)Class     preferredViewType;
+@property(nonatomic)Class     preferredControlType;
+
+@property(nonatomic)/*IBInspectable*/ NSString* name;
+@property(nonatomic)/*IBInspectable*/ NSString* role;
+
+@end
+
+@interface AKAEditingControlViewBindingConfiguration: AKAControlViewBindingConfiguration
+
+@property(nonatomic)NSString* valueKeyPath;
+
+@end
+
 @interface AKAControlViewBinding : NSObject<AKAControlViewDelegate>
+
++ (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
+                      withConfiguration:(id<AKAControlViewBindingConfigurationProtocol>)configuration
+                                   view:(UIView*)view
+                           controlOwner:(AKACompositeControl*)owner;
 
 - (instancetype)initWithControl:(AKAControl*)control
                            view:(UIView*)view;

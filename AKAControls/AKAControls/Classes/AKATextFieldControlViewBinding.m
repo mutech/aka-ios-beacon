@@ -8,6 +8,7 @@
 
 #import "AKATextFieldControlViewBinding.h"
 #import "AKAControlViewBinding_Protected.h"
+#import "AKATextField.h"
 
 #import "AKAControl.h"
 #import "AKAProperty.h"
@@ -141,7 +142,7 @@
     UITextField* textField = self.textField;
     if (textField != nil)
     {
-        AKALogDebug(@"Setting up return style for %@ in sequence (%p-%p-%p)", textField, previous.viewBinding.view, textField, next.viewBinding.view);
+        AKALogDebug(@"Setting up return style for %@ in sequence (%p-%p-%p)", textField, previous.view, textField, next.view);
 
         // TODO: save properties in this object (not text field) and also restore on dealloc
         if (next != nil)

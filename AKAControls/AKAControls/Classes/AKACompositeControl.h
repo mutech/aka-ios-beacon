@@ -30,6 +30,7 @@
 #pragma mark - Activation
 
 @property(nonatomic, readonly) AKAControl* activeControl;
+@property(nonatomic, readonly) AKAControl* activeLeafControl;
 
 - (void)setupKeyboardActivationSequence;
 - (AKAControl*)nextControlInKeyboardActivationSequenceAfter:(AKAControl*)control;

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "AKAControlViewBindingConfigurationProtocol.h"
+
 @class AKAControl;
 @class AKACompositeControl;
 @class AKAControlViewBinding;
@@ -16,67 +18,19 @@
 
 /**
  * ControlViews are typically UIViews, but they might also represent things like the
- * title of a UIViewController.
+ * title of a UIViewController. Control views implement the
+ * AKAControlBindingConfigurationProtocol.
  */
-@protocol AKAControlViewProtocol <NSObject>
+@protocol AKAControlViewProtocol <AKAControlViewBindingConfigurationProtocol>
 
 /**
- * The binding associating this control view with an AKAControl instance or nil
- * if the control view is not bound.
- */
-@property(nonatomic, weak, readonly) AKAControlViewBinding* controlBinding;
-
-/**
- * Binds the control view to the specified control. A control view can only be bound to
- * one control.
+ * The type of binding that should be used to bind this view. Views typically should
+ * or even have to implement the binding configuration required by the binding type.
  *
- * @param control the control that should bound.
+ * If this property value is nil, the default binding type is used
+ * which will try to find the best match depending on the type of this view.
  */
-- (AKAControlViewBinding*)bindToControl:(AKAControl*)control;
-
-/**
- * Creates a new control suitable to manage this control view with the specified data context.
- *
- * @param dataContext an object that is KVC compliant with the key paths used in value bindings.
- */
-- (AKAControl*)createControlWithDataContext:(id)dataContext;
-
-/**
- * Creates a new control with the specified owner. The data context for value bindings is
- * provided by the new owner control.
- *
- * @param owner the composite control which will own the created control.
- */
-- (AKAControl*)createControlWithOwner:(AKACompositeControl *)owner;
-
-#pragma mark - Interface Builder Properties
-
-// Implementation Note: IB does not recognize IBInspectable properties
-// in protocols, you have to redeclare the properties in your
-// UIView implementation to be able to set it in IB.
-
-/**
- * Defines the role of a control in the context of its owner composite control.
- * The meaning and range of a role is determined by the owner. Roles are typically used
- * for layout and to identify a control, for example as label to hold a validation error
- * message.
- */
-@property(nonatomic) IBInspectable NSString* role;
-
-@end
-
-@protocol AKAEditingControlViewProtocol <AKAControlViewProtocol>
-
-#pragma mark - Interface Builder Properties
-
-// Implementation Note: IB does not recognize IBInspectable properties
-// in protocols, you have to redeclare the properties in your
-// UIView implementation to be able to set it in IB.
-
-/**
- * The key path refering to the controls model value relative to
- * the controls data context.
- */
-@property(nonatomic) IBInspectable NSString* valueKeyPath;
+//@optional
+@property(nonatomic, readonly) Class preferredBindingType;
 
 @end

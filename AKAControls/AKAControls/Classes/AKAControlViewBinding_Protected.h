@@ -10,5 +10,6 @@
 
 @interface AKAControlViewBinding (Protected)
 
++ (Class)resolveControlTypeForView:(id)view;
 
 @end

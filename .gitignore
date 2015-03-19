@@ -10,3 +10,4 @@ AKAControls/AKAControls.xcodeproj/project.xcworkspace/xcuserdata
 Pods
 AKACommons/Podfile.lock
 .git
+.*.swp

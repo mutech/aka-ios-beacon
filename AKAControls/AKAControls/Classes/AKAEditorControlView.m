@@ -392,7 +392,9 @@
         SEL autoCreateSelector = NSSelectorFromString([NSString stringWithFormat:@"autoCreateViewForRole_%@", role]);
         if ([self respondsToSelector:autoCreateSelector])
         {
-            UIView* view = [self performSelector:autoCreateSelector];
+            IMP imp = [self methodForSelector:autoCreateSelector];
+            UIView*(*autoCreateFunction)(id, SEL) = (void*)imp;
+            UIView* view = autoCreateFunction(self, autoCreateSelector);
             if (view)
             {
                 BOOL added = NO;

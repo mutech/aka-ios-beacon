@@ -26,4 +26,7 @@ IB_DESIGNABLE
 @property(nonatomic) IBInspectable NSString* valueKeyPath;
 @property(nonatomic) IBInspectable BOOL liveModelUpdates;
 
+@property(nonatomic) IBInspectable BOOL autoActivate;
+@property(nonatomic) IBInspectable BOOL KBActivationSequence;
+
 @end

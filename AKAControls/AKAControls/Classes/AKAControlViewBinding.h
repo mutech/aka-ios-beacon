@@ -16,13 +16,41 @@
 
 @interface AKAControlViewBinding : NSObject<AKAControlViewDelegate>
 
+- (instancetype)initWithControl:(AKAControl*)control
+                           view:(UIView*)view;
+
+- (AKAProperty*)createViewValueProperty;
+
+#pragma mark - Interface for binding implementations
+
+@property(nonatomic, weak, readonly) AKAControl* control;
+
+#pragma mark - Interface for AKAControl
+
+// TODO: make view private
+@property(nonatomic, weak, readonly) UIView* view;
+
 /**
  * Provides access to the view's value.
  */
 @property(nonatomic, strong, readonly) AKAProperty* viewValueProperty;
 
-@property(nonatomic, weak, readonly) AKAControl* control;
+#pragma mark - Activation
 
-@property(nonatomic, weak, readonly) UIView* view;
+/**
+ * Indicates whether the view can be activated.
+ */
+@property(nonatomic, readonly) BOOL controlViewCanActivate;
+
+@property(nonatomic, readonly) BOOL shouldAutoActivate;
+
+@property(nonatomic, readonly) BOOL participatesInKeyboardActivationSequence;
+
+- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
+                                             successor:(AKAControl*)next;
+
+- (BOOL)activateControlView;
+
+- (BOOL)deactivateControlView;
 
 @end

@@ -18,4 +18,12 @@
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue;
 
+#pragma mark - Activation
+
+// These are called by the control binding:
+
+- (void)didActivate;
+
+- (void)didDeactivate;
+
 @end

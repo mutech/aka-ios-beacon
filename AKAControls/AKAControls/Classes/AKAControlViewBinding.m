@@ -65,7 +65,44 @@
     }
 }
 
+#pragma mark - Controlling the AKAControlView
+
+#pragma mark Activation
+
+- (BOOL)controlViewCanActivate
+{
+    return NO;
+}
+
+- (BOOL)shouldAutoActivate
+{
+    return self.controlViewCanActivate;
+}
+
+- (BOOL)participatesInKeyboardActivationSequence
+{
+    return NO;
+}
+
+- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
+                                             successor:(AKAControl*)next
+{
+    // Default implementation does nothing
+}
+
+- (BOOL)activateControlView
+{
+    return NO;
+}
+
+- (BOOL)deactivateControlView
+{
+    return NO;
+}
+
 #pragma mark - AKAControlViewDelegate
+
+#pragma mark View Value Changes
 
 - (void)                controlView:(UIView*)controlView
           didChangeValueChangedFrom:(id)oldValue
@@ -78,43 +115,32 @@
     }
 }
 
-#pragma mark - Activation
+#pragma mark Activation
+
+// TODO: controlView's are passed in order to support requests from multiple views. Check if this is needed
 
 - (BOOL)controlViewShouldActivate:(UIView*)controlView
 {
-    (void)controlView; // TODO: refactor this, controlView is useless.
-    BOOL result = YES;
-    return result;
+    (void)controlView; // not used
+    return [self.control shouldActivate];
 }
 
 - (void)controlViewDidActivate:(UIView *)controlView
 {
-    (void)controlView; // TODO: refactor this, controlView is useless.
+    (void)controlView; // not used
+    [self.control didActivate];
 }
 
 - (BOOL)controlViewShouldDeactivate:(UIView*)controlView
 {
-    (void)controlView; // TODO: refactor this, controlView is useless.
-    BOOL result = YES;
-    return result;
+    (void)controlView; // not used
+    return [self.control shouldDeactivate];
 }
 
 - (void)controlViewDidDeactivate:(UIView *)controlView
 {
-    (void)controlView; // TODO: refactor this, controlView is useless.
-}
-
-- (BOOL)controlViewShouldActivateNextControl:(UIView*)controlView
-
-{
-    (void)controlView; // TODO: refactor this, controlView is useless.
-    BOOL result = YES;
-    return result;
-}
-
-- (void)controlViewRequestsActivateNextControl:(UIView*)controlView
-{
-    (void)controlView; // TODO: refactor this, controlView is useless.
+    (void)controlView; // not used
+    [self.control didDeactivate];
 }
 
 @end

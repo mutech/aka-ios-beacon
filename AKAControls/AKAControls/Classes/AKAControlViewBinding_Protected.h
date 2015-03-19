@@ -10,9 +10,5 @@
 
 @interface AKAControlViewBinding (Protected)
 
-- (instancetype)initWithControl:(AKAControl*)control
-                           view:(UIView*)view;
-
-- (AKAProperty*)createViewValueProperty;
 
 @end

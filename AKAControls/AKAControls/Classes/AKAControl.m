@@ -9,6 +9,8 @@
 #import "AKAControl_Internal.h"
 #import "AKACompositeControl.h"
 
+#import "AKAControlsErrors.h"
+
 @interface AKAControl() {
     AKAProperty* _modelValueProperty;
 }
@@ -17,6 +19,7 @@
 @implementation AKAControl
 
 @synthesize owner = _owner;
+@synthesize isActive = _isActive;
 
 #pragma mark - Initialization
 
@@ -201,6 +204,93 @@
 - (BOOL)stopObservingModelValueChanges
 {
     return [self.modelValueProperty stopObservingChanges];
+}
+
+#pragma mark - Activation
+
+- (void)setIsActive:(BOOL)isActive
+{
+    // TODO: error handling
+    _isActive = isActive;
+}
+
+- (BOOL)canActivate
+{
+    return self.viewBinding.controlViewCanActivate;
+}
+
+- (BOOL)shouldActivate
+{
+    BOOL result = self.canActivate;
+    if (result && self.owner)
+    {
+        result = [self.owner shouldControlActivate:self];
+    }
+    return result;
+}
+
+- (BOOL)activate
+{
+    return [self.viewBinding activateControlView];
+}
+
+- (void)didActivate
+{
+    [self setIsActive:YES];
+    [self.owner controlDidActivate:self];
+}
+
+- (BOOL)shouldDeactivate
+{
+    BOOL result = YES;
+    if (result && self.owner)
+    {
+        result = [self.owner shouldControlDeactivate:self];
+    }
+    return YES;
+}
+
+- (BOOL)deactivate
+{
+    return [self.viewBinding deactivateControlView];
+}
+
+- (void)didDeactivate
+{
+    [self setIsActive:NO];
+    [self.owner controlDidDeactivate:self];
+}
+
+- (BOOL)shouldActivateNextControl
+{
+    return [self.owner shouldActivateNextControl];
+}
+
+- (BOOL)activateNextControl
+{
+    return [self.owner activateNextControl];
+}
+
+- (BOOL)shouldAutoActivate
+{
+    return [self.viewBinding shouldAutoActivate];
+}
+
+- (BOOL)participatesInKeyboardActivationSequence
+{
+    return [self.viewBinding participatesInKeyboardActivationSequence];
+}
+
+- (AKAControl*)nextControlInKeyboardActivationSequence
+{
+    return [self.owner nextControlInKeyboardActivationSequenceAfter:self];
+}
+
+- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
+                                             successor:(AKAControl*)next
+{
+    [self.viewBinding setupKeyboardActivationSequenceWithPredecessor:previous
+                                                           successor:next];
 }
 
 @end

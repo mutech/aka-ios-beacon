@@ -206,7 +206,7 @@
     for (UIView* subview in self.subviews)
     {
         BOOL __block subviewIdentified = NO;
-        [subview enumerateSelfAndSubviewsUsingBlock:^(UIView *view, BOOL *stop, BOOL *doNotDescend) {
+        [subview aka_enumerateSelfAndSubviewsUsingBlock:^(UIView *view, BOOL *stop, BOOL *doNotDescend) {
             (void)stop; // not used
             BOOL identified = NO;
             NSDictionary* identifiedBy = nil;
@@ -482,8 +482,8 @@
         {
             for (UIView* view in views.objectEnumerator)
             {
-                [self removeConstraintsAffecting:view];
-                [view removeConstraintsAffecting:self];
+                [self aka_removeConstraintsAffecting:view];
+                [view aka_removeConstraintsAffecting:self];
             }
             NSDictionary* metrics = layout[@"metrics"];
             for (NSDictionary* constraintSpec in layout[@"constraints"])

@@ -1,7 +1,23 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://sources.aka-labs.com/scm/git/cocoapods'
+workspace 'AKAControls.xcworkspace'
+xcodeproj 'AKAControls.xcodeproj'
+xcodeproj 'AKAControlsDemo/AKAControlsDemo.xcodeproj'
 
-platform :ios, '8.0'
+target :AKAControlsDemo do
+    platform :ios, '8.0'
+    pod 'AKACommons', :path => '..'
+    pod 'AKAControls', :path => '..'
+    xcodeproj 'AKAControlsDemo/AKAControlsDemo.xcodeproj'
+end
 
-pod 'AKACommons', :path => '..'
+target :AKAControls do
+    platform :ios, '8.0'
+    pod 'AKACommons', :path => '..'
+    xcodeproj 'AKAControls.xcodeproj'
+end
+
+#platform :ios, '8.0'
+#link_with 'AKAControlsDemo', 'AKAControls'
+#pod 'AKACommons', :path => '..'

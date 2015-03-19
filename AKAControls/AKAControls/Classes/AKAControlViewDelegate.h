@@ -22,7 +22,4 @@
 - (BOOL)controlViewShouldDeactivate:(UIView*)controlView;
 - (void)controlViewDidDeactivate:(UIView *)controlView;
 
-- (BOOL)controlViewShouldActivateNextControl:(UIView*)controlView;
-- (void)controlViewRequestsActivateNextControl:(UIView*)controlView;
-
 @end

@@ -8,7 +8,7 @@
 
 #import "AKAControl.h"
 
-@interface AKACompositeControl : AKAControl
+@interface AKACompositeControl : AKAControl<AKAControlDelegate>
 
 #pragma mark - Initialization
 
@@ -26,6 +26,13 @@
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
                                                    atIndex:(NSUInteger)index;
+
+#pragma mark - Activation
+
+@property(nonatomic, readonly) AKAControl* activeControl;
+
+- (void)setupKeyboardActivationSequence;
+- (AKAControl*)nextControlInKeyboardActivationSequenceAfter:(AKAControl*)control;
 
 @end
 

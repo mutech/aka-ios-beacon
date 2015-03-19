@@ -8,10 +8,15 @@
 
 #import "AKAProperty.h"
 
+#import "AKAErrors.h"
+
 @interface AKAKVOProperty: AKAProperty
 
 - (instancetype)initWithTarget:(NSObject*)target
                        keyPath:(NSString*)keyPath
+                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+
+- (instancetype)initWithTarget:(NSObject*)target
                 changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
 
 @property(nonatomic, readonly) NSObject* target;
@@ -110,17 +115,14 @@
 
 - (id)value
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 - (void)setValue:(id)value
 {
     (void)value; // not used, throwing exception
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 #pragma mark - Validation
@@ -137,23 +139,17 @@
 
 - (BOOL)isObservingChanges
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 - (BOOL)startObservingChanges
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 - (BOOL)stopObservingChanges
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 - (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue
@@ -237,9 +233,7 @@
     (void)oldValue; // not used, throwing exception
     (void)newValue; // not used, throwing exception
 
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
-                                 userInfo:nil];
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 @end
@@ -259,6 +253,12 @@
 @synthesize changeObserver = _changeObserver;
 
 #pragma mark - Initialization
+
+- (instancetype)initWithTarget:(NSObject*)target
+                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+{
+    return [self initWithTarget:target keyPath:nil changeObserver:valueDidChange];
+}
 
 - (instancetype)initWithTarget:(NSObject*)target
                        keyPath:(NSString *)keyPath
@@ -292,7 +292,10 @@
     {
         id oldValue = self.target;
         _target = value;
-        self.changeObserver(oldValue, value);
+        if (self.isObservingChanges && self.changeObserver)
+        {
+            self.changeObserver(oldValue, value);
+        }
     }
 }
 
@@ -345,10 +348,17 @@
 {
     if (self.isObservingChanges)
     {
-        [self.target removeObserver:self
-                         forKeyPath:self.keyPath
-                            context:(__bridge void *)(self)];
-        _isObservingChanges = NO;
+        if (self.keyPath.length == 0)
+        {
+            _isObservingChanges = NO;
+        }
+        else
+        {
+            [self.target removeObserver:self
+                             forKeyPath:self.keyPath
+                                context:(__bridge void *)(self)];
+            _isObservingChanges = NO;
+        }
     }
     return !self.isObservingChanges;
 }

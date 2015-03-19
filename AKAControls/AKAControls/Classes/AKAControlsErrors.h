@@ -8,6 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AKAControlsErrors : NSObject
+#import <AKACommons/AKAErrors.h>
+
+@class AKAControl;
+@class AKACompositeControl;
+
+@interface AKAControlsErrors : AKAErrors
+
++ (NSString*)akaControlsErrorDomain;
+
++ (BOOL)attemptRecoveryActions;
+
++ (void)invalidAttemptToActivate:(AKAControl*)control
+                     inComposite:(AKACompositeControl*)composite
+ whileAnotherMemberIsStillActive:(AKAControl*)oldActive
+                        recovery:(BOOL(^)())recover;
+
++ (void)invalidAttemptToActivateNonMemberControl:(AKAControl*)control
+                                      inComposite:(AKACompositeControl*)composite;
 
 @end

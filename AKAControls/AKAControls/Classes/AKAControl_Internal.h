@@ -14,6 +14,10 @@
 
 - (void)setOwner:(AKACompositeControl*)owner;
 
+#pragma mark - Binding
+
+- (void)setViewBinding:(AKAControlViewBinding *)viewBinding;
+
 #pragma mark - Change Tracking
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue;

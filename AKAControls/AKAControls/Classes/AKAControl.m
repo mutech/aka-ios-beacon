@@ -13,6 +13,7 @@
 
 @interface AKAControl() {
     AKAProperty* _modelValueProperty;
+    AKAControlViewBinding* _viewBinding;
 }
 @end
 
@@ -20,6 +21,7 @@
 
 @synthesize owner = _owner;
 @synthesize isActive = _isActive;
+
 
 #pragma mark - Initialization
 
@@ -100,6 +102,18 @@
         }
         _owner = owner;
     }
+}
+
+#pragma mark - Binding
+
+- (AKAControlViewBinding *)viewBinding
+{
+    return _viewBinding;
+}
+
+- (void)setViewBinding:(AKAControlViewBinding *)viewBinding
+{
+    _viewBinding = viewBinding;
 }
 
 #pragma mark - Value Access

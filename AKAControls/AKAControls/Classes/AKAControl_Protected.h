@@ -22,7 +22,7 @@
 
 #pragma mark - View Binding
 
-@property(nonatomic, strong) AKAControlViewBinding* viewBinding;
+@property(nonatomic, strong, readonly) AKAControlViewBinding* viewBinding;
 
 #pragma mark - Value Properties
 

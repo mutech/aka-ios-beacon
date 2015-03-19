@@ -18,6 +18,6 @@
  *
  * @param block the block to execut.
  */
-- (void)performBlockInMainThreadOrQueue:(void(^)())block;
+- (void)aka_performBlockInMainThreadOrQueue:(void(^)())block;
 
 @end

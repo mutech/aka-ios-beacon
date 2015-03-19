@@ -9,7 +9,7 @@
 
 @implementation UIView (AKAHierarchyVisitor)
 
-- (BOOL)enumerateSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
+- (BOOL)aka_enumerateSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
 {
     BOOL stop = NO;
     BOOL doNotDescend = NO;
@@ -24,14 +24,14 @@
         }
         else
         {
-            stop = ![view enumerateSubviewsUsingBlock:visitor];
+            stop = ![view aka_enumerateSubviewsUsingBlock:visitor];
         }
         if (stop) { break; }
     }
     return !stop;
 }
 
-- (BOOL)enumerateSelfAndSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
+- (BOOL)aka_enumerateSelfAndSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
 {
     BOOL stop = NO;
     BOOL doNotDescend = NO;
@@ -45,7 +45,7 @@
         }
         else
         {
-            stop = ![self enumerateSubviewsUsingBlock:visitor];
+            stop = ![self aka_enumerateSubviewsUsingBlock:visitor];
         }
     }
     return !stop;

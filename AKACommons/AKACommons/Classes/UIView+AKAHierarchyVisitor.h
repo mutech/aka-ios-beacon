@@ -10,9 +10,9 @@
 
 @interface UIView (AKAHierarchyVisitor)
 
-- (BOOL)enumerateSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor;
+- (BOOL)aka_enumerateSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor;
 
-- (BOOL)enumerateSelfAndSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
+- (BOOL)aka_enumerateSelfAndSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
 ;
 
 @end

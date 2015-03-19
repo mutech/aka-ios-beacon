@@ -10,6 +10,6 @@
 
 @interface UIView (AKAConstraintTools)
 
-- (NSArray*)removeConstraintsAffecting:(UIView*)view;
+- (NSArray*)aka_removeConstraintsAffecting:(UIView*)view;
 
 @end

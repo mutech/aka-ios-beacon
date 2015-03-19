@@ -16,6 +16,6 @@
  *
  * @return self, if self has subviews or no matching nib or view was found, or a view loaded from the associated NIB configured to replace self.
  */
-- (instancetype)viewFromNibOrSelf;
+- (instancetype)aka_viewFromNibOrSelf;
 
 @end

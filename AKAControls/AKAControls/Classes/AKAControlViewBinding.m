@@ -76,6 +76,7 @@
             result = [bindingType alloc];
             result = [result initWithControl:control
                                         view:view];
+            [control setViewBinding:result];
         }
     }
     return result;

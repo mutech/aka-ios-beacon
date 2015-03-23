@@ -9,6 +9,7 @@
 #import "AKAEditorControlView.h"
 #import "AKAControlViewProtocol.h"
 #import "AKAProperty.h"
+#import "AKAControlsErrors.h"
 
 #import "UIView+AKAHierarchyVisitor.h"
 #import "UIView+AKAConstraintTools.h"
@@ -93,6 +94,11 @@
 
 #pragma mark - Configuration
 
+- (Class)preferredBindingType
+{
+    return nil;
+}
+
 - (NSDictionary*)roleMapping
 {
     NSDictionary* roleMapping = @{ @"label":
@@ -131,55 +137,52 @@
     return result;
 }
 
-- (NSArray*)layoutSpecifications
+- (NSDictionary*)themeSpecification
 {
-    return @[ @{ @"requiredRoles": @[ @"editor", @"label", @"errorMessageLabel" ],
-                 @"metrics":
-                     @{ @"padTop": @(4),
-                        @"padRight": @(4),
-                        @"padBottom": @(4),
-                        @"padLeft": @(4),
-                        @"vSpace": @(2),
-                        @"hSpace": @(8),
-                        @"labelWidth": @(60)
-                        },
-                 @"constraints":
-                     @[  @{ @"format": @"V:|-(>=padTop)-[label]-(>=padBottom)-|" },
-                         @{ @"format": @"H:|-(padLeft)-[label(labelWidth)]-(hSpace)-[editor]-(padRight@750)-|", @"options": @(NSLayoutFormatAlignAllBaseline) },
-                         @{ @"format": @"V:|-(padTop)-[editor]-(vSpace)-[errorMessageLabel]-(padBottom)-|", @"options": @(NSLayoutFormatAlignAllLeft|NSLayoutFormatAlignAllRight) },
-                         /*
-                          @{ @"custom":
-                          @{ @"item": @"editor",
-                          @"attribute":  @(NSLayoutAttributeFirstBaseline),
-                          @"relatedBy":  @(NSLayoutRelationEqual),
-                          @"multiplier": @(1),
-                          @"constant":   @(0),
-                          @"priority":   @(1000)
-                          },
-                          @"items":
-                          @[ @{ @"item": @"label",
-                          @"attribute": @(NSLayoutAttributeFirstBaseline)
-                          }
+    return
+    @{ @"metrics": @{ @"padTop": @(4),
+                      @"padRight": @(4),
+                      @"padBottom": @(4),
+                      @"padLeft": @(4),
+                      @"vSpace": @(2),
+                      @"hSpace": @(8),
+                      @"labelWidth": @(60)
+                      },
+       @"viewCustomization":
+           @{ @"label":
+                  @{ @"font": [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight],
+                     //@"numberOfLines": @(0),
+                     //@"lineBreakMode": @(NSLineBreakByWordWrapping)
+                     },
+              @"editor":
+                  @{ @"font": [UIFont systemFontOfSize:14.0 weight:UIFontWeightLight]
+                     },
+              @"errorMessageLabel":
+                  @{ @"font": [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight],
+                     @"textColor": [UIColor redColor]
+                     }
+              },
+       @"layouts":
+           @[
+               @{ @"requiredViews": @[ @"editor", @"label" ],
+                  @"constraints":
+                      @[  @{ @"format": @"V:|-(>=padTop)-[label]-(>=padBottom)-|" },
+                          @{ @"format": @"H:|-(padLeft)-[label(labelWidth)]-(hSpace)-[editor]-(padRight@750)-|", @"options": @(NSLayoutFormatAlignAllFirstBaseline) },
+                          @{ @"format": @"V:|-(padTop)-[editor]-(padBottom)-|" },
                           ]
-                          }*/
+                  },
+               @{ @"requiredViews": @[ @"editor", @"label", @"errorMessageLabel" ],
+                 @"constraints":
+                     @[
+                         @{ @"format": @"H:|-(4)-[label(60)]-(4)-[editor]-(4)-|",
+                            @"options": @(NSLayoutFormatAlignAllFirstBaseline) },
+                         @{ @"format": @"V:|-(4)-[editor]-(4)-[errorMessageLabel]-(4)-|",
+                            @"options": @(NSLayoutFormatAlignAllLeft|NSLayoutFormatAlignAllRight) },
+                         @{ @"format": @"V:|-(>=padTop)-[label]-(>=padBottom)-|" },
                          ]
-                 },/*
-                    @{ @"requiredRoles": @[ @"editor", @"label" ],
-                    @"metrics":
-                    @{ @"padTop": @(0),
-                    @"padRight": @(0),
-                    @"padBottom": @(0),
-                    @"padLeft": @(0),
-                    @"vSpace": @(2),
-                    @"hSpace": @(8),
-                    },
-                    @"constraints":
-                    @[ @{ @"format": @"V:|-(padTop)-[editor]-(padBottom)-|"  },
-                    @{ @"format": @"V:[label]-(>=padBottom)-|" },
-                    @{ @"format": @"H:|-(padLeft)-[label]-(hSpace)-[editor]-(padRight)-|" }
-                    ]
-                    },*/
-              ];
+                 },
+              ]
+      };
 }
 
 #pragma mark - Analyze Subview Structure
@@ -446,101 +449,31 @@
     [super updateConstraints];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+}
+
 - (void)setupConstraintsWithRoleAssignments:(NSDictionary*)assignments
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    //self.autoresizingMask = UIViewAutoresizingNone;
 
-    NSArray* layouts = [self layoutSpecifications];
-
-    for (NSDictionary* layout in layouts)
+    NSMutableDictionary* views = NSMutableDictionary.new;
+    for (NSString* role in assignments)
     {
-        NSMutableDictionary* views = NSMutableDictionary.new;
-        NSArray* requiredRoles = layout[@"requiredRoles"];
-        BOOL applicable = requiredRoles.count > 0;
-        for (NSString* role in requiredRoles)
+        NSDictionary* assignment = assignments[role];
+        UIView* view = assignment[@"toplevelView"];
+        if (view)
         {
-            NSDictionary* assignment = assignments[role];
-            if (assignment)
-            {
-                // layout uses the roles toplevel view
-                id view = assignment[@"toplevelView"];
-                if (view && view != [NSNull null])
-                {
-                    views[role] = view;
-                }
-                else
-                {
-                    applicable = NO;
-                    break;
-                }
-            }
-            else
-            {
-                applicable = NO;
-                break;
-            }
-        }
-        if (applicable)
-        {
-            for (UIView* view in views.objectEnumerator)
-            {
-                [self aka_removeConstraintsAffecting:view];
-                [view aka_removeConstraintsAffecting:self];
-            }
-            NSDictionary* metrics = layout[@"metrics"];
-            for (NSDictionary* constraintSpec in layout[@"constraints"])
-            {
-                NSString* visualFormat = constraintSpec[@"format"];
-                NSDictionary* custom = constraintSpec[@"custom"];
-                if (visualFormat)
-                {
-                    NSLayoutFormatOptions options = ((NSNumber*)constraintSpec[@"options"]).unsignedIntegerValue;
-
-                    NSArray* constraints = [NSLayoutConstraint constraintsWithVisualFormat:visualFormat
-                                                                                   options:options
-                                                                                   metrics:metrics
-                                                                                     views:views];
-                    [self addConstraints:constraints];
-                }
-                else if (custom)
-                {
-                    UIView* item = custom[@"item"] ? views[custom[@"item"]] : nil;
-                    int attribute = ((NSNumber*)(custom[@"attribute"])).intValue;
-                    int relatedBy = ((NSNumber*)custom[@"relatedBy"]).intValue;
-                    CGFloat multiplier = ((NSNumber*)custom[@"multiplier"]).doubleValue;
-                    CGFloat constant = ((NSNumber*)custom[@"constant"]).doubleValue;
-                    UILayoutPriority priority = UILayoutPriorityDefaultHigh;
-                    if (custom[@"priority"] != nil)
-                    {
-                        priority = ((NSNumber*)custom[@"priority"]).intValue;
-                    }
-                    for (NSDictionary* itemSpec in constraintSpec[@"items"])
-                    {
-                        UIView* item2 = itemSpec[@"item"] ? views[itemSpec[@"item"]] : nil;
-                        int attribute2 = ((NSNumber*)custom[@"attribute"]).intValue;
-                        if (item && item2)
-                        {
-                            NSAssert(item.superview == item2.superview, @"%@ != %@", item.superview, item2.superview);
-                            NSLayoutConstraint* constraint =
-                                [NSLayoutConstraint constraintWithItem:item
-                                                             attribute:attribute
-                                                             relatedBy:relatedBy
-                                                                toItem:item2
-                                                         attribute:attribute2
-                                                        multiplier:multiplier
-                                                          constant:constant];
-                            constraint.priority = priority;
-                            [self addConstraint:constraint];
-                        }
-                    }
-                }
-            }
-
-            [self setNeedsLayout];
-            //[self layoutIfNeeded];
-            break;
+            views[role] = view;
         }
     }
+
+    NSDictionary* theme = [self themeSpecification];
+    [self aka_applyTheme:theme toViews:views];
+
+    [self setNeedsLayout];
 }
 
 #pragma mark - Outlets
@@ -571,20 +504,8 @@
 {
     UILabel* errorMessageLabel = [[UILabel alloc] init];
     errorMessageLabel.text = self.errorText;
-    if (self.errorTextColor)
-    {
-        errorMessageLabel.textColor = self.errorTextColor;
-    }
-    if (self.errorFont)
-    {
-        errorMessageLabel.font = self.errorFont;
-    }
-    else
-    {
-        errorMessageLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight];
-    }
     errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    [errorMessageLabel sizeToFit];
+    //[errorMessageLabel sizeToFit];
     return errorMessageLabel;
 }
 
@@ -609,34 +530,38 @@
     return editor;
 }
 
-#pragma mark Validation
+#pragma mark Outlet Validation
 
-- (BOOL)value:(inout __autoreleasing id*)ioValue isKindOfType:(Class)type error:(out NSError *__autoreleasing *)error
-{
-    BOOL result = [*ioValue isKindOfClass:type];
-    if (!result && error != nil)
-    {
-        // TODO: error handling
-        *error = [NSError errorWithDomain:@"com.aka-labs.com.AKAControls"
-                                     code:123
-                                 userInfo:@{}];
-    }
-    return result;
-}
 
 - (BOOL)validateLabel:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error
 {
-    return [self value:ioValue isKindOfType:[UILabel class] error:error];
+    return [self validateView:ioValue forRole:@"label" isKindOfType:[UILabel class] error:error];
 }
 
 - (BOOL)validateEditor:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error
 {
-    return [self value:ioValue isKindOfType:[UIView class] error:error];
+    return [self validateView:ioValue forRole:@"editor" isKindOfType:[UIView class] error:error];
 }
 
 - (BOOL)validateErrorMessageLabel:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error
 {
-    return [self value:ioValue isKindOfType:[UILabel class] error:error];
+    return [self validateView:ioValue forRole:@"errorMessageLabel" isKindOfType:[UILabel class] error:error];
+}
+
+- (BOOL)validateView:(inout __autoreleasing id*)ioValue
+             forRole:(NSString*)role
+        isKindOfType:(Class)type
+               error:(out NSError *__autoreleasing *)error
+{
+    BOOL result = [*ioValue isKindOfClass:type];
+    if (!result && error != nil)
+    {
+        *error = [AKAControlsErrors errorForTextEditorControlView:self
+                                                      invalidView:*ioValue
+                                                          forRole:@"editor"
+                                                     expectedType:[UITextField class]];
+    }
+    return result;
 }
 
 @end

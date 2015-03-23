@@ -11,6 +11,7 @@
 #import "AKAControl_Internal.h"
 #import "AKAControlViewBinding_Internal.h"
 #import "AKAControlViewProtocol.h"
+#import "AKACompositeControl.h"
 
 @implementation AKAControlViewBinding: NSObject
 
@@ -22,30 +23,20 @@
 
 + (Class)resolveBindingType:(Class)preferredBindingType
 {
+    NSParameterAssert(preferredBindingType == nil || [preferredBindingType isSubclassOfClass:[AKAControlViewBinding class]]);
+
+    // Use the preferred type if defined, otherwise fall back to AKAControlViewBinding
     Class result = preferredBindingType;
     if (preferredBindingType == nil)
     {
         result = [AKAControlViewBinding class];
-    }
-    else if (![preferredBindingType isSubclassOfClass:[AKAControlViewBinding class]])
-    {
-        // TODO: error handling
     }
     return result;
 }
 
 + (Class)resolveControlTypeForView:(id)view
 {
-    Class result = nil;
-    if ([view isKindOfClass:[UIView class]])
-    {
-        UIView* uiView = view;
-        if (uiView.subviews.count > 0)
-        {
-            result = [AKAControl class];
-        }
-    }
-    return result;
+    return [AKAControl class];
 }
 
 + (AKAControlViewBinding*)bindingOfType:(Class)preferredBindingType
@@ -107,9 +98,12 @@
 
 - (AKAProperty *)createViewValueProperty
 {
+    return nil;
+    /*
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"Class %@ failed to implement method %s", NSStringFromClass(self.class), __PRETTY_FUNCTION__]
                                  userInfo:nil];
+     */
 }
 
 #pragma mark - Control

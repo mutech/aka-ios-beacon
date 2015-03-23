@@ -129,7 +129,8 @@
 
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView
 {
-    return [self insertControlsForControlViewsInViewHierarchy:rootView atIndex:self.controlsStorage.count];
+    return [self insertControlsForControlViewsInViewHierarchy:rootView
+                                                      atIndex:self.controlsStorage.count];
 }
 
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
@@ -154,6 +155,11 @@
             {
                 ++count;
                 *doNotDescend = YES;
+                if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)
+                {
+                    AKACompositeControl* composite = (AKACompositeControl*)control;
+                    [composite addControlsForControlViewsInViewHierarchy:binding.view];
+                }
             }
         }
     }];

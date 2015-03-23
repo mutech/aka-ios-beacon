@@ -43,6 +43,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKAControlViewBinding_Protected.h>
 #import <AKAControls/AKAControlViewBindingConfigurationProtocol.h>
 #import <AKAControls/AKATextFieldControlViewBinding.h>
+#import <AKAControls/AKAEditorControlViewBindingConfigurationProtocol.h>
 
 // AKAControls/Properties
 #import <AKAControls/AKAProperty.h>

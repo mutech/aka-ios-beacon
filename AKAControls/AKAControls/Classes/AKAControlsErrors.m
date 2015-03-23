@@ -81,4 +81,19 @@ static BOOL _attemptRecoveryActions = YES;
     [self handleErrorWithMessage:message recovery:recover];
 }
 
+#pragma mark - Control View Errors
+
++ (NSError *)errorForTextEditorControlView:(AKAEditorControlView *)editorControlView
+                               invalidView:(id)view
+                                   forRole:(NSString*)role
+                              expectedType:(Class)type
+{
+    NSString* description = [NSString stringWithFormat:@"%@: Invalid view %@ for role %@", editorControlView, view, role];
+    NSString* reason = [NSString stringWithFormat:@"Wrong type %@, subview is expected to be a kind of %@", [view class], type];
+    return [NSError errorWithDomain:[self akaControlsErrorDomain]
+                               code:AKATextEditorControlViewRequiresUITextFieldEditor
+                           userInfo:@{ NSLocalizedDescriptionKey: description,
+                                       NSLocalizedFailureReasonErrorKey: reason }];
+}
+
 @end

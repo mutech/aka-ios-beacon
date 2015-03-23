@@ -8,29 +8,38 @@
 
 #import <UIKit/UIKit.h>
 
+#import "AKAControlViewProtocol.h"
+#import "AKAEditorControlViewBindingConfigurationProtocol.h"
+
 IB_DESIGNABLE
-@interface AKAEditorControlView : UIView
+@interface AKAEditorControlView : UIView<
+    AKAControlViewProtocol,
+    AKAEditorControlViewBindingConfigurationProtocol>
 
-#pragma mark - Interface Builder Properties
+#pragma mark - Interface Builder and Binding Configuration Properties
 
-@property(nonatomic, weak) IBInspectable NSString* layoutIdentifier;
+@property(nonatomic) IBInspectable NSString* controlName;
+@property(nonatomic) IBInspectable NSString* role;
+@property(nonatomic) IBInspectable NSString* valueKeyPath;
 
+@property(nonatomic) IBInspectable NSString* layoutIdentifier;
+
+@property(nonatomic) IBInspectable NSString* editorValueKeyPath;
+
+@property(nonatomic) IBInspectable NSString* labelValueKeyPath;
 @property(nonatomic) IBInspectable NSString* labelText;
 @property(nonatomic) IBInspectable UIColor* labelTextColor;
-@property(nonatomic) IBInspectable UIFont* labelFont;
+@property(nonatomic)               UIFont* labelFont;
+
 
 @property(nonatomic) IBInspectable NSString* errorText;
 @property(nonatomic) IBInspectable UIColor* errorTextColor;
-@property(nonatomic) IBInspectable UIFont* errorFont;
+@property(nonatomic)               UIFont* errorFont;
 
 #pragma mark - Outlets
 
 @property(nonatomic, weak) IBOutlet UILabel* label;
 @property(nonatomic, weak) IBOutlet UIView* editor;
 @property(nonatomic, weak) IBOutlet UILabel* errorMessageLabel;
-
-- (BOOL)validateLabel:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error;
-- (BOOL)validateEditor:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error;
-- (BOOL)validateErrorMessageLabel:(inout __autoreleasing id *)ioValue error:(out NSError *__autoreleasing *)error;
 
 @end

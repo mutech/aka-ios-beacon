@@ -11,6 +11,10 @@
 #import <AKAControls/AKATextField.h>
 #import <AKAControls/AKACompositeControl.h>
 
+// DEBUGGING:
+#import <objc/runtime.h>
+#import "AKATestContainerView.h"
+
 @interface AKAControlsDemoBaseViewController ()
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -18,9 +22,60 @@
 @property(nonatomic) NSMutableDictionary* model;
 @property(nonatomic) AKACompositeControl* form;
 
+@property (weak, nonatomic) IBOutlet AKATestContainerView *themeSwitchTarget;
 @end
 
 @implementation AKAControlsDemoBaseViewController
+
+#pragma mark - DEBUGGING
+
+- (NSSet*)propertyNamesOfObject:(id<NSObject>)object
+{
+    NSMutableSet* result = NSMutableSet.new;
+    unsigned int count = 0;
+    objc_property_t *props = class_copyPropertyList([object class], &count);
+    for (int i=0; i < count; ++i) {
+        NSString* name = [NSString stringWithUTF8String:property_getName(props[i])];
+        [result addObject:name];
+    }
+    return result;
+}
+
+- (void)enumerateDifferencesBetween:(NSObject*)object1
+                                and:(NSObject*)object2
+                         usingBlock:(BOOL(^)(NSString* property, id value1, id value2, BOOL* stop))block
+{
+    NSSet* properties = nil;
+    {
+        NSSet* properties1 = [self propertyNamesOfObject:object1];
+        NSSet* properties2 = [self propertyNamesOfObject:object2];
+        NSMutableSet* commonProperties = [NSMutableSet setWithSet:properties1];
+        [commonProperties intersectSet:properties2];
+        properties = commonProperties;
+    }
+
+    [properties enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        NSString* propertyName = (NSString*)obj;
+        id value1 = [object1 valueForKey:propertyName];
+        id value2 = [object2 valueForKey:propertyName];
+        BOOL equal = NO;
+        if ([value1 isKindOfClass:[NSObject class]] && [value2 isKindOfClass:[NSObject class]])
+        {
+            equal = [(NSObject*)value1 isEqual:value2];
+        }
+        else
+        {
+            equal = (value1 == value2);
+        }
+
+        if (!equal)
+        {
+            block(propertyName, value1, value2, stop);
+        }
+    }];
+}
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad
 {
@@ -35,7 +90,13 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self.form startObservingChanges];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -47,6 +108,35 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Theme switcher
+
+- (IBAction)switchTheme:(id)sender
+{
+    if (self.themeSwitchTarget)
+    {
+        if ([@"tableview" isEqualToString:self.themeSwitchTarget.theme])
+        {
+            self.themeSwitchTarget.theme = @"default";
+        }
+        else
+        {
+            self.themeSwitchTarget.theme = @"tableview";
+        }
+        [UIView animateWithDuration:.3
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionShowHideTransitionViews
+                         animations:^
+        {
+
+            [self.themeSwitchTarget setNeedsLayout];
+            //[self.themeSwitchTarget layoutIfNeeded];
+            [self.view layoutIfNeeded];
+        }
+                         completion:nil];
+
+    }
 }
 
 #pragma mark - Keyboard
@@ -102,5 +192,6 @@
                      @"email": @"info@demo.org"
                      }];
 }
+
 
 @end

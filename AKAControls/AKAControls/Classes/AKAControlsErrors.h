@@ -10,8 +10,15 @@
 
 #import <AKACommons/AKAErrors.h>
 
+typedef enum AKAControlsErrorCodes {
+    AKATextEditorControlViewRequiresUITextFieldEditor
+}
+
+AKAControlsErrorCodes;
+
 @class AKAControl;
 @class AKACompositeControl;
+@class AKAEditorControlView;
 
 @interface AKAControlsErrors : AKAErrors
 
@@ -34,5 +41,13 @@
 
 + (void)invalidAttemptToActivateNonMemberControl:(AKAControl*)control
                                       inComposite:(AKACompositeControl*)composite;
+
+#pragma mark - ControlView Errors
+
+
++ (NSError *)errorForTextEditorControlView:(AKAEditorControlView *)editorControlView
+                               invalidView:(id)view
+                                   forRole:(NSString*)role
+                              expectedType:(Class)type;
 
 @end

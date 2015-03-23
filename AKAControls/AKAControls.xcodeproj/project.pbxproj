@@ -11,12 +11,19 @@
 		7D1E164209A74DFD00104C88 /* Pods_AKAControls.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB21F9A04C43FB881DF4351 /* Pods_AKAControls.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8E796F671AB8522F0014EC1E /* AKAControls.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F661AB8522F0014EC1E /* AKAControls.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E796FC11AB8CA170014EC1E /* AKAControlDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796FC01AB8CA170014EC1E /* AKAControlDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E9EB6DD1ABCC54700C9B771 /* AKACompositeControlViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E9EB6DB1ABCC54700C9B771 /* AKACompositeControlViewBinding.h */; };
+		8E9EB6DE1ABCC54700C9B771 /* AKACompositeControlViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9EB6DC1ABCC54700C9B771 /* AKACompositeControlViewBinding.m */; };
 		8EBA32DC1AB9D861007436AA /* AKATextFieldControlViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA32DA1AB9D861007436AA /* AKATextFieldControlViewBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EBA32DD1AB9D861007436AA /* AKATextFieldControlViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA32DB1AB9D861007436AA /* AKATextFieldControlViewBinding.m */; };
 		8EBA32E51ABAE288007436AA /* Pods.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA32E31ABAE288007436AA /* Pods.debug.xcconfig */; };
 		8EBA32E61ABAE288007436AA /* Pods.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA32E41ABAE288007436AA /* Pods.release.xcconfig */; };
 		8EBA33501ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA334F1ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EBA33A11ABB69F9007436AA /* AKACompositeControl_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA33A01ABB69F9007436AA /* AKACompositeControl_Internal.h */; };
+		8EBA33A41ABBFD62007436AA /* AKATextEditorControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA33A21ABBFD62007436AA /* AKATextEditorControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EBA33A51ABBFD62007436AA /* AKATextEditorControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33A31ABBFD62007436AA /* AKATextEditorControlView.m */; };
+		8EBA33A71ABBFE20007436AA /* AKAEditorControlViewBindingConfigurationProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA33A61ABBFE20007436AA /* AKAEditorControlViewBindingConfigurationProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EBA33A91ABC027E007436AA /* AKAEditorControlViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA33A81ABC027E007436AA /* AKAEditorControlViewProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EBA33AB1ABC177F007436AA /* AKAEditorControlView_Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA33AA1ABC177F007436AA /* AKAEditorControlView_Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EF251A31AB849E8005CDE34 /* AKAControls.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EF251971AB849E8005CDE34 /* AKAControls.framework */; };
 		8EF251AA1AB849E8005CDE34 /* AKAControlsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251A91AB849E8005CDE34 /* AKAControlsTests.m */; };
 		8EF251CD1AB84AF2005CDE34 /* AKAEditorControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EF251B31AB84AF2005CDE34 /* AKAEditorControlView.m */; };
@@ -60,12 +67,19 @@
 /* Begin PBXFileReference section */
 		8E796F661AB8522F0014EC1E /* AKAControls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAControls.h; sourceTree = "<group>"; };
 		8E796FC01AB8CA170014EC1E /* AKAControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlDelegate.h; path = Classes/AKAControlDelegate.h; sourceTree = "<group>"; };
+		8E9EB6DB1ABCC54700C9B771 /* AKACompositeControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKACompositeControlViewBinding.h; path = Classes/AKACompositeControlViewBinding.h; sourceTree = "<group>"; };
+		8E9EB6DC1ABCC54700C9B771 /* AKACompositeControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKACompositeControlViewBinding.m; path = Classes/AKACompositeControlViewBinding.m; sourceTree = "<group>"; };
 		8EBA32DA1AB9D861007436AA /* AKATextFieldControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATextFieldControlViewBinding.h; path = Classes/AKATextFieldControlViewBinding.h; sourceTree = "<group>"; };
 		8EBA32DB1AB9D861007436AA /* AKATextFieldControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATextFieldControlViewBinding.m; path = Classes/AKATextFieldControlViewBinding.m; sourceTree = "<group>"; };
 		8EBA32E31ABAE288007436AA /* Pods.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		8EBA32E41ABAE288007436AA /* Pods.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		8EBA334F1ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAControlViewBindingConfigurationProtocol.h; path = Classes/AKAControlViewBindingConfigurationProtocol.h; sourceTree = "<group>"; };
 		8EBA33A01ABB69F9007436AA /* AKACompositeControl_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKACompositeControl_Internal.h; path = Classes/AKACompositeControl_Internal.h; sourceTree = "<group>"; };
+		8EBA33A21ABBFD62007436AA /* AKATextEditorControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATextEditorControlView.h; path = Classes/AKATextEditorControlView.h; sourceTree = "<group>"; };
+		8EBA33A31ABBFD62007436AA /* AKATextEditorControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATextEditorControlView.m; path = Classes/AKATextEditorControlView.m; sourceTree = "<group>"; };
+		8EBA33A61ABBFE20007436AA /* AKAEditorControlViewBindingConfigurationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAEditorControlViewBindingConfigurationProtocol.h; path = Classes/AKAEditorControlViewBindingConfigurationProtocol.h; sourceTree = "<group>"; };
+		8EBA33A81ABC027E007436AA /* AKAEditorControlViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAEditorControlViewProtocol.h; path = Classes/AKAEditorControlViewProtocol.h; sourceTree = "<group>"; };
+		8EBA33AA1ABC177F007436AA /* AKAEditorControlView_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAEditorControlView_Protected.h; path = Classes/AKAEditorControlView_Protected.h; sourceTree = "<group>"; };
 		8EF251971AB849E8005CDE34 /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKAControls.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EF2519B1AB849E8005CDE34 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EF251A21AB849E8005CDE34 /* AKAControlsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,9 +183,12 @@
 				8EF251C71AB84AF2005CDE34 /* AKAControlViewBinding_Protected.h */,
 				8EF251C81AB84AF2005CDE34 /* AKAControlViewBinding_Internal.h */,
 				8EF251BF1AB84AF2005CDE34 /* AKAControlViewBinding.m */,
+				8E9EB6DB1ABCC54700C9B771 /* AKACompositeControlViewBinding.h */,
+				8E9EB6DC1ABCC54700C9B771 /* AKACompositeControlViewBinding.m */,
+				8EBA334F1ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h */,
 				8EBA32DA1AB9D861007436AA /* AKATextFieldControlViewBinding.h */,
 				8EBA32DB1AB9D861007436AA /* AKATextFieldControlViewBinding.m */,
-				8EBA334F1ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h */,
+				8EBA33A61ABBFE20007436AA /* AKAEditorControlViewBindingConfigurationProtocol.h */,
 			);
 			name = ControlViewBindings;
 			sourceTree = "<group>";
@@ -203,8 +220,12 @@
 		8E796F6C1AB853020014EC1E /* CompositeControlViews */ = {
 			isa = PBXGroup;
 			children = (
+				8EBA33A81ABC027E007436AA /* AKAEditorControlViewProtocol.h */,
 				8EF251B41AB84AF2005CDE34 /* AKAEditorControlView.h */,
+				8EBA33AA1ABC177F007436AA /* AKAEditorControlView_Protected.h */,
 				8EF251B31AB84AF2005CDE34 /* AKAEditorControlView.m */,
+				8EBA33A21ABBFD62007436AA /* AKATextEditorControlView.h */,
+				8EBA33A31ABBFD62007436AA /* AKATextEditorControlView.m */,
 			);
 			name = CompositeControlViews;
 			sourceTree = "<group>";
@@ -285,12 +306,17 @@
 				8EF251DE1AB84AF2005CDE34 /* AKAControl.h in Headers */,
 				8EF251DD1AB84AF2005CDE34 /* AKAControl_Protected.h in Headers */,
 				8EF251DB1AB84AF2005CDE34 /* AKACompositeControl.h in Headers */,
+				8E9EB6DD1ABCC54700C9B771 /* AKACompositeControlViewBinding.h in Headers */,
+				8EBA33A71ABBFE20007436AA /* AKAEditorControlViewBindingConfigurationProtocol.h in Headers */,
 				8EF251D41AB84AF2005CDE34 /* AKAControlViewProtocol.h in Headers */,
 				8EF251E01AB84AF2005CDE34 /* AKAControlViewDelegate.h in Headers */,
 				8E796FC11AB8CA170014EC1E /* AKAControlDelegate.h in Headers */,
 				8EF251D01AB84AF2005CDE34 /* AKALabel.h in Headers */,
 				8EBA33501ABB241E007436AA /* AKAControlViewBindingConfigurationProtocol.h in Headers */,
+				8EBA33A91ABC027E007436AA /* AKAEditorControlViewProtocol.h in Headers */,
+				8EBA33AB1ABC177F007436AA /* AKAEditorControlView_Protected.h in Headers */,
 				8EBA33A11ABB69F9007436AA /* AKACompositeControl_Internal.h in Headers */,
+				8EBA33A41ABBFD62007436AA /* AKATextEditorControlView.h in Headers */,
 				8EF251D11AB84AF2005CDE34 /* AKATextField.h in Headers */,
 				8EF251CF1AB84AF2005CDE34 /* AKASwitch.h in Headers */,
 				8EF251CE1AB84AF2005CDE34 /* AKAEditorControlView.h in Headers */,
@@ -441,7 +467,9 @@
 				8EF251E41AB84AF2005CDE34 /* AKAControlsErrors.m in Sources */,
 				8EF251D81AB84AF2005CDE34 /* AKALabel.m in Sources */,
 				8EF251D31AB84AF2005CDE34 /* AKAProperty.m in Sources */,
+				8E9EB6DE1ABCC54700C9B771 /* AKACompositeControlViewBinding.m in Sources */,
 				8EF251D61AB84AF2005CDE34 /* AKASwitch.m in Sources */,
+				8EBA33A51ABBFD62007436AA /* AKATextEditorControlView.m in Sources */,
 				8EF251D91AB84AF2005CDE34 /* AKAControlViewBinding.m in Sources */,
 				8EF251D71AB84AF2005CDE34 /* AKACompositeControl.m in Sources */,
 				8EF251DA1AB84AF2005CDE34 /* AKAControl.m in Sources */,

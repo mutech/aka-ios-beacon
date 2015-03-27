@@ -91,23 +91,61 @@
                toViews:(NSDictionary*)views
 {
     NSMutableArray* removedConstraints = NSMutableArray.new;
+    NSDictionary* result = @{ @"viewCustomization": NSMutableArray.new,
+                              @"layouts": @[ @{ @"constraints": removedConstraints } ]
+                              };
+
     NSMutableArray* addedConstraints = NSMutableArray.new;
 
-    NSDictionary* viewCustomization = themeSpecification[@"viewCustomization"];
+    NSArray* viewCustomization = themeSpecification[@"viewCustomization"];
+    for (NSDictionary* customization in viewCustomization)
+    {
+        id viewSpec = customization[@"view"];
+        UIView* view = [self resolveViewSpecification:viewSpec
+                                             inViews:views];
+        NSDictionary* requirements = customization[@"requirements"];
+        if ([view aka_viewSatisfiesRequirements:requirements])
+        {
+
+            NSDictionary* properties = (NSDictionary*)customization[@"properties"];
+            NSMutableDictionary* modifiedProperties = NSMutableDictionary.new;
+            for (NSString* property in properties.keyEnumerator)
+            {
+                id oldValue = [view valueForKey:property];
+                oldValue = (oldValue == nil) ? [NSNull null] : oldValue;
+                modifiedProperties[property] = oldValue;
+
+                id value = properties[property];
+                value = (value == [NSNull null]) ? nil : value;
+                [view setValue:value forKey:property];
+            }
+            if (modifiedProperties.count > 0)
+            {
+                [(NSMutableArray*)result[@"viewCustomization"] addObject:@{ @"view": viewSpec, @"properties": modifiedProperties }];
+            }
+        }
+    }
+
+
     for (NSString* viewName in views.keyEnumerator)
     {
         UIView* view = views[viewName];
-        if (view != nil)
+
+        NSArray* fromSelf = [self aka_removeConstraintsAffectingView:view];
+        NSArray* fromView1 = [view aka_removeConstraintsAffectingView:self];
+        NSArray* fromView2 = [view aka_removeConstraintsAffectingOnlySelf];
+
+        if (fromSelf.count > 0)
         {
-            NSDictionary* customization = viewCustomization[viewName];
-            if (customization != nil)
-            {
-                for (NSString* property in customization.keyEnumerator)
-                {
-                    id value = customization[property];
-                    [view setValue:value forKey:property];
-                }
-            }
+            [removedConstraints addObject:@{ @"constraints": fromSelf }];
+        }
+        if (fromView1.count > 0)
+        {
+            [removedConstraints addObject:@{ @"constraints": fromView1, @"target": viewName }];
+        }
+        if (fromView2.count > 0)
+        {
+            [removedConstraints addObject:@{ @"constraints": fromView2, @"target": viewName }];
         }
     }
 
@@ -115,17 +153,7 @@
     NSArray* layouts = themeSpecification[@"layouts"];
     for (NSDictionary* layout in layouts)
     {
-        BOOL applicable = YES;
-        NSArray* requiredViews = layout[@"requiredViews"];
-        for (NSString* viewName in requiredViews)
-        {
-            if (views[viewName] == nil)
-            {
-                applicable = NO;
-                break;
-            }
-        }
-
+        BOOL applicable = [self aka_views:views statisfyRequirements:layout[@"viewRequirements"]];
         if (applicable)
         {
             NSDictionary* metrics = layout[@"metrics"];
@@ -142,26 +170,100 @@
                 }
                 metrics = tmp;
             }
-            for (UIView* view in views.objectEnumerator)
-            {
-                // TODO: record target from which constraints have been removed:
-                [removedConstraints addObjectsFromArray:[self aka_removeConstraintsAffectingView:view]];
-                [removedConstraints addObjectsFromArray:[view aka_removeConstraintsAffectingView:self]];
-                [removedConstraints addObjectsFromArray:[view aka_removeConstraintsAffectingOnlySelf]];
-            }
             for (NSDictionary* constraintSpec in layout[@"constraints"])
             {
-                NSArray* constraints = [self aka_constraintsForSpecification:constraintSpec
-                                                                       views:views
-                                                                     metrics:metrics];
-                [self addConstraints:constraints];
-                [addedConstraints addObjectsFromArray:constraints];
+                NSArray* constraints = [self aka_addConstraintsForSpecification:constraintSpec
+                                                                          views:views
+                                                                        metrics:metrics];
+                if (constraints.count > 0)
+                {
+                    [addedConstraints addObjectsFromArray:constraints];
+                }
             }
+        }
+    }
+    return result;
+}
 
+- (BOOL)aka_viewSatisfiesRequirements:(NSDictionary*)requirements
+{
+    BOOL result = YES;
+    UIView* view = self;
+
+    id typeSpec = requirements[@"type"];
+    if (result && [typeSpec isKindOfClass:[NSArray class]])
+    {
+        result = NO;
+        for (Class type in ((NSArray*)typeSpec))
+        {
+            result |= [view isKindOfClass:type];
+        }
+    }
+    else if ([typeSpec respondsToSelector:@selector(superclass)])
+    {
+        result &= [view isKindOfClass:typeSpec];
+    }
+
+    id notTypeSpec = requirements[@"notType"];
+    if ([notTypeSpec isKindOfClass:[NSArray class]])
+    {
+        for (Class type in ((NSArray*)notTypeSpec))
+        {
+            result &= ![view isKindOfClass:type];
+        }
+    }
+    else if ([notTypeSpec respondsToSelector:@selector(superclass)])
+    {
+        result &= ![view isKindOfClass:notTypeSpec];
+    }
+
+    return result;
+}
+
+- (BOOL)aka_views:(NSDictionary*)views statisfyRequirements:(NSDictionary*)requirementsByViewName
+{
+    BOOL result = YES;
+
+    for (NSString* viewName in requirementsByViewName.keyEnumerator)
+    {
+        id spec = requirementsByViewName[viewName];
+        id view = views[viewName];
+
+        if ([spec isKindOfClass:[NSNumber class]])
+        {
+            BOOL value = ((NSNumber*)spec).boolValue;
+            result &= (value == (view != nil));
+        }
+        else if ([spec isKindOfClass:[NSDictionary class]] && [view isKindOfClass:[UIView class]])
+        {
+            result &= [((UIView*)view)aka_viewSatisfiesRequirements:spec];
+        }
+        if (!result)
+        {
             break;
         }
     }
-    return NSDictionaryOfVariableBindings(addedConstraints, removedConstraints);
+    return result;
+}
+
+- (NSArray*)aka_addConstraintsForSpecification:(NSDictionary*)specification
+                                      views:(NSDictionary*)views
+                                    metrics:(NSDictionary*)metrics
+{
+    NSArray* result = [self aka_constraintsForSpecification:specification views:views metrics:metrics];
+
+    if (result.count > 0)
+    {
+        // target is the view where constraints will be added
+        UIView* target = [self resolveViewSpecification:specification[@"target"] inViews:views];
+        if (target == nil)
+        {
+            target = self;
+        }
+        [target addConstraints:result];
+    }
+
+    return result;
 }
 
 - (NSArray*)aka_constraintsForSpecification:(NSDictionary*)specification
@@ -169,17 +271,17 @@
                                     metrics:(NSDictionary*)metrics
 {
     NSArray* result = nil;
-    NSString* visualFormat = specification[@"format"];
-    if (visualFormat)
+
+    if (specification[@"format"] != nil)
     {
         NSLayoutFormatOptions options = ((NSNumber*)specification[@"options"]).unsignedIntegerValue;
 
-        result = [NSLayoutConstraint constraintsWithVisualFormat:visualFormat
+        result = [NSLayoutConstraint constraintsWithVisualFormat:specification[@"format"]
                                                          options:options
                                                          metrics:metrics
                                                            views:views];
     }
-    else
+    else if (specification[@"firstItem"] != nil || specification[@"firstItems"] != nil)
     {
         NSMutableArray* constraints = NSMutableArray.new;
 
@@ -206,19 +308,19 @@
         {
             for (NSDictionary* secondItemSpec in secondItems)
             {
-                UIView* firstItem = [self resolveConstraintItem:firstItemSpec[@"item"]
+                UIView* firstItem = [self resolveViewSpecification:firstItemSpec[@"item"]
                                                         inViews:views];
                 NSNumber* firstAttribute = [self resolveKey:@"firstAttribute"
                                                       inTop:specification
                                                       first:firstItemSpec
                                                      second:secondItemSpec];
-                UIView* secondItem = [self resolveConstraintItem:secondItemSpec[@"item"]
+                UIView* secondItem = [self resolveViewSpecification:secondItemSpec[@"item"]
                                                          inViews:views];
                 NSNumber* secondAttribute = [self resolveKey:@"secondAttribute"
                                                       inTop:specification
                                                       first:firstItemSpec
                                                      second:secondItemSpec];
-                NSNumber* relatedBy = [self resolveKey:@"secondAttribute"
+                NSNumber* relatedBy = [self resolveKey:@"relatedBy"
                                                         inTop:specification
                                                         first:firstItemSpec
                                                        second:secondItemSpec];
@@ -256,12 +358,20 @@
 
             }
         }
-
         if (constraints.count > 0)
         {
             result = constraints;
         }
     }
+    else if (specification[@"constraint"] != nil)
+    {
+        result = @[ specification[@"constraint"] ];
+    }
+    else if (specification[@"constraints"] != nil)
+    {
+        result = specification[@"constraints"];
+    }
+
     return result;
 }
 
@@ -308,7 +418,7 @@
     }
     else if ([relation isKindOfClass:[NSNumber class]])
     {
-        result = ((NSNumber*)relation).unsignedIntegerValue;
+        result = ((NSNumber*)relation).intValue;
     }
     else
     {
@@ -317,16 +427,20 @@
     return result;
 }
 
-- (UIView*)resolveConstraintItem:(id)item inViews:(NSDictionary*)views
+- (UIView*)resolveViewSpecification:(id)item inViews:(NSDictionary*)views
 {
     UIView* result = nil;
     if ([item isKindOfClass:[UIView class]])
     {
         result = item;
     }
-    else
+    else if ([item isKindOfClass:[NSString class]])
     {
         result = views[item];
+        if (result == nil && [@"self" isEqualToString:item])
+        {
+            result = self;
+        }
     }
     return result;
 }

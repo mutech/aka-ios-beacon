@@ -36,7 +36,10 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKASwitch.h>
 
 // AKAControls/ControlViews/CompositeControlViews
+#import <AKAControls/AKAEditorControlViewProtocol.h>
 #import <AKAControls/AKAEditorControlView.h>
+#import <AKAControls/AKAEditorControlView_Protected.h>
+#import <AKAControls/AKATextEditorControlView.h>
 
 // AKAControls/ControlViewBindings
 #import <AKAControls/AKAControlViewBinding.h>
@@ -44,6 +47,16 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKAControlViewBindingConfigurationProtocol.h>
 #import <AKAControls/AKATextFieldControlViewBinding.h>
 #import <AKAControls/AKAEditorControlViewBindingConfigurationProtocol.h>
+
+// AKAControls/Themes
+#import <AKAControls/AKAThemeProviderProtocol.h>
+#import <AKAControls/UIView+AKAThemeProvider.h>
+#import <AKAControls/AKATheme.h>
+#import <AKAControls/AKAThemeViewApplicability.h>
+#import <AKAControls/AKAThemeViewCustomization.h>
+#import <AKAControls/AKAThemeLayout.h>
+#import <AKAControls/AKALayoutConstraintSpecification.h>
+#import <AKAControls/AKAThemableContainerView.h>
 
 // AKAControls/Properties
 #import <AKAControls/AKAProperty.h>

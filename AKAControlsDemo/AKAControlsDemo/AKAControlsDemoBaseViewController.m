@@ -22,7 +22,8 @@
 @property(nonatomic) NSMutableDictionary* model;
 @property(nonatomic) AKACompositeControl* form;
 
-@property (weak, nonatomic) IBOutlet AKATestContainerView *themeSwitchTarget;
+@property (nonatomic) IBOutletCollection(AKATestContainerView) NSArray* themableViews;
+
 @end
 
 @implementation AKAControlsDemoBaseViewController
@@ -114,24 +115,27 @@
 
 - (IBAction)switchTheme:(id)sender
 {
-    if (self.themeSwitchTarget)
+    for (AKATestContainerView* view in self.themableViews)
     {
-        if ([@"tableview" isEqualToString:self.themeSwitchTarget.theme])
+        if ([@"none" isEqualToString:view.themeName] || view.themeName.length == 0)
         {
-            self.themeSwitchTarget.theme = @"default";
+            view.themeName = @"default";
+        }
+        else if ([@"default" isEqualToString:view.themeName])
+        {
+            view.themeName = @"tableview";
         }
         else
         {
-            self.themeSwitchTarget.theme = @"tableview";
+            view.themeName = @"none";
         }
         [UIView animateWithDuration:.3
                               delay:0
-                            options:UIViewAnimationOptionCurveEaseOut|UIViewAnimationOptionShowHideTransitionViews
+                            options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews
                          animations:^
         {
-
-            [self.themeSwitchTarget setNeedsLayout];
-            //[self.themeSwitchTarget layoutIfNeeded];
+            [view setNeedsLayout];
+            [view layoutIfNeeded];
             [self.view layoutIfNeeded];
         }
                          completion:nil];

@@ -282,7 +282,7 @@
     {
         result = [self.owner shouldControlDeactivate:self];
     }
-    return YES;
+    return result;
 }
 
 - (BOOL)deactivate

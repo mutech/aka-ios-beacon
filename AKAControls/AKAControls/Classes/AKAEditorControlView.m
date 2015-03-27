@@ -248,6 +248,7 @@
                 {
                     // Ignore the subviews of the
                     *doNotDescend = YES;
+                    NSAssert(view != nil && roleSpec != nil && subview != nil && identifiedBy != nil, @"Dictionary entries can't be nil");
                     NSDictionary* entry = @{ @"assignee": view,
                                              @"roleSpecification": roleSpec,
                                              @"toplevelView": subview,

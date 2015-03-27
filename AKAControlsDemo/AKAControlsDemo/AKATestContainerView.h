@@ -7,16 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AKAControls/AKAThemableContainerView.h>
 
 IB_DESIGNABLE
-@interface AKATestContainerView : UIView
-
-@property (nonatomic)IBInspectable NSString* theme;
-
-@property (nonatomic)IBInspectable BOOL customLayout;
+@interface AKATestContainerView : AKAThemableContainerView
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
-@property (weak, nonatomic) IBOutlet UITextField* editor;
+@property (weak, nonatomic) IBOutlet UIView* editor;
 @property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
 
 @end

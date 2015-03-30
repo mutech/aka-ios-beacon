@@ -7,12 +7,12 @@
 //
 
 #import "AKATheme.h"
-#import "AKAThemeViewCustomization.h"
+#import "AKAViewCustomization.h"
 #import "AKAThemeLayout.h"
 #import <AKACommons/UIView+AKAConstraintTools.h>
 
 @interface AKATheme()<
-    AKAThemeViewCustomizationDelegate,
+        AKAViewCustomizationDelegate,
     AKAThemeLayoutDelegate
 > {
     NSMutableArray* _viewCustomizations;
@@ -46,7 +46,31 @@
     if (self)
     {
         [specification enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([@"viewCustomization" isEqualToString:key])
+            if ([@"views" isEqualToString:key])
+            {
+                if ([obj isKindOfClass:[NSDictionary class]])
+                {
+                    NSString* viewName = key;
+                    [(NSDictionary*)obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                        if ([@"outlet" isEqualToString:key])
+                        {
+                            // TODO: implement
+                        }
+                        else if ([@"autocreate" isEqualToString:key])
+                        {
+                            // TODO: implement
+                        }
+                        else if ([@"customization" isEqualToString:key])
+                        {
+                            // TODO: refactor theme to use view configuration at toplevel
+                            NSMutableDictionary* tmp = [NSMutableDictionary dictionaryWithDictionary:obj];
+                            tmp[@"view"] = viewName;
+                            [self addViewCustomizationWithDictionary:tmp];
+                        }
+                    }];
+                }
+            }
+            else if ([@"viewCustomization" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
@@ -116,9 +140,9 @@
     return count;
 }
 
-- (AKAThemeViewCustomization*)addViewCustomizationWithDictionary:(NSDictionary*)specification
+- (AKAViewCustomization *)addViewCustomizationWithDictionary:(NSDictionary*)specification
 {
-    AKAThemeViewCustomization* result = [[AKAThemeViewCustomization alloc] initWithDictionary:specification];
+    AKAViewCustomization * result = [[AKAViewCustomization alloc] initWithDictionary:specification];
     if (result != nil)
     {
         [self addViewCustomization:result];
@@ -126,13 +150,13 @@
     return result;
 }
 
-- (void)addViewCustomization:(AKAThemeViewCustomization*)viewCustomization
+- (void)addViewCustomization:(AKAViewCustomization *)viewCustomization
 {
     [_viewCustomizations addObject:viewCustomization];
     //viewCustomization.delegate = self;
 }
 
-- (AKAThemeViewCustomization*)customizeViewWithKey:(NSString*)key
+- (AKAViewCustomization *)customizeViewWithKey:(NSString*)key
                                        whereTypeIn:(NSArray*)validTypes
                                       andTypeNotIn:(NSArray*)invalidTypes
                                   modifyProperties:(NSDictionary*)propertyModifications
@@ -203,9 +227,9 @@
                                     toViews:views
                                    delegate:delegate])
     {
-        for (AKAThemeViewCustomization* customization in self.viewCustomizations)
+        for (AKAViewCustomization * customization in self.viewCustomizations)
         {
-            [customization applyToViews:views delegate:delegate];
+            [customization applyToViews:views withContext:target delegate:delegate];
         }
     }
 
@@ -261,7 +285,8 @@
     {
         [layout applyToViews:views
           withDefaultMetrics:self.defaultMetrics
-               defaultTarget:target];
+               defaultTarget:target
+                withDelegate:delegate];
     }
 }
 
@@ -410,9 +435,9 @@
 
 #pragma mark - AKAThemeDelegate support
 
-#pragma mark - AKAThemeViewCustomizationDelegate
+#pragma mark - AKAViewCustomizationDelegate
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customization willBeAppliedToView:(id)view
+- (void)viewCustomizations:(AKAViewCustomization *)customization willBeAppliedToView:(id)view
 {
     if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
     {
@@ -420,7 +445,7 @@
     }
 }
 
-- (BOOL)viewCustomizations:(AKAThemeViewCustomization *)customization shouldSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
+- (BOOL)viewCustomizations:(AKAViewCustomization *)customization shouldSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
 {
     BOOL result = YES;
     if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
@@ -430,7 +455,7 @@
     return result;
 }
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customization didSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
+- (void)viewCustomizations:(AKAViewCustomization *)customization didSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
 {
     if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
     {
@@ -438,7 +463,7 @@
     }
 }
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customizations haveBeenAppliedToView:(id)view
+- (void)viewCustomizations:(AKAViewCustomization *)customizations haveBeenAppliedToView:(id)view
 {
     if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
     {
@@ -530,10 +555,249 @@ hasBeenAppliedToViews:(NSDictionary *)views
 
 @end
 
+
+@implementation AKAThemeDelegateProxy
+
+#pragma mark - AKAThemeDelegate Implementation
+
+- (BOOL)                    theme:(AKATheme*)theme
+    shouldApplyViewCustomizations:(NSArray*)viewCustomizations
+                          toViews:(NSDictionary*)views
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(theme:shouldApplyViewCustomizations:toViews:)])
+    {
+        result = [self.delegate theme:theme
+        shouldApplyViewCustomizations:viewCustomizations
+                              toViews:views];
+    }
+    return result;
+}
+
+- (void)themeWillRemoveConstraints:(AKATheme*)theme
+{
+    if ([self.delegate respondsToSelector:@selector(themeWillRemoveConstraints:)])
+    {
+        [self.delegate themeWillRemoveConstraints:theme];
+    }
+}
+
+- (BOOL)                    theme:(AKATheme*)theme
+          shouldRemoveConstraints:(inout NSArray**)constraints
+                    relatedToView:(UIView*)view
+                          withKey:(NSString*)key
+                          inViews:(NSDictionary*)views
+                       fromTarget:(UIView*)target
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToView:withKey:inViews:fromTarget:)])
+    {
+        result = [self.delegate theme:theme
+              shouldRemoveConstraints:constraints
+                        relatedToView:view
+                              withKey:key
+                              inViews:views
+                           fromTarget:target];
+    }
+    return result;
+}
+
+- (BOOL)                    theme:(AKATheme*)theme
+          shouldRemoveConstraints:(inout NSArray**)constraints
+                  relatedToTarget:(UIView*)target
+                         fromView:(UIView*)view
+                          withKey:(NSString*)key
+                          inViews:(NSDictionary*)views
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToTarget:fromView:withKey:inViews:)])
+    {
+        result = [self.delegate theme:theme
+              shouldRemoveConstraints:constraints
+                      relatedToTarget:target
+                             fromView:view
+                              withKey:key
+                              inViews:views];
+    }
+    return result;
+}
+
+- (BOOL)                    theme:(AKATheme*)theme
+shouldRemoveConstraintsOnlyRelatedToSelf:(inout NSArray**)constraints
+                         fromView:(UIView*)view
+                          withKey:(NSString*)key
+                          inViews:(NSDictionary*)views
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraintsOnlyRelatedToSelf:fromView:withKey:inViews:)])
+    {
+        result = [self.delegate theme:theme
+shouldRemoveConstraintsOnlyRelatedToSelf:constraints
+                             fromView:view
+                              withKey:key
+                              inViews:views];
+    }
+    return result;
+}
+
+- (void)                    theme:(AKATheme*)theme
+             didRemoveConstraints:(NSArray*)constraints
+                         fromView:(UIView*)view
+{
+    if ([self.delegate respondsToSelector:@selector(theme:didRemoveConstraints:fromView:)])
+    {
+        [self.delegate theme:theme
+        didRemoveConstraints:constraints
+                    fromView:view];
+    }
+}
+
+- (void)themeDidRemoveConstraints:(AKATheme*)theme
+{
+    if ([self.delegate respondsToSelector:@selector(themeDidRemoveConstraints:)])
+    {
+        [self.delegate themeDidRemoveConstraints:theme];
+    }
+}
+
+#pragma mark - AKAThemeLayoutDelegate methods
+
+- (void)                    layout:(AKAThemeLayout*)layout
+      didCheckApplicabilityToViews:(NSDictionary*)views
+                        withResult:(BOOL)result
+{
+    if ([self.delegate respondsToSelector:@selector(layout:didCheckApplicabilityToViews:withResult:)])
+    {
+        [self.delegate layout:layout didCheckApplicabilityToViews:views withResult:result];
+    }
+}
+
+- (void)                    layout:(AKAThemeLayout *)layout
+              willBeAppliedToViews:(NSDictionary *)views
+                           metrics:(NSDictionary *)metrics
+                     defaultTarget:(UIView *)target
+{
+    if ([self.delegate respondsToSelector:@selector(layout:willBeAppliedToViews:metrics:defaultTarget:)])
+    {
+        [self.delegate layout:layout
+         willBeAppliedToViews:views
+                      metrics:metrics
+                defaultTarget:target];
+    }
+}
+
+- (void)                    layout:(AKAThemeLayout *)layout
+             hasBeenAppliedToViews:(NSDictionary *)views
+                           metrics:(NSDictionary *)metrics
+                     defaultTarget:(UIView *)target
+{
+    if ([self.delegate respondsToSelector:@selector(layout:hasBeenAppliedToViews:metrics:defaultTarget:)])
+    {
+        [self.delegate layout:layout
+        hasBeenAppliedToViews:views
+                      metrics:metrics
+                defaultTarget:target];
+    }
+}
+
+#pragma mark - AKALayoutConstraintSpecificationDelegate methods
+
+- (BOOL)constraintSpecification:(AKALayoutConstraintSpecification*)constraintSpecification
+       shouldInstallConstraints:(NSArray*)nsLayoutConstraints
+                       inTarget:(UIView*)target
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
+    {
+        result = [self.delegate constraintSpecification:constraintSpecification
+                               shouldInstallConstraints:nsLayoutConstraints
+                                               inTarget:target];
+    }
+    return result;
+}
+
+- (void)constraintSpecification:(AKALayoutConstraintSpecification*)constraintSpecification
+         willInstallConstraints:(NSArray*)nsLayoutConstraints
+                       inTarget:(UIView*)target
+{
+    if ([self.delegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
+    {
+        [self.delegate constraintSpecification:constraintSpecification
+                        willInstallConstraints:nsLayoutConstraints
+                                      inTarget:target];
+    }
+}
+
+- (void)constraintSpecification:(AKALayoutConstraintSpecification*)constraintSpecification
+          didInstallConstraints:(NSArray*)nsLayoutConstraints
+                       inTarget:(UIView*)target
+{
+    if ([self.delegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
+    {
+        [self.delegate constraintSpecification:constraintSpecification
+                         didInstallConstraints:nsLayoutConstraints
+                                      inTarget:target];
+    }
+}
+
+#pragma mark - AKAViewCustomizationDelegate methods
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+       willBeAppliedToView:(id)view
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
+    {
+        [self.delegate viewCustomizations:customization
+                      willBeAppliedToView:view];
+    }
+}
+
+- (BOOL)viewCustomizations:(AKAViewCustomization *)customization
+         shouldSetProperty:(NSString*)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
+    {
+        result = [self.delegate viewCustomizations:customization
+                                 shouldSetProperty:name
+                                             value:oldValue
+                                                to:newValue];
+    }
+    return result;
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+            didSetProperty:(NSString *)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
+    {
+        [self.delegate viewCustomizations:customization
+                           didSetProperty:name
+                                    value:oldValue
+                                       to:newValue];
+    }
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customizations
+     haveBeenAppliedToView:(id)view
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
+    {
+        [self.delegate viewCustomizations:customizations
+                    haveBeenAppliedToView:view];
+    }
+}
+
+@end
+
 @interface AKAThemeChangeRecorderDelegate()
 
 @property(nonatomic) AKAThemeLayout* currentlyRecordedLayout;
-@property(nonatomic) AKAThemeViewCustomization* currentlyRecordedViewCustomization;
+@property(nonatomic) AKAViewCustomization * currentlyRecordedViewCustomization;
 
 @end
 
@@ -549,30 +813,43 @@ hasBeenAppliedToViews:(NSDictionary *)views
     return self;
 }
 
+- (instancetype)initWithDelegate:(id<AKAThemeDelegate>)delegate
+{
+    self = [self init];
+    if (self)
+    {
+        self.delegate = delegate;
+    }
+    return self;
+}
+
 #pragma mark - AKAThemeDelegate
 
 #pragma mark - Recording Modified View Properties
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customization
+- (void)viewCustomizations:(AKAViewCustomization *)customization
        willBeAppliedToView:(id)view
 {
-    self.currentlyRecordedViewCustomization = [[AKAThemeViewCustomization alloc] init];
+    self.currentlyRecordedViewCustomization = [[AKAViewCustomization alloc] init];
     self.currentlyRecordedViewCustomization.viewKey = customization.viewKey;
+    [super viewCustomizations:customization willBeAppliedToView:view];
 }
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customization
+- (void)viewCustomizations:(AKAViewCustomization *)customization
             didSetProperty:(NSString *)name
                      value:(id)oldValue
                         to:(id)newValue
 {
     [self.currentlyRecordedViewCustomization addCustomizationSetValue:oldValue forPropertyName:name];
+    [super viewCustomizations:customization didSetProperty:name value:oldValue to:newValue];
 }
 
-- (void)viewCustomizations:(AKAThemeViewCustomization *)customizations
+- (void)viewCustomizations:(AKAViewCustomization *)customizations
      haveBeenAppliedToView:(id)view
 {
     [self.recordedTheme addViewCustomization:self.currentlyRecordedViewCustomization];
     self.currentlyRecordedViewCustomization = nil;
+    [super viewCustomizations:customizations haveBeenAppliedToView:view];
 }
 
 #pragma mark - Recording Removed Constraints
@@ -580,18 +857,21 @@ hasBeenAppliedToViews:(NSDictionary *)views
 - (void)themeWillRemoveConstraints:(AKATheme *)theme
 {
     self.currentlyRecordedLayout = [[AKAThemeLayout alloc] init];
+    [super themeWillRemoveConstraints:theme];
 }
 
 - (void)theme:(AKATheme *)theme didRemoveConstraints:(NSArray *)constraints fromView:(UIView *)view
 {
     [self.currentlyRecordedLayout addConstraintSpecificationWithConstraints:constraints
                                                         forTarget:view];
+    [super theme:theme didRemoveConstraints:constraints fromView:view];
 }
 
 - (void)themeDidRemoveConstraints:(AKATheme *)theme
 {
     [self.recordedTheme addLayout:self.currentlyRecordedLayout];
     self.currentlyRecordedLayout = nil;
+    [super themeDidRemoveConstraints:theme];
 }
 
 @end

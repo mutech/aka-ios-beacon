@@ -13,7 +13,7 @@
 
 @optional
 - (void)                    layout:(AKAThemeLayout*)layout
-      didCheckApplicabilityToViews:(NSDictionary*)view
+      didCheckApplicabilityToViews:(NSDictionary*)views
                         withResult:(BOOL)result;
 
 @optional

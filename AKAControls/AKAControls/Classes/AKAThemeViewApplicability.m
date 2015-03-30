@@ -6,24 +6,51 @@
 #import "AKATheme.h"
 #import "AKAThemeViewApplicability.h"
 
+#import <objc/runtime.h> // needed to check if id is Class
+
 @implementation AKAThemeViewApplicability
+
+- (instancetype)init
+{
+    {
+        self = [super init];
+        if (self)
+        {
+            _requirePresent = NO;
+            _requireAbsent = NO;
+        }
+        return self;
+    }
+}
 
 - (instancetype)initRequirePresent
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
-        self.present = YES;
+        _requirePresent = YES;
     }
     return self;
 }
 
 - (instancetype)initRequireAbsent
 {
-    self = [super init];
+    self = [self init];
     if (self)
     {
-        self.present = YES;
+        _requireAbsent = YES;
+    }
+    return self;
+}
+
+- (instancetype)initWithValidTypes:(NSArray *)validTypes invalidTypes:(NSArray *)invalidTypes requirePresent:(BOOL)required
+{
+    self = [self init];
+    if (self)
+    {
+        _requirePresent = required;
+        _validTypes = validTypes;
+        _invalidTypes = invalidTypes;
     }
     return self;
 }
@@ -34,32 +61,46 @@
     if (self)
     {
         __block BOOL failed = NO;
-        self.present = YES;
         [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([@"type" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
-                    [self setRequiresViewsOfTypeIn:obj];
+                    _validTypes = obj;
                 }
-                else
+                else if (class_isMetaClass(object_getClass(obj)))
                 {
-                    [self setRequiresViewsOfTypeIn:@[obj]];
+                    _validTypes = @[obj];
                 }
             }
             else if ([@"notType" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
-                    [self setRequiresViewsOfTypeNotIn:obj];
+                    _invalidTypes = obj;
                 }
-                else
+                else if (class_isMetaClass(object_getClass(obj)))
                 {
-                    [self setRequiresViewsOfTypeNotIn:@[obj]];
+                    _invalidTypes = @[obj];
+                }
+            }
+            else if ([@"present" isEqualToString:key])
+            {
+                if ([obj isKindOfClass:[NSNumber class]])
+                {
+                    _requirePresent = ((NSNumber*)obj).boolValue;
+                }
+            }
+            else if ([@"absent" isEqualToString:key])
+            {
+                if ([obj isKindOfClass:[NSNumber class]])
+                {
+                    _requireAbsent = ((NSNumber*)obj).boolValue;
                 }
             }
             else
             {
+                // TODO: error handling
                 failed = YES;
                 *stop = YES;
             }
@@ -99,7 +140,15 @@
 
 - (BOOL)isApplicableToView:(id)view
 {
-    BOOL result = self.present == (view != nil);
+    BOOL result = YES;
+    if (self.requirePresent && (view == nil))
+    {
+        result = NO;
+    }
+    if (self.requireAbsent && (view != nil))
+    {
+        result = NO;
+    }
     if (result && self.validTypes.count > 0)
     {
         result = NO;
@@ -112,7 +161,7 @@
             }
         }
     }
-    if (result && self.invalidTypes)
+    if (result && self.invalidTypes.count > 0)
     {
         for (Class type in self.invalidTypes)
         {
@@ -123,16 +172,6 @@
         }
     }
     return result;
-}
-
-- (void)setRequiresViewsOfTypeIn:(NSArray *)validTypes
-{
-    self.validTypes = validTypes;
-}
-
-- (void)setRequiresViewsOfTypeNotIn:(NSArray *)invalidTypes
-{
-    self.invalidTypes = invalidTypes;
 }
 
 @end

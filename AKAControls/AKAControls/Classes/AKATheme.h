@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 
 #import <AKAControls/AKAThemeViewApplicability.h>
-#import <AKAControls/AKAThemeViewCustomization.h>
+#import <AKAControls/AKAViewCustomization.h>
 #import <AKAControls/AKAThemeLayout.h>
 
-#pragma mark - AKAThemeViewCustomization
+#pragma mark - AKAViewCustomization
 #pragma mark -
 
 @class AKATheme;
 @protocol AKAThemeDelegate<
-    AKAThemeViewCustomizationDelegate,
+    AKAViewCustomizationDelegate,
     AKAThemeLayoutDelegate
 >
 
@@ -62,7 +62,16 @@ shouldRemoveConstraintsOnlyRelatedToSelf:(inout NSArray**)constraints
 
 @end
 
-@interface AKAThemeChangeRecorderDelegate: NSObject<AKAThemeDelegate>
+
+@interface AKAThemeDelegateProxy: NSObject<AKAThemeDelegate>
+
+@property(nonatomic) id<AKAThemeDelegate> delegate;
+
+@end
+
+@interface AKAThemeChangeRecorderDelegate: AKAThemeDelegateProxy
+
+- (instancetype)initWithDelegate:(id<AKAThemeDelegate>)delegate;
 
 @property(nonatomic) AKATheme* recordedTheme;
 

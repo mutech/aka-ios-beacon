@@ -61,7 +61,7 @@
     if (self)
     {
         self.modelValueProperty =
-            [AKAProperty propertyOfKeyValueTarget:dataContext
+            [AKAProperty propertyOfWeakKeyValueTarget:dataContext
                                           keyPath:keyPath
                                    changeObserver:^(id oldValue, id newValue) {
                                        [self modelValueDidChangeFrom:oldValue

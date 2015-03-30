@@ -7,17 +7,19 @@
 
 @interface AKAThemeViewApplicability: NSObject
 
-- (instancetype)initRequirePresent;
 - (instancetype)initRequireAbsent;
+- (instancetype)initRequirePresent;
+- (instancetype)initWithValidTypes:(NSArray*)validTypes
+                      invalidTypes:(NSArray*)invalidTypes
+                    requirePresent:(BOOL)required;
 - (instancetype)initWithDictionary:(NSDictionary*)dictionary;
 - (instancetype)initWithSpecification:(id)specification;
 
-@property(nonatomic) NSArray* validTypes;
-@property(nonatomic) NSArray* invalidTypes;
-@property(nonatomic) BOOL present;
+@property(nonatomic, readonly) NSArray* validTypes;
+@property(nonatomic, readonly) NSArray* invalidTypes;
+@property(nonatomic, readonly) BOOL requirePresent;
+@property(nonatomic, readonly) BOOL requireAbsent;
 
 - (BOOL)isApplicableToView:(id)view;
-- (void)setRequiresViewsOfTypeIn:(NSArray*)validTypes;
-- (void)setRequiresViewsOfTypeNotIn:(NSArray*)invalidTypes;
 
 @end

@@ -31,32 +31,48 @@
 
 - (AKAProperty *)createViewValueProperty
 {
-    AKAProperty* property = [AKAProperty propertyWithGetter:^id {
-        return @(self.switchView.on);
-    } setter:^(id value) {
-        if ([value isKindOfClass:[NSNumber class]])
-        {
-            self.switchView.on = ((NSNumber*)value).boolValue;
-        }
-    } observationStarter:^BOOL () {
-        BOOL result = self.switchView != nil;
-        if (result)
-        {
-            [self.switchView addTarget:self
-                                action:@selector(viewValueDidChange:)
-                      forControlEvents:UIControlEventValueChanged];
-        }
-        return result;
-    } observationStopper:^BOOL {
-        BOOL result = self.switchView != nil;
-        if (result)
-        {
-            [self.switchView removeTarget:self
-                                   action:@selector(viewValueDidChange:)
-                         forControlEvents:UIControlEventValueChanged];
-        }
-        return result;
-    }];
+    AKAProperty* property = [AKAProperty propertyOfWeakTarget:self
+                                                     getter:
+                             ^id (id target)
+                             {
+                                 AKASwitchControlViewBinding* binding = target;
+                                 return @(binding.switchView.on);
+                             }
+                                                     setter:
+                             ^(id target, id value)
+                             {
+                                 AKASwitchControlViewBinding* binding = target;
+                                 if ([value isKindOfClass:[NSNumber class]])
+                                 {
+                                     binding.switchView.on = ((NSNumber*)value).boolValue;
+                                 }
+                             }
+                                         observationStarter:
+                             ^BOOL (id target)
+                             {
+                                 AKASwitchControlViewBinding* binding = target;
+                                 BOOL result = binding.switchView != nil;
+                                 if (result)
+                                 {
+                                     [binding.switchView addTarget:binding
+                                                            action:@selector(viewValueDidChange:)
+                                                  forControlEvents:UIControlEventValueChanged];
+                                 }
+                                 return result;
+                             }
+                                         observationStopper:
+                             ^BOOL (id target)
+                             {
+                                 AKASwitchControlViewBinding* binding = target;
+                                 BOOL result = binding.switchView != nil;
+                                 if (result)
+                                 {
+                                     [self.switchView removeTarget:binding
+                                                            action:@selector(viewValueDidChange:)
+                                                  forControlEvents:UIControlEventValueChanged];
+                                 }
+                                 return result;
+                             }];
     return property;
 }
 

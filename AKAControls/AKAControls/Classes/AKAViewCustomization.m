@@ -3,12 +3,12 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+#import <AKACommons/AKAProperty.h>
 #import "AKATheme.h"
-#import "AKAThemeViewCustomization.h"
-#import "AKAThemeViewCustomization.h"
+#import "AKAViewCustomization.h"
 #import "AKAThemeViewApplicability.h"
 
-@interface AKAThemeViewCustomization()
+@interface AKAViewCustomization ()
 
 @property(nonatomic)NSArray* validTypes;
 @property(nonatomic)NSArray* invalidTypes;
@@ -17,7 +17,7 @@
 
 @end
 
-@implementation AKAThemeViewCustomization
+@implementation AKAViewCustomization
 
 #pragma mark - Initialization
 
@@ -69,14 +69,16 @@
 }
 
 - (BOOL)applyToViews:(NSDictionary *)views
-            delegate:(id<AKAThemeViewCustomizationDelegate>)delegate
+        withContext:(id)context
+            delegate:(id<AKAViewCustomizationDelegate>)delegate
 {
     id view = views[self.viewKey];
-    return [self applyToView:view delegate:delegate];
+    return [self applyToView:view withContext:context delegate:delegate];
 }
 
 - (BOOL)applyToView:(id)view
-           delegate:(id<AKAThemeViewCustomizationDelegate>)delegate
+        withContext:(id)context
+           delegate:(id<AKAViewCustomizationDelegate>)delegate
 {
     BOOL result = [self isApplicableToView:view];
     if (result)
@@ -85,7 +87,8 @@
         [self.propertyValuesByName enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
          {
              id oldValue = [view valueForKey:key];
-             id newValue = obj == [NSNull null] ? nil : obj;
+             id newValue = [self resolvePropertyValue:obj withContext:context];
+
              if ([self shouldSetProperty:key value:oldValue to:newValue delegate:delegate])
              {
                  [view setValue:newValue forKey:key];
@@ -97,10 +100,25 @@
     return result;
 }
 
-#pragma mark - AKAThemeViewCustomizationDelegate support
+- (id)resolvePropertyValue:(id)obj withContext:(id)context
+{
+    id result = obj;
+    if ([result isKindOfClass:[AKAProperty class]])
+    {
+        AKAProperty* p = result;
+        result = [p valueWithDefaultTarget:context];
+    }
+    if (result == [NSNull null])
+    {
+        result = nil;
+    }
+    return result;
+}
+
+#pragma mark - AKAViewCustomizationDelegate support
 
 - (void)willApplyToView:(UIView*)view
-               delegate:(NSObject<AKAThemeViewCustomizationDelegate>*)delegate
+               delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate
 {
     if ([delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
     {
@@ -115,7 +133,7 @@
 -(BOOL)shouldSetProperty:(NSString*)name
                    value:(id)oldValue
                       to:(id)newValue
-                delegate:(NSObject<AKAThemeViewCustomizationDelegate>*)delegate
+                delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate
 {
     BOOL result = YES;
     if (result && [delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
@@ -138,7 +156,7 @@
 -(void)didSetProperty:(NSString*)name
                 value:(id)oldValue
                    to:(id)newValue
-             delegate:(NSObject<AKAThemeViewCustomizationDelegate>*)delegate
+             delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate
 {
     if ([delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
     {
@@ -151,7 +169,7 @@
 }
 
 - (void)didApplyToView:(UIView*)view
-              delegate:(NSObject<AKAThemeViewCustomizationDelegate>*)delegate
+              delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate
 {
     if ([delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
     {
@@ -164,26 +182,6 @@
 }
 
 #pragma mark - Configuration
-
-#pragma mark Requirements
-
-- (void)setRequiresViewsOfTypeIn:(NSArray *)validTypes
-{
-    if (!self.applicability)
-    {
-        self.applicability = [[AKAThemeViewApplicability alloc] initRequirePresent];
-    }
-    [self.applicability setRequiresViewsOfTypeIn:validTypes];
-}
-
-- (void)setRequiresViewsOfTypeNotIn:(NSArray *)invalidTypes
-{
-    if (!self.applicability)
-    {
-        self.applicability = [[AKAThemeViewApplicability alloc] initRequirePresent];
-    }
-    [self.applicability setRequiresViewsOfTypeNotIn:invalidTypes];
-}
 
 #pragma mark Property customizations
 

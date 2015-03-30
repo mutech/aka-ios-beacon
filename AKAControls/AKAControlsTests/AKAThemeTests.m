@@ -46,7 +46,7 @@
                                                 @"notType": [AKALabel class] },
                             @"properties": @{ @"text": @"Hello there" },
                             };
-    AKAThemeViewCustomization* customization = [[AKAThemeViewCustomization alloc] initWithDictionary:spec];
+    AKAViewCustomization* customization = [[AKAViewCustomization alloc] initWithDictionary:spec];
     XCTAssert(customization != nil);
     XCTAssert(customization.viewKey == spec[@"view"]);
 
@@ -55,18 +55,18 @@
     XCTAssert(![customization isApplicableToView:view]);
 
     XCTAssert(label.text == originalLabelText);
-    [customization applyToView:label withDelegate:nil];
+    [customization applyToView:label withContext:nil delegate:nil];
     XCTAssert([@"Hello there" isEqualToString:label.text]);
     label.text = originalLabelText;
 
     XCTAssert(textField.text == originalTextFieldText);
-    [customization applyToView:textField withDelegate:nil];
+    [customization applyToView:textField withContext:nil delegate:nil];
     XCTAssert([@"Hello there" isEqualToString:textField.text]);
     textField.text = originalTextFieldText;
 
     XCTAssert(label.text == originalLabelText);
     XCTAssert(textField.text == originalTextFieldText);
-    [customization applyToViews:views withDelegate:nil];
+    [customization applyToViews:views withContext:nil delegate:nil];
     XCTAssert([@"Hello there" isEqualToString:label.text]);
     XCTAssert(textField.text == originalTextFieldText);
 

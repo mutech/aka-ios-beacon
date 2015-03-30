@@ -13,38 +13,37 @@
 
 @implementation AKATextEditorControlView
 
-- (UIView *)autoCreateViewForRole_editor
+- (BOOL)subviewSpecificationItem:(AKASubviewsSpecificationItem *)specification
+         subviewNotFoundInTarget:(UIView *)containerView
+                     createdView:(out UIView *__autoreleasing *)createdView
 {
-    UITextField* result = [[AKATextField alloc] initWithFrame:CGRectZero];
-    result.translatesAutoresizingMaskIntoConstraints = NO;
-
-    result.borderStyle = UITextBorderStyleRoundedRect;
-    result.placeholder = self.labelText;
-    if ([result isKindOfClass:[AKATextField class]])
+    BOOL result = NO;
+    if (containerView == self)
     {
-        AKATextField* aka = (AKATextField*)result;
-        if (self.controlName.length > 0)
+        if (specification.requirements.requirePresent)
         {
-            aka.controlName = [self.controlName stringByAppendingString:@"_editor"];
+            if ([@"editor" isEqualToString:specification.name])
+            {
+                AKATextField* editor = [[AKATextField alloc] initWithFrame:CGRectZero];
+                editor.translatesAutoresizingMaskIntoConstraints = NO;
+
+                editor.valueKeyPath = self.editorBinding;
+                editor.role = specification.name;
+
+                editor.text = @"";
+
+                *createdView = editor;
+                result = YES;
+            }
+            else
+            {
+                result = [super subviewSpecificationItem:specification
+                                 subviewNotFoundInTarget:containerView
+                                             createdView:createdView];
+            }
         }
-        aka.role = @"editor";
-        aka.valueKeyPath = self.editorValueKeyPath;
     }
-    else
-    {
-        result.tag = 20; // TODO: get this from role specification
-    }
-
     return result;
-}
-
-- (BOOL)validateEditor:(inout __autoreleasing id *)ioValue
-                 error:(out NSError *__autoreleasing *)error
-{
-    return [self validateView:ioValue
-                      forRole:@"editor"
-                 isKindOfType:[UITextField class]
-                        error:error];
 }
 
 @end

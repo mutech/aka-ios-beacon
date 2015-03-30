@@ -10,37 +10,98 @@
 
 #import "AKAErrors.h"
 
+#pragma mark - AKAKVOProperty (Cluster Interface)
+#pragma mark -
+
 @interface AKAKVOProperty: AKAProperty
 
-- (instancetype)initWithTarget:(NSObject*)target
-                       keyPath:(NSString*)keyPath
-                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+#pragma mark - Initialization
 
-- (instancetype)initWithTarget:(NSObject*)target
-                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+- (instancetype)initWithWeakTarget:(NSObject*)target
+                           keyPath:(NSString*)keyPath
+                    changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
 
-@property(nonatomic, readonly) NSObject* target;
+- (instancetype)initWithWeakTarget:(NSObject*)target
+                    changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+
+#pragma mark - Configuration
+
 @property(nonatomic, readonly) NSString* keyPath;
 
 @end
 
 
+#pragma mark - AKACustomProperty (Cluster Interface)
+#pragma mark -
+
 @interface AKACustomProperty: AKAProperty
 
-- (instancetype)initWithGetter:(id(^)())getter
-                        setter:(void(^)(id value))setter
-            observationStarter:(BOOL(^)())observationStarter
-            observationStopper:(BOOL(^)())observationStopper;
+#pragma mark - Initialization
+
+- (instancetype)initWithWeakTarget:(id)target
+                            getter:(id (^)(id target))getter
+                            setter:(void (^)(id target, id value))setter
+                observationStarter:(BOOL(^)(id target))observationStarter
+                observationStopper:(BOOL (^)(id target))observationStopper;
 
 @end
 
 
+#pragma mark - AKAUnboundProperty (Implementation)
+#pragma mark -
+
+@implementation AKAUnboundProperty
+
+#pragma mark - Initialization
+
++ (AKAUnboundProperty *)unboundPropertyWithKeyPath:(NSString *)keyPath
+{
+    return [[AKAKVOProperty alloc] initWithWeakTarget:nil
+                                              keyPath:keyPath
+                                       changeObserver:nil];
+}
+
++ (AKAUnboundProperty *)unboundPropertyWithGetter:(id (^)(id))getter
+                                           setter:(void (^)(id, id))setter
+{
+    return [[AKACustomProperty alloc] initWithWeakTarget:nil
+                                                  getter:getter
+                                                  setter:setter
+                                      observationStarter:^BOOL(id target) { (void)target; return NO; }
+                                      observationStopper:^BOOL(id target) { (void)target; return NO; }];
+}
+
+#pragma mark - Value Access
+
+- (id)valueForTarget:(id)target
+{
+    (void)target;
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (void)setValue:(id)value forTarget:(id)target
+{
+    (void)value;
+    (void)target;
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+@end
+
+#pragma mark - AKAProperty
+#pragma mark -
+
+#pragma mark - AKAProperty (Private Interface)
+
 @interface AKAProperty()
 
+@property(nonatomic, weak) id target;
 @property(nonatomic, strong) NSHashTable* dependentPropertiesStorage;
 @property(nonatomic, strong) NSHashTable* dependencyPropertiesStorage;
 
 @end
+
+#pragma mark - AKAProperty (Protected Interface)
 
 @interface  AKAProperty(Protected)
 
@@ -54,33 +115,40 @@
 
 @end
 
+#pragma mark - AKAProperty (Implementation)
+
 @implementation AKAProperty
 
 #pragma mark - Initialization
 
-+ (AKAProperty*)propertyOfKeyValueTarget:(NSObject*)target
-                                   keyPath:(NSString*)keyPath
-                            changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
++ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
+                                     keyPath:(NSString*)keyPath
+                              changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
-    return [[AKAKVOProperty alloc] initWithTarget:target keyPath:keyPath changeObserver:valueDidChange];
+    return [[AKAKVOProperty alloc] initWithWeakTarget:target
+                                              keyPath:keyPath
+                                       changeObserver:valueDidChange];
 }
 
-+ (AKAProperty*)propertyWithGetter:(id(^)())getter
-                            setter:(void(^)(id value))setter
-                observationStarter:(BOOL(^)())observationStarter
-                         observationStopper:(BOOL(^)())observationStopper
++ (AKAProperty*)propertyOfWeakTarget:(id)target
+                              getter:(id(^)(id target))getter
+                              setter:(void(^)(id target, id value))setter
+                  observationStarter:(BOOL(^)(id target))observationStarter
+                  observationStopper:(BOOL(^)(id target))observationStopper
 {
-    return [[AKACustomProperty alloc] initWithGetter:getter
-                                             setter:setter
-                                 observationStarter:observationStarter
-                                 observationStopper:observationStopper];
+    return [[AKACustomProperty alloc] initWithWeakTarget:target
+                                                  getter:getter
+                                                  setter:setter
+                                      observationStarter:observationStarter
+                                      observationStopper:observationStopper];
 }
 
-- (instancetype)init
+- (instancetype)initWithWeakTarget:(id)target
 {
     self = [super init];
     if (self)
     {
+        self.target = target;
     }
     return self;
 }
@@ -93,11 +161,12 @@
     }
 }
 
-- (AKAProperty *)propertyAtKeyPath:(NSString *)keyPath withChangeObserver:(void (^)(id, id))valueDidChange
+- (AKAProperty *)propertyAtKeyPath:(NSString *)keyPath
+                withChangeObserver:(void (^)(id, id))valueDidChange
 {
-    AKAProperty* result = [AKAProperty propertyOfKeyValueTarget:self.value
-                                                        keyPath:keyPath
-                                                 changeObserver:valueDidChange];
+    AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:self.value
+                                                            keyPath:keyPath
+                                                     changeObserver:valueDidChange];
     [self addDependentProperty:result];
     [result addDependencyProperty:self];
 
@@ -113,16 +182,26 @@
 
 #pragma mark - Value Access
 
+- (id)valueWithDefaultTarget:(id)defaultTarget
+{
+    if (self.target != nil)
+    {
+        return self.value;
+    }
+    else
+    {
+        return [self valueForTarget:defaultTarget];
+    }
+}
+
 - (id)value
 {
-    AKAErrorAbstractMethodImplementationMissing();
+    return [self valueForTarget:self.target];
 }
 
 - (void)setValue:(id)value
 {
-    (void)value; // not used, throwing exception
-
-    AKAErrorAbstractMethodImplementationMissing();
+    [self setValue:value forTarget:self.target];
 }
 
 #pragma mark - Validation
@@ -238,6 +317,8 @@
 
 @end
 
+#pragma mark - AKAKVOProperty (Implementation)
+#pragma mark -
 
 @interface AKAKVOProperty()
 
@@ -247,27 +328,25 @@
 
 @implementation AKAKVOProperty
 
-@synthesize target = _target;
 @synthesize keyPath = _keyPath;
 @synthesize isObservingChanges = _isObservingChanges;
 @synthesize changeObserver = _changeObserver;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithTarget:(NSObject*)target
+- (instancetype)initWithWeakTarget:(NSObject*)target
                 changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
-    return [self initWithTarget:target keyPath:nil changeObserver:valueDidChange];
+    return [self initWithWeakTarget:target keyPath:nil changeObserver:valueDidChange];
 }
 
-- (instancetype)initWithTarget:(NSObject*)target
+- (instancetype)initWithWeakTarget:(NSObject*)target
                        keyPath:(NSString *)keyPath
                 changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
-    self = [super init];
+    self = [super initWithWeakTarget:target];
     if (self)
     {
-        _target = target;
         _keyPath = keyPath;
         _isObservingChanges = NO;
         _changeObserver = valueDidChange;
@@ -277,26 +356,31 @@
 
 #pragma mark - Value Access
 
-- (id)value
-{
-    return self.keyPath.length > 0 ? [self.target valueForKeyPath:self.keyPath] : self.target;
-}
-
 - (void)setValue:(id)value
 {
     if (self.keyPath.length > 0)
     {
-        [self.target setValue:value forKeyPath:self.keyPath];
+        [super setValue:value];
     }
     else
     {
         id oldValue = self.target;
-        _target = value;
+        self.target = value;
         if (self.isObservingChanges && self.changeObserver)
         {
             self.changeObserver(oldValue, value);
         }
     }
+}
+
+- (id)valueForTarget:(id)target
+{
+    return self.keyPath.length > 0 ? [target valueForKeyPath:self.keyPath] : target;
+}
+
+- (void)setValue:(id)value forTarget:(id)target
+{
+    [target setValue:value forKeyPath:self.keyPath];
 }
 
 #pragma mark - Validation
@@ -305,11 +389,12 @@
                     error:(out NSError *__autoreleasing *)outError
 {
     BOOL result = YES;
+    id target = self.target;
     if (self.keyPath.length > 0)
     {
-        result = [self.target validateValue:ioValue
-                                 forKeyPath:self.keyPath
-                                      error:outError];
+        result = [target validateValue:ioValue
+                            forKeyPath:self.keyPath
+                                 error:outError];
     }
     return result;
 }
@@ -323,6 +408,8 @@
 
 - (BOOL)startObservingChanges
 {
+    id target = self.target;
+
     if (!self.isObservingChanges)
     {
         if (self.keyPath.length == 0)
@@ -333,11 +420,10 @@
         }
         else if (self.changeObserver)
         {
-            [self.target addObserver:self
-                          forKeyPath:self.keyPath
-                             options:(NSKeyValueObservingOptions)
-                                     (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
-                             context:(__bridge void *)(self)];
+            [target addObserver:self
+                     forKeyPath:self.keyPath
+                        options:(NSKeyValueObservingOptions)(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                        context:(__bridge void *)(self)];
             _isObservingChanges = YES;
         }
     }
@@ -354,9 +440,15 @@
         }
         else
         {
-            [self.target removeObserver:self
-                             forKeyPath:self.keyPath
-                                context:(__bridge void *)(self)];
+            // make sure self.target is not deallocated while we
+            // remove the observer
+            __strong id target = self.target;
+            if (target != nil)
+            {
+                [target removeObserver:self
+                            forKeyPath:self.keyPath
+                               context:(__bridge void *)(self)];
+            }
             _isObservingChanges = NO;
         }
     }
@@ -386,12 +478,13 @@
 
 - (void)dependencyDidChangeValueFrom:(id)oldValue to:(id)newValue
 {
+    __strong id target = self.target;
     BOOL wasObservingChanges = self.isObservingChanges;
-    if (_target == oldValue)
+    if (target == oldValue || target == nil)
     {
         [self stopObservingChanges];
         id myOldValue = self.value;
-        _target = newValue;
+        self.target = newValue;
         id myNewValue = self.value;
         if (wasObservingChanges)
         {
@@ -406,13 +499,15 @@
 
 @end
 
+#pragma mark - AKACustomProperty (Implementation)
+#pragma mark -
 
 @interface AKACustomProperty()
 
-@property (nonatomic, strong) id(^getter)();
-@property (nonatomic, strong) void(^setter)(id value);
-@property (nonatomic, strong) BOOL(^observationStarter)(void(^notifyPropertyOfChange)(id oldValue, id newValue));
-@property (nonatomic, strong) BOOL(^observationStopper)();
+@property (nonatomic, strong) id(^getter)(id target);
+@property (nonatomic, strong) void(^setter)(id target, id value);
+@property (nonatomic, strong) BOOL(^observationStarter)(id target);
+@property (nonatomic, strong) BOOL(^observationStopper)(id target);
 
 @end
 
@@ -422,12 +517,13 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithGetter:(id (^)())getter
-                        setter:(void (^)(id))setter
-            observationStarter:(BOOL(^)())observationStarter
-            observationStopper:(BOOL (^)())observationStopper
+- (instancetype)initWithWeakTarget:(id)target
+                            getter:(id (^)(id target))getter
+                            setter:(void (^)(id target, id value))setter
+                observationStarter:(BOOL(^)(id target))observationStarter
+                observationStopper:(BOOL (^)(id target))observationStopper
 {
-    self = [super init];
+    self = [super initWithWeakTarget:target];
     if (self)
     {
         self.getter = getter;
@@ -443,12 +539,12 @@
 
 - (id)value
 {
-    return self.getter();
+    return self.getter(self.target);
 }
 
 - (void)setValue:(id)value
 {
-    self.setter(value);
+    self.setter(self.target, value);
 }
 
 #pragma mark - Notifications
@@ -458,9 +554,7 @@
     BOOL result = self.isObservingChanges;
     if (!result && self.observationStarter)
     {
-        result = self.observationStarter(^(id oldValue, id newValue) {
-            [self propertyValueDidChangeFrom:oldValue to:newValue];
-        });
+        result = self.observationStarter(self.target);
     }
     return result;
 }
@@ -470,7 +564,7 @@
     BOOL result = !self.isObservingChanges;
     if (!result)
     {
-        result = self.observationStopper();
+        result = self.observationStopper(self.target);
     }
     return result;
 }

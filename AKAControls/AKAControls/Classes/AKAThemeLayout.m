@@ -97,36 +97,39 @@
                             withResult:result
                               delegate:delegate];
 
-    NSDictionary* metrics = nil; //self.metrics;
-    if (metrics == nil)
+    if (result)
     {
-        metrics = defaultMetrics;
-    }
-    else
-    {
-        NSMutableDictionary* tmp = [NSMutableDictionary dictionaryWithDictionary:defaultMetrics];
-        for (NSString* key in metrics)
+        NSDictionary* metrics = nil; //self.metrics;
+        if (metrics == nil)
         {
-            tmp[key] = metrics[key];
+            metrics = defaultMetrics;
         }
-        metrics = tmp;
-    }
+        else
+        {
+            NSMutableDictionary* tmp = [NSMutableDictionary dictionaryWithDictionary:defaultMetrics];
+            for (NSString* key in metrics)
+            {
+                tmp[key] = metrics[key];
+            }
+            metrics = tmp;
+        }
 
-    [self willApplyToViews:views
-                   metrics:metrics
-             defaultTarget:target
-                  delegate:delegate];
-    for (AKALayoutConstraintSpecification* constraintSpecification in self.constraintSpecifications)
-    {
-        [constraintSpecification installConstraintsForViews:views
-                                                    metrics:metrics
-                                              defaultTarget:target
-                                                   delegate:delegate];
+        [self willApplyToViews:views
+                       metrics:metrics
+                 defaultTarget:target
+                      delegate:delegate];
+        for (AKALayoutConstraintSpecification* constraintSpecification in self.constraintSpecifications)
+        {
+            [constraintSpecification installConstraintsForViews:views
+                                                        metrics:metrics
+                                                  defaultTarget:target
+                                                       delegate:delegate];
+        }
+        [self didApplyToViews:views
+                      metrics:metrics
+                defaultTarget:target
+                     delegate:delegate];
     }
-    [self didApplyToViews:views
-                  metrics:metrics
-            defaultTarget:target
-                 delegate:delegate];
 
     return result;
 }
@@ -143,9 +146,7 @@
          withTypeIn:(NSArray *)validTypes
        andTypeNotIn:(NSArray *)invalidTypes
 {
-    AKAThemeViewApplicability* applicability = [[AKAThemeViewApplicability alloc] initRequirePresent];
-    [applicability setRequiresViewsOfTypeIn:validTypes];
-    [applicability setRequiresViewsOfTypeNotIn:invalidTypes];
+    AKAThemeViewApplicability* applicability = [[AKAThemeViewApplicability alloc] initWithValidTypes:validTypes invalidTypes:invalidTypes requirePresent:YES];
     [self requireView:key withApplicability:applicability];
 }
 
@@ -319,3 +320,4 @@
 }
 
 @end
+

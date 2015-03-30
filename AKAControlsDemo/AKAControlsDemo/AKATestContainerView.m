@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKACommons/UIView+AKAConstraintTools.h>
-#import <AKAControls/AKATheme.h>
 #import "AKATestContainerView.h"
+#import <AKAControls/AKAThemableContainerView_Protected.h>
+
+#import <AKACommons/UIView+AKAConstraintTools.h>
 
 @interface AKATestContainerView()
 
@@ -18,30 +19,47 @@
 
 #pragma mark - Initialization
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+#pragma mark - Configuration
+
++ (AKASubviewsSpecification *)subviewsSpecification
 {
-    self = [super initWithCoder:aDecoder];
-    if (self)
-    {
-        [self setNeedsUpdateConstraints];
-    }
-    return self;
+    static dispatch_once_t token;
+    static AKASubviewsSpecification* instance = nil;
+    dispatch_once(&token, ^{
+        instance = [[AKASubviewsSpecification alloc] initWithDictionary:
+                    @{ @"label":
+                           @{ @"outlet": [NSString stringWithUTF8String:sel_getName(@selector(label))],
+                              @"viewTag": @1,
+                              @"requirements": @{ @"present": @YES,
+                                                  @"type": [UILabel class] }
+                              },
+                       @"editor":
+                           @{ @"outlet": [NSString stringWithUTF8String:sel_getName(@selector(editor))],
+                              @"viewTag": @2,
+                              @"requirements": @{ @"present": @YES,
+                                                  @"type": [UIView class] }
+                              },
+                       @"errorMessageLabel":
+                           @{ @"outlet": [NSString stringWithUTF8String:sel_getName(@selector(errorMessageLabel))],
+                              @"viewTag": @3,
+                              @"requirements": @{ @"type": [UILabel class] }
+                              },
+                       }];
+    });
+    return instance;
 }
 
-- (void)awakeFromNib
++ (NSDictionary*)builtinThemes
 {
-    // awakeFromNib is called when outlets are set. If at that point
-    // the outlets are nil, default controls will be created here.
-    [self autocreateMissingViews];
+    static dispatch_once_t token;
+    static NSDictionary* instance = nil;
+    dispatch_once(&token, ^{
+        instance = @{ @"default": [self builtinDefaultTheme],
+                      @"tableview": [self builtinTableViewTheme]
+                      };
+    });
+    return instance;
 }
-
-- (void)prepareForInterfaceBuilder
-{
-    [self setNeedsUpdateConstraints];
-    [self setNeedsLayout];
-}
-
-#pragma mark - Theme support
 
 + (AKATheme*)builtinDefaultTheme
 {
@@ -73,7 +91,7 @@
                                },
                             ],
 
-                     @"metrics": @{ @"pl":@(4), @"pr":@(4), @"pt":@(4), @"pb":@(4),
+                     @"metrics": @{ @"pl":@(0), @"pr":@(0), @"pt":@(0), @"pb":@(0),
                                     @"vs":@(0), @"hs":@(4),
                                     @"labelWidth":@(80)},
                      @"layouts":
@@ -164,6 +182,16 @@
                                          @"options": @(NSLayoutFormatAlignAllLeading|NSLayoutFormatAlignAllTrailing)
                                          }
                                       ]
+                               },
+                            @{ @"viewRequirements": @{ @"label": @{ @"type": [UIView class] },
+                                                       @"editor": @{ @"type": [UIView class] },
+                                                       @"errorMessageLabel": @{ @"notType": [UIView class] } },
+                               @"constraints":
+                                   @[ @{ @"format": @"H:|-(pl)-[label]-(pr)-|" },
+                                      @{ @"format": @"V:|-(pt)-[label]-(vs12)-[editor]-(pb)-|",
+                                         @"options": @(NSLayoutFormatAlignAllLeading|NSLayoutFormatAlignAllTrailing)
+                                         }
+                                      ]
                                }
                             ]
                      }];
@@ -171,67 +199,41 @@
     return result;
 }
 
-+ (NSDictionary*)builtinThemes
-{
-    return
-    @{ @"default": [AKATestContainerView builtinDefaultTheme],
-       @"tableview": [AKATestContainerView builtinTableViewTheme]
-       };
-}
+#pragma mark - Subviews Setup
 
-- (void)autocreateMissingViews
+- (BOOL)subviewSpecificationItem:(AKASubviewsSpecificationItem *)specification
+         subviewNotFoundInTarget:(UIView *)containerView
+                     createdView:(out UIView *__autoreleasing *)createdView
 {
-    if (self.label == nil)
+    BOOL result = NO;
+    if (containerView == self)
     {
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.text = @"autocreated";
-        label.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:label];
-        self.label = label;
+        if ([@"label" isEqualToString:specification.name])
+        {
+            UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.text = @"autocreated";
+            label.translatesAutoresizingMaskIntoConstraints = NO;
+            *createdView = label;
+            result = YES;
+        }
+        else if ([@"editor" isEqualToString:specification.name])
+        {
+            UITextField* editor = [[UITextField alloc] initWithFrame:CGRectZero];
+            editor.text = @"autocreated";
+            editor.translatesAutoresizingMaskIntoConstraints = NO;
+            *createdView = editor;
+            result = YES;
+        }
+        else if ([@"errorMessageLabel" isEqualToString:specification.name])
+        {
+            UILabel* errorMessageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            errorMessageLabel.text = @"autocreated";
+            errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+            *createdView = errorMessageLabel;
+            result = YES;
+        }
     }
-    if (self.editor == nil)
-    {
-        UITextField* editor = [[UITextField alloc] initWithFrame:CGRectZero];
-        editor.text = @"autocreated";
-        editor.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:editor];
-        self.editor = editor;
-    }
-    if (self.errorMessageLabel == nil)
-    {
-        UILabel* errorMessageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        errorMessageLabel.text = @"autocreated";
-        errorMessageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:errorMessageLabel];
-        self.errorMessageLabel = errorMessageLabel;
-    }
-}
-
-- (NSDictionary*)viewsParticipatingInTheme
-{
-    NSMutableDictionary* views = NSMutableDictionary.new;
-    if (self.label) { views[@"label"] = self.label; }
-    if (self.editor) { views[@"editor"] = self.editor; }
-    if (self.errorMessageLabel) { views[@"errorMessageLabel"] = self.errorMessageLabel; }
-    return views;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-
-    // Without this, baseline alignments with UITextField's will not work reliably.
-    NSDictionary* views = [self viewsParticipatingInTheme];
-    for (UIView* view in views.objectEnumerator)
-    {
-        // We could restrict update constraints to text fields, but we'll do this for
-        // all views, just in case another view type also needs this:
-        //if ([view isKindOfClass:[UITextField class]])
-        //{
-        [view setNeedsUpdateConstraints];
-        [view updateConstraintsIfNeeded];
-        //}
-    }
+    return result;
 }
 
 @end

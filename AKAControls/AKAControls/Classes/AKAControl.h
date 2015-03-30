@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AKAProperty.h"
+#import <AKACommons/AKAProperty.h>
 #import "AKAControlDelegate.h"
 #import "AKAControlConverterProtocol.h"
 #import "AKAControlValidatorProtocol.h"

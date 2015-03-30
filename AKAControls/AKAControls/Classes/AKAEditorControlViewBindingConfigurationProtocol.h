@@ -12,14 +12,7 @@
 
 @protocol AKAEditorControlViewBindingConfigurationProtocol <AKAControlViewBindingConfigurationProtocol>
 
-@property(nonatomic)/*IBInspectable*/ NSString* layoutIdentifier;
-
-@property(nonatomic)/*IBInspectable*/ NSString* labelText;
-@property(nonatomic)/*IBInspectable*/ UIColor* labelTextColor;
-@property(nonatomic)                  UIFont* labelFont;
-
-@property(nonatomic)/*IBInspectable*/ NSString* errorText;
-@property(nonatomic)/*IBInspectable*/ UIColor* errorTextColor;
-@property(nonatomic)                  UIFont* errorFont;
+@property(nonatomic) IBInspectable NSString* editorBinding;
+@property(nonatomic) IBInspectable NSString* labelText;
 
 @end

@@ -8,11 +8,41 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AKAProperty : NSObject
+@interface AKAUnboundProperty: NSObject
+
++ (AKAUnboundProperty*)unboundPropertyWithKeyPath:(NSString*)keyPath;
+
++ (AKAUnboundProperty*)unboundPropertyWithGetter:(id(^)(id target))getter
+                                          setter:(void(^)(id target, id value))setter;
+
+#pragma mark - Value Access
+
+/**
+ * Returns the value of the property in the specified target. This can also be used
+ * in bound properties to query the property value of an object different from the
+ * bound target.
+ *
+ * @param target the object to query for the property value.
+ *
+ * @return the value of the property in the specified target.
+ */
+- (id)valueForTarget:(id)target;
+
+/**
+ * Changes the value of the property in the specified target to the specified new value.
+ *
+ * @param value the new value
+ * @param target the target object in which to change the property.
+ */
+- (void)setValue:(id)value forTarget:(id)target;
+
+@end
+
+@interface AKAProperty: AKAUnboundProperty
 
 #pragma mark - Initialization
 
-+ (AKAProperty*)propertyOfKeyValueTarget:(NSObject*)target
++ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
                                  keyPath:(NSString*)keyPath
                           changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
 
@@ -31,14 +61,29 @@
  *
  * @return a new property.
  */
-+ (AKAProperty*)propertyWithGetter:(id(^)())getter
-                            setter:(void(^)(id value))setter
-                observationStarter:(BOOL(^)())observationStarter
-                observationStopper:(BOOL(^)())observationStopper;
++ (AKAProperty*)propertyOfWeakTarget:(id)target
+                            getter:(id(^)(id target))getter
+                            setter:(void(^)(id target, id value))setter
+                observationStarter:(BOOL(^)(id target))observationStarter
+                observationStopper:(BOOL(^)(id target))observationStopper;
 
 #pragma mark - Value Access
 
+/**
+ * The value of the property in the target bound to this instance.
+ */
 @property(nonatomic) id value;
+
+/**
+ * If the property is bound (has a defined target), then this function returns
+ * the property value of this target. Otherwise it will return the property value
+ * of the specified defaultTarget.
+ *
+ * @param defaultTarget The target to query for the value if this property instance is not bound.
+ *
+ * @return the property value of this target if bound, otherwise the property value of the default target.
+ */
+- (id)valueWithDefaultTarget:(id)defaultTarget;
 
 #pragma mark - Validation
 

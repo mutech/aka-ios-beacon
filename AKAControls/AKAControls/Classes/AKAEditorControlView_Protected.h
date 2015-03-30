@@ -10,18 +10,4 @@
 
 @interface AKAEditorControlView (Protected)
 
-- (UILabel*)autoCreateViewForRole_label;
-- (UILabel*)autoCreateViewForRole_errorMessageLabel;
-- (UIView*)autoCreateViewForRole_editor;
-
-- (BOOL)validateLabel:(inout __autoreleasing id *)ioValue
-                error:(out NSError *__autoreleasing *)error;
-- (BOOL)validateEditor:(inout __autoreleasing id *)ioValue
-                 error:(out NSError *__autoreleasing *)error;
-- (BOOL)validateErrorMessageLabel:(inout __autoreleasing id *)ioValue
-                            error:(out NSError *__autoreleasing *)error;
-- (BOOL)validateView:(inout __autoreleasing id*)ioValue
-             forRole:(NSString*)role
-        isKindOfType:(Class)type
-               error:(out NSError *__autoreleasing *)error;
 @end

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E9EB6E11ABCCB4600C9B771 /* AKATestContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9EB6E01ABCCB4600C9B771 /* AKATestContainerView.m */; };
 		8EBA332C1ABAFA82007436AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332B1ABAFA82007436AA /* main.m */; };
 		8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332E1ABAFA82007436AA /* AppDelegate.m */; };
 		8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */; };
@@ -16,6 +15,7 @@
 		8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33381ABAFA82007436AA /* LaunchScreen.xib */; };
 		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
 		8EBA33B81ABC2F3D007436AA /* AKATestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33B71ABC2F3D007436AA /* AKATestView.m */; };
+		DA8BEA38B247217205D58A13 /* AKATestContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B82405DB65A5C0BC5D4B9 /* AKATestContainerView.m */; };
 		FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD591E74E4A6B018CDD9320 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -31,8 +31,6 @@
 
 /* Begin PBXFileReference section */
 		5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		8E9EB6DF1ABCCB4600C9B771 /* AKATestContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATestContainerView.h; sourceTree = "<group>"; };
-		8E9EB6E01ABCCB4600C9B771 /* AKATestContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATestContainerView.m; sourceTree = "<group>"; };
 		8EBA33261ABAFA82007436AA /* AKAControlsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKAControlsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EBA332A1ABAFA82007436AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EBA332B1ABAFA82007436AA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -50,6 +48,8 @@
 		8EBA33B71ABC2F3D007436AA /* AKATestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATestView.m; sourceTree = "<group>"; };
 		9AD591E74E4A6B018CDD9320 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		DA8B82405DB65A5C0BC5D4B9 /* AKATestContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATestContainerView.m; sourceTree = "<group>"; };
+		DA8D237FCC5B003679400857 /* AKATestContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATestContainerView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,18 +111,18 @@
 		8EBA33281ABAFA82007436AA /* AKAControlsDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8EBA33331ABAFA82007436AA /* Main.storyboard */,
 				8EBA332D1ABAFA82007436AA /* AppDelegate.h */,
 				8EBA332E1ABAFA82007436AA /* AppDelegate.m */,
 				8EBA33301ABAFA82007436AA /* AKAControlsDemoBaseViewController.h */,
 				8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */,
-				8EBA33331ABAFA82007436AA /* Main.storyboard */,
+				DA8B82405DB65A5C0BC5D4B9 /* AKATestContainerView.m */,
+				DA8D237FCC5B003679400857 /* AKATestContainerView.h */,
+				8EBA33B61ABC2F3D007436AA /* AKATestView.h */,
+				8EBA33B71ABC2F3D007436AA /* AKATestView.m */,
 				8EBA33361ABAFA82007436AA /* Images.xcassets */,
 				8EBA33381ABAFA82007436AA /* LaunchScreen.xib */,
 				8EBA33291ABAFA82007436AA /* Supporting Files */,
-				8EBA33B61ABC2F3D007436AA /* AKATestView.h */,
-				8EBA33B71ABC2F3D007436AA /* AKATestView.m */,
-				8E9EB6DF1ABCCB4600C9B771 /* AKATestContainerView.h */,
-				8E9EB6E01ABCCB4600C9B771 /* AKATestContainerView.m */,
 			);
 			path = AKAControlsDemo;
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */,
 				8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */,
 				8EBA332C1ABAFA82007436AA /* main.m in Sources */,
-				8E9EB6E11ABCCB4600C9B771 /* AKATestContainerView.m in Sources */,
+				DA8BEA38B247217205D58A13 /* AKATestContainerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

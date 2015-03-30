@@ -8,11 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#define AKAThemeNameInherited @"inherited"
+#define AKAThemeNameNone @"none"
+#define AKAThemeNameDefault @"default"
+
 IB_DESIGNABLE
 @interface AKAThemableContainerView : UIView
 
+/**
+ * The name of the theme to apply to this view and its subviews.
+ * 
+ */
 @property (nonatomic)IBInspectable NSString* themeName;
 
-@property (nonatomic)IBInspectable BOOL customLayout;
+@property (nonatomic)IBInspectable BOOL IBEnablePreview;
 
 @end

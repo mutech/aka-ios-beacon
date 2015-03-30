@@ -38,27 +38,44 @@
 - (AKAProperty *)createViewValueProperty
 {
     AKAProperty* result;
-    result = [AKAProperty propertyWithGetter:^id {
-        return self.textField.text;
-    } setter:^(id value) {
-        if ([value isKindOfClass:[NSString class]])
-        {
-            self.textField.text = value;
-        }
-        else
-        {
-            self.textField.text = [NSString stringWithFormat:@"%@", value];
-        }
-    } observationStarter:^BOOL () {
-        self.originalText = self.textField.text;
-        self.savedTextViewDelegate = self.textField.delegate;
-        self.textField.delegate = self;
-        return YES;
-    } observationStopper:^BOOL {
-        self.originalText = nil;
-        self.textField.delegate = self.savedTextViewDelegate;
-        return YES;
-    }];
+    result = [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+              ^id (id target)
+              {
+                  AKATextFieldControlViewBinding* binding = target;
+                  return binding.textField.text;
+              }
+                                      setter:
+              ^(id target, id value)
+              {
+                  AKATextFieldControlViewBinding* binding = target;
+                  if ([value isKindOfClass:[NSString class]])
+                  {
+                      binding.textField.text = value;
+                  }
+                  else
+                  {
+                      binding.textField.text = [NSString stringWithFormat:@"%@", value];
+                  }
+              }
+                          observationStarter:
+              ^BOOL (id target)
+              {
+                  // NOTE: the text field delegate is responsible to notify the property of changes!
+                  AKATextFieldControlViewBinding* binding = target;
+                  binding.originalText = binding.textField.text;
+                  binding.savedTextViewDelegate = binding.textField.delegate;
+                  binding.textField.delegate = binding;
+                  return YES;
+              }
+                          observationStopper:
+              ^BOOL (id target)
+              {
+                  AKATextFieldControlViewBinding* binding = target;
+                  binding.originalText = nil;
+                  binding.textField.delegate = binding.savedTextViewDelegate;
+                  return YES;
+              }];
     return result;
 }
 
@@ -142,7 +159,7 @@
     UITextField* textField = self.textField;
     if (textField != nil)
     {
-        AKALogDebug(@"Setting up return style for %@ in sequence (%p-%p-%p)", textField, previous.view, textField, next.view);
+        //AKALogDebug(@"Setting up return style for %@ in sequence (%p-%p-%p)", textField, previous.view, textField, next.view);
 
         // TODO: save properties in this object (not text field) and also restore on dealloc
         if (next != nil)
@@ -152,14 +169,14 @@
                 self.originalReturnKeyType = @(textField.returnKeyType);
             }
             textField.returnKeyType = UIReturnKeyNext;
-            AKALogDebug(@"Set return key type of %@ to %@ (%@)", textField, @(UIReturnKeyNext), @(textField.returnKeyType));
+            //AKALogDebug(@"Set return key type of %@ to %@ (%@)", textField, @(UIReturnKeyNext), @(textField.returnKeyType));
         }
         else
         {
             if (self.originalReturnKeyType != nil)
             {
                 textField.returnKeyType = self.originalReturnKeyType.unsignedIntegerValue;
-                AKALogDebug(@"Restored return key type of %@ to %@ (%@)", textField, self.originalReturnKeyType, @(textField.returnKeyType));
+                //AKALogDebug(@"Restored return key type of %@ to %@ (%@)", textField, self.originalReturnKeyType, @(textField.returnKeyType));
                 self.originalReturnKeyType = nil;
             }
         }

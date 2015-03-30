@@ -27,23 +27,36 @@
 - (AKAProperty *)createViewValueProperty
 {
     AKAProperty* result;
-    result = [AKAProperty propertyWithGetter:^id {
-        return self.label.text;
-    } setter:^(id value) {
-        if ([value isKindOfClass:[NSString class]])
-        {
-            self.label.text = value;
-        }
-        else
-        {
-            self.label.text = [NSString stringWithFormat:@"%@", value];
-        }
-    } observationStarter:^BOOL (void(^notifyPropertyOnChange)(id, id)) {
-        (void)notifyPropertyOnChange; // Not used, view value is not updated by UI and we do not notify on programmatic changes (analogue to UIKit)
-        return YES;
-    } observationStopper:^BOOL {
-        return YES;
-    }];
+    result = [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+              ^id (id target)
+              {
+                  AKALabelControlViewBinding* binding = target;
+                  return binding.label.text;
+              }
+                                      setter:
+              ^(id target, id value)
+              {
+                  AKALabelControlViewBinding* binding = target;
+                  if ([value isKindOfClass:[NSString class]])
+                  {
+                      binding.label.text = value;
+                  }
+                  else
+                  {
+                      binding.label.text = [NSString stringWithFormat:@"%@", value];
+                  }
+              }
+                          observationStarter:
+              ^BOOL (id target)
+              {
+                  return YES;
+              }
+                          observationStopper:
+              ^BOOL (id target) {
+                  (void)target;
+                  return YES;
+              }];
     return result;
 }
 

@@ -52,23 +52,6 @@
                                             <segue destination="GdP-lB-pb3" kind="show" id="Zda-yi-II0"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="Pto-LF-gsW" style="IBUITableViewCellStyleDefault" id="o0z-Da-BQk">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o0z-Da-BQk" id="rjz-BX-gyg">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Editor controls (Label/Error/Editor)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pto-LF-gsW">
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="gnB-20-gPU" kind="show" id="CCu-Yj-bD1"/>
-                                        </connections>
-                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="HjE-qO-OuX" style="IBUITableViewCellStyleDefault" id="bQn-cu-N48">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bQn-cu-N48" id="hJK-gq-rHd">
@@ -269,202 +252,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QKZ-dP-fBD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-145.5" y="1949.5"/>
-        </scene>
-        <!--Controls Demo Base View Controller-->
-        <scene sceneID="df1-m4-Wpq">
-            <objects>
-                <viewController id="gnB-20-gPU" customClass="AKAControlsDemoBaseViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xo1-MU-4Ka"/>
-                        <viewControllerLayoutGuide type="bottom" id="yT1-PH-ZzH"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="VBB-cm-IRA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Editor Controls Demo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbR-e2-8EP">
-                                <rect key="frame" x="105" y="72" width="165.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSq-xy-TIK" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="100" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tlk-ip-Z0Q">
-                                        <rect key="frame" x="4" y="14" width="60" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="wu9-YX-l6T"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="tableview layout" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jBd-oG-lln">
-                                        <rect key="frame" x="68" y="8" width="267" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGD-gE-bhI">
-                                        <rect key="frame" x="68" y="41" width="267" height="12"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="jBd-oG-lln" secondAttribute="trailing" constant="8" id="1NQ-DM-Tu1"/>
-                                    <constraint firstItem="hGD-gE-bhI" firstAttribute="top" secondItem="jBd-oG-lln" secondAttribute="bottom" constant="3" id="52z-dJ-wVb"/>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="7E4-Cp-9ZM"/>
-                                    <constraint firstItem="tlk-ip-Z0Q" firstAttribute="leading" secondItem="hSq-xy-TIK" secondAttribute="leading" constant="4" id="8Yu-H1-Xnh"/>
-                                    <constraint firstItem="jBd-oG-lln" firstAttribute="top" secondItem="hSq-xy-TIK" secondAttribute="top" constant="8" id="Drt-lw-ISk"/>
-                                    <constraint firstItem="jBd-oG-lln" firstAttribute="leading" secondItem="hGD-gE-bhI" secondAttribute="leading" id="JB9-DO-UGr"/>
-                                    <constraint firstItem="jBd-oG-lln" firstAttribute="baseline" secondItem="tlk-ip-Z0Q" secondAttribute="baseline" id="NB9-1W-Qja"/>
-                                    <constraint firstItem="jBd-oG-lln" firstAttribute="trailing" secondItem="hGD-gE-bhI" secondAttribute="trailing" id="Vu7-Ig-KRc"/>
-                                    <constraint firstAttribute="bottom" secondItem="hGD-gE-bhI" secondAttribute="bottom" id="fmz-SF-T4L"/>
-                                    <constraint firstItem="jBd-oG-lln" firstAttribute="leading" secondItem="tlk-ip-Z0Q" secondAttribute="trailing" constant="4" id="fyi-UO-NWT"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="tableview"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="jBd-oG-lln" id="Xiq-V0-E65"/>
-                                    <outlet property="errorMessageLabel" destination="hGD-gE-bhI" id="Iot-Fg-elO"/>
-                                    <outlet property="label" destination="tlk-ip-Z0Q" id="6HU-OT-YSU"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="03g-c1-2i4" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="161" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXb-Ms-K1y">
-                                        <rect key="frame" x="4" y="14" width="60" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="CEn-no-uxl"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="default layout" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sGA-Ja-5F4">
-                                        <rect key="frame" x="68" y="8" width="267" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Error message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jBf-Np-bER">
-                                        <rect key="frame" x="68" y="41" width="267" height="12"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="HXb-Ms-K1y" secondAttribute="centerY" id="PHK-1Z-mGO"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="sGA-Ja-5F4" id="qKM-ye-uOW"/>
-                                    <outlet property="errorMessageLabel" destination="jBf-Np-bER" id="i82-gD-3vT"/>
-                                    <outlet property="label" destination="HXb-Ms-K1y" id="ibI-aZ-YRS"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Nod-HV-2Vn" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="222" width="343" height="53"/>
-                                <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="old layout (editor control view)" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fzb-NU-J05">
-                                        <rect key="frame" x="68" y="8" width="267" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Error message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vDi-Cr-Ifx">
-                                        <rect key="frame" x="68" y="41" width="267" height="12"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ute-uC-zZh">
-                                        <rect key="frame" x="4" y="36" width="60" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="TL9-Nm-8GE"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="centerY" secondItem="ute-uC-zZh" secondAttribute="centerY" id="flP-e6-Eur"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="fzb-NU-J05" id="udN-pb-twI"/>
-                                    <outlet property="errorMessageLabel" destination="vDi-Cr-Ifx" id="SHx-Fd-xiG"/>
-                                    <outlet property="label" destination="ute-uC-zZh" id="nQW-cf-LDA"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iPK-JG-oZB" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="283" width="343" height="53"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="TH2-KB-SNH"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Owm-JA-WFT" customClass="AKATestView">
-                                <rect key="frame" x="16" y="344" width="343" height="53"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="iUF-eg-tEl"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="03g-c1-2i4" firstAttribute="leading" secondItem="VBB-cm-IRA" secondAttribute="leadingMargin" id="3nL-lC-ScZ"/>
-                            <constraint firstItem="Owm-JA-WFT" firstAttribute="top" secondItem="iPK-JG-oZB" secondAttribute="bottom" constant="8" id="4rr-ZQ-pvG"/>
-                            <constraint firstItem="KbR-e2-8EP" firstAttribute="top" secondItem="xo1-MU-4Ka" secondAttribute="bottom" constant="8" id="AHb-Te-7nK"/>
-                            <constraint firstItem="03g-c1-2i4" firstAttribute="trailing" secondItem="VBB-cm-IRA" secondAttribute="trailingMargin" id="Ag0-Gq-XJA"/>
-                            <constraint firstItem="03g-c1-2i4" firstAttribute="top" secondItem="hSq-xy-TIK" secondAttribute="bottom" constant="8" id="OIT-11-DAX"/>
-                            <constraint firstItem="Nod-HV-2Vn" firstAttribute="trailing" secondItem="VBB-cm-IRA" secondAttribute="trailingMargin" id="Q3M-U7-QJK"/>
-                            <constraint firstItem="iPK-JG-oZB" firstAttribute="top" secondItem="Nod-HV-2Vn" secondAttribute="bottom" constant="8" id="QWf-zK-ks6"/>
-                            <constraint firstItem="hSq-xy-TIK" firstAttribute="trailing" secondItem="VBB-cm-IRA" secondAttribute="trailingMargin" id="SNB-LG-7CO"/>
-                            <constraint firstAttribute="centerX" secondItem="KbR-e2-8EP" secondAttribute="centerX" id="TSz-fn-S2d"/>
-                            <constraint firstItem="Nod-HV-2Vn" firstAttribute="leading" secondItem="VBB-cm-IRA" secondAttribute="leadingMargin" id="TUS-zt-kKQ"/>
-                            <constraint firstItem="hSq-xy-TIK" firstAttribute="top" secondItem="KbR-e2-8EP" secondAttribute="bottom" constant="7.5" id="UHJ-Fm-zGM"/>
-                            <constraint firstItem="Owm-JA-WFT" firstAttribute="trailing" secondItem="VBB-cm-IRA" secondAttribute="trailingMargin" id="kIr-s3-NZe"/>
-                            <constraint firstItem="hSq-xy-TIK" firstAttribute="leading" secondItem="VBB-cm-IRA" secondAttribute="leadingMargin" id="nHk-W1-G8y"/>
-                            <constraint firstItem="iPK-JG-oZB" firstAttribute="leading" secondItem="VBB-cm-IRA" secondAttribute="leadingMargin" id="pUa-rb-vhf"/>
-                            <constraint firstItem="Owm-JA-WFT" firstAttribute="leading" secondItem="VBB-cm-IRA" secondAttribute="leadingMargin" id="qSB-X8-cGG"/>
-                            <constraint firstItem="iPK-JG-oZB" firstAttribute="trailing" secondItem="VBB-cm-IRA" secondAttribute="trailingMargin" id="tEg-eS-OaY"/>
-                            <constraint firstItem="Nod-HV-2Vn" firstAttribute="top" secondItem="03g-c1-2i4" secondAttribute="bottom" constant="8" id="vQr-mp-PFm"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hdb-e5-xeX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" ambiguous="YES" id="9Fc-VR-W7m" customClass="AKATextEditorControlView">
-                    <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="controlName" value="name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="editorValueKeyPath" value="name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="errorText" value="(Error message)"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="enablePreview" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                </view>
-            </objects>
-            <point key="canvasLocation" x="350.5" y="1949.5"/>
+            <point key="canvasLocation" x="355.5" y="1949.5"/>
         </scene>
         <!--Controls Demo Base View Controller-->
         <scene sceneID="gZj-hL-C5T">
@@ -479,12 +267,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Editor Controls Demo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-sB-4fl">
-                                <rect key="frame" x="104.5" y="72" width="165.5" height="20.5"/>
+                                <rect key="frame" x="104" y="72" width="165.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATestContainerView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKAEditorControlView">
                                 <rect key="frame" x="16" y="100" width="343" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HtN-qR-6bv">
@@ -526,11 +314,10 @@
                                     <constraint firstItem="TiQ-4b-WNI" firstAttribute="trailing" secondItem="5qK-QA-Gif" secondAttribute="trailing" id="rRj-Jn-p1E"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="editor" destination="TiQ-4b-WNI" id="SIS-Oj-dau"/>
-                                    <outlet property="errorMessageLabel" destination="5qK-QA-Gif" id="BTY-kE-Zbz"/>
                                     <outlet property="label" destination="HtN-qR-6bv" id="YXz-zI-kdr"/>
                                 </connections>
                             </view>
@@ -538,7 +325,7 @@
                                 <rect key="frame" x="16" y="161" width="343" height="53"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone number" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K5A-Dz-esg">
-                                        <rect key="frame" x="4" y="3.5" width="60" height="33.5"/>
+                                        <rect key="frame" x="4" y="3" width="60" height="33.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="60" id="5LU-Op-Vn4"/>
                                         </constraints>
@@ -576,62 +363,12 @@
                                     <constraint firstItem="eco-nh-s8c" firstAttribute="leading" secondItem="569-5f-WJh" secondAttribute="leading" id="ztO-1Y-v6P"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="editor" destination="eco-nh-s8c" id="aQO-PR-beY"/>
                                     <outlet property="errorMessageLabel" destination="569-5f-WJh" id="hic-iS-UBh"/>
                                     <outlet property="label" destination="K5A-Dz-esg" id="fZB-Av-OmE"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="222" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10D-jy-SOh">
-                                        <rect key="frame" x="4" y="3.5" width="60" height="33.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="O8S-lo-mg6"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rZJ-Dz-urg" customClass="AKATextField">
-                                        <rect key="frame" x="68" y="8" width="267" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E20-KZ-nWZ">
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="trailing" secondItem="E20-KZ-nWZ" secondAttribute="trailing" id="29I-1e-b9i"/>
-                                    <constraint firstAttribute="trailing" secondItem="rZJ-Dz-urg" secondAttribute="trailing" constant="8" id="Opc-ML-fVC"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="E20-KZ-nWZ" secondAttribute="leading" id="dNi-RH-ApA"/>
-                                    <constraint firstAttribute="bottom" secondItem="E20-KZ-nWZ" secondAttribute="bottom" id="jIy-kf-xfd"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="top" constant="8" id="lbd-94-cav"/>
-                                    <constraint firstItem="10D-jy-SOh" firstAttribute="leading" secondItem="v77-a2-mYd" secondAttribute="leading" constant="4" id="m1o-0v-hO9"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="10D-jy-SOh" secondAttribute="trailing" constant="4" id="nTV-HY-XZi"/>
-                                    <constraint firstItem="E20-KZ-nWZ" firstAttribute="top" secondItem="rZJ-Dz-urg" secondAttribute="bottom" constant="3" id="p42-o6-BuQ"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="baseline" secondItem="10D-jy-SOh" secondAttribute="baseline" id="q7q-yC-trV"/>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="zN7-ut-cLa"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="rZJ-Dz-urg" id="aMy-0Y-JMY"/>
-                                    <outlet property="errorMessageLabel" destination="E20-KZ-nWZ" id="jBV-RF-Sgo"/>
-                                    <outlet property="label" destination="10D-jy-SOh" id="Byi-lW-9RT"/>
                                 </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eag-lP-JCc">
@@ -676,7 +413,7 @@
                                     <constraint firstAttribute="trailing" secondItem="SpK-IT-urk" secondAttribute="trailing" constant="8" id="tWz-ua-akv"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="customLayout" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="editor" destination="fmF-sH-Y5S" id="nCu-p7-LqC"/>
@@ -684,15 +421,77 @@
                                     <outlet property="label" destination="GzT-Fq-frj" id="Txb-Sb-gd7"/>
                                 </connections>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATestContainerView">
+                                <rect key="frame" x="16" y="222" width="343" height="53"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10D-jy-SOh">
+                                        <rect key="frame" x="4" y="3" width="60" height="33.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="O8S-lo-mg6"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rZJ-Dz-urg" customClass="AKATextField">
+                                        <rect key="frame" x="68" y="8" width="267" height="42"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E20-KZ-nWZ">
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="trailing" secondItem="E20-KZ-nWZ" secondAttribute="trailing" id="29I-1e-b9i"/>
+                                    <constraint firstAttribute="trailing" secondItem="rZJ-Dz-urg" secondAttribute="trailing" constant="8" id="Opc-ML-fVC"/>
+                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="E20-KZ-nWZ" secondAttribute="leading" id="dNi-RH-ApA"/>
+                                    <constraint firstAttribute="bottom" secondItem="E20-KZ-nWZ" secondAttribute="bottom" id="jIy-kf-xfd"/>
+                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="top" constant="8" id="lbd-94-cav"/>
+                                    <constraint firstItem="10D-jy-SOh" firstAttribute="leading" secondItem="v77-a2-mYd" secondAttribute="leading" constant="4" id="m1o-0v-hO9"/>
+                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="10D-jy-SOh" secondAttribute="trailing" constant="4" id="nTV-HY-XZi"/>
+                                    <constraint firstItem="E20-KZ-nWZ" firstAttribute="top" secondItem="rZJ-Dz-urg" secondAttribute="bottom" constant="3" id="p42-o6-BuQ"/>
+                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="baseline" secondItem="10D-jy-SOh" secondAttribute="baseline" id="q7q-yC-trV"/>
+                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="zN7-ut-cLa"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outlet property="editor" destination="rZJ-Dz-urg" id="aMy-0Y-JMY"/>
+                                    <outlet property="errorMessageLabel" destination="E20-KZ-nWZ" id="jBV-RF-Sgo"/>
+                                    <outlet property="label" destination="10D-jy-SOh" id="Byi-lW-9RT"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ObJ-bY-wXn" customClass="AKATextEditorControlView">
+                                <rect key="frame" x="16" y="345" width="343" height="34.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="tableview"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="editorBinding" value="model.name"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Label text"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="170-UT-KNl"/>
+                            <constraint firstItem="eag-lP-JCc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ObJ-bY-wXn" secondAttribute="bottom" constant="20" id="5AH-LR-TuL"/>
                             <constraint firstItem="hDs-lv-70o" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="7jN-2e-mGn"/>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="top" secondItem="WX9-sB-4fl" secondAttribute="bottom" constant="7.5" id="CWk-SP-shL"/>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="EQG-Od-3gw"/>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="F5V-ZD-Hnb"/>
                             <constraint firstItem="f7B-eL-7l6" firstAttribute="leading" secondItem="v77-a2-mYd" secondAttribute="leading" id="Nzn-3f-8BD"/>
+                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="top" secondItem="f7B-eL-7l6" secondAttribute="bottom" constant="8" id="Osg-lF-3fZ"/>
                             <constraint firstAttribute="centerX" secondItem="WX9-sB-4fl" secondAttribute="centerX" id="Pqc-pa-IkO"/>
                             <constraint firstItem="f7B-eL-7l6" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="bottom" constant="9" id="TRt-f2-5lr"/>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="aNh-K3-Q4q"/>
@@ -700,8 +499,10 @@
                             <constraint firstItem="f7B-eL-7l6" firstAttribute="trailing" secondItem="v77-a2-mYd" secondAttribute="trailing" id="etn-hU-nub"/>
                             <constraint firstAttribute="centerX" secondItem="eag-lP-JCc" secondAttribute="centerX" id="fvc-QY-fDU"/>
                             <constraint firstItem="WX9-sB-4fl" firstAttribute="top" secondItem="m9L-Eh-0be" secondAttribute="bottom" constant="8" id="gpr-WM-lWn"/>
+                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="jF1-3V-WxX"/>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="top" secondItem="hDs-lv-70o" secondAttribute="bottom" constant="8" id="jg7-YK-p6e"/>
                             <constraint firstItem="hDs-lv-70o" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="rfo-pc-QCN"/>
+                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="vQm-aX-Ev7"/>
                             <constraint firstItem="t27-kV-h6x" firstAttribute="top" secondItem="eag-lP-JCc" secondAttribute="bottom" constant="20" id="vXX-0n-ms8"/>
                         </constraints>
                     </view>
@@ -713,19 +514,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="po4-oc-0Ya" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" ambiguous="YES" id="2d0-pD-XUb" customClass="AKATextEditorControlView">
-                    <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="controlName" value="name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="editorValueKeyPath" value="name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="errorText" value="(Error message)"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="enablePreview" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                </view>
             </objects>
             <point key="canvasLocation" x="837.5" y="1949.5"/>
         </scene>

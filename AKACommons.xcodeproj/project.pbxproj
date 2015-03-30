@@ -37,6 +37,8 @@
 		8EECDAAD1AC5EAD1001A6826 /* NSString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */; };
 		8EECDAB01AC6069C001A6826 /* AKAProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAE1AC6069C001A6826 /* AKAProperty.m */; };
 		8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAF1AC6069C001A6826 /* AKAProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EECDAB51AC97B24001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB41AC97B24001A6826 /* Podfile */; };
+		8EECDAB71AC97B42001A6826 /* AKACommons.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB61AC97B42001A6826 /* AKACommons.podspec */; };
 		C6583473BCAFA2C8A161EF2E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0DCDA793832CDEB3B9F670 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +88,8 @@
 		8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+AKATools.m"; path = "Classes/NSString+AKATools.m"; sourceTree = "<group>"; };
 		8EECDAAE1AC6069C001A6826 /* AKAProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAProperty.m; path = Classes/AKAProperty.m; sourceTree = "<group>"; };
 		8EECDAAF1AC6069C001A6826 /* AKAProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAProperty.h; path = Classes/AKAProperty.h; sourceTree = "<group>"; };
+		8EECDAB41AC97B24001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		8EECDAB61AC97B42001A6826 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = ../../AKACommons.podspec; sourceTree = "<group>"; };
 		BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CA0DCDA793832CDEB3B9F670 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -167,6 +171,8 @@
 		8EC2D94A1AB090FC00822E8C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8EECDAB61AC97B42001A6826 /* AKACommons.podspec */,
+				8EECDAB41AC97B24001A6826 /* Podfile */,
 				8EC2D94B1AB090FC00822E8C /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -338,6 +344,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EECDAB51AC97B24001A6826 /* Podfile in Resources */,
+				8EECDAB71AC97B42001A6826 /* AKACommons.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

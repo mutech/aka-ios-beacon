@@ -15,6 +15,7 @@
 		8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33381ABAFA82007436AA /* LaunchScreen.xib */; };
 		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
 		8EBA33B81ABC2F3D007436AA /* AKATestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33B71ABC2F3D007436AA /* AKATestView.m */; };
+		8EECDABD1AC97C53001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDABC1AC97C53001A6826 /* Podfile */; };
 		DA8BEA38B247217205D58A13 /* AKATestContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B82405DB65A5C0BC5D4B9 /* AKATestContainerView.m */; };
 		FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD591E74E4A6B018CDD9320 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsDemoTests.m; sourceTree = "<group>"; };
 		8EBA33B61ABC2F3D007436AA /* AKATestView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATestView.h; sourceTree = "<group>"; };
 		8EBA33B71ABC2F3D007436AA /* AKATestView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATestView.m; sourceTree = "<group>"; };
+		8EECDABC1AC97C53001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		9AD591E74E4A6B018CDD9320 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DA8B82405DB65A5C0BC5D4B9 /* AKATestContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATestContainerView.m; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 		8EBA33291ABAFA82007436AA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8EECDABC1AC97C53001A6826 /* Podfile */,
 				8EBA332A1ABAFA82007436AA /* Info.plist */,
 				8EBA332B1ABAFA82007436AA /* main.m */,
 			);
@@ -239,6 +242,7 @@
 			files = (
 				8EBA33351ABAFA82007436AA /* Main.storyboard in Resources */,
 				8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */,
+				8EECDABD1AC97C53001A6826 /* Podfile in Resources */,
 				8EBA33371ABAFA82007436AA /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

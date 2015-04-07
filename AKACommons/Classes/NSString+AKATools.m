@@ -38,10 +38,13 @@
     {
         case 0:
             result = self;
+            break;
         case 1:
             result = [self uppercaseString];
+            break;
         default:
             result = [[[self substringToIndex:1] uppercaseString] stringByAppendingString:[self substringFromIndex:1]];
+            break;
     }
     return result;
 }

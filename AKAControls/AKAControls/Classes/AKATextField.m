@@ -7,14 +7,19 @@
 //
 
 #import "AKATextField.h"
-#import "AKATextFieldControlViewBinding.h"
+#import "AKATextFieldBinding.h"
 
 #import "AKAControl.h"
 
 @interface AKATextField()
+
+@property (nonatomic, readonly) AKATextFieldBindingConfiguration* textFieldBindingConfiguration;
+
 @end
 
 @implementation AKATextField
+
+@synthesize textFieldBindingConfiguration = _textFieldBindingConfiguration;
 
 - (instancetype)init
 {
@@ -48,20 +53,96 @@
 
 - (void)setupDefaultValues
 {
+    _textFieldBindingConfiguration = AKATextFieldBindingConfiguration.new;
     self.controlName = nil;
     self.role = nil;
     self.valueKeyPath = nil;
 
-    self.liveModelUpdates = YES;
+    self.liveModelUpdates = NO;
     self.KBActivationSequence = YES;
     self.autoActivate = YES;
 }
 
 #pragma mark - Control View Protocol
 
-- (Class)preferredBindingType
+- (AKAViewBindingConfiguration*)bindingConfiguration
 {
-    return [AKATextFieldControlViewBinding class];
+    return self.textFieldBindingConfiguration;
+}
+
+#pragma mark - Interface Builder Properties
+/// @name Interface Builder Properties
+
+- (NSString *)controlName
+{
+    return self.bindingConfiguration.controlName;
+}
+- (void)setControlName:(NSString *)controlName
+{
+    self.bindingConfiguration.controlName = controlName;
+}
+
+- (NSString *)role
+{
+    return self.bindingConfiguration.role;
+}
+- (void)setRole:(NSString *)role
+{
+    self.bindingConfiguration.role = role;
+}
+
+- (NSString *)valueKeyPath
+{
+    return self.bindingConfiguration.valueKeyPath;
+}
+- (void)setValueKeyPath:(NSString *)valueKeyPath
+{
+    self.bindingConfiguration.valueKeyPath = valueKeyPath;
+}
+
+- (NSString *)converterKeyPath
+{
+    return self.bindingConfiguration.converterKeyPath;
+}
+- (void)setConverterKeyPath:(NSString *)converterKeyPath
+{
+    self.bindingConfiguration.converterKeyPath = converterKeyPath;
+}
+
+- (NSString *)validatorKeyPath
+{
+    return self.bindingConfiguration.validatorKeyPath;
+}
+- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
+{
+    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
+}
+
+- (BOOL)liveModelUpdates
+{
+    return self.textFieldBindingConfiguration.liveModelUpdates;
+}
+- (void)setLiveModelUpdates:(BOOL)liveModelUpdates
+{
+    self.textFieldBindingConfiguration.liveModelUpdates = liveModelUpdates;
+}
+
+- (BOOL)autoActivate
+{
+    return self.textFieldBindingConfiguration.autoActivate;
+}
+- (void)setAutoActivate:(BOOL)autoActivate
+{
+    self.textFieldBindingConfiguration.autoActivate = autoActivate;
+}
+
+- (BOOL)KBActivationSequence
+{
+    return self.textFieldBindingConfiguration.KBActivationSequence;
+}
+- (void)setKBActivationSequence:(BOOL)KBActivationSequence
+{
+    self.textFieldBindingConfiguration.KBActivationSequence = KBActivationSequence;
 }
 
 @end

@@ -34,7 +34,6 @@
     self = [super init];
     if (self)
     {
-        _viewCustomizations = NSMutableArray.new;
         _layouts = NSMutableArray.new;
     }
     return self;
@@ -46,31 +45,7 @@
     if (self)
     {
         [specification enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([@"views" isEqualToString:key])
-            {
-                if ([obj isKindOfClass:[NSDictionary class]])
-                {
-                    NSString* viewName = key;
-                    [(NSDictionary*)obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                        if ([@"outlet" isEqualToString:key])
-                        {
-                            // TODO: implement
-                        }
-                        else if ([@"autocreate" isEqualToString:key])
-                        {
-                            // TODO: implement
-                        }
-                        else if ([@"customization" isEqualToString:key])
-                        {
-                            // TODO: refactor theme to use view configuration at toplevel
-                            NSMutableDictionary* tmp = [NSMutableDictionary dictionaryWithDictionary:obj];
-                            tmp[@"view"] = viewName;
-                            [self addViewCustomizationWithDictionary:tmp];
-                        }
-                    }];
-                }
-            }
-            else if ([@"viewCustomization" isEqualToString:key])
+            if ([@"viewCustomization" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
@@ -108,61 +83,11 @@
     return self;
 }
 
-#pragma mark - View Customizations
+#pragma mark - View Customizations Container Support
 
-- (NSArray *)viewCustomizations
+- (NSObject<AKAViewCustomizationDelegate> *)viewCustomizationDelegate
 {
-    return [NSArray arrayWithArray:_viewCustomizations];
-}
-
-- (NSUInteger)addViewCustomizationsWithArrayOfDictionaries:(NSArray*)specifications
-{
-    NSUInteger count = 0;
-    for (id spec in specifications)
-    {
-        if ([spec isKindOfClass:[NSDictionary class]])
-        {
-            id vc = [self addViewCustomizationWithDictionary:spec];
-            if (vc != nil)
-            {
-                ++count;
-            }
-            else
-            {
-                // TODO: error handling
-            }
-        }
-        else
-        {
-            // TODO: error handling
-        }
-    }
-    return count;
-}
-
-- (AKAViewCustomization *)addViewCustomizationWithDictionary:(NSDictionary*)specification
-{
-    AKAViewCustomization * result = [[AKAViewCustomization alloc] initWithDictionary:specification];
-    if (result != nil)
-    {
-        [self addViewCustomization:result];
-    }
-    return result;
-}
-
-- (void)addViewCustomization:(AKAViewCustomization *)viewCustomization
-{
-    [_viewCustomizations addObject:viewCustomization];
-    //viewCustomization.delegate = self;
-}
-
-- (AKAViewCustomization *)customizeViewWithKey:(NSString*)key
-                                       whereTypeIn:(NSArray*)validTypes
-                                      andTypeNotIn:(NSArray*)invalidTypes
-                                  modifyProperties:(NSDictionary*)propertyModifications
-{
-    // TODO: implement
-    return nil;
+    return self.delegate;
 }
 
 #pragma mark - Layout Constraint Specifications
@@ -227,11 +152,11 @@
                                     toViews:views
                                    delegate:delegate])
     {
-        for (AKAViewCustomization * customization in self.viewCustomizations)
-        {
-            [customization applyToViews:views withContext:target delegate:delegate];
-        }
+        [self applyViewCustomizationsToTarget:target
+                                    withViews:views
+                                     delegate:self.viewCustomizationDelegate];
     }
+
 
     [self willRemoveConstraintsDelegate:delegate];
     for (NSString* viewName in views.keyEnumerator)
@@ -434,42 +359,6 @@
 
 
 #pragma mark - AKAThemeDelegate support
-
-#pragma mark - AKAViewCustomizationDelegate
-
-- (void)viewCustomizations:(AKAViewCustomization *)customization willBeAppliedToView:(id)view
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
-    {
-        [self.delegate viewCustomizations:customization willBeAppliedToView:view];
-    }
-}
-
-- (BOOL)viewCustomizations:(AKAViewCustomization *)customization shouldSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
-{
-    BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
-    {
-        result &= [self.delegate viewCustomizations:customization shouldSetProperty:name value:oldValue to:newValue];
-    }
-    return result;
-}
-
-- (void)viewCustomizations:(AKAViewCustomization *)customization didSetProperty:(NSString *)name value:(id)oldValue to:(id)newValue
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
-    {
-        [self.delegate viewCustomizations:customization didSetProperty:name value:oldValue to:newValue];
-    }
-}
-
-- (void)viewCustomizations:(AKAViewCustomization *)customizations haveBeenAppliedToView:(id)view
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
-    {
-        [self.delegate viewCustomizations:customizations haveBeenAppliedToView:view];
-    }
-}
 
 #pragma mark - AKAThemeLayoutDelegate
 
@@ -740,57 +629,6 @@ shouldRemoveConstraintsOnlyRelatedToSelf:constraints
     }
 }
 
-#pragma mark - AKAViewCustomizationDelegate methods
-
-- (void)viewCustomizations:(AKAViewCustomization *)customization
-       willBeAppliedToView:(id)view
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
-    {
-        [self.delegate viewCustomizations:customization
-                      willBeAppliedToView:view];
-    }
-}
-
-- (BOOL)viewCustomizations:(AKAViewCustomization *)customization
-         shouldSetProperty:(NSString*)name
-                     value:(id)oldValue
-                        to:(id)newValue
-{
-    BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
-    {
-        result = [self.delegate viewCustomizations:customization
-                                 shouldSetProperty:name
-                                             value:oldValue
-                                                to:newValue];
-    }
-    return result;
-}
-
-- (void)viewCustomizations:(AKAViewCustomization *)customization
-            didSetProperty:(NSString *)name
-                     value:(id)oldValue
-                        to:(id)newValue
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
-    {
-        [self.delegate viewCustomizations:customization
-                           didSetProperty:name
-                                    value:oldValue
-                                       to:newValue];
-    }
-}
-
-- (void)viewCustomizations:(AKAViewCustomization *)customizations
-     haveBeenAppliedToView:(id)view
-{
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
-    {
-        [self.delegate viewCustomizations:customizations
-                    haveBeenAppliedToView:view];
-    }
-}
 
 @end
 

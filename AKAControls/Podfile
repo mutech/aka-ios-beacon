@@ -3,6 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 source 'https://sources.aka-labs.com/scm/git/cocoapods'
 workspace 'AKAControls.xcworkspace'
 xcodeproj 'AKAControls.xcodeproj'
+use_frameworks!
 
 platform :ios, '8.0'
 pod 'AKACommons', :path => '..'

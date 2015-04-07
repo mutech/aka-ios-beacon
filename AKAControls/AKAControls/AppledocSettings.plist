@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>--project-company</key>
+	<string>AKA SARL</string>
+	<key>--create-docset</key>
+	<false/>
+	<key>--create-html</key>
+	<true/>
+	<key>--use-code-order</key>
+	<true/>
+	<key>--keep-undocumented-objects</key>
+	<true/>
+	<key>--keep-undocumented-members</key>
+	<true/>
+	<key>--search-undocumented-doc</key>
+	<true/>
+	<key>--repeat-first-par</key>
+	<false/>
+	<key>--logformat</key>
+	<string>xcode</string>
+	<key>--exit-threshold</key>
+	<integer>210</integer>
+</dict>
+</plist>

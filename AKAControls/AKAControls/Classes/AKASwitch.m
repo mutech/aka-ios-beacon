@@ -7,102 +7,68 @@
 //
 
 #import "AKASwitch.h"
-#import "AKAControlViewBinding_Protected.h"
-#import "AKAProperty.h"
+#import "AKASwitchBinding.h"
 #import "AKAControl.h"
-
-@interface AKASwitchControlViewBinding: AKAControlViewBinding
-#pragma mark - State
-
-@property(nonatomic, weak) id<UITextFieldDelegate> savedSwitchDelegate;
-
-@property(nonatomic) NSString* originalText;
-
-#pragma mark - Convenience
-
-@property(nonatomic, readonly) AKASwitch* switchView;
-
-@end
-
-
-@implementation AKASwitchControlViewBinding
-
-#pragma mark - View Value Binding
-
-- (AKAProperty *)createViewValueProperty
-{
-    AKAProperty* property = [AKAProperty propertyOfWeakTarget:self
-                                                     getter:
-                             ^id (id target)
-                             {
-                                 AKASwitchControlViewBinding* binding = target;
-                                 return @(binding.switchView.on);
-                             }
-                                                     setter:
-                             ^(id target, id value)
-                             {
-                                 AKASwitchControlViewBinding* binding = target;
-                                 if ([value isKindOfClass:[NSNumber class]])
-                                 {
-                                     binding.switchView.on = ((NSNumber*)value).boolValue;
-                                 }
-                             }
-                                         observationStarter:
-                             ^BOOL (id target)
-                             {
-                                 AKASwitchControlViewBinding* binding = target;
-                                 BOOL result = binding.switchView != nil;
-                                 if (result)
-                                 {
-                                     [binding.switchView addTarget:binding
-                                                            action:@selector(viewValueDidChange:)
-                                                  forControlEvents:UIControlEventValueChanged];
-                                 }
-                                 return result;
-                             }
-                                         observationStopper:
-                             ^BOOL (id target)
-                             {
-                                 AKASwitchControlViewBinding* binding = target;
-                                 BOOL result = binding.switchView != nil;
-                                 if (result)
-                                 {
-                                     [self.switchView removeTarget:binding
-                                                            action:@selector(viewValueDidChange:)
-                                                  forControlEvents:UIControlEventValueChanged];
-                                 }
-                                 return result;
-                             }];
-    return property;
-}
-
-#pragma mark - Convenience
-
-- (AKASwitch*)switchView
-{
-    return (AKASwitch*)self.view;
-}
-
-- (void)viewValueDidChange:(AKASwitch*)view
-{
-    [self           controlView:view
-      didChangeValueChangedFrom:@(!view.on)
-                             to:@(view.on)];
-    [self.viewValueProperty notifyPropertyValueDidChangeFrom:@(!view.on)
-                                                          to:@(view.on)];
-}
-
-@end
-
-
-@interface AKASwitch()
-@end
 
 @implementation AKASwitch
 
-- (Class)preferredBindingType
+@synthesize bindingConfiguration = _bindingConfiguration;
+
+- (AKAViewBindingConfiguration*)bindingConfiguration
 {
-    return [AKASwitchControlViewBinding class];
+    if (_bindingConfiguration == nil)
+    {
+        _bindingConfiguration = AKASwitchBindingConfiguration.new;
+    }
+    return _bindingConfiguration;
+}
+
+#pragma mark - Interface Builder Properties
+/// @name Interface Builder Properties
+
+- (NSString *)controlName
+{
+    return self.bindingConfiguration.controlName;
+}
+- (void)setControlName:(NSString *)controlName
+{
+    self.bindingConfiguration.controlName = controlName;
+}
+
+- (NSString *)role
+{
+    return self.bindingConfiguration.role;
+}
+- (void)setRole:(NSString *)role
+{
+    self.bindingConfiguration.role = role;
+}
+
+- (NSString *)valueKeyPath
+{
+    return self.bindingConfiguration.valueKeyPath;
+}
+- (void)setValueKeyPath:(NSString *)valueKeyPath
+{
+    self.bindingConfiguration.valueKeyPath = valueKeyPath;
+}
+
+- (NSString *)converterKeyPath
+{
+    return self.bindingConfiguration.converterKeyPath;
+}
+- (void)setConverterKeyPath:(NSString *)converterKeyPath
+{
+    self.bindingConfiguration.converterKeyPath = converterKeyPath;
+}
+
+- (NSString *)validatorKeyPath
+{
+    return self.bindingConfiguration.validatorKeyPath;
+}
+- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
+{
+    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
 }
 
 @end

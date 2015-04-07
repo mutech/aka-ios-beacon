@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAControlsErrors.h"
+#import "AKAControlsErrors_Internal.h"
 #import "AKALog.h"
 
 @implementation AKAControlsErrors
@@ -94,6 +94,24 @@ static BOOL _attemptRecoveryActions = YES;
                                code:AKATextEditorControlViewRequiresUITextFieldEditor
                            userInfo:@{ NSLocalizedDescriptionKey: description,
                                        NSLocalizedFailureReasonErrorKey: reason }];
+}
+
+#pragma mark - Binding Errors
+
++ (void)invalidAttemptToBindView:(id)view
+                       toBinding:(AKAViewBinding*)binding
+{
+    NSString* message = [NSString stringWithFormat:@"Invalid attempt to bind view %@ to binding %@", view, binding];
+    [self handleErrorWithMessage:message recovery:nil];
+}
+
+
+#pragma mark - Themes
+
++ (void)invalidLayoutRelationSpecification:(id)relationSpecification
+{
+    NSString* message = [NSString stringWithFormat:@"Invalid relation specification %@. Relations can be specified as NSString (<=, ==, >=) or as NSNumber containing a NSLayoutRelation constant.", relationSpecification];
+    [self handleErrorWithMessage:message recovery:nil];
 }
 
 @end

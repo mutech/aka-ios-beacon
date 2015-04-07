@@ -10,4 +10,8 @@
 
 @interface AKAEditorControlView (Protected)
 
+- (BOOL)autocreateLabel:(out UIView*__autoreleasing *)createdView;
+- (BOOL)autocreateEditor:(out UIView*__autoreleasing *)createdView;
+- (BOOL)autocreateMessage:(out UIView*__autoreleasing *)createdView;
+
 @end

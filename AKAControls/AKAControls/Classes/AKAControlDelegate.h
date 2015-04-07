@@ -16,9 +16,13 @@
 
 - (BOOL)shouldControlActivate:(AKAControl*)memberControl;
 
+- (void)controlWillActivate:(AKAControl*)memberControl;
+
 - (void)controlDidActivate:(AKAControl*)memberControl;
 
 - (BOOL)shouldControlDeactivate:(AKAControl*)memberControl;
+
+- (void)controlWillDeactivate:(AKAControl*)memberControl;
 
 - (void)controlDidDeactivate:(AKAControl*)memberControl;
 

@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKATextFieldControlViewBinding.h"
-#import "AKAControlViewBinding_Protected.h"
+#import "AKATextFieldBinding.h"
 #import "AKATextField.h"
 
 #import "AKAControl.h"
@@ -16,53 +15,62 @@
 #import <AKACommons/NSObject+AKAAssociatedValues.h>
 #import <AKACommons/AKALog.h>
 
-@interface AKATextFieldControlViewBinding(Protected)<UITextFieldDelegate>
-
-@property(nonatomic, weak) id<UITextFieldDelegate> savedTextViewDelegate;
-
-@end
-
-@interface AKATextFieldControlViewBinding() {
+@interface AKATextFieldBinding() <UITextFieldDelegate> {
     NSString* _originalText;
     id<UITextFieldDelegate> _savedTextViewDelegate;
 }
+
 @property(nonatomic) NSString* originalText;
 @property(nonatomic) NSNumber* originalReturnKeyType;
 
+@property(nonatomic, weak) id<UITextFieldDelegate> savedTextViewDelegate;
+
+#pragma mark - Convenience
+
+@property(nonatomic, readonly) UITextField* textField;
+@property(nonatomic, readonly) AKATextFieldBindingConfiguration* textFieldConfiguration;
+
 @end
 
-@implementation AKATextFieldControlViewBinding
+@implementation AKATextFieldBinding
+
+#pragma mark - Binding Configuration
+
+- (AKATextFieldBindingConfiguration *)textFieldConfiguration
+{
+    return (AKATextFieldBindingConfiguration*)self.configuration;
+}
 
 #pragma mark - View Value Binding
 
-- (AKAProperty *)createViewValueProperty
+- (AKAProperty *)createViewValueProperty;
 {
     AKAProperty* result;
     result = [AKAProperty propertyOfWeakTarget:self
                                       getter:
               ^id (id target)
               {
-                  AKATextFieldControlViewBinding* binding = target;
+                  AKATextFieldBinding* binding = target;
                   return binding.textField.text;
               }
                                       setter:
               ^(id target, id value)
               {
-                  AKATextFieldControlViewBinding* binding = target;
-                  if ([value isKindOfClass:[NSString class]])
+                  AKATextFieldBinding* adapter = target;
+                  if (value == nil || [value isKindOfClass:[NSString class]])
                   {
-                      binding.textField.text = value;
+                      adapter.textField.text = value;
                   }
-                  else
+                  else if (value != nil)
                   {
-                      binding.textField.text = [NSString stringWithFormat:@"%@", value];
+                      adapter.textField.text = [NSString stringWithFormat:@"%@", value];
                   }
               }
                           observationStarter:
               ^BOOL (id target)
               {
                   // NOTE: the text field delegate is responsible to notify the property of changes!
-                  AKATextFieldControlViewBinding* binding = target;
+                  AKATextFieldBinding* binding = target;
                   binding.originalText = binding.textField.text;
                   binding.savedTextViewDelegate = binding.textField.delegate;
                   binding.textField.delegate = binding;
@@ -71,7 +79,7 @@
                           observationStopper:
               ^BOOL (id target)
               {
-                  AKATextFieldControlViewBinding* binding = target;
+                  AKATextFieldBinding* binding = target;
                   binding.originalText = nil;
                   binding.textField.delegate = binding.savedTextViewDelegate;
                   return YES;
@@ -79,8 +87,15 @@
     return result;
 }
 
-- (id<UITextFieldDelegate>)savedTextViewDelegate { return _savedTextViewDelegate; }
-- (void)setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate { _savedTextViewDelegate = savedTextViewDelegate; }
+- (id<UITextFieldDelegate>)savedTextViewDelegate
+{
+    return _savedTextViewDelegate;
+}
+
+- (void)setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
+{
+    _savedTextViewDelegate = savedTextViewDelegate;
+}
 
 #pragma mark - Convenience
 
@@ -94,65 +109,33 @@
     return result;
 }
 
-- (AKATextField*)akaTextField
-{
-    AKATextField* result = nil;
-    if ([self.view isKindOfClass:[AKATextField class]])
-    {
-        result = (AKATextField*)self.view;
-    }
-    return result;
-}
-
 - (BOOL)liveModelUpdates
 {
-    BOOL result;
-    AKATextField* akaTextField = self.akaTextField;
-    if (akaTextField)
-    {
-        result = akaTextField.liveModelUpdates;
-    }
-    else
-    {
-        result = YES;
-    }
-    return result;
+    return self.textFieldConfiguration.liveModelUpdates;
 }
 
 #pragma mark - Activation
 
-- (BOOL)controlViewCanActivate
+- (BOOL)supportsActivation
 {
-    return self.textField != nil;
+    BOOL result = self.textField != nil;
+    return result;
 }
 
 - (BOOL)shouldAutoActivate
 {
-    BOOL result = self.controlViewCanActivate;
-    AKATextField* akaTextField = self.akaTextField;
-    if (akaTextField)
-    {
-        result = akaTextField.autoActivate;
-    }
+    BOOL result = self.supportsActivation && self.textFieldConfiguration.autoActivate;
     return result;
 }
 
 - (BOOL)participatesInKeyboardActivationSequence
 {
-    BOOL result = self.controlViewCanActivate;
-    if (result)
-    {
-        AKATextField* akaTextField = self.akaTextField;
-        if (akaTextField)
-        {
-            result = akaTextField.KBActivationSequence;
-        }
-    }
+    BOOL result = self.supportsActivation && self.textFieldConfiguration.KBActivationSequence;
     return result;
 }
 
-- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
-                                             successor:(AKAControl*)next
+- (void)setupKeyboardActivationSequenceWithPredecessor:(UIView*)previous
+                                             successor:(UIView*)next
 {
     // TODO: support keyboard toolbar to add previous/next buttons for keyboards not
     // supporting them and maybe always provide close keyboard button.
@@ -183,24 +166,25 @@
     }
 }
 
-
-- (BOOL)activateControlView
+- (BOOL)activate
 {
     UITextField* textField = self.textField;
     BOOL result = textField != nil;
     if (result)
     {
+        [self viewWillActivate];
         result = [textField becomeFirstResponder];
     }
     return result;
 }
 
-- (BOOL)deactivateControlView
+- (BOOL)deactivate
 {
     UITextField* textField = self.textField;
     BOOL result = textField != nil;
     if (result)
     {
+        [self viewWillDeactivate];
         result = [textField resignFirstResponder];
     }
     return result;
@@ -219,7 +203,7 @@
     }
     if (result)
     {
-        result = [self controlViewShouldActivate:self.textField];
+        result = [self shouldActivate];
     }
     return result;
 }
@@ -230,7 +214,7 @@
     id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
 
     [self updateOriginalTextBeforeEditing];
-    [self controlViewDidActivate:self.textField];
+    [self viewDidActivate];
     if ([secondary respondsToSelector:@selector(textFieldDidBeginEditing:)])
     {
         [secondary textFieldDidBeginEditing:textField];
@@ -253,12 +237,11 @@
         switch (textField.returnKeyType)
         {
             case UIReturnKeyNext:
-                if ([self.control shouldDeactivate])
+                if ([self shouldDeactivate])
                 {
-                    AKAControl* next = [self.control nextControlInKeyboardActivationSequence];
-                    if ([next shouldActivate])
+                    if (![self activateNextInKeyboardActivationSequence])
                     {
-                        [next activate];
+                        [self deactivate];
                     }
                 }
                 break;
@@ -268,7 +251,7 @@
                 // TODO: check if committing the form is appropriate for these return key styles.
             default:
                 // This will call the corresponding should/did end editing handlers
-                [textField resignFirstResponder];
+                [self deactivate];
                 break;
         }
     }
@@ -285,11 +268,11 @@
     {
         result = [secondary textFieldShouldClear:self.textField];
     }
-    if (result && !self.control.isActive)
+    if (result && !self.textField.isFirstResponder)
     {
         // If the control should not activate, it should also not change its value
         // TODO: this might not always be true, consider to make this behaviour customizable.
-        result = self.control.shouldActivate;
+        result = self.shouldActivate;
         if (result)
         {
             // This is needed to update self.originalText, which is updated when the text
@@ -355,7 +338,7 @@
 
     if (self.liveModelUpdates)
     {
-        [self viewValueDidChangeFrom:self.originalText to:self.textField.text];
+        [self viewValueDidChange];
     }
 }
 
@@ -369,7 +352,7 @@
     {
         result &= [secondary textFieldShouldEndEditing:textField];
     }
-    result &= [self controlViewShouldDeactivate:self.textField];
+    result &= [self shouldDeactivate];
     return result;
 }
 
@@ -385,9 +368,9 @@
     }
     if (!self.liveModelUpdates)
     {
-        [self viewValueDidChangeFrom:self.originalText to:self.textField.text];
+        [self viewValueDidChange];
     }
-    [self controlViewDidDeactivate:self.textField];
+    [self viewDidDeactivate];
 }
 
 - (void)updateOriginalTextBeforeEditing
@@ -401,25 +384,37 @@
     }
 }
 
-- (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
+- (void)viewValueDidChange
 {
-    (void)oldValue; // prefer live values
-    (void)newValue; // prefer live values
-
-    NSString* previousValue = self.originalText;
-    NSString* value = self.textField.text;
+    NSString* oldValue = self.originalText;
+    NSString* newValue = self.textField.text;
 
     // Send change notification
-    if (value != previousValue && ![value isEqualToString:previousValue])
+    if (newValue != oldValue && ![newValue isEqualToString:oldValue])
     {
-        [self           controlView:self.textField
-          didChangeValueChangedFrom:previousValue
-                                 to:value];
-        value = self.textField.text; // update just in case handler did change the value
+        [self viewValueDidChangeFrom:oldValue to:newValue];
+        newValue = self.textField.text; // the delegate may change the value
     }
-    [self.viewValueProperty notifyPropertyValueDidChangeFrom:previousValue to:value];
-    self.originalText = self.textField.text;
+
+    if (newValue != oldValue && ![newValue isEqualToString:oldValue])
+    {
+        [self.viewValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        self.originalText = newValue;
+    }
 }
 
 @end
 
+@implementation AKATextFieldBindingConfiguration
+
+- (Class)preferredBindingType
+{
+    return [AKATextFieldBinding class];
+}
+
+- (Class)preferredViewType
+{
+    return [AKATextField class];
+}
+
+@end

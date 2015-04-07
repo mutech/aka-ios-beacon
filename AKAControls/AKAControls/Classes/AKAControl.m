@@ -1,27 +1,37 @@
 //
 //  AKAControl.m
-//  AKACommons
+//  AKAControls
 //
 //  Created by Michael Utech on 12.03.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
 #import "AKAControl_Internal.h"
+#import "AKAControl_Protected.h" // To make appledoc find it
 #import "AKACompositeControl.h"
+#import "AKAViewBinding.h"
 
-#import "AKAControlsErrors.h"
+#import "AKAControlsErrors_Internal.h"
+
+#import <AKACommons/AKALog.h>
+#import <AKACommons/NSObject+AKAConcurrencyTools.h>
+#import <objc/runtime.h>
 
 @interface AKAControl() {
+    AKAProperty* _dataContextProperty;
     AKAProperty* _modelValueProperty;
-    AKAControlViewBinding* _viewBinding;
+    AKAViewBinding* _viewBinding;
 }
+
+@property(nonatomic)NSMutableDictionary* themeNameByType;
+@property(nonatomic)id synchronizedViewValue;
+
 @end
 
 @implementation AKAControl
 
 @synthesize owner = _owner;
 @synthesize isActive = _isActive;
-
 
 #pragma mark - Initialization
 
@@ -55,34 +65,42 @@
     return [[self alloc] initWithOwner:owner keyPath:keyPath];
 }
 
-- (instancetype)initWithDataContext:(id)dataContext keyPath:(NSString*)keyPath
+- (instancetype)initWithDataContext:(id)dataContext
+                            keyPath:(NSString*)keyPath
 {
     self = [self init];
     if (self)
     {
-        self.modelValueProperty =
+        self.dataContextProperty =
             [AKAProperty propertyOfWeakKeyValueTarget:dataContext
-                                          keyPath:keyPath
-                                   changeObserver:^(id oldValue, id newValue) {
-                                       [self modelValueDidChangeFrom:oldValue
-                                                                  to:newValue];
-                                   }];
+                                              keyPath:nil
+                                       changeObserver:nil];
+        self.modelValueProperty =
+            [self.dataContextProperty propertyAtKeyPath:keyPath
+                                     withChangeObserver:^(id oldValue, id newValue)
+             {
+                 [self modelValueDidChangeFrom:oldValue
+                                            to:newValue];
+             }];
     }
     return self;
 }
 
-- (instancetype)initWithOwner:(AKACompositeControl *)owner keyPath:(NSString *)keyPath
+- (instancetype)initWithOwner:(AKACompositeControl *)owner
+                      keyPath:(NSString *)keyPath
 {
     self = [self init];
     if (self)
     {
-        self.modelValueProperty =
-            [owner.modelValueProperty propertyAtKeyPath:keyPath
-                                     withChangeObserver:^(id oldValue, id newValue) {
-                                         [self modelValueDidChangeFrom:oldValue
-                                                                    to:newValue];
-                                     }];
         [self setOwner:owner];
+        // Data context inherited from owner
+        self.modelValueProperty =
+            [self.dataContextProperty propertyAtKeyPath:keyPath
+                                        withChangeObserver:^(id oldValue, id newValue)
+             {
+                 [self modelValueDidChangeFrom:oldValue
+                                            to:newValue];
+             }];
     }
     return self;
 }
@@ -106,17 +124,48 @@
 
 #pragma mark - Binding
 
-- (AKAControlViewBinding *)viewBinding
+- (AKAViewBinding *)viewBinding
 {
     return _viewBinding;
 }
 
-- (void)setViewBinding:(AKAControlViewBinding *)viewBinding
+- (void)setViewBinding:(AKAViewBinding *)viewBinding
 {
-    _viewBinding = viewBinding;
+    if (viewBinding != _viewBinding)
+    {
+        if (_viewBinding != nil && viewBinding != nil)
+        {
+            // TODO: error handling
+        }
+        else
+        {
+            _viewBinding = viewBinding;
+            if (viewBinding != nil)
+            {
+                NSString* converterKeyPath = viewBinding.configuration.converterKeyPath;
+                if (converterKeyPath.length > 0)
+                {
+                    _converterProperty = [self.dataContextProperty propertyAtKeyPath:converterKeyPath
+                                                                      withChangeObserver:nil];
+                }
+                NSString* validatorKeyPath = viewBinding.configuration.validatorKeyPath;
+                if (validatorKeyPath.length > 0)
+                {
+                    _validatorProperty = [self.dataContextProperty propertyAtKeyPath:validatorKeyPath
+                                                                      withChangeObserver:nil];
+                }
+            }
+        }
+
+    }
 }
 
 #pragma mark - Value Access
+
+- (UIView *)view
+{
+    return self.viewBinding.view;
+}
 
 - (AKAProperty*)viewValueProperty
 {
@@ -125,12 +174,22 @@
 
 - (id)viewValue
 {
-    return self.viewBinding.viewValueProperty.value;
+    return self.viewValueProperty.value;
 }
 
 - (void)setViewValue:(id)viewValue
 {
-    self.viewBinding.viewValueProperty.value = viewValue;
+    self.viewValueProperty.value = viewValue;
+}
+
+- (AKAProperty *)dataContextProperty
+{
+    return _dataContextProperty != nil ? _dataContextProperty : self.owner.dataContextProperty;
+}
+
+- (void)setDataContextProperty:(AKAProperty *)dataContextProperty
+{
+    _dataContextProperty = dataContextProperty;
 }
 
 - (AKAProperty *)modelValueProperty
@@ -153,41 +212,160 @@
     self.modelValueProperty.value = modelValue;
 }
 
+- (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
+                          withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver
+{
+    // TODO: create a data context property
+    if (self.owner)
+    {
+        // data context is the owners model value
+        return [self.owner.modelValueProperty propertyAtKeyPath:keyPath
+                                             withChangeObserver:changeObserver];
+    }
+    else
+    {
+        // without owner, data context is the controls model value
+        return [self.modelValueProperty propertyAtKeyPath:keyPath
+                                       withChangeObserver:changeObserver];
+    }
+}
+
+- (id<AKAControlValidatorProtocol>)validator
+{
+    return self.validatorProperty.value;
+}
+
 #pragma mark - Change Tracking
 
 #pragma mark Handling Changes
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
-    (void)oldValue; // not used.
+    if (self.synchronizedViewValue == nil)
+    {
+        self.synchronizedViewValue = oldValue;
+    }
     [self updateModelValueForViewValueChangeTo:newValue];
 }
 
 - (void)modelValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
     (void)oldValue; // not used.
-    if ([NSThread isMainThread])
+
+    // Model changes can occur in any thread. Since such changes will most likely
+    // result in UI updates, we have to make sure that updates are performed in
+    // the main thread.
+    __weak typeof(self)weakSelf = self;
+    [self aka_performBlockInMainThreadOrQueue:^{
+        [weakSelf updateViewValueForModelValueChangeTo:newValue];
+    }];
+}
+
+- (BOOL)validateModelValue:(inout id*)valueStorage error:(out NSError *__autoreleasing *)error
+{
+    NSParameterAssert(valueStorage != nil);
+
+    BOOL result = YES;
+    id validatedValue = *valueStorage;
+
+    id<AKAControlValidatorProtocol> validator = self.validator;
+    if (validator != nil)
     {
-        [self updateViewValueForModelValueChangeTo:newValue];
+        result = [validator validateModelValue:validatedValue error:error];
     }
-    else
+
+    // Perform additional validation provided by KVC after custom validation,
+    // assuming that custom validation will provide better error messages.
+    if (result)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self updateViewValueForModelValueChangeTo:newValue];
-        });
+        result = [self.modelValueProperty validateValue:&validatedValue error:error];
+        if (validatedValue != *valueStorage)
+        {
+            AKALogWarn(@"Model value KVC validation replaced model value %@ with %@, this indicates potentially invalid model data",
+                       *valueStorage, validatedValue);
+            *valueStorage = validatedValue;
+        }
     }
+
+    return result;
 }
 
 - (void)updateViewValueForModelValueChangeTo:(id)newValue
 {
-    // TODO: conversion, error handling
-    self.viewValue = newValue;
+    NSError* error;
+    if (![self updateViewValueForModelValueChangeTo:newValue
+                                 validateModelValue:YES
+                                              error:&error])
+    {
+        // TODO: error handling
+    }
+}
+
+- (BOOL)updateViewValueForModelValueChangeTo:(id)newValue
+                          validateModelValue:(BOOL)validateModelValue
+                                       error:(NSError*__autoreleasing*)error
+{
+    BOOL result = YES;
+
+    id validatedValue = newValue;
+    if (validateModelValue)
+    {
+        result = [self validateModelValue:&validatedValue error:error];
+    }
+
+    if (result)
+    {
+        id viewValue = validatedValue;
+        id<AKAControlConverterProtocol> converter = self.converter;
+        if (converter != nil)
+        {
+            result = [converter convertModelValue:validatedValue toViewValue:&viewValue error:error];
+        }
+        if (result)
+        {
+            self.synchronizedViewValue = viewValue;
+            self.viewValue = viewValue;
+        }
+    }
+
+    // Invalid model values should either be handled somehow or displayed as good as possible
+
+    return result;
 }
 
 - (void)updateModelValueForViewValueChangeTo:(id)newValue
 {
-    // TODO: conversion, validation, error handling
-    self.modelValue = newValue;
+    NSError* error = nil;
+    if (![self updateModelValueForViewValueChangeTo:newValue error:&error])
+    {
+        // TODO: error handling
+    }
+}
+
+- (BOOL)updateModelValueForViewValueChangeTo:(id)newValue error:(NSError*__autoreleasing*)error
+{
+    BOOL result = YES;
+
+    id modelValue = newValue;
+    id<AKAControlConverterProtocol> converter = self.converter;
+    if (converter != nil)
+    {
+        result = [converter convertViewValue:newValue toModelValue:&modelValue error:error];
+    }
+
+    if (result)
+    {
+        result = [self validateModelValue:&modelValue error:error];
+        if (result)
+        {
+            // change of model value will have updated view value when returning from assignment
+            // that's why synchronizedViewValue has to be reset before.
+            self.synchronizedViewValue = nil;
+            self.modelValue = modelValue;
+        }
+    }
+
+    return result;
 }
 
 #pragma mark Controlling Observation
@@ -251,12 +429,16 @@
 
 - (BOOL)canActivate
 {
-    return self.viewBinding.controlViewCanActivate;
+    return self.viewBinding.supportsActivation;
 }
 
 - (BOOL)shouldActivate
 {
     BOOL result = self.canActivate;
+    if (result && [self.delegate respondsToSelector:@selector(shouldControlActivate:)])
+    {
+        result = [self.delegate shouldControlActivate:self];
+    }
     if (result && self.owner)
     {
         result = [self.owner shouldControlActivate:self];
@@ -266,18 +448,40 @@
 
 - (BOOL)activate
 {
-    return [self.viewBinding activateControlView];
+    BOOL result = self.canActivate;
+    if (result)
+    {
+        result = [self.viewBinding activate];
+    }
+    return result;
+}
+
+- (void)willActivate
+{
+    if ([self.delegate respondsToSelector:@selector(controlWillActivate:)])
+    {
+        [self.delegate controlWillActivate:self];
+    }
+    [self.owner controlWillActivate:self];
 }
 
 - (void)didActivate
 {
     [self setIsActive:YES];
     [self.owner controlDidActivate:self];
+    if ([self.delegate respondsToSelector:@selector(controlDidActivate:)])
+    {
+        [self.delegate controlDidActivate:self];
+    }
 }
 
 - (BOOL)shouldDeactivate
 {
     BOOL result = YES;
+    if (result && [self.delegate respondsToSelector:@selector(shouldControlDeactivate:)])
+    {
+        result = [self.delegate shouldControlDeactivate:self];
+    }
     if (result && self.owner)
     {
         result = [self.owner shouldControlDeactivate:self];
@@ -287,13 +491,31 @@
 
 - (BOOL)deactivate
 {
-    return [self.viewBinding deactivateControlView];
+    BOOL result = self.canActivate;
+    if (result)
+    {
+        result = [self.viewBinding deactivate];
+    }
+    return result;
+}
+
+- (void)willDeactivate
+{
+    if ([self.delegate respondsToSelector:@selector(controlWillDeactivate:)])
+    {
+        [self.delegate controlWillDeactivate:self];
+    }
+    [self.owner controlWillDeactivate:self];
 }
 
 - (void)didDeactivate
 {
     [self setIsActive:NO];
     [self.owner controlDidDeactivate:self];
+    if ([self.delegate respondsToSelector:@selector(controlDidDeactivate:)])
+    {
+        [self.delegate controlDidDeactivate:self];
+    }
 }
 
 - (BOOL)shouldActivateNextControl
@@ -324,8 +546,104 @@
 - (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
                                              successor:(AKAControl*)next
 {
-    [self.viewBinding setupKeyboardActivationSequenceWithPredecessor:previous
-                                                           successor:next];
+    [self.viewBinding setupKeyboardActivationSequenceWithPredecessor:previous.view
+                                                           successor:next.view];
+}
+
+#pragma mark - View Binding Delegate
+
+- (void)viewBinding:(AKAViewBinding *)viewBinding
+               view:(UIView *)view
+ valueDidChangeFrom:(id)oldValue
+                 to:(id)newValue
+{
+    NSParameterAssert(view == self.view);
+    NSParameterAssert(viewBinding == self.viewBinding);
+
+    [self viewValueDidChangeFrom:oldValue to:newValue];
+}
+
+- (BOOL)viewBindingShouldActivate:(AKAViewBinding *)viewBinding
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    return [self shouldActivate];
+}
+
+- (void)viewBinding:(AKAViewBinding *)viewBinding viewWillActivate:(UIView *)view
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    [self willActivate];
+}
+
+- (void)viewBinding:(AKAViewBinding *)viewBinding viewDidActivate:(UIView *)view
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    [self didActivate];
+}
+
+- (BOOL)viewBindingShouldDeactivate:(AKAViewBinding *)viewBinding
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    return [self shouldDeactivate];
+}
+
+- (void)viewBinding:(AKAViewBinding *)viewBinding viewWillDeactivate:(UIView *)view
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    [self willDeactivate];
+}
+
+- (void)viewBinding:(AKAViewBinding *)viewBinding viewDidDeactivate:(UIView *)view
+{
+    NSParameterAssert(viewBinding == self.viewBinding);
+    [self didDeactivate];
+}
+
+- (BOOL)viewBindingRequestsActivateNextInKeyboardActivationSequence:(AKAViewBinding *)viewBinding
+{
+    BOOL result = NO;
+    AKAControl* next = [self nextControlInKeyboardActivationSequence];
+    if ([next shouldActivate])
+    {
+        [next activate];
+    }
+    return result;
+}
+
+#pragma mark - Theme Selection
+
+- (AKAProperty*)themeNamePropertyForView:(UIView*)view
+                  changeObserver:(void(^)(id oldValue, id newValue))themeNameChanged
+{
+    AKAProperty* result = nil;
+    NSString* themeName;
+    for (Class type = view.class; [type isSubclassOfClass:[UIView class]]; type = [type superclass])
+    {
+        NSString* typeName = NSStringFromClass(type);
+        themeName = self.themeNameByType[typeName];
+        if (themeName)
+        {
+            result = [AKAProperty propertyOfWeakKeyValueTarget:self.themeNameByType
+                                                       keyPath:typeName
+                                                changeObserver:themeNameChanged];
+            break;
+        }
+    }
+    if (!result)
+    {
+        result = [self.owner themeNamePropertyForView:view
+                                       changeObserver:themeNameChanged];
+    }
+    return result;
+}
+
+- (void)setThemeName:(NSString*)themeName forClass:(Class)type
+{
+    if (!self.themeNameByType)
+    {
+        self.themeNameByType = NSMutableDictionary.new;
+    }
+    self.themeNameByType[NSStringFromClass(type)] = themeName;
 }
 
 @end

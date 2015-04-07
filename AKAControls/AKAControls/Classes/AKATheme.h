@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-#import <AKAControls/AKAThemeViewApplicability.h>
-#import <AKAControls/AKAViewCustomization.h>
-#import <AKAControls/AKAThemeLayout.h>
+#import "AKAThemeViewApplicability.h"
+#import "AKAViewCustomization.h"
+#import "AKAThemeLayout.h"
 
 #pragma mark - AKAViewCustomization
 #pragma mark -
 
 @class AKATheme;
 @protocol AKAThemeDelegate<
-    AKAViewCustomizationDelegate,
     AKAThemeLayoutDelegate
 >
 
@@ -62,22 +61,49 @@ shouldRemoveConstraintsOnlyRelatedToSelf:(inout NSArray**)constraints
 
 @end
 
-
+/**
+ * Implementation of the AKAThemeDelegate protocol that forwards all methods its @c delegate.
+ *
+ * This is useful chain delegates and f.e. used by the AKAThemeChangeRecorderDelegate to record changes
+ * while preserving the possibility to serve another delegate.
+ */
 @interface AKAThemeDelegateProxy: NSObject<AKAThemeDelegate>
 
+/**
+ * The delegate to which all messages are forwarded.
+ */
 @property(nonatomic) id<AKAThemeDelegate> delegate;
 
 @end
 
+/**
+ * This delegate records all changes made by a theme application and creates a theme that can be
+ * applied in order to restore the initial state of a set of views undoing the previous theme
+ * application.
+ *
+ * @note The current implementation saves concrete instances of NSLayoutConstraint's which means
+ * that a recorded theme can only be applied to the target which has been originally recorded.
+ */
 @interface AKAThemeChangeRecorderDelegate: AKAThemeDelegateProxy
 
+/**
+ * Initializes the theme recorded with the specified delegate. The theme recorded forwards all
+ * delegate messages to the specified delegate in order to transparently perform its task
+ *
+ * @param delegate a delegate or nil
+ *
+ * @return the theme change recorder.
+ */
 - (instancetype)initWithDelegate:(id<AKAThemeDelegate>)delegate;
 
+/**
+ * The recorded theme (available after a theme was applied with this instance as delegate).
+ */
 @property(nonatomic) AKATheme* recordedTheme;
 
 @end
 
-@interface AKATheme : NSObject
+@interface AKATheme : AKAViewCustomizationContainer
 
 #pragma mark - Initialization
 
@@ -95,7 +121,6 @@ shouldRemoveConstraintsOnlyRelatedToSelf:(inout NSArray**)constraints
 
 @property(nonatomic, weak) NSObject<AKAThemeDelegate>* delegate;
 
-@property(nonatomic, readonly) NSArray* viewCustomizations;
 @property(nonatomic) NSDictionary* defaultMetrics;
 @property(nonatomic, readonly) NSArray* layouts;
 

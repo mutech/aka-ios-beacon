@@ -1,6 +1,6 @@
 //
 //  AKACompositeControl.h
-//  AKACommons
+//  AKAControls
 //
 //  Created by Michael Utech on 12.03.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
@@ -26,6 +26,19 @@
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
                                                    atIndex:(NSUInteger)index;
+
+- (NSUInteger)addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection;
+- (NSUInteger)insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+                                                      atIndex:(NSUInteger)index;
+
+- (NSUInteger)addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections;
+- (NSUInteger)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+                                                       atIndex:(NSUInteger)index;
+
+
+- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView;
+- (NSUInteger)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                                     atIndex:(NSUInteger)index;
 
 #pragma mark - Activation
 

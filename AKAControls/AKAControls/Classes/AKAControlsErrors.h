@@ -19,35 +19,36 @@ AKAControlsErrorCodes;
 @class AKAControl;
 @class AKACompositeControl;
 @class AKAEditorControlView;
+@class AKAViewBinding;
+@class UIView;
 
+/**
+ * Provides common definitions and settings concerning errors originating in or detected
+ * by AKAControls.
+ */
 @interface AKAControlsErrors : AKAErrors
 
+/**
+ * The error domain used for errors created by AKAControls.
+ *
+ * @return A string identifying errors created by this framework
+ */
 + (NSString*)akaControlsErrorDomain;
 
+/**
+ * Determines whether error handling routines should attempt to perform recovery actions
+ * to correct errors.
+ *
+ * @return YES if recovery actions are enabled.
+ */
 + (BOOL)attemptRecoveryActions;
 
-#pragma mark - Control Ownership
-
-+ (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control
-                                  ownedBy:(AKACompositeControl*)currentOwner
-                               toNewOwner:(AKACompositeControl*)owner;
-
-#pragma mark - Composite Control Member Activation
-
-+ (void)invalidAttemptToActivate:(AKAControl*)control
-                     inComposite:(AKACompositeControl*)composite
- whileAnotherMemberIsStillActive:(AKAControl*)oldActive
-                        recovery:(BOOL(^)())recover;
-
-+ (void)invalidAttemptToActivateNonMemberControl:(AKAControl*)control
-                                      inComposite:(AKACompositeControl*)composite;
-
-#pragma mark - ControlView Errors
-
-
-+ (NSError *)errorForTextEditorControlView:(AKAEditorControlView *)editorControlView
-                               invalidView:(id)view
-                                   forRole:(NSString*)role
-                              expectedType:(Class)type;
+/**
+ * Enables or disables recovery actions. To ensure that you don't miss errors in your code,
+ * you should not enable this option during development.
+ *
+ * @param attemptRecoveryActions YES to enable recovery actions, NO otherwise.
+ */
++ (void)setAttemptRecoveryActions:(BOOL)attemptRecoveryActions;
 
 @end

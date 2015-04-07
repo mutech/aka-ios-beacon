@@ -7,7 +7,13 @@
 //
 
 #import "AKAEditorControlView.h"
+#import "AKATextFieldBinding.h"
 
 IB_DESIGNABLE
 @interface AKATextEditorControlView : AKAEditorControlView
+
+@property(nonatomic) IBInspectable BOOL liveModelUpdates;
+@property(nonatomic) IBInspectable BOOL autoActivate;
+@property(nonatomic) IBInspectable BOOL KBActivationSequence;
+
 @end

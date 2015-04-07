@@ -9,8 +9,9 @@
 #import "AKACompositeControl.h"
 #import "AKAControl_Internal.h"
 #import "AKAControlViewProtocol.h"
+#import "AKAViewBinding.h"
 
-#import "AKAControlsErrors.h"
+#import "AKAControlsErrors_Internal.h"
 
 #import "UIView+AKAHierarchyVisitor.h"
 
@@ -90,17 +91,22 @@
                         continueInOwner:(BOOL)continueInOwner
 {
     [self enumerateControlsUsingBlock:^(AKAControl* control, NSUInteger idx, BOOL *stop) {
+        __block BOOL localStop = NO;
         if ([control isKindOfClass:[AKACompositeControl class]])
         {
             AKACompositeControl* composite = (AKACompositeControl*)control;
-            [composite enumerateLeafControlsUsingBlock:block
+            [composite enumerateLeafControlsUsingBlock:^(AKAControl* control, AKACompositeControl* owner, NSUInteger idx, BOOL* stop) {
+                block(control, owner, idx, &localStop);
+                *stop = localStop;
+            }
                                             startIndex:0
                                        continueInOwner:NO]; // NO: this instance handles siblings
         }
         else
         {
-            block(control, self, idx, stop);
+            block(control, self, idx, &localStop);
         }
+        *stop = localStop;
     }
                                           startIndex:startIndex
                                      continueInOwner:continueInOwner];
@@ -141,28 +147,150 @@
         (void)stop; // not used
         if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
         {
-            UIView<AKAControlViewProtocol>* controlView = (id)view;
-            UIView<AKAControlViewBindingConfigurationProtocol>* configuration = controlView;
-            Class bindingType = controlView.preferredBindingType;
-
-            AKAControlViewBinding* binding =
-            [AKAControlViewBinding bindingOfType:bindingType
-                               withConfiguration:configuration
-                                            view:view
-                                    controlOwner:self];
-            AKAControl* control = binding.control;
-            if ([self insertControl:control atIndex:index + count])
+            AKAControl* control = nil;
+            count += [self insertControl:&control
+                          forControlView:(id)view
+                                 atIndex:index + count];
+            if ([control isKindOfClass:[AKACompositeControl class]])
             {
-                ++count;
                 *doNotDescend = YES;
-                if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)
-                {
-                    AKACompositeControl* composite = (AKACompositeControl*)control;
-                    [composite addControlsForControlViewsInViewHierarchy:binding.view];
-                }
             }
         }
     }];
+    return count;
+}
+
+- (NSUInteger)insertControl:(out AKAControl**)controlStorage
+             forControlView:(UIView<AKAControlViewProtocol>*)view
+                    atIndex:(NSUInteger)index
+{
+    AKAViewBindingConfiguration* configuration = view.bindingConfiguration;
+    return [self insertControl:controlStorage
+                       forView:view
+             withConfiguration:configuration
+                       atIndex:index];
+}
+
+- (NSUInteger)insertControl:(out AKAControl**)controlStorage
+                    forView:(UIView*)view
+          withConfiguration:(AKAViewBindingConfiguration*)configuration
+                    atIndex:(NSUInteger)index
+{
+    NSUInteger count = 0;
+
+    Class controlType = configuration.preferredControlType;
+    AKAControl* control = [[controlType alloc] initWithOwner:self
+                                                     keyPath:configuration.valueKeyPath];
+
+    Class bindingType = configuration.preferredBindingType;
+    AKAViewBinding* binding = [[bindingType alloc] initWithView:view
+                                                  configuration:configuration
+                                                       delegate:control];
+    control.viewBinding = binding;
+    if ([self insertControl:control atIndex:index + count])
+    {
+        ++count;
+        if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)
+        {
+            AKACompositeControl* composite = (AKACompositeControl*)control;
+            [composite addControlsForControlViewsInViewHierarchy:binding.view];
+        }
+    }
+
+    if (controlStorage != nil)
+    {
+        *controlStorage = control;
+    }
+    return count;
+}
+
+- (NSUInteger)addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+{
+    return [self insertControlsForControlViewsInOutletCollection:outletCollection
+                                                   atIndex:0];
+}
+
+- (NSUInteger)insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+                                                       atIndex:(NSUInteger)index
+{
+    NSUInteger count = 0;
+    for (UIView* view in outletCollection)
+    {
+        if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
+        {
+            count += [self insertControl:nil
+                          forControlView:(id)view
+                                 atIndex:index + count];
+        }
+        else
+        {
+            count += [self insertControlsForControlViewsInViewHierarchy:view
+                                                                atIndex:index + count];
+        }
+    }
+    return count;
+}
+
+- (NSUInteger)addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+{
+    return [self insertControlsForControlViewsInOutletCollections:arrayOfOutletCollections
+                                                   atIndex:0];
+}
+
+- (NSUInteger)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+                                                       atIndex:(NSUInteger)index
+{
+    NSUInteger count = 0;
+    for (NSArray* outletCollection in arrayOfOutletCollections)
+    {
+        AKACompositeControl* collectionControl = [[AKACompositeControl alloc] initWithOwner:self keyPath:nil];
+        if ([self insertControl:collectionControl atIndex:index + count])
+        {
+            ++count;
+            [collectionControl addControlsForControlViewsInOutletCollection:outletCollection];
+        }
+    }
+    return count;
+}
+
+- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView
+{
+    return [self insertControlsForControlViewsInStaticTableView:tableView
+                                                      atIndex:self.controlsStorage.count];
+}
+
+- (NSUInteger)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                                     atIndex:(NSUInteger)index
+{
+    NSUInteger __block count = 0;
+    for (NSInteger sectionIndex = 0; sectionIndex < tableView.numberOfSections; ++sectionIndex)
+    {
+        for (NSInteger rowIndex = 0; rowIndex < [tableView numberOfRowsInSection:sectionIndex]; ++rowIndex)
+        {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+            UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
+            UIView* rootView = cell.contentView;
+            [rootView aka_enumerateSubviewsUsingBlock:^(UIView *view, BOOL *stop, BOOL *doNotDescend) {
+                (void)stop; // not used
+                if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
+                {
+                    UIView<AKAControlViewProtocol>* controlView = (id)view;
+                    AKAControl* control = nil;
+                    if ([self insertControl:&control forControlView:controlView atIndex:index + count])
+                    {
+                        ++count;
+                        *doNotDescend = YES;
+                        if ([control isKindOfClass:[AKACompositeControl class]] && control.view != nil)
+                        {
+                            AKACompositeControl* composite = (AKACompositeControl*)control;
+                            [composite addControlsForControlViewsInViewHierarchy:control.view];
+                        }
+                    }
+                }
+            }];
+        }
+    }
+
     return count;
 }
 
@@ -354,6 +482,109 @@
 
 #pragma mark - Activation
 
+- (BOOL)activate
+{
+    BOOL result = self.isActive;
+    if (!result)
+    {
+        result = [super activate];
+    }
+    if (!result)
+    {
+        __block AKAControl* autoActivatable;
+        __block AKAControl* activatable;
+        [self enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
+            if ([control canActivate])
+            {
+                if (!activatable)
+                {
+                    activatable = control;
+                }
+                if ([control shouldAutoActivate])
+                {
+                    autoActivatable = control;
+                }
+                *stop = autoActivatable != nil;
+            }
+        }];
+        if (autoActivatable)
+        {
+            result = [autoActivatable activate];
+        }
+        else if (activatable)
+        {
+            result = [activatable activate];
+        }
+    }
+    return result;
+}
+
+- (BOOL)deactivate
+{
+    BOOL result = !self.isActive;
+    if (!result)
+    {
+        if (self.activeControl)
+        {
+            result = [self.activeControl deactivate];
+        }
+        if (!result)
+        {
+            // Do not deactivate if active member failed to deactivate
+            result = [super deactivate];
+        }
+    }
+    return result;
+}
+
+/**
+ * Determines whether this control can be activated. This is true if either the associated
+ * view binding indicates that the bound view supports activation or if any of the member
+ * controls can activate.
+ *
+ * @return YES if the composite control directly or any of its members can be activated.
+ */
+- (BOOL)canActivate
+{
+    __block BOOL result = [super canActivate];
+    if (!result)
+    {
+        [self enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
+            result = *stop = control.canActivate;
+        }];
+    }
+    return result;
+}
+
+/**
+ * Determines whether this control should be activated automatically. This is true if either the
+ * associated view binding indicates that the bound view or any of the member controls should
+ * be automatically activated.
+ *
+ * @return YES if the composite control directly or any of its members should be activated automatically.
+ */
+- (BOOL)shouldAutoActivate
+{
+    __block BOOL result = [super shouldAutoActivate];
+    if (!result)
+    {
+        [self enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
+            result = *stop = [control shouldAutoActivate];
+        }];
+    }
+    return result;
+}
+
+- (BOOL)shouldActivate
+{
+    return [super shouldActivate];
+}
+
+- (BOOL)shouldDeactivate
+{
+    return [super shouldActivate];
+}
+
 - (void)setActiveControl:(AKAControl *)activeControl
 {
     AKAControl* oldActive = self.activeControl;
@@ -438,47 +669,88 @@
 
 #pragma mark Member Activation
 
+/**
+ * Determines if the specified control should be activated by first consulting
+ * the delegate and then owner controls (transitively). If no delegate or owner
+ * (including their delegates) vetoed and then all controls that would have to
+ * be deactivate should do so, the result is YES.
+ *
+ * @param memberControl the member control
+ *
+ * @return YES if the specified member control should be updated.
+ */
 - (BOOL)shouldControlActivate:(AKAControl*)memberControl
 {
-    BOOL result = memberControl != self.activeControl;
+    BOOL result = !memberControl.isActive;
 
-    // Let this instances delegate decide first
-    id<AKAControlDelegate> delegate = self.delegate;
-    if (result && [delegate respondsToSelector:@selector(shouldControlActivate:)])
+    if (result)
     {
-        result = [delegate shouldControlActivate:memberControl];
+        // Let this instances delegate decide first
+        id<AKAControlDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(shouldControlActivate:)])
+        {
+            result = [delegate shouldControlActivate:memberControl];
+        }
     }
 
-    AKACompositeControl* owner = self.owner;
-    if (result && owner)
+    if (result)
     {
-        // Ascend the control tree to ensure all delegates
-        // have been consulted first.
-        result = [owner shouldControlActivate:memberControl];
-
-        if (result && !self.isActive && owner.isActive && owner.activeControl != nil)
+        AKACompositeControl* owner = self.owner;
+        if (owner != nil)
         {
-            // The owner is the junction point between the current
-            // and future active control path and it is responsible to
-            // check if a currently active control and its transitive
-            // owners should be deactivated.
-            result = [self shouldDeactivateActiveSubtree];
+            // Ascend the control tree to ensure all delegates
+            // have been consulted first.
+            result = [owner shouldControlActivate:memberControl];
+        }
+
+        // At this point, all ancestor delegates approved activation
+
+        if (result && memberControl.owner == self)
+        {
+            if (self.isActive)
+            {
+                if (self.activeControl != nil)
+                {
+                    // This is the junction point between the current
+                    // and future active control path and it is responsible to
+                    // check if a currently active control and its transitive
+                    // owners should be deactivated.
+                    result = [self shouldDeactivateActiveSubtree];
+                }
+            }
+            else if (owner != nil)
+            {
+                result = [self.owner shouldControlActivate:self];
+            }
         }
     }
 
     return result;
 }
 
+- (void)controlWillActivate:(AKAControl *)memberControl
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controlWillActivate:)])
+    {
+        [delegate controlWillActivate:memberControl];
+    }
+    [self.owner controlWillActivate:memberControl];
+}
+
 - (void)controlDidActivate:(AKAControl*)memberControl
 {
     if (memberControl.owner == self)
     {
-        // Deactivate formerly active composite controls which
-        // will no longer be part of the active control path:
-        AKACompositeControl* activeControlPathJunction = [self activeControlPathJunction];
-        if (activeControlPathJunction != nil)
+        if (self.activeControl != nil && self.activeControl != memberControl)
         {
-            [activeControlPathJunction activeSubtreeDidDeactivate];
+            // This should not be necessary, because they should have deactivated
+            // before another control activated, just to be sure:
+            [self.activeControl didDeactivate];
+            if (self.activeControl != nil)
+            {
+                [self controlDidDeactivate:self.activeControl];
+            }
         }
 
         [self setActiveControl:memberControl];
@@ -516,6 +788,16 @@
     return result;
 }
 
+- (void)controlWillDeactivate:(AKAControl *)memberControl
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controlWillDeactivate:)])
+    {
+        [delegate controlWillDeactivate:memberControl];
+    }
+    [self.owner controlWillDeactivate:memberControl];
+}
+
 - (void)controlDidDeactivate:(AKAControl*)memberControl
 {
     if (memberControl.owner == self)
@@ -538,39 +820,6 @@
     return YES;
 }
 
-- (void)activeSubtreeDidDeactivate
-{
-    // Composite controls are activated when one of their members become
-    // active. They are not immediately deactivated when the member
-    // deactivates but will be deactivated here whenever a control
-    // which is not part of the currently active control path is
-    // activated.
-    AKAControl* active = self.activeControl;
-    if (active != nil)
-    {
-        if ([active isKindOfClass:[AKACompositeControl class]])
-        {
-            AKACompositeControl* composite = (AKACompositeControl*)active;
-            [composite activeSubtreeDidDeactivate];
-            [composite didDeactivate];
-        }
-        else
-        {
-            NSAssert(NO, @"%@ received subtree deactivation notification while non-composite control %@ was marked active. It should have detected its deactivation before!", self, active);
-            [active didDeactivate];
-        }
-    }
-}
-
-- (AKACompositeControl*)activeControlPathJunction
-{
-    AKACompositeControl* result = self;
-    if (!self.isActive)
-    {
-        result = [self.owner activeControlPathJunction];
-    }
-    return result;
-}
 
 - (AKAControl*)activeMemberLeafControl
 {

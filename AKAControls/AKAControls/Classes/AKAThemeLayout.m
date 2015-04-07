@@ -54,9 +54,27 @@
                     }
                 }
             }
+            else if ([@"viewCustomization" isEqualToString:key])
+            {
+                if ([obj isKindOfClass:[NSArray class]])
+                {
+                    [self addViewCustomizationsWithArrayOfDictionaries:obj];
+                }
+                else
+                {
+                    // TODO: error handling
+                }
+            }
         }];
     }
     return self;
+}
+
+#pragma mark - View Customizations Container Support
+
+- (NSObject<AKAViewCustomizationDelegate> *)viewCustomizationDelegate
+{
+    return self.delegate;
 }
 
 #pragma mark - Application
@@ -99,6 +117,11 @@
 
     if (result)
     {
+        // View customizations first (no particular reason):
+        [self applyViewCustomizationsToTarget:target
+                                    withViews:views
+                                     delegate:self.viewCustomizationDelegate];
+
         NSDictionary* metrics = nil; //self.metrics;
         if (metrics == nil)
         {
@@ -316,6 +339,58 @@
         [self.delegate constraintSpecification:constraintSpecification
                          didInstallConstraints:nsLayoutConstraints
                                       inTarget:target];
+    }
+}
+
+#pragma mark - AKAViewCustomizationDelegate methods
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+       willBeAppliedToView:(id)view
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
+    {
+        [self.delegate viewCustomizations:customization
+                      willBeAppliedToView:view];
+    }
+}
+
+- (BOOL)viewCustomizations:(AKAViewCustomization *)customization
+         shouldSetProperty:(NSString*)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
+    {
+        result = [self.delegate viewCustomizations:customization
+                                 shouldSetProperty:name
+                                             value:oldValue
+                                                to:newValue];
+    }
+    return result;
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+            didSetProperty:(NSString *)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
+    {
+        [self.delegate viewCustomizations:customization
+                           didSetProperty:name
+                                    value:oldValue
+                                       to:newValue];
+    }
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customizations
+     haveBeenAppliedToView:(id)view
+{
+    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
+    {
+        [self.delegate viewCustomizations:customizations
+                    haveBeenAppliedToView:view];
     }
 }
 

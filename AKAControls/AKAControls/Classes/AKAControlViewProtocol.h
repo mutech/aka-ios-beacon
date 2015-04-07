@@ -9,28 +9,33 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "AKAControlViewBindingConfigurationProtocol.h"
+#import "AKAViewBindingConfiguration.h"
 
 @class AKAControl;
-@class AKACompositeControl;
-@class AKAControlViewBinding;
-@class AKAProperty;
 
 /**
- * ControlViews are typically UIViews, but they might also represent things like the
- * title of a UIViewController. Control views implement the
- * AKAControlBindingConfigurationProtocol.
- */
-@protocol AKAControlViewProtocol <AKAControlViewBindingConfigurationProtocol>
-
-/**
- * The type of binding that should be used to bind this view. Views typically should
- * or even have to implement the binding configuration required by the binding type.
+ * This protocol identifies an object as serving the role of a control view that can be
+ * bound as view to an instance of AKAControl or one of its sub classes.
  *
- * If this property value is nil, the default binding type is used
- * which will try to find the best match depending on the type of this view.
+ * A control view (an object conforming to this protocol) provides the <bindingConfiguration>
+ * required to establish the binding.
+ *
+ * ControlViews are typically UIViews, but they might also represent things like the
+ * title of a UIViewController.
  */
-//@optional
-@property(nonatomic, readonly) Class preferredBindingType;
+@protocol AKAControlViewProtocol
+
+@property (nonatomic, readonly) AKAViewBindingConfiguration* bindingConfiguration;
+
+@optional
+/**
+ * If implemented by the conforming class, this method is called whenever the
+ * control view binding to this instance is changed.
+ *
+ * @param oldBinding the old binding
+ * @param newBinding the current (new) binding
+ */
+- (void)viewBindingChangedFrom:(AKAControl*)oldBinding
+                            to:(AKAControl*)newBinding;
 
 @end

@@ -7,8 +7,8 @@
 //
 
 #import "AKASubviewsSpecification.h"
-#import <AKAControls/AKAThemableContainerView.h>
-#import <AKAControls/AKATheme.h>
+#import "AKAThemableContainerView.h"
+#import "AKATheme.h"
 
 @interface AKAThemableContainerView (Protected) <
     AKASubviewsSpecificationDelegate,
@@ -17,6 +17,8 @@
 
 #pragma mark - Configuration
 
+- (void)setupDefaultValues;
+
 + (AKASubviewsSpecification*)subviewsSpecification;
 
 + (NSDictionary*)builtinThemes;
@@ -24,5 +26,9 @@
 #pragma mark - Access
 
 - (NSDictionary*)viewsParticipatingInTheme;
+
+#pragma mark - Theme changes
+
+- (void)setNeedsApplySelectedTheme;
 
 @end

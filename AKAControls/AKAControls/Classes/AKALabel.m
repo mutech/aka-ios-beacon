@@ -7,77 +7,68 @@
 //
 
 #import "AKALabel.h"
-
-#import "AKAControl_Protected.h"
-#import "AKAControlViewBinding_Protected.h"
-#import "AKAProperty.h"
-
-@interface AKALabelControlViewBinding: AKAControlViewBinding
-
-#pragma mark - Convenience
-
-@property(nonatomic, readonly) AKALabel* label;
-
-@end
-
-@implementation AKALabelControlViewBinding
-
-#pragma mark - View Value Binding
-
-- (AKAProperty *)createViewValueProperty
-{
-    AKAProperty* result;
-    result = [AKAProperty propertyOfWeakTarget:self
-                                      getter:
-              ^id (id target)
-              {
-                  AKALabelControlViewBinding* binding = target;
-                  return binding.label.text;
-              }
-                                      setter:
-              ^(id target, id value)
-              {
-                  AKALabelControlViewBinding* binding = target;
-                  if ([value isKindOfClass:[NSString class]])
-                  {
-                      binding.label.text = value;
-                  }
-                  else
-                  {
-                      binding.label.text = [NSString stringWithFormat:@"%@", value];
-                  }
-              }
-                          observationStarter:
-              ^BOOL (id target)
-              {
-                  return YES;
-              }
-                          observationStopper:
-              ^BOOL (id target) {
-                  (void)target;
-                  return YES;
-              }];
-    return result;
-}
-
-#pragma mark - Convenience
-
-- (AKALabel *)label
-{
-    return (AKALabel*)self.view;
-}
-
-@end
-
-
-@interface AKALabel()
-@end
+#import "AKALabelBinding.h"
+#import "AKAControl.h"
 
 @implementation AKALabel
 
-- (Class)preferredBindingType
+@synthesize bindingConfiguration = _bindingConfiguration;
+
+- (AKAViewBindingConfiguration*)bindingConfiguration
 {
-    return [AKALabelControlViewBinding class];
+    if (_bindingConfiguration == nil)
+    {
+        _bindingConfiguration = AKALabelBindingConfiguration.new;
+    }
+    return _bindingConfiguration;
+}
+
+#pragma mark - Interface Builder Properties
+/// @name Interface Builder Properties
+
+- (NSString *)controlName
+{
+    return self.bindingConfiguration.controlName;
+}
+- (void)setControlName:(NSString *)controlName
+{
+    self.bindingConfiguration.controlName = controlName;
+}
+
+- (NSString *)role
+{
+    return self.bindingConfiguration.role;
+}
+- (void)setRole:(NSString *)role
+{
+    self.bindingConfiguration.role = role;
+}
+
+- (NSString *)valueKeyPath
+{
+    return self.bindingConfiguration.valueKeyPath;
+}
+- (void)setValueKeyPath:(NSString *)valueKeyPath
+{
+    self.bindingConfiguration.valueKeyPath = valueKeyPath;
+}
+
+- (NSString *)converterKeyPath
+{
+    return self.bindingConfiguration.converterKeyPath;
+}
+- (void)setConverterKeyPath:(NSString *)converterKeyPath
+{
+    self.bindingConfiguration.converterKeyPath = converterKeyPath;
+}
+
+- (NSString *)validatorKeyPath
+{
+    return self.bindingConfiguration.validatorKeyPath;
+}
+- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
+{
+    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
 }
 
 @end

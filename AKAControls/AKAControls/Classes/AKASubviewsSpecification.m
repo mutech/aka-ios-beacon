@@ -223,6 +223,10 @@
     {
         result = [superView viewWithTag:self.viewTag.integerValue];
     }
+    if (result == nil && [@"self" isEqualToString:self.name])
+    {
+        result = superView;
+    }
     return result;
 }
 
@@ -233,6 +237,8 @@
     BOOL result = NO;
 
     UIView* view = [self matchingViewInTarget:target];
+    BOOL viewIsTarget = (view == target && target != nil);
+
     BOOL viewCreatedByDelegate = NO;
     if (view == nil && [delegate respondsToSelector:@selector(subviewSpecificationItem:subviewNotFoundInTarget:createdView:)])
     {
@@ -273,23 +279,17 @@
 
         BOOL outletSpecified = self.outlet != nil;
         BOOL outletUsable = NO;
-        BOOL outletCorrectedByDelegate = NO;
         if (outletSpecified)
         {
             id outletValue = [self.outlet valueForTarget:target];
             outletUsable = outletValue == view;
             if (!outletUsable && [delegate respondsToSelector:@selector(subviewSpecificationItem:target:outlet:doesNotReferToView:)])
             {
-                outletCorrectedByDelegate = [delegate subviewSpecificationItem:self
-                                                                        target:target
-                                                                        outlet:self.outlet
-                                                            doesNotReferToView:view];
+                [delegate subviewSpecificationItem:self
+                                            target:target
+                                            outlet:self.outlet
+                                doesNotReferToView:view];
                 outletUsable = outletValue == view;
-                if (outletUsable && !outletCorrectedByDelegate)
-                {
-                    // it did correct it, let's be pedantic
-                    outletCorrectedByDelegate = YES;
-                }
             }
 
             if (!outletUsable && outletValue == nil && fixProblems)
@@ -300,7 +300,7 @@
             }
         }
 
-        BOOL viewIsIdentifiable = viewTagCorrect || outletUsable;
+        BOOL viewIsIdentifiable = viewTagCorrect || outletUsable || viewIsTarget;
         if (!viewIsIdentifiable)
         {
             result = NO;
@@ -309,7 +309,7 @@
                 [delegate subviewSpecificationItem:self createdView:view willNotBeFoundInTarget:target];
             }
         }
-        else
+        else if (!viewIsTarget)
         {
             BOOL viewIsDescendant = [view isDescendantOfView:target];
             BOOL viewAddedByDelegate = NO;

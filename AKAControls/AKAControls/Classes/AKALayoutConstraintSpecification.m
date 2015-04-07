@@ -6,7 +6,7 @@
 #import "AKAThemeLayout.h"
 #import "AKATheme.h"
 #import "AKALayoutConstraintSpecification.h"
-#import <AKACommons/AKAErrors.h>
+#import "AKAControlsErrors_Internal.h"
 
 #pragma mark - Internal Class Cluster Interfaces
 #pragma mark -
@@ -48,9 +48,18 @@
 
 @interface AKALayoutConstraintSpecification ()
 
+/**
+ * Initializes the constraint specification with the specified target.
+ *
+ * @note The initializer is intended to be used by implementing classes only. Please use the factory methods to create constraint specifications instead.
+ *
+ * @param target a UIView instance or a name referencing a UIView in a views dictionary.
+ *
+ * @return a constraints specification with a target reference
+ */
 - (instancetype)initWithTarget:(id)target;
-@property(nonatomic) NSString* targetName;
-@property(nonatomic, weak) UIView* targetView;
+
+@property(nonatomic) id target;
 
 @end
 
@@ -210,11 +219,16 @@
                                delegate:(NSObject<AKALayoutConstraintSpecificationDelegate>*)delegate
 {
     NSArray* constraints = nil;
-    UIView* effectiveTarget = self.targetView;
-    if (effectiveTarget == nil && self.targetName.length > 0)
+    UIView* effectiveTarget = nil;
+    if ([self.target isKindOfClass:[UIView class]])
     {
-        effectiveTarget = views[self.targetName];
+        effectiveTarget = self.target;
     }
+    else if ([self.target isKindOfClass:[NSString class]])
+    {
+        effectiveTarget = views[self.target];
+    }
+
     if (effectiveTarget == nil)
     {
         effectiveTarget = defaultTarget;
@@ -242,33 +256,27 @@
     return constraints;
 }
 
-- (id)target
-{
-    return self.targetView ? self.targetView : self.targetName;
-}
-
 - (void)setTarget:(id)target
 {
-    if (target == nil)
-    {
-        self.targetName = nil;
-        self.targetView = nil;
-    }
-    else if ([target isKindOfClass:[NSString class]])
-    {
-        self.targetView = nil;
-        self.targetName = target;
-    }
-    else if ([target isKindOfClass:[UIView class]])
-    {
-        self.targetName = nil;
-        self.targetView = target;
-    }
+    NSParameterAssert(target == nil ||
+                      [target isKindOfClass:[UIView class]] ||
+                      [target isKindOfClass:[NSString class]]);
+    _target = target;
 }
 
 #pragma mark - AKALayoutConstraintSpecificationDelegate support
 
-
+/**
+ * Determines if the constraint specification should install the specified constraints
+ * in the specified target view using the specified delegate and the instance delegate
+ * delegate in this order.
+ *
+ * @param constraints the constraints to be installed
+ * @param target the target view
+ * @param delegate the primary delegate used to determine the result
+ *
+ * @return YES if the constraints should be installed.
+ */
 - (BOOL)shouldInstallConstraints:(NSArray*)constraints
                         inTarget:(UIView*)target
                         delegate:(NSObject<AKALayoutConstraintSpecificationDelegate>*)delegate
@@ -289,6 +297,14 @@
     return result;
 }
 
+/**
+ * Announces to the specified and the instance delegate that the specified constraints will
+ * be installed in the specified target
+ *
+ * @param constraints the constraints that will be installed
+ * @param target the target view
+ * @param delegate the delegate
+ */
 - (void)willInstallConstraints:(NSArray*)constraints
                       inTarget:(UIView*)target
                       delegate:(NSObject<AKALayoutConstraintSpecificationDelegate>*)delegate
@@ -307,6 +323,14 @@
     }
 }
 
+/**
+ * Announces to the specified and the instance delegate that the specified constraints have
+ * been installed in the specified target
+ *
+ * @param constraints the constraints that will be installed
+ * @param target the target view
+ * @param delegate the delegate
+ */
 - (void)didInstallConstraints:(NSArray*)constraints
                      inTarget:(UIView*)target
                      delegate:(NSObject<AKALayoutConstraintSpecificationDelegate>*)delegate
@@ -327,6 +351,13 @@
 
 #pragma mark - Implementation
 
+/**
+ * Resolves a layout relation specification to an NSLayoutRelation constant.
+ *
+ * @param relation nil (defaults to ==), an NSString >=, <=, == or an NSNumber containing a NSLayoutRelation constant.
+ *
+ * @return the NSLayoutRelation value corresponding to the relation specification
+ */
 + (NSLayoutRelation)resolveConstraintRelation:(id)relation
 {
     NSLayoutRelation result = NSLayoutRelationEqual;
@@ -342,16 +373,16 @@
         }
         else if (![@"==" isEqualToString:relation])
         {
-            // TODO: error handling
+            [AKAControlsErrors invalidLayoutRelationSpecification:relation];
         }
     }
     else if ([relation isKindOfClass:[NSNumber class]])
     {
         result = ((NSNumber*)relation).unsignedIntegerValue;
     }
-    else
+    else if (relation != nil)
     {
-        // TODO: error handling
+        [AKAControlsErrors invalidLayoutRelationSpecification:relation];
     }
     return result;
 }
@@ -363,7 +394,14 @@
 
 @interface AKALayoutConstraintSpecificationVisualFormat ()
 
+/**
+ * The visual format specifying the constraints (see NSLayoutConstraint)
+ */
 @property(nonatomic) NSString* format;
+
+/**
+ * Options (see NSLayoutConstraint).
+ */
 @property(nonatomic) NSLayoutFormatOptions options;
 
 @end

@@ -7,6 +7,7 @@
 #import "AKATheme.h"
 #import "AKAViewCustomization.h"
 #import "AKAThemeViewApplicability.h"
+#import "AKAControlsErrors.h"
 
 @interface AKAViewCustomization ()
 
@@ -205,6 +206,147 @@
         result = [target valueForKey:self.viewKey];
     }
     return result;
+}
+
+@end
+
+@interface AKAViewCustomizationContainer() <AKAViewCustomizationDelegate> {
+    NSMutableArray* _viewCustomizations;
+}
+@end
+
+@implementation AKAViewCustomizationContainer
+
+#pragma mark - Initialization
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _viewCustomizations = NSMutableArray.new;
+    }
+    return self;
+}
+
+#pragma mark - Configuration
+
+- (NSObject<AKAViewCustomizationDelegate> *)viewCustomizationDelegate
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+#pragma mark - Application
+
+- (void)applyViewCustomizationsToTarget:(UIView*)target
+                              withViews:(NSDictionary*)views
+                               delegate:(NSObject<AKAThemeDelegate>*)delegate
+{
+    for (AKAViewCustomization * customization in self.viewCustomizations)
+    {
+        [customization applyToViews:views withContext:target delegate:delegate];
+    }
+}
+
+
+#pragma mark - Adding View Customizations
+
+- (NSArray *)viewCustomizations
+{
+    return [NSArray arrayWithArray:_viewCustomizations];
+}
+
+- (NSUInteger)addViewCustomizationsWithArrayOfDictionaries:(NSArray*)specifications
+{
+    NSUInteger count = 0;
+    for (id spec in specifications)
+    {
+        if ([spec isKindOfClass:[NSDictionary class]])
+        {
+            id vc = [self addViewCustomizationWithDictionary:spec];
+            if (vc != nil)
+            {
+                ++count;
+            }
+            else
+            {
+                // TODO: error handling
+            }
+        }
+        else
+        {
+            // TODO: error handling
+        }
+    }
+    return count;
+}
+
+- (AKAViewCustomization *)addViewCustomizationWithDictionary:(NSDictionary*)specification
+{
+    AKAViewCustomization * result = [[AKAViewCustomization alloc] initWithDictionary:specification];
+    if (result != nil)
+    {
+        [self addViewCustomization:result];
+    }
+    return result;
+}
+
+- (void)addViewCustomization:(AKAViewCustomization *)viewCustomization
+{
+    [_viewCustomizations addObject:viewCustomization];
+    viewCustomization.delegate = self;
+}
+
+#pragma mark - AKAViewCustomizationDelegate methods
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+       willBeAppliedToView:(id)view
+{
+    if ([self.viewCustomizationDelegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
+    {
+        [self.viewCustomizationDelegate viewCustomizations:customization
+                      willBeAppliedToView:view];
+    }
+}
+
+- (BOOL)viewCustomizations:(AKAViewCustomization *)customization
+         shouldSetProperty:(NSString*)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    BOOL result = YES;
+    if ([self.viewCustomizationDelegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
+    {
+        result = [self.viewCustomizationDelegate viewCustomizations:customization
+                                                  shouldSetProperty:name
+                                                                value:oldValue
+                                                to:newValue];
+    }
+    return result;
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customization
+            didSetProperty:(NSString *)name
+                     value:(id)oldValue
+                        to:(id)newValue
+{
+    if ([self.viewCustomizationDelegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
+    {
+        [self.viewCustomizationDelegate viewCustomizations:customization
+                           didSetProperty:name
+                                    value:oldValue
+                                       to:newValue];
+    }
+}
+
+- (void)viewCustomizations:(AKAViewCustomization *)customizations
+     haveBeenAppliedToView:(id)view
+{
+    if ([self.viewCustomizationDelegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
+    {
+        [self.viewCustomizationDelegate viewCustomizations:customizations
+                    haveBeenAppliedToView:view];
+    }
 }
 
 @end

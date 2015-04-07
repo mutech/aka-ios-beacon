@@ -13,36 +13,68 @@
 
 @implementation AKATextEditorControlView
 
-- (BOOL)subviewSpecificationItem:(AKASubviewsSpecificationItem *)specification
-         subviewNotFoundInTarget:(UIView *)containerView
-                     createdView:(out UIView *__autoreleasing *)createdView
+@synthesize autoActivate = _autoActivate;
+@synthesize KBActivationSequence = _KBActivationSequence;
+@synthesize liveModelUpdates = _liveModelUpdates;
+
+#pragma mark - AKATextFieldControlViewBindingConfigurationProtocol
+
+- (void)setupDefaultValues
 {
-    BOOL result = NO;
-    if (containerView == self)
+    [super setupDefaultValues];
+    self.liveModelUpdates = NO;
+    self.autoActivate = YES;
+    self.KBActivationSequence = YES;
+}
+
+- (void)setAutoActivate:(BOOL)autoActivate
+{
+    _autoActivate = autoActivate;
+    if ([self.editor isKindOfClass:[AKATextField class]])
     {
-        if (specification.requirements.requirePresent)
-        {
-            if ([@"editor" isEqualToString:specification.name])
-            {
-                AKATextField* editor = [[AKATextField alloc] initWithFrame:CGRectZero];
-                editor.translatesAutoresizingMaskIntoConstraints = NO;
-
-                editor.valueKeyPath = self.editorBinding;
-                editor.role = specification.name;
-
-                editor.text = @"";
-
-                *createdView = editor;
-                result = YES;
-            }
-            else
-            {
-                result = [super subviewSpecificationItem:specification
-                                 subviewNotFoundInTarget:containerView
-                                             createdView:createdView];
-            }
-        }
+        ((AKATextField*)self.editor).autoActivate = autoActivate;
     }
+}
+
+- (void)setKBActivationSequence:(BOOL)KBActivationSequence
+{
+    _KBActivationSequence = KBActivationSequence;
+    if ([self.editor isKindOfClass:[AKATextField class]])
+    {
+        ((AKATextField*)self.editor).KBActivationSequence = KBActivationSequence;
+    }
+}
+
+- (void)setLiveModelUpdates:(BOOL)liveModelUpdates
+{
+    _liveModelUpdates = liveModelUpdates;
+    if ([self.editor isKindOfClass:[AKATextField class]])
+    {
+        ((AKATextField*)self.editor).liveModelUpdates = liveModelUpdates;
+    }
+}
+
+#pragma mark - AKAEditorControlView overrides
+
+- (BOOL)autocreateEditor:(out UIView *__autoreleasing *)createdView
+{
+    AKATextField* editor = [[AKATextField alloc] initWithFrame:CGRectZero];
+    BOOL result = editor != nil;
+
+    if (result)
+    {
+        editor.valueKeyPath = self.valueKeyPath;
+        editor.autoActivate = self.autoActivate;
+        editor.KBActivationSequence = self.KBActivationSequence;
+        editor.liveModelUpdates = self.liveModelUpdates;
+        editor.validatorKeyPath = self.validatorKeyPath;
+        editor.converterKeyPath = self.converterKeyPath;
+        
+        editor.text = @"";
+
+        *createdView = editor;
+    }
+
     return result;
 }
 

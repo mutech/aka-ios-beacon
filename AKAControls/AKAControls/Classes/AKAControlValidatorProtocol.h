@@ -10,6 +10,6 @@
 
 @protocol AKAControlValidatorProtocol <NSObject>
 
-- (BOOL)validateModelValue:(id)modelValue error:(NSError*)error;
+- (BOOL)validateModelValue:(id)modelValue error:(NSError**)error;
 
 @end

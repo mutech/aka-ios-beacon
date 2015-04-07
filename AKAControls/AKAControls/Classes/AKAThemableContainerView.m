@@ -22,6 +22,8 @@
 
 @implementation AKAThemableContainerView
 
+@synthesize themeName = _themeName;
+
 #pragma mark - Initialization
 
 - (instancetype)init
@@ -89,7 +91,6 @@
         [self setNeedsUpdateConstraints];
     }
 }
- 
 
 - (void)modifyViewHierarchy:(void(^)())block
 {
@@ -106,7 +107,7 @@
     self.subviewsNeedingUpdateConstraintsFromLayoutSubviews = NSMutableSet.new;
     if (self.themeName == nil)
     {
-        self.themeName = AKAThemeNameNone;
+        //self.themeName = AKAThemeNameNone;
     }
     self.IBEnablePreview = NO;
 }
@@ -135,6 +136,11 @@
     return [[self.class subviewsSpecification] validateTarget:self
                                                  withDelegate:self
                                                   fixProblems:YES];
+}
+
+- (NSString*)themeName
+{
+    return _themeName;
 }
 
 - (void)setThemeName:(NSString *)themeName
@@ -253,15 +259,15 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    /*
+    ///*
     NSSet* needySubviews = [NSSet setWithSet:self.subviewsNeedingUpdateConstraintsFromLayoutSubviews];
     [self.subviewsNeedingUpdateConstraintsFromLayoutSubviews removeAllObjects];
     for (UIView* view in needySubviews)
     {
-        //[view setNeedsUpdateConstraints];
-        //[view updateConstraintsIfNeeded];
+        [view setNeedsUpdateConstraints];
+        [view updateConstraintsIfNeeded];
     }
-     */
+     //*/
 }
 
 @end

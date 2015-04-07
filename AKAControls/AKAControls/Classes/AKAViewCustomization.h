@@ -31,7 +31,7 @@
 
 @end
 
-@interface AKAViewCustomization : NSObject
+@interface AKAViewCustomization: NSObject
 
 #pragma mark Initialization
 
@@ -92,5 +92,26 @@
 - (BOOL)applyToView:(id)view
         withContext:(id)context
            delegate:(id<AKAViewCustomizationDelegate>)delegate;
+
+@end
+
+@interface AKAViewCustomizationContainer: NSObject
+
+@property(nonatomic, readonly) NSObject<AKAViewCustomizationDelegate>* viewCustomizationDelegate;
+@property(nonatomic, readonly) NSArray* viewCustomizations;
+
+#pragma mark - Adding View Customizations
+
+- (NSUInteger)addViewCustomizationsWithArrayOfDictionaries:(NSArray*)specifications;
+- (AKAViewCustomization *)addViewCustomizationWithDictionary:(NSDictionary*)specification
+;
+- (void)addViewCustomization:(AKAViewCustomization *)viewCustomization;
+
+
+#pragma mark - Application
+
+- (void)applyViewCustomizationsToTarget:(UIView*)target
+                              withViews:(NSDictionary*)views
+                               delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate;
 
 @end

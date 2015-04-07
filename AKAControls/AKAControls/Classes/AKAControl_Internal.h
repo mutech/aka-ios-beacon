@@ -16,18 +16,6 @@
 
 #pragma mark - Binding
 
-- (void)setViewBinding:(AKAControlViewBinding *)viewBinding;
-
-#pragma mark - Change Tracking
-
-- (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue;
-
-#pragma mark - Activation
-
-// These are called by the control binding:
-
-- (void)didActivate;
-
-- (void)didDeactivate;
+- (void)setViewBinding:(AKAViewBinding *)viewBinding;
 
 @end

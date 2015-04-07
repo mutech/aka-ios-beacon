@@ -15,7 +15,7 @@
                    error:(NSError**)error;
 
 - (BOOL)convertModelValue:(id)modelValue
-              toViewValue:(id)viewValueStorage
-                    error:(NSError*)error;
+              toViewValue:(id*)viewValueStorage
+                    error:(NSError**)error;
 
 @end

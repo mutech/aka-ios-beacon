@@ -267,110 +267,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Editor Controls Demo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-sB-4fl">
-                                <rect key="frame" x="104" y="72" width="165.5" height="20.5"/>
+                                <rect key="frame" x="105" y="72" width="165.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKAEditorControlView">
-                                <rect key="frame" x="16" y="100" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HtN-qR-6bv">
-                                        <rect key="frame" x="4" y="20" width="60" height="17"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="6qw-TF-gQY"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TiQ-4b-WNI" customClass="AKATextField">
-                                        <rect key="frame" x="68" y="8" width="267" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qK-QA-Gif">
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="5qK-QA-Gif" firstAttribute="top" secondItem="TiQ-4b-WNI" secondAttribute="bottom" constant="3" id="EEw-Gc-3FE"/>
-                                    <constraint firstAttribute="bottom" secondItem="5qK-QA-Gif" secondAttribute="bottom" id="FTt-YM-CWr"/>
-                                    <constraint firstItem="TiQ-4b-WNI" firstAttribute="baseline" secondItem="HtN-qR-6bv" secondAttribute="baseline" id="FfF-aC-Ip8"/>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="Geh-Pk-tWK"/>
-                                    <constraint firstAttribute="trailing" secondItem="TiQ-4b-WNI" secondAttribute="trailing" constant="8" id="Hkm-4b-bjs"/>
-                                    <constraint firstItem="TiQ-4b-WNI" firstAttribute="leading" secondItem="5qK-QA-Gif" secondAttribute="leading" id="IZh-5a-Qq5"/>
-                                    <constraint firstItem="TiQ-4b-WNI" firstAttribute="leading" secondItem="HtN-qR-6bv" secondAttribute="trailing" constant="4" id="Mfb-Jn-gBe"/>
-                                    <constraint firstItem="TiQ-4b-WNI" firstAttribute="top" secondItem="L9H-ls-c3J" secondAttribute="top" constant="8" id="O1u-Ck-CHj"/>
-                                    <constraint firstItem="HtN-qR-6bv" firstAttribute="leading" secondItem="L9H-ls-c3J" secondAttribute="leading" constant="4" id="lL7-Qd-oki"/>
-                                    <constraint firstItem="TiQ-4b-WNI" firstAttribute="trailing" secondItem="5qK-QA-Gif" secondAttribute="trailing" id="rRj-Jn-p1E"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="TiQ-4b-WNI" id="SIS-Oj-dau"/>
-                                    <outlet property="label" destination="HtN-qR-6bv" id="YXz-zI-kdr"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="161" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone number" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K5A-Dz-esg">
-                                        <rect key="frame" x="4" y="3" width="60" height="33.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="5LU-Op-Vn4"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eco-nh-s8c" customClass="AKATextField">
-                                        <rect key="frame" x="68" y="8" width="267" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.phone"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="569-5f-WJh">
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="569-5f-WJh" firstAttribute="top" secondItem="eco-nh-s8c" secondAttribute="bottom" constant="3" id="EzF-yE-GM9"/>
-                                    <constraint firstItem="K5A-Dz-esg" firstAttribute="leading" secondItem="hDs-lv-70o" secondAttribute="leading" constant="4" id="GcS-AW-drS"/>
-                                    <constraint firstItem="eco-nh-s8c" firstAttribute="top" secondItem="hDs-lv-70o" secondAttribute="top" constant="8" id="K7f-vy-341"/>
-                                    <constraint firstAttribute="bottom" secondItem="569-5f-WJh" secondAttribute="bottom" id="LDV-Jg-3ZK"/>
-                                    <constraint firstItem="eco-nh-s8c" firstAttribute="baseline" secondItem="K5A-Dz-esg" secondAttribute="baseline" id="Qf1-Ez-OK5"/>
-                                    <constraint firstItem="eco-nh-s8c" firstAttribute="leading" secondItem="K5A-Dz-esg" secondAttribute="trailing" constant="4" id="SoK-Mr-TyR"/>
-                                    <constraint firstItem="eco-nh-s8c" firstAttribute="trailing" secondItem="569-5f-WJh" secondAttribute="trailing" id="ZAv-Da-nBe"/>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="piL-fX-11H"/>
-                                    <constraint firstAttribute="trailing" secondItem="eco-nh-s8c" secondAttribute="trailing" constant="8" id="zHB-Zp-DWx"/>
-                                    <constraint firstItem="eco-nh-s8c" firstAttribute="leading" secondItem="569-5f-WJh" secondAttribute="leading" id="ztO-1Y-v6P"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="eco-nh-s8c" id="aQO-PR-beY"/>
-                                    <outlet property="errorMessageLabel" destination="569-5f-WJh" id="hic-iS-UBh"/>
-                                    <outlet property="label" destination="K5A-Dz-esg" id="fZB-Av-OmE"/>
-                                </connections>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eag-lP-JCc">
                                 <rect key="frame" x="140" y="617" width="94" height="30"/>
                                 <state key="normal" title="Switch theme">
@@ -380,130 +281,61 @@
                                     <action selector="switchTheme:" destination="o5i-N2-XrK" eventType="touchUpInside" id="b8Q-QJ-tZO"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f7B-eL-7l6" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="284" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live updates" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GzT-Fq-frj">
-                                        <rect key="frame" x="4" y="4" width="60" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="YmV-g9-c99"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fmF-sH-Y5S" customClass="AKASwitch">
-                                        <rect key="frame" x="84" y="8" width="51" height="31"/>
-                                    </switch>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpK-IT-urk">
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="SpK-IT-urk" firstAttribute="leading" secondItem="f7B-eL-7l6" secondAttribute="leading" constant="68" id="3gp-bE-MeL"/>
-                                    <constraint firstItem="fmF-sH-Y5S" firstAttribute="leading" secondItem="GzT-Fq-frj" secondAttribute="trailing" constant="20" id="4tS-6D-CHk"/>
-                                    <constraint firstItem="SpK-IT-urk" firstAttribute="top" secondItem="GzT-Fq-frj" secondAttribute="bottom" constant="1" id="BGP-Ko-E6f"/>
-                                    <constraint firstItem="GzT-Fq-frj" firstAttribute="top" secondItem="f7B-eL-7l6" secondAttribute="top" constant="4" id="DfL-av-8ML"/>
-                                    <constraint firstItem="fmF-sH-Y5S" firstAttribute="top" secondItem="f7B-eL-7l6" secondAttribute="top" constant="8" id="ImP-MF-fRj"/>
-                                    <constraint firstItem="SpK-IT-urk" firstAttribute="top" secondItem="fmF-sH-Y5S" secondAttribute="bottom" constant="6" id="Mje-g5-7xV"/>
-                                    <constraint firstAttribute="bottom" secondItem="SpK-IT-urk" secondAttribute="bottom" constant="8" id="bvX-rL-drv"/>
-                                    <constraint firstItem="GzT-Fq-frj" firstAttribute="leading" secondItem="f7B-eL-7l6" secondAttribute="leading" constant="4" id="cZT-0s-rjb"/>
-                                    <constraint firstAttribute="trailing" secondItem="SpK-IT-urk" secondAttribute="trailing" constant="8" id="tWz-ua-akv"/>
-                                </constraints>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATextEditorControlView">
+                                <rect key="frame" x="16" y="100" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="fmF-sH-Y5S" id="nCu-p7-LqC"/>
-                                    <outlet property="errorMessageLabel" destination="SpK-IT-urk" id="5EY-kq-sqd"/>
-                                    <outlet property="label" destination="GzT-Fq-frj" id="Txb-Sb-gd7"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATestContainerView">
-                                <rect key="frame" x="16" y="222" width="343" height="53"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10D-jy-SOh">
-                                        <rect key="frame" x="4" y="3" width="60" height="33.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="O8S-lo-mg6"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rZJ-Dz-urg" customClass="AKATextField">
-                                        <rect key="frame" x="68" y="8" width="267" height="42"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E20-KZ-nWZ">
-                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                        <color key="textColor" red="0.84313732389999996" green="0.13725490870000001" blue="0.20392158630000001" alpha="1" colorSpace="deviceRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="trailing" secondItem="E20-KZ-nWZ" secondAttribute="trailing" id="29I-1e-b9i"/>
-                                    <constraint firstAttribute="trailing" secondItem="rZJ-Dz-urg" secondAttribute="trailing" constant="8" id="Opc-ML-fVC"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="E20-KZ-nWZ" secondAttribute="leading" id="dNi-RH-ApA"/>
-                                    <constraint firstAttribute="bottom" secondItem="E20-KZ-nWZ" secondAttribute="bottom" id="jIy-kf-xfd"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="top" constant="8" id="lbd-94-cav"/>
-                                    <constraint firstItem="10D-jy-SOh" firstAttribute="leading" secondItem="v77-a2-mYd" secondAttribute="leading" constant="4" id="m1o-0v-hO9"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="leading" secondItem="10D-jy-SOh" secondAttribute="trailing" constant="4" id="nTV-HY-XZi"/>
-                                    <constraint firstItem="E20-KZ-nWZ" firstAttribute="top" secondItem="rZJ-Dz-urg" secondAttribute="bottom" constant="3" id="p42-o6-BuQ"/>
-                                    <constraint firstItem="rZJ-Dz-urg" firstAttribute="baseline" secondItem="10D-jy-SOh" secondAttribute="baseline" id="q7q-yC-trV"/>
-                                    <constraint firstAttribute="height" constant="53" placeholder="YES" id="zN7-ut-cLa"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="NO"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="editor" destination="rZJ-Dz-urg" id="aMy-0Y-JMY"/>
-                                    <outlet property="errorMessageLabel" destination="E20-KZ-nWZ" id="jBV-RF-Sgo"/>
-                                    <outlet property="label" destination="10D-jy-SOh" id="Byi-lW-9RT"/>
-                                </connections>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ObJ-bY-wXn" customClass="AKATextEditorControlView">
-                                <rect key="frame" x="16" y="345" width="343" height="34.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="tableview"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="editorBinding" value="model.name"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Label text"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATextEditorControlView">
+                                <rect key="frame" x="16" y="153.5" width="343" height="59.5"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.phone"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Phone number"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="validatorKeyPath" value="phoneValidator"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="f7B-eL-7l6" customClass="AKASwitchEditorControlView">
+                                <rect key="frame" x="16" y="275.5" width="343" height="47"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Live updates"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATextEditorControlView">
+                                <rect key="frame" x="16" y="221.5" width="343" height="46"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Email address"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="L9H-ls-c3J" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="170-UT-KNl"/>
-                            <constraint firstItem="eag-lP-JCc" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ObJ-bY-wXn" secondAttribute="bottom" constant="20" id="5AH-LR-TuL"/>
-                            <constraint firstItem="hDs-lv-70o" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="7jN-2e-mGn"/>
-                            <constraint firstItem="L9H-ls-c3J" firstAttribute="top" secondItem="WX9-sB-4fl" secondAttribute="bottom" constant="7.5" id="CWk-SP-shL"/>
-                            <constraint firstItem="v77-a2-mYd" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="EQG-Od-3gw"/>
-                            <constraint firstItem="v77-a2-mYd" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="F5V-ZD-Hnb"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="leading" secondItem="v77-a2-mYd" secondAttribute="leading" id="Nzn-3f-8BD"/>
-                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="top" secondItem="f7B-eL-7l6" secondAttribute="bottom" constant="8" id="Osg-lF-3fZ"/>
-                            <constraint firstAttribute="centerX" secondItem="WX9-sB-4fl" secondAttribute="centerX" id="Pqc-pa-IkO"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="bottom" constant="9" id="TRt-f2-5lr"/>
-                            <constraint firstItem="L9H-ls-c3J" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="aNh-K3-Q4q"/>
-                            <constraint firstItem="hDs-lv-70o" firstAttribute="top" secondItem="L9H-ls-c3J" secondAttribute="bottom" constant="8" id="cYD-LR-kdf"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="trailing" secondItem="v77-a2-mYd" secondAttribute="trailing" id="etn-hU-nub"/>
-                            <constraint firstAttribute="centerX" secondItem="eag-lP-JCc" secondAttribute="centerX" id="fvc-QY-fDU"/>
-                            <constraint firstItem="WX9-sB-4fl" firstAttribute="top" secondItem="m9L-Eh-0be" secondAttribute="bottom" constant="8" id="gpr-WM-lWn"/>
-                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="jF1-3V-WxX"/>
-                            <constraint firstItem="v77-a2-mYd" firstAttribute="top" secondItem="hDs-lv-70o" secondAttribute="bottom" constant="8" id="jg7-YK-p6e"/>
-                            <constraint firstItem="hDs-lv-70o" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="rfo-pc-QCN"/>
-                            <constraint firstItem="ObJ-bY-wXn" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="vQm-aX-Ev7"/>
-                            <constraint firstItem="t27-kV-h6x" firstAttribute="top" secondItem="eag-lP-JCc" secondAttribute="bottom" constant="20" id="vXX-0n-ms8"/>
+                            <constraint firstItem="v77-a2-mYd" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="07e-sD-nKx"/>
+                            <constraint firstAttribute="centerX" secondItem="WX9-sB-4fl" secondAttribute="centerX" id="0vM-nS-gL5"/>
+                            <constraint firstItem="t27-kV-h6x" firstAttribute="top" secondItem="eag-lP-JCc" secondAttribute="bottom" constant="20" id="IrH-GH-1f6"/>
+                            <constraint firstItem="L9H-ls-c3J" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="Oyi-nN-Dvp"/>
+                            <constraint firstAttribute="centerX" secondItem="eag-lP-JCc" secondAttribute="centerX" id="QXh-ZI-WBC"/>
+                            <constraint firstItem="v77-a2-mYd" firstAttribute="top" secondItem="hDs-lv-70o" secondAttribute="bottom" constant="8" id="Znp-s6-x98"/>
+                            <constraint firstItem="v77-a2-mYd" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="a9e-aw-H4S"/>
+                            <constraint firstItem="hDs-lv-70o" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="aFk-1P-mrL"/>
+                            <constraint firstItem="hDs-lv-70o" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="bfx-XJ-rg5"/>
+                            <constraint firstItem="hDs-lv-70o" firstAttribute="top" secondItem="L9H-ls-c3J" secondAttribute="bottom" constant="8" id="ddK-so-6hF"/>
+                            <constraint firstItem="WX9-sB-4fl" firstAttribute="top" secondItem="m9L-Eh-0be" secondAttribute="bottom" constant="8" id="dkO-lu-Ipp"/>
+                            <constraint firstItem="f7B-eL-7l6" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="e53-Jc-8Uj"/>
+                            <constraint firstItem="L9H-ls-c3J" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="h6p-P8-Yfk"/>
+                            <constraint firstItem="f7B-eL-7l6" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="qwj-Yg-Vi1"/>
+                            <constraint firstItem="L9H-ls-c3J" firstAttribute="top" secondItem="WX9-sB-4fl" secondAttribute="bottom" constant="7.5" id="sJJ-Ki-FJa"/>
+                            <constraint firstItem="f7B-eL-7l6" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="bottom" constant="8" id="tOo-CB-HhA"/>
                         </constraints>
                     </view>
                     <connections>

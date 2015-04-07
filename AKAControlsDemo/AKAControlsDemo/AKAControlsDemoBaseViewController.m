@@ -22,65 +22,25 @@
 @property(nonatomic) NSMutableDictionary* model;
 @property(nonatomic) AKACompositeControl* form;
 
-@property (nonatomic) IBOutletCollection(AKATestContainerView) NSArray* themableViews;
+@property(nonatomic) IBOutletCollection(AKATestContainerView) NSArray* themableViews;
+@property(nonatomic) NSArray* themeNames;
+@property(nonatomic) NSUInteger currentThemeIndex;
+@end
 
+@interface PhoneNumberValidator: NSObject<AKAControlValidatorProtocol>
 @end
 
 @implementation AKAControlsDemoBaseViewController
-
-#pragma mark - DEBUGGING
-
-- (NSSet*)propertyNamesOfObject:(id<NSObject>)object
-{
-    NSMutableSet* result = NSMutableSet.new;
-    unsigned int count = 0;
-    objc_property_t *props = class_copyPropertyList([object class], &count);
-    for (int i=0; i < count; ++i) {
-        NSString* name = [NSString stringWithUTF8String:property_getName(props[i])];
-        [result addObject:name];
-    }
-    return result;
-}
-
-- (void)enumerateDifferencesBetween:(NSObject*)object1
-                                and:(NSObject*)object2
-                         usingBlock:(BOOL(^)(NSString* property, id value1, id value2, BOOL* stop))block
-{
-    NSSet* properties = nil;
-    {
-        NSSet* properties1 = [self propertyNamesOfObject:object1];
-        NSSet* properties2 = [self propertyNamesOfObject:object2];
-        NSMutableSet* commonProperties = [NSMutableSet setWithSet:properties1];
-        [commonProperties intersectSet:properties2];
-        properties = commonProperties;
-    }
-
-    [properties enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-        NSString* propertyName = (NSString*)obj;
-        id value1 = [object1 valueForKey:propertyName];
-        id value2 = [object2 valueForKey:propertyName];
-        BOOL equal = NO;
-        if ([value1 isKindOfClass:[NSObject class]] && [value2 isKindOfClass:[NSObject class]])
-        {
-            equal = [(NSObject*)value1 isEqual:value2];
-        }
-        else
-        {
-            equal = (value1 == value2);
-        }
-
-        if (!equal)
-        {
-            block(propertyName, value1, value2, stop);
-        }
-    }];
-}
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.themeNames = @[ @"default", @"tableview" ];
+    self.currentThemeIndex = 0;
+
     [self initializeModel];
     self.form = [AKACompositeControl controlWithDataContext:self];
     [self.form addControlsForControlViewsInViewHierarchy:self.view];
@@ -111,24 +71,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - ViewModel
+
+- (PhoneNumberValidator*)phoneValidator
+{
+    return PhoneNumberValidator.new;
+}
+
 #pragma mark - Theme switcher
 
 - (IBAction)switchTheme:(id)sender
 {
+    self.currentThemeIndex = (self.currentThemeIndex + 1) % self.themeNames.count;
+    NSString* themeName = self.themeNames[self.currentThemeIndex];
     for (AKATestContainerView* view in self.themableViews)
     {
-        if ([@"none" isEqualToString:view.themeName] || view.themeName.length == 0)
-        {
-            view.themeName = @"default";
-        }
-        else if ([@"default" isEqualToString:view.themeName])
-        {
-            view.themeName = @"tableview";
-        }
-        else
-        {
-            view.themeName = @"none";
-        }
+        view.themeName = themeName;
         [UIView animateWithDuration:.3
                               delay:0
                             options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews
@@ -139,7 +97,6 @@
             [self.view layoutIfNeeded];
         }
                          completion:nil];
-
     }
 }
 
@@ -197,5 +154,39 @@
                      }];
 }
 
+
+@end
+
+@implementation PhoneNumberValidator
+
+- (BOOL)validateModelValue:(id)modelValue error:(NSError *__autoreleasing *)error
+{
+    BOOL result = YES;
+    NSString* message = nil;
+    if ([modelValue isKindOfClass:[NSString class]])
+    {
+        NSString* text = modelValue;
+        text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        if (text.length > 0)
+        {
+            if (![text hasPrefix:@"+"])
+            {
+                result = NO;
+                message = @"Telefonnummern müssen mit '+' beginnen (z.B.: '+49...')";
+            }
+        }
+    }
+    else
+    {
+        result = NO;
+        message = [NSString stringWithFormat:@"Ungúltiger Datentyp: %@ - benötige einen Text (NSString)", NSStringFromClass([modelValue class])];
+    }
+    if (!result && message.length > 0 && error != nil)
+    {
+        *error = [NSError errorWithDomain:@"Demo" code:1 userInfo:@{ NSLocalizedDescriptionKey: message }];
+    }
+    return result;
+}
 
 @end

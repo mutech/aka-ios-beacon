@@ -7,6 +7,8 @@
 //
 
 #import "AKAProperty.h"
+#import "AKALog.h"
+#import "NSString+AKATools.h"
 
 #import "AKAErrors.h"
 
@@ -161,15 +163,77 @@
     }
 }
 
+- (BOOL)resolveProperty:(out AKAProperty**)propertyStorage
+             andKeyPath:(out NSString**)keyPathStorage
+     forExtendedKeyPath:(out NSString*)keyPath
+{
+    BOOL result = YES;
+    if ([keyPath hasPrefix:@"$"])
+    {
+        if ([keyPath hasPrefix:@"$root"])
+        {
+            AKAProperty* root;
+            for (root=self;
+                 root.dependencyPropertiesStorage.count > 0;
+                 root=[root.dependencyPropertiesStorage.objectEnumerator nextObject])
+            {
+                if (root.dependencyPropertiesStorage.count > 1)
+                {
+                    // TODO: error handling
+                    AKALogError(@"Invalid attempt to resolve key path extension $root from a property %@ that has multiple dependencies %@, starting from property %@", root, root.dependencyPropertiesStorage, self);
+                }
+            }
+            result = root != nil;
+            if (result)
+            {
+                *propertyStorage = root;
+            }
+            if (result)
+            {
+                if (keyPath.length == 5)
+                {
+                    *keyPathStorage = nil;
+                }
+                else if (keyPath.length > 6 && [keyPath characterAtIndex:5] == (unichar)'.')
+                {
+                    *keyPathStorage = [keyPath substringFromIndex:6];
+                }
+            }
+        }
+        else
+        {
+            *propertyStorage = self;
+            *keyPathStorage = keyPath;
+        }
+    }
+    else
+    {
+        *propertyStorage = self;
+        *keyPathStorage = keyPath;
+    }
+    return result;
+}
+
 - (AKAProperty *)propertyAtKeyPath:(NSString *)keyPath
                 withChangeObserver:(void (^)(id, id))valueDidChange
 {
-    AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:self.value
-                                                            keyPath:keyPath
-                                                     changeObserver:valueDidChange];
-    [self addDependentProperty:result];
-    [result addDependencyProperty:self];
+    AKAProperty* result = nil;
 
+    AKAProperty* source = nil;
+    NSString* effectiveKeyPath = nil;
+    if ([self resolveProperty:&source
+                   andKeyPath:&effectiveKeyPath
+           forExtendedKeyPath:keyPath])
+    {
+        if (source != nil)
+        {
+            result = [AKAProperty propertyOfWeakKeyValueTarget:source.value
+                                                       keyPath:effectiveKeyPath
+                                                changeObserver:valueDidChange];
+            [source addDependentProperty:result];
+            [result addDependencyProperty:source];
+        }
+    }
     return result;
 }
 

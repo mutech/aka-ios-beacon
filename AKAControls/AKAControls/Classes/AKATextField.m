@@ -6,16 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKATextField.h"
+#import "AKATextField_Protected.h"
 #import "AKATextFieldBinding.h"
 
 #import "AKAControl.h"
-
-@interface AKATextField()
-
-@property (nonatomic, readonly) AKATextFieldBindingConfiguration* textFieldBindingConfiguration;
-
-@end
 
 @implementation AKATextField
 
@@ -53,17 +47,22 @@
 
 - (void)setupDefaultValues
 {
-    _textFieldBindingConfiguration = AKATextFieldBindingConfiguration.new;
+    _textFieldBindingConfiguration = [self createTextFieldBindingConfiguration];
     self.controlName = nil;
     self.role = nil;
     self.valueKeyPath = nil;
 
-    self.liveModelUpdates = NO;
+    self.liveModelUpdates = YES;
     self.KBActivationSequence = YES;
     self.autoActivate = YES;
 }
 
 #pragma mark - Control View Protocol
+
+- (AKATextFieldBindingConfiguration*)createTextFieldBindingConfiguration
+{
+    return AKATextFieldBindingConfiguration.new;
+}
 
 - (AKAViewBindingConfiguration*)bindingConfiguration
 {

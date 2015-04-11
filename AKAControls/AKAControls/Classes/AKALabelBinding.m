@@ -31,6 +31,10 @@
                                {
                                    ((UILabel*)target).text = value;
                                }
+                               else if (value == nil)
+                               {
+                                   ((UILabel*)target).text = nil;
+                               }
                                else
                                {
                                    ((UILabel*)target).text = [NSString stringWithFormat:@"%@", value];

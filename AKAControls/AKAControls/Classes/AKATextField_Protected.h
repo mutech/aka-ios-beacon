@@ -6,8 +6,15 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKAControls/AKAControls.h>
+#import "AKATextField.h"
+#import "AKATextFieldBinding.h"
 
 @interface AKATextField ()
+
+@property (nonatomic, readonly) AKATextFieldBindingConfiguration* textFieldBindingConfiguration;
+
+- (AKATextFieldBindingConfiguration*)createTextFieldBindingConfiguration;
+
+- (void)setupDefaultValues;
 
 @end

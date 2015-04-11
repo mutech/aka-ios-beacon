@@ -68,6 +68,7 @@
     if (self.IBEnablePreview)
     {
         [self valdiateAndSetupSubviews];
+        [self setNeedsApplySelectedTheme];
     }
     [self setNeedsUpdateConstraints];
     [self setNeedsLayout];
@@ -105,10 +106,6 @@
 - (void)setupDefaultValues
 {
     self.subviewsNeedingUpdateConstraintsFromLayoutSubviews = NSMutableSet.new;
-    if (self.themeName == nil)
-    {
-        //self.themeName = AKAThemeNameNone;
-    }
     self.IBEnablePreview = NO;
 }
 
@@ -166,6 +163,14 @@
         // state of the view hierarchy unchanged. Otherwise the old state can
         // be restored using the saved restoration theme.
         result = self.restorationTheme;
+#       if TARGET_INTERFACE_BUILDER
+        if (self.IBEnablePreview)
+        {
+            // Enforce using a theme if preview is enabled and target is interface builder
+            // to 
+            result = ([self.class builtinThemes])[AKAThemeNameDefault];
+        }
+#       endif
     }
     else
     {
@@ -178,6 +183,7 @@
 {
     self.needsApplySelectedTheme = YES;
     [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
 }
 
 - (void)applySelectedThemeIfNeeded

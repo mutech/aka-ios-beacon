@@ -3,6 +3,7 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+#import <AKACommons/AKAReference.h>
 #import "AKAThemeLayout.h"
 #import "AKATheme.h"
 #import "AKALayoutConstraintSpecification.h"
@@ -13,7 +14,7 @@
 
 @interface AKALayoutConstraintSpecificationVisualFormat : AKALayoutConstraintSpecification
 
-- (instancetype)initWithTarget:(UIView*)target
+- (instancetype)initWithTarget:(id)target
                   visualFormat:(NSString*)visualFormat
                        options:(NSLayoutFormatOptions)options;
 
@@ -21,7 +22,7 @@
 
 @interface AKALayoutConstraintSpecificationExplicit : AKALayoutConstraintSpecification
 
-- (instancetype)initWithTarget:(UIView*)target
+- (instancetype)initWithTarget:(id)target
                     firstItems:(NSArray*)firstItems
                 firstAttribute:(NSLayoutAttribute)firstAttribute
                      relatedBy:(NSLayoutRelation)relation
@@ -59,7 +60,7 @@
  */
 - (instancetype)initWithTarget:(id)target;
 
-@property(nonatomic) id target;
+@property(nonatomic) AKAReference* targetReference;
 
 @end
 
@@ -161,14 +162,14 @@
 }
 
 + (AKALayoutConstraintSpecification *)constraint:(NSLayoutConstraint *)constraint
-                                      withTarget:(id)target
+                                      withTarget:(UIView*)target
 {
     return [[AKALayoutConstraintSpecificationExisting alloc] initWithTarget:target
                                                                  constraint:constraint];
 }
 
 + (AKALayoutConstraintSpecification *)constraints:(NSArray *)constraints
-                                       withTarget:(id)target
+                                       withTarget:(UIView*)target
 {
     return [[AKALayoutConstraintSpecificationExisting alloc] initWithTarget:target
                                                                 constraints:constraints];
@@ -256,12 +257,34 @@
     return constraints;
 }
 
+#pragma mark - Target
+
+- (id)target
+{
+    return self.targetReference.value;
+}
+
 - (void)setTarget:(id)target
 {
     NSParameterAssert(target == nil ||
                       [target isKindOfClass:[UIView class]] ||
                       [target isKindOfClass:[NSString class]]);
-    _target = target;
+    if ([target isKindOfClass:[NSString class]])
+    {
+        self.targetReference = [AKAReference strongReferenceTo:target];
+    }
+    else if ([target isKindOfClass:[UIView class]])
+    {
+        self.targetReference = [AKAReference weakReferenceTo:target];
+    }
+    else if (target == nil)
+    {
+        self.targetReference = nil;
+    }
+    else
+    {
+        // TODO: error handling
+    }
 }
 
 #pragma mark - AKALayoutConstraintSpecificationDelegate support
@@ -408,7 +431,7 @@
 
 @implementation AKALayoutConstraintSpecificationVisualFormat
 
-- (instancetype)initWithTarget:(UIView *)target
+- (instancetype)initWithTarget:(id)target
                   visualFormat:(NSString *)visualFormat
                        options:(NSLayoutFormatOptions)options
 {
@@ -449,7 +472,7 @@
 
 @implementation AKALayoutConstraintSpecificationExplicit
 
-- (instancetype)initWithTarget:(UIView *)target
+- (instancetype)initWithTarget:(id)target
                     firstItems:(NSArray *)firstItems
                 firstAttribute:(NSLayoutAttribute)firstAttribute
                      relatedBy:(NSLayoutRelation)relation
@@ -502,6 +525,7 @@
 - (UIView*)viewFromItemSpec:(id)item withViews:(NSDictionary*)views
 {
     UIView* result = nil;
+
     if ([item isKindOfClass:[NSString class]])
     {
         item = views[item];
@@ -511,6 +535,11 @@
     {
         result = (UIView*)item;
     }
+    else
+    {
+        // TODO: error handling
+    }
+
     return result;
 }
 

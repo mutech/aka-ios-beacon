@@ -13,32 +13,13 @@
 #pragma mark - Initialization
 /// @name Initialization
 
-/**
- * Initializes a new unbound control with the specified owner control.
- * The data context (model value) of the new control is derived from the owners data
- * context by querying the value at the specified @c keyPath.
- *
- * @note The initializer should only be used by inheriting classes. Please use the public factory methods +controlWithOwner: or +controlWithOwner:keyPath: instead.
- *
- * @param owner the composite control owning the new control (not nil).
- * @param keyPath a valid key path used to derive the controls data context from that of the owner.
- *
- * @return the new control.
- */
+- (instancetype)initWithOwner:(AKACompositeControl*)owner;
+
 - (instancetype)initWithOwner:(AKACompositeControl*)owner
                       keyPath:(NSString*)keyPath;
 
-/**
- * Initializes a new toplevel control using the specified data context
- * queried with the specified key path.
- *
- * @note The initializer should only be used by inheriting classes. Please use the public factory methods +controlWithDataContext: or +controlWithDataContext:keyPath: instead.
- *
- * @param dataContext the data context providing the model value at the specified @c keyPath
- * @param keyPath a valid key path
- *
- * @return the new control
- */
+- (instancetype)initWithDataContext:(id)dataContext;
+
 - (instancetype)initWithDataContext:(id)dataContext
                             keyPath:(NSString*)keyPath;
 

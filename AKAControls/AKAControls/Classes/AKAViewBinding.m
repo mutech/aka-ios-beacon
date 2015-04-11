@@ -43,8 +43,45 @@
     return _viewValueProperty;
 }
 
+#pragma mark - Validation
+
+- (void)    validationContext:(id)validationContext
+                      forView:(UIView*)view
+   changedValidationStateFrom:(NSError*)oldError
+                           to:(NSError*)newError
+{
+    if ([self managesValidationStateForContext:validationContext
+                                          view:view])
+    {
+        //
+        [UIView animateWithDuration:.1
+                              delay:.04
+                            options:(UIViewAnimationOptionCurveEaseOut |
+                                     UIViewAnimationOptionTransitionCrossDissolve |
+                                     UIViewAnimationOptionAllowAnimatedContent)
+                         animations:^{
+                             [self setValidationState:newError
+                                              forView:view
+                                    validationContext:validationContext];
+                             [self.view.superview layoutIfNeeded];
+                         }
+                         completion:nil];
+    }
+}
+
+- (BOOL)managesValidationStateForContext:(id)validationContext
+                                    view:(UIView*)view
+{
+    return NO;
+}
+
+- (void)setValidationState:(NSError*)error
+                   forView:(UIView*)view
+         validationContext:(id)validationContext
+{
+}
+
 #pragma mark - Activation
-/// @name Activation
 
 - (BOOL)supportsActivation
 {
@@ -59,13 +96,6 @@
 - (BOOL)deactivate
 {
     return YES;
-}
-
-- (void)setupKeyboardActivationSequenceWithPredecessor:(UIView *)previous
-                                             successor:(UIView *)next
-{
-    (void)previous;
-    (void)next;
 }
 
 #pragma mark - Protected Interface - Abstract Methods
@@ -137,16 +167,6 @@
     {
         [self.delegate viewBinding:self viewDidDeactivate:self.view];
     }
-}
-
-- (BOOL)activateNextInKeyboardActivationSequence
-{
-    BOOL result = NO;
-    if ([self.delegate respondsToSelector:@selector(viewBindingRequestsActivateNextInKeyboardActivationSequence:)])
-    {
-        result = [self.delegate viewBindingRequestsActivateNextInKeyboardActivationSequence:self];
-    }
-    return result;
 }
 
 @end

@@ -12,30 +12,34 @@
 #import "AKAViewBindingConfiguration.h"
 
 @class AKAViewBinding;
+@class AKAKeyboardActivationSequence;
 
 @protocol AKAViewBindingDelegate <NSObject>
 
-- (void)viewBinding:(AKAViewBinding*)viewBinding
-                      view:(UIView*)view
-        valueDidChangeFrom:(id)oldValue to:(id)newValue;
+#pragma mark - Activation
+/// @name Activation
+
+- (void)        viewBinding:(AKAViewBinding*)viewBinding
+                       view:(UIView*)view
+         valueDidChangeFrom:(id)oldValue to:(id)newValue;
 
 - (BOOL)viewBindingShouldActivate:(AKAViewBinding*)viewBinding;
 
-- (void)viewBinding:(AKAViewBinding*)viewBinding
-           viewWillActivate:(UIView*)view;
+- (void)        viewBinding:(AKAViewBinding*)viewBinding
+            viewWillActivate:(UIView*)view;
 
-- (void)viewBinding:(AKAViewBinding*)viewBinding
-           viewDidActivate:(UIView*)view;
+- (void)        viewBinding:(AKAViewBinding*)viewBinding
+            viewDidActivate:(UIView*)view;
 
 - (BOOL)viewBindingShouldDeactivate:(AKAViewBinding*)viewBinding;
 
-- (void)viewBinding:(AKAViewBinding*)viewBinding
-         viewDidDeactivate:(UIView*)view;
+- (void)        viewBinding:(AKAViewBinding*)viewBinding
+          viewDidDeactivate:(UIView*)view;
 
-- (void)viewBinding:(AKAViewBinding*)viewBinding
-        viewWillDeactivate:(UIView*)view;
+- (void)        viewBinding:(AKAViewBinding*)viewBinding
+         viewWillDeactivate:(UIView*)view;
 
-- (BOOL)viewBindingRequestsActivateNextInKeyboardActivationSequence:(AKAViewBinding*)viewBinding;
+@property(nonatomic, readonly)AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 #pragma mark - Theme Support
 /// @name Theme support
@@ -86,6 +90,20 @@
 
 @property(nonatomic, readonly) AKAProperty* viewValueProperty;
 
+#pragma mark - Validation
+/// @name Validation
+
+- (void)    validationContext:(id)validationContext
+                      forView:(UIView*)view
+   changedValidationStateFrom:(NSError*)oldError
+                           to:(NSError*)newError;
+
+- (BOOL)managesValidationStateForContext:(id)validationContext
+                                    view:(UIView*)view;
+
+- (void)setValidationState:(NSError*)error
+                   forView:(UIView*)view
+         validationContext:(id)validationContext;
 #pragma mark - Activation
 /// @name Activation
 
@@ -98,9 +116,6 @@
 #pragma mark - Keyboard Activation Sequence
 
 @property(nonatomic, readonly) BOOL participatesInKeyboardActivationSequence;
-
-- (void)setupKeyboardActivationSequenceWithPredecessor:(UIView*)previous
-                                             successor:(UIView*)next;
 
 @end
 
@@ -121,6 +136,5 @@
 - (BOOL)shouldDeactivate;
 - (void)viewWillDeactivate;
 - (void)viewDidDeactivate;
-- (BOOL)activateNextInKeyboardActivationSequence;
 
 @end

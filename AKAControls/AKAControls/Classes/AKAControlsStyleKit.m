@@ -17,6 +17,10 @@
 
 static UIColor* _barButtonItemForegroundColor = nil;
 
+static UIImage* _imageOfBackBarButtonItemIcon = nil;
+static UIImage* _imageOfForthBarButtonItemIcon = nil;
+static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
+
 #pragma mark Initialization
 
 + (void)initialize
@@ -32,54 +36,195 @@ static UIColor* _barButtonItemForegroundColor = nil;
 
 #pragma mark Drawing Methods
 
-+ (void)drawBackBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth
++ (void)drawBackBarButtonItemIcon
 {
+
+    //// Variable Declarations
+    CGFloat barButtonItemStrokeWidth = 2;
 
     //// Bezier Drawing
     UIBezierPath* bezierPath = UIBezierPath.bezierPath;
-    [bezierPath moveToPoint: CGPointMake(29, 8)];
-    [bezierPath addLineToPoint: CGPointMake(15, 21.6)];
-    [bezierPath addLineToPoint: CGPointMake(29, 36)];
+    [bezierPath moveToPoint: CGPointMake(26, 14)];
+    [bezierPath addLineToPoint: CGPointMake(18, 21.77)];
+    [bezierPath addLineToPoint: CGPointMake(26, 30)];
     [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
     bezierPath.lineWidth = barButtonItemStrokeWidth;
     [bezierPath stroke];
 }
 
-+ (void)drawForthBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth
++ (void)drawForthBarButtonItemIcon
 {
+
+    //// Variable Declarations
+    CGFloat barButtonItemStrokeWidth = 2;
 
     //// Bezier Drawing
     UIBezierPath* bezierPath = UIBezierPath.bezierPath;
-    [bezierPath moveToPoint: CGPointMake(15, 8)];
-    [bezierPath addLineToPoint: CGPointMake(29, 21.6)];
-    [bezierPath addLineToPoint: CGPointMake(15, 36)];
+    [bezierPath moveToPoint: CGPointMake(18, 14)];
+    [bezierPath addLineToPoint: CGPointMake(26, 21.77)];
+    [bezierPath addLineToPoint: CGPointMake(18, 30)];
     [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
     bezierPath.lineWidth = barButtonItemStrokeWidth;
     [bezierPath stroke];
+}
+
++ (void)drawCloseKeyboardBarButtonItemIcon
+{
+    //// General Declarations
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    //// Rectangle Drawing
+    UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRoundedRect: CGRectMake(13, 14, 19, 12) cornerRadius: 1];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
+    rectanglePath.lineWidth = 1;
+    [rectanglePath stroke];
+
+
+    //// Bezier Drawing
+    CGContextSaveGState(context);
+    CGContextTranslateCTM(context, 26.98, 30.63);
+    CGContextRotateCTM(context, 91.71 * M_PI / 180);
+
+    UIBezierPath* bezierPath = UIBezierPath.bezierPath;
+    [bezierPath moveToPoint: CGPointMake(-0, -0)];
+    [bezierPath addLineToPoint: CGPointMake(5, 4.58)];
+    [bezierPath addLineToPoint: CGPointMake(-0, 9.42)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
+    bezierPath.lineWidth = 1;
+    [bezierPath stroke];
+
+    CGContextRestoreGState(context);
+
+
+    //// Rectangle 3 Drawing
+    UIBezierPath* rectangle3Path = [UIBezierPath bezierPathWithRect: CGRectMake(15.5, 17, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle3Path fill];
+
+
+    //// Rectangle 4 Drawing
+    UIBezierPath* rectangle4Path = [UIBezierPath bezierPathWithRect: CGRectMake(18.5, 17, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle4Path fill];
+
+
+    //// Rectangle 6 Drawing
+    UIBezierPath* rectangle6Path = [UIBezierPath bezierPathWithRect: CGRectMake(24.5, 17, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle6Path fill];
+
+
+    //// Rectangle 7 Drawing
+    UIBezierPath* rectangle7Path = [UIBezierPath bezierPathWithRect: CGRectMake(27.5, 17, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle7Path fill];
+
+
+    //// Rectangle 9 Drawing
+    UIBezierPath* rectangle9Path = [UIBezierPath bezierPathWithRect: CGRectMake(15.5, 21, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle9Path fill];
+
+
+    //// Rectangle 10 Drawing
+    UIBezierPath* rectangle10Path = [UIBezierPath bezierPathWithRect: CGRectMake(18.5, 21, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle10Path fill];
+
+
+    //// Rectangle 12 Drawing
+    UIBezierPath* rectangle12Path = [UIBezierPath bezierPathWithRect: CGRectMake(24.5, 21, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle12Path fill];
+
+
+    //// Rectangle 13 Drawing
+    UIBezierPath* rectangle13Path = [UIBezierPath bezierPathWithRect: CGRectMake(27.5, 21, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle13Path fill];
+
+
+    //// Rectangle 2 Drawing
+    UIBezierPath* rectangle2Path = [UIBezierPath bezierPathWithRect: CGRectMake(21.5, 17, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle2Path fill];
+
+
+    //// Rectangle 5 Drawing
+    UIBezierPath* rectangle5Path = [UIBezierPath bezierPathWithRect: CGRectMake(21.5, 21, 2, 2)];
+    [AKAControlsStyleKit.barButtonItemForegroundColor setFill];
+    [rectangle5Path fill];
 }
 
 #pragma mark Generated Images
 
-+ (UIImage*)imageOfBackBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth
++ (UIImage*)imageOfBackBarButtonItemIcon
 {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(44, 44), NO, 0.0f);
-    [AKAControlsStyleKit drawBackBarButtonItemIconWithBarButtonItemStrokeWidth: barButtonItemStrokeWidth];
+    if (_imageOfBackBarButtonItemIcon)
+        return _imageOfBackBarButtonItemIcon;
 
-    UIImage* imageOfBackBarButtonItemIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(44, 44), NO, 0.0f);
+    [AKAControlsStyleKit drawBackBarButtonItemIcon];
+
+    _imageOfBackBarButtonItemIcon = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    return imageOfBackBarButtonItemIcon;
+    return _imageOfBackBarButtonItemIcon;
 }
 
-+ (UIImage*)imageOfForthBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth
++ (UIImage*)imageOfForthBarButtonItemIcon
 {
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(44, 44), NO, 0.0f);
-    [AKAControlsStyleKit drawForthBarButtonItemIconWithBarButtonItemStrokeWidth: barButtonItemStrokeWidth];
+    if (_imageOfForthBarButtonItemIcon)
+        return _imageOfForthBarButtonItemIcon;
 
-    UIImage* imageOfForthBarButtonItemIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(44, 44), NO, 0.0f);
+    [AKAControlsStyleKit drawForthBarButtonItemIcon];
+
+    _imageOfForthBarButtonItemIcon = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    return imageOfForthBarButtonItemIcon;
+    return _imageOfForthBarButtonItemIcon;
 }
+
++ (UIImage*)imageOfCloseKeyboardBarButtonItemIcon
+{
+    if (_imageOfCloseKeyboardBarButtonItemIcon)
+        return _imageOfCloseKeyboardBarButtonItemIcon;
+
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(44, 44), NO, 0.0f);
+    [AKAControlsStyleKit drawCloseKeyboardBarButtonItemIcon];
+
+    _imageOfCloseKeyboardBarButtonItemIcon = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return _imageOfCloseKeyboardBarButtonItemIcon;
+}
+
+#pragma mark Customization Infrastructure
+
+- (void)setBackBarButtonItemIconTargets: (NSArray*)backBarButtonItemIconTargets
+{
+    _backBarButtonItemIconTargets = backBarButtonItemIconTargets;
+
+    for (id target in self.backBarButtonItemIconTargets)
+        [target setImage: AKAControlsStyleKit.imageOfBackBarButtonItemIcon];
+}
+
+- (void)setForthBarButtonItemIconTargets: (NSArray*)forthBarButtonItemIconTargets
+{
+    _forthBarButtonItemIconTargets = forthBarButtonItemIconTargets;
+
+    for (id target in self.forthBarButtonItemIconTargets)
+        [target setImage: AKAControlsStyleKit.imageOfForthBarButtonItemIcon];
+}
+
+- (void)setCloseKeyboardBarButtonItemIconTargets: (NSArray*)closeKeyboardBarButtonItemIconTargets
+{
+    _closeKeyboardBarButtonItemIconTargets = closeKeyboardBarButtonItemIconTargets;
+
+    for (id target in self.closeKeyboardBarButtonItemIconTargets)
+        [target setImage: AKAControlsStyleKit.imageOfCloseKeyboardBarButtonItemIcon];
+}
+
 
 @end

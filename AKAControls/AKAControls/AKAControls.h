@@ -17,11 +17,13 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <AKAControls/PublicHeader.h>
 
 #import <AKAControls/AKAControlsErrors.h>
+#import <AKAControls/AKAControlsStyleKit.h>
 
 #import <AKAControls/AKAControl.h>
 #import <AKAControls/AKAControl_Protected.h>
 #import <AKAControls/AKAControlDelegate.h>
 #import <AKAControls/AKACompositeControl.h>
+#import <AKAControls/AKAFormControl.h>
 #import <AKAControls/AKAControlViewProtocol.h>
 #import <AKAControls/AKAViewBinding.h>
 #import <AKAControls/AKAViewBindingConfiguration.h>
@@ -29,6 +31,8 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/UIView+AKABinding.h>
 #import <AKAControls/AKAControlValidatorProtocol.h>
 #import <AKAControls/AKAControlConverterProtocol.h>
+#import <AKAControls/AKAKeyboardActivationSequence.h>
+#import <AKAControls/AKAKeyboardActivationSequenceAccessoryView.h>
 
 // AKAControls/ControlViews
 
@@ -36,7 +40,9 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKALabel.h>
 #import <AKAControls/AKALabelBinding.h>
 #import <AKAControls/AKATextField.h>
+#import <AKAControls/AKATextField_Protected.h>
 #import <AKAControls/AKATextFieldBinding.h>
+#import <AKAControls/AKANumberTextField.h>
 #import <AKAControls/AKASwitch.h>
 #import <AKAControls/AKASwitchBinding.h>
 

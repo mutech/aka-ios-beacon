@@ -8,6 +8,22 @@
 
 #import <UIKit/UIKit.h>
 
+@class AKAKeyboardActivationSequence;
+
 @interface AKAKeyboardActivationSequenceAccessoryView : UIToolbar
+
+#pragma mark - Initialization
+
+#pragma mark - Configuration
+
+@property(nonatomic, weak)AKAKeyboardActivationSequence* keyboardActivationSequence;
+
+- (void)updateBarItemStates;
+
+#pragma mark - Outlets
+
+@property(nonatomic)IBOutlet UIBarButtonItem* activatePreviousBarButtonItem;
+@property(nonatomic)IBOutlet UIBarButtonItem* closeKeyboardBarButtonItem;
+@property(nonatomic)IBOutlet UIBarButtonItem* activateNextBarButtonItem;
 
 @end

@@ -6,8 +6,13 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKAControls/AKAControls.h>
+#import "AKATextfield.h"
 
 @interface AKANumberTextField : AKATextField
+@end
 
+@interface AKANumberTextFieldBinding: AKATextFieldBinding
+@end
+
+@interface AKANumberTextFieldBindingConfiguration : AKATextFieldBindingConfiguration
 @end

@@ -10,7 +10,7 @@
 #import "AKAControl_Internal.h"
 #import "AKAControlViewProtocol.h"
 #import "AKAViewBinding.h"
-
+#import "AKAKeyboardActivationSequence.h"
 #import "AKAControlsErrors_Internal.h"
 
 #import "UIView+AKAHierarchyVisitor.h"
@@ -112,25 +112,6 @@
                                      continueInOwner:continueInOwner];
 }
 
-- (void)enumerateKeyboardActivationSequenceUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
-{
-    [self enumerateKeyboardActivationSequenceUsingBlock:block startIndex:0 continueInOwner:NO];
-}
-
-- (void)enumerateKeyboardActivationSequenceUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
-                                           startIndex:(NSUInteger)startIndex
-                                      continueInOwner:(BOOL)continueInOwner
-{
-    [self enumerateLeafControlsUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop) {
-            if ([control participatesInKeyboardActivationSequence])
-            {
-                block(control, owner, index, stop);
-            }
-        }
-                               startIndex:startIndex
-                          continueInOwner:continueInOwner];
-}
-
 #pragma mark Adding and Removing Member Controls
 
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView
@@ -179,8 +160,17 @@
     NSUInteger count = 0;
 
     Class controlType = configuration.preferredControlType;
-    AKAControl* control = [[controlType alloc] initWithOwner:self
-                                                     keyPath:configuration.valueKeyPath];
+    AKAControl* control;
+    NSString* keyPath = configuration.valueKeyPath;
+    if (keyPath.length > 0)
+    {
+        control = [[controlType alloc] initWithOwner:self
+                                             keyPath:configuration.valueKeyPath];
+    }
+    else
+    {
+        control = [[controlType alloc] initWithOwner:self];
+    }
 
     Class bindingType = configuration.preferredBindingType;
     AKAViewBinding* binding = [[bindingType alloc] initWithView:view
@@ -301,6 +291,9 @@
 
 - (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
+    NSParameterAssert(control != nil);
+    NSParameterAssert(index <= self.controlsStorage.count);
+
     BOOL result = [self shouldAddControl:control atIndex:index];
     if (result)
     {
@@ -388,6 +381,24 @@
 #pragma mark - Change Tracking
 
 #pragma mark Controlling Observation
+
+- (void)startObservingOtherChanges
+{
+    [super startObservingOtherChanges];
+    for (AKAControl* control in self.controlsStorage)
+    {
+        [control startObservingOtherChanges];
+    }
+}
+
+- (void)stopObservingOtherChanges
+{
+    for (AKAControl* control in self.controlsStorage)
+    {
+        [control stopObservingOtherChanges];
+    }
+    [super stopObservingOtherChanges];
+}
 
 - (BOOL)isObservingViewValueChanges
 {
@@ -621,6 +632,11 @@
 
 #pragma mark Keyboard Activation Sequence
 
+- (AKAKeyboardActivationSequence*)keyboardActivationSequence
+{
+    return self.owner.keyboardActivationSequence;
+}
+
 - (BOOL)participatesInKeyboardActivationSequence
 {
     BOOL __block result = NO;
@@ -629,42 +645,6 @@
         *stop = result;
     }];
     return result;
-}
-
-- (AKAControl*)nextControlInKeyboardActivationSequenceAfter:(AKAControl*)control
-{
-    __block AKAControl* result = nil;
-    NSUInteger index = [self indexOfControl:control];
-    [self enumerateKeyboardActivationSequenceUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop)
-    {
-        result = control;
-        *stop = YES;
-    }
-                                             startIndex:index+1
-                                        continueInOwner:YES];
-    return result;
-}
-
-- (void)setupKeyboardActivationSequence
-{
-    __block AKAControl* previous = nil;
-    __block AKAControl* current = nil;
-    __block AKAControl* next = nil;
-    [self enumerateKeyboardActivationSequenceUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop) {
-        previous = current;
-        current = next;
-        next = control;
-        if (current != nil)
-        {
-            [current setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
-                                                          successor:(AKAControl*)next];
-        }
-    }];
-    if (next != nil)
-    {
-        [next setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)current
-                                                      successor:(AKAControl*)nil];
-    }
 }
 
 #pragma mark Member Activation

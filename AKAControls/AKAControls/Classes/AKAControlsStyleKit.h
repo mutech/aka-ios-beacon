@@ -14,15 +14,22 @@
 
 @interface AKAControlsStyleKit : NSObject
 
+// iOS Controls Customization Outlets
+@property(strong, nonatomic) IBOutletCollection(NSObject) NSArray* backBarButtonItemIconTargets;
+@property(strong, nonatomic) IBOutletCollection(NSObject) NSArray* forthBarButtonItemIconTargets;
+@property(strong, nonatomic) IBOutletCollection(NSObject) NSArray* closeKeyboardBarButtonItemIconTargets;
+
 // Colors
 + (UIColor*)barButtonItemForegroundColor;
 
 // Drawing Methods
-+ (void)drawBackBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth;
-+ (void)drawForthBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth;
++ (void)drawBackBarButtonItemIcon;
++ (void)drawForthBarButtonItemIcon;
++ (void)drawCloseKeyboardBarButtonItemIcon;
 
 // Generated Images
-+ (UIImage*)imageOfBackBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth;
-+ (UIImage*)imageOfForthBarButtonItemIconWithBarButtonItemStrokeWidth: (CGFloat)barButtonItemStrokeWidth;
++ (UIImage*)imageOfBackBarButtonItemIcon;
++ (UIImage*)imageOfForthBarButtonItemIcon;
++ (UIImage*)imageOfCloseKeyboardBarButtonItemIcon;
 
 @end

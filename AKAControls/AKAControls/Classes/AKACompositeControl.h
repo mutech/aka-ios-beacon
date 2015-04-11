@@ -8,6 +8,8 @@
 
 #import "AKAControl.h"
 
+@class AKAKeyboardActivationSequence;
+
 @interface AKACompositeControl : AKAControl<AKAControlDelegate>
 
 #pragma mark - Initialization
@@ -16,11 +18,38 @@
 
 @property(nonatomic, readonly)NSArray* controls;
 
+- (NSUInteger)indexOfControl:(AKAControl*)control;
+
+- (void)enumerateControlsUsingBlock:(void(^)(AKAControl* control,
+                                             NSUInteger index,
+                                             BOOL* stop))block;
+
+- (void)enumerateControlsUsingBlock:(void(^)(AKAControl* control,
+                                             NSUInteger index,
+                                             BOOL* stop))block
+                         startIndex:(NSUInteger)startIndex
+                    continueInOwner:(BOOL)continueInOwner;
+
+- (void)enumerateLeafControlsUsingBlock:(void(^)(AKAControl* control,
+                                                 AKACompositeControl* owner,
+                                                 NSUInteger index,
+                                                 BOOL* stop))block;
+
+- (void)enumerateLeafControlsUsingBlock:(void(^)(AKAControl* control,
+                                                 AKACompositeControl* owner,
+                                                 NSUInteger index,
+                                                 BOOL* stop))block
+                             startIndex:(NSUInteger)startIndex
+                        continueInOwner:(BOOL)continueInOwner;
+
 #pragma mark Control Membership
 
 - (BOOL)addControl:(AKAControl*)control;
+
 - (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index;
+
 - (BOOL)removeControl:(AKAControl*)control;
+
 - (BOOL)removeControlAtIndex:(NSUInteger)index;
 
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
@@ -44,9 +73,6 @@
 
 @property(nonatomic, readonly) AKAControl* activeControl;
 @property(nonatomic, readonly) AKAControl* activeLeafControl;
-
-- (void)setupKeyboardActivationSequence;
-- (AKAControl*)nextControlInKeyboardActivationSequenceAfter:(AKAControl*)control;
 
 @end
 

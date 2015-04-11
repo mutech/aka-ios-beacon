@@ -8,6 +8,7 @@
 
 #import "AKATextFieldBinding.h"
 #import "AKATextField.h"
+#import "AKAKeyboardActivationSequence.h"
 
 #import "AKAControl.h"
 #import "AKAProperty.h"
@@ -74,14 +75,20 @@
                   binding.originalText = binding.textField.text;
                   binding.savedTextViewDelegate = binding.textField.delegate;
                   binding.textField.delegate = binding;
+                  [binding.textField addTarget:binding
+                                        action:@selector(textFieldDidChange:)
+                              forControlEvents:UIControlEventEditingChanged];
                   return YES;
               }
                           observationStopper:
               ^BOOL (id target)
               {
                   AKATextFieldBinding* binding = target;
-                  binding.originalText = nil;
+                  [binding.textField removeTarget:target
+                                           action:@selector(textDidChange:)
+                                 forControlEvents:UIControlEventEditingChanged];
                   binding.textField.delegate = binding.savedTextViewDelegate;
+                  binding.originalText = nil;
                   return YES;
               }];
     return result;
@@ -239,7 +246,7 @@
             case UIReturnKeyNext:
                 if ([self shouldDeactivate])
                 {
-                    if (![self activateNextInKeyboardActivationSequence])
+                    if (![self.delegate.keyboardActivationSequence activateNext])
                     {
                         [self deactivate];
                     }
@@ -290,7 +297,6 @@
     return result;
 }
 
-
 - (BOOL)               textField:(UITextField *)textField
    shouldChangeCharactersInRange:(NSRange)range
                replacementString:(NSString *)string
@@ -305,7 +311,9 @@
         shouldChangeCharactersInRange:range
                     replacementString:string];
     }
+    return result;
 
+    /*
     if (result && self.liveModelUpdates)
     {
         // Simulate a didChange event by performing the change
@@ -326,8 +334,18 @@
         result = NO;
     }
     return result;
+     */
 }
 
+- (void)textFieldDidChange:(UITextField*)textField
+{
+    if (self.liveModelUpdates)
+    {
+        [self viewValueDidChange];
+    }
+}
+
+/*
 - (void)                textField:(UITextField*)textField
        didChangeCharactersInRange:(NSRange)range
                 replacementString:(NSString*)string
@@ -341,6 +359,7 @@
         [self viewValueDidChange];
     }
 }
+*/
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {

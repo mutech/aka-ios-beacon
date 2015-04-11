@@ -6,8 +6,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKAControls/AKAControls.h>
+#import "AKACompositeControl.h"
 
 @interface AKAFormControl : AKACompositeControl
-
 @end

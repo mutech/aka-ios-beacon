@@ -10,6 +10,7 @@
 #import "AKAControl_Protected.h" // To make appledoc find it
 #import "AKACompositeControl.h"
 #import "AKAViewBinding.h"
+#import "AKAKeyboardActivationSequence.h"
 
 #import "AKAControlsErrors_Internal.h"
 
@@ -17,14 +18,16 @@
 #import <AKACommons/NSObject+AKAConcurrencyTools.h>
 #import <objc/runtime.h>
 
-@interface AKAControl() {
+@interface AKAControl() <
+    AKAControlConverterDelegate,
+    AKAControlValidationDelegate
+> {
     AKAProperty* _dataContextProperty;
     AKAProperty* _modelValueProperty;
     AKAViewBinding* _viewBinding;
 }
 
 @property(nonatomic)NSMutableDictionary* themeNameByType;
-@property(nonatomic)id synchronizedViewValue;
 
 @end
 
@@ -39,7 +42,7 @@
 {
     NSParameterAssert(dataContext != nil);
 
-    return [[self alloc] initWithDataContext:dataContext keyPath:nil];
+    return [[self alloc] initWithDataContext:dataContext];
 }
 
 + (instancetype)controlWithDataContext:(id)dataContext keyPath:(NSString *)keyPath
@@ -54,7 +57,7 @@
 {
     NSParameterAssert(owner != nil);
 
-    return [[self alloc] initWithOwner:owner keyPath:nil];
+    return [[self alloc] initWithOwner:owner];
 }
 
 + (instancetype)controlWithOwner:(AKACompositeControl *)owner keyPath:(NSString *)keyPath
@@ -63,6 +66,20 @@
     NSParameterAssert(keyPath.length > 0);
 
     return [[self alloc] initWithOwner:owner keyPath:keyPath];
+}
+
+- (instancetype)initWithDataContext:(id)dataContext
+{
+    self = [self init];
+    if (self)
+    {
+        self.dataContextProperty =
+            [AKAProperty propertyOfWeakKeyValueTarget:dataContext
+                                              keyPath:nil
+                                       changeObserver:nil];
+        self.modelValueProperty = nil;
+    }
+    return self;
 }
 
 - (instancetype)initWithDataContext:(id)dataContext
@@ -75,13 +92,26 @@
             [AKAProperty propertyOfWeakKeyValueTarget:dataContext
                                               keyPath:nil
                                        changeObserver:nil];
+        __weak typeof(self) weakSelf = self;
         self.modelValueProperty =
-            [self.dataContextProperty propertyAtKeyPath:keyPath
+            [weakSelf.dataContextProperty propertyAtKeyPath:keyPath
                                      withChangeObserver:^(id oldValue, id newValue)
              {
-                 [self modelValueDidChangeFrom:oldValue
+                 [weakSelf modelValueDidChangeFrom:oldValue
                                             to:newValue];
              }];
+    }
+    return self;
+}
+
+- (instancetype)initWithOwner:(AKACompositeControl *)owner
+{
+    self = [self init];
+    if (self)
+    {
+        [self setOwner:owner];
+        // Data context inherited from owner
+        self.modelValueProperty = nil;
     }
     return self;
 }
@@ -94,11 +124,12 @@
     {
         [self setOwner:owner];
         // Data context inherited from owner
+        __weak typeof(self) weakSelf = self;
         self.modelValueProperty =
             [self.dataContextProperty propertyAtKeyPath:keyPath
                                         withChangeObserver:^(id oldValue, id newValue)
              {
-                 [self modelValueDidChangeFrom:oldValue
+                 [weakSelf modelValueDidChangeFrom:oldValue
                                             to:newValue];
              }];
     }
@@ -235,16 +266,284 @@
     return self.validatorProperty.value;
 }
 
+#pragma mark - Conversion
+
+- (BOOL)convertViewValue:(id)viewValue
+            toModelValue:(out __autoreleasing id *)modelValueStorage
+                   error:(out NSError *__autoreleasing *)error
+{
+    BOOL result = NO;
+    BOOL needsConversion = YES;
+    while (needsConversion)
+    {
+        needsConversion = NO;
+        id effectiveViewValue = viewValue;
+        id<AKAControlConverterProtocol> converter = self.converter;
+        if (converter != nil)
+        {
+            result = [converter convertViewValue:effectiveViewValue
+                                    toModelValue:modelValueStorage
+                                           error:error];
+        }
+        else
+        {
+            *modelValueStorage = effectiveViewValue;
+            result = YES;
+        }
+
+        if (!result && [self.delegate respondsToSelector:@selector(control:viewValue:conversionFailedWithError:)])
+        {
+            result = [          self control:self
+                                   viewValue:&effectiveViewValue
+                   conversionFailedWithError:error];
+            needsConversion = result;
+        }
+    }
+    return result;
+}
+
+- (BOOL)                control:(AKAControl *)control
+                      viewValue:(inout __autoreleasing id *)viewValueStorage
+      conversionFailedWithError:(NSError *__autoreleasing *)error
+{
+    BOOL result = NO;
+    if ([self.delegate respondsToSelector:@selector(control:viewValue:conversionFailedWithError:)])
+    {
+        result = [self.delegate control:self
+                              viewValue:viewValueStorage
+              conversionFailedWithError:error];
+        if (!result && self.owner)
+        {
+            result = [self.owner control:self
+                               viewValue:viewValueStorage
+               conversionFailedWithError:error];
+        }
+    }
+    return result;
+}
+
+#pragma mark - Validation
+
+- (BOOL)isValid
+{
+    return self.validationError == nil;
+}
+
+- (void)setIsValid:(BOOL)isValid error:(NSError*)error
+{
+    NSError* previousError = _validationError;
+    if (!isValid && error == nil)
+    {
+        // TODO: create error code and message in AKAontrolsErrors
+        _validationError = [NSError errorWithDomain:[AKAControlsErrors akaControlsErrorDomain]
+                                               code:123
+                                           userInfo:@{}];
+    }
+    else
+    {
+        _validationError = error;
+    }
+    if (_validationError != previousError)
+    {
+        [self control:self validationState:previousError changedTo:_validationError];
+    }
+}
+
+- (void)            control:(AKAControl *)control
+            validationState:(NSError *)oldError
+                  changedTo:(NSError *)newError
+{
+    if (self.viewBinding != nil)
+    {
+        [self.viewBinding validationContext:control
+                                    forView:control.view
+                 changedValidationStateFrom:oldError
+                                         to:newError];
+    }
+    [self.owner control:control validationState:oldError changedTo:newError];
+}
+
+- (UIView *)viewForValidationContext:(id)validationContext
+                     validationError:(NSError *)validationError
+{
+    UIView* result = nil;
+    if ([validationContext isKindOfClass:[AKAControl class]])
+    {
+        AKAControl* control = validationContext;
+        result = control.view;
+    }
+    return result;
+}
+
+#pragma mark Model Value Validation
+
+- (BOOL)validateModelValue:(inout id*)valueStorage
+                     error:(out NSError *__autoreleasing *)error
+{
+    return [self validateModelValue:valueStorage error:error callDelegate:YES];
+}
+
+- (BOOL)validateModelValue:(inout id*)valueStorage
+                     error:(out NSError *__autoreleasing *)error
+              callDelegate:(BOOL)callDelegate
+{
+    NSParameterAssert(valueStorage != nil);
+
+    BOOL result = YES;
+
+    BOOL needsValidation = YES;
+    while (needsValidation)
+    {
+        needsValidation = NO;
+        id validatedValue = *valueStorage;
+
+        id<AKAControlValidatorProtocol> validator = self.validator;
+        if (validator != nil)
+        {
+            result = [validator validateModelValue:validatedValue error:error];
+        }
+
+        // Perform additional validation provided by KVC after custom validation,
+        // assuming that custom validation will provide better error messages.
+        if (result && self.modelValueProperty != nil)
+        {
+            result = [self.modelValueProperty validateValue:&validatedValue error:error];
+            if (validatedValue != *valueStorage)
+            {
+                if (callDelegate)
+                {
+                    // Assuming that callDelegate indicates we are validating the real model
+                    // value.
+                    AKALogWarn(@"Model value KVC validation for property %@ replaced model value %@ with %@, this might indicate that the model data is invalid.",
+                               self.modelValueProperty, *valueStorage, validatedValue);
+                }
+                *valueStorage = validatedValue;
+            }
+        }
+
+        if (!result && callDelegate)
+        {
+            id previousValue = validatedValue;
+            result = ![self         control:self
+                                 modelValue:&validatedValue
+                  validationFailedWithError:error];
+            if (previousValue == validatedValue)
+            {
+                result = NO;
+            }
+            else
+            {
+                needsValidation = YES;
+            }
+        }
+    }
+    
+    return result;
+}
+
+- (BOOL)                control:(AKAControl *)control
+                     modelValue:(inout __autoreleasing id *)modelValueStorage
+      validationFailedWithError:(inout NSError *__autoreleasing *)error
+{
+    BOOL result = NO;
+    if (!result && [self.delegate respondsToSelector:@selector(control:modelValue:validationFailedWithError:)])
+    {
+        result = ![self.delegate control:control
+                              modelValue:modelValueStorage
+               validationFailedWithError:error];
+    }
+    if (!result)
+    {
+        result = [self.owner control:control
+                          modelValue:modelValueStorage
+           validationFailedWithError:error];
+    }
+    return result;
+}
+
+#pragma mark View Value Validation
+
+- (BOOL)validateViewValue:(inout id*)viewValueStorage
+                    error:(out NSError *__autoreleasing *)error
+{
+    return [self validateViewValue:viewValueStorage
+                             error:error
+                   storeModelValue:nil];
+}
+
+- (BOOL)validateViewValue:(inout id*)viewValueStorage
+                    error:(out NSError *__autoreleasing *)error
+          storeModelValue:(out id*)modelValueStorage
+{
+    BOOL result = YES;
+
+    id modelValue = nil;
+    result = [self convertViewValue:*viewValueStorage
+                       toModelValue:&modelValue
+                              error:error];
+    if (result)
+    {
+        BOOL needsValidation = YES;
+        while (needsValidation)
+        {
+            needsValidation = NO;
+            result = [self validateModelValue:&modelValue
+                                        error:error
+                                 callDelegate:NO];
+            if (!result)
+            {
+                id previousValue = modelValue;
+                result = ![self         control:self
+                                      viewValue:*viewValueStorage
+                          convertedToModelValue:&modelValue
+                      validationFailedWithError:error];
+                // Reject request to accept invalid value:
+                if (previousValue == modelValue)
+                {
+                    result = NO;
+                }
+                needsValidation = result;
+            }
+        }
+    }
+
+    if (result && modelValueStorage != nil)
+    {
+        *modelValueStorage = modelValue;
+    }
+
+    return result;
+}
+
+- (BOOL)                control:(AKAControl *)control
+                      viewValue:(id)viewValue
+          convertedToModelValue:(inout id*)modelValueStorage
+      validationFailedWithError:(inout NSError *__autoreleasing *)error
+{
+    BOOL result = NO;
+    if (!result && [self.delegate respondsToSelector:@selector(control:viewValue:convertedToModelValue:validationFailedWithError:)])
+    {
+        result = ![self.delegate control:control
+                               viewValue:viewValue
+                   convertedToModelValue:modelValueStorage
+               validationFailedWithError:error];
+    }
+    if (!result && self.owner != nil)
+    {
+        result = [self.owner control:control
+                           viewValue:viewValue
+               convertedToModelValue:modelValueStorage
+           validationFailedWithError:error];
+    }
+    return result;
+}
+
 #pragma mark - Change Tracking
 
 #pragma mark Handling Changes
 
 - (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
-    if (self.synchronizedViewValue == nil)
-    {
-        self.synchronizedViewValue = oldValue;
-    }
     [self updateModelValueForViewValueChangeTo:newValue];
 }
 
@@ -261,44 +560,13 @@
     }];
 }
 
-- (BOOL)validateModelValue:(inout id*)valueStorage error:(out NSError *__autoreleasing *)error
-{
-    NSParameterAssert(valueStorage != nil);
-
-    BOOL result = YES;
-    id validatedValue = *valueStorage;
-
-    id<AKAControlValidatorProtocol> validator = self.validator;
-    if (validator != nil)
-    {
-        result = [validator validateModelValue:validatedValue error:error];
-    }
-
-    // Perform additional validation provided by KVC after custom validation,
-    // assuming that custom validation will provide better error messages.
-    if (result)
-    {
-        result = [self.modelValueProperty validateValue:&validatedValue error:error];
-        if (validatedValue != *valueStorage)
-        {
-            AKALogWarn(@"Model value KVC validation replaced model value %@ with %@, this indicates potentially invalid model data",
-                       *valueStorage, validatedValue);
-            *valueStorage = validatedValue;
-        }
-    }
-
-    return result;
-}
-
 - (void)updateViewValueForModelValueChangeTo:(id)newValue
 {
-    NSError* error;
-    if (![self updateViewValueForModelValueChangeTo:newValue
-                                 validateModelValue:YES
-                                              error:&error])
-    {
-        // TODO: error handling
-    }
+    NSError* error = nil;
+    BOOL isValid = [self updateViewValueForModelValueChangeTo:newValue
+                                           validateModelValue:YES
+                                                        error:&error];
+    [self setIsValid:isValid error:error];
 }
 
 - (BOOL)updateViewValueForModelValueChangeTo:(id)newValue
@@ -323,7 +591,6 @@
         }
         if (result)
         {
-            self.synchronizedViewValue = viewValue;
             self.viewValue = viewValue;
         }
     }
@@ -336,10 +603,8 @@
 - (void)updateModelValueForViewValueChangeTo:(id)newValue
 {
     NSError* error = nil;
-    if (![self updateModelValueForViewValueChangeTo:newValue error:&error])
-    {
-        // TODO: error handling
-    }
+    BOOL isValid = [self updateModelValueForViewValueChangeTo:newValue error:&error];
+    [self setIsValid:isValid error:error];
 }
 
 - (BOOL)updateModelValueForViewValueChangeTo:(id)newValue error:(NSError*__autoreleasing*)error
@@ -358,9 +623,6 @@
         result = [self validateModelValue:&modelValue error:error];
         if (result)
         {
-            // change of model value will have updated view value when returning from assignment
-            // that's why synchronizedViewValue has to be reset before.
-            self.synchronizedViewValue = nil;
             self.modelValue = modelValue;
         }
     }
@@ -374,13 +636,28 @@
 {
     [self startObservingModelValueChanges];
     [self startObservingViewValueChanges];
+    [self startObservingOtherChanges];
 }
 
 - (void)stopObservingChanges
 {
     [self stopObservingModelValueChanges];
     [self stopObservingViewValueChanges];
+    [self stopObservingOtherChanges];
 }
+
+- (void)startObservingOtherChanges
+{
+    [self.converterProperty startObservingChanges];
+    [self.validatorProperty startObservingChanges];
+}
+
+- (void)stopObservingOtherChanges
+{
+    [self.converterProperty stopObservingChanges];
+    [self.validatorProperty stopObservingChanges];
+}
+
 
 - (BOOL)isObservingViewValueChanges
 {
@@ -468,6 +745,10 @@
 - (void)didActivate
 {
     [self setIsActive:YES];
+    if (self.participatesInKeyboardActivationSequence)
+    {
+        [self.keyboardActivationSequence activateItem:self];
+    }
     [self.owner controlDidActivate:self];
     if ([self.delegate respondsToSelector:@selector(controlDidActivate:)])
     {
@@ -511,6 +792,14 @@
 - (void)didDeactivate
 {
     [self setIsActive:NO];
+    if (self.participatesInKeyboardActivationSequence)
+    {
+        if (self == self.keyboardActivationSequence.activeItem)
+        {
+            [self.keyboardActivationSequence deactivate];
+        }
+    }
+
     [self.owner controlDidDeactivate:self];
     if ([self.delegate respondsToSelector:@selector(controlDidDeactivate:)])
     {
@@ -538,16 +827,9 @@
     return [self.viewBinding participatesInKeyboardActivationSequence];
 }
 
-- (AKAControl*)nextControlInKeyboardActivationSequence
+- (AKAKeyboardActivationSequence*)keyboardActivationSequence
 {
-    return [self.owner nextControlInKeyboardActivationSequenceAfter:self];
-}
-
-- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
-                                             successor:(AKAControl*)next
-{
-    [self.viewBinding setupKeyboardActivationSequenceWithPredecessor:previous.view
-                                                           successor:next.view];
+    return self.owner.keyboardActivationSequence;
 }
 
 #pragma mark - View Binding Delegate
@@ -597,17 +879,6 @@
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     [self didDeactivate];
-}
-
-- (BOOL)viewBindingRequestsActivateNextInKeyboardActivationSequence:(AKAViewBinding *)viewBinding
-{
-    BOOL result = NO;
-    AKAControl* next = [self nextControlInKeyboardActivationSequence];
-    if ([next shouldActivate])
-    {
-        [next activate];
-    }
-    return result;
 }
 
 #pragma mark - Theme Selection

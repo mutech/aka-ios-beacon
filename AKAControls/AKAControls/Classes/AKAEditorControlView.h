@@ -11,7 +11,7 @@
 #import "AKAControlViewProtocol.h"
 #import "AKAThemableContainerView_Protected.h"
 #import "AKACompositeViewBindingConfiguration.h"
-
+#import "AKAViewBinding.h"
 
 IB_DESIGNABLE
 /**
@@ -111,4 +111,7 @@ IB_DESIGNABLE
 
 @property(nonatomic) IBInspectable NSString* labelText;
 
+@end
+
+@interface AKAEditorBinding: AKAViewBinding
 @end

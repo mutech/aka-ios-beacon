@@ -126,16 +126,9 @@
                               {
                                   [weakSelf setNeedsApplySelectedTheme];
                                   [weakSelf setNeedsLayout];
-                                  [weakSelf.superview setNeedsLayout];
-                                  [UIView animateWithDuration:.5
-                                                        delay:0
-                                                      options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews
-                                                   animations:^
-                                   {
-                                       [weakSelf layoutIfNeeded];
-                                       //[self.view layoutIfNeeded];
-                                   }
-                                                   completion:nil];
+
+                                  [weakSelf updateConstraintsIfNeeded];
+                                  [weakSelf layoutIfNeeded];
                               }];
     [self.themeNameProperty startObservingChanges];
     if (super.themeName.length == 0)
@@ -171,7 +164,8 @@
                        @"message":
                            @{ @"outlet": [NSString stringWithUTF8String:sel_getName(@selector(messageLabel))],
                               @"viewTag": @3,
-                              @"requirements": @{ @"type": [UILabel class] }
+                              @"requirements": @{ @"present": @YES,
+                                                  @"type": [UILabel class] }
                               },
                        }];
     });
@@ -202,8 +196,11 @@
                                @"properties":
                                    @{ @"font": [UIFont systemFontOfSize:16.0 weight:UIFontWeightLight],
                                       @"textColor": [UIColor grayColor],
-                                      @"numberOfLines": @(0),
-                                      @"lineBreakMode": @(NSLineBreakByWordWrapping)
+                                      @"numberOfLines": @(1),
+                                      @"lineBreakMode": @(NSLineBreakByTruncatingTail),
+                                      @"textAlignment": @(NSTextAlignmentLeft),
+                                      @"adjustsFontSizeToFitWidth": @YES,
+                                      @"minimumScaleFactor": @(.5f)
                                       }
                                },
                             @{ @"view": @"editor",
@@ -215,8 +212,11 @@
                                },
                             @{ @"view": @"message",
                                @"requirements": @{ @"type": [UILabel class] },
-                               @"font": [UIFont systemFontOfSize:12.0 weight:UIFontWeightLight],
-                               @"textColor": [UIColor redColor]
+                               @"properties":
+                                   @{ @"font": [UIFont systemFontOfSize:12.0 weight:UIFontWeightLight],
+                                      @"textColor": [UIColor redColor],
+                                      @"numberOfLines": @(0),
+                                      @"lineBreakMode": @(NSLineBreakByWordWrapping) }
                                },
                             ],
                      @"metrics": @{ @"pl":@(0), @"pr":@(0), @"pt":@(8), @"pb":@(8),
@@ -308,13 +308,13 @@
                             @{ @"view": @"message",
                                @"requirements": @{ @"type": [UILabel class] },
                                @"properties":
-                                   @{ @"font": [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight],
+                                   @{ @"font": [UIFont systemFontOfSize:11.0 weight:UIFontWeightLight],
                                       @"textColor": [UIColor redColor]
                                       }
                                },
                             ],
                      @"metrics": @{ @"pl":@(0), @"pr":@(0), @"pt":@(4), @"pb":@(4),
-                                    @"vs12":@(4), @"vs23":@(4),
+                                    @"vs12":@(2), @"vs23":@(0),
                                     @"hs":@(4) },
                      @"layouts":
                          @[ @{ @"viewRequirements":
@@ -328,7 +328,7 @@
                                       @{ @"format": @"H:|-(pl)-[message]-(>=hs)-[editor]-(pr)-|",
                                          @"options": @(NSLayoutFormatAlignAllBottom)
                                          },
-                                      @{ @"format": @"V:[label]-(v12)-[message]" },
+                                      @{ @"format": @"V:[label]-(vs12)-[message]" },
                                       @{ @"format": @"V:|-(>=pt)-[editor]-(>=pb)-|" },
                                       @{ @"format": @"V:|-(pt@249)-[editor]-(pb@249)-|" },
                                       @{ @"firstItem": @"editor",
@@ -354,6 +354,14 @@
                                       ]
                                },
 
+                            @{ @"viewRequirements":
+                                   @{ @"editor":  @{ @"type": [UISwitch class] } },
+                               @"viewCustomization":
+                                   @[ @{ @"view": @"label",
+                                         @"requirements": @{ @"type": [UILabel class] },
+                                         @"properties":
+                                             @{ @"font": [UIFont systemFontOfSize:14.0] } } ]
+                               },
                             @{ @"viewRequirements":
                                    @{ @"label":   @YES,
                                       @"editor":  @{ @"notType": [UISwitch class] },
@@ -464,4 +472,46 @@
 @end
 
 @implementation AKAEditorBindingConfiguration
+
+- (Class)preferredBindingType
+{
+    return [AKAEditorBinding class];
+}
+
+- (Class)preferredViewType
+{
+    return [AKAEditorControlView class];
+}
+
+@end
+
+@interface AKAEditorBinding()
+
+@property(nonatomic, readonly)AKAEditorControlView* editorControlView;
+
+@end
+
+@implementation AKAEditorBinding
+
+- (AKAEditorControlView *)editorControlView
+{
+    return (AKAEditorControlView*)self.view;
+}
+
+- (BOOL)managesValidationStateForContext:(id)validationContext view:(UIView *)view
+{
+    return (self.editorControlView.editor == view);
+}
+
+- (void)setValidationState:(NSError *)error
+                   forView:(UIView *)view
+         validationContext:(id)validationContext
+{
+    UILabel* messageLabel = self.editorControlView.messageLabel;
+    if (messageLabel != nil)
+    {
+        messageLabel.text = error == nil ? @"" : error.localizedDescription;
+    }
+}
+
 @end

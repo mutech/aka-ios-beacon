@@ -107,8 +107,12 @@
  */
 @property(nonatomic, readonly) id<AKAControlConverterProtocol> converter;
 
-#pragma mark - Model Value Validation
-/// @name Model Value Validation
+#pragma mark - Validation
+/// @name Validation
+
+@property(nonatomic, readonly) NSError* validationError;
+
+@property(nonatomic, readonly) BOOL isValid;
 
 /**
  * Used to validate model values.
@@ -159,6 +163,10 @@
 @property(nonatomic) id modelValue;
 
 #pragma mark - Change Tracking
+
+- (void)startObservingOtherChanges;
+
+- (void)stopObservingOtherChanges;
 
 /// @name Controlling change tracking
 
@@ -330,21 +338,13 @@
  */
 @property(nonatomic, readonly) BOOL participatesInKeyboardActivationSequence;
 
-/**
- * Returns the successor of this control in the keyboard activation sequence.
- */
-@property(nonatomic, readonly) AKAControl* nextControlInKeyboardActivationSequence;
+@property(nonatomic, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
-/**
- * This is only called for controls responding YES to participatesInKeyboardActivationSequence.
- * The default implementation will forward the message to the binding, which in turn will setup the
- * control view to support activating the next control in the keyboard activation sequence,
- * typically when the return key is pressed.
- *
- * @param previous the predecessor of this control in the keyboard activation sequence or nil if this is the first control.
- * @param next the successor of this contorl in the keyboard activation sequence or nil if this is the last control.
- */
-- (void)setupKeyboardActivationSequenceWithPredecessor:(AKAControl*)previous
-                                              successor:(AKAControl*)next;
+#pragma mark - Theme Selection
+
+- (AKAProperty*)themeNamePropertyForView:(UIView*)view
+                          changeObserver:(void(^)(id oldValue, id newValue))themeNameChanged;
+
+- (void)setThemeName:(NSString*)themeName forClass:(Class)type;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C52661AD92BCD0011525A /* AKAReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C52671AD92BCD0011525A /* AKAReference.m */; };
 		8E796F771AB863DC0014EC1E /* UIView+AKAConstraintTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */; };
 		8E796F781AB863DC0014EC1E /* UIView+AKAConstraintTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F6E1AB863DC0014EC1E /* UIView+AKAConstraintTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E796F791AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F6F1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m */; };
@@ -54,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		8E6C52661AD92BCD0011525A /* AKAReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAReference.h; path = Classes/AKAReference.h; sourceTree = "<group>"; };
+		8E6C52671AD92BCD0011525A /* AKAReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAReference.m; path = Classes/AKAReference.m; sourceTree = "<group>"; };
 		8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAConstraintTools.m"; path = "Classes/UIView+AKAConstraintTools.m"; sourceTree = "<group>"; };
 		8E796F6E1AB863DC0014EC1E /* UIView+AKAConstraintTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+AKAConstraintTools.h"; path = "Classes/UIView+AKAConstraintTools.h"; sourceTree = "<group>"; };
 		8E796F6F1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAHierarchyVisitor.m"; path = "Classes/UIView+AKAHierarchyVisitor.m"; sourceTree = "<group>"; };
@@ -155,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				8EC2D94C1AB090FC00822E8C /* AKACommons.h */,
+				8E6C52661AD92BCD0011525A /* AKAReference.h */,
+				8E6C52671AD92BCD0011525A /* AKAReference.m */,
 				8EECDAAE1AC6069C001A6826 /* AKAProperty.m */,
 				8EECDAAF1AC6069C001A6826 /* AKAProperty.h */,
 				8EBA32BF1AB9C08F007436AA /* AKALog.h */,
@@ -246,6 +252,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */,
 				8EBA32C31AB9C08F007436AA /* AKALog.h in Headers */,
 				8EBA32C51AB9C08F007436AA /* AKAErrors.h in Headers */,
 				8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */,
@@ -404,6 +411,7 @@
 				8EBA32C61AB9C08F007436AA /* AKAErrors.m in Sources */,
 				8EBA32C41AB9C08F007436AA /* AKALog.m in Sources */,
 				8E796F801AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m in Sources */,
+				8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */,
 				8EC2D9EF1AB254CA00822E8C /* AKAKVOSubscription.m in Sources */,
 				8EC2D9EC1AB254CA00822E8C /* AKAKVOPublisher.m in Sources */,
 				8EECDAB01AC6069C001A6826 /* AKAProperty.m in Sources */,

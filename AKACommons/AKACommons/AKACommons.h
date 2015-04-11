@@ -18,6 +18,7 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 
 #import <AKACommons/AKALog.h>
 #import <AKACommons/AKAErrors.h>
+#import <AKACommons/AKAReference.h>
 #import <AKACommons/AKAProperty.h>
 
 // Categories/

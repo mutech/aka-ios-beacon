@@ -163,8 +163,8 @@
     }
 }
 
-- (BOOL)resolveProperty:(out AKAProperty**)propertyStorage
-             andKeyPath:(out NSString**)keyPathStorage
+- (BOOL)resolveProperty:(out AKAProperty*__autoreleasing*)propertyStorage
+             andKeyPath:(out NSString*__autoreleasing*)keyPathStorage
      forExtendedKeyPath:(out NSString*)keyPath
 {
     BOOL result = YES;
@@ -344,8 +344,7 @@
 {
     if (self.dependencyPropertiesStorage == nil)
     {
-        self.dependencyPropertiesStorage = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory
-                                                                      capacity:1];
+        self.dependencyPropertiesStorage = [NSHashTable weakObjectsHashTable];
     }
     [self.dependencyPropertiesStorage addObject:derived];
 }
@@ -354,8 +353,7 @@
 {
     if (self.dependentPropertiesStorage == nil)
     {
-        self.dependentPropertiesStorage = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory
-                                                                      capacity:1];
+        self.dependentPropertiesStorage = [NSHashTable weakObjectsHashTable];
     }
     [self.dependentPropertiesStorage addObject:derived];
 }

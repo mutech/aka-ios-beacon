@@ -8,14 +8,16 @@
 
 #import "AKAControlsDemoBaseViewController.h"
 
-#import <AKAControls/AKATextField.h>
-#import <AKAControls/AKACompositeControl.h>
+#import <AKAControls/AKAControl.h>
+#import <AKAControls/AKAFormControl.h>
+#import <AKAControls/AKATheme.h>
+#import <AKAControls/AKAEditorControlView.h>
 
 // DEBUGGING:
 #import <objc/runtime.h>
 #import "AKATestContainerView.h"
 
-@interface AKAControlsDemoBaseViewController ()
+@interface AKAControlsDemoBaseViewController () <AKAControlDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -42,9 +44,10 @@
     self.currentThemeIndex = 0;
 
     [self initializeModel];
-    self.form = [AKACompositeControl controlWithDataContext:self];
+    self.form = [AKAFormControl controlWithDataContext:self];
+    self.form.delegate = self;
+    [self.form setThemeName:@"default" forClass:[AKAEditorControlView class]];
     [self.form addControlsForControlViewsInViewHierarchy:self.view];
-    [self.form setupKeyboardActivationSequence];
 
     [self registerForKeyboardNotifications];
 }
@@ -84,20 +87,16 @@
 {
     self.currentThemeIndex = (self.currentThemeIndex + 1) % self.themeNames.count;
     NSString* themeName = self.themeNames[self.currentThemeIndex];
-    for (AKATestContainerView* view in self.themableViews)
-    {
-        view.themeName = themeName;
-        [UIView animateWithDuration:.3
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews
-                         animations:^
-        {
-            [view setNeedsLayout];
-            [view layoutIfNeeded];
-            [self.view layoutIfNeeded];
-        }
-                         completion:nil];
-    }
+    [self.view setNeedsLayout];
+    [UIView animateWithDuration:.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews
+                     animations:^
+     {
+         [self.form setThemeName:themeName forClass:[AKAEditorControlView class]];
+         [self.view layoutIfNeeded];
+     }
+                     completion:nil];
 }
 
 #pragma mark - Keyboard
@@ -150,7 +149,8 @@
     self.model = [NSMutableDictionary dictionaryWithDictionary:
                   @{ @"name": @"AKA Sarl",
                      @"phone": @"+1-234-5678",
-                     @"email": @"info@demo.org"
+                     @"email": @"info@demo.org",
+                     @"number": @(123.45)
                      }];
 }
 

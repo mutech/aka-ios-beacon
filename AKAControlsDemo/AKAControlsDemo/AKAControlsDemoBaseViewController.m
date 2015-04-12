@@ -13,10 +13,6 @@
 #import <AKAControls/AKATheme.h>
 #import <AKAControls/AKAEditorControlView.h>
 
-// DEBUGGING:
-#import <objc/runtime.h>
-#import "AKATestContainerView.h"
-
 @interface AKAControlsDemoBaseViewController () <AKAControlDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -24,9 +20,9 @@
 @property(nonatomic) NSMutableDictionary* model;
 @property(nonatomic) AKACompositeControl* form;
 
-@property(nonatomic) IBOutletCollection(AKATestContainerView) NSArray* themableViews;
 @property(nonatomic) NSArray* themeNames;
 @property(nonatomic) NSUInteger currentThemeIndex;
+
 @end
 
 @interface PhoneNumberValidator: NSObject<AKAControlValidatorProtocol>
@@ -153,7 +149,6 @@
                      @"number": @(123.45)
                      }];
 }
-
 
 @end
 

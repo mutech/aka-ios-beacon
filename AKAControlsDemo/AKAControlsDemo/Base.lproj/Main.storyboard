@@ -281,7 +281,7 @@
                                     <action selector="switchTheme:" destination="o5i-N2-XrK" eventType="touchUpInside" id="b8Q-QJ-tZO"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="101" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
@@ -289,7 +289,7 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="155" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
@@ -299,14 +299,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f7B-eL-7l6" customClass="AKASwitchEditorControlView">
-                                <rect key="frame" x="16" y="263" width="343" height="47"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Live updates"/>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="209" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
@@ -314,57 +307,35 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DJI-1Z-AxN" customClass="AKANumberTextField">
-                                <rect key="frame" x="16" y="347" width="343" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqy-Jp-e2u" customClass="AKANumberEditorControlView">
+                                <rect key="frame" x="16" y="263" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="A number"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.number"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
                                 </userDefinedRuntimeAttributes>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="A number:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tsH-AU-iIc">
-                                <rect key="frame" x="16" y="323" width="343" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="07e-sD-nKx"/>
                             <constraint firstAttribute="centerX" secondItem="WX9-sB-4fl" secondAttribute="centerX" id="0vM-nS-gL5"/>
+                            <constraint firstItem="cqy-Jp-e2u" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="3Xc-cL-QDt"/>
                             <constraint firstItem="t27-kV-h6x" firstAttribute="top" secondItem="eag-lP-JCc" secondAttribute="bottom" constant="20" id="IrH-GH-1f6"/>
-                            <constraint firstItem="tsH-AU-iIc" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="IyN-Ow-vjE"/>
-                            <constraint firstItem="DJI-1Z-AxN" firstAttribute="top" secondItem="tsH-AU-iIc" secondAttribute="bottom" constant="3" id="Kc0-aF-9dS"/>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="Oyi-nN-Dvp"/>
                             <constraint firstAttribute="centerX" secondItem="eag-lP-JCc" secondAttribute="centerX" id="QXh-ZI-WBC"/>
-                            <constraint firstItem="tsH-AU-iIc" firstAttribute="top" secondItem="f7B-eL-7l6" secondAttribute="bottom" constant="13" id="SqZ-lI-huy"/>
-                            <constraint firstItem="DJI-1Z-AxN" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="SxC-Tb-FWT"/>
-                            <constraint firstItem="DJI-1Z-AxN" firstAttribute="top" secondItem="tsH-AU-iIc" secondAttribute="bottom" constant="3" id="WKH-yw-C64"/>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="top" secondItem="hDs-lv-70o" secondAttribute="bottom" constant="8" id="Znp-s6-x98"/>
                             <constraint firstItem="v77-a2-mYd" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="a9e-aw-H4S"/>
                             <constraint firstItem="hDs-lv-70o" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="aFk-1P-mrL"/>
                             <constraint firstItem="hDs-lv-70o" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="bfx-XJ-rg5"/>
                             <constraint firstItem="hDs-lv-70o" firstAttribute="top" secondItem="L9H-ls-c3J" secondAttribute="bottom" constant="8" id="ddK-so-6hF"/>
-                            <constraint firstItem="DJI-1Z-AxN" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="dhF-6E-NSa"/>
                             <constraint firstItem="WX9-sB-4fl" firstAttribute="top" secondItem="m9L-Eh-0be" secondAttribute="bottom" constant="8" id="dkO-lu-Ipp"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="e53-Jc-8Uj"/>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="h6p-P8-Yfk"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="trailing" secondItem="WNE-90-36C" secondAttribute="trailingMargin" id="qwj-Yg-Vi1"/>
+                            <constraint firstItem="cqy-Jp-e2u" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="bottom" constant="8" id="odl-u3-O5O"/>
+                            <constraint firstItem="cqy-Jp-e2u" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="qPo-z8-L4u"/>
                             <constraint firstItem="L9H-ls-c3J" firstAttribute="top" secondItem="WX9-sB-4fl" secondAttribute="bottom" constant="7.5" id="sJJ-Ki-FJa"/>
-                            <constraint firstItem="f7B-eL-7l6" firstAttribute="top" secondItem="v77-a2-mYd" secondAttribute="bottom" constant="8" id="tOo-CB-HhA"/>
-                            <constraint firstItem="tsH-AU-iIc" firstAttribute="leading" secondItem="WNE-90-36C" secondAttribute="leadingMargin" id="zVa-2d-p9u"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outletCollection property="themableViews" destination="L9H-ls-c3J" id="WZ7-q2-ui9"/>
-                        <outletCollection property="themableViews" destination="hDs-lv-70o" id="Ftu-LC-ik1"/>
-                        <outletCollection property="themableViews" destination="v77-a2-mYd" id="sIP-hc-Swn"/>
-                        <outletCollection property="themableViews" destination="f7B-eL-7l6" id="HGU-1s-0nq"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="po4-oc-0Ya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -104,6 +104,31 @@
     _savedTextViewDelegate = savedTextViewDelegate;
 }
 
+#pragma mark - Validation
+
+- (BOOL)managesValidationStateForContext:(id)validationContext view:(UIView *)view
+{
+    return view == self.textField;
+}
+
+- (void)setValidationState:(NSError *)error
+                   forView:(UIView *)view
+         validationContext:(id)validationContext
+{
+    if (view == self.textField)
+    {
+        // Save and restore indicator attributes, best using themes or view customization:
+        if (error == nil)
+        {
+            self.textField.textColor = [UIColor blackColor];
+        }
+        else
+        {
+            self.textField.textColor = [UIColor redColor];
+        }
+    }
+}
+
 #pragma mark - Convenience
 
 - (UITextField *)textField

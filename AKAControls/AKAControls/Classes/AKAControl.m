@@ -179,6 +179,10 @@
                     _converterProperty = [self.dataContextProperty propertyAtKeyPath:converterKeyPath
                                                                       withChangeObserver:nil];
                 }
+                else
+                {
+                    _converter = [viewBinding.class defaultConverter];
+                }
                 NSString* validatorKeyPath = viewBinding.configuration.validatorKeyPath;
                 if (validatorKeyPath.length > 0)
                 {

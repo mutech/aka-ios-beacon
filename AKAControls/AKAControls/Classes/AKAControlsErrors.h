@@ -10,10 +10,15 @@
 
 #import <AKACommons/AKAErrors.h>
 
-typedef enum AKAControlsErrorCodes {
-    AKATextEditorControlViewRequiresUITextFieldEditor
-}
+typedef enum AKAControlsErrorCodes
+{
+    AKATextEditorControlViewRequiresUITextFieldEditor,
 
+    // Conversion Error Codes
+    AKAConversionErrorInvalidModelValueType,
+    AKAConversionErrorInvalidViewValueType,
+    AKAConversionErrorInvalidViewValueNumberParseError,
+}
 AKAControlsErrorCodes;
 
 @class AKAControl;

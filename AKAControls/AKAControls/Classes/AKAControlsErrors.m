@@ -53,6 +53,65 @@ static BOOL _attemptRecoveryActions = YES;
     }
 }
 
+#pragma mark - Conversion Errors
+
++ (NSError*)conversionErrorInvalidModelValue:(id)modelValue
+                                        type:(Class)modelValueType
+                                expectedType:(Class)expectedType
+                         forConversionToType:(Class)targetType
+{
+    NSString* reason = [NSString stringWithFormat:@"Invalid model value type %@, expected an instance of %@",
+                        NSStringFromClass(modelValueType),
+                        NSStringFromClass(expectedType)];
+    NSString* description = [NSString stringWithFormat:@"Conversion error: Failed to convert `%@' to an instance of %@: %@",
+                             modelValue,
+                             targetType,
+                             reason];
+    NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
+                                          code:AKAConversionErrorInvalidModelValueType
+                                      userInfo:
+                       @{ NSLocalizedDescriptionKey: description,
+                          NSLocalizedFailureReasonErrorKey: reason
+                          }];
+    return result;
+}
+
++ (NSError*)conversionErrorInvalidViewValue:(id)modelValue
+                                       type:(Class)modelValueType
+                               expectedType:(Class)expectedType
+                        forConversionToType:(Class)targetType
+{
+    NSString* reason = [NSString stringWithFormat:@"Invalid view value type %@, expected an instance of %@",
+                        NSStringFromClass(modelValueType),
+                        NSStringFromClass(expectedType)];
+    NSString* description = [NSString stringWithFormat:@"Conversion error: Failed to convert `%@' to an instance of %@: %@",
+                             modelValue,
+                             targetType,
+                             reason];
+    NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
+                                          code:AKAConversionErrorInvalidViewValueType
+                                      userInfo:
+                       @{ NSLocalizedDescriptionKey: description,
+                          NSLocalizedFailureReasonErrorKey: reason
+                          }];
+    return result;
+}
+
++ (NSError*)conversionErrorInvalidViewValue:(id)viewValue
+                  notAValidNumberParseError:(NSString*)reason
+{
+    NSString* description = [NSString stringWithFormat:@"`%@' is not a valid number: %@",
+                             viewValue,
+                             reason];
+    NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
+                                          code:AKAConversionErrorInvalidViewValueNumberParseError
+                                      userInfo:
+                       @{ NSLocalizedDescriptionKey: description,
+                          NSLocalizedFailureReasonErrorKey: reason
+                          }];
+    return result;
+}
+
 #pragma mark - Control Ownership
 
 + (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control

@@ -10,6 +10,21 @@
 
 @interface AKAControlsErrors ()
 
+#pragma mark - Conversion Errors
+
++ (NSError*)conversionErrorInvalidModelValue:(id)modelValue
+                                        type:(Class)modelValueType
+                                expectedType:(Class)expectedType
+                         forConversionToType:(Class)targetType;
+
++ (NSError*)conversionErrorInvalidViewValue:(id)modelValue
+                                       type:(Class)modelValueType
+                               expectedType:(Class)expectedType
+                        forConversionToType:(Class)targetType;
+
++ (NSError*)conversionErrorInvalidViewValue:(id)viewValue
+                  notAValidNumberParseError:(NSString*)reason;
+
 #pragma mark - Control Ownership
 
 + (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control

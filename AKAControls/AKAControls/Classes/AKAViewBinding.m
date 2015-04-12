@@ -43,6 +43,13 @@
     return _viewValueProperty;
 }
 
+#pragma mark - Conversion
+
++ (id<AKAControlConverterProtocol>)defaultConverter
+{
+    return nil;
+}
+
 #pragma mark - Validation
 
 - (void)    validationContext:(id)validationContext
@@ -53,7 +60,6 @@
     if ([self managesValidationStateForContext:validationContext
                                           view:view])
     {
-        //
         [UIView animateWithDuration:.1
                               delay:.04
                             options:(UIViewAnimationOptionCurveEaseOut |

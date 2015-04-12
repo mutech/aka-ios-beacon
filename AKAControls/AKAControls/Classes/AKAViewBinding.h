@@ -13,6 +13,7 @@
 
 @class AKAViewBinding;
 @class AKAKeyboardActivationSequence;
+@protocol AKAControlConverterProtocol;
 
 @protocol AKAViewBindingDelegate <NSObject>
 
@@ -90,20 +91,53 @@
 
 @property(nonatomic, readonly) AKAProperty* viewValueProperty;
 
+#pragma mark - Conversion
+
++ (id<AKAControlConverterProtocol>) defaultConverter;
+
 #pragma mark - Validation
 /// @name Validation
 
+/**
+ * Announces to the view binding, that the specified validation context (typically
+ * the control owning the view binding) has changed the validation state for the
+ * specified view from oldError to newError.
+ *
+ * The default implementation calls <managesValidationStateForContext:view:> and if that
+ * returns YES <setValidationState:forView:validationContext> using an appropriate animation.
+ *
+ * @param validationContext the object performing or controlling the validation process, typically the control owning this view binding.
+ * @param the view that triggered the view value validation (should equal <view>)
+ * @param oldError the previous validation state
+ * @param newError the current validation state
+ */
 - (void)    validationContext:(id)validationContext
                       forView:(UIView*)view
    changedValidationStateFrom:(NSError*)oldError
                            to:(NSError*)newError;
 
+/**
+ * Determines whether this view binding manages the validation state for the specified
+ * validationContext and the specified view. This typically means that the bound view
+ * (hierarchy) displays validation error messages.
+ */
 - (BOOL)managesValidationStateForContext:(id)validationContext
                                     view:(UIView*)view;
 
+/**
+ * Updates the validation error display if the view binding manages the validation state for
+ * the context and view.
+ *
+ * The default implementation does nothing.
+ *
+ * @param error the validation state to display.
+ * @param view the view to which the validation state refers to.
+ * @param validationContext the object performing or controlling the validation.
+ */
 - (void)setValidationState:(NSError*)error
                    forView:(UIView*)view
          validationContext:(id)validationContext;
+
 #pragma mark - Activation
 /// @name Activation
 

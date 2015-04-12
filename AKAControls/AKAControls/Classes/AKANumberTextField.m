@@ -10,6 +10,7 @@
 #import "AKANumberTextField.h"
 #import "UIView+AKABinding.h"
 #import "AKAControlsStyleKit.h"
+#import "AKANumberTextConverter.h"
 
 @implementation AKANumberTextField
 
@@ -28,6 +29,11 @@
 @end
 
 @implementation AKANumberTextFieldBinding
+
++ (id<AKAControlConverterProtocol>)defaultConverter
+{
+    return [[AKANumberTextConverter alloc] init];
+}
 
 @end
 

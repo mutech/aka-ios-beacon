@@ -34,6 +34,12 @@
 - (UIView*)customizeInputAccessoryView:(UIView*)inputAccessoryView
          forKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence;
 
+@optional
+- (BOOL)        activateResponder:(UIResponder*)responder
+                          forItem:(id)item
+                          atIndex:(NSUInteger)index
+     inKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence;
+
 @end
 
 @interface AKAKeyboardActivationSequence : NSObject

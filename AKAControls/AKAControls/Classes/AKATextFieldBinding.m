@@ -108,7 +108,7 @@
 
 - (BOOL)managesValidationStateForContext:(id)validationContext view:(UIView *)view
 {
-    return view == self.textField;
+    return NO; //view == self.textField;
 }
 
 - (void)setValidationState:(NSError *)error

@@ -308,8 +308,10 @@
                             @{ @"view": @"message",
                                @"requirements": @{ @"type": [UILabel class] },
                                @"properties":
-                                   @{ @"font": [UIFont systemFontOfSize:11.0 weight:UIFontWeightLight],
-                                      @"textColor": [UIColor redColor]
+                                   @{ @"font": [UIFont systemFontOfSize:10.0 weight:UIFontWeightLight],
+                                      @"textColor": [UIColor redColor],
+                                      @"numberOfLines": @(0),
+                                      @"lineBreakMode": @(NSLineBreakByWordWrapping)
                                       }
                                },
                             ],
@@ -335,8 +337,7 @@
                                          @"firstAttribute": @(NSLayoutAttributeCenterY),
                                          @"secondItem": @"self",
                                          @"secondAttribute": @(NSLayoutAttributeCenterY) }
-                                      ]
-                               },
+                                      ] },
                             @{ @"viewRequirements":
                                    @{ @"label":   @YES,             // short for @{@"present": @YES}
                                       @"editor":  @{ @"type": [UISwitch class] },
@@ -351,9 +352,7 @@
                                          @"firstAttribute": @(NSLayoutAttributeCenterY),
                                          @"secondItem": @"self",
                                          @"secondAttribute": @(NSLayoutAttributeCenterY) }
-                                      ]
-                               },
-
+                                      ] },
                             @{ @"viewRequirements":
                                    @{ @"editor":  @{ @"type": [UISwitch class] } },
                                @"viewCustomization":
@@ -362,15 +361,17 @@
                                          @"properties":
                                              @{ @"font": [UIFont systemFontOfSize:14.0] } } ]
                                },
+
                             @{ @"viewRequirements":
                                    @{ @"label":   @YES,
                                       @"editor":  @{ @"notType": [UISwitch class] },
                                       @"message": @YES },
                                @"constraints":
                                    @[ @{ @"format": @"H:|-(pl)-[label]-(pr)-|" },
-                                      @{ @"format": @"V:|-(pt)-[label]-(vs12)-[editor]-(vs23)-[message]-(pb)-|",
+                                      @{ @"format": @"V:|-(pt)-[label]-(vs12)-[editor]-(>=vs23)-[message]-(pb)-|",
                                          @"options": @(NSLayoutFormatAlignAllLeading|NSLayoutFormatAlignAllTrailing)
-                                         }
+                                         },
+                                      @{ @"format": @"V:[editor]-(vs23@249)-[message]" },
                                       ]
                                },
                             @{ @"viewRequirements":

@@ -74,6 +74,24 @@
     return result;
 }
 
+- (BOOL)        activateResponder:(UIResponder*)responder
+                          forItem:(id)item
+                          atIndex:(NSUInteger)index
+     inKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence
+{
+    BOOL result = NO;
+    if ([item isKindOfClass:[AKAControl class]])
+    {
+        // TODO: maybe test for shouldActivate:
+        result = [((AKAControl*)item) activate];
+    }
+    else
+    {
+        AKALogError(@"Invalid request to activate keyboard activation sequence %@ item %@ which is not an instance of AKAControl", keyboardActivationSequence, item);
+    }
+    return result;
+}
+
 #pragma mark -
 
 - (void)enumerateKeyboardActivationSequenceUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block

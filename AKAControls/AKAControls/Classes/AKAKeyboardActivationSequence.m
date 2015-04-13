@@ -219,7 +219,17 @@
                                     forItemAtIndex:index];
             if (result && !responder.isFirstResponder)
             {
-                result = [responder becomeFirstResponder];
+                if ([self.delegate respondsToSelector:@selector(activateResponder:forItem:atIndex:inKeyboardActivationSequence:)])
+                {
+                    result = [self.delegate activateResponder:responder
+                                                      forItem:[self itemAtIndex:index]
+                                                      atIndex:index
+                                 inKeyboardActivationSequence:self];
+                }
+                else
+                {
+                    result = [responder becomeFirstResponder];
+                }
             }
         }
     }

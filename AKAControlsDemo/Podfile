@@ -8,4 +8,4 @@ platform :ios, '8.0'
 pod 'AKAControls', :path => '..'
 pod 'AKACommons', :path => '..'
 pod 'Reveal-iOS-SDK', :configurations => ['Debug']
-#pod 'AKAControls', '~> 0.0.3'
+#pod 'AKAControls', '~> 0.0.4'

@@ -322,6 +322,7 @@
 				TargetAttributes = {
 					8EC2D9461AB090FC00822E8C = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = PUB728ZT9Y;
 					};
 					8EC2D9511AB090FC00822E8C = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -566,6 +567,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -583,6 +585,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

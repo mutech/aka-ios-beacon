@@ -43,6 +43,7 @@
                                          observationStarter:
                            ^BOOL (id target)
                            {
+                               (void)target; // not needed
                                return YES;
                            }
                                          observationStopper:

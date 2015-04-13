@@ -45,7 +45,7 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
     //// Bezier Drawing
     UIBezierPath* bezierPath = UIBezierPath.bezierPath;
     [bezierPath moveToPoint: CGPointMake(26, 14)];
-    [bezierPath addLineToPoint: CGPointMake(18, 21.77)];
+    [bezierPath addLineToPoint: CGPointMake(18, 21.77f)];
     [bezierPath addLineToPoint: CGPointMake(26, 30)];
     [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
     bezierPath.lineWidth = barButtonItemStrokeWidth;
@@ -61,7 +61,7 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
     //// Bezier Drawing
     UIBezierPath* bezierPath = UIBezierPath.bezierPath;
     [bezierPath moveToPoint: CGPointMake(18, 14)];
-    [bezierPath addLineToPoint: CGPointMake(26, 21.77)];
+    [bezierPath addLineToPoint: CGPointMake(26, 21.77f)];
     [bezierPath addLineToPoint: CGPointMake(18, 30)];
     [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
     bezierPath.lineWidth = barButtonItemStrokeWidth;

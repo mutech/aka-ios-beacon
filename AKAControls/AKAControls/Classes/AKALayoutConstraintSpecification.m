@@ -122,7 +122,7 @@
         NSLayoutAttribute secondAttribute = secondAttributeSpec.intValue;
 
         id multiplierSpec = specification[@"multiplier"];
-        CGFloat multiplier = multiplierSpec == nil ? 1.0 : ((NSNumber*)multiplierSpec).doubleValue;
+        CGFloat multiplier = multiplierSpec == nil ? 1.0f : ((NSNumber*)multiplierSpec).floatValue;
 
         id constantSpec = specification[@"constant"];
         CGFloat constant = constantSpec == nil ? 0 : ((NSNumber*)constantSpec).integerValue;
@@ -201,6 +201,8 @@
 - (NSArray*)constraintsForViews:(NSDictionary*)views
                         metrics:(NSDictionary*)metrics
 {
+    (void)views; // not needed
+    (void)metrics; // not needed
     AKAErrorAbstractMethodImplementationMissing();
 }
 

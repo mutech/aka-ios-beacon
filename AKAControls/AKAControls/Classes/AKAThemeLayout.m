@@ -35,6 +35,7 @@
     if (self)
     {
         [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            (void)stop; // not needed
             if ([@"viewRequirements" isEqualToString:key])
             {
                 NSDictionary* viewRequirements = obj;

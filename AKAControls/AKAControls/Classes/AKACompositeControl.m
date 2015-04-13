@@ -66,18 +66,18 @@
     {
         NSRange range = NSMakeRange(startIndex, self.controlsStorage.count - startIndex);
         NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
-        NSEnumerationOptions options = 0;
         [self.controlsStorage enumerateObjectsAtIndexes:indexSet
-                                                options:options
+                                                options:(NSEnumerationOptions)0
                                              usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                                                  block(obj, idx, &localStop);
                                                  *stop = localStop;
                                              }];
     }
-    if (!localStop && continueInOwner && self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (!localStop && continueInOwner && owner)
     {
-        NSUInteger index = [self.owner indexOfControl:self];
-        [self.owner enumerateControlsUsingBlock:block startIndex:index+1 continueInOwner:continueInOwner];
+        NSUInteger index = [owner indexOfControl:self];
+        [owner enumerateControlsUsingBlock:block startIndex:index+1 continueInOwner:continueInOwner];
     }
 }
 
@@ -505,6 +505,8 @@
         __block AKAControl* autoActivatable;
         __block AKAControl* activatable;
         [self enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
+            (void)index; // not needed
+
             if ([control canActivate])
             {
                 if (!activatable)

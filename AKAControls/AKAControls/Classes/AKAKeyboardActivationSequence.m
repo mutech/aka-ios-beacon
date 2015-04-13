@@ -68,23 +68,24 @@
 
     [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:^(id object, NSUInteger idx, BOOL *stop)
      {
+         (void)stop; // not needed
          UIResponder* responder = [self.delegate responderForKeyboardActivationSequence:self
                                                                                    item:object];
          if (responder != nil)
          {
              [self.items addObject:[AKAWeakReference weakReferenceTo:object]];
-
-             if (self.activeResponder != nil || self.activeItemIndex != NSNotFound)
+             UIResponder* activeResponder = self.activeResponder;
+             if (activeResponder != nil || self.activeItemIndex != NSNotFound)
              {
-                 if (responder == self.activeResponder)
+                 if (responder == activeResponder)
                  {
                      // Update possibly changed index of active responder
-                     _activeItemIndex = idx;
+                     self->_activeItemIndex = idx;
                  }
                  else if (self.activeItemIndex == idx)
                  {
                      // Reset the index of active responder, which is different after the update
-                     _activeItemIndex = NSNotFound;
+                     self->_activeItemIndex = NSNotFound;
                  }
              }
 
@@ -95,9 +96,11 @@
              }
          }
      }];
-    if (self.activeResponder != nil)
+
+    UIResponder* activeResponder = self.activeResponder;
+    if (activeResponder != nil)
     {
-        if (self.activeItemIndex == NSNotFound || !self.activeResponder.isFirstResponder)
+        if (self.activeItemIndex == NSNotFound || !activeResponder.isFirstResponder)
         {
             // Responder no longer part of the activation sequence or stealthily deactivated
             [self unregisterActiveResponder];
@@ -133,9 +136,10 @@
 {
     UIResponder* result = nil;
     id item = [self itemAtIndex:index];
-    if (item != nil && self.delegate != nil)
+    id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
+    if (item != nil && delegate != nil)
     {
-        result = [self.delegate responderForKeyboardActivationSequence:self
+        result = [delegate responderForKeyboardActivationSequence:self
                                                                   item:item];
     }
     return result;
@@ -219,9 +223,10 @@
                                     forItemAtIndex:index];
             if (result && !responder.isFirstResponder)
             {
-                if ([self.delegate respondsToSelector:@selector(activateResponder:forItem:atIndex:inKeyboardActivationSequence:)])
+                id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
+                if ([delegate respondsToSelector:@selector(activateResponder:forItem:atIndex:inKeyboardActivationSequence:)])
                 {
-                    result = [self.delegate activateResponder:responder
+                    result = [delegate activateResponder:responder
                                                       forItem:[self itemAtIndex:index]
                                                       atIndex:index
                                  inKeyboardActivationSequence:self];
@@ -446,16 +451,19 @@
 
 - (void)closeKeyboard:(id)sender
 {
+    (void)sender; // not needed
     [self deactivate];
 }
 
 - (void)activateNext:(id)sender
 {
+    (void)sender; // not needed
     (void)[self activateNext];
 }
 
 - (void)activatePrevious:(id)sender
 {
+    (void)sender; // not needed
     (void)[self activatePrevious];
 }
 

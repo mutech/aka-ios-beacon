@@ -43,6 +43,8 @@
                                             NSUInteger index,
                                             BOOL *stop)
      {
+         (void)owner; // not needed
+         (void)index; // not needed
          if ([control participatesInKeyboardActivationSequence])
          {
              // Cannot use index, since not all controls neccessarily participate in keyboard

@@ -77,7 +77,8 @@
 
 - (UISwitch*)switchView
 {
-    return [self.view isKindOfClass:[UISwitch class]] ? (UISwitch*)self.view : nil;
+    UIView* view = self.view;
+    return [view isKindOfClass:[UISwitch class]] ? (UISwitch*)view : nil;
 }
 
 - (void)viewValueDidChange:(UISwitch*)view

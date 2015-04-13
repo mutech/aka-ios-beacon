@@ -45,6 +45,7 @@
     if (self)
     {
         [specification enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            (void)stop; // not needed
             if ([@"viewCustomization" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])

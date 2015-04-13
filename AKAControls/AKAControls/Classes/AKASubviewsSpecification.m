@@ -38,6 +38,7 @@
     if (self)
     {
         [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            (void)stop; // not needed
             if ([key isKindOfClass:[NSString class]])
             {
                 NSString* viewName = key;
@@ -68,6 +69,8 @@
     __block BOOL result = YES;
 
     [self.subviewSpecificationStorage enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        (void)key; // not needed
+        (void)stop; // not needed
         AKASubviewsSpecificationItem* item = obj;
 
         if ([delegate respondsToSelector:@selector(subviewsSpecification:item:willValidateTarget:)])
@@ -97,6 +100,7 @@
 {
     NSMutableDictionary* result = NSMutableDictionary.new;
     [self.subviewSpecificationStorage enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        (void)stop; // not needed
         AKASubviewsSpecificationItem * specification = obj;
         UIView* view = [specification matchingViewInTarget:containerView];
         if (view)
@@ -155,6 +159,7 @@
 
         _name = name;
         [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            (void)stop; // not needed
             if ([@"outlet" isEqualToString:key])
             {
                 explicitOutlet = YES;
@@ -178,14 +183,14 @@
 
                 if (key.length > 0)
                 {
-                    _outlet = [AKAUnboundProperty unboundPropertyWithKeyPath:key];
+                    self->_outlet = [AKAUnboundProperty unboundPropertyWithKeyPath:key];
                 }
             }
             else if ([@"viewTag" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
-                    _viewTag = @(((NSNumber*)obj).integerValue);
+                    self->_viewTag = @(((NSNumber*)obj).integerValue);
                 }
                 else
                 {
@@ -194,7 +199,7 @@
             }
             else if ([@"requirements" isEqualToString:key])
             {
-                _requirements = [[AKAThemeViewApplicability alloc] initWithSpecification:obj];
+                self->_requirements = [[AKAThemeViewApplicability alloc] initWithSpecification:obj];
             }
             else
             {

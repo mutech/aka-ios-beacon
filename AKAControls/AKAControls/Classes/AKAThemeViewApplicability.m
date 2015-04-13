@@ -66,36 +66,36 @@
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
-                    _validTypes = obj;
+                    self->_validTypes = obj;
                 }
                 else if (class_isMetaClass(object_getClass(obj)))
                 {
-                    _validTypes = @[obj];
+                    self->_validTypes = @[obj];
                 }
             }
             else if ([@"notType" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSArray class]])
                 {
-                    _invalidTypes = obj;
+                    self->_invalidTypes = obj;
                 }
                 else if (class_isMetaClass(object_getClass(obj)))
                 {
-                    _invalidTypes = @[obj];
+                    self->_invalidTypes = @[obj];
                 }
             }
             else if ([@"present" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
-                    _requirePresent = ((NSNumber*)obj).boolValue;
+                    self->_requirePresent = ((NSNumber*)obj).boolValue;
                 }
             }
             else if ([@"absent" isEqualToString:key])
             {
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
-                    _requireAbsent = ((NSNumber*)obj).boolValue;
+                    self->_requireAbsent = ((NSNumber*)obj).boolValue;
                 }
             }
             else

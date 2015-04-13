@@ -38,6 +38,7 @@
     if (self)
     {
         [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            (void)stop; // not needed
             if ([@"view" isEqualToString:key])
             {
                 self.viewKey = obj;

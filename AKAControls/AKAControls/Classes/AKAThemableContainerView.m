@@ -222,9 +222,12 @@
           didInstallConstraints:(NSArray *)nsLayoutConstraints
                        inTarget:(UIView *)target
 {
+    (void)constraintSpecification; // not needed
     if (target == self)
     {
         [nsLayoutConstraints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            (void)idx; // not needed
+            (void)stop; // not needed
             NSLayoutConstraint* constraint = obj;
             switch (constraint.firstAttribute)
             {

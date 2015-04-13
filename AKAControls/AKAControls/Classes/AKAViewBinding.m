@@ -57,6 +57,7 @@
    changedValidationStateFrom:(NSError*)oldError
                            to:(NSError*)newError
 {
+    (void)oldError; // not needed
     if ([self managesValidationStateForContext:validationContext
                                           view:view])
     {

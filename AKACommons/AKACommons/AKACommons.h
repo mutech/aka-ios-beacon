@@ -21,7 +21,14 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/AKAReference.h>
 #import <AKACommons/AKAProperty.h>
 
+// UI/TableViews/
+#import <AKACommons/AKAMultiplexedTableViewDataSourceBase.h>
+#import <AKACommons/AKAMultiplexedTableViewDataSource.h>
+
 // Categories/
+#import <AKACommons/NSObject+AKASelectorTools.h>
+#import <AKACommons/NSString+AKATools.h>
+#import <AKACommons/NSIndexPath+AKARowAndSectionAsInteger.h>
 #import <AKACommons/UIView+AKAHierarchyVisitor.h>
 #import <AKACommons/UIView+AKAReusableViewsSupport.h>
 #import <AKACommons/UIView+AKAConstraintTools.h>

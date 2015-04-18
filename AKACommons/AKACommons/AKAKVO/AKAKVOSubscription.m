@@ -103,12 +103,14 @@
 - (void)publisherActivatedSubscription:(AKAKVOPublisher*)publisher
 {
     NSParameterAssert(publisher == self.publisher);
+    (void)publisher;
     _isActive = YES;
 }
 
 - (void)publisherDeactivatedSubscription:(AKAKVOPublisher*)publisher
 {
     NSParameterAssert(publisher == self.publisher);
+    (void)publisher;
     _isActive = NO;
 }
 
@@ -116,7 +118,8 @@
 {
     NSParameterAssert(publisher == self.publisher);
     NSAssert(!self.isActive, @"Attempt to cancel active subscription, publisher is expected to deactivate before cancelling");
-
+    (void)publisher;
+    
     _publisher = nil;
     // Reset handlers to release resources bound to handlers
     _subscriptionStartedHandler = nil;

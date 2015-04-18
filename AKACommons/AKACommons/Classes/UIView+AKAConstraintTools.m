@@ -348,8 +348,8 @@
                                                  relatedBy:relatedBy.intValue
                                                     toItem:secondItem
                                                  attribute:secondAttribute.intValue
-                                                multiplier:multiplier.doubleValue
-                                                  constant:constant.doubleValue];
+                                                multiplier:multiplier.floatValue
+                                                  constant:constant.floatValue];
                 if ([priority isKindOfClass:[NSNumber class]])
                 {
                     constraint.priority = ((NSNumber*)priority).intValue;

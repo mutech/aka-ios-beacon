@@ -218,6 +218,7 @@
     NSParameterAssert(subscription.publisher == self);
     NSParameterAssert(![self.activeSubscriptions containsObject:subscription] &&
                       ![self.suspendedSubscriptions containsObject:subscription]);
+    (void)subscription;
 }
 
 - (void)validateManagedSubscription:(AKAKVOSubscription*)subscription
@@ -226,6 +227,7 @@
     NSParameterAssert(subscription.publisher == self);
     NSParameterAssert([self.activeSubscriptions containsObject:subscription] ||
                       [self.suspendedSubscriptions containsObject:subscription]);
+    (void)subscription;
 }
 
 - (void)validateUnmanagedSubscription:(AKAKVOSubscription*)subscription
@@ -234,6 +236,7 @@
     NSParameterAssert(subscription.publisher != self);
     NSParameterAssert(![self.activeSubscriptions containsObject:subscription] &&
                       ![self.suspendedSubscriptions containsObject:subscription]);
+    (void)subscription;
 }
 
 #pragma mark Key Value Observing

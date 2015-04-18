@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E5D0A141ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5D0A121ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E5D0A151ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A131ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.m */; };
+		8E5D0A181ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5D0A161ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E5D0A191ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A171ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.m */; };
+		8E5D0A1E1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E5D0A1F1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */; };
+		8E5D0A211ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */; };
+		8E5D0A231ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */; };
 		8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C52661AD92BCD0011525A /* AKAReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C52671AD92BCD0011525A /* AKAReference.m */; };
 		8E796F771AB863DC0014EC1E /* UIView+AKAConstraintTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */; };
@@ -33,15 +41,15 @@
 		8EC2D9ED1AB254CA00822E8C /* AKAKVOSubscription_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E51AB254CA00822E8C /* AKAKVOSubscription_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8EC2D9EE1AB254CA00822E8C /* AKAKVOSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E61AB254CA00822E8C /* AKAKVOSubscription.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8EC2D9EF1AB254CA00822E8C /* AKAKVOSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9E71AB254CA00822E8C /* AKAKVOSubscription.m */; };
-		8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */; };
+		8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EECDAA91AC5E557001A6826 /* NSObject+AKASelectorTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAA71AC5E557001A6826 /* NSObject+AKASelectorTools.m */; };
-		8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */; };
+		8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EECDAAD1AC5EAD1001A6826 /* NSString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */; };
 		8EECDAB01AC6069C001A6826 /* AKAProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAE1AC6069C001A6826 /* AKAProperty.m */; };
 		8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAF1AC6069C001A6826 /* AKAProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EECDAB51AC97B24001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB41AC97B24001A6826 /* Podfile */; };
 		8EECDAB71AC97B42001A6826 /* AKACommons.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB61AC97B42001A6826 /* AKACommons.podspec */; };
-		C6583473BCAFA2C8A161EF2E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0DCDA793832CDEB3B9F670 /* libPods.a */; };
+		B385CDC7FFE41052F8F32EAC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FF87A7C2C0691D7A6D6770 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +63,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		39FF87A7C2C0691D7A6D6770 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		8E5D0A121ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAMultiplexedTableViewDataSourceBase.h; path = Classes/AKAMultiplexedTableViewDataSourceBase.h; sourceTree = "<group>"; };
+		8E5D0A131ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAMultiplexedTableViewDataSourceBase.m; path = Classes/AKAMultiplexedTableViewDataSourceBase.m; sourceTree = "<group>"; };
+		8E5D0A161ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAMultiplexedTableViewDataSource.h; path = Classes/AKAMultiplexedTableViewDataSource.h; sourceTree = "<group>"; };
+		8E5D0A171ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAMultiplexedTableViewDataSource.m; path = Classes/AKAMultiplexedTableViewDataSource.m; sourceTree = "<group>"; };
+		8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexPath+AKARowAndSectionAsInteger.h"; path = "Classes/NSIndexPath+AKARowAndSectionAsInteger.h"; sourceTree = "<group>"; };
+		8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexPath+AKARowAndSectionAsInteger.m"; path = "Classes/NSIndexPath+AKARowAndSectionAsInteger.m"; sourceTree = "<group>"; };
+		8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSIndexPath_AKARowAndSectionAsIntegerTests.m; sourceTree = "<group>"; };
+		8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMultiplexedTableViewDataSourceTests.m; sourceTree = "<group>"; };
 		8E6C52661AD92BCD0011525A /* AKAReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAReference.h; path = Classes/AKAReference.h; sourceTree = "<group>"; };
 		8E6C52671AD92BCD0011525A /* AKAReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAReference.m; path = Classes/AKAReference.m; sourceTree = "<group>"; };
 		8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAConstraintTools.m"; path = "Classes/UIView+AKAConstraintTools.m"; sourceTree = "<group>"; };
@@ -95,7 +112,6 @@
 		8EECDAB41AC97B24001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		8EECDAB61AC97B42001A6826 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = ../../AKACommons.podspec; sourceTree = "<group>"; };
 		BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		CA0DCDA793832CDEB3B9F670 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C6583473BCAFA2C8A161EF2E /* libPods.a in Frameworks */,
+				B385CDC7FFE41052F8F32EAC /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +141,25 @@
 				BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		8E5D0A041ADC10BE0087C687 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				8E5D0A111ADDBD2A0087C687 /* TableViews */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		8E5D0A111ADDBD2A0087C687 /* TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				8E5D0A121ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.h */,
+				8E5D0A131ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.m */,
+				8E5D0A161ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.h */,
+				8E5D0A171ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.m */,
+			);
+			name = TableViews;
 			sourceTree = "<group>";
 		};
 		8E98D9301AB4EF1E005AEB2A /* iOS Feature Tests */ = {
@@ -167,6 +202,7 @@
 				8EBA32C01AB9C08F007436AA /* AKALog.m */,
 				8EBA32C11AB9C08F007436AA /* AKAErrors.h */,
 				8EBA32C21AB9C08F007436AA /* AKAErrors.m */,
+				8E5D0A041ADC10BE0087C687 /* UI */,
 				8EC2D9DF1AB2543A00822E8C /* AKAKVO */,
 				8EC2D99D1AB09A5500822E8C /* Categories */,
 				8EC2D94A1AB090FC00822E8C /* Supporting Files */,
@@ -190,6 +226,8 @@
 				8E98D9301AB4EF1E005AEB2A /* iOS Feature Tests */,
 				8EC2D9591AB090FC00822E8C /* AKACommonsTests.m */,
 				8EC2D9571AB090FC00822E8C /* Supporting Files */,
+				8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */,
+				8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */,
 			);
 			path = AKACommonsTests;
 			sourceTree = "<group>";
@@ -213,12 +251,14 @@
 				8E796F721AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m */,
 				8E796F731AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h */,
 				8E796F741AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m */,
-				8E796F751AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h */,
-				8E796F761AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m */,
 				8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */,
 				8EECDAA71AC5E557001A6826 /* NSObject+AKASelectorTools.m */,
+				8E796F751AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h */,
+				8E796F761AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m */,
 				8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */,
 				8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */,
+				8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */,
+				8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -240,7 +280,7 @@
 		96A93AA25F5243A7D6E8BD24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CA0DCDA793832CDEB3B9F670 /* libPods.a */,
+				39FF87A7C2C0691D7A6D6770 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -252,19 +292,22 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */,
 				8EBA32C31AB9C08F007436AA /* AKALog.h in Headers */,
 				8EBA32C51AB9C08F007436AA /* AKAErrors.h in Headers */,
+				8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */,
+				8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */,
+				8E5D0A141ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.h in Headers */,
+				8E5D0A181ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.h in Headers */,
+				8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */,
 				8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */,
+				8E796F7D1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h in Headers */,
+				8E5D0A1E1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */,
 				8E796F7A1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h in Headers */,
 				8E796F7F1AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h in Headers */,
 				8E796F781AB863DC0014EC1E /* UIView+AKAConstraintTools.h in Headers */,
-				8E796F7D1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h in Headers */,
 				8E796F7B1AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h in Headers */,
-				8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */,
 				8EC2D9EB1AB254CA00822E8C /* AKAKVOPublisher.h in Headers */,
 				8EC2D9E81AB254CA00822E8C /* AKAKVOChangeEvent.h in Headers */,
-				8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */,
 				8EC2D9EE1AB254CA00822E8C /* AKAKVOSubscription.h in Headers */,
 				8EC2D9ED1AB254CA00822E8C /* AKAKVOSubscription_Internal.h in Headers */,
 			);
@@ -283,6 +326,7 @@
 				8EC2D9441AB090FC00822E8C /* Headers */,
 				8EC2D9451AB090FC00822E8C /* Resources */,
 				88646D8128E2CA5E7C406A1C /* Copy Pods Resources */,
+				D79261164F39686B6D2942F8 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -397,6 +441,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		D79261164F39686B6D2942F8 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -408,8 +467,11 @@
 				8E796F7E1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m in Sources */,
 				8EC2D9E91AB254CA00822E8C /* AKAKVOChangeEvent.m in Sources */,
 				8EECDAA91AC5E557001A6826 /* NSObject+AKASelectorTools.m in Sources */,
+				8E5D0A151ADDBDA80087C687 /* AKAMultiplexedTableViewDataSourceBase.m in Sources */,
+				8E5D0A1F1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */,
 				8E796F771AB863DC0014EC1E /* UIView+AKAConstraintTools.m in Sources */,
 				8EBA32C61AB9C08F007436AA /* AKAErrors.m in Sources */,
+				8E5D0A191ADDBE290087C687 /* AKAMultiplexedTableViewDataSource.m in Sources */,
 				8EBA32C41AB9C08F007436AA /* AKALog.m in Sources */,
 				8E796F801AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m in Sources */,
 				8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */,
@@ -426,6 +488,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EC2D95A1AB090FC00822E8C /* AKACommonsTests.m in Sources */,
+				8E5D0A211ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */,
+				8E5D0A231ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */,
 				8E98D9321AB4EF62005AEB2A /* KVCValidationTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +534,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -498,7 +563,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -532,8 +599,9 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -555,7 +623,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -568,16 +638,18 @@
 			baseConfigurationReference = 6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
@@ -586,16 +658,18 @@
 			baseConfigurationReference = BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};

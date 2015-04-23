@@ -422,7 +422,7 @@
                      validationState:oldError
                            changedTo:newError
       updateValidationMessageDisplay:updateValidationMessageDisplayBlock];
-    if (!blockCalled)
+    if (!blockCalled && updateValidationMessageDisplayBlock != NULL)
     {
         updateValidationMessageDisplayBlock();
     }

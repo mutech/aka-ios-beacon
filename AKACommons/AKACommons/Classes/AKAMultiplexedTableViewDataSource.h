@@ -12,5 +12,10 @@
 
 @interface AKAMultiplexedTableViewDataSource : AKAMultiplexedTableViewDataSourceBase
 
+#pragma mark - Batch Table View Updates
+
+- (void)beginUpdatesForTableView:(UITableView*)tableView;
+
+- (void)endUpdatesForTableView:(UITableView*)tableView;
 
 @end

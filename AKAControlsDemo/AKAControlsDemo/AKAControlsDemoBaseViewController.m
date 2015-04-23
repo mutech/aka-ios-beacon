@@ -62,6 +62,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.form stopObservingChanges];
+
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning

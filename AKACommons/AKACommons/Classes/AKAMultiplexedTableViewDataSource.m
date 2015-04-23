@@ -7,10 +7,285 @@
 //
 
 #import "AKAMultiplexedTableViewDataSource.h"
+#import "AKATVDataSource.h"
 #import "AKAReference.h"
 #import "AKALog.h"
 #import "AKAErrors.h"
 
+#pragma mark - AKATVUpdateBatch
+#pragma mark -
+
+@interface AKATVUpdateBatch: NSObject
+
+@property(nonatomic, readonly, weak) UITableView* tableView;
+@property(nonatomic)NSUInteger depth;
+@property(nonatomic, readonly) NSMutableIndexSet* insertedSections;
+@property(nonatomic, readonly) NSMutableIndexSet* deletedSections;
+@property(nonatomic, readonly) NSMutableDictionary* insertedRows;
+@property(nonatomic, readonly) NSMutableDictionary* deletedRows;
+
+@end
+
+@implementation AKATVUpdateBatch
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _depth = 0;
+    }
+    return self;
+}
+
+- (void)beginUpdatesForTableView:(UITableView*)tableView
+{
+    UITableView* tv = tableView;   // (multiple references to weak item)
+    NSAssert(self.depth == 0 ? _tableView == nil : YES, @"%@: Internal inconsistency, tableView has to be nil if depth is 0", self);
+
+    if (self.depth == 0)
+    {
+        _tableView = tv;
+        _deletedSections = [NSMutableIndexSet new];
+        _insertedSections = [NSMutableIndexSet new];
+        _deletedRows = [NSMutableDictionary new];
+        _insertedRows = [NSMutableDictionary new];
+    }
+    ++_depth;
+}
+
+- (void)endUpdatesForTableView:(UITableView*)tableView
+{
+    NSParameterAssert(tableView == _tableView);
+    if (self.depth == 1)
+    {
+        _tableView = nil;
+        _deletedSections = nil;
+        _insertedSections = nil;
+        _deletedRows = nil;
+        _insertedRows = nil;
+    }
+    --_depth;
+}
+
+#pragma mark - Insertions and Deletions of Sections
+
+//
+// iOS reorders updates such that deletions are performed (in the issued order) before any
+// insertions are performed. Indexes of deletions are affected by previous deletions but not
+// by insertions.
+// Insertion indexes take into account all deletions and previously issued insertions.
+//
+// To undo this mess:
+// - deletion indexes have to be corrected if any previous deletions or insertions are made to rows
+//   preceeding a row to be deleted. Previously inserted indexes have to be corrected.
+// - insertion indexes have to be corrected if any previous deletions or insertion are make to rows
+//   preceeding a row to be inserted.
+//
+
+- (void)recordDeletionOfSection:(NSInteger)sectionIndex
+      forBatchUpdateInTableView:(UITableView*)tableView
+{
+    NSParameterAssert(sectionIndex >= 0);
+    NSParameterAssert(tableView == _tableView);
+
+    NSMutableIndexSet* deletions = self.deletedSections;
+    NSUInteger precedingDeletions = [deletions countOfIndexesInRange:NSMakeRange(0, (NSUInteger)(sectionIndex + 1))];
+
+    NSMutableIndexSet* insertions = self.insertedSections;
+    NSUInteger precedingInsertions = [insertions countOfIndexesInRange:NSMakeRange(0, (NSUInteger)sectionIndex)];
+
+    NSUInteger originalSectionIndex = (NSUInteger)sectionIndex + precedingDeletions - precedingInsertions;
+
+    while ([deletions containsIndex:originalSectionIndex])
+    {
+        ++originalSectionIndex;
+    }
+
+    [deletions addIndex:originalSectionIndex];
+
+    [insertions shiftIndexesStartingAtIndex:originalSectionIndex+1 by:-1];
+}
+
+- (void)recordInsertionOfSection:(NSInteger)sectionIndex
+       forBatchUpdateInTableView:(UITableView*)tableView
+{
+    NSParameterAssert(tableView == _tableView);
+
+    NSMutableIndexSet* insertions = self.insertedSections;
+    [insertions shiftIndexesStartingAtIndex:(NSUInteger)sectionIndex by:1];
+}
+
+- (void)recordDeletionOfRowAtIndexPath:(NSIndexPath*)indexPath
+             forBatchUpdateInTableView:(UITableView*)tableView
+{
+    NSParameterAssert(tableView == _tableView);
+
+    NSUInteger rowIndex = (NSUInteger)indexPath.row;
+    NSMutableIndexSet* deletions = [self deletedRowsInSection:indexPath.section
+                                              createIfMissing:YES];
+    NSUInteger precedingDeletions = [deletions countOfIndexesInRange:NSMakeRange(0, rowIndex + 1)];
+
+    NSMutableIndexSet* insertions = [self insertedRowsInSection:indexPath.section
+                                                createIfMissing:NO];
+    NSUInteger precedingInsertions = [insertions countOfIndexesInRange:NSMakeRange(0, rowIndex)];
+
+    NSUInteger originalRowIndex = rowIndex + precedingDeletions - precedingInsertions;
+
+    while ([deletions containsIndex:originalRowIndex])
+    {
+        ++originalRowIndex;
+    }
+
+    [deletions addIndex:originalRowIndex];
+
+    [insertions shiftIndexesStartingAtIndex:originalRowIndex+1 by:-1];
+}
+
+- (void)recordInsertionOfRowAtIndexPath:(NSIndexPath*)indexPath
+              forBatchUpdateInTableView:(UITableView*)tableView
+{
+    NSParameterAssert(tableView == _tableView);
+
+    NSInteger rowIndex = indexPath.row;
+    NSMutableIndexSet* insertions = [self insertedRowsInSection:indexPath.section
+                                                createIfMissing:YES];
+    [insertions shiftIndexesStartingAtIndex:(NSUInteger)rowIndex by:1];
+}
+
+- (NSMutableIndexSet*)deletedRowsInSection:(NSInteger)sectionIndex
+                    createIfMissing:(BOOL)createIfMissing
+
+{
+    NSNumber* section = @(sectionIndex);
+    NSMutableIndexSet* result = self.deletedRows[section];
+
+    if (result == nil && createIfMissing)
+    {
+        result = [NSMutableIndexSet new];
+        self.deletedRows[section] = result;
+    }
+    return result;
+}
+
+- (NSMutableIndexSet*)insertedRowsInSection:(NSInteger)sectionIndex
+                            createIfMissing:(BOOL)createIfMissing
+
+{
+    NSNumber* section = @(sectionIndex);
+    NSMutableIndexSet* result = self.insertedRows[section];
+
+
+    if (result == nil && createIfMissing)
+    {
+        result = [NSMutableIndexSet new];
+        self.insertedRows[section] = result;
+    }
+    return result;
+}
+
+#pragma mark - Public Interface
+
+- (NSInteger)insertionIndexForSection:(NSInteger)sectionIndex
+            forBatchUpdateInTableView:(UITableView*)tableView
+                recordAsInsertedIndex:(BOOL)recordAsInserted
+{
+    // Determine the number of preceeding sections which have been previously deleted.
+    // The specified sectionIndex is expected to account for all previous deletions
+    // and that's what we have to undo.
+    NSIndexSet* deletedSections = self.deletedSections;
+    NSInteger deletedPrecedingSections = (NSInteger)[deletedSections countOfIndexesInRange:NSMakeRange(0, (NSUInteger)sectionIndex)];
+
+    NSInteger result = sectionIndex + deletedPrecedingSections;
+
+    if (recordAsInserted && self.depth > 0)
+    {
+        [self recordInsertionOfSection:result
+             forBatchUpdateInTableView:tableView];
+    }
+    return result;
+}
+
+- (NSInteger)deletionIndexForSection:(NSInteger)sectionIndex
+           forBatchUpdateInTableView:(UITableView*)tableView
+               recordAsInsertedIndex:(BOOL)recordAsDeleted
+{
+    // Determine the number of preceeding sections which have been previously inserted.
+    // The specified sectionIndex is expected to account for all previous insertions
+    // and that's what we have to undo.
+    NSIndexSet* insertedSections = self.insertedSections;
+    NSUInteger insertedPrecedingSections = [insertedSections countOfIndexesInRange:NSMakeRange(0, (NSUInteger)sectionIndex)];
+
+    NSInteger result = sectionIndex - (NSInteger)insertedPrecedingSections;
+
+    if (recordAsDeleted && self.depth > 0)
+    {
+        [self recordDeletionOfSection:result forBatchUpdateInTableView:tableView];
+    }
+    return result;
+}
+
+- (NSIndexPath*)insertionIndexPathForRow:(NSInteger)rowIndex
+                               inSection:(NSInteger)sectionIndex
+               forBatchUpdateInTableView:(UITableView*)tableView
+                   recordAsInsertedIndex:(BOOL)recordAsInserted
+{
+    NSIndexPath* result = nil;
+
+    // Determine the number of preceeding rows which have been previously deleted.
+    // The specified rowIndex is expected to account for all previous deletions
+    // and that's what we have to undo.
+    NSIndexSet* deletedRows = [self deletedRowsInSection:sectionIndex
+                                         createIfMissing:NO];
+    NSUInteger deletedPrecedingRows = [deletedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)rowIndex)];
+
+    result = [NSIndexPath indexPathForRow:rowIndex + (NSInteger)deletedPrecedingRows inSection:sectionIndex];
+
+    if (recordAsInserted && self.depth > 0)
+    {
+        [self recordInsertionOfRowAtIndexPath:result forBatchUpdateInTableView:tableView];
+    }
+    return result;
+}
+
+- (NSIndexPath*)deletionIndexPathForRow:(NSInteger)rowIndex
+                              inSection:(NSInteger)sectionIndex
+              forBatchUpdateInTableView:(UITableView*)tableView
+                   recordAsDeletedIndex:(BOOL)recordAsDeleted
+{
+    NSIndexPath* result = nil;
+
+    // Determine the number of preceeding rows which have been previously inserted.
+    // The specified rowIndex is expected to account for all previous insertions
+    // and that's what we have to undo.
+    NSIndexSet* insertedRows = [self insertedRowsInSection:sectionIndex
+                                           createIfMissing:NO];
+    NSUInteger insertedPrecedingRows = [insertedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)rowIndex)];
+
+    result = [NSIndexPath indexPathForRow:rowIndex - (NSInteger)insertedPrecedingRows inSection:sectionIndex];
+
+    if (recordAsDeleted && self.depth > 0)
+    {
+        [self recordDeletionOfRowAtIndexPath:result
+                   forBatchUpdateInTableView:tableView];
+    }
+    return result;
+}
+
+- (void)    movementSourceRowIndex:(inout NSIndexPath*__autoreleasing*)sourceRowIndex
+                    targetRowIndex:(inout NSIndexPath*__autoreleasing*)targetRowIndex
+         forBatchUpdateInTableView:(UITableView*)tableView
+                  recordAsMovedRow:(BOOL)recordAsMovedRow
+{
+    (void)sourceRowIndex;
+    (void)targetRowIndex;
+    (void)tableView;
+    (void)recordAsMovedRow;
+    // do nothing for now, it's not documented if movements also
+    // are reordered inside of begin/endUpdate.
+
+    // TODO: record movement or refactor the interface of this class alltogether
+}
+
+@end
 
 #pragma mark - AKATVRowSegment
 #pragma mark -
@@ -249,6 +524,43 @@
     return result;
 }
 
+#pragma mark - Moving Rows
+
+- (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
+                 toIndex:(NSUInteger)targetRowIndex
+               tableView:(UITableView*)tableView
+{
+    // TODO: check indexes before doing anything
+
+    NSMutableArray* removedSegments = [NSMutableArray new];
+    NSUInteger toRemove = [self removeUpTo:1
+                             rowsFromIndex:rowIndex
+                                 tableView:tableView
+                        removedRowSegments:removedSegments];
+    BOOL result = toRemove == 0;
+
+    if (result)
+    {
+        NSAssert(removedSegments.count == 1, nil);
+        NSAssert([removedSegments.firstObject isKindOfClass:[AKATVRowSegment class]], nil);
+
+        AKATVRowSegment* removedRows = removedSegments.firstObject;
+        NSAssert(removedRows.numberOfRows == 1, nil);
+
+        NSUInteger effectiveTarget = targetRowIndex;
+        if (rowIndex < targetRowIndex)
+        {
+            --effectiveTarget;
+        }
+
+        // TODO: make sure this does not fail or rollback:
+        result = [self insertRowSegment:removedRows
+                             atRowIndex:effectiveTarget
+                              tableView:tableView];
+    }
+    return result;
+}
+
 #pragma mark - Adding and Removing Rows
 
 /**
@@ -279,6 +591,20 @@
 {
     NSParameterAssert(sourceRowIndex >= 0);
     NSParameterAssert(numberOfRows > 0);
+
+    AKATVRowSegment* segment =
+    [[AKATVRowSegment alloc] initWithDataSource:dataSource
+                                          index:sourceRowIndex
+                                          count:numberOfRows];
+    return [self insertRowSegment:segment
+                       atRowIndex:rowIndex
+                        tableView:tableView];
+}
+
+- (BOOL)insertRowSegment:(AKATVRowSegment*)segment
+              atRowIndex:(NSUInteger)rowIndex
+               tableView:(UITableView*)tableView
+{
     NSParameterAssert(rowIndex >= 0);
 
     (void)tableView; // not used. TODO: see if we need it
@@ -297,7 +623,9 @@
     if (result)
     {
         NSAssert(offset >= 0 && offset < rowSegment.numberOfRows,
-                 @"offset %ld out of bounds 0..%ld", offset, rowSegment.numberOfRows - 1);
+                 @"offset %lu out of bounds 0..%lu",
+                 (unsigned long)offset,
+                 (unsigned long)(rowSegment.numberOfRows - 1));
         if (offset > 0)
         {
             AKATVRowSegment* part = [rowSegment splitAtOffset:offset];
@@ -315,10 +643,6 @@
 
     if (result)
     {
-        AKATVRowSegment* segment =
-        [[AKATVRowSegment alloc] initWithDataSource:dataSource
-                                              index:sourceRowIndex
-                                              count:numberOfRows];
         [self.rowSegments insertObject:segment atIndex:segmentIndex];
     }
 
@@ -329,11 +653,22 @@
            rowsFromIndex:(NSUInteger)rowIndex
                tableView:(UITableView*)tableView
 {
+    return [self removeUpTo:numberOfRows
+              rowsFromIndex:rowIndex
+                  tableView:tableView
+         removedRowSegments:nil];
+}
+
+- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
+           rowsFromIndex:(NSUInteger)rowIndex
+               tableView:(UITableView*)tableView
+      removedRowSegments:(NSMutableArray*)removedRowSegments
+{
     NSParameterAssert(numberOfRows > 0);
     NSParameterAssert(rowIndex >= 0);
     (void)tableView; // not used. TODO: see if we need it
 
-    NSUInteger result = numberOfRows;
+    NSUInteger numberOfRowsToRemove = numberOfRows;
 
     NSUInteger segmentIndex = NSNotFound;
     NSUInteger segmentFirstRowIndex = NSNotFound;
@@ -341,41 +676,69 @@
 
     AKATVRowSegment* rowSegment = nil;
 
-    BOOL done = [self locateRowSegment:&rowSegment
-                            segmentIndex:&segmentIndex
-                         offsetInSegment:&offset
-                             rowsVisited:&segmentFirstRowIndex
-                             forRowIndex:rowIndex];
-    if (done)
+    BOOL rowSegmentFound = [self locateRowSegment:&rowSegment
+                                     segmentIndex:&segmentIndex
+                                  offsetInSegment:&offset
+                                      rowsVisited:&segmentFirstRowIndex
+                                      forRowIndex:rowIndex];
+    if (rowSegmentFound)
     {
         NSAssert(offset >= 0 && offset < rowSegment.numberOfRows,
-                 @"offset %ld out of bounds 0..%ld", offset, rowSegment.numberOfRows - 1);
+                 @"offset %lu out of bounds 0..%lu",
+                 (unsigned long)offset,
+                 (unsigned long)(rowSegment.numberOfRows - 1));
 
         AKATVRowSegment* trailingRowsSegment = nil;
-        result = [rowSegment removeUpTo:numberOfRows
-                          rowsFromIndex:offset
-                           trailingRows:&trailingRowsSegment
-                            removedRows:nil];
-        NSAssert(result > 0 ? trailingRowsSegment == nil : YES, nil);
+        AKATVRowSegment* removedRow = nil;
+        numberOfRowsToRemove = [rowSegment removeUpTo:numberOfRows
+                                        rowsFromIndex:offset
+                                         trailingRows:&trailingRowsSegment
+                                          removedRows:removedRowSegments != nil ? &removedRow : nil];
+        if (removedRowSegments != nil)
+        {
+            [removedRowSegments addObject:removedRow];
+        }
+
+        // If there are rows left to be removed, there is no trailing segment to be inserted
+        NSAssert(numberOfRowsToRemove > 0 ? trailingRowsSegment == nil : YES, nil);
+
+        // Proceed to the next segment, unless the row segment is empty (and has to be removed)
+        // or we need to insert trailing rows
         if (rowSegment.numberOfRows > 0 && trailingRowsSegment == nil)
         {
             ++segmentIndex;
             rowSegment = segmentIndex < self.rowSegments.count ? self.rowSegments[segmentIndex] : nil;
         }
-        while (rowSegment != nil && result > 0)
+
+        // Remove row segments until the number of rows is reached; here we can remove from the first
+        // row in the segment (no offset).
+        while (rowSegment != nil && numberOfRowsToRemove > 0)
         {
-            if (rowSegment.numberOfRows < result)
+            if (numberOfRowsToRemove > rowSegment.numberOfRows)
             {
-                result -= rowSegment.numberOfRows;
+                numberOfRowsToRemove -= rowSegment.numberOfRows;
+
+                if (removedRowSegments != nil)
+                {
+                    AKATVRowSegment* removedSegment = self.rowSegments[segmentIndex];
+                    [removedRowSegments addObject:removedSegment];
+                }
+
                 [self.rowSegments removeObjectAtIndex:segmentIndex];
+
                 rowSegment = self.rowSegments.count > segmentIndex ? self.rowSegments[segmentIndex] : nil;
             }
             else
             {
-                result = [rowSegment removeUpTo:result
-                                  rowsFromIndex:0
-                                   trailingRows:&trailingRowsSegment
-                                    removedRows:nil];
+                AKATVRowSegment* removedSegment = nil;
+                numberOfRowsToRemove = [rowSegment removeUpTo:numberOfRowsToRemove
+                                                rowsFromIndex:0
+                                                 trailingRows:&trailingRowsSegment
+                                                  removedRows:(removedRowSegments != nil) ? &removedSegment : nil];
+                if (removedRowSegments != nil && removedSegment != nil)
+                {
+                    [removedRowSegments addObject:removedSegment];
+                }
             }
         }
         if (trailingRowsSegment != nil)
@@ -384,7 +747,10 @@
         }
     }
 
-    return result;
+    NSAssert(removedRowSegments ? removedRowSegments.count > 0 : YES, nil);
+    NSAssert(removedRowSegments ? [removedRowSegments.firstObject numberOfRows] == numberOfRows - numberOfRowsToRemove : YES, nil);
+
+    return numberOfRowsToRemove;
 }
 
 @end
@@ -396,6 +762,7 @@
 
 @property(nonatomic) NSMutableArray* sectionSegments;
 @property(nonatomic, readonly) NSUInteger numberOfSections;
+@property(nonatomic, readonly) AKATVUpdateBatch* updateBatch;
 
 @end
 
@@ -407,7 +774,8 @@
 {
     if (self = [super init])
     {
-        _sectionSegments = NSMutableArray.new;
+        _sectionSegments = [NSMutableArray new];
+        _updateBatch = [AKATVUpdateBatch new];
     }
     return self;
 }
@@ -417,6 +785,18 @@
 - (NSUInteger)numberOfSections
 {
     return self.sectionSegments.count;
+}
+
+#pragma mark - Batch Table View Updates
+
+- (void)beginUpdatesForTableView:(UITableView*)tableView
+{
+    [self.updateBatch beginUpdatesForTableView:tableView];
+}
+
+- (void)endUpdatesForTableView:(UITableView*)tableView
+{
+    [self.updateBatch endUpdatesForTableView:tableView];
 }
 
 #pragma mark - Adding and Removing Sections
@@ -476,7 +856,10 @@
 
     if (tableView && updateTableView)
     {
-        [tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+        NSInteger correctedSectionIndex = [self.updateBatch insertionIndexForSection:(NSInteger)sectionIndex
+                                                           forBatchUpdateInTableView:tableView
+                                                               recordAsInsertedIndex:YES];
+        [tableView insertSections:[NSIndexSet indexSetWithIndex:(NSUInteger)correctedSectionIndex]
                  withRowAnimation:rowAnimation];
     }
 }
@@ -487,21 +870,83 @@
                 update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    NSParameterAssert(sectionIndex + numberOfSections < self.numberOfSections);
+    NSParameterAssert(sectionIndex + numberOfSections <= self.numberOfSections);
 
-    NSRange range = NSMakeRange(sectionIndex, numberOfSections);
-    [self.sectionSegments removeObjectsInRange:range];
+    [self.sectionSegments removeObjectsInRange:NSMakeRange(sectionIndex, numberOfSections)];
 
     if (tableView && updateTableView)
     {
-        NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:range];
+        NSInteger correctedSectionIndex = [self.updateBatch deletionIndexForSection:(NSInteger)sectionIndex
+                                                          forBatchUpdateInTableView:tableView
+                                                              recordAsInsertedIndex:YES];
+
+        NSIndexSet* indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange((NSUInteger)correctedSectionIndex, numberOfSections)];
         [tableView deleteSections:indexSet
                  withRowAnimation:rowAnimation];
     }
 }
 
-#pragma mark - Adding and Removing Rows to/from Sections
+#pragma mark - Moving Rows
 
+- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
+               toIndexPath:(NSIndexPath*)targetIndexPath
+                 tableView:(UITableView *)tableView
+                    update:(BOOL)updateTableView
+{
+    NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
+
+    BOOL result = NO;
+
+    AKATVSection* section = nil;
+    if ([self resolveSectionSpecification:&section
+                             sectionIndex:indexPath.section])
+    {
+        if (indexPath.section == targetIndexPath.section)
+        {
+            result = [section moveRowFromIndex:(NSUInteger)indexPath.row
+                                       toIndex:(NSUInteger)targetIndexPath.row
+                                     tableView:tableView];
+        }
+        else
+        {
+            NSMutableArray* segments = [NSMutableArray new];
+            result = (0 == [section removeUpTo:1
+                                 rowsFromIndex:(NSUInteger)indexPath.row
+                                     tableView:tableView
+                            removedRowSegments:segments]);
+            NSAssert(segments.count == 1, nil);
+
+            AKATVSection* targetSection = nil;
+            if ([self resolveSectionSpecification:&targetSection
+                                     sectionIndex:targetIndexPath.section])
+            {
+                [targetSection insertRowSegment:segments.firstObject
+                                     atRowIndex:(NSUInteger)targetIndexPath.row
+                                      tableView:tableView];
+            }
+        }
+    }
+    else
+    {
+        // TODO: error handling
+    }
+
+    if (result && tableView && updateTableView)
+    {
+        NSIndexPath* srcIndexPath = indexPath;
+        NSIndexPath* tgtIndexPath = targetIndexPath;
+        [self.updateBatch movementSourceRowIndex:&srcIndexPath
+                                  targetRowIndex:&tgtIndexPath
+                       forBatchUpdateInTableView:tableView
+                                recordAsMovedRow:YES];
+        [tableView moveRowAtIndexPath:srcIndexPath
+                          toIndexPath:tgtIndexPath];
+    }
+
+    return;
+}
+
+#pragma mark - Adding and Removing Rows to/from Sections
 
 - (void)insertRowsFromDataSource:(NSString*)dataSourceKey
                  sourceIndexPath:(NSIndexPath*)sourceIndexPath
@@ -531,8 +976,11 @@
                 NSMutableArray* indexPaths = NSMutableArray.new;
                 for (NSInteger i=0; i < numberOfRows; ++i)
                 {
-                    [indexPaths addObject:[NSIndexPath indexPathForRow:indexPath.row+i
-                                                             inSection:indexPath.section]];
+                    NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row+i
+                                                                                       inSection:indexPath.section
+                                                                       forBatchUpdateInTableView:tableView
+                                                                           recordAsInsertedIndex:YES];
+                    [indexPaths addObject:correctedIndexPath];
                 }
                 [tableView insertRowsAtIndexPaths:indexPaths
                                  withRowAnimation:rowAnimation];
@@ -589,8 +1037,11 @@
             NSMutableArray* indexPaths = NSMutableArray.new;
             for (NSInteger i=0; i < rowsRemoved; ++i)
             {
-                [indexPaths addObject:[NSIndexPath indexPathForRow:indexPath.row + i
-                                                         inSection:indexPath.section]];
+                NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row + i
+                                                                                  inSection:indexPath.section
+                                                                  forBatchUpdateInTableView:tableView
+                                                                       recordAsDeletedIndex:YES];
+                [indexPaths addObject:correctedIndexPath];
             }
             [tableView deleteRowsAtIndexPaths:indexPaths
                              withRowAnimation:rowAnimation];
@@ -635,10 +1086,9 @@
     return result;
 }
 
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource>*)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>*)delegateStorage
-       sourceSectionIndex:(out NSInteger *)sectionIndexStorage
-          forSectionIndex:(NSInteger)sectionIndex
+- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing *)dataSourceStorage
+          sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+             forSectionIndex:(NSInteger)sectionIndex
 {
     AKATVSection* sectionSpecification = nil;
     BOOL result = [self resolveSectionSpecification:&sectionSpecification
@@ -647,11 +1097,7 @@
     {
         if (dataSourceStorage)
         {
-            (*dataSourceStorage) = sectionSpecification.dataSource.dataSource;
-        }
-        if (delegateStorage)
-        {
-            (*delegateStorage) = sectionSpecification.dataSource.delegate;
+            (*dataSourceStorage) = sectionSpecification.dataSource;
         }
         if (sectionIndexStorage)
         {
@@ -662,10 +1108,9 @@
     return result;
 }
 
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource> *)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>*)delegateStorage
-          sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
-             forIndexPath:(NSIndexPath*)indexPath
+- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing *)dataSourceStorage
+             sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
+                forIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger sectionIndex = indexPath.section;
     AKATVSection* sectionSpecification = nil;
@@ -682,11 +1127,7 @@
         {
             if (dataSourceStorage)
             {
-                (*dataSourceStorage) = dataSourceEntry.dataSource;
-            }
-            if (delegateStorage)
-            {
-                (*delegateStorage) = dataSourceEntry.delegate;
+                (*dataSourceStorage) = dataSourceEntry;
             }
             if (indexPathStorage)
             {

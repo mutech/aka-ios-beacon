@@ -11,12 +11,10 @@
 @interface NSObject (AKAConcurrencyTools)
 
 /**
- * Executes the block as early as possible in the main thread (or
- * dispatches it in the main queue). If the calling code is execute in
- * the main thread, the block will be executed immediately. Otherwise it
- * will be dispatched asynchronuously in the main queue.
+ * If called form the main thread, the block is executed right away
+ * and otherwise dispatched to the main queue.
  *
- * @param block the block to execut.
+ * @param block the block to execute.
  */
 - (void)aka_performBlockInMainThreadOrQueue:(void(^)())block;
 

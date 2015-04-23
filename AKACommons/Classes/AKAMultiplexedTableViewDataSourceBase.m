@@ -9,28 +9,10 @@
 #import "AKAErrors.h"
 
 #import "AKAMultiplexedTableViewDataSourceBase.h"
+#import "AKATVDataSource.h"
+#import "AKALog.h"
+
 #import <objc/runtime.h>
-
-#pragma mark - AKATVDataSource
-#pragma mark -
-
-@implementation AKATVDataSource
-+ (instancetype)dataSource:(id<UITableViewDataSource>)dataSource
-              withDelegate:(id<UITableViewDelegate>)delegate
-{
-    return [[AKATVDataSource alloc] initWithDataSource:dataSource delegate:delegate];
-}
-- (instancetype)initWithDataSource:(id<UITableViewDataSource>)dataSource
-                          delegate:(id<UITableViewDelegate>)delegate
-{
-    if (self = [self init])
-    {
-        _dataSource = dataSource;
-        _delegate = delegate;
-    }
-    return self;
-}
-@end
 
 #pragma mark - AKAMultiplexedTableViewDataSourceBase
 #pragma mark -
@@ -46,12 +28,13 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)proxyDataSourceAndDelegateInTableView:(UITableView*)tableView
++ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
+                                     inTableView:(UITableView*)tableView
 {
     AKAMultiplexedTableViewDataSourceBase* result = [[self alloc] init];
     if (tableView.dataSource != nil)
     {
-        NSString* key = [self defaultDataSourceKey];
+        NSString* key = dataSourceKey;
         id<UITableViewDataSource> dataSource = [result addDataSource:tableView.dataSource
                                                         withDelegate:tableView.delegate
                                                               forKey:key].dataSource;
@@ -69,13 +52,15 @@
     return result;
 }
 
-+ (instancetype)proxyDataSourceAndDelegateInTableView:(UITableView*)tableView
++ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
+                                     inTableView:(UITableView*)tableView
                                   andAppendDataSource:(id<UITableViewDataSource>)dataSource
                                          withDelegate:(id<UITableViewDelegate>)delegate
                                                forKey:(NSString*)key
 {
     AKAMultiplexedTableViewDataSourceBase* result =
-    [self proxyDataSourceAndDelegateInTableView:tableView];
+    [self proxyDataSourceAndDelegateForKey:dataSourceKey
+                               inTableView:tableView];
 
     [result addDataSource:dataSource
              withDelegate:delegate
@@ -102,37 +87,6 @@
     return self;
 }
 
-- (instancetype)initWithTableView:(UITableView*)tableView
-{
-    if (self = [self init])
-    {
-        if (tableView.dataSource != nil)
-        {
-            [self addDataSource:tableView.dataSource
-                   withDelegate:tableView.delegate
-                         forKey:[self.class defaultDataSourceKey]];
-            NSInteger numberOfSections = [tableView.dataSource numberOfSectionsInTableView:tableView];
-            [self insertSectionsFromDataSource:[self.class defaultDataSourceKey]
-                            sourceSectionIndex:0
-                                         count:(NSUInteger)numberOfSections
-                                atSectionIndex:0
-                             useRowsFromSource:YES
-                                     tableView:tableView
-                                        update:NO
-                              withRowAnimation:UITableViewRowAnimationNone];
-        }
-        if (tableView.dataSource != nil || tableView.delegate == nil)
-        {
-            // Only install if delegate was registered (it is unless dataSource is nil)
-            // or if no delegate is set.
-            tableView.dataSource = self;
-            tableView.delegate = self;
-            [tableView reloadData];
-        }
-    }
-    return self;
-}
-
 #pragma mark - Configuration
 
 + (NSString*)defaultDataSourceKey
@@ -148,7 +102,9 @@
 {
     NSParameterAssert(self.dataSourcesByKey[key] == nil);
     AKATVDataSource* result = [AKATVDataSource dataSource:dataSource
-                                             withDelegate:delegate];
+                                             withDelegate:delegate
+                                                   forKey:key
+                                            inMultiplexer:self];
     self.dataSourcesByKey[key] = result;
     if (delegate != nil)
     {
@@ -234,6 +190,54 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
+#pragma mark - Moving Rows
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView*)tableView
+{
+    [self moveRowAtIndex:rowIndex
+               inSection:sectionIndex
+              toRowIndex:targetIndex
+               tableView:tableView
+                  update:YES];
+}
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView *)tableView
+                update:(BOOL)updateTableView
+{
+    [self moveRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]
+                 toIndexPath:[NSIndexPath indexPathForRow:targetIndex inSection:sectionIndex]
+                   tableView:tableView
+                      update:updateTableView];
+}
+
+- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
+               toIndexPath:(NSIndexPath*)targetIndexPath
+                 tableView:(UITableView *)tableView
+{
+    [self moveRowAtIndexPath:indexPath
+                 toIndexPath:targetIndexPath
+                   tableView:tableView
+                      update:YES];
+}
+
+- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
+               toIndexPath:(NSIndexPath*)targetIndexPath
+                 tableView:(UITableView *)tableView
+                    update:(BOOL)updateTableView
+{
+    (void)indexPath;
+    (void)targetIndexPath;
+    (void)tableView;
+    (void)updateTableView;
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
 #pragma mark - Adding and Removing Rows to/from Sections
 
 - (void)insertRowsFromDataSource:(NSString*)dataSourceKey
@@ -301,8 +305,29 @@
        sourceSectionIndex:(out NSInteger *)sectionIndexStorage
           forSectionIndex:(NSInteger)sectionIndex
 {
+    AKATVDataSource* dataSource = nil;
+    BOOL result = [self resolveAKADataSource:&dataSource
+                          sourceSectionIndex:sectionIndexStorage
+                             forSectionIndex:sectionIndex];
+    if (result)
+    {
+        if (dataSourceStorage != nil)
+        {
+            *dataSourceStorage = dataSource.dataSource;
+        }
+        if (delegateStorage != nil)
+        {
+            *delegateStorage = dataSource.delegate;
+        }
+    }
+    return result;
+}
+
+- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
+          sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+             forSectionIndex:(NSInteger)sectionIndex
+{
     (void)dataSourceStorage;
-    (void)delegateStorage;
     (void)sectionIndexStorage;
     (void)sectionIndex;
     AKAErrorAbstractMethodImplementationMissing();
@@ -313,8 +338,29 @@
           sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
              forIndexPath:(NSIndexPath*)indexPath
 {
+    AKATVDataSource* dataSource = nil;
+    BOOL result = [self resolveAKADataSource:&dataSource
+                             sourceIndexPath:indexPathStorage
+                                forIndexPath:indexPath];
+    if (result)
+    {
+        if (dataSourceStorage != nil)
+        {
+            *dataSourceStorage = dataSource.dataSource;
+        }
+        if (delegateStorage != nil)
+        {
+            *delegateStorage = dataSource.delegate;
+        }
+    }
+    return result;
+}
+
+- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
+             sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
+             forIndexPath:(NSIndexPath*)indexPath
+{
     (void)dataSourceStorage;
-    (void)delegateStorage;
     (void)indexPathStorage;
     (void)indexPath;
     AKAErrorAbstractMethodImplementationMissing();
@@ -433,6 +479,9 @@
                        moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
                               toIndexPath:(NSIndexPath *)destinationIndexPath
 {
+    // Not implemented becuase I have no idea yet how to handle cross DS row movements.
+    // This should probably be implemented in a subclass of the multiplexed data source
+    // TODO: implement this if at all possible.
     (void)tableView;
     (void)sourceIndexPath;
     (void)destinationIndexPath;
@@ -443,6 +492,9 @@
               sectionForSectionIndexTitle:(NSString *)title
                                   atIndex:(NSInteger)index
 {
+    // Not implemented becuase I have no idea yet how to handle cross DS section indexes.
+    // This should probably be implemented in a subclass of the multiplexed data source
+    // TODO: implement this if at all possible.
     (void)tableView;
     (void)title;
     (void)index;
@@ -452,64 +504,111 @@
 
 #pragma mark - UITableViewDelegate
 
+- (id<UITableViewDelegate>)resolveDelegateForInvocation:(NSInvocation*)invocation
+                          withTableViewParameterAtIndex:(NSInteger)tvParameterIndex
+                                sectionParameterAtIndex:(NSInteger)parameterIndex
+                                     resolveCoordinates:(BOOL)resolveCoordinates
+                                      useTableViewProxy:(BOOL)useTableViewProxy
+{
+    id<UITableViewDelegate> result = nil;
+    AKATVDataSource* dataSource = nil;
+    NSInteger section = NSNotFound;
+    [invocation getArgument:&section atIndex:2+parameterIndex];
+    if ([self resolveAKADataSource:&dataSource sourceSectionIndex:&section forSectionIndex:section])
+    {
+        result = dataSource.delegate;
+        if (resolveCoordinates)
+        {
+            if (useTableViewProxy)
+            {
+                UITableView* __unsafe_unretained tableView = nil;
+                [invocation getArgument:&tableView atIndex:2+tvParameterIndex];
+
+                UITableView* __unsafe_unretained tableViewProxy = [dataSource proxyForTableView:tableView];
+                [invocation setArgument:&tableViewProxy atIndex:2+tvParameterIndex];
+            }
+            [invocation setArgument:&section atIndex:2+parameterIndex];
+        }
+    }
+    return result;
+}
+
+- (id<UITableViewDelegate>)resolveDelegateForInvocation:(NSInvocation*)invocation
+                          withTableViewParameterAtIndex:(NSInteger)tvParameterIndex
+                              indexPathParameterAtIndex:(NSInteger)parameterIndex
+                                     resolveCoordinates:(BOOL)resolveCoordinates
+                                      useTableViewProxy:(BOOL)useTableViewProxy
+{
+    id<UITableViewDelegate> result = nil;
+    AKATVDataSource* dataSource = nil;
+
+    NSIndexPath* __unsafe_unretained indexPath;
+    [invocation getArgument:&indexPath atIndex:2+parameterIndex];
+
+    NSIndexPath* sourceIndexPath = nil;
+    if ([self resolveAKADataSource:&dataSource sourceIndexPath:&sourceIndexPath forIndexPath:indexPath])
+    {
+        result = dataSource.delegate;
+        if (resolveCoordinates)
+        {
+            if (useTableViewProxy)
+            {
+                UITableView* __unsafe_unretained tableView = nil;
+                [invocation getArgument:&tableView atIndex:2+tvParameterIndex];
+
+                UITableView* tableViewProxy = [dataSource proxyForTableView:tableView];
+                [invocation setArgument:&tableViewProxy atIndex:2+tvParameterIndex];
+            }
+            [invocation setArgument:&sourceIndexPath atIndex:2+parameterIndex];
+        }
+    }
+    return result;
+}
+
+
 + (NSDictionary*)sharedTableViewDelegateSelectorMapping
 {
     static NSDictionary* sharedInstance = nil;
     static dispatch_once_t token;
     dispatch_once(&token, ^{
-        id<UITableViewDelegate> (^resolveBySection)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, NSInteger) =
-        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds,
-                                 NSInvocation* inv,
-                                 NSInteger parameterIndex)
+        id<UITableViewDelegate> (^resolveSectionAt1)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, BOOL) =
+        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv, BOOL useTableViewProxy)
         {
-            id<UITableViewDelegate> result = nil;
-            NSInteger section = NSNotFound;
-            [inv getArgument:&section atIndex:2+parameterIndex];
-            if ([mds resolveDataSource:nil delegate:&result sourceSectionIndex:&section forSectionIndex:section])
-            {
-                //[inv setArgument:&section atIndex:2+parameterIndex];
-            }
-            return result;
+            return [mds resolveDelegateForInvocation:inv
+                       withTableViewParameterAtIndex:0
+                             sectionParameterAtIndex:1
+                                  resolveCoordinates:YES
+                                   useTableViewProxy:useTableViewProxy];
         };
-        id<UITableViewDelegate> (^resolveByIndexPath)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, NSInteger) =
-        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds,
-                                 NSInvocation* inv,
-                                 NSInteger parameterIndex)
+        id<UITableViewDelegate> (^resolveSectionAt2)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, BOOL) =
+        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv, BOOL useTableViewProxy)
         {
-            id<UITableViewDelegate> result = nil;
-
-            NSIndexPath* __unsafe_unretained indexPath;
-            [inv getArgument:&indexPath atIndex:2+parameterIndex];
-
-            NSIndexPath* sourceIndexPath = nil;
-            if ([mds resolveDataSource:nil delegate:&result sourceIndexPath:&sourceIndexPath forIndexPath:indexPath])
-            {
-                //[inv setArgument:&sourceIndexPath atIndex:2+parameterIndex];
-            }
-            return result;
+            return [mds resolveDelegateForInvocation:inv
+                       withTableViewParameterAtIndex:0
+                             sectionParameterAtIndex:2
+                                  resolveCoordinates:YES
+                                   useTableViewProxy:useTableViewProxy];
         };
 
-        id<UITableViewDelegate> (^sectionAt1)(AKAMultiplexedTableViewDataSourceBase* mds,
-                                              NSInvocation* inv) = ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv)
+        id<UITableViewDelegate> (^resolveIndexPathAt1)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, BOOL) =
+        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv, BOOL useTableViewProxy)
         {
-            return resolveBySection(mds, inv, 1);
+            return [mds resolveDelegateForInvocation:inv
+                       withTableViewParameterAtIndex:0
+                           indexPathParameterAtIndex:1
+                                  resolveCoordinates:YES
+                                   useTableViewProxy:useTableViewProxy];
         };
-        id<UITableViewDelegate> (^sectionAt2)(AKAMultiplexedTableViewDataSourceBase* mds,
-                                              NSInvocation* inv) = ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv)
+        id<UITableViewDelegate> (^resolveIndexPathAt2)(AKAMultiplexedTableViewDataSourceBase*, NSInvocation*, BOOL) =
+        ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv, BOOL useTableViewProxy)
         {
-            return resolveBySection(mds, inv, 2);
+            return [mds resolveDelegateForInvocation:inv
+                       withTableViewParameterAtIndex:0
+                           indexPathParameterAtIndex:2
+                                  resolveCoordinates:YES
+                                   useTableViewProxy:useTableViewProxy];
         };
-        id<UITableViewDelegate> (^indexPathAt1)(AKAMultiplexedTableViewDataSourceBase* mds,
-                                                NSInvocation* inv) = ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv)
-        {
-            return resolveByIndexPath(mds, inv, 1);
-        };
-        id<UITableViewDelegate> (^indexPathAt2)(AKAMultiplexedTableViewDataSourceBase* mds,
-                                                NSInvocation* inv) = ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv)
-        {
-            return resolveByIndexPath(mds, inv, 2);
-        };
-        id<UITableViewDelegate> (^indexPathAt1And2)(AKAMultiplexedTableViewDataSourceBase* mds,
+        id<UITableViewDelegate> (^resolveIndexPathAt1And2)(AKAMultiplexedTableViewDataSourceBase* mds,
                                                     NSInvocation* inv) = ^id<UITableViewDelegate>(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation* inv)
         {
             (void)mds; (void)inv;
@@ -517,43 +616,44 @@
         };
 
         sharedInstance =
-            @{ [NSValue valueWithPointer:@selector(tableView:heightForHeaderInSection:)]: sectionAt1,
-               [NSValue valueWithPointer:@selector(tableView:heightForFooterInSection:)]: sectionAt1,
-               [NSValue valueWithPointer:@selector(tableView:viewForHeaderInSection:)]: sectionAt1,
-               [NSValue valueWithPointer:@selector(tableView:viewForFooterInSection:)]: sectionAt1,
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForHeaderInSection:)]: sectionAt1,
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForFooterInSection:)]: sectionAt1,
+            @{ [NSValue valueWithPointer:@selector(tableView:heightForHeaderInSection:)]: resolveSectionAt1,
+               [NSValue valueWithPointer:@selector(tableView:heightForFooterInSection:)]: resolveSectionAt1,
+               [NSValue valueWithPointer:@selector(tableView:viewForHeaderInSection:)]: resolveSectionAt1,
+               [NSValue valueWithPointer:@selector(tableView:viewForFooterInSection:)]: resolveSectionAt1,
+               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForHeaderInSection:)]: resolveSectionAt1,
+               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForFooterInSection:)]: resolveSectionAt1,
 
-               [NSValue valueWithPointer:@selector(tableView:willDisplayHeaderView:forSection:)]: sectionAt2,
-               [NSValue valueWithPointer:@selector(tableView:willDisplayFooterView:forSection:)]: sectionAt2,
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingHeaderView:forSection:)]: sectionAt2,
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingFooterView:forSection:)]: sectionAt2,
+               [NSValue valueWithPointer:@selector(tableView:willDisplayHeaderView:forSection:)]: resolveSectionAt2,
+               [NSValue valueWithPointer:@selector(tableView:willDisplayFooterView:forSection:)]: resolveSectionAt2,
+               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingHeaderView:forSection:)]: resolveSectionAt2,
+               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingFooterView:forSection:)]: resolveSectionAt2,
 
-               [NSValue valueWithPointer:@selector(tableView:heightForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:accessoryTypeForRowWithIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:shouldHighlightRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:didHighlightRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:didUnhighlightRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:willSelectRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:willDeselectRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:didSelectRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:didDeselectRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:editingStyleForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:editActionsForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:willBeginEditingRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:didEndEditingRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:indentationLevelForRowAtIndexPath:)]: indexPathAt1,
-               [NSValue valueWithPointer:@selector(tableView:shouldShowMenuForRowAtIndexPath:)]: indexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:heightForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:accessoryTypeForRowWithIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:shouldHighlightRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:didHighlightRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:didUnhighlightRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:willSelectRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:willDeselectRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:didSelectRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:didDeselectRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:editingStyleForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:editActionsForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:willBeginEditingRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:didEndEditingRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:indentationLevelForRowAtIndexPath:)]: resolveIndexPathAt1,
+               [NSValue valueWithPointer:@selector(tableView:shouldShowMenuForRowAtIndexPath:)]: resolveIndexPathAt1,
 
-               [NSValue valueWithPointer:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]: indexPathAt2,
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]: indexPathAt2,
-               [NSValue valueWithPointer:@selector(tableView:canPerformAction:forRowAtIndexPath:withSender:)]: indexPathAt2,
-               [NSValue valueWithPointer:@selector(tableView:performAction:forRowAtIndexPath:withSender:)]: indexPathAt2,
-               [NSValue valueWithPointer:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]: indexPathAt1And2
+               [NSValue valueWithPointer:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]: resolveIndexPathAt2,
+               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]: resolveIndexPathAt2,
+               [NSValue valueWithPointer:@selector(tableView:canPerformAction:forRowAtIndexPath:withSender:)]: resolveIndexPathAt2,
+               [NSValue valueWithPointer:@selector(tableView:performAction:forRowAtIndexPath:withSender:)]: resolveIndexPathAt2,
+               
+               [NSValue valueWithPointer:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]: resolveIndexPathAt1And2
             };
     });
     return sharedInstance;
@@ -629,11 +729,18 @@
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {
     NSValue* selectorValue = [NSValue valueWithPointer:anInvocation.selector];
-    id<UITableViewDelegate>(^mapping)(AKAMultiplexedTableViewDataSourceBase* mds, NSInvocation *inv) =
+    id<UITableViewDelegate>(^mapping)(AKAMultiplexedTableViewDataSourceBase* mds,
+                                      NSInvocation *invocation,
+                                      BOOL useTableViewProxy) =
         self.tableViewDelegateSelectorMapping[selectorValue];
     if (mapping)
     {
-        id<UITableViewDelegate> delegate = mapping(self, anInvocation);
+        // mapping() maps row/section coordinates between multiplexed and source data sources,
+        // resolves the source delegate and optionally replaces the invocation's table view
+        // parameter with a proxy that also performs row/section coordinate mapping (so that
+        // if the delegate calls table view methods with coordinate parameters, it will not
+        // fail due to the different structure of the multiplexed table view.
+        id<UITableViewDelegate> delegate = mapping(self, anInvocation, YES);
         if ([delegate respondsToSelector:anInvocation.selector])
         {
             [anInvocation invokeWithTarget:delegate];

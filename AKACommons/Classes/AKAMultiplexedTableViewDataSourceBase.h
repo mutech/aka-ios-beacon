@@ -8,15 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#pragma mark - AKATVDataSource
-#pragma mark -
-
-@interface AKATVDataSource: NSObject
-+ (instancetype)dataSource:(id<UITableViewDataSource>)dataSource
-              withDelegate:(id<UITableViewDelegate>)delegate;
-@property(nonatomic, weak, readonly) id<UITableViewDataSource> dataSource;
-@property(nonatomic, weak, readonly) id<UITableViewDelegate> delegate;
-@end
+#import "AKATVCoordinateMappingProtocol.h"
+@class AKATVDataSource;
 
 #pragma mark - AKAMultiplexedTableViewDataSourceBase
 #pragma mark -
@@ -55,23 +48,22 @@
 /**
  * Creates a new instance that acts as proxy for the dataSource and
  * delegate of the specified table view (replacing them). The original
- * data source is available at the key "default"
- * (@c +defaultDataSourceKey).
+ * data source is available at the specified dataSourceKey.
  *
  * @note that the tableView is not reloaded or updated, because its
  *      contents does not change.
  *
  * @param tableView the table view in which to install the new instance
- *
+ * @param dataSourceKey the key for which the original dataSource will be registered.
  * @return the new instance
  */
-+ (instancetype)proxyDataSourceAndDelegateInTableView:(UITableView*)tableView;
++ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
+                                     inTableView:(UITableView*)tableView;
 
 /**
  * Creates a new instance that acts as proxy for the dataSource and
  * delegate of the specified table view (replacing them). The original
- * data source is available at the key "default"
- * (@c +defaultDataSourceKey).
+ * data source is available at the specified dataSourceKey.
  *
  * The second dataSource and delegate are registered and the corresponding
  * sections are added following the sections of the primary data source.
@@ -81,17 +73,18 @@
  *      and insert their sections if you don't want reloadData to be
  *      called.
  *
+ * @param dataSourceKey the key for which the original dataSource will be registered.
  * @param tableView the table view in which to install the new instance
- * @param dataSource the second (multiplexed) data source
+ * @param dataSource the key identifying the table views original data source
  * @param delegate the delegate for the second data source
- * @param key the key identifying the second data source
+ * @param additionalDataSourceKey the key identifying the second data source
  *
  * @return the new instance
  */
-+ (instancetype)proxyDataSourceAndDelegateInTableView:(UITableView*)tableView
-                                  andAppendDataSource:(id<UITableViewDataSource>)dataSource
++ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
+                                     inTableView:(UITableView*)tableView                                  andAppendDataSource:(id<UITableViewDataSource>)dataSource
                                          withDelegate:(id<UITableViewDelegate>)delegate
-                                               forKey:(NSString*)key;
+                                               forKey:(NSString*)additionalDataSourceKey;
 
 #pragma mark - Managing Data Sources and associated Delegates
 
@@ -233,6 +226,28 @@
                 update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
+#pragma mark - Moving Rows
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView*)tableView;
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView*)tableView
+                update:(BOOL)updateTableView;
+
+- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
+               toIndexPath:(NSIndexPath*)targetIndexPath
+                 tableView:(UITableView *)tableView;
+
+- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
+               toIndexPath:(NSIndexPath*)targetIndexPath
+                 tableView:(UITableView *)tableView
+                    update:(BOOL)updateTableView;
+
 #pragma mark - Adding and Removing Rows to/from Sections
 /// @name Adding and Removing Rows to or from Sections
 
@@ -346,6 +361,13 @@
                tableView:(UITableView*)tableView;
 
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
+
+- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
+             sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
+                forIndexPath:(NSIndexPath*)indexPath;
+- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
+          sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+             forSectionIndex:(NSInteger)sectionIndex;
 
 /**
  * Resolves the source data source, delegate and index of the section with the specified section index

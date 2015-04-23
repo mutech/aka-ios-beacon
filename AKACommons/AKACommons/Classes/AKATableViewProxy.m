@@ -70,43 +70,43 @@
 
 #pragma mark - Coordinate Mapping
 
-- (NSIndexPath*)aka_mappedIndexPath:(NSIndexPath*)indexPath
+- (NSIndexPath*)aka_tableViewIndexPathFor:(NSIndexPath*)indexPath
+{
+    AKATVDataSource* ds = self.aka_dataSource;
+    return [ds  reverseMappedIndexPath:indexPath];
+}
+
+- (NSIndexPath*)aka_dataSourceIndexPathFor:(NSIndexPath*)indexPath
 {
     AKATVDataSource* ds = self.aka_dataSource;
     return [ds mappedIndexPath:indexPath];
 }
 
-- (NSIndexPath*)aka_reverseMappedIndexPath:(NSIndexPath*)indexPath
-{
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds reverseMappedIndexPath:indexPath];
-}
-
-- (NSArray*)aka_mappedIndexPaths:(NSArray*)indexPaths
-{
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds mappedIndexPaths:indexPaths];
-}
-
-- (NSArray*)aka_reverseMappedIndexPaths:(NSArray*)indexPaths
+- (NSArray*)aka_tableViewIndexPaths:(NSArray*)indexPaths
 {
     AKATVDataSource* ds = self.aka_dataSource;
     return [ds reverseMappedIndexPaths:indexPaths];
 }
 
-- (NSInteger)aka_mappedSection:(NSInteger)section
+- (NSArray*)aka_dataSourceIndexPaths:(NSArray*)indexPaths
 {
     AKATVDataSource* ds = self.aka_dataSource;
-    return [ds mappedSection:section];
+    return [ds mappedIndexPaths:indexPaths];
 }
 
-- (NSIndexSet*)aka_mappedSectionIndexSet:(NSIndexSet*)sections
+- (NSInteger)aka_tableViewSectionFor:(NSInteger)section
 {
     AKATVDataSource* ds = self.aka_dataSource;
-    return [ds mappedSectionIndexSet:sections];
+    return [ds reverseMappedSection:section];
 }
 
-- (NSArray*)aka_filteredCells:(NSArray*)cells
+- (NSIndexSet*)aka_tableViewSectionIndexSet:(NSIndexSet*)sections
+{
+    AKATVDataSource* ds = self.aka_dataSource;
+    return [ds reverseMappedSectionIndexSet:sections];
+}
+
+- (NSArray*)aka_excludeCellsFromOtherDataSources:(NSArray*)cells
 {
     AKATVDataSource* ds = self.aka_dataSource;
     return [ds filteredCells:cells];
@@ -116,12 +116,14 @@
 
 - (NSInteger)numberOfSections
 {
+    // TODO: Don't know what to do with this one (yet)
     UITableView* tv = self.aka_proxiedTableView;
     return [tv numberOfSections];
 }
 
 - (NSInteger)numberOfRowsInSection:(NSInteger)section
 {
+    // TODO: Don't know what to do with this one (yet)
     UITableView* tv = self.aka_proxiedTableView;
     return [tv numberOfRowsInSection:section];
 }
@@ -132,7 +134,7 @@
 {
     UITableView* tv = self.aka_proxiedTableView;
     return [tv dequeueReusableCellWithIdentifier:identifier
-                                    forIndexPath:[self aka_mappedIndexPath:indexPath]];
+                                    forIndexPath:[self aka_tableViewIndexPathFor:indexPath]];
 }
 
 #pragma mark - Accessing Header and Footer Views
@@ -140,13 +142,13 @@
 - (UITableViewHeaderFooterView *)headerViewForSection:(NSInteger)section
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv headerViewForSection:[self aka_mappedSection:section]];
+    return [tv headerViewForSection:[self aka_tableViewSectionFor:section]];
 }
 
 - (UITableViewHeaderFooterView *)footerViewForSection:(NSInteger)section
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv footerViewForSection:[self aka_mappedSection:section]];
+    return [tv footerViewForSection:[self aka_tableViewSectionFor:section]];
 }
 
 #pragma mark - Accessing Cells and Sections
@@ -154,42 +156,43 @@
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv cellForRowAtIndexPath:[self aka_mappedIndexPath:indexPath]];
+    NSIndexPath* mappedIndexPath = [self aka_tableViewIndexPathFor:indexPath];
+    return [tv cellForRowAtIndexPath:mappedIndexPath];
 }
 
 - (NSIndexPath*)indexPathForCell:(UITableViewCell *)cell
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSIndexPath* indexPath = [tv indexPathForCell:cell];
-    return [self aka_reverseMappedIndexPath:indexPath];
+    return [self aka_dataSourceIndexPathFor:indexPath];
 }
 
 - (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSIndexPath* indexPath = [tv indexPathForRowAtPoint:point];
-    return [self aka_reverseMappedIndexPath:indexPath];
+    return [self aka_dataSourceIndexPathFor:indexPath];
 }
 
 - (NSArray *)indexPathsForRowsInRect:(CGRect)rect
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSArray* indexPaths = [tv indexPathsForRowsInRect:rect];
-    return [self aka_reverseMappedIndexPaths:indexPaths];
+    return [self aka_dataSourceIndexPaths:indexPaths];
 }
 
 - (NSArray *)visibleCells
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSArray* cells = [tv visibleCells];
-    return [self aka_filteredCells:cells];
+    return [self aka_excludeCellsFromOtherDataSources:cells];
 }
 
 - (NSArray *)indexPathsForVisibleRows
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSArray* indexPaths = [tv indexPathsForVisibleRows];
-    return [self aka_reverseMappedIndexPaths:indexPaths];
+    return [self aka_dataSourceIndexPaths:indexPaths];
 }
 
 #pragma mark - Scrolling the Table View
@@ -199,7 +202,7 @@
                       animated:(BOOL)animated
 {
     UITableView* tv = self.aka_proxiedTableView;
-    [tv scrollToRowAtIndexPath:[self aka_mappedIndexPath:indexPath]
+    [tv scrollToRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]
               atScrollPosition:scrollPosition
                       animated:animated];
 }
@@ -210,14 +213,14 @@
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSIndexPath* indexPath = [tv indexPathForSelectedRow];
-    return [self aka_reverseMappedIndexPath:indexPath];
+    return [self aka_dataSourceIndexPathFor:indexPath];
 }
 
 - (NSArray *)indexPathsForSelectedRows
 {
     UITableView* tv = self.aka_proxiedTableView;
     NSArray* indexPaths = [tv indexPathsForSelectedRows];
-    return [self aka_reverseMappedIndexPaths:indexPaths];
+    return [self aka_dataSourceIndexPaths:indexPaths];
 }
 
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -225,7 +228,7 @@
               scrollPosition:(UITableViewScrollPosition)scrollPosition
 {
     UITableView* tv = self.aka_proxiedTableView;
-    [tv selectRowAtIndexPath:[self aka_mappedIndexPath:indexPath]
+    [tv selectRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]
                     animated:animated
               scrollPosition:scrollPosition];
 }
@@ -233,48 +236,57 @@
 - (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
 {
     UITableView* tv = self.aka_proxiedTableView;
-    [tv deselectRowAtIndexPath:[self aka_mappedIndexPath:indexPath]
+    [tv deselectRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]
                       animated:animated];
 }
 
 #pragma mark - Inserting, Deleting and  Moving Rows and Sections
 
+// To implement this correctly, we would have to track structure changes and map usages
+// of data source coordinates in the multiplexer accordingly. Maybe later.
+
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv insertSections:[self aka_mappedSectionIndexSet:sections] withRowAnimation:animation];
+    [tv insertSections:[self aka_tableViewSectionIndexSet:sections] withRowAnimation:animation];
 }
 
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv deleteSections:[self aka_mappedSectionIndexSet:sections] withRowAnimation:animation];
+    [tv deleteSections:[self aka_tableViewSectionIndexSet:sections] withRowAnimation:animation];
 }
 
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv moveSection:[self aka_mappedSection:section]
-          toSection:[self aka_mappedSection:newSection]];
+    [tv moveSection:[self aka_tableViewSectionFor:section]
+          toSection:[self aka_tableViewSectionFor:newSection]];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv insertRowsAtIndexPaths:[self aka_mappedIndexPaths:indexPaths] withRowAnimation:animation];
+    [tv insertRowsAtIndexPaths:[self aka_tableViewIndexPaths:indexPaths] withRowAnimation:animation];
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv deleteRowsAtIndexPaths:[self aka_mappedIndexPaths:indexPaths] withRowAnimation:animation];
+    [tv deleteRowsAtIndexPaths:[self aka_tableViewIndexPaths:indexPaths] withRowAnimation:animation];
 }
 
 - (void)moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
+    NSAssert(NO, @"Table structure manipulation is not (yet) supported.");
     UITableView* tv = self.aka_proxiedTableView;
-    [tv moveRowAtIndexPath:[self aka_mappedIndexPath:indexPath]
-               toIndexPath:[self aka_mappedIndexPath:newIndexPath]];
+    [tv moveRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]
+               toIndexPath:[self aka_tableViewIndexPathFor:newIndexPath]];
 }
 
 #pragma mark - Reloading the Table View
@@ -282,7 +294,7 @@
 - (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     UITableView* tv = self.aka_proxiedTableView;
-    [tv reloadRowsAtIndexPaths:[self aka_mappedIndexPaths:indexPaths]
+    [tv reloadRowsAtIndexPaths:[self aka_tableViewIndexPaths:indexPaths]
               withRowAnimation:animation];
 }
 
@@ -291,37 +303,42 @@
 - (CGRect)rectForSection:(NSInteger)section
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv rectForSection:[self aka_mappedSection:section]];
+    return [tv rectForSection:[self aka_tableViewSectionFor:section]];
 }
 
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv rectForRowAtIndexPath:[self aka_mappedIndexPath:indexPath]];
+    return [tv rectForRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]];
 }
 
 - (CGRect)rectForFooterInSection:(NSInteger)section
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv rectForFooterInSection:[self aka_mappedSection:section]];
+    return [tv rectForFooterInSection:[self aka_tableViewSectionFor:section]];
 }
 
 - (CGRect)rectForHeaderInSection:(NSInteger)section
 {
     UITableView* tv = self.aka_proxiedTableView;
-    return [tv rectForHeaderInSection:[self aka_mappedSection:section]];
+    return [tv rectForHeaderInSection:[self aka_tableViewSectionFor:section]];
 }
 
 #pragma mark - Managing the Data Source and Delegate
 
 - (id<UITableViewDataSource>)dataSource
 {
+    // Pretend the tableView is based on the source data source. This will not work
+    // in all cases (would need a complete bidrectional mapping -> look at TODO's).
     AKATVDataSource* ds = self.aka_dataSource;
     return ds.dataSource;
 }
 
 - (void)setDataSource:(id<UITableViewDataSource>)dataSource
 {
+    // Setting the dataSource from a delegate could be supported, but then we would have
+    // to scan all references to the old dataSource in the multiplexer and update
+    // them (number of sections/rows etc).
     (void)dataSource;
     NSString* reason = [NSString stringWithFormat:@"Invalid attempt to change the dataSource of %@",
                         self];
@@ -331,12 +348,15 @@
 
 - (id<UITableViewDelegate>)delegate
 {
+    // Pretend the tableView is using source delegate. This will not work
+    // in all cases (would need a complete bidrectional mapping -> look at TODO's).
     AKATVDataSource* ds = self.aka_dataSource;
     return ds.delegate;
 }
 
 - (void)setDelegate:(id<UITableViewDelegate>)delegate
 {
+    // TODO: This could actually work out of the box, would need testing -> no time now
     (void)delegate;
     NSString* reason = [NSString stringWithFormat:@"Invalid attempt to change the delegate of %@",
                         self];

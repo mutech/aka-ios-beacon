@@ -57,8 +57,8 @@
  * @param dataSourceKey the key for which the original dataSource will be registered.
  * @return the new instance
  */
-+ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
-                                     inTableView:(UITableView*)tableView;
++ (nullable instancetype)proxyDataSourceAndDelegateForKey:(NSString*__nonnull)dataSourceKey
+                                             inTableView:(UITableView*__nonnull)tableView;
 
 /**
  * Creates a new instance that acts as proxy for the dataSource and
@@ -81,10 +81,10 @@
  *
  * @return the new instance
  */
-+ (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
-                                     inTableView:(UITableView*)tableView                                  andAppendDataSource:(id<UITableViewDataSource>)dataSource
-                                         withDelegate:(id<UITableViewDelegate>)delegate
-                                               forKey:(NSString*)additionalDataSourceKey;
++ (nullable instancetype)proxyDataSourceAndDelegateForKey:(NSString* __nonnull)dataSourceKey
+                                              inTableView:(UITableView* __nonnull)tableView                                  andAppendDataSource:(id<UITableViewDataSource>__nonnull)dataSource
+                                             withDelegate:(id<UITableViewDelegate>__nullable)delegate
+                                                   forKey:(NSString*__nonnull)additionalDataSourceKey;
 
 #pragma mark - Managing Data Sources and associated Delegates
 
@@ -101,9 +101,9 @@
  * @param delegate the delegate to use for rows and sections using the data source
  * @param key the key identifying the data source
  */
-- (AKATVDataSource*)addDataSource:(id<UITableViewDataSource>)dataSource
-                     withDelegate:(id<UITableViewDelegate>)delegate
-                           forKey:(NSString*)key;
+- (nonnull AKATVDataSource*)addDataSource:(id<UITableViewDataSource>__nonnull)dataSource
+                             withDelegate:(id<UITableViewDelegate>__nullable)delegate
+                                   forKey:(NSString*__nonnull)key;
 
 /**
  * Registers the specified @c dataSource which also acts as delegate 
@@ -117,8 +117,8 @@
  * @param dataSource the data source and delegae to add
  * @param key the key identifying the data source
  */
-- (AKATVDataSource*)addDataSourceAndDelegate:(id<UITableViewDataSource, UITableViewDelegate>)dataSource
-                                      forKey:(NSString*)key;
+- (AKATVDataSource*__nonnull)addDataSourceAndDelegate:(id<UITableViewDataSource, UITableViewDelegate>__nonnull)dataSource
+                                               forKey:(NSString*__nonnull)key;
 
 /**
  * Returns the data source information for the specified key.
@@ -128,7 +128,7 @@
  * @return the data source associated with the specified key of nil if no data source information
  *      is associated with the key.
  */
-- (AKATVDataSource*)dataSourceForKey:(NSString*)key;
+- (AKATVDataSource*__nullable)dataSourceForKey:(NSString*__nonnull)key;
 
 #pragma mark - Adding and Removing Sections
 /// @name Adding and Removing Sections
@@ -156,12 +156,12 @@
  * @param tableView the table view which is passed to data sources in queries and
  *          which will be updated.
  */
-- (void)insertSectionsFromDataSource:(NSString*)dataSourceKey
+- (void)insertSectionsFromDataSource:(NSString*__nonnull)dataSourceKey
                   sourceSectionIndex:(NSUInteger)sourceSectionIndex
                                count:(NSUInteger)numberOfSections
                       atSectionIndex:(NSUInteger)targetSectionIndex
                    useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView*)tableView;
+                           tableView:(UITableView*__nullable)tableView;
 
 /**
  * Takes the specified @c numberOfSections from the specified @c dataSource
@@ -179,12 +179,12 @@
  * @param tableView the table view which is passed to data sources in queries and
  *          which will be updated.
  */
-- (void)insertSectionsFromDataSource:(NSString*)dataSourceKey
+- (void)insertSectionsFromDataSource:(NSString*__nonnull)dataSourceKey
                   sourceSectionIndex:(NSUInteger)sourceSectionIndex
                                count:(NSUInteger)numberOfSections
                       atSectionIndex:(NSUInteger)targetSectionIndex
                    useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView *)tableView
+                           tableView:(UITableView*__nullable)tableView
                               update:(BOOL)updateTableView
                     withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
@@ -204,7 +204,7 @@
  */
 - (void)        remove:(NSUInteger)numberOfSections
        sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView *)tableView;
+             tableView:(UITableView*__nullable)tableView;
 
 /**
  * Removes the specified numberOfSections starting at the specified sectionIndex.
@@ -222,7 +222,7 @@
  */
 - (void)        remove:(NSUInteger)numberOfSections
        sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView *)tableView
+             tableView:(UITableView*__nullable)tableView
                 update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
@@ -231,21 +231,21 @@
 - (void)moveRowAtIndex:(NSInteger)rowIndex
              inSection:(NSInteger)sectionIndex
             toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*)tableView;
+             tableView:(UITableView*__nullable)tableView;
 
 - (void)moveRowAtIndex:(NSInteger)rowIndex
              inSection:(NSInteger)sectionIndex
             toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*)tableView
+             tableView:(UITableView*__nullable)tableView
                 update:(BOOL)updateTableView;
 
-- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
-               toIndexPath:(NSIndexPath*)targetIndexPath
-                 tableView:(UITableView *)tableView;
+- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
+               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
+                 tableView:(UITableView *__nullable)tableView;
 
-- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
-               toIndexPath:(NSIndexPath*)targetIndexPath
-                 tableView:(UITableView *)tableView
+- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
+               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
+                 tableView:(UITableView *__nullable)tableView
                     update:(BOOL)updateTableView;
 
 #pragma mark - Adding and Removing Rows to/from Sections
@@ -272,11 +272,11 @@
  * @param tableView the table view which is passed to data sources in queries and
  *          which will be updated.
  */
-- (void)insertRowsFromDataSource:(NSString*)dataSourceKey
-                 sourceIndexPath:(NSIndexPath*)sourceIndexPath
+- (void)insertRowsFromDataSource:(NSString*__nonnull)dataSourceKey
+                 sourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
                            count:(NSUInteger)numberOfRows
-                     atIndexPath:(NSIndexPath*)indexPath
-                       tableView:(UITableView*)tableView;
+                     atIndexPath:(NSIndexPath*__nonnull)indexPath
+                       tableView:(UITableView*__nullable)tableView;
 
 /**
  * Takes the specified numberOfRows from the specified dataSource starting
@@ -299,11 +299,11 @@
  *          beginUpdate/endUpdate).
  * @param rowAnimation The row animation to use if update is YES.
  */
-- (void)insertRowsFromDataSource:(NSString*)dataSourceKey
-                 sourceIndexPath:(NSIndexPath*)sourceIndexPath
+- (void)insertRowsFromDataSource:(NSString*__nonnull)dataSourceKey
+                 sourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
                            count:(NSUInteger)numberOfRows
-                     atIndexPath:(NSIndexPath*)indexPath
-                       tableView:(UITableView*)tableView
+                     atIndexPath:(NSIndexPath*__nonnull)indexPath
+                       tableView:(UITableView*__nullable)tableView
                           update:(BOOL)updateTableView
                 withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
@@ -328,8 +328,8 @@
  *      rows which have not been removed.
  */
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-       rowsFromIndexPath:(NSIndexPath*)indexPath
-               tableView:(UITableView*)tableView
+       rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
+               tableView:(UITableView*__nullable)tableView
                   update:(BOOL)updateTableView
         withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
@@ -357,16 +357,25 @@
  *      rows which have not been removed.
  */
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-       rowsFromIndexPath:(NSIndexPath*)indexPath
-               tableView:(UITableView*)tableView;
+       rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
+               tableView:(UITableView*__nullable)tableView;
 
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
 
-- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
-             sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
-                forIndexPath:(NSIndexPath*)indexPath;
-- (BOOL)resolveAKADataSource:(out __autoreleasing AKATVDataSource **)dataSourceStorage
-          sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+- (BOOL)resolveIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage
+      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
+            inDataSource:(AKATVDataSource* __nonnull)dataSource;
+
+- (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
+      forSourceSection:(NSInteger)sourceSection
+          inDataSource:(AKATVDataSource* __nonnull)dataSource;
+
+- (BOOL)resolveAKADataSource:(out AKATVDataSource*__autoreleasing __nullable* __nullable)dataSourceStorage
+             sourceIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage
+                forIndexPath:(NSIndexPath* __nonnull)indexPath;
+
+- (BOOL)resolveAKADataSource:(out AKATVDataSource*__autoreleasing __nullable* __nullable)dataSourceStorage
+          sourceSectionIndex:(out NSInteger* __nullable)sectionIndexStorage
              forSectionIndex:(NSInteger)sectionIndex;
 
 /**
@@ -380,9 +389,9 @@
  *
  * @return YES if the section with the specified sectionIndex exists.
  */
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource> *)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>*)delegateStorage
-       sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource>__nullable*__nullable)dataSourceStorage
+                 delegate:(out __autoreleasing id<UITableViewDelegate>__nullable*__nullable)delegateStorage
+       sourceSectionIndex:(out NSInteger *__nullable)sectionIndexStorage
           forSectionIndex:(NSInteger)sectionIndex;
 
 /**
@@ -396,10 +405,10 @@
  *
  * @return YES if the row at the specified indexPath exists.
  */
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource> *)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>*)delegateStorage
-          sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
-             forIndexPath:(NSIndexPath*)indexPath;
+- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource>__nullable*__nullable)dataSourceStorage
+                 delegate:(out __autoreleasing id<UITableViewDelegate>__nullable*__nullable)delegateStorage
+          sourceIndexPath:(out NSIndexPath *__autoreleasing __nullable*__nullable)indexPathStorage
+             forIndexPath:(NSIndexPath*__nullable)indexPath;
 
 #pragma mark - UITableViewDelegate Support
 
@@ -411,7 +420,7 @@
  *
  * @param delegate the delegate used to identify which messages to implement.
  */
-- (void)addTableViewDelegateSelectorsRespondedBy:(id<UITableViewDelegate>)delegate;
+- (void)addTableViewDelegateSelectorsRespondedBy:(id<UITableViewDelegate>__nullable)delegate;
 
 /**
  * Makes this data source respond to the specified selector. The delegate implementation will
@@ -422,7 +431,7 @@
  *
  * @param selector one of the methods specified in the UITableViewDelegate protocol
  */
-- (void)addTableViewDelegateSelector:(SEL)selector;
+- (void)addTableViewDelegateSelector:(SEL __nonnull)selector;
 
 /**
  * Makes this data source stop responding to the specified selector as part of the automatic
@@ -432,6 +441,6 @@
  *
  * @param selector one of the methods specified in the UITableViewDelegate protocol
  */
-- (void)removeTableViewDelegateSelector:(SEL)selector;
+- (void)removeTableViewDelegateSelector:(SEL __nonnull)selector;
 
 @end

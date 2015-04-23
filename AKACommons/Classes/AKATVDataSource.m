@@ -41,7 +41,7 @@
 {
     if (self = [self init])
     {
-        _tableViewProxies = [NSMutableDictionary new];
+        //_tableViewProxies = [NSMutableDictionary new];
         _dataSource = dataSource;
         _delegate = delegate;
         _key = key;
@@ -67,13 +67,13 @@
 
 - (UITableView *)proxyForTableView:(UITableView *)tableView
 {
-    NSValue* key = [NSValue valueWithNonretainedObject:tableView];
-    UITableView* result = self.tableViewProxies[key];
+    //NSValue* key = [NSValue valueWithNonretainedObject:tableView];
+    UITableView* result = nil; //self.tableViewProxies[key];
     if (result == nil)
     {
         result = (UITableView*)[[AKATableViewProxy alloc] initWithTableView:tableView
                                                                  dataSource:self];
-        self.tableViewProxies[key] = result;
+        //self.tableViewProxies[key] = result;
     }
     return result;
 }
@@ -109,9 +109,12 @@
 
 - (NSInteger)reverseMappedSection:(NSInteger)section
 {
-    (void)section;
-    // TODO: implement
-    AKAErrorMethodNotImplemented();
+    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    NSInteger resolvedSection = NSNotFound;
+    [mds resolveSection:&resolvedSection
+       forSourceSection:section
+           inDataSource:self];
+    return resolvedSection;
 }
 
 - (NSIndexSet *)reverseMappedSectionIndexSet:(NSIndexSet *)sections
@@ -158,9 +161,12 @@
 
 - (NSIndexPath *)reverseMappedIndexPath:(NSIndexPath *)indexPath
 {
-    (void)indexPath;
-    // TODO: implement
-    AKAErrorMethodNotImplemented();
+    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    NSIndexPath* resolvedIndexPath = nil;
+    [mds resolveIndexPath:&resolvedIndexPath
+       forSourceIndexPath:indexPath
+             inDataSource:self];
+    return resolvedIndexPath;
 }
 
 - (NSArray *)reverseMappedIndexPaths:(NSArray *)indexPaths

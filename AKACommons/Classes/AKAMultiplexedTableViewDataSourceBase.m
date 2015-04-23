@@ -300,6 +300,27 @@
 
 #pragma mark - Resolution
 
+- (BOOL)resolveIndexPath:(out NSIndexPath*__autoreleasing* __nullable)indexPathStorage
+      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
+            inDataSource:(AKATVDataSource* __nonnull)dataSource
+{
+    (void)indexPathStorage;
+    (void)sourceIndexPath;
+    (void)dataSource;
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (BOOL)resolveSection:(out NSInteger*)sectionStorage
+      forSourceSection:(NSInteger)sourceSection
+          inDataSource:(AKATVDataSource* __nonnull)dataSource
+{
+    (void)sectionStorage;
+    (void)sourceSection;
+    (void)dataSource;
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+
 - (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource> *)dataSourceStorage
                  delegate:(out __autoreleasing id<UITableViewDelegate>*)delegateStorage
        sourceSectionIndex:(out NSInteger *)sectionIndexStorage
@@ -521,10 +542,12 @@
         {
             if (useTableViewProxy)
             {
+                [invocation retainArguments];
+
                 UITableView* __unsafe_unretained tableView = nil;
                 [invocation getArgument:&tableView atIndex:2+tvParameterIndex];
 
-                UITableView* __unsafe_unretained tableViewProxy = [dataSource proxyForTableView:tableView];
+                UITableView* tableViewProxy = [dataSource proxyForTableView:tableView];
                 [invocation setArgument:&tableViewProxy atIndex:2+tvParameterIndex];
             }
             [invocation setArgument:&section atIndex:2+parameterIndex];
@@ -553,6 +576,8 @@
         {
             if (useTableViewProxy)
             {
+                [invocation retainArguments];
+
                 UITableView* __unsafe_unretained tableView = nil;
                 [invocation getArgument:&tableView atIndex:2+tvParameterIndex];
 

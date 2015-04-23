@@ -290,49 +290,64 @@
 #pragma mark - AKATVRowSegment
 #pragma mark -
 
+/**
+ * Represents a contiguous sequence of rows originating from a data source.
+ *
+ * Row segments are used internally and not exposed in the public interface.
+ */
 @interface AKATVRowSegment: NSObject
 
-- (instancetype)initWithDataSource:(AKATVDataSource*)dataSource
-                             index:(NSUInteger)rowIndex
-                             count:(NSUInteger)numberOfRows;
-
-@property(nonatomic, readonly, weak) AKATVDataSource* dataSource;
-@property(nonatomic, readonly) NSUInteger rowIndex;
-@property(nonatomic, readonly) NSUInteger numberOfRows;
-
-@end
-
-@implementation AKATVRowSegment
-
 #pragma mark - Initialization
-
-- (instancetype)initWithDataSource:(AKATVDataSource*)dataSource
-                             index:(NSUInteger)rowIndex
-                             count:(NSUInteger)numberOfRows
-{
-    if (self = [self init])
-    {
-        _dataSource = dataSource;
-        _rowIndex = rowIndex;
-        _numberOfRows = numberOfRows;
-    }
-    return self;
-}
-
-- (AKATVRowSegment*)splitAtOffset:(NSUInteger)offset
-{
-    NSParameterAssert(offset > 0 && offset < self.numberOfRows);
-    AKATVRowSegment* result =
-    [[AKATVRowSegment alloc] initWithDataSource:self.dataSource
-                                          index:self.rowIndex + offset
-                                          count:self.numberOfRows - offset];
-    _numberOfRows -= (self.numberOfRows - offset);
-    return result;
-}
+/// @name Initialization
 
 /**
- * Removes up to numberOfRows rows from this segment, starting at the specified index
- * and returns the number of rows which have not been removed.
+ * Initializes the segment to refer to the sequence of the specified @c numberOfRows
+ * of the specified @c dataSource starting at the specified @c indexPath.
+ *
+ * @param dataSource the data source providing the rows.
+ * @param indexPath the index path of a row having the required number of successors in the same section.
+ * @param numberOfRows the number of rows (greater than or equal to 1).
+ *
+ * @return an initialized row segment.
+ */
+- (instancetype)initWithDataSource:(AKATVDataSource* __nonnull)dataSource
+                         indexPath:(NSIndexPath* __nonnull)indexPath
+                             count:(NSUInteger)numberOfRows;
+
+#pragma mark - Properties
+/// @name Properties
+
+/**
+ * The data source providing the rows in this segment.
+ */
+@property(nonatomic, readonly, weak) AKATVDataSource* dataSource;
+
+/**
+ * The index path of the first row of this segment.
+ */
+@property(nonatomic, readonly, nonnull) NSIndexPath* indexPath;
+
+/**
+ * The numer of rows in this segment.
+ */
+@property(nonatomic, readonly) NSUInteger numberOfRows;
+
+#pragma mark - Removing Rows from the Segment
+/// @name Removing Rows from the Segment
+
+/**
+ * Splits the segments at the specified @c offset into two and and returns the
+ * new segment.
+ *
+ * @param offset The relative index of the first row in the new segment (greater than 0).
+ *
+ * @return the new segment containing rows starting from the specified offset.
+ */
+- (AKATVRowSegment*)splitAtOffset:(NSUInteger)offset;
+
+/**
+ * Removes up to the specified @c numberOfRows rows from this segment, starting at the specified offset
+ * and returns the number of rows which have been removed.
  *
  * If the removal leaves trailing rows, a new segment is created and stored in the
  * specified trailingRowsSegment location.
@@ -342,25 +357,64 @@
  *
  * @param numberOfRows the number of rows to delete.
  * @param index the zero based index specifying the first row to remove
- * @param trailingRowsSegment location at which to store the trailing rows segment.
- * @param removedRowsSegment if not nil, location at which to store a segment specifying the removed rows.
+ * @param trailingRowsStorage location at which to store the trailing rows segment.
+ * @param removedRowsStorage if not nil, location at which to store a segment specifying the removed rows.
  *
- * @return the number of rows that have not been deleted because this segment does not contain
- *      a sufficient number of rows.
+ * @return the number of rows that have been removed. This might be less than the requested number if
+ *          this segment does not contain a sufficient number of rows.
  */
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-           rowsFromIndex:(NSUInteger)index
+            rowsAtOffset:(NSUInteger)index
+            trailingRows:(AKATVRowSegment*__autoreleasing* __nonnull)trailingRowsStorage
+             removedRows:(AKATVRowSegment*__autoreleasing* __nullable)removedRowsStorage;
+
+@end
+
+@implementation AKATVRowSegment
+
+#pragma mark - Initialization
+
+- (instancetype)initWithDataSource:(AKATVDataSource* __nonnull)dataSource
+                         indexPath:(NSIndexPath* __nonnull)indexPath
+                             count:(NSUInteger)numberOfRows
+{
+    if (self = [self init])
+    {
+        _dataSource = dataSource;
+        _indexPath = indexPath;
+        _numberOfRows = numberOfRows;
+    }
+    return self;
+}
+
+#pragma mark - Removing Rows from the Segment
+
+- (AKATVRowSegment*)splitAtOffset:(NSUInteger)offset
+{
+    NSParameterAssert(offset > 0 && offset < self.numberOfRows);
+    AKATVRowSegment* result =
+    [[AKATVRowSegment alloc] initWithDataSource:self.dataSource
+                                      indexPath:[NSIndexPath indexPathForRow:self.indexPath.row + offset
+                                                                   inSection:self.indexPath.section]
+                                          count:self.numberOfRows - offset];
+    _numberOfRows -= (self.numberOfRows - offset);
+    return result;
+}
+
+- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
+           rowsAtOffset:(NSUInteger)offset
             trailingRows:(AKATVRowSegment*__autoreleasing*)trailingRowsSegment
              removedRows:(AKATVRowSegment*__autoreleasing*)removedRowsSegment
 {
     AKATVDataSource* dataSource = self.dataSource;
 
-    NSUInteger result = 0;
-    NSUInteger count = numberOfRows;
-    if (index + count > self.numberOfRows)
+    NSUInteger rowsNotRemoved = 0;
+    NSUInteger rowsToRemove = numberOfRows;
+    if (offset + rowsToRemove > self.numberOfRows)
     {
-        result = index + count - self.numberOfRows;
-        count = count - result;
+        // limit rows to remove to the number of available rows in this segment
+        rowsNotRemoved = offset + rowsToRemove - self.numberOfRows;
+        rowsToRemove -= rowsNotRemoved;
     }
 
     // record removed rows if requested
@@ -368,36 +422,38 @@
     {
         *removedRowsSegment =
         [[AKATVRowSegment alloc] initWithDataSource:dataSource
-                                              index:self.rowIndex + index
-                                              count:count];
+                                          indexPath:[NSIndexPath indexPathForRow:self.indexPath.row + offset
+                                                                       inSection:self.indexPath.section]
+                                              count:rowsToRemove];
     }
 
     // return trailingRowsSegment if there are trailing rows
-    if (index + count < self.numberOfRows && index > 0)
+    if (offset + rowsToRemove < self.numberOfRows && offset > 0)
     {
-        NSUInteger trailingRows = self.numberOfRows - (index + count);
+        NSUInteger trailingRows = self.numberOfRows - (offset + rowsToRemove);
         _numberOfRows -= trailingRows;
         if (trailingRowsSegment != nil)
         {
             *trailingRowsSegment =
             [[AKATVRowSegment alloc] initWithDataSource:dataSource
-                                                  index:self.rowIndex + index + count
+                                              indexPath:[NSIndexPath indexPathForRow:self.indexPath.row + offset + rowsToRemove
+                                                                           inSection:self.indexPath.section]
                                                   count:trailingRows];
         }
         else
         {
-            AKALogError(@"Removal of %ld rows from row segment %@ starting at index %ld resulted in a trailing rows segment, which should/has to be inserted following this segement. The caller did not supply a trailingRowsSegment and will probably fail to update the containing section correctly", (long)count, self, (long)index);
+            AKALogError(@"Removal of %ld rows from row segment %@ starting at index %ld resulted in a trailing rows segment, which should/has to be inserted following this segement. The caller did not supply a trailingRowsSegment and will probably fail to update the containing section correctly", (long)rowsToRemove, self, (long)offset);
         }
     }
 
     // Perform removal on this segment
-    if (index == 0)
+    if (offset == 0)
     {
-        _rowIndex += count;
+        _indexPath = [NSIndexPath indexPathForRow:self.indexPath.row + rowsToRemove inSection:self.indexPath.section];
     }
-    _numberOfRows -= count;
+    _numberOfRows -= rowsToRemove;
 
-    return result;
+    return numberOfRows - rowsNotRemoved;
 }
 
 #pragma mark - Adding and Removing Rows
@@ -407,159 +463,69 @@
 #pragma mark - AKATVSection
 #pragma mark -
 
+/**
+ * Represents a table view section provided by a data source.
+ *
+ * Independent of the sections own data source reference, a section can contain rows from
+ * one or more other data sources.
+ *
+ * Section instances are used internally and not exposed in the public interface.
+ */
 @interface AKATVSection: NSObject
 
-- (instancetype)initWithDataSource:(AKATVDataSource*)dataSource
+#pragma mark - Initialization
+/// @name Initialization
+
+/**
+ * Initializes a new instance with the specified data source providing the data source implementation
+ * required for the section (except for row specific information, which is provided by the respective
+ * data sources of corresponding row segments).
+ *
+ * @param dataSource the data souce providing the section
+ * @param sectionIndex the index of the section (relative to the specified data source).
+ *
+ * @return An initialized instance.
+ */
+- (instancetype)initWithDataSource:(AKATVDataSource* __nonnull)dataSource
                              index:(NSUInteger)sectionIndex;
 
+#pragma mark - Properties
+/// @name Properties
+
+/**
+ * The data source providing the section.
+ */
 @property(nonatomic, readonly) AKATVDataSource* dataSource;
+
+/**
+ * The index of the section (relative to the specified data source).
+ */
 @property(nonatomic, readonly) NSUInteger sectionIndex;
+
+/**
+ * The number of rows contained in the section (this is the actual number of rows, not the
+ * number of rows provided by the data source section).
+ */
 @property(nonatomic, readonly) NSUInteger numberOfRows;
 
-@end
+#pragma mark - Enumerating Row Segments
+/// @name Enumerating Row Segments
 
-@interface AKATVSection()
-
-@property(nonatomic, readonly) NSMutableArray* rowSegments;
-
-@end
-
-@implementation AKATVSection
-
-#pragma mark - Initialization
-
-- (instancetype)init
-{
-    if (self = [super init])
-    {
-        _rowSegments = NSMutableArray.new;
-    }
-    return self;
-}
-
-- (instancetype)initWithDataSource:(AKATVDataSource*)dataSource
-                             index:(NSUInteger)sectionIndex
-{
-    if (self = [self init])
-    {
-        _dataSource = dataSource;
-        _sectionIndex = sectionIndex;
-    }
-    return self;
-}
-
-#pragma mark - Properties
-
-- (NSUInteger)numberOfRows
-{
-    __block NSUInteger result = 0;
-    [self.rowSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        (void)idx; (void)stop; // not used
-        AKATVRowSegment* rowSegment = obj;
-        result += (NSUInteger)rowSegment.numberOfRows;
-    }];
-    return result;
-}
+- (void)enumerateRowSegmentsUsingBlock:(void(^)(AKATVRowSegment* rowSegment,
+                                                NSUInteger idx, BOOL *stop))block;
 
 #pragma mark - Resolution
+/// @name Resolution
 
-- (BOOL)resolveDataSource:(out AKATVDataSource*__autoreleasing*)dataSourceStorage
-           sourceRowIndex:(out NSUInteger*)rowIndexStorage
-              forRowIndex:(NSUInteger)rowIndex
-{
-    AKATVRowSegment* rowSegment = nil;
-    NSUInteger offset = NSNotFound;
-    BOOL result = [self locateRowSegment:&rowSegment
-                            segmentIndex:nil
-                         offsetInSegment:&offset
-                             rowsVisited:nil
-                             forRowIndex:rowIndex];
-    if (result)
-    {
-        *rowIndexStorage = (NSUInteger)offset + rowSegment.rowIndex;
-        if (dataSourceStorage != nil)
-        {
-            *dataSourceStorage = rowSegment.dataSource;
-        }
-    }
-    return result;
-}
+- (BOOL)resolveDataSource:(out AKATVDataSource*__autoreleasing* __nullable)dataSourceStorage
+       sourceRowIndexPath:(out NSIndexPath*__autoreleasing* __nullable)rowIndexPathStorage
+              forRowIndex:(NSUInteger)rowIndex;
 
-- (BOOL)locateRowSegment:(out AKATVRowSegment*__autoreleasing*)rowSegmentStorage
-            segmentIndex:(out NSUInteger*)segmentIndexStorage
-         offsetInSegment:(out NSUInteger*)offsetStorage
-             rowsVisited:(out NSUInteger*)rowsVisitedStorage
-             forRowIndex:(NSUInteger)rowIndex
-{
-    __block BOOL result = NO;
-    __block NSUInteger rowsVisited = 0;
-    [self.rowSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-     {
-         AKATVRowSegment* segment = obj;
-         if (rowIndex - rowsVisited < segment.numberOfRows)
-         {
-             result = *stop = YES;
-             if (rowSegmentStorage)
-             {
-                 *rowSegmentStorage = segment;
-             }
-             if (segmentIndexStorage)
-             {
-                 *segmentIndexStorage = idx;
-             }
-             if (offsetStorage)
-             {
-                 *offsetStorage = (NSUInteger)(rowIndex - rowsVisited);
-             }
-         }
-         else
-         {
-             rowsVisited += segment.numberOfRows;
-         }
-     }];
-    if (rowsVisitedStorage)
-    {
-        *rowsVisitedStorage = (NSUInteger)rowsVisited;
-    }
-    return result;
-}
-
-#pragma mark - Moving Rows
-
-- (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
-                 toIndex:(NSUInteger)targetRowIndex
-               tableView:(UITableView*)tableView
-{
-    // TODO: check indexes before doing anything
-
-    NSMutableArray* removedSegments = [NSMutableArray new];
-    NSUInteger toRemove = [self removeUpTo:1
-                             rowsFromIndex:rowIndex
-                                 tableView:tableView
-                        removedRowSegments:removedSegments];
-    BOOL result = toRemove == 0;
-
-    if (result)
-    {
-        NSAssert(removedSegments.count == 1, nil);
-        NSAssert([removedSegments.firstObject isKindOfClass:[AKATVRowSegment class]], nil);
-
-        AKATVRowSegment* removedRows = removedSegments.firstObject;
-        NSAssert(removedRows.numberOfRows == 1, nil);
-
-        NSUInteger effectiveTarget = targetRowIndex;
-        if (rowIndex < targetRowIndex)
-        {
-            --effectiveTarget;
-        }
-
-        // TODO: make sure this does not fail or rollback:
-        result = [self insertRowSegment:removedRows
-                             atRowIndex:effectiveTarget
-                              tableView:tableView];
-    }
-    return result;
-}
+- (BOOL)locateRowSegment:(out AKATVRowSegment*__autoreleasing* __nullable)rowSegmentStorage
+            segmentIndex:(out NSUInteger* __nullable)segmentIndexStorage
+         offsetInSegment:(out NSUInteger* __nullable)offsetStorage
+             rowsVisited:(out NSUInteger* __nullable)rowsVisitedStorage
+             forRowIndex:(NSUInteger)rowIndex;
 
 #pragma mark - Adding and Removing Rows
 
@@ -584,17 +550,155 @@
  *      out of range 0..<numberOfRows>
  */
 - (BOOL)insertRowsFromDataSource:(AKATVDataSource*)dataSource
-                  sourceRowIndex:(NSUInteger)sourceRowIndex
+                 sourceIndexPath:(NSIndexPath*)sourceIndexPath
+                           count:(NSUInteger)numberOfRows
+                      atRowIndex:(NSUInteger)rowIndex
+                       tableView:(UITableView*)tableView;
+
+#pragma mark - Moving Rows
+// @name Moving Rows
+
+- (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
+                 toIndex:(NSUInteger)targetRowIndex
+               tableView:(UITableView*)tableView;
+
+@end
+
+@interface AKATVSection()
+
+/**
+ * The row segments constituting or specifying the sections rows.
+ */
+@property(nonatomic, readonly, nonnull) NSMutableArray* rowSegments;
+
+@end
+
+@implementation AKATVSection
+
+#pragma mark - Initialization
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _rowSegments = NSMutableArray.new;
+    }
+    return self;
+}
+
+- (instancetype)initWithDataSource:(AKATVDataSource* __nonnull)dataSource
+                             index:(NSUInteger)sectionIndex
+{
+    if (self = [self init])
+    {
+        _dataSource = dataSource;
+        _sectionIndex = sectionIndex;
+    }
+    return self;
+}
+
+#pragma mark - Enumerate Row Segments
+
+- (void)enumerateRowSegmentsUsingBlock:(void(^)(AKATVRowSegment* rowSegment, NSUInteger idx, BOOL *stop))block
+{
+    [self.rowSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        block(obj, idx, stop);
+    }];
+}
+
+#pragma mark - Properties
+
+- (NSUInteger)numberOfRows
+{
+    __block NSUInteger result = 0;
+    [self enumerateRowSegmentsUsingBlock:^(AKATVRowSegment *rowSegment, NSUInteger idx, BOOL *stop) {
+        (void)idx; (void)stop; // not used
+        result += (NSUInteger)rowSegment.numberOfRows;
+    }];
+    return result;
+}
+
+#pragma mark - Resolution
+
+- (BOOL)resolveDataSource:(out AKATVDataSource*__autoreleasing* __nullable)dataSourceStorage
+       sourceRowIndexPath:(out NSIndexPath*__autoreleasing* __nullable)rowIndexPathStorage
+              forRowIndex:(NSUInteger)rowIndex
+{
+    AKATVRowSegment* rowSegment = nil;
+    NSUInteger offset = NSNotFound;
+    BOOL result = [self locateRowSegment:&rowSegment
+                            segmentIndex:nil
+                         offsetInSegment:&offset
+                             rowsVisited:nil
+                             forRowIndex:rowIndex];
+    if (result)
+    {
+        if (rowIndexPathStorage != nil)
+        {
+            NSIndexPath* ip = [NSIndexPath indexPathForRow:offset + rowSegment.indexPath.row
+                                                 inSection:rowSegment.indexPath.section];
+            *rowIndexPathStorage = ip;
+        }
+        if (dataSourceStorage != nil)
+        {
+            *dataSourceStorage = rowSegment.dataSource;
+        }
+    }
+    return result;
+}
+
+- (BOOL)locateRowSegment:(out AKATVRowSegment*__autoreleasing* __nullable)rowSegmentStorage
+            segmentIndex:(out NSUInteger* __nullable)segmentIndexStorage
+         offsetInSegment:(out NSUInteger* __nullable)offsetStorage
+             rowsVisited:(out NSUInteger* __nullable)rowsVisitedStorage
+             forRowIndex:(NSUInteger)rowIndex
+{
+    __block BOOL result = NO;
+    __block NSUInteger rowsVisited = 0;
+    [self enumerateRowSegmentsUsingBlock:^void(AKATVRowSegment* segment, NSUInteger idx, BOOL *stop) {
+        if (rowIndex - rowsVisited < segment.numberOfRows)
+        {
+            result = *stop = YES;
+            if (rowSegmentStorage)
+            {
+                *rowSegmentStorage = segment;
+            }
+            if (segmentIndexStorage)
+            {
+                *segmentIndexStorage = idx;
+            }
+            if (offsetStorage)
+            {
+                *offsetStorage = (NSUInteger)(rowIndex - rowsVisited);
+            }
+        }
+        else
+        {
+            rowsVisited += segment.numberOfRows;
+        }
+    }];
+
+    if (rowsVisitedStorage)
+    {
+        *rowsVisitedStorage = (NSUInteger)rowsVisited;
+    }
+    return result;
+}
+
+#pragma mark - Adding and Removing Rows
+
+- (BOOL)insertRowsFromDataSource:(AKATVDataSource*)dataSource
+                 sourceIndexPath:(NSIndexPath*)sourceIndexPath
                            count:(NSUInteger)numberOfRows
                       atRowIndex:(NSUInteger)rowIndex
                        tableView:(UITableView*)tableView
 {
-    NSParameterAssert(sourceRowIndex >= 0);
+    NSParameterAssert(sourceIndexPath != nil);
     NSParameterAssert(numberOfRows > 0);
 
     AKATVRowSegment* segment =
     [[AKATVRowSegment alloc] initWithDataSource:dataSource
-                                          index:sourceRowIndex
+                                      indexPath:sourceIndexPath
                                           count:numberOfRows];
     return [self insertRowSegment:segment
                        atRowIndex:rowIndex
@@ -690,10 +794,10 @@
 
         AKATVRowSegment* trailingRowsSegment = nil;
         AKATVRowSegment* removedRow = nil;
-        numberOfRowsToRemove = [rowSegment removeUpTo:numberOfRows
-                                        rowsFromIndex:offset
-                                         trailingRows:&trailingRowsSegment
-                                          removedRows:removedRowSegments != nil ? &removedRow : nil];
+        numberOfRowsToRemove = numberOfRows - [rowSegment removeUpTo:numberOfRows
+                                                        rowsAtOffset:offset
+                                                        trailingRows:&trailingRowsSegment
+                                                         removedRows:removedRowSegments != nil ? &removedRow : nil];
         if (removedRowSegments != nil)
         {
             [removedRowSegments addObject:removedRow];
@@ -731,10 +835,12 @@
             else
             {
                 AKATVRowSegment* removedSegment = nil;
-                numberOfRowsToRemove = [rowSegment removeUpTo:numberOfRowsToRemove
-                                                rowsFromIndex:0
-                                                 trailingRows:&trailingRowsSegment
-                                                  removedRows:(removedRowSegments != nil) ? &removedSegment : nil];
+                numberOfRowsToRemove = numberOfRowsToRemove - [rowSegment removeUpTo:numberOfRowsToRemove
+                                                                        rowsAtOffset:0
+                                                                        trailingRows:&trailingRowsSegment
+                                                                         removedRows:((removedRowSegments != nil)
+                                                                                      ? &removedSegment
+                                                                                      : nil)];
                 if (removedRowSegments != nil && removedSegment != nil)
                 {
                     [removedRowSegments addObject:removedSegment];
@@ -750,7 +856,43 @@
     NSAssert(removedRowSegments ? removedRowSegments.count > 0 : YES, nil);
     NSAssert(removedRowSegments ? [removedRowSegments.firstObject numberOfRows] == numberOfRows - numberOfRowsToRemove : YES, nil);
 
-    return numberOfRowsToRemove;
+    return numberOfRows - numberOfRowsToRemove;
+}
+
+#pragma mark - Moving Rows
+
+- (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
+                 toIndex:(NSUInteger)targetRowIndex
+               tableView:(UITableView*)tableView
+{
+    // TODO: check indexes before doing anything
+
+    NSMutableArray* removedSegments = [NSMutableArray new];
+    BOOL result = (1 == [self removeUpTo:1
+                             rowsFromIndex:rowIndex
+                                 tableView:tableView
+                        removedRowSegments:removedSegments]);
+
+    if (result)
+    {
+        NSAssert(removedSegments.count == 1, nil);
+        NSAssert([removedSegments.firstObject isKindOfClass:[AKATVRowSegment class]], nil);
+
+        AKATVRowSegment* removedRows = removedSegments.firstObject;
+        NSAssert(removedRows.numberOfRows == 1, nil);
+
+        NSUInteger effectiveTarget = targetRowIndex;
+        if (rowIndex < targetRowIndex)
+        {
+            --effectiveTarget;
+        }
+
+        // TODO: make sure this does not fail or rollback:
+        result = [self insertRowSegment:removedRows
+                             atRowIndex:effectiveTarget
+                              tableView:tableView];
+    }
+    return result;
 }
 
 @end
@@ -821,9 +963,9 @@
         if (useRowsFromSource)
         {
             [section insertRowsFromDataSource:dataSourceEntry
-                               sourceRowIndex:0
+                              sourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:sourceSectionIndex + i]
                                         count:(NSUInteger)[dataSource tableView:tableView
-                                                          numberOfRowsInSection:(NSInteger)(sourceSectionIndex+i)]
+                                                          numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)]
                                    atRowIndex:0
                                     tableView:tableView];
         }
@@ -872,7 +1014,9 @@
 {
     NSParameterAssert(sectionIndex + numberOfSections <= self.numberOfSections);
 
-    [self.sectionSegments removeObjectsInRange:NSMakeRange(sectionIndex, numberOfSections)];
+    NSRange range = NSMakeRange(sectionIndex, numberOfSections);
+    [self.sectionSegments removeObjectsInRange:range];
+
 
     if (tableView && updateTableView)
     {
@@ -910,7 +1054,7 @@
         else
         {
             NSMutableArray* segments = [NSMutableArray new];
-            result = (0 == [section removeUpTo:1
+            result = (1 == [section removeUpTo:1
                                  rowsFromIndex:(NSUInteger)indexPath.row
                                      tableView:tableView
                             removedRowSegments:segments]);
@@ -966,7 +1110,7 @@
                              sectionIndex:indexPath.section])
     {
         if ([section insertRowsFromDataSource:dataSource
-                                    sourceRowIndex:(NSUInteger)sourceIndexPath.row
+                                    sourceIndexPath:sourceIndexPath
                                              count:numberOfRows
                                         atRowIndex:(NSUInteger)indexPath.row
                                          tableView:tableView])
@@ -1022,16 +1166,15 @@
 {
     NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
 
-    NSUInteger result = numberOfRows;
+    NSUInteger rowsRemoved = 0;
 
     AKATVSection* section = nil;
     if ([self resolveSectionSpecification:&section
                              sectionIndex:indexPath.section])
     {
-        result = [section removeUpTo:numberOfRows
+        rowsRemoved = [section removeUpTo:numberOfRows
                        rowsFromIndex:(NSUInteger)indexPath.row
                            tableView:tableView];
-        NSUInteger rowsRemoved = numberOfRows - result;
         if (rowsRemoved > 0 && tableView && updateTableView)
         {
             NSMutableArray* indexPaths = NSMutableArray.new;
@@ -1048,7 +1191,7 @@
         }
     }
 
-    return result;
+    return rowsRemoved;
 }
 
 #pragma mark - UITableViewDataSource Implementations
@@ -1075,19 +1218,79 @@
 
 #pragma mark - Implementation - Resolution
 
-- (BOOL)resolveSectionSpecification:(out AKATVSection*__autoreleasing*)sectionStorage
+- (BOOL)resolveIndexPath:(out NSIndexPath*__autoreleasing* __nullable)indexPathStorage
+      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
+            inDataSource:(AKATVDataSource* __nonnull)dataSource
+{
+    __block BOOL result = NO;
+
+    NSInteger sourceSection = sourceIndexPath.section;
+    NSInteger sourceRow = sourceIndexPath.row;
+
+    [self.sectionSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger sectionIndex, BOOL *stop) {
+        AKATVSection* section = obj;
+        __block NSUInteger offset = 0;
+        [section enumerateRowSegmentsUsingBlock:^(AKATVRowSegment *rowSegment, NSUInteger rowSegmentIndex, BOOL *stop) {
+            NSIndexPath* segmentIndexPath = rowSegment.indexPath;
+            NSInteger segmentSection = segmentIndexPath.section;
+            NSInteger segmentRow = segmentIndexPath.row;
+            NSInteger segmentRowCount = rowSegment.numberOfRows;
+
+            if (dataSource == rowSegment.dataSource &&
+                sourceSection == segmentSection &&
+                sourceRow >= segmentRow &&
+                sourceRow < segmentRow + segmentRowCount)
+            {
+                result = YES;
+                if (indexPathStorage != nil)
+                {
+                    NSIndexPath* indexPath = [NSIndexPath indexPathForRow:offset + (sourceRow - segmentRow)
+                                                                inSection:sectionIndex];
+                    *indexPathStorage = indexPath;
+                }
+            }
+            offset += segmentRowCount;
+        }];
+    }];
+    return result;
+}
+
+- (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
+      forSourceSection:(NSInteger)sourceSection
+          inDataSource:(AKATVDataSource* __nonnull)dataSource
+{
+    __block BOOL result = NO;
+
+    [self.sectionSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger sectionIndex, BOOL *stop) {
+        AKATVSection* section = obj;
+        if (section.dataSource == dataSource)
+        {
+            result = YES;
+            if (sectionStorage != nil)
+            {
+                *sectionStorage = sectionIndex;
+            }
+        }
+    }];
+    return result;
+}
+
+- (BOOL)resolveSectionSpecification:(out AKATVSection*__autoreleasing* __nullable)sectionStorage
                        sectionIndex:(NSInteger)sectionIndex
 {
     BOOL result = sectionIndex >= 0 && sectionIndex < self.numberOfSections;
     if (result)
     {
-        (*sectionStorage) = self.sectionSegments[(NSUInteger)sectionIndex];
+        if (sectionStorage != nil)
+        {
+            (*sectionStorage) = self.sectionSegments[(NSUInteger)sectionIndex];
+        }
     }
     return result;
 }
 
-- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing *)dataSourceStorage
-          sourceSectionIndex:(out NSInteger *)sectionIndexStorage
+- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing* __nullable)dataSourceStorage
+          sourceSectionIndex:(out NSInteger* __nullable)sectionIndexStorage
              forSectionIndex:(NSInteger)sectionIndex
 {
     AKATVSection* sectionSpecification = nil;
@@ -1108,8 +1311,8 @@
     return result;
 }
 
-- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing *)dataSourceStorage
-             sourceIndexPath:(out NSIndexPath *__autoreleasing *)indexPathStorage
+- (BOOL)resolveAKADataSource:(out AKATVDataSource *__autoreleasing* __nullable)dataSourceStorage
+             sourceIndexPath:(out NSIndexPath *__autoreleasing* __nullable)indexPathStorage
                 forIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger sectionIndex = indexPath.section;
@@ -1119,9 +1322,10 @@
     if (result)
     {
         NSUInteger rowIndex = (NSUInteger)indexPath.row;
+        NSIndexPath* sourceIndexPath = nil;
         AKATVDataSource* dataSourceEntry = nil;
         result = [sectionSpecification resolveDataSource:&dataSourceEntry
-                                          sourceRowIndex:&rowIndex
+                                      sourceRowIndexPath:&sourceIndexPath
                                              forRowIndex:rowIndex];
         if (result)
         {
@@ -1131,8 +1335,7 @@
             }
             if (indexPathStorage)
             {
-                (*indexPathStorage) = [NSIndexPath indexPathForRow:(NSInteger)rowIndex
-                                                         inSection:(NSInteger)sectionSpecification.sectionIndex];
+                (*indexPathStorage) = sourceIndexPath;
             }
         }
     }

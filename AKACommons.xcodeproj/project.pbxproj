@@ -46,6 +46,7 @@
 		8EBA32C41AB9C08F007436AA /* AKALog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA32C01AB9C08F007436AA /* AKALog.m */; };
 		8EBA32C51AB9C08F007436AA /* AKAErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA32C11AB9C08F007436AA /* AKAErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EBA32C61AB9C08F007436AA /* AKAErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA32C21AB9C08F007436AA /* AKAErrors.m */; };
+		8EBD27311AE87EB4009A68F2 /* SwiftTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */; };
 		8EC2D9531AB090FC00822E8C /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC2D9471AB090FC00822E8C /* AKACommons.framework */; };
 		8EC2D95A1AB090FC00822E8C /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9591AB090FC00822E8C /* AKACommonsTests.m */; };
 		8EC2D9E81AB254CA00822E8C /* AKAKVOChangeEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E01AB254CA00822E8C /* AKAKVOChangeEvent.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -118,6 +119,8 @@
 		8EBA32C01AB9C08F007436AA /* AKALog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKALog.m; path = Classes/AKALog.m; sourceTree = "<group>"; };
 		8EBA32C11AB9C08F007436AA /* AKAErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAErrors.h; path = Classes/AKAErrors.h; sourceTree = "<group>"; };
 		8EBA32C21AB9C08F007436AA /* AKAErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAErrors.m; path = Classes/AKAErrors.m; sourceTree = "<group>"; };
+		8EBD272D1AE87D1D009A68F2 /* AKACommonsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AKACommonsTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTest.swift; sourceTree = "<group>"; };
 		8EC2D9471AB090FC00822E8C /* AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EC2D94B1AB090FC00822E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EC2D94C1AB090FC00822E8C /* AKACommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKACommons.h; sourceTree = "<group>"; };
@@ -278,6 +281,8 @@
 				8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */,
 				8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */,
 				8E0E47721AE47897005DC1AE /* AKAIPNetmaskTests.m */,
+				8EBD272D1AE87D1D009A68F2 /* AKACommonsTests-Bridging-Header.h */,
+				8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */,
 			);
 			path = AKACommonsTests;
 			sourceTree = "<group>";
@@ -553,6 +558,7 @@
 				8EC2D95A1AB090FC00822E8C /* AKACommonsTests.m in Sources */,
 				8E5D0A211ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */,
 				8E5D0A231ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */,
+				8EBD27311AE87EB4009A68F2 /* SwiftTest.swift in Sources */,
 				8E0E47731AE47897005DC1AE /* AKAIPNetmaskTests.m in Sources */,
 				8E98D9321AB4EF62005AEB2A /* KVCValidationTest.m in Sources */,
 			);
@@ -740,6 +746,7 @@
 		8EC2D9611AB090FC00822E8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -751,12 +758,15 @@
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AKACommonsTests/AKACommonsTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		8EC2D9621AB090FC00822E8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -764,6 +774,7 @@
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AKACommonsTests/AKACommonsTests-Bridging-Header.h";
 			};
 			name = Release;
 		};

@@ -797,15 +797,7 @@
                     tvccp.tableView = tableView;
                     tvccp.dataSource = dataSource;
                     // Content controls are handle below
-                }
-                if ([control isKindOfClass:[AKACompositeControl class]])
-                {
-                    AKACompositeControl* composite = (AKACompositeControl*)control;
-                    //UIView* rootView = cell.contentView;
-                    //count += [composite insertControlsForControlViewsInViewHierarchy:rootView
-                    //                                                         atIndex:index + count];
-                }
-            }
+                }            }
             else if (cell != nil)
             {
                 // If the cell is not a control view, handle is like any other view (scanning its

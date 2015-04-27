@@ -9,7 +9,7 @@ LICENSE
     spec.homepage      = 'https://www-akalabs.rhcloud.com/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
     spec.summary       = 'Form controls library with binding support and live rendering'
-    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.4-b001' }
+    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.5-b001' }
 
     spec.source_files  = 'AKAControls/AKAControls/Classes/*.{h,m}'
     spec.private_header_files = '**/*_Internal.h'

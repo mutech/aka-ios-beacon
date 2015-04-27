@@ -53,8 +53,8 @@
  * @param configuration the control configuration
  * @return the new control
  */
-+ (instancetype)controlWithOwner:(AKACompositeControl*)owner
-                   configuration:(id<AKAControlConfigurationProtocol>)configuration;
++ (nullable instancetype)controlWithOwner:(AKACompositeControl* __nonnull)owner
+                            configuration:(id<AKAControlConfigurationProtocol> __nullable)configuration;
 
 /**
  * Creates and initializes a new unbound toplevel control using the specified data context.
@@ -64,8 +64,8 @@
  *
  * @return the new control.
  */
-+ (instancetype)controlWithDataContext:(id)dataContext
-                         configuration:(id<AKAControlConfigurationProtocol>)configuration;
++ (nullable instancetype)controlWithDataContext:(id __nullable)dataContext
+                         configuration:(id<AKAControlConfigurationProtocol>__nullable)configuration;
 
 #pragma mark - Configuration
 /// @name Configuration
@@ -78,14 +78,14 @@
  * Delegate methods influencing the behavior of the control are called before forwarding messages
  * to owners, informative methods are called after forwarding messages to owners.
  */
-@property(nonatomic, weak) id<AKAControlDelegate> delegate;
+@property(nonatomic, weak, nullable) id<AKAControlDelegate> delegate;
 
 #pragma mark - Properties
 
 /**
  * Tags (typically specified in the control view's binding configuration)
  */
-@property(nonnull, readonly) NSSet* tags;
+@property(readonly, nonnull) NSSet* tags;
 
 #pragma mark - Model-View Value Conversion
 /// @name Model Value Validation
@@ -93,12 +93,12 @@
 /**
  * Used to convert between model and view values.
  */
-@property(nonatomic, readonly) id<AKAControlConverterProtocol> converter;
+@property(nonatomic, readonly, nullable) id<AKAControlConverterProtocol> converter;
 
 #pragma mark - Validation
 /// @name Validation
 
-@property(nonatomic, readonly) NSError* validationError;
+@property(nonatomic, readonly, nullable) NSError* validationError;
 
 @property(nonatomic, readonly) BOOL isValid;
 
@@ -108,7 +108,7 @@
  * @note that in addition to this validator Key-Value-Coding validation is
  * used whenever model values are bound by means of Key-Value-Coding.
  */
-@property(nonatomic, readonly) id<AKAControlValidatorProtocol> validator;
+@property(nonatomic, readonly, nullable) id<AKAControlValidatorProtocol> validator;
 
 #pragma mark - Control Hierarchy
 /// @name Control hierarchy
@@ -116,7 +116,7 @@
 /**
  * The composite control owning this control or nil if the control is a toplevel (root) control.
  */
-@property(nonatomic, readonly, weak)AKACompositeControl* owner;
+@property(nonatomic, readonly, weak, nullable)AKACompositeControl* owner;
 
 #pragma mark - Value Access
 /// @name Accessing view and model values
@@ -128,7 +128,7 @@
  * view or it might not be accessible or not an instance of UIView. In all these cases
  * or if the control is not bound, the returned value will be nil.
  */
-@property(nonatomic, readonly) UIView* view;
+@property(nonatomic, readonly, nullable) UIView* view;
 
 /**
  * The value representing the views visual state.
@@ -141,14 +141,14 @@
  * Please note that assigning a view value requires knowledge of the required type and format
  * and the result of assigning an invalid value is undefined.
  */
-@property(nonatomic) id viewValue;
+@property(nonatomic, nullable) id viewValue;
 
 /**
  * The controls model value. The value is obtained from the data context by querying it
  * with the controls model value key path (or identical to the data context if no key path
  * is specified).
  */
-@property(nonatomic) id modelValue;
+@property(nonatomic, nullable) id modelValue;
 
 #pragma mark - Change Tracking
 
@@ -326,13 +326,13 @@
  */
 @property(nonatomic, readonly) BOOL participatesInKeyboardActivationSequence;
 
-@property(nonatomic, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+@property(nonatomic, readonly, nullable) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 #pragma mark - Theme Selection
 
-- (AKAProperty*)themeNamePropertyForView:(UIView*)view
-                          changeObserver:(void(^)(id oldValue, id newValue))themeNameChanged;
+- (nullable AKAProperty*)themeNamePropertyForView:(UIView* __nonnull)view
+                          changeObserver:(void(^__nullable)(id __nullable oldValue, id __nullable newValue))themeNameChanged;
 
-- (void)setThemeName:(NSString*)themeName forClass:(Class)type;
+- (void)setThemeName:(NSString* __nullable)themeName forClass:(Class __nonnull)type;
 
 @end

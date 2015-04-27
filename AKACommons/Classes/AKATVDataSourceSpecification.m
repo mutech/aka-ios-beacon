@@ -6,29 +6,29 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKATVDataSource.h"
+#import "AKATVDataSourceSpecification.h"
 #import "AKATVCoordinateMappingProtocol.h"
-#import "AKAMultiplexedTableViewDataSourceBase.h"
-#import "AKATableViewProxy.h"
+#import "AKATVMultiplexedDataSource.h"
+#import "AKATVProxy.h"
 #import "AKAErrors.h"
 
 #pragma mark - AKATVDataSource
 #pragma mark -
 
-@interface AKATVDataSource()
+@interface AKATVDataSourceSpecification()
 
 @property(nonatomic) NSMutableDictionary* tableViewProxies;
 
 @end
 
-@implementation AKATVDataSource
+@implementation AKATVDataSourceSpecification
 
 + (instancetype)dataSource:(id<UITableViewDataSource>)dataSource
               withDelegate:(id<UITableViewDelegate>)delegate
                     forKey:(NSString*)key
-             inMultiplexer:(AKAMultiplexedTableViewDataSourceBase*)multiplexer
+             inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer
 {
-    return [[AKATVDataSource alloc] initWithDataSource:dataSource
+    return [[AKATVDataSourceSpecification alloc] initWithDataSource:dataSource
                                               delegate:delegate
                                                 forKey:key
                                          inMultiplexer:multiplexer];
@@ -37,7 +37,7 @@
 - (instancetype)initWithDataSource:(id<UITableViewDataSource>)dataSource
                           delegate:(id<UITableViewDelegate>)delegate
                             forKey:(NSString*)key
-                     inMultiplexer:(AKAMultiplexedTableViewDataSourceBase*)multiplexer
+                     inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer
 {
     if (self = [self init])
     {
@@ -71,7 +71,7 @@
     UITableView* result = nil; //self.tableViewProxies[key];
     if (result == nil)
     {
-        result = (UITableView*)[[AKATableViewProxy alloc] initWithTableView:tableView
+        result = (UITableView*)[[AKATVProxy alloc] initWithTableView:tableView
                                                                  dataSource:self];
         //self.tableViewProxies[key] = result;
     }
@@ -82,23 +82,22 @@
 
 #pragma mark Sections
 
-- (NSInteger)mappedSection:(NSInteger)section
+- (NSInteger)dataSourceSection:(NSInteger)section
 {
-    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    AKATVMultiplexedDataSource* mds = self.multiplexer;
     NSInteger resolvedSection = NSNotFound;
-    [mds resolveDataSource:nil
-                   delegate:nil
+    [mds resolveAKADataSource:nil
          sourceSectionIndex:&resolvedSection
             forSectionIndex:section];
     return resolvedSection;
 }
 
-- (NSIndexSet *)mappedSectionIndexSet:(NSIndexSet *)sections
+- (NSIndexSet *)dataSourceSectionIndexSet:(NSIndexSet *)sections
 {
     NSMutableIndexSet* result = [NSMutableIndexSet new];
     [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         (void)stop;
-        NSInteger resolvedSection = [self mappedSection:(NSInteger)idx];
+        NSInteger resolvedSection = [self dataSourceSection:(NSInteger)idx];
         if (resolvedSection != NSNotFound)
         {
             [result addIndex:(NSUInteger)resolvedSection];
@@ -107,9 +106,9 @@
     return result;
 }
 
-- (NSInteger)reverseMappedSection:(NSInteger)section
+- (NSInteger)tableViewSection:(NSInteger)section
 {
-    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    AKATVMultiplexedDataSource* mds = self.multiplexer;
     NSInteger resolvedSection = NSNotFound;
     [mds resolveSection:&resolvedSection
        forSourceSection:section
@@ -117,12 +116,12 @@
     return resolvedSection;
 }
 
-- (NSIndexSet *)reverseMappedSectionIndexSet:(NSIndexSet *)sections
+- (NSIndexSet *)tableViewSectionIndexSet:(NSIndexSet *)sections
 {
     NSMutableIndexSet* result = [NSMutableIndexSet new];
     [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
         (void)stop;
-        NSInteger resolvedSection = [self reverseMappedSection:(NSInteger)idx];
+        NSInteger resolvedSection = [self tableViewSection:(NSInteger)idx];
         if (resolvedSection != NSNotFound)
         {
             [result addIndex:(NSUInteger)resolvedSection];
@@ -133,24 +132,23 @@
 
 #pragma mark Index Paths
 
-- (NSIndexPath *)mappedIndexPath:(NSIndexPath *)indexPath
+- (NSIndexPath *)dataSourceIndexPath:(NSIndexPath *)indexPath
 {
-    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    AKATVMultiplexedDataSource* mds = self.multiplexer;
     NSIndexPath* resolvedIndexPath = nil;
-    [mds resolveDataSource:nil
-                  delegate:nil
+    [mds resolveAKADataSource:nil
            sourceIndexPath:&resolvedIndexPath
               forIndexPath:indexPath];
     return resolvedIndexPath;
 }
 
-- (NSArray *)mappedIndexPaths:(NSArray *)indexPaths
+- (NSArray *)dataSourceIndexPaths:(NSArray *)indexPaths
 {
     NSMutableArray* result = [NSMutableArray new];
     [indexPaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         (void)idx;
         (void)stop;
-        NSIndexPath* resolvedIndexPath = [self mappedIndexPath:obj];
+        NSIndexPath* resolvedIndexPath = [self dataSourceIndexPath:obj];
         if (resolvedIndexPath != nil)
         {
             [result addObject:resolvedIndexPath];
@@ -159,9 +157,9 @@
     return result;
 }
 
-- (NSIndexPath *)reverseMappedIndexPath:(NSIndexPath *)indexPath
+- (NSIndexPath *)tableViewMappedIndexPath:(NSIndexPath *)indexPath
 {
-    AKAMultiplexedTableViewDataSourceBase* mds = self.multiplexer;
+    AKATVMultiplexedDataSource* mds = self.multiplexer;
     NSIndexPath* resolvedIndexPath = nil;
     [mds resolveIndexPath:&resolvedIndexPath
        forSourceIndexPath:indexPath
@@ -169,13 +167,13 @@
     return resolvedIndexPath;
 }
 
-- (NSArray *)reverseMappedIndexPaths:(NSArray *)indexPaths
+- (NSArray *)tableViewMappedIndexPaths:(NSArray *)indexPaths
 {
     NSMutableArray* result = [NSMutableArray new];
     [indexPaths enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         (void)idx;
         (void)stop;
-        NSIndexPath* resolvedIndexPath = [self reverseMappedIndexPath:obj];
+        NSIndexPath* resolvedIndexPath = [self tableViewMappedIndexPath:obj];
         if (resolvedIndexPath != nil)
         {
             [result addObject:resolvedIndexPath];

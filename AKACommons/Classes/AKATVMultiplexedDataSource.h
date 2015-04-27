@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AKATVCoordinateMappingProtocol.h"
-@class AKATVDataSource;
+@class AKATVDataSourceSpecification;
 
 #pragma mark - AKAMultiplexedTableViewDataSourceBase
 #pragma mark -
@@ -38,7 +38,7 @@
  *      you will have to write a custom delegate (subclass the multiplexer or use your own delegate
  *      instead of the automatic proxy implementation of the multiplexer.
  */
-@interface AKAMultiplexedTableViewDataSourceBase: NSObject<
+@interface AKATVMultiplexedDataSource: NSObject<
     UITableViewDataSource,
     UITableViewDelegate
 >
@@ -101,9 +101,9 @@
  * @param delegate the delegate to use for rows and sections using the data source
  * @param key the key identifying the data source
  */
-- (nonnull AKATVDataSource*)addDataSource:(id<UITableViewDataSource>__nonnull)dataSource
-                             withDelegate:(id<UITableViewDelegate>__nullable)delegate
-                                   forKey:(NSString*__nonnull)key;
+- (nonnull AKATVDataSourceSpecification*)addDataSource:(id<UITableViewDataSource>__nonnull)dataSource
+                                          withDelegate:(id<UITableViewDelegate>__nullable)delegate
+                                                forKey:(NSString*__nonnull)key;
 
 /**
  * Registers the specified @c dataSource which also acts as delegate 
@@ -117,7 +117,7 @@
  * @param dataSource the data source and delegae to add
  * @param key the key identifying the data source
  */
-- (AKATVDataSource*__nonnull)addDataSourceAndDelegate:(id<UITableViewDataSource, UITableViewDelegate>__nonnull)dataSource
+- (AKATVDataSourceSpecification*__nonnull)addDataSourceAndDelegate:(id<UITableViewDataSource, UITableViewDelegate>__nonnull)dataSource
                                                forKey:(NSString*__nonnull)key;
 
 /**
@@ -128,7 +128,7 @@
  * @return the data source associated with the specified key of nil if no data source information
  *      is associated with the key.
  */
-- (AKATVDataSource*__nullable)dataSourceForKey:(NSString*__nonnull)key;
+- (AKATVDataSourceSpecification*__nullable)dataSourceForKey:(NSString*__nonnull)key;
 
 #pragma mark - Adding and Removing Sections
 /// @name Adding and Removing Sections
@@ -226,27 +226,12 @@
                 update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
-#pragma mark - Moving Rows
 
-- (void)moveRowAtIndex:(NSInteger)rowIndex
-             inSection:(NSInteger)sectionIndex
-            toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*__nullable)tableView;
+#pragma mark - Batch Table View Updates
 
-- (void)moveRowAtIndex:(NSInteger)rowIndex
-             inSection:(NSInteger)sectionIndex
-            toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*__nullable)tableView
-                update:(BOOL)updateTableView;
+- (void)beginUpdatesForTableView:(UITableView*__nonnull)tableView;
 
-- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
-               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
-                 tableView:(UITableView *__nullable)tableView;
-
-- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
-               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
-                 tableView:(UITableView *__nullable)tableView
-                    update:(BOOL)updateTableView;
+- (void)endUpdatesForTableView:(UITableView*__nonnull)tableView;
 
 #pragma mark - Adding and Removing Rows to/from Sections
 /// @name Adding and Removing Rows to or from Sections
@@ -360,55 +345,45 @@
        rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
                tableView:(UITableView*__nullable)tableView;
 
+#pragma mark - Moving Rows
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView*__nullable)tableView;
+
+- (void)moveRowAtIndex:(NSInteger)rowIndex
+             inSection:(NSInteger)sectionIndex
+            toRowIndex:(NSInteger)targetIndex
+             tableView:(UITableView*__nullable)tableView
+                update:(BOOL)updateTableView;
+
+- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
+               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
+                 tableView:(UITableView *__nullable)tableView;
+
+- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
+               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
+                 tableView:(UITableView *__nullable)tableView
+                    update:(BOOL)updateTableView;
+
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
 
 - (BOOL)resolveIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage
       forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
-            inDataSource:(AKATVDataSource* __nonnull)dataSource;
+            inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource;
 
 - (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
       forSourceSection:(NSInteger)sourceSection
-          inDataSource:(AKATVDataSource* __nonnull)dataSource;
+          inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource;
 
-- (BOOL)resolveAKADataSource:(out AKATVDataSource*__autoreleasing __nullable* __nullable)dataSourceStorage
+- (BOOL)resolveAKADataSource:(out AKATVDataSourceSpecification*__autoreleasing __nullable* __nullable)dataSourceStorage
              sourceIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage
                 forIndexPath:(NSIndexPath* __nonnull)indexPath;
 
-- (BOOL)resolveAKADataSource:(out AKATVDataSource*__autoreleasing __nullable* __nullable)dataSourceStorage
+- (BOOL)resolveAKADataSource:(out AKATVDataSourceSpecification*__autoreleasing __nullable* __nullable)dataSourceStorage
           sourceSectionIndex:(out NSInteger* __nullable)sectionIndexStorage
              forSectionIndex:(NSInteger)sectionIndex;
-
-/**
- * Resolves the source data source, delegate and index of the section with the specified section index
- * and stores the resolved values in the respective specified locations.
- *
- * @param dataSourceStorage A pointer to data source which will be updated if the resolution succeeds.
- * @param delegateStorage A pointer to a delegate which will be updated if the resolution succeeds.
- * @param sectionIndexStorage A pointer to a section index which will be updated if the resolution succeeds.
- * @param sectionIndex The index of the section for which the resolution should be performed.
- *
- * @return YES if the section with the specified sectionIndex exists.
- */
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource>__nullable*__nullable)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>__nullable*__nullable)delegateStorage
-       sourceSectionIndex:(out NSInteger *__nullable)sectionIndexStorage
-          forSectionIndex:(NSInteger)sectionIndex;
-
-/**
- * Resolves the source data source, delegate and index path of the row at the specified indexPath
- * and stores the resolved values in the respective specified locations.
- *
- * @param dataSourceStorage A pointer to data source which will be updated if the resolution succeeds.
- * @param delegateStorage A pointer to a delegate which will be updated if the resolution succeeds.
- * @param indexPathStorage A pointer to an index path which will be updated if the resolution succeeds.
- * @param sectionIndex The index of the section for which the resolution should be performed.
- *
- * @return YES if the row at the specified indexPath exists.
- */
-- (BOOL)resolveDataSource:(out __autoreleasing id<UITableViewDataSource>__nullable*__nullable)dataSourceStorage
-                 delegate:(out __autoreleasing id<UITableViewDelegate>__nullable*__nullable)delegateStorage
-          sourceIndexPath:(out NSIndexPath *__autoreleasing __nullable*__nullable)indexPathStorage
-             forIndexPath:(NSIndexPath*__nullable)indexPath;
 
 #pragma mark - UITableViewDelegate Support
 

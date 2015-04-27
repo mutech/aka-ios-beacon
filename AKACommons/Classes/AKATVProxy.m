@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKATableViewProxy.h"
-#import "AKATVDataSource.h"
+#import "AKATVProxy.h"
+#import "AKATVDataSourceSpecification.h"
 #import "AKATVCoordinateMappingProtocol.h"
 
 /**
@@ -22,19 +22,19 @@
  * @note You should not perform any view hierarchy manipulations with this
  *      proxy (that will almost certainly fail).
  */
-@interface AKATableViewProxy()
+@interface AKATVProxy()
 
 @property(nonnull, readonly, weak) UITableView* aka_proxiedTableView;
-@property(nonnull, readonly, weak) AKATVDataSource* aka_dataSource;
+@property(nonnull, readonly, weak) AKATVDataSourceSpecification* aka_dataSource;
 
 @end
 
-@implementation AKATableViewProxy
+@implementation AKATVProxy
 
 #pragma mark - Initialization
 
 - (instancetype)initWithTableView:(UITableView*)tableView
-                       dataSource:(AKATVDataSource*)dataSource
+                       dataSource:(AKATVDataSourceSpecification*)dataSource
 {
     _aka_proxiedTableView = tableView;
     _aka_dataSource = dataSource;
@@ -72,43 +72,43 @@
 
 - (NSIndexPath*)aka_tableViewIndexPathFor:(NSIndexPath*)indexPath
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds  reverseMappedIndexPath:indexPath];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds  tableViewMappedIndexPath:indexPath];
 }
 
 - (NSIndexPath*)aka_dataSourceIndexPathFor:(NSIndexPath*)indexPath
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds mappedIndexPath:indexPath];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds dataSourceIndexPath:indexPath];
 }
 
 - (NSArray*)aka_tableViewIndexPaths:(NSArray*)indexPaths
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds reverseMappedIndexPaths:indexPaths];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds tableViewMappedIndexPaths:indexPaths];
 }
 
 - (NSArray*)aka_dataSourceIndexPaths:(NSArray*)indexPaths
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds mappedIndexPaths:indexPaths];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds dataSourceIndexPaths:indexPaths];
 }
 
 - (NSInteger)aka_tableViewSectionFor:(NSInteger)section
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds reverseMappedSection:section];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds tableViewSection:section];
 }
 
 - (NSIndexSet*)aka_tableViewSectionIndexSet:(NSIndexSet*)sections
 {
-    AKATVDataSource* ds = self.aka_dataSource;
-    return [ds reverseMappedSectionIndexSet:sections];
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
+    return [ds tableViewSectionIndexSet:sections];
 }
 
 - (NSArray*)aka_excludeCellsFromOtherDataSources:(NSArray*)cells
 {
-    AKATVDataSource* ds = self.aka_dataSource;
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
     return [ds filteredCells:cells];
 }
 
@@ -330,7 +330,7 @@
 {
     // Pretend the tableView is based on the source data source. This will not work
     // in all cases (would need a complete bidrectional mapping -> look at TODO's).
-    AKATVDataSource* ds = self.aka_dataSource;
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
     return ds.dataSource;
 }
 
@@ -350,7 +350,7 @@
 {
     // Pretend the tableView is using source delegate. This will not work
     // in all cases (would need a complete bidrectional mapping -> look at TODO's).
-    AKATVDataSource* ds = self.aka_dataSource;
+    AKATVDataSourceSpecification* ds = self.aka_dataSource;
     return ds.delegate;
 }
 

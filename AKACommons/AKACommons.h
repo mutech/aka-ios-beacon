@@ -22,10 +22,9 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/AKAProperty.h>
 
 // UI/TableViews/
-#import <AKACommons/AKAMultiplexedTableViewDataSourceBase.h>
-#import <AKACommons/AKAMultiplexedTableViewDataSource.h>
-#import <AKACommons/AKATableViewProxy.h>
-#import <AKACommons/AKATVDataSource.h>
+#import <AKACommons/AKATVMultiplexedDataSource.h>
+#import <AKACommons/AKATVProxy.h>
+#import <AKACommons/AKATVDataSourceSpecification.h>
 #import <AKACommons/AKATVCoordinateMappingProtocol.h>
 
 // Categories/

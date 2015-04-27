@@ -13,21 +13,21 @@
 
 @protocol AKATVCoordinateMappingProtocol <NSObject>
 
-- (NSIndexPath*)mappedIndexPath:(NSIndexPath*)indexPath;
+- (NSIndexPath*)dataSourceIndexPath:(NSIndexPath*)indexPath;
 
-- (NSIndexPath*)reverseMappedIndexPath:(NSIndexPath*)indexPath;
+- (NSIndexPath*)tableViewMappedIndexPath:(NSIndexPath*)indexPath;
 
-- (NSArray*)mappedIndexPaths:(NSArray*)indexPaths;
+- (NSArray*)dataSourceIndexPaths:(NSArray*)indexPaths;
 
-- (NSArray*)reverseMappedIndexPaths:(NSArray*)indexPaths;
+- (NSArray*)tableViewMappedIndexPaths:(NSArray*)indexPaths;
 
-- (NSInteger)mappedSection:(NSInteger)section;
+- (NSInteger)dataSourceSection:(NSInteger)section;
 
-- (NSInteger)reverseMappedSection:(NSInteger)section;
+- (NSInteger)tableViewSection:(NSInteger)section;
 
-- (NSIndexSet*)mappedSectionIndexSet:(NSIndexSet*)sections;
+- (NSIndexSet*)dataSourceSectionIndexSet:(NSIndexSet*)sections;
 
-- (NSIndexSet*)reverseMappedSectionIndexSet:(NSIndexSet*)sections;
+- (NSIndexSet*)tableViewSectionIndexSet:(NSIndexSet*)sections;
 
 - (NSArray*)filteredCells:(NSArray*)cells;
 

@@ -114,4 +114,8 @@
     AKAControlValidationDelegate,
     AKAControlActivationDelegate
 >
+
+@optional
+- (void)control:(AKAControl*)control modelValueChangedFrom:(id)oldValue to:(id)newValue;
+
 @end

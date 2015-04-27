@@ -58,6 +58,15 @@
     self.bindingConfiguration.controlName = controlName;
 }
 
+- (NSString *)controlTags
+{
+    return self.bindingConfiguration.controlTags;
+}
+-(void)setControlTags:(NSString *)controlTags
+{
+    self.bindingConfiguration.controlTags = controlTags;
+}
+
 - (NSString *)role
 {
     return self.bindingConfiguration.role;
@@ -143,6 +152,10 @@
 {
     static dispatch_once_t token;
     static AKASubviewsSpecification* instance = nil;
+// Selectors used below are instance selectors and for this reason probably
+// not defined in a class method. Ignore the warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
     dispatch_once(&token, ^{
         instance = [[AKASubviewsSpecification alloc] initWithDictionary:
                     @{ @"self":
@@ -169,6 +182,7 @@
                               },
                        }];
     });
+#pragma clang diagnostic pop
     return instance;
 }
 

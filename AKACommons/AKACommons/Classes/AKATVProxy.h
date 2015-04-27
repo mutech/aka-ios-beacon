@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class AKATVDataSource;
+@class AKATVDataSourceSpecification;
 
-@interface AKATableViewProxy : NSProxy
+@interface AKATVProxy : NSProxy
 
 #pragma mark - Initialization
 
 - (instancetype)initWithTableView:(UITableView*)tableView
-                       dataSource:(AKATVDataSource*)dataSource;
+                       dataSource:(AKATVDataSourceSpecification*)dataSource;
 
 @end

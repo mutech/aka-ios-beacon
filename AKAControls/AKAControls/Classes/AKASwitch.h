@@ -26,6 +26,13 @@ IB_DESIGNABLE
 @property(nonatomic) IBInspectable NSString* controlName;
 
 /**
+ * A space separated list of tag names. A tag name has to start with a
+ * letter (A-Z, a-z) and can contain letters and digits (A-Z, a-z, 0-9).
+ * By convention, tag names should start with a lower case letter.
+ */
+@property(nonatomic) IBInspectable NSString* controlTags;
+
+/**
  * Defines the role of a control in the context of its owner composite control.
  * The meaning and range of a role is determined by the owner. Roles are typically used
  * for layout and to identify a control, for example as label to hold a validation error

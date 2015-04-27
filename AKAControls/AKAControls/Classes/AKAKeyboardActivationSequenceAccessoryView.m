@@ -42,6 +42,11 @@
 
 - (void)createBarItems
 {
+    // Warning: "No method with selector '...' is implemented in compilation unit"
+    // The methods for these selectors exist, ignoring the warning.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
+
     self.tintColor = [UIColor blackColor];
 
     [self setBarStyle:UIBarStyleDefault];
@@ -81,6 +86,8 @@
     [self setItems:@[self.activatePreviousBarButtonItem, hs12,
                      self.closeKeyboardBarButtonItem, hs23,
                      self.activateNextBarButtonItem]];
+
+#pragma clang diagnostic pop
 }
 
 @end

@@ -15,6 +15,7 @@
 		8EBA33371ABAFA82007436AA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33361ABAFA82007436AA /* Images.xcassets */; };
 		8EBA333A1ABAFA82007436AA /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8EBA33381ABAFA82007436AA /* LaunchScreen.xib */; };
 		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
+		8EBD27471AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */; };
 		8EECDABD1AC97C53001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDABC1AC97C53001A6826 /* Podfile */; };
 		FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD591E74E4A6B018CDD9320 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
@@ -46,6 +47,8 @@
 		8EBA333F1ABAFA82007436AA /* AKAControlsDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EBA33441ABAFA82007436AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsDemoTests.m; sourceTree = "<group>"; };
+		8EBD27451AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFormTableViewControllerDemo.h; sourceTree = "<group>"; };
+		8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFormTableViewControllerDemo.m; sourceTree = "<group>"; };
 		8EECDABC1AC97C53001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		9AD591E74E4A6B018CDD9320 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -115,6 +118,8 @@
 				8EBA332E1ABAFA82007436AA /* AppDelegate.m */,
 				8EBA33301ABAFA82007436AA /* AKAControlsDemoBaseViewController.h */,
 				8EBA33311ABAFA82007436AA /* AKAControlsDemoBaseViewController.m */,
+				8EBD27451AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.h */,
+				8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */,
 				8E7D6EAD1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.h */,
 				8E7D6EAE1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m */,
 				8EBA33361ABAFA82007436AA /* Images.xcassets */,
@@ -305,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E7D6EAF1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m in Sources */,
+				8EBD27471AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m in Sources */,
 				8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */,
 				8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */,
 				8EBA332C1ABAFA82007436AA /* main.m in Sources */,

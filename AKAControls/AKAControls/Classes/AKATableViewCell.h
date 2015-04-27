@@ -1,27 +1,20 @@
 //
-//  AKALabel.h
-//  AKACommons
+//  AKATableViewCell.h
+//  AKAControls
 //
-//  Created by Michael Utech on 14.03.15.
+//  Created by Michael Utech on 25.04.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-
 #import "AKAControlViewProtocol.h"
-#import "AKALabelBinding.h"
+#import "AKACompositeViewBindingConfiguration.h"
+#import "AKAViewBinding.h"
 
 IB_DESIGNABLE
-/**
- * Extends UILabel to implement the AKAControlViewProtocol which makes the label
- * recognizable as control view. AKALabel supports read-only data binding.
- */
-@interface AKALabel : UILabel<AKAControlViewProtocol>
+@interface AKATableViewCell : UITableViewCell<AKAControlViewProtocol>
 
-@property(nonatomic, readonly) AKAViewBindingConfiguration* bindingConfiguration;
-
-#pragma mark - Interface Builder Properties
-/// @name Interface Builder Properties
+#pragma mark - Interface Builder and Binding Configuration Properties
 
 /**
  * Configures the name of the control, which has to be unique in the scope of its owner
@@ -30,7 +23,6 @@ IB_DESIGNABLE
  * should mark the redeclaration of this property as IBInspectable.
  */
 @property(nonatomic) IBInspectable NSString* controlName;
-
 
 /**
  * A space separated list of tag names. A tag name has to start with a
@@ -48,11 +40,15 @@ IB_DESIGNABLE
  */
 @property(nonatomic) IBInspectable NSString* role;
 
+// TODO: Binding properties (valueKeyPath, converterKeyPath, validatorKeyPath)are not currently exposed.
+// It's not yet clear how to map the "view value" for standard and custom cell types
+// Deferred to a later version.
+
 /**
  * The key path refering to the controls model value relative to
  * the controls data context.
  */
-@property(nonatomic) IBInspectable NSString* valueKeyPath;
+@property(nonatomic) /*IBInspectable*/ NSString* valueKeyPath;
 
 /**
  * The key path refering to the converter used to convert between model and view values.
@@ -61,7 +57,7 @@ IB_DESIGNABLE
  * it is preferrable to use the '$root' keypath extension to reference the top level
  * data context.
  */
-@property(nonatomic) IBInspectable NSString* converterKeyPath;
+@property(nonatomic) /*IBInspectable*/ NSString* converterKeyPath;
 
 /**
  * The key path refering to the validator used to validate model values.
@@ -70,6 +66,15 @@ IB_DESIGNABLE
  * it is preferrable to use the '$root' keypath extension to reference the top level
  * data context.
  */
-@property(nonatomic) IBInspectable NSString* validatorKeyPath;
+@property(nonatomic) /*IBInspectable*/ NSString* validatorKeyPath;
 
+#pragma mark - Outlets
+
+@end
+
+@interface AKATableViewCellBindingConfiguration : AKACompositeViewBindingConfiguration
+
+@end
+
+@interface AKATableViewCellBinding: AKAViewBinding
 @end

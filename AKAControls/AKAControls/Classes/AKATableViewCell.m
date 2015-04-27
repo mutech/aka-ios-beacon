@@ -1,16 +1,29 @@
 //
-//  AKASwitch.m
-//  AKACommons
+//  AKATableViewCell.m
+//  AKAControls
 //
-//  Created by Michael Utech on 14.03.15.
+//  Created by Michael Utech on 25.04.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKASwitch.h"
-#import "AKASwitchBinding.h"
-#import "AKAControl.h"
+#import "AKATableViewCell.h"
+#import "AKATableViewCellCompositeControl.h"
 
-@implementation AKASwitch
+@implementation AKATableViewCell
+
+- (void)awakeFromNib
+{
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+#pragma mark - Binding Configuration
 
 @synthesize bindingConfiguration = _bindingConfiguration;
 
@@ -18,7 +31,7 @@
 {
     if (_bindingConfiguration == nil)
     {
-        _bindingConfiguration = AKASwitchBindingConfiguration.new;
+        _bindingConfiguration = AKATableViewCellBindingConfiguration.new;
     }
     return _bindingConfiguration;
 }
@@ -79,5 +92,28 @@
 {
     self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
 }
+
+@end
+
+@implementation AKATableViewCellBindingConfiguration
+
+- (Class)preferredViewType
+{
+    return [AKATableViewCell class];
+}
+
+- (Class)preferredBindingType
+{
+    return [AKATableViewCellBinding class];
+}
+
+- (Class)preferredControlType
+{
+    return [AKATableViewCellCompositeControl class];
+}
+
+@end
+
+@implementation AKATableViewCellBinding
 
 @end

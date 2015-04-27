@@ -25,6 +25,7 @@
     AKAProperty* _dataContextProperty;
     AKAProperty* _modelValueProperty;
     AKAViewBinding* _viewBinding;
+    NSMutableSet* _tags;
 }
 
 @property(nonatomic)NSMutableDictionary* themeNameByType;
@@ -39,101 +40,120 @@
 #pragma mark - Initialization
 
 + (instancetype)controlWithDataContext:(id)dataContext
+                         configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     NSParameterAssert(dataContext != nil);
 
-    return [[self alloc] initWithDataContext:dataContext];
-}
-
-+ (instancetype)controlWithDataContext:(id)dataContext keyPath:(NSString *)keyPath
-{
-    NSParameterAssert(dataContext != nil);
-    NSParameterAssert(keyPath.length > 0);
-
-    return [[self alloc] initWithDataContext:dataContext keyPath:keyPath];
+    return [[self alloc] initWithDataContext:dataContext configuration:configuration];
 }
 
 + (instancetype)controlWithOwner:(AKACompositeControl *)owner
+                   configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     NSParameterAssert(owner != nil);
 
-    return [[self alloc] initWithOwner:owner];
+    return [[self alloc] initWithOwner:owner configuration:configuration];
 }
 
-+ (instancetype)controlWithOwner:(AKACompositeControl *)owner keyPath:(NSString *)keyPath
+- (instancetype)init
 {
-    NSParameterAssert(owner != nil);
-    NSParameterAssert(keyPath.length > 0);
-
-    return [[self alloc] initWithOwner:owner keyPath:keyPath];
-}
-
-- (instancetype)initWithDataContext:(id)dataContext
-{
-    self = [self init];
-    if (self)
+    if (self = [super init])
     {
-        self.dataContextProperty =
-            [AKAProperty propertyOfWeakKeyValueTarget:dataContext
-                                              keyPath:nil
-                                       changeObserver:nil];
-        self.modelValueProperty = nil;
+        _tags = [NSMutableSet new];
     }
     return self;
 }
 
 - (instancetype)initWithDataContext:(id)dataContext
-                            keyPath:(NSString*)keyPath
+                      configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
-    self = [self init];
-    if (self)
+    if (self = [self init])
     {
+        // Setup data context
         self.dataContextProperty =
-            [AKAProperty propertyOfWeakKeyValueTarget:dataContext
-                                              keyPath:nil
-                                       changeObserver:nil];
-        __weak typeof(self) weakSelf = self;
-        self.modelValueProperty =
-            [weakSelf.dataContextProperty propertyAtKeyPath:keyPath
-                                     withChangeObserver:^(id oldValue, id newValue)
-             {
-                 [weakSelf modelValueDidChangeFrom:oldValue
-                                            to:newValue];
-             }];
+        [AKAProperty propertyOfWeakKeyValueTarget:dataContext
+                                          keyPath:nil
+                                   changeObserver:nil];
+
+        if (![self setupWithConfiguration:configuration])
+        {
+            self = nil;
+        }
     }
     return self;
 }
 
-- (instancetype)initWithOwner:(AKACompositeControl *)owner
+- (instancetype)initWithOwner:(AKACompositeControl*)owner
+                configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
-    self = [self init];
-    if (self)
+    if (self = [self init])
     {
         [self setOwner:owner];
-        // Data context inherited from owner
+
+        if (![self setupWithConfiguration:configuration])
+        {
+            self = nil;
+        }
+    }
+    return self;
+}
+
+#pragma mark - Configuration
+
+- (BOOL)setupWithConfiguration:(id<AKAControlConfigurationProtocol>)configuration
+{
+    BOOL result = YES;
+
+    // Setup model value property
+    if (configuration.valueKeyPath.length > 0)
+    {
+        __weak typeof(self) weakSelf = self;
+        self.modelValueProperty =
+        [self.dataContextProperty propertyAtKeyPath:configuration.valueKeyPath
+                                 withChangeObserver:^(id oldValue, id newValue)
+         {
+             [weakSelf modelValueDidChangeFrom:oldValue
+                                            to:newValue];
+         }];
+    }
+    else
+    {
         self.modelValueProperty = nil;
     }
-    return self;
-}
 
-- (instancetype)initWithOwner:(AKACompositeControl *)owner
-                      keyPath:(NSString *)keyPath
-{
-    self = [self init];
-    if (self)
+    if (configuration.controlTags.length > 0)
     {
-        [self setOwner:owner];
-        // Data context inherited from owner
-        __weak typeof(self) weakSelf = self;
-        self.modelValueProperty =
-            [self.dataContextProperty propertyAtKeyPath:keyPath
-                                        withChangeObserver:^(id oldValue, id newValue)
-             {
-                 [weakSelf modelValueDidChangeFrom:oldValue
-                                            to:newValue];
-             }];
+        NSScanner* scanner = [NSScanner scannerWithString:configuration.controlTags];
+        [scanner setCharactersToBeSkipped:nil];
+        while (!scanner.isAtEnd)
+        {
+            [scanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet] intoString:nil];
+
+            NSString* tag;
+            if ([scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet]
+                                intoString:&tag])
+            {
+                if (scanner.isAtEnd || [scanner scanCharactersFromSet:[NSCharacterSet whitespaceCharacterSet]
+                                                           intoString:nil])
+                {
+                    [_tags addObject:tag];
+                    tag = nil;
+                }
+                else
+                {
+                    // TODO: error handling
+                    NSString* reason = [NSString stringWithFormat:@"Invalid character '%@' at position %lu in '%@'",
+                                        [configuration.controlTags substringWithRange:NSMakeRange(scanner.scanLocation, 1)],
+                                        (unsigned long)scanner.scanLocation,
+                                        configuration.controlTags];
+                    @throw [NSException exceptionWithName:@"Invalid control tags specification"
+                                                   reason:reason
+                                                 userInfo:nil];
+                }
+            }
+        }
     }
-    return self;
+    return result;
 }
 
 #pragma mark - Control Hierarchy
@@ -623,6 +643,17 @@
     [self aka_performBlockInMainThreadOrQueue:^{
         [weakSelf updateViewValueForModelValueChangeTo:newValue];
     }];
+    [self control:self modelValueChangedFrom:oldValue to:newValue];
+}
+
+- (void)control:(AKAControl*)control modelValueChangedFrom:(id)oldValue to:(id)newValue
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:modelValueChangedFrom:to:)])
+    {
+        [delegate control:self modelValueChangedFrom:oldValue to:newValue];
+    }
+    [self.owner control:self modelValueChangedFrom:oldValue to:newValue];
 }
 
 - (void)updateViewValueForModelValueChangeTo:(id)newValue
@@ -953,16 +984,19 @@
 {
     AKAProperty* result = nil;
     NSString* themeName;
-    for (Class type = view.class; [type isSubclassOfClass:[UIView class]]; type = [type superclass])
+    if (self.themeNameByType != nil)
     {
-        NSString* typeName = NSStringFromClass(type);
-        themeName = self.themeNameByType[typeName];
-        if (themeName)
+        for (Class type = view.class; [type isSubclassOfClass:[UIView class]]; type = [type superclass])
         {
-            result = [AKAProperty propertyOfWeakKeyValueTarget:self.themeNameByType
-                                                       keyPath:typeName
-                                                changeObserver:themeNameChanged];
-            break;
+            NSString* typeName = NSStringFromClass(type);
+            themeName = self.themeNameByType[typeName];
+            if (themeName)
+            {
+                result = [AKAProperty propertyOfWeakKeyValueTarget:self.themeNameByType
+                                                           keyPath:typeName
+                                                    changeObserver:themeNameChanged];
+                break;
+            }
         }
     }
     if (!result)

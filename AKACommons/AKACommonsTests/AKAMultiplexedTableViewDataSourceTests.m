@@ -1,5 +1,5 @@
 //
-//  AKAMultiplexedTableViewDataSourceTests.m
+//  AKATVMultiplexedDataSourceTests.m
 //  AKACommons
 //
 //  Created by Michael Utech on 15.04.15.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "AKAMultiplexedTableViewDataSource.h"
+#import "AKATVMultiplexedDataSource.h"
 
 @interface ArrayDataSource: NSObject<UITableViewDataSource>
 @property(nonatomic) NSArray* data;
@@ -44,10 +44,10 @@
 @end
 
 
-@interface AKAMultiplexedTableViewDataSourceTests : XCTestCase
+@interface AKATVMultiplexedDataSourceTests : XCTestCase
 @end
 
-@implementation AKAMultiplexedTableViewDataSourceTests
+@implementation AKATVMultiplexedDataSourceTests
 
 - (void)setUp
 {
@@ -91,7 +91,7 @@
     ArrayDataSource* dsAB = [ArrayDataSource dataSourceWithArray:
                              @[ @[ @"A0-1", @"A0-2", @"A0-3" ],
                                 @[ @"B0-1", @"B0-2" ] ]];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];
@@ -119,7 +119,7 @@
                             @[ @[ @"B0-1", @"B0-2" ] ] ];
     ArrayDataSource* dsAB = [ArrayDataSource dataSourceWithArray:
                              @[ @[ @"A0-1", @"A0-2", @"A0-3", @"B0-1", @"B0-2" ] ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
     NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
@@ -156,7 +156,7 @@
                             @[ @[ @"B0-1", @"B0-2" ] ] ];
     ArrayDataSource* dsAB = [ArrayDataSource dataSourceWithArray:
                              @[ @[ @"B0-1", @"B0-2" , @"A0-1", @"A0-2", @"A0-3" ] ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
     NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
@@ -192,7 +192,7 @@
                             @[ @[ @"B0-1", @"B0-2" ] ] ];
     ArrayDataSource* dsAB = [ArrayDataSource dataSourceWithArray:
                              @[ @[ @"A0-1", @"B0-1", @"B0-2", @"A0-2", @"A0-3" ] ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
     NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
@@ -227,7 +227,7 @@
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ]  ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"A0-3" ], @[ @"A1-1" ]  ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
@@ -250,7 +250,7 @@
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ] ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"A0-1", @"A0-2" ], @[ @"A1-1" ] ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
@@ -274,7 +274,7 @@
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ] ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"A0-1", @"A0-3" ], @[ @"A1-1" ] ] ];
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
@@ -308,7 +308,7 @@
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];
@@ -349,7 +349,7 @@
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];
@@ -390,7 +390,7 @@
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
-    AKAMultiplexedTableViewDataSource* dsTest = AKAMultiplexedTableViewDataSource.new;
+    AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];

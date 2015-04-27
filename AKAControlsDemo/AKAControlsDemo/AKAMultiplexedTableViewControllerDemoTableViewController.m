@@ -8,7 +8,7 @@
 
 #import "AKAMultiplexedTableViewControllerDemoTableViewController.h"
 
-#import <AKACommons/AKAMultiplexedTableViewDataSource.h>
+#import <AKACommons/AKATVMultiplexedDataSource.h>
 
 @interface ArrayDataSource: NSObject<UITableViewDataSource, UITableViewDelegate>
 
@@ -76,7 +76,7 @@
 }
 @end
 
-@interface MultiplexDataSource: AKAMultiplexedTableViewDataSource
+@interface MultiplexDataSource: AKATVMultiplexedDataSource
 
 @property(nonatomic) ArrayDataSource* additionalDataSource;
 @property(nonatomic) id<UITableViewDataSource> originalDataSource;
@@ -132,7 +132,7 @@
 
 - (IBAction)firstStaticCellTapAction:(id)sender
 {
-    AKAMultiplexedTableViewDataSource* mds = self.multiplexedDataSource;
+    AKATVMultiplexedDataSource* mds = self.multiplexedDataSource;
     NSIndexPath* indexPath_0_1 = [NSIndexPath indexPathForRow:1 inSection:0];
 
     NSInteger rowsInSection0 = [mds tableView:self.tableView numberOfRowsInSection:0];
@@ -163,7 +163,7 @@
 
 - (IBAction)secondStaticCellTapAction:(id)sender
 {
-    AKAMultiplexedTableViewDataSource* mds = self.multiplexedDataSource;
+    AKATVMultiplexedDataSource* mds = self.multiplexedDataSource;
 
     self.alternative1Active = !self.alternative1Active;
 

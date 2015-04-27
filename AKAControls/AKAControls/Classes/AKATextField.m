@@ -81,6 +81,15 @@
     self.bindingConfiguration.controlName = controlName;
 }
 
+- (NSString *)controlTags
+{
+    return self.bindingConfiguration.controlTags;
+}
+-(void)setControlTags:(NSString *)controlTags
+{
+    self.bindingConfiguration.controlTags = controlTags;
+}
+
 - (NSString *)role
 {
     return self.bindingConfiguration.role;

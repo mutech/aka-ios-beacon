@@ -40,7 +40,7 @@
     self.currentThemeIndex = 0;
 
     [self initializeModel];
-    self.form = [AKAFormControl controlWithDataContext:self];
+    self.form = [AKAFormControl controlWithDataContext:self configuration:nil];
     self.form.delegate = self;
     [self.form setThemeName:@"default" forClass:[AKAEditorControlView class]];
     [self.form addControlsForControlViewsInViewHierarchy:self.view];

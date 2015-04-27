@@ -82,13 +82,13 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
 
     //// Bezier Drawing
     CGContextSaveGState(context);
-    CGContextTranslateCTM(context, 26.98, 30.63);
-    CGContextRotateCTM(context, 91.71 * M_PI / 180);
+    CGContextTranslateCTM(context, 26.98f, 30.63f);
+    CGContextRotateCTM(context, 91.71f * (CGFloat)M_PI / 180);
 
     UIBezierPath* bezierPath = UIBezierPath.bezierPath;
     [bezierPath moveToPoint: CGPointMake(-0, -0)];
-    [bezierPath addLineToPoint: CGPointMake(5, 4.58)];
-    [bezierPath addLineToPoint: CGPointMake(-0, 9.42)];
+    [bezierPath addLineToPoint: CGPointMake(5, 4.58f)];
+    [bezierPath addLineToPoint: CGPointMake(-0, 9.42f)];
     [AKAControlsStyleKit.barButtonItemForegroundColor setStroke];
     bezierPath.lineWidth = 1;
     [bezierPath stroke];

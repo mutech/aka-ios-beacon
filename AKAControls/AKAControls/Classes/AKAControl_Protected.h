@@ -13,15 +13,11 @@
 #pragma mark - Initialization
 /// @name Initialization
 
-- (instancetype)initWithOwner:(AKACompositeControl*)owner;
-
 - (instancetype)initWithOwner:(AKACompositeControl*)owner
-                      keyPath:(NSString*)keyPath;
-
-- (instancetype)initWithDataContext:(id)dataContext;
+                configuration:(id<AKAControlConfigurationProtocol>)configuration;
 
 - (instancetype)initWithDataContext:(id)dataContext
-                            keyPath:(NSString*)keyPath;
+                      configuration:(id<AKAControlConfigurationProtocol>)configuration;
 
 #pragma mark - View Binding
 

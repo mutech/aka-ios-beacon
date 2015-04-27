@@ -61,18 +61,10 @@
     if ([self managesValidationStateForContext:validationContext
                                           view:view])
     {
-        /*[UIView animateWithDuration:.1
-                              delay:.04
-                            options:(UIViewAnimationOptionCurveEaseOut |
-                                     UIViewAnimationOptionTransitionCrossDissolve |
-                                     UIViewAnimationOptionAllowAnimatedContent)
-                         animations:^{*/
-                             [self setValidationState:newError
-                                              forView:view
-                                    validationContext:validationContext];
-                             [self.view.superview layoutIfNeeded];
-                         /*}
-                         completion:nil];*/
+        [self setValidationState:newError
+                         forView:view
+               validationContext:validationContext];
+        [self.view.superview layoutIfNeeded];
     }
 }
 

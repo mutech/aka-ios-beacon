@@ -12,13 +12,33 @@
 
 @interface AKACompositeControl : AKAControl<AKAControlDelegate>
 
-#pragma mark - Initialization
-
-#pragma mark - Member Controls
+#pragma mark Access to Member Controls
 
 @property(nonatomic, readonly)NSArray* controls;
 
 - (NSUInteger)indexOfControl:(AKAControl*)control;
+
+#pragma mark - Adding and Removing Member Controls
+
+- (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index;
+
+- (NSUInteger)insertControl:(out AKAControl**)controlStorage
+                    forView:(UIView*)view
+          withConfiguration:(AKAViewBindingConfiguration*)configuration
+                    atIndex:(NSUInteger)index;
+
+- (BOOL)removeControlAtIndex:(NSUInteger)index;
+
+#pragma mark - Activation
+
+@property(nonatomic, readonly) AKAControl* activeControl;
+@property(nonatomic, readonly) AKAControl* activeLeafControl;
+
+@end
+
+@interface AKACompositeControl(Conveniences)
+
+#pragma mark - Enumerating Members
 
 - (void)enumerateControlsUsingBlock:(void(^)(AKAControl* control,
                                              NSUInteger index,
@@ -42,15 +62,12 @@
                              startIndex:(NSUInteger)startIndex
                         continueInOwner:(BOOL)continueInOwner;
 
-#pragma mark Control Membership
+#pragma mark - Adding and Removing Member Controls
 
 - (BOOL)addControl:(AKAControl*)control;
 
-- (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index;
-
 - (BOOL)removeControl:(AKAControl*)control;
 
-- (BOOL)removeControlAtIndex:(NSUInteger)index;
 
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
@@ -64,15 +81,10 @@
 - (NSUInteger)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
                                                        atIndex:(NSUInteger)index;
 
-
-- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView;
+- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                               dataSource:(id<UITableViewDataSource>)dataSource;
 - (NSUInteger)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                                  dataSource:(id<UITableViewDataSource>)dataSource
                                                      atIndex:(NSUInteger)index;
 
-#pragma mark - Activation
-
-@property(nonatomic, readonly) AKAControl* activeControl;
-@property(nonatomic, readonly) AKAControl* activeLeafControl;
-
 @end
-

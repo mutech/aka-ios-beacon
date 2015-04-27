@@ -15,6 +15,7 @@
 
 @class AKACompositeControl;
 @class AKAViewBinding;
+@protocol AKAControlConfigurationProtocol;
 
 #pragma mark - AKAControl Interface
 #pragma mark -
@@ -49,42 +50,22 @@
  * control "inherits" its data context (model value) from the owner.
  *
  * @param owner the composite control owning the new control (not nil).
- *
+ * @param configuration the control configuration
  * @return the new control
  */
-+ (instancetype)controlWithOwner:(AKACompositeControl*)owner;
-
-/**
- * Creates and initializes a new unbound control with the specified owner control.
- * The data context (model value) of the new control is derived from the owners data
- * context by querying the value at the specified @code keyPath.
- *
- * @param owner the composite control owning the new control (not nil).
- * @param keyPath a valid key path used to derive the controls data context from that of the owner.
- *
- * @return the new control.
- */
-+ (instancetype)controlWithOwner:(AKACompositeControl*)owner keyPath:(NSString*)keyPath;
++ (instancetype)controlWithOwner:(AKACompositeControl*)owner
+                   configuration:(id<AKAControlConfigurationProtocol>)configuration;
 
 /**
  * Creates and initializes a new unbound toplevel control using the specified data context.
  *
  * @param dataContext the data context representing the controls model value.
+ * @param configuration the control configuration
  *
  * @return the new control.
  */
-+ (instancetype)controlWithDataContext:(id)dataContext;
-
-/**
- * Creates and initializes a new toplevel control using the specified data context
- * queried with the specified key path.
- *
- * @param dataContext the data context providing the model value at the specified @c keyPath
- * @param keyPath a valid key path
- *
- * @return the new control
- */
-+ (instancetype)controlWithDataContext:(id)dataContext keyPath:(NSString*)keyPath;
++ (instancetype)controlWithDataContext:(id)dataContext
+                         configuration:(id<AKAControlConfigurationProtocol>)configuration;
 
 #pragma mark - Configuration
 /// @name Configuration
@@ -98,6 +79,13 @@
  * to owners, informative methods are called after forwarding messages to owners.
  */
 @property(nonatomic, weak) id<AKAControlDelegate> delegate;
+
+#pragma mark - Properties
+
+/**
+ * Tags (typically specified in the control view's binding configuration)
+ */
+@property(nonnull, readonly) NSSet* tags;
 
 #pragma mark - Model-View Value Conversion
 /// @name Model Value Validation

@@ -35,6 +35,11 @@
     return result;
 }
 
+// Warning: "No method with selector '...' is implemented in compilation unit"
+// The methods for these selectors exist, ignoring the warning.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wselector"
+
 - (void)aka_setTheme:(AKATheme *)theme
             withName:(NSString *)name
             forClass:(Class)class
@@ -92,6 +97,8 @@
     }
     return result;
 }
+
+#pragma clang diagnostic pop
 
 #pragma mark - Implementation - Theme collections
 

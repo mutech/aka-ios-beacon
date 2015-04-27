@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AKAFormControl.h"
-#import <AKACommons/AKATVMultiplexedDataSource.h>
+#import <AKACommons/AKATVDataSourceSpecification.h>
 
 @class AKAReference;
 
@@ -17,7 +17,7 @@
 
 @property(nonatomic) id model;
 @property(nonatomic, readonly) AKAFormControl* formControl;
-@property(nonatomic, readonly) AKATVMultiplexedDataSource* multiplexedDataSource;
+@property(nonatomic, readonly) AKATVDataSourceSpecification* defaultDataSource;
 
 #pragma mark - Hiding and Unhinding Rows
 

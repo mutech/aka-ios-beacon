@@ -14,6 +14,7 @@
 @interface AKAFormTableViewControllerDemo () <AKAControlDelegate>
 
 @property(nonatomic) BOOL showPersonalInformation;
+@property(nonatomic) BOOL showPersonalInformation2;
 
 @property (weak, nonatomic) IBOutlet AKALabel *modelValueLabel;
 
@@ -49,6 +50,27 @@
 
         UITableViewRowAnimation rowAnimation = UITableViewRowAnimationTop;
         if (self.showPersonalInformation)
+        {
+            [self unhideRowControls:personalInfoCells
+                   withRowAnimation:rowAnimation];
+        }
+        else
+        {
+            [self hideRowControls:personalInfoCells
+                 withRowAnimation:rowAnimation];
+        }
+    }
+}
+
+- (void)setShowPersonalInformation2:(BOOL)showPersonalInformation
+{
+    if (self.showPersonalInformation2 != showPersonalInformation)
+    {
+        _showPersonalInformation2 = showPersonalInformation;
+        NSArray* personalInfoCells = [self rowControlsTaggedWith:@"personalInfoB"];
+
+        UITableViewRowAnimation rowAnimation = UITableViewRowAnimationTop;
+        if (self.showPersonalInformation2)
         {
             [self unhideRowControls:personalInfoCells
                    withRowAnimation:rowAnimation];

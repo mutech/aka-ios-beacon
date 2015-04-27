@@ -9,11 +9,12 @@
 #import "AKAFormTableViewController.h"
 #import "AKAEditorControlView.h"
 #import <AKAControls/AKATableViewCellCompositeControl.h>
-#import <AKACommons/AKATVDataSourceSpecification.h>
+#import <AKACommons/AKATVMultiplexedDataSource.h>
 
 @interface AKAFormTableViewController ()
 
 @property(nonatomic, readonly) NSMutableDictionary* hiddenControlCellsInfo;
+@property(nonatomic, readonly) AKATVMultiplexedDataSource* multiplexedDataSource;
 
 @end
 

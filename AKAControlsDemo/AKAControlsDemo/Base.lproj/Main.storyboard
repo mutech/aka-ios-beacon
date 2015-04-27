@@ -579,6 +579,114 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Personal Information" id="I2J-Ff-op2">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Zhe-Mg-tdw" customClass="AKATableViewCell">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zhe-Mg-tdw" id="xIO-dX-Y1U">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6uA-qq-FsE" customClass="AKASwitchEditorControlView">
+                                                    <rect key="frame" x="16" y="0.0" width="339" height="43"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="showPersonalInformation2"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Show personal information"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="6uA-qq-FsE" secondAttribute="trailing" constant="20" id="990-bS-hcV"/>
+                                                <constraint firstItem="6uA-qq-FsE" firstAttribute="top" secondItem="xIO-dX-Y1U" secondAttribute="top" id="DEU-uH-Xjx"/>
+                                                <constraint firstItem="6uA-qq-FsE" firstAttribute="leading" secondItem="xIO-dX-Y1U" secondAttribute="leading" constant="16" id="bYp-Rx-goc"/>
+                                                <constraint firstAttribute="bottom" secondItem="6uA-qq-FsE" secondAttribute="bottom" id="xhZ-bi-fPE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8qR-JV-oKv" customClass="AKATableViewCell">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8qR-JV-oKv" id="4FQ-yl-to0">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vza-3X-Ms7" customClass="AKATextEditorControlView">
+                                                    <rect key="frame" x="16" y="0.0" width="339" height="43"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="vza-3X-Ms7" firstAttribute="top" secondItem="4FQ-yl-to0" secondAttribute="top" id="2Jj-1Q-cRB"/>
+                                                <constraint firstItem="vza-3X-Ms7" firstAttribute="leading" secondItem="4FQ-yl-to0" secondAttribute="leading" constant="16" id="MbV-jf-TfU"/>
+                                                <constraint firstAttribute="trailing" secondItem="vza-3X-Ms7" secondAttribute="trailing" constant="20" id="Nat-wd-mb1"/>
+                                                <constraint firstAttribute="bottom" secondItem="vza-3X-Ms7" secondAttribute="bottom" id="p6n-kV-nGX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="controlTags" value="personalInfoB"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0RJ-gf-umI" customClass="AKATableViewCell">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0RJ-gf-umI" id="gCD-6O-K9s">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lno-Re-mcO" customClass="AKATextEditorControlView">
+                                                    <rect key="frame" x="16" y="0.0" width="339" height="43"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.phone"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Phone number"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="lno-Re-mcO" secondAttribute="bottom" id="3Oc-JA-pss"/>
+                                                <constraint firstItem="lno-Re-mcO" firstAttribute="top" secondItem="gCD-6O-K9s" secondAttribute="top" id="aRP-ij-Pt7"/>
+                                                <constraint firstAttribute="trailing" secondItem="lno-Re-mcO" secondAttribute="trailing" constant="20" id="jza-0f-4j2"/>
+                                                <constraint firstItem="lno-Re-mcO" firstAttribute="leading" secondItem="gCD-6O-K9s" secondAttribute="leading" constant="16" id="kiN-dB-lt3"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="controlTags" value="personalInfoB"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jXb-H9-yIh" customClass="AKATableViewCell">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jXb-H9-yIh" id="Vqa-Gy-e1h">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Zs-nv-n72" customClass="AKATextEditorControlView">
+                                                    <rect key="frame" x="16" y="0.0" width="339" height="43"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Email Address"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8Zs-nv-n72" firstAttribute="leading" secondItem="Vqa-Gy-e1h" secondAttribute="leading" constant="16" id="14B-tN-7uC"/>
+                                                <constraint firstAttribute="bottom" secondItem="8Zs-nv-n72" secondAttribute="bottom" id="14d-qT-9ba"/>
+                                                <constraint firstItem="8Zs-nv-n72" firstAttribute="top" secondItem="Vqa-Gy-e1h" secondAttribute="top" id="htu-0i-K8e"/>
+                                                <constraint firstAttribute="trailing" secondItem="8Zs-nv-n72" secondAttribute="trailing" constant="20" id="luc-eS-rnW"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="controlTags" value="personalInfoB"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Model Data" id="0Iy-gA-lDH">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cZs-aF-OLC" customClass="AKATableViewCell">

@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name          = 'AKACommons'
-    spec.version       = '0.0.4'
+    spec.version       = '0.0.5'
     spec.license       = { :type => 'PROPRIETARY', :text => <<-LICENSE
                    Copyright 2015 AKA Sarl. All rights reserved.
                    This is non-public work in progres. License terms are not yet determined. You should not see this!

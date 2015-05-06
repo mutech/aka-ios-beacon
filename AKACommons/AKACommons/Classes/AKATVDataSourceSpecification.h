@@ -10,6 +10,7 @@
 #import "AKATVCoordinateMappingProtocol.h"
 
 @class AKATVMultiplexedDataSource;
+@class AKAObservableCollection;
 
 #pragma mark - AKATVDataSource
 #pragma mark -
@@ -17,9 +18,9 @@
 @interface AKATVDataSourceSpecification: NSObject<AKATVCoordinateMappingProtocol>
 
 + (AKATVDataSourceSpecification*)dataSource:(id<UITableViewDataSource>)dataSource
-              withDelegate:(id<UITableViewDelegate>) delegate
-                    forKey:(NSString*)key
-             inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer;
+                               withDelegate:(id<UITableViewDelegate>) delegate
+                                     forKey:(NSString*)key
+                              inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer;
 
 @property(nonatomic, readonly) NSString* key;
 @property(nonatomic, weak, readonly) id<UITableViewDataSource> dataSource;
@@ -29,5 +30,3 @@
 - (UITableView*)proxyForTableView:(UITableView*)tableView;
 
 @end
-
-

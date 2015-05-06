@@ -100,13 +100,13 @@
                                    count:1
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertSectionsFromDataSource:@"dsB"
                       sourceSectionIndex:0
                                    count:1
                           atSectionIndex:(NSUInteger)[dsTest numberOfSectionsInTableView:nil]
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
 
     [self assertDataSource:dsTest equalsExpected:dsAB];
 }
@@ -132,18 +132,18 @@
                           sourceSectionIndex:0
                                        count:1
                               atSectionIndex:0
-                           useRowsFromSource:NO
-                                   tableView:nil];
+                            useRowsFromSource:NO
+                            withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsA"
                          sourceIndexPath:indexPath_0_0
                                    count:(NSUInteger)numberOfRowsInA0
-                             atIndexPath:indexPath_0_0
-                               tableView:nil];
+                            atIndexPath:indexPath_0_0
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                          sourceIndexPath:indexPath_0_0
                                    count:(NSUInteger)numberOfRowsInB0
-                             atIndexPath:indexPath_0_rowsA0
-                               tableView:nil];
+                            atIndexPath:indexPath_0_rowsA0
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
 
     [self assertDataSource:dsTest equalsExpected:dsAB];
 }
@@ -168,18 +168,18 @@
                           sourceSectionIndex:0
                                        count:1
                               atSectionIndex:0
-                           useRowsFromSource:NO
-                                   tableView:nil];
+                       useRowsFromSource:NO
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsA"
                          sourceIndexPath:indexPath_0_0
                                    count:(NSUInteger)numberOfRowsInA0
-                             atIndexPath:indexPath_0_0
-                               tableView:nil];
+                         atIndexPath:indexPath_0_0
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                          sourceIndexPath:indexPath_0_0
                                    count:(NSUInteger)numberOfRowsInB0
-                             atIndexPath:indexPath_0_0
-                               tableView:nil];
+                         atIndexPath:indexPath_0_0
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
 
     [self assertDataSource:dsTest equalsExpected:dsAB];
 }
@@ -206,17 +206,17 @@
                                    count:1
                           atSectionIndex:0
                        useRowsFromSource:NO
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsA"
                      sourceIndexPath:indexPath_0_0
                                count:(NSUInteger)numberOfRowsInA0
                          atIndexPath:indexPath_0_0
-                           tableView:nil];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                      sourceIndexPath:indexPath_0_0
                                count:(NSUInteger)numberOfRowsInB0
                          atIndexPath:indexPath_0_1
-                           tableView:nil];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
 
     [self assertDataSource:dsTest equalsExpected:dsAB];
 }
@@ -235,12 +235,12 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:2
+    NSUInteger removed = [dsTest removeUpTo:2
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (NSUInteger)2);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 
@@ -258,12 +258,12 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:1
+    NSUInteger removed = [dsTest removeUpTo:1
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (NSUInteger)1);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 
@@ -282,12 +282,12 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:1
+    NSUInteger removed = [dsTest removeUpTo:1
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (NSUInteger)1);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 
@@ -317,18 +317,18 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                      sourceIndexPath:indexPath_0_0
                                count:(NSUInteger)numberOfRowsInB0
                          atIndexPath:indexPath_0_rA0
-                           tableView:nil];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     [self assertDataSource:dsTest equalsExpected:dsAB];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:2
+    NSUInteger removed = [dsTest removeUpTo:2
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (unsigned long)2);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 
@@ -358,18 +358,18 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                      sourceIndexPath:indexPath_0_0
                                count:(NSUInteger)numberOfRowsInB0
                          atIndexPath:indexPath_0_rA0
-                           tableView:nil];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     [self assertDataSource:dsTest equalsExpected:dsAB];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:3
+    NSUInteger removed = [dsTest removeUpTo:3
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (unsigned long)3);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 
@@ -400,18 +400,18 @@
                                    count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
                           atSectionIndex:0
                        useRowsFromSource:YES
-                               tableView:nil];
+                        withRowAnimation:UITableViewRowAnimationAutomatic];
     [dsTest insertRowsFromDataSource:@"dsB"
                      sourceIndexPath:indexPath_0_0
                                count:(NSUInteger)numberOfRowsInB0
                          atIndexPath:indexPath_0_rA0
-                           tableView:nil];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     [self assertDataSource:dsTest equalsExpected:dsAB];
 
-    NSUInteger notRemoved = [dsTest removeUpTo:3
+    NSUInteger removed = [dsTest removeUpTo:3
                              rowsFromIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]
-                                     tableView:nil];
-    XCTAssertEqual(notRemoved, 0);
+                              withRowAnimation:UITableViewRowAnimationAutomatic];
+    XCTAssertEqual(removed, (unsigned long)3);
     [self assertDataSource:dsTest equalsExpected:dsExpected];
 }
 

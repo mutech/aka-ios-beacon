@@ -22,7 +22,7 @@
     NSUInteger v = 0;
     if (length > 0)
     {
-        for (int i=0; i < length; ++i)
+        for (NSUInteger i=0; i < length; ++i)
         {
             v = (v << 1) | 1;
         }

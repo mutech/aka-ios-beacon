@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import AKACommons
 
 class SwiftTest: XCTestCase {
 
@@ -21,7 +22,8 @@ class SwiftTest: XCTestCase {
         super.tearDown()
     }
 
-    func testExample() {
+    func testExample()
+    {
         // This is an example of a functional test case.
         XCTAssert(true, "Pass")
     }

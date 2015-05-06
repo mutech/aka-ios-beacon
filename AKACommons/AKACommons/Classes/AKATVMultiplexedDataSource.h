@@ -51,7 +51,8 @@
  * data source is available at the specified dataSourceKey.
  *
  * @note that the tableView is not reloaded or updated, because its
- *      contents does not change.
+ *      contents does not change, the proxy is transparent until its configuration
+ *      is modified by inserting, moving or removing rows or sections.
  *
  * @param tableView the table view in which to install the new instance
  * @param dataSourceKey the key for which the original dataSource will be registered.
@@ -85,6 +86,10 @@
                                               inTableView:(UITableView* __nonnull)tableView                                  andAppendDataSource:(id<UITableViewDataSource>__nonnull)dataSource
                                              withDelegate:(id<UITableViewDelegate>__nullable)delegate
                                                    forKey:(NSString*__nonnull)additionalDataSourceKey;
+
+#pragma mark - Configuration
+
+@property(nonnull, readonly, weak) UITableView* tableView;
 
 #pragma mark - Managing Data Sources and associated Delegates
 
@@ -130,38 +135,14 @@
  */
 - (AKATVDataSourceSpecification*__nullable)dataSourceForKey:(NSString*__nonnull)key;
 
+#pragma mark - Batch Table View Updates
+
+- (void)beginUpdates;
+
+- (void)endUpdates;
+
 #pragma mark - Adding and Removing Sections
 /// @name Adding and Removing Sections
-
-/**
- * Takes the specified @c numberOfSections from the specified @c dataSource
- * starting at the specified @c sourceSectionIndex and inserts them
- * at the specified @c sectionIndex in this data source.
- *
- * @note If a tableView is specified, the table view will be updated using
- *      automatic row animations. You have to call UITableView::beginUpdate and UITableView::endUpdate.
- *      If you do not want to update the table view, use the version of
- *      this method that let's you specify whether to update and which
- *      animation to use.
- *
- * @note It is your responsibility to ensure that rows for which a data source returns
- *      the same instance of a cell (static table views) are not used in more than one
- *      place. (TODO: verify if this is really a problem).
- *
- * @param dataSource the data source providing the sections
- * @param sourceSectionIndex the section index in the source data source
- * @param numberOfSections the number of sections to insert
- * @param targetSectionIndex the section index in this data source at which to insert the specified sections
- * @param useRowsFromSource whether the inserted sections should contain the original rows (YES) or should be left empty (NO)
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated.
- */
-- (void)insertSectionsFromDataSource:(NSString*__nonnull)dataSourceKey
-                  sourceSectionIndex:(NSUInteger)sourceSectionIndex
-                               count:(NSUInteger)numberOfSections
-                      atSectionIndex:(NSUInteger)targetSectionIndex
-                   useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView*__nullable)tableView;
 
 /**
  * Takes the specified @c numberOfSections from the specified @c dataSource
@@ -176,35 +157,13 @@
  * @param numberOfSections the number of sections to insert
  * @param targetSectionIndex the section index in this data source at which to insert the specified sections
  * @param useRowsFromSource whether the inserted sections should contain the original rows (YES) or should be left empty (NO)
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated.
  */
 - (void)insertSectionsFromDataSource:(NSString*__nonnull)dataSourceKey
                   sourceSectionIndex:(NSUInteger)sourceSectionIndex
                                count:(NSUInteger)numberOfSections
                       atSectionIndex:(NSUInteger)targetSectionIndex
                    useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView*__nullable)tableView
-                              update:(BOOL)updateTableView
                     withRowAnimation:(UITableViewRowAnimation)rowAnimation;
-
-/**
- * Removes the specified numberOfSections starting at the specified sectionIndex.
- *
- * @note If a tableView is specified, it will be updated using
- *      automatic row animations. You have to call begin- and endUpdate.
- *      If you do not want to update the table view, use the version of
- *      this method that let's you specify whether to update and which
- *      animation to use.
- *
- * @param numberOfSections the number of sections to remove
- * @param sectionIndex the index of the first section to remove
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated if update is YES.
- */
-- (void)        remove:(NSUInteger)numberOfSections
-       sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView*__nullable)tableView;
 
 /**
  * Removes the specified numberOfSections starting at the specified sectionIndex.
@@ -214,54 +173,15 @@
  *
  * @param numberOfSections the number of sections to remove
  * @param sectionIndex the index of the first section to remove
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated if update is YES.
- * @param update If YES, the tableView will be updated (without calling
- *          beginUpdate/endUpdate).
  * @param rowAnimation The row animation to use if update is YES.
  */
 - (void)        remove:(NSUInteger)numberOfSections
        sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView*__nullable)tableView
-                update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
 
-#pragma mark - Batch Table View Updates
-
-- (void)beginUpdatesForTableView:(UITableView*__nonnull)tableView;
-
-- (void)endUpdatesForTableView:(UITableView*__nonnull)tableView;
-
 #pragma mark - Adding and Removing Rows to/from Sections
 /// @name Adding and Removing Rows to or from Sections
-
-/**
- * Takes the specified numberOfRows from the specified dataSource starting
- * at the specified sourceIndexPath and inserts them at the position
- * specified by indexPath.
- *
- * @note The source section has to contain a sufficient amount of rows
- *      and the target indexPath has to reference a valid insertion point.
- *
- * @note If a tableView is specified, it will be updated using
- *      automatic row animations. You have to call begin- and endUpdate.
- *      If you do not want to update the table view, use the version of
- *      this method that let's you specify whether to update and which
- *      animation to use.
- *
- * @param dataSource the data source providing the rows
- * @param sourceIndexPath the indexPath specifying the first row to insert
- * @param numberOfRows the number of rows to insert
- * @param indexPath the location where the rows should be inserted.
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated.
- */
-- (void)insertRowsFromDataSource:(NSString*__nonnull)dataSourceKey
-                 sourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
-                           count:(NSUInteger)numberOfRows
-                     atIndexPath:(NSIndexPath*__nonnull)indexPath
-                       tableView:(UITableView*__nullable)tableView;
 
 /**
  * Takes the specified numberOfRows from the specified dataSource starting
@@ -278,18 +198,12 @@
  * @param sourceIndexPath the indexPath specifying the first row to insert
  * @param numberOfRows the number of rows to insert
  * @param indexPath the location where the rows should be inserted.
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated if update is YES.
- * @param update If YES, the tableView will be updated (without calling
- *          beginUpdate/endUpdate).
  * @param rowAnimation The row animation to use if update is YES.
  */
 - (void)insertRowsFromDataSource:(NSString*__nonnull)dataSourceKey
                  sourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
                            count:(NSUInteger)numberOfRows
                      atIndexPath:(NSIndexPath*__nonnull)indexPath
-                       tableView:(UITableView*__nullable)tableView
-                          update:(BOOL)updateTableView
                 withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
 /**
@@ -303,10 +217,6 @@
  *
  * @param numberOfRows the number of rows to remove
  * @param indexPath the index path specifying the first row to remove
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated.
- * @param update If YES, the tableView will be updated (without calling
- *          beginUpdate/endUpdate).
  * @param rowAnimation The row animation to use if update is YES.
  *
  * @return 0 if the specified number of rows has been removed or the number of
@@ -314,58 +224,16 @@
  */
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
        rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
-               tableView:(UITableView*__nullable)tableView
-                  update:(BOOL)updateTableView
         withRowAnimation:(UITableViewRowAnimation)rowAnimation;
-
-/**
- * Removes (up to) the specified numberOfRows from the section and row of
- * the specified indexPath and returns the number of rows which could not be
- * removed (due to the section not containing that many rows at and following
- * the indexPath)
- *
- * @note If a tableView is specified, it will be updated using
- *      automatic row animations. You have to call begin- and endUpdate.
- *      If you do not want to update the table view, use the version of
- *      this method that let's you specify whether to update and which
- *      animation to use.
- *
- * @param numberOfRows the number of rows to remove
- * @param indexPath the index path specifying the first row to remove
- * @param tableView the table view which is passed to data sources in queries and
- *          which will be updated.
- * @param update If YES, the tableView will be updated (without calling
- *          beginUpdate/endUpdate).
- * @param rowAnimation The row animation to use if update is YES.
- *
- * @return 0 if the specified number of rows has been removed or the number of
- *      rows which have not been removed.
- */
-- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-       rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
-               tableView:(UITableView*__nullable)tableView;
 
 #pragma mark - Moving Rows
 
 - (void)moveRowAtIndex:(NSInteger)rowIndex
              inSection:(NSInteger)sectionIndex
-            toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*__nullable)tableView;
-
-- (void)moveRowAtIndex:(NSInteger)rowIndex
-             inSection:(NSInteger)sectionIndex
-            toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*__nullable)tableView
-                update:(BOOL)updateTableView;
+            toRowIndex:(NSInteger)targetIndex;
 
 - (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
-               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
-                 tableView:(UITableView *__nullable)tableView;
-
-- (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
-               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath
-                 tableView:(UITableView *__nullable)tableView
-                    update:(BOOL)updateTableView;
+               toIndexPath:(NSIndexPath*__nonnull)targetIndexPath;
 
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
 

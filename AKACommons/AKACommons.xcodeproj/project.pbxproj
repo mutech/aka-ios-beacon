@@ -7,347 +7,320 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E0E47731AE47897005DC1AE /* AKAIPNetmaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E47721AE47897005DC1AE /* AKAIPNetmaskTests.m */; };
-		8E0E47761AE70F5D005DC1AE /* AKATVProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E0E47741AE70F5D005DC1AE /* AKATVProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E0E47771AE70F5D005DC1AE /* AKATVProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E47751AE70F5D005DC1AE /* AKATVProxy.m */; };
-		8E0E477A1AE77FB9005DC1AE /* AKATVDataSourceSpecification.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E0E47781AE77FB9005DC1AE /* AKATVDataSourceSpecification.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E0E477B1AE77FB9005DC1AE /* AKATVDataSourceSpecification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E47791AE77FB9005DC1AE /* AKATVDataSourceSpecification.m */; };
-		8E0E477D1AE79B97005DC1AE /* AKATVCoordinateMappingProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E0E477C1AE79B97005DC1AE /* AKATVCoordinateMappingProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E1ED3891AE873C200B20D8C /* AKAInterfaceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1ED3811AE873C200B20D8C /* AKAInterfaceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E1ED38A1AE873C200B20D8C /* AKAInterfaceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ED3821AE873C200B20D8C /* AKAInterfaceInfo.m */; };
-		8E1ED38B1AE873C200B20D8C /* AKAIPAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1ED3831AE873C200B20D8C /* AKAIPAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E1ED38C1AE873C200B20D8C /* AKAIPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ED3841AE873C200B20D8C /* AKAIPAddress.m */; };
-		8E1ED38D1AE873C200B20D8C /* AKAIPNetmask.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1ED3851AE873C200B20D8C /* AKAIPNetmask.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E1ED38E1AE873C200B20D8C /* AKAIPNetmask.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ED3861AE873C200B20D8C /* AKAIPNetmask.m */; };
-		8E1ED38F1AE873C200B20D8C /* AKANetworkingErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1ED3871AE873C200B20D8C /* AKANetworkingErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E1ED3901AE873C200B20D8C /* AKANetworkingErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1ED3881AE873C200B20D8C /* AKANetworkingErrors.m */; };
-		8E5D0A141ADDBDA80087C687 /* AKATVMultiplexedDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5D0A121ADDBDA80087C687 /* AKATVMultiplexedDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E5D0A151ADDBDA80087C687 /* AKATVMultiplexedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A131ADDBDA80087C687 /* AKATVMultiplexedDataSource.m */; };
-		8E5D0A1E1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E5D0A1F1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */; };
-		8E5D0A211ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */; };
-		8E5D0A231ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */; };
-		8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C52661AD92BCD0011525A /* AKAReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C52671AD92BCD0011525A /* AKAReference.m */; };
-		8E796F771AB863DC0014EC1E /* UIView+AKAConstraintTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */; };
-		8E796F781AB863DC0014EC1E /* UIView+AKAConstraintTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F6E1AB863DC0014EC1E /* UIView+AKAConstraintTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E796F791AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F6F1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m */; };
-		8E796F7A1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F701AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E796F7B1AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F711AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8E796F7C1AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F721AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m */; };
-		8E796F7D1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F731AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E796F7E1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F741AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m */; };
-		8E796F7F1AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E796F751AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E796F801AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E796F761AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m */; };
-		8E98D9321AB4EF62005AEB2A /* KVCValidationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E98D9311AB4EF62005AEB2A /* KVCValidationTest.m */; };
-		8EBA32C31AB9C08F007436AA /* AKALog.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA32BF1AB9C08F007436AA /* AKALog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EBA32C41AB9C08F007436AA /* AKALog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA32C01AB9C08F007436AA /* AKALog.m */; };
-		8EBA32C51AB9C08F007436AA /* AKAErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBA32C11AB9C08F007436AA /* AKAErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EBA32C61AB9C08F007436AA /* AKAErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA32C21AB9C08F007436AA /* AKAErrors.m */; };
-		8EBD27311AE87EB4009A68F2 /* SwiftTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */; };
-		8EBD27361AE9B4BB009A68F2 /* AKATVUpdateBatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBD27341AE9B4BB009A68F2 /* AKATVUpdateBatch.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EBD27371AE9B4BB009A68F2 /* AKATVUpdateBatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27351AE9B4BB009A68F2 /* AKATVUpdateBatch.m */; };
-		8EBD273A1AE9B531009A68F2 /* AKATVRowSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBD27381AE9B531009A68F2 /* AKATVRowSegment.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EBD273B1AE9B531009A68F2 /* AKATVRowSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27391AE9B531009A68F2 /* AKATVRowSegment.m */; };
-		8EBD273E1AE9B7F7009A68F2 /* AKATVSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EBD273C1AE9B7F7009A68F2 /* AKATVSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EBD273F1AE9B7F7009A68F2 /* AKATVSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD273D1AE9B7F7009A68F2 /* AKATVSection.m */; };
-		8EC2D9531AB090FC00822E8C /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EC2D9471AB090FC00822E8C /* AKACommons.framework */; };
-		8EC2D95A1AB090FC00822E8C /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9591AB090FC00822E8C /* AKACommonsTests.m */; };
-		8EC2D9E81AB254CA00822E8C /* AKAKVOChangeEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E01AB254CA00822E8C /* AKAKVOChangeEvent.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EC2D9E91AB254CA00822E8C /* AKAKVOChangeEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9E11AB254CA00822E8C /* AKAKVOChangeEvent.m */; };
-		8EC2D9EB1AB254CA00822E8C /* AKAKVOPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E31AB254CA00822E8C /* AKAKVOPublisher.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EC2D9EC1AB254CA00822E8C /* AKAKVOPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9E41AB254CA00822E8C /* AKAKVOPublisher.m */; };
-		8EC2D9ED1AB254CA00822E8C /* AKAKVOSubscription_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E51AB254CA00822E8C /* AKAKVOSubscription_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EC2D9EE1AB254CA00822E8C /* AKAKVOSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC2D9E61AB254CA00822E8C /* AKAKVOSubscription.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		8EC2D9EF1AB254CA00822E8C /* AKAKVOSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC2D9E71AB254CA00822E8C /* AKAKVOSubscription.m */; };
-		8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EECDAA91AC5E557001A6826 /* NSObject+AKASelectorTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAA71AC5E557001A6826 /* NSObject+AKASelectorTools.m */; };
-		8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EECDAAD1AC5EAD1001A6826 /* NSString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */; };
-		8EECDAB01AC6069C001A6826 /* AKAProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EECDAAE1AC6069C001A6826 /* AKAProperty.m */; };
-		8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EECDAAF1AC6069C001A6826 /* AKAProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EECDAB51AC97B24001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB41AC97B24001A6826 /* Podfile */; };
-		8EECDAB71AC97B42001A6826 /* AKACommons.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDAB61AC97B42001A6826 /* AKACommons.podspec */; };
-		B385CDC7FFE41052F8F32EAC /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FF87A7C2C0691D7A6D6770 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */; };
+		8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86F11AF8E7D600FDAD7B /* AKAInterfaceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C21AF8E7D600FDAD7B /* AKAInterfaceInfo.m */; };
+		8E6C86F21AF8E7D600FDAD7B /* AKAIPAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C31AF8E7D600FDAD7B /* AKAIPAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86F31AF8E7D600FDAD7B /* AKAIPAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C41AF8E7D600FDAD7B /* AKAIPAddress.m */; };
+		8E6C86F41AF8E7D600FDAD7B /* AKAIPNetmask.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C51AF8E7D600FDAD7B /* AKAIPNetmask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86F51AF8E7D600FDAD7B /* AKAIPNetmask.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C61AF8E7D600FDAD7B /* AKAIPNetmask.m */; };
+		8E6C86F61AF8E7D600FDAD7B /* AKALog.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C71AF8E7D600FDAD7B /* AKALog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86F71AF8E7D600FDAD7B /* AKALog.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C81AF8E7D600FDAD7B /* AKALog.m */; };
+		8E6C86F81AF8E7D600FDAD7B /* AKANetworkingErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C91AF8E7D600FDAD7B /* AKANetworkingErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86F91AF8E7D600FDAD7B /* AKANetworkingErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86CA1AF8E7D600FDAD7B /* AKANetworkingErrors.m */; };
+		8E6C86FA1AF8E7D600FDAD7B /* AKAObservableCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86CB1AF8E7D600FDAD7B /* AKAObservableCollection.h */; };
+		8E6C86FB1AF8E7D600FDAD7B /* AKAObservableCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86CC1AF8E7D600FDAD7B /* AKAObservableCollection.m */; };
+		8E6C86FC1AF8E7D600FDAD7B /* AKAProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86CD1AF8E7D600FDAD7B /* AKAProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86FD1AF8E7D600FDAD7B /* AKAProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86CE1AF8E7D600FDAD7B /* AKAProperty.m */; };
+		8E6C86FE1AF8E7D600FDAD7B /* AKAReference.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86CF1AF8E7D600FDAD7B /* AKAReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C86FF1AF8E7D600FDAD7B /* AKAReference.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86D01AF8E7D600FDAD7B /* AKAReference.m */; };
+		8E6C87001AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86D11AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87011AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86D21AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87021AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86D31AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m */; };
+		8E6C87031AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86D41AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87041AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86D51AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m */; };
+		8E6C87051AF8E7D600FDAD7B /* AKATVProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86D61AF8E7D600FDAD7B /* AKATVProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87061AF8E7D600FDAD7B /* AKATVProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86D71AF8E7D600FDAD7B /* AKATVProxy.m */; };
+		8E6C87071AF8E7D600FDAD7B /* AKATVRowSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86D81AF8E7D600FDAD7B /* AKATVRowSegment.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		8E6C87081AF8E7D600FDAD7B /* AKATVRowSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86D91AF8E7D600FDAD7B /* AKATVRowSegment.m */; };
+		8E6C87091AF8E7D600FDAD7B /* AKATVSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86DA1AF8E7D600FDAD7B /* AKATVSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		8E6C870A1AF8E7D600FDAD7B /* AKATVSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86DB1AF8E7D600FDAD7B /* AKATVSection.m */; };
+		8E6C870B1AF8E7D600FDAD7B /* AKATVUpdateBatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86DC1AF8E7D600FDAD7B /* AKATVUpdateBatch.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		8E6C870C1AF8E7D600FDAD7B /* AKATVUpdateBatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86DD1AF8E7D600FDAD7B /* AKATVUpdateBatch.m */; };
+		8E6C870D1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86DE1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C870E1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86DF1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m */; };
+		8E6C870F1AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86E01AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h */; };
+		8E6C87101AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86E11AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m */; };
+		8E6C87111AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86E21AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87121AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86E31AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m */; };
+		8E6C87131AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86E41AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87141AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86E51AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m */; };
+		8E6C87151AF8E7D600FDAD7B /* NSString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86E61AF8E7D600FDAD7B /* NSString+AKATools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87161AF8E7D600FDAD7B /* NSString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86E71AF8E7D600FDAD7B /* NSString+AKATools.m */; };
+		8E6C87171AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86E81AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C87181AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86E91AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m */; };
+		8E6C87191AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86EA1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C871A1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86EB1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m */; };
+		8E6C871B1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86EC1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E6C871C1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86ED1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m */; };
+		8E7231F61AF8E87300D647A9 /* AKAIPNetmaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7231F01AF8E87300D647A9 /* AKAIPNetmaskTests.m */; };
+		8E7231F71AF8E87300D647A9 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7231F11AF8E87300D647A9 /* AKAMultiplexedTableViewDataSourceTests.m */; };
+		8E7231F81AF8E87300D647A9 /* KVCValidationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7231F31AF8E87300D647A9 /* KVCValidationTest.m */; };
+		8E7231F91AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7231F41AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */; };
+		8E7231FA1AF8E87300D647A9 /* SwiftTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7231F51AF8E87300D647A9 /* SwiftTest.swift */; };
+		8E7232DF1AFA2DCA00D647A9 /* AKACommons.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */; };
+		8E90F9471AF8E69A00CBBB52 /* AKACommons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E90F9461AF8E69A00CBBB52 /* AKACommons.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E90F94D1AF8E69A00CBBB52 /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */; };
+		8E90F9541AF8E69A00CBBB52 /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */; };
+		A677E50747F837365B479A33 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68E1B59A0220B66D1F7D2C1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8EC2D9541AB090FC00822E8C /* PBXContainerItemProxy */ = {
+		8E90F94E1AF8E69A00CBBB52 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 8EC2D93E1AB090FC00822E8C /* Project object */;
+			containerPortal = 8E90F9381AF8E69A00CBBB52 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8EC2D9461AB090FC00822E8C;
+			remoteGlobalIDString = 8E90F9401AF8E69A00CBBB52;
 			remoteInfo = AKACommons;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		39FF87A7C2C0691D7A6D6770 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		8E0E47721AE47897005DC1AE /* AKAIPNetmaskTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAIPNetmaskTests.m; sourceTree = "<group>"; };
-		8E0E47741AE70F5D005DC1AE /* AKATVProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVProxy.h; path = Classes/AKATVProxy.h; sourceTree = "<group>"; };
-		8E0E47751AE70F5D005DC1AE /* AKATVProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVProxy.m; path = Classes/AKATVProxy.m; sourceTree = "<group>"; };
-		8E0E47781AE77FB9005DC1AE /* AKATVDataSourceSpecification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVDataSourceSpecification.h; path = Classes/AKATVDataSourceSpecification.h; sourceTree = "<group>"; };
-		8E0E47791AE77FB9005DC1AE /* AKATVDataSourceSpecification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVDataSourceSpecification.m; path = Classes/AKATVDataSourceSpecification.m; sourceTree = "<group>"; };
-		8E0E477C1AE79B97005DC1AE /* AKATVCoordinateMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVCoordinateMappingProtocol.h; path = Classes/AKATVCoordinateMappingProtocol.h; sourceTree = "<group>"; };
-		8E1ED3811AE873C200B20D8C /* AKAInterfaceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAInterfaceInfo.h; path = Classes/AKAInterfaceInfo.h; sourceTree = "<group>"; };
-		8E1ED3821AE873C200B20D8C /* AKAInterfaceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAInterfaceInfo.m; path = Classes/AKAInterfaceInfo.m; sourceTree = "<group>"; };
-		8E1ED3831AE873C200B20D8C /* AKAIPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAIPAddress.h; path = Classes/AKAIPAddress.h; sourceTree = "<group>"; };
-		8E1ED3841AE873C200B20D8C /* AKAIPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAIPAddress.m; path = Classes/AKAIPAddress.m; sourceTree = "<group>"; };
-		8E1ED3851AE873C200B20D8C /* AKAIPNetmask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAIPNetmask.h; path = Classes/AKAIPNetmask.h; sourceTree = "<group>"; };
-		8E1ED3861AE873C200B20D8C /* AKAIPNetmask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAIPNetmask.m; path = Classes/AKAIPNetmask.m; sourceTree = "<group>"; };
-		8E1ED3871AE873C200B20D8C /* AKANetworkingErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKANetworkingErrors.h; path = Classes/AKANetworkingErrors.h; sourceTree = "<group>"; };
-		8E1ED3881AE873C200B20D8C /* AKANetworkingErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKANetworkingErrors.m; path = Classes/AKANetworkingErrors.m; sourceTree = "<group>"; };
-		8E5D0A121ADDBDA80087C687 /* AKATVMultiplexedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVMultiplexedDataSource.h; path = Classes/AKATVMultiplexedDataSource.h; sourceTree = "<group>"; };
-		8E5D0A131ADDBDA80087C687 /* AKATVMultiplexedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVMultiplexedDataSource.m; path = Classes/AKATVMultiplexedDataSource.m; sourceTree = "<group>"; };
-		8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexPath+AKARowAndSectionAsInteger.h"; path = "Classes/NSIndexPath+AKARowAndSectionAsInteger.h"; sourceTree = "<group>"; };
-		8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexPath+AKARowAndSectionAsInteger.m"; path = "Classes/NSIndexPath+AKARowAndSectionAsInteger.m"; sourceTree = "<group>"; };
-		8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSIndexPath_AKARowAndSectionAsIntegerTests.m; sourceTree = "<group>"; };
-		8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMultiplexedTableViewDataSourceTests.m; sourceTree = "<group>"; };
-		8E6C52661AD92BCD0011525A /* AKAReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAReference.h; path = Classes/AKAReference.h; sourceTree = "<group>"; };
-		8E6C52671AD92BCD0011525A /* AKAReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAReference.m; path = Classes/AKAReference.m; sourceTree = "<group>"; };
-		8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAConstraintTools.m"; path = "Classes/UIView+AKAConstraintTools.m"; sourceTree = "<group>"; };
-		8E796F6E1AB863DC0014EC1E /* UIView+AKAConstraintTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+AKAConstraintTools.h"; path = "Classes/UIView+AKAConstraintTools.h"; sourceTree = "<group>"; };
-		8E796F6F1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAHierarchyVisitor.m"; path = "Classes/UIView+AKAHierarchyVisitor.m"; sourceTree = "<group>"; };
-		8E796F701AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+AKAHierarchyVisitor.h"; path = "Classes/UIView+AKAHierarchyVisitor.h"; sourceTree = "<group>"; };
-		8E796F711AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+AKAAssociatedValues.h"; path = "Classes/NSObject+AKAAssociatedValues.h"; sourceTree = "<group>"; };
-		8E796F721AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AKAAssociatedValues.m"; path = "Classes/NSObject+AKAAssociatedValues.m"; sourceTree = "<group>"; };
-		8E796F731AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+AKAConcurrencyTools.h"; path = "Classes/NSObject+AKAConcurrencyTools.h"; sourceTree = "<group>"; };
-		8E796F741AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AKAConcurrencyTools.m"; path = "Classes/NSObject+AKAConcurrencyTools.m"; sourceTree = "<group>"; };
-		8E796F751AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+AKAReusableViewsSupport.h"; path = "Classes/UIView+AKAReusableViewsSupport.h"; sourceTree = "<group>"; };
-		8E796F761AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+AKAReusableViewsSupport.m"; path = "Classes/UIView+AKAReusableViewsSupport.m"; sourceTree = "<group>"; };
-		8E98D9311AB4EF62005AEB2A /* KVCValidationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KVCValidationTest.m; path = iOSFeatureTests/KVCValidationTest.m; sourceTree = "<group>"; };
-		8EBA32BF1AB9C08F007436AA /* AKALog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKALog.h; path = Classes/AKALog.h; sourceTree = "<group>"; };
-		8EBA32C01AB9C08F007436AA /* AKALog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKALog.m; path = Classes/AKALog.m; sourceTree = "<group>"; };
-		8EBA32C11AB9C08F007436AA /* AKAErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAErrors.h; path = Classes/AKAErrors.h; sourceTree = "<group>"; };
-		8EBA32C21AB9C08F007436AA /* AKAErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAErrors.m; path = Classes/AKAErrors.m; sourceTree = "<group>"; };
-		8EBD272D1AE87D1D009A68F2 /* AKACommonsTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AKACommonsTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTest.swift; sourceTree = "<group>"; };
-		8EBD27341AE9B4BB009A68F2 /* AKATVUpdateBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVUpdateBatch.h; path = Classes/AKATVUpdateBatch.h; sourceTree = "<group>"; };
-		8EBD27351AE9B4BB009A68F2 /* AKATVUpdateBatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVUpdateBatch.m; path = Classes/AKATVUpdateBatch.m; sourceTree = "<group>"; };
-		8EBD27381AE9B531009A68F2 /* AKATVRowSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVRowSegment.h; path = Classes/AKATVRowSegment.h; sourceTree = "<group>"; };
-		8EBD27391AE9B531009A68F2 /* AKATVRowSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVRowSegment.m; path = Classes/AKATVRowSegment.m; sourceTree = "<group>"; };
-		8EBD273C1AE9B7F7009A68F2 /* AKATVSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATVSection.h; path = Classes/AKATVSection.h; sourceTree = "<group>"; };
-		8EBD273D1AE9B7F7009A68F2 /* AKATVSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATVSection.m; path = Classes/AKATVSection.m; sourceTree = "<group>"; };
-		8EC2D9471AB090FC00822E8C /* AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EC2D94B1AB090FC00822E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8EC2D94C1AB090FC00822E8C /* AKACommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKACommons.h; sourceTree = "<group>"; };
-		8EC2D9521AB090FC00822E8C /* AKACommonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKACommonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8EC2D9581AB090FC00822E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8EC2D9591AB090FC00822E8C /* AKACommonsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKACommonsTests.m; sourceTree = "<group>"; };
-		8EC2D9E01AB254CA00822E8C /* AKAKVOChangeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAKVOChangeEvent.h; path = AKAKVO/AKAKVOChangeEvent.h; sourceTree = "<group>"; };
-		8EC2D9E11AB254CA00822E8C /* AKAKVOChangeEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAKVOChangeEvent.m; path = AKAKVO/AKAKVOChangeEvent.m; sourceTree = "<group>"; };
-		8EC2D9E31AB254CA00822E8C /* AKAKVOPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAKVOPublisher.h; path = AKAKVO/AKAKVOPublisher.h; sourceTree = "<group>"; };
-		8EC2D9E41AB254CA00822E8C /* AKAKVOPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAKVOPublisher.m; path = AKAKVO/AKAKVOPublisher.m; sourceTree = "<group>"; };
-		8EC2D9E51AB254CA00822E8C /* AKAKVOSubscription_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAKVOSubscription_Internal.h; path = AKAKVO/AKAKVOSubscription_Internal.h; sourceTree = "<group>"; };
-		8EC2D9E61AB254CA00822E8C /* AKAKVOSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAKVOSubscription.h; path = AKAKVO/AKAKVOSubscription.h; sourceTree = "<group>"; };
-		8EC2D9E71AB254CA00822E8C /* AKAKVOSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAKVOSubscription.m; path = AKAKVO/AKAKVOSubscription.m; sourceTree = "<group>"; };
-		8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+AKASelectorTools.h"; path = "Classes/NSObject+AKASelectorTools.h"; sourceTree = "<group>"; };
-		8EECDAA71AC5E557001A6826 /* NSObject+AKASelectorTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+AKASelectorTools.m"; path = "Classes/NSObject+AKASelectorTools.m"; sourceTree = "<group>"; };
-		8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+AKATools.h"; path = "Classes/NSString+AKATools.h"; sourceTree = "<group>"; };
-		8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+AKATools.m"; path = "Classes/NSString+AKATools.m"; sourceTree = "<group>"; };
-		8EECDAAE1AC6069C001A6826 /* AKAProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAProperty.m; path = Classes/AKAProperty.m; sourceTree = "<group>"; };
-		8EECDAAF1AC6069C001A6826 /* AKAProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAProperty.h; path = Classes/AKAProperty.h; sourceTree = "<group>"; };
-		8EECDAB41AC97B24001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
-		8EECDAB61AC97B42001A6826 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = ../../AKACommons.podspec; sourceTree = "<group>"; };
-		BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		79483621CA7D059E6F07B696 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAErrors.h; sourceTree = "<group>"; };
+		8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAErrors.m; sourceTree = "<group>"; };
+		8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAInterfaceInfo.h; sourceTree = "<group>"; };
+		8E6C86C21AF8E7D600FDAD7B /* AKAInterfaceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAInterfaceInfo.m; sourceTree = "<group>"; };
+		8E6C86C31AF8E7D600FDAD7B /* AKAIPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAIPAddress.h; sourceTree = "<group>"; };
+		8E6C86C41AF8E7D600FDAD7B /* AKAIPAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAIPAddress.m; sourceTree = "<group>"; };
+		8E6C86C51AF8E7D600FDAD7B /* AKAIPNetmask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAIPNetmask.h; sourceTree = "<group>"; };
+		8E6C86C61AF8E7D600FDAD7B /* AKAIPNetmask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAIPNetmask.m; sourceTree = "<group>"; };
+		8E6C86C71AF8E7D600FDAD7B /* AKALog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKALog.h; sourceTree = "<group>"; };
+		8E6C86C81AF8E7D600FDAD7B /* AKALog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKALog.m; sourceTree = "<group>"; };
+		8E6C86C91AF8E7D600FDAD7B /* AKANetworkingErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKANetworkingErrors.h; sourceTree = "<group>"; };
+		8E6C86CA1AF8E7D600FDAD7B /* AKANetworkingErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKANetworkingErrors.m; sourceTree = "<group>"; };
+		8E6C86CB1AF8E7D600FDAD7B /* AKAObservableCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAObservableCollection.h; sourceTree = "<group>"; };
+		8E6C86CC1AF8E7D600FDAD7B /* AKAObservableCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAObservableCollection.m; sourceTree = "<group>"; };
+		8E6C86CD1AF8E7D600FDAD7B /* AKAProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAProperty.h; sourceTree = "<group>"; };
+		8E6C86CE1AF8E7D600FDAD7B /* AKAProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAProperty.m; sourceTree = "<group>"; };
+		8E6C86CF1AF8E7D600FDAD7B /* AKAReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAReference.h; sourceTree = "<group>"; };
+		8E6C86D01AF8E7D600FDAD7B /* AKAReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAReference.m; sourceTree = "<group>"; };
+		8E6C86D11AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVCoordinateMappingProtocol.h; sourceTree = "<group>"; };
+		8E6C86D21AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVDataSourceSpecification.h; sourceTree = "<group>"; };
+		8E6C86D31AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVDataSourceSpecification.m; sourceTree = "<group>"; };
+		8E6C86D41AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVMultiplexedDataSource.h; sourceTree = "<group>"; };
+		8E6C86D51AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVMultiplexedDataSource.m; sourceTree = "<group>"; };
+		8E6C86D61AF8E7D600FDAD7B /* AKATVProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVProxy.h; sourceTree = "<group>"; };
+		8E6C86D71AF8E7D600FDAD7B /* AKATVProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVProxy.m; sourceTree = "<group>"; };
+		8E6C86D81AF8E7D600FDAD7B /* AKATVRowSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVRowSegment.h; sourceTree = "<group>"; };
+		8E6C86D91AF8E7D600FDAD7B /* AKATVRowSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVRowSegment.m; sourceTree = "<group>"; };
+		8E6C86DA1AF8E7D600FDAD7B /* AKATVSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVSection.h; sourceTree = "<group>"; };
+		8E6C86DB1AF8E7D600FDAD7B /* AKATVSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVSection.m; sourceTree = "<group>"; };
+		8E6C86DC1AF8E7D600FDAD7B /* AKATVUpdateBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATVUpdateBatch.h; sourceTree = "<group>"; };
+		8E6C86DD1AF8E7D600FDAD7B /* AKATVUpdateBatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATVUpdateBatch.m; sourceTree = "<group>"; };
+		8E6C86DE1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+AKARowAndSectionAsInteger.h"; sourceTree = "<group>"; };
+		8E6C86DF1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+AKARowAndSectionAsInteger.m"; sourceTree = "<group>"; };
+		8E6C86E01AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AKAAssociatedValues.h"; sourceTree = "<group>"; };
+		8E6C86E11AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AKAAssociatedValues.m"; sourceTree = "<group>"; };
+		8E6C86E21AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AKAConcurrencyTools.h"; sourceTree = "<group>"; };
+		8E6C86E31AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AKAConcurrencyTools.m"; sourceTree = "<group>"; };
+		8E6C86E41AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+AKASelectorTools.h"; sourceTree = "<group>"; };
+		8E6C86E51AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+AKASelectorTools.m"; sourceTree = "<group>"; };
+		8E6C86E61AF8E7D600FDAD7B /* NSString+AKATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AKATools.h"; sourceTree = "<group>"; };
+		8E6C86E71AF8E7D600FDAD7B /* NSString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AKATools.m"; sourceTree = "<group>"; };
+		8E6C86E81AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AKAConstraintTools.h"; sourceTree = "<group>"; };
+		8E6C86E91AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AKAConstraintTools.m"; sourceTree = "<group>"; };
+		8E6C86EA1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AKAHierarchyVisitor.h"; sourceTree = "<group>"; };
+		8E6C86EB1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AKAHierarchyVisitor.m"; sourceTree = "<group>"; };
+		8E6C86EC1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AKAReusableViewsSupport.h"; sourceTree = "<group>"; };
+		8E6C86ED1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AKAReusableViewsSupport.m"; sourceTree = "<group>"; };
+		8E7231F01AF8E87300D647A9 /* AKAIPNetmaskTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAIPNetmaskTests.m; sourceTree = "<group>"; };
+		8E7231F11AF8E87300D647A9 /* AKAMultiplexedTableViewDataSourceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMultiplexedTableViewDataSourceTests.m; sourceTree = "<group>"; };
+		8E7231F31AF8E87300D647A9 /* KVCValidationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVCValidationTest.m; sourceTree = "<group>"; };
+		8E7231F41AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSIndexPath_AKARowAndSectionAsIntegerTests.m; sourceTree = "<group>"; };
+		8E7231F51AF8E87300D647A9 /* SwiftTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTest.swift; sourceTree = "<group>"; };
+		8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = ../../AKACommons.podspec; sourceTree = "<group>"; };
+		8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E90F9451AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E90F9461AF8E69A00CBBB52 /* AKACommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKACommons.h; sourceTree = "<group>"; };
+		8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKACommonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E90F9521AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKACommonsTests.m; sourceTree = "<group>"; };
+		D68E1B59A0220B66D1F7D2C1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8EC2D9431AB090FC00822E8C /* Frameworks */ = {
+		8E90F93D1AF8E69A00CBBB52 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B385CDC7FFE41052F8F32EAC /* Pods.framework in Frameworks */,
+				A677E50747F837365B479A33 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8EC2D94F1AB090FC00822E8C /* Frameworks */ = {
+		8E90F9491AF8E69A00CBBB52 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EC2D9531AB090FC00822E8C /* AKACommons.framework in Frameworks */,
+				8E90F94D1AF8E69A00CBBB52 /* AKACommons.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		743F2499968ABBA36240A1AF /* Pods */ = {
+		3A96352C13C6F13B37BFD605 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */,
-				BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */,
+				16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */,
+				79483621CA7D059E6F07B696 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		8E0E475E1AE3E87F005DC1AE /* Networking */ = {
+		8E6C86BE1AF8E7D600FDAD7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8E1ED3811AE873C200B20D8C /* AKAInterfaceInfo.h */,
-				8E1ED3821AE873C200B20D8C /* AKAInterfaceInfo.m */,
-				8E1ED3831AE873C200B20D8C /* AKAIPAddress.h */,
-				8E1ED3841AE873C200B20D8C /* AKAIPAddress.m */,
-				8E1ED3851AE873C200B20D8C /* AKAIPNetmask.h */,
-				8E1ED3861AE873C200B20D8C /* AKAIPNetmask.m */,
-				8E1ED3871AE873C200B20D8C /* AKANetworkingErrors.h */,
-				8E1ED3881AE873C200B20D8C /* AKANetworkingErrors.m */,
+				8E7232061AF8F31900D647A9 /* Error Handling */,
+				8E7232051AF8F30C00D647A9 /* Logging */,
+				8E7232041AF8F2F900D647A9 /* Networking */,
+				8E6C86CB1AF8E7D600FDAD7B /* AKAObservableCollection.h */,
+				8E6C86CC1AF8E7D600FDAD7B /* AKAObservableCollection.m */,
+				8E6C86CD1AF8E7D600FDAD7B /* AKAProperty.h */,
+				8E6C86CE1AF8E7D600FDAD7B /* AKAProperty.m */,
+				8E6C86CF1AF8E7D600FDAD7B /* AKAReference.h */,
+				8E6C86D01AF8E7D600FDAD7B /* AKAReference.m */,
+				8E6C86D11AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h */,
+				8E6C86D21AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h */,
+				8E6C86D31AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m */,
+				8E6C86D41AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h */,
+				8E6C86D51AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m */,
+				8E6C86D61AF8E7D600FDAD7B /* AKATVProxy.h */,
+				8E6C86D71AF8E7D600FDAD7B /* AKATVProxy.m */,
+				8E6C86D81AF8E7D600FDAD7B /* AKATVRowSegment.h */,
+				8E6C86D91AF8E7D600FDAD7B /* AKATVRowSegment.m */,
+				8E6C86DA1AF8E7D600FDAD7B /* AKATVSection.h */,
+				8E6C86DB1AF8E7D600FDAD7B /* AKATVSection.m */,
+				8E6C86DC1AF8E7D600FDAD7B /* AKATVUpdateBatch.h */,
+				8E6C86DD1AF8E7D600FDAD7B /* AKATVUpdateBatch.m */,
+				8E6C86DE1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h */,
+				8E6C86DF1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m */,
+				8E6C86E01AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h */,
+				8E6C86E11AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m */,
+				8E6C86E21AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h */,
+				8E6C86E31AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m */,
+				8E6C86E41AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h */,
+				8E6C86E51AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m */,
+				8E6C86E61AF8E7D600FDAD7B /* NSString+AKATools.h */,
+				8E6C86E71AF8E7D600FDAD7B /* NSString+AKATools.m */,
+				8E6C86E81AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h */,
+				8E6C86E91AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m */,
+				8E6C86EA1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h */,
+				8E6C86EB1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m */,
+				8E6C86EC1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h */,
+				8E6C86ED1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		8E7231F21AF8E87300D647A9 /* iOSFeatureTests */ = {
+			isa = PBXGroup;
+			children = (
+				8E7231F31AF8E87300D647A9 /* KVCValidationTest.m */,
+			);
+			path = iOSFeatureTests;
+			sourceTree = "<group>";
+		};
+		8E7232041AF8F2F900D647A9 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				8E6C86C91AF8E7D600FDAD7B /* AKANetworkingErrors.h */,
+				8E6C86CA1AF8E7D600FDAD7B /* AKANetworkingErrors.m */,
+				8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */,
+				8E6C86C21AF8E7D600FDAD7B /* AKAInterfaceInfo.m */,
+				8E6C86C31AF8E7D600FDAD7B /* AKAIPAddress.h */,
+				8E6C86C41AF8E7D600FDAD7B /* AKAIPAddress.m */,
+				8E6C86C51AF8E7D600FDAD7B /* AKAIPNetmask.h */,
+				8E6C86C61AF8E7D600FDAD7B /* AKAIPNetmask.m */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
 		};
-		8E5D0A041ADC10BE0087C687 /* UI */ = {
+		8E7232051AF8F30C00D647A9 /* Logging */ = {
 			isa = PBXGroup;
 			children = (
-				8E5D0A111ADDBD2A0087C687 /* TableViews */,
+				8E6C86C71AF8E7D600FDAD7B /* AKALog.h */,
+				8E6C86C81AF8E7D600FDAD7B /* AKALog.m */,
 			);
-			name = UI;
+			name = Logging;
 			sourceTree = "<group>";
 		};
-		8E5D0A111ADDBD2A0087C687 /* TableViews */ = {
+		8E7232061AF8F31900D647A9 /* Error Handling */ = {
 			isa = PBXGroup;
 			children = (
-				8E5D0A121ADDBDA80087C687 /* AKATVMultiplexedDataSource.h */,
-				8E5D0A131ADDBDA80087C687 /* AKATVMultiplexedDataSource.m */,
-				8E0E47781AE77FB9005DC1AE /* AKATVDataSourceSpecification.h */,
-				8E0E47791AE77FB9005DC1AE /* AKATVDataSourceSpecification.m */,
-				8E0E47741AE70F5D005DC1AE /* AKATVProxy.h */,
-				8E0E47751AE70F5D005DC1AE /* AKATVProxy.m */,
-				8E0E477C1AE79B97005DC1AE /* AKATVCoordinateMappingProtocol.h */,
-				8EBD27341AE9B4BB009A68F2 /* AKATVUpdateBatch.h */,
-				8EBD27351AE9B4BB009A68F2 /* AKATVUpdateBatch.m */,
-				8EBD27381AE9B531009A68F2 /* AKATVRowSegment.h */,
-				8EBD27391AE9B531009A68F2 /* AKATVRowSegment.m */,
-				8EBD273C1AE9B7F7009A68F2 /* AKATVSection.h */,
-				8EBD273D1AE9B7F7009A68F2 /* AKATVSection.m */,
+				8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */,
+				8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */,
 			);
-			name = TableViews;
+			name = "Error Handling";
 			sourceTree = "<group>";
 		};
-		8E98D9301AB4EF1E005AEB2A /* iOS Feature Tests */ = {
+		8E90F9371AF8E69A00CBBB52 = {
 			isa = PBXGroup;
 			children = (
-				8E98D9311AB4EF62005AEB2A /* KVCValidationTest.m */,
-			);
-			name = "iOS Feature Tests";
-			sourceTree = "<group>";
-		};
-		8EC2D93D1AB090FC00822E8C = {
-			isa = PBXGroup;
-			children = (
-				8EC2D9491AB090FC00822E8C /* AKACommons */,
-				8EC2D9561AB090FC00822E8C /* AKACommonsTests */,
-				8EC2D9481AB090FC00822E8C /* Products */,
-				743F2499968ABBA36240A1AF /* Pods */,
-				96A93AA25F5243A7D6E8BD24 /* Frameworks */,
+				8E90F9431AF8E69A00CBBB52 /* AKACommons */,
+				8E90F9501AF8E69A00CBBB52 /* AKACommonsTests */,
+				8E90F9421AF8E69A00CBBB52 /* Products */,
+				3A96352C13C6F13B37BFD605 /* Pods */,
+				C5798B8136FBB491E2427ED2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		8EC2D9481AB090FC00822E8C /* Products */ = {
+		8E90F9421AF8E69A00CBBB52 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8EC2D9471AB090FC00822E8C /* AKACommons.framework */,
-				8EC2D9521AB090FC00822E8C /* AKACommonsTests.xctest */,
+				8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */,
+				8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8EC2D9491AB090FC00822E8C /* AKACommons */ = {
+		8E90F9431AF8E69A00CBBB52 /* AKACommons */ = {
 			isa = PBXGroup;
 			children = (
-				8EC2D94C1AB090FC00822E8C /* AKACommons.h */,
-				8E6C52661AD92BCD0011525A /* AKAReference.h */,
-				8E6C52671AD92BCD0011525A /* AKAReference.m */,
-				8EECDAAE1AC6069C001A6826 /* AKAProperty.m */,
-				8EECDAAF1AC6069C001A6826 /* AKAProperty.h */,
-				8EBA32BF1AB9C08F007436AA /* AKALog.h */,
-				8EBA32C01AB9C08F007436AA /* AKALog.m */,
-				8EBA32C11AB9C08F007436AA /* AKAErrors.h */,
-				8EBA32C21AB9C08F007436AA /* AKAErrors.m */,
-				8E5D0A041ADC10BE0087C687 /* UI */,
-				8E0E475E1AE3E87F005DC1AE /* Networking */,
-				8EC2D9DF1AB2543A00822E8C /* AKAKVO */,
-				8EC2D99D1AB09A5500822E8C /* Categories */,
-				8EC2D94A1AB090FC00822E8C /* Supporting Files */,
+				8E90F9461AF8E69A00CBBB52 /* AKACommons.h */,
+				8E6C86BE1AF8E7D600FDAD7B /* Classes */,
+				8E90F9441AF8E69A00CBBB52 /* Supporting Files */,
 			);
 			path = AKACommons;
 			sourceTree = "<group>";
 		};
-		8EC2D94A1AB090FC00822E8C /* Supporting Files */ = {
+		8E90F9441AF8E69A00CBBB52 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8EECDAB61AC97B42001A6826 /* AKACommons.podspec */,
-				8EECDAB41AC97B24001A6826 /* Podfile */,
-				8EC2D94B1AB090FC00822E8C /* Info.plist */,
+				8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */,
+				8E90F9451AF8E69A00CBBB52 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8EC2D9561AB090FC00822E8C /* AKACommonsTests */ = {
+		8E90F9501AF8E69A00CBBB52 /* AKACommonsTests */ = {
 			isa = PBXGroup;
 			children = (
-				8E98D9301AB4EF1E005AEB2A /* iOS Feature Tests */,
-				8EC2D9571AB090FC00822E8C /* Supporting Files */,
-				8EC2D9591AB090FC00822E8C /* AKACommonsTests.m */,
-				8E5D0A201ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */,
-				8E5D0A221ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m */,
-				8E0E47721AE47897005DC1AE /* AKAIPNetmaskTests.m */,
-				8EBD272D1AE87D1D009A68F2 /* AKACommonsTests-Bridging-Header.h */,
-				8EBD27301AE87EB4009A68F2 /* SwiftTest.swift */,
+				8E7231F21AF8E87300D647A9 /* iOSFeatureTests */,
+				8E7231F01AF8E87300D647A9 /* AKAIPNetmaskTests.m */,
+				8E7231F11AF8E87300D647A9 /* AKAMultiplexedTableViewDataSourceTests.m */,
+				8E7231F41AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */,
+				8E7231F51AF8E87300D647A9 /* SwiftTest.swift */,
+				8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */,
+				8E90F9511AF8E69A00CBBB52 /* Supporting Files */,
 			);
 			path = AKACommonsTests;
 			sourceTree = "<group>";
 		};
-		8EC2D9571AB090FC00822E8C /* Supporting Files */ = {
+		8E90F9511AF8E69A00CBBB52 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8EC2D9581AB090FC00822E8C /* Info.plist */,
+				8E90F9521AF8E69A00CBBB52 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8EC2D99D1AB09A5500822E8C /* Categories */ = {
+		C5798B8136FBB491E2427ED2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8E796F6D1AB863DC0014EC1E /* UIView+AKAConstraintTools.m */,
-				8E796F6E1AB863DC0014EC1E /* UIView+AKAConstraintTools.h */,
-				8E796F6F1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m */,
-				8E796F701AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h */,
-				8E796F711AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h */,
-				8E796F721AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m */,
-				8E796F731AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h */,
-				8E796F741AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m */,
-				8EECDAA61AC5E557001A6826 /* NSObject+AKASelectorTools.h */,
-				8EECDAA71AC5E557001A6826 /* NSObject+AKASelectorTools.m */,
-				8E796F751AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h */,
-				8E796F761AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m */,
-				8EECDAAA1AC5EAD1001A6826 /* NSString+AKATools.h */,
-				8EECDAAB1AC5EAD1001A6826 /* NSString+AKATools.m */,
-				8E5D0A1C1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h */,
-				8E5D0A1D1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m */,
-			);
-			name = Categories;
-			sourceTree = "<group>";
-		};
-		8EC2D9DF1AB2543A00822E8C /* AKAKVO */ = {
-			isa = PBXGroup;
-			children = (
-				8EC2D9E01AB254CA00822E8C /* AKAKVOChangeEvent.h */,
-				8EC2D9E11AB254CA00822E8C /* AKAKVOChangeEvent.m */,
-				8EC2D9E31AB254CA00822E8C /* AKAKVOPublisher.h */,
-				8EC2D9E41AB254CA00822E8C /* AKAKVOPublisher.m */,
-				8EC2D9E51AB254CA00822E8C /* AKAKVOSubscription_Internal.h */,
-				8EC2D9E61AB254CA00822E8C /* AKAKVOSubscription.h */,
-				8EC2D9E71AB254CA00822E8C /* AKAKVOSubscription.m */,
-			);
-			name = AKAKVO;
-			sourceTree = "<group>";
-		};
-		96A93AA25F5243A7D6E8BD24 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				39FF87A7C2C0691D7A6D6770 /* Pods.framework */,
+				D68E1B59A0220B66D1F7D2C1 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -355,54 +328,52 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		8EC2D9441AB090FC00822E8C /* Headers */ = {
+		8E90F93E1AF8E69A00CBBB52 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EBA32C31AB9C08F007436AA /* AKALog.h in Headers */,
-				8EBA32C51AB9C08F007436AA /* AKAErrors.h in Headers */,
-				8E6C52681AD92BCD0011525A /* AKAReference.h in Headers */,
-				8EECDAB11AC6069C001A6826 /* AKAProperty.h in Headers */,
-				8E5D0A141ADDBDA80087C687 /* AKATVMultiplexedDataSource.h in Headers */,
-				8E0E477A1AE77FB9005DC1AE /* AKATVDataSourceSpecification.h in Headers */,
-				8E0E477D1AE79B97005DC1AE /* AKATVCoordinateMappingProtocol.h in Headers */,
-				8E0E47761AE70F5D005DC1AE /* AKATVProxy.h in Headers */,
-				8EECDAA81AC5E557001A6826 /* NSObject+AKASelectorTools.h in Headers */,
-				8EECDAAC1AC5EAD1001A6826 /* NSString+AKATools.h in Headers */,
-				8E796F7D1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.h in Headers */,
-				8E5D0A1E1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */,
-				8E796F7A1AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.h in Headers */,
-				8E796F7F1AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.h in Headers */,
-				8E796F781AB863DC0014EC1E /* UIView+AKAConstraintTools.h in Headers */,
-				8E1ED3891AE873C200B20D8C /* AKAInterfaceInfo.h in Headers */,
-				8E1ED38D1AE873C200B20D8C /* AKAIPNetmask.h in Headers */,
-				8E1ED38F1AE873C200B20D8C /* AKANetworkingErrors.h in Headers */,
-				8E796F7B1AB863DC0014EC1E /* NSObject+AKAAssociatedValues.h in Headers */,
-				8EBD27361AE9B4BB009A68F2 /* AKATVUpdateBatch.h in Headers */,
-				8EBD273E1AE9B7F7009A68F2 /* AKATVSection.h in Headers */,
-				8EBD273A1AE9B531009A68F2 /* AKATVRowSegment.h in Headers */,
-				8EC2D9EB1AB254CA00822E8C /* AKAKVOPublisher.h in Headers */,
-				8EC2D9E81AB254CA00822E8C /* AKAKVOChangeEvent.h in Headers */,
-				8E1ED38B1AE873C200B20D8C /* AKAIPAddress.h in Headers */,
-				8EC2D9EE1AB254CA00822E8C /* AKAKVOSubscription.h in Headers */,
-				8EC2D9ED1AB254CA00822E8C /* AKAKVOSubscription_Internal.h in Headers */,
+				8E90F9471AF8E69A00CBBB52 /* AKACommons.h in Headers */,
+				8E6C86F61AF8E7D600FDAD7B /* AKALog.h in Headers */,
+				8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */,
+				8E6C86FE1AF8E7D600FDAD7B /* AKAReference.h in Headers */,
+				8E6C86FC1AF8E7D600FDAD7B /* AKAProperty.h in Headers */,
+				8E6C87031AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h in Headers */,
+				8E6C87051AF8E7D600FDAD7B /* AKATVProxy.h in Headers */,
+				8E6C87011AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h in Headers */,
+				8E6C87001AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h in Headers */,
+				8E6C87131AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h in Headers */,
+				8E6C87111AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h in Headers */,
+				8E6C87151AF8E7D600FDAD7B /* NSString+AKATools.h in Headers */,
+				8E6C870D1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */,
+				8E6C87191AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h in Headers */,
+				8E6C871B1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h in Headers */,
+				8E6C87171AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h in Headers */,
+				8E6C86F81AF8E7D600FDAD7B /* AKANetworkingErrors.h in Headers */,
+				8E6C86F21AF8E7D600FDAD7B /* AKAIPAddress.h in Headers */,
+				8E6C86F41AF8E7D600FDAD7B /* AKAIPNetmask.h in Headers */,
+				8E6C87091AF8E7D600FDAD7B /* AKATVSection.h in Headers */,
+				8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */,
+				8E6C870B1AF8E7D600FDAD7B /* AKATVUpdateBatch.h in Headers */,
+				8E6C87071AF8E7D600FDAD7B /* AKATVRowSegment.h in Headers */,
+				8E6C86FA1AF8E7D600FDAD7B /* AKAObservableCollection.h in Headers */,
+				8E6C870F1AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8EC2D9461AB090FC00822E8C /* AKACommons */ = {
+		8E90F9401AF8E69A00CBBB52 /* AKACommons */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8EC2D95D1AB090FC00822E8C /* Build configuration list for PBXNativeTarget "AKACommons" */;
+			buildConfigurationList = 8E90F9571AF8E69A00CBBB52 /* Build configuration list for PBXNativeTarget "AKACommons" */;
 			buildPhases = (
-				C5FD33F1B8DC2C00D355365F /* Check Pods Manifest.lock */,
-				8EC2D9421AB090FC00822E8C /* Sources */,
-				8EC2D9431AB090FC00822E8C /* Frameworks */,
-				8EC2D9441AB090FC00822E8C /* Headers */,
-				8EC2D9451AB090FC00822E8C /* Resources */,
-				88646D8128E2CA5E7C406A1C /* Copy Pods Resources */,
-				D79261164F39686B6D2942F8 /* Embed Pods Frameworks */,
+				33E6C62738198F12C2DC32FC /* Check Pods Manifest.lock */,
+				8E90F93C1AF8E69A00CBBB52 /* Sources */,
+				8E90F93D1AF8E69A00CBBB52 /* Frameworks */,
+				8E90F93E1AF8E69A00CBBB52 /* Headers */,
+				8E90F93F1AF8E69A00CBBB52 /* Resources */,
+				53E76633E5879A46F2180906 /* Embed Pods Frameworks */,
+				ADA96839DE3136830FEAF1E5 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -410,74 +381,72 @@
 			);
 			name = AKACommons;
 			productName = AKACommons;
-			productReference = 8EC2D9471AB090FC00822E8C /* AKACommons.framework */;
+			productReference = 8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8EC2D9511AB090FC00822E8C /* AKACommonsTests */ = {
+		8E90F94B1AF8E69A00CBBB52 /* AKACommonsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8EC2D9601AB090FC00822E8C /* Build configuration list for PBXNativeTarget "AKACommonsTests" */;
+			buildConfigurationList = 8E90F95A1AF8E69A00CBBB52 /* Build configuration list for PBXNativeTarget "AKACommonsTests" */;
 			buildPhases = (
-				8EC2D94E1AB090FC00822E8C /* Sources */,
-				8EC2D94F1AB090FC00822E8C /* Frameworks */,
-				8EC2D9501AB090FC00822E8C /* Resources */,
+				8E90F9481AF8E69A00CBBB52 /* Sources */,
+				8E90F9491AF8E69A00CBBB52 /* Frameworks */,
+				8E90F94A1AF8E69A00CBBB52 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				8EC2D9551AB090FC00822E8C /* PBXTargetDependency */,
+				8E90F94F1AF8E69A00CBBB52 /* PBXTargetDependency */,
 			);
 			name = AKACommonsTests;
 			productName = AKACommonsTests;
-			productReference = 8EC2D9521AB090FC00822E8C /* AKACommonsTests.xctest */;
+			productReference = 8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		8EC2D93E1AB090FC00822E8C /* Project object */ = {
+		8E90F9381AF8E69A00CBBB52 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "AKA Sarl";
 				TargetAttributes = {
-					8EC2D9461AB090FC00822E8C = {
-						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = PUB728ZT9Y;
+					8E90F9401AF8E69A00CBBB52 = {
+						CreatedOnToolsVersion = 6.3.1;
 					};
-					8EC2D9511AB090FC00822E8C = {
-						CreatedOnToolsVersion = 6.1.1;
+					8E90F94B1AF8E69A00CBBB52 = {
+						CreatedOnToolsVersion = 6.3.1;
 					};
 				};
 			};
-			buildConfigurationList = 8EC2D9411AB090FC00822E8C /* Build configuration list for PBXProject "AKACommons" */;
+			buildConfigurationList = 8E90F93B1AF8E69A00CBBB52 /* Build configuration list for PBXProject "AKACommons" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 8EC2D93D1AB090FC00822E8C;
-			productRefGroup = 8EC2D9481AB090FC00822E8C /* Products */;
+			mainGroup = 8E90F9371AF8E69A00CBBB52;
+			productRefGroup = 8E90F9421AF8E69A00CBBB52 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8EC2D9461AB090FC00822E8C /* AKACommons */,
-				8EC2D9511AB090FC00822E8C /* AKACommonsTests */,
+				8E90F9401AF8E69A00CBBB52 /* AKACommons */,
+				8E90F94B1AF8E69A00CBBB52 /* AKACommonsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8EC2D9451AB090FC00822E8C /* Resources */ = {
+		8E90F93F1AF8E69A00CBBB52 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EECDAB51AC97B24001A6826 /* Podfile in Resources */,
-				8EECDAB71AC97B42001A6826 /* AKACommons.podspec in Resources */,
+				8E7232DF1AFA2DCA00D647A9 /* AKACommons.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8EC2D9501AB090FC00822E8C /* Resources */ = {
+		8E90F94A1AF8E69A00CBBB52 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -487,22 +456,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		88646D8128E2CA5E7C406A1C /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C5FD33F1B8DC2C00D355365F /* Check Pods Manifest.lock */ = {
+		33E6C62738198F12C2DC32FC /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -517,7 +471,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D79261164F39686B6D2942F8 /* Embed Pods Frameworks */ = {
+		53E76633E5879A46F2180906 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -532,66 +486,79 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		ADA96839DE3136830FEAF1E5 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8EC2D9421AB090FC00822E8C /* Sources */ = {
+		8E90F93C1AF8E69A00CBBB52 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E796F791AB863DC0014EC1E /* UIView+AKAHierarchyVisitor.m in Sources */,
-				8E796F7E1AB863DC0014EC1E /* NSObject+AKAConcurrencyTools.m in Sources */,
-				8EC2D9E91AB254CA00822E8C /* AKAKVOChangeEvent.m in Sources */,
-				8EBD273F1AE9B7F7009A68F2 /* AKATVSection.m in Sources */,
-				8E0E477B1AE77FB9005DC1AE /* AKATVDataSourceSpecification.m in Sources */,
-				8E1ED38E1AE873C200B20D8C /* AKAIPNetmask.m in Sources */,
-				8EECDAA91AC5E557001A6826 /* NSObject+AKASelectorTools.m in Sources */,
-				8E5D0A151ADDBDA80087C687 /* AKATVMultiplexedDataSource.m in Sources */,
-				8E1ED38C1AE873C200B20D8C /* AKAIPAddress.m in Sources */,
-				8E5D0A1F1ADDBFC60087C687 /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */,
-				8EBD27371AE9B4BB009A68F2 /* AKATVUpdateBatch.m in Sources */,
-				8E796F771AB863DC0014EC1E /* UIView+AKAConstraintTools.m in Sources */,
-				8EBA32C61AB9C08F007436AA /* AKAErrors.m in Sources */,
-				8EBA32C41AB9C08F007436AA /* AKALog.m in Sources */,
-				8E0E47771AE70F5D005DC1AE /* AKATVProxy.m in Sources */,
-				8E1ED3901AE873C200B20D8C /* AKANetworkingErrors.m in Sources */,
-				8E796F801AB863DC0014EC1E /* UIView+AKAReusableViewsSupport.m in Sources */,
-				8E6C52691AD92BCD0011525A /* AKAReference.m in Sources */,
-				8EC2D9EF1AB254CA00822E8C /* AKAKVOSubscription.m in Sources */,
-				8E1ED38A1AE873C200B20D8C /* AKAInterfaceInfo.m in Sources */,
-				8EBD273B1AE9B531009A68F2 /* AKATVRowSegment.m in Sources */,
-				8EC2D9EC1AB254CA00822E8C /* AKAKVOPublisher.m in Sources */,
-				8EECDAB01AC6069C001A6826 /* AKAProperty.m in Sources */,
-				8E796F7C1AB863DC0014EC1E /* NSObject+AKAAssociatedValues.m in Sources */,
-				8EECDAAD1AC5EAD1001A6826 /* NSString+AKATools.m in Sources */,
+				8E6C871C1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m in Sources */,
+				8E6C870C1AF8E7D600FDAD7B /* AKATVUpdateBatch.m in Sources */,
+				8E6C87141AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m in Sources */,
+				8E6C86FF1AF8E7D600FDAD7B /* AKAReference.m in Sources */,
+				8E6C87181AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m in Sources */,
+				8E6C870E1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m in Sources */,
+				8E6C86F31AF8E7D600FDAD7B /* AKAIPAddress.m in Sources */,
+				8E6C86F71AF8E7D600FDAD7B /* AKALog.m in Sources */,
+				8E6C86FD1AF8E7D600FDAD7B /* AKAProperty.m in Sources */,
+				8E6C86FB1AF8E7D600FDAD7B /* AKAObservableCollection.m in Sources */,
+				8E6C87041AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m in Sources */,
+				8E6C87101AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m in Sources */,
+				8E6C86F91AF8E7D600FDAD7B /* AKANetworkingErrors.m in Sources */,
+				8E6C87021AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m in Sources */,
+				8E6C871A1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m in Sources */,
+				8E6C87061AF8E7D600FDAD7B /* AKATVProxy.m in Sources */,
+				8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */,
+				8E6C86F51AF8E7D600FDAD7B /* AKAIPNetmask.m in Sources */,
+				8E6C86F11AF8E7D600FDAD7B /* AKAInterfaceInfo.m in Sources */,
+				8E6C87121AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m in Sources */,
+				8E6C87081AF8E7D600FDAD7B /* AKATVRowSegment.m in Sources */,
+				8E6C870A1AF8E7D600FDAD7B /* AKATVSection.m in Sources */,
+				8E6C87161AF8E7D600FDAD7B /* NSString+AKATools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8EC2D94E1AB090FC00822E8C /* Sources */ = {
+		8E90F9481AF8E69A00CBBB52 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8EC2D95A1AB090FC00822E8C /* AKACommonsTests.m in Sources */,
-				8E5D0A211ADDCAD10087C687 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */,
-				8E5D0A231ADEDB580087C687 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */,
-				8EBD27311AE87EB4009A68F2 /* SwiftTest.swift in Sources */,
-				8E0E47731AE47897005DC1AE /* AKAIPNetmaskTests.m in Sources */,
-				8E98D9321AB4EF62005AEB2A /* KVCValidationTest.m in Sources */,
+				8E7231F61AF8E87300D647A9 /* AKAIPNetmaskTests.m in Sources */,
+				8E7231F91AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */,
+				8E7231F81AF8E87300D647A9 /* KVCValidationTest.m in Sources */,
+				8E7231FA1AF8E87300D647A9 /* SwiftTest.swift in Sources */,
+				8E90F9541AF8E69A00CBBB52 /* AKACommonsTests.m in Sources */,
+				8E7231F71AF8E87300D647A9 /* AKAMultiplexedTableViewDataSourceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		8EC2D9551AB090FC00822E8C /* PBXTargetDependency */ = {
+		8E90F94F1AF8E69A00CBBB52 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8EC2D9461AB090FC00822E8C /* AKACommons */;
-			targetProxy = 8EC2D9541AB090FC00822E8C /* PBXContainerItemProxy */;
+			target = 8E90F9401AF8E69A00CBBB52 /* AKACommons */;
+			targetProxy = 8E90F94E1AF8E69A00CBBB52 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		8EC2D95B1AB090FC00822E8C /* Debug */ = {
+		8E90F9551AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -606,13 +573,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -620,45 +581,43 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
-				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		8EC2D95C1AB090FC00822E8C /* Release */ = {
+		8E90F9561AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -673,13 +632,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
-				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
-				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -687,31 +640,29 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SDKROOT = iphoneos;
-				STRIP_STYLE = "non-global";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -719,53 +670,41 @@
 			};
 			name = Release;
 		};
-		8EC2D95E1AB090FC00822E8C /* Debug */ = {
+		8E90F9581AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E13C3993A1C1E7D60BD0D22 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
-				SKIP_INSTALL = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		8EC2D95F1AB090FC00822E8C /* Release */ = {
+		8E90F9591AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BC1F315226AFF0CF862A6CEE /* Pods.release.xcconfig */;
+			baseConfigurationReference = 79483621CA7D059E6F07B696 /* Pods.release.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Headers";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		8EC2D9611AB090FC00822E8C /* Debug */ = {
+		8E90F95B1AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -777,15 +716,12 @@
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "AKACommonsTests/AKACommonsTests-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		8EC2D9621AB090FC00822E8C /* Release */ = {
+		8E90F95C1AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -793,41 +729,40 @@
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "AKACommonsTests/AKACommonsTests-Bridging-Header.h";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8EC2D9411AB090FC00822E8C /* Build configuration list for PBXProject "AKACommons" */ = {
+		8E90F93B1AF8E69A00CBBB52 /* Build configuration list for PBXProject "AKACommons" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8EC2D95B1AB090FC00822E8C /* Debug */,
-				8EC2D95C1AB090FC00822E8C /* Release */,
+				8E90F9551AF8E69A00CBBB52 /* Debug */,
+				8E90F9561AF8E69A00CBBB52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8EC2D95D1AB090FC00822E8C /* Build configuration list for PBXNativeTarget "AKACommons" */ = {
+		8E90F9571AF8E69A00CBBB52 /* Build configuration list for PBXNativeTarget "AKACommons" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8EC2D95E1AB090FC00822E8C /* Debug */,
-				8EC2D95F1AB090FC00822E8C /* Release */,
+				8E90F9581AF8E69A00CBBB52 /* Debug */,
+				8E90F9591AF8E69A00CBBB52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8EC2D9601AB090FC00822E8C /* Build configuration list for PBXNativeTarget "AKACommonsTests" */ = {
+		8E90F95A1AF8E69A00CBBB52 /* Build configuration list for PBXNativeTarget "AKACommonsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8EC2D9611AB090FC00822E8C /* Debug */,
-				8EC2D9621AB090FC00822E8C /* Release */,
+				8E90F95B1AF8E69A00CBBB52 /* Debug */,
+				8E90F95C1AF8E69A00CBBB52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 8EC2D93E1AB090FC00822E8C /* Project object */;
+	rootObject = 8E90F9381AF8E69A00CBBB52 /* Project object */;
 }

@@ -24,8 +24,8 @@
 
     result = (row & 0xffffffff) + ((section & 0xffffffff) << 32);
 #else
-    if (((NSUInteger)self.row) > 0xfffff - 2 ||
-        ((NSUInteger)self.section) > 0xfff - 2)
+    if ((self.row != NSNotFound && ((NSUInteger)self.row) > 0xfffff - 2) ||
+        (self.section != NSNotFound && ((NSUInteger)self.section) > 0xfff - 2))
     {
         @throw [NSException exceptionWithName:@"NSIndexPath cannot be encoded in an NSUInteger" reason:@"Rrow or section out of encoding range (0..2^20-2 or 0..2^12-2 respectively)" userInfo:nil];
     }

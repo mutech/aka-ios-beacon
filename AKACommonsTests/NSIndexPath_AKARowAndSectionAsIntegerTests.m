@@ -40,7 +40,7 @@
 
 #ifdef __LP64__
     XCTAssertEqual((NSUInteger)indexPath.section, encoded >> 32);
-    XCTAssertEqual(indexPath.row, encoded & 0xffffffff);
+    XCTAssertEqual((NSUInteger)indexPath.row, encoded & 0xffffffff);
 #else
     XCTAssertEqual(indexPath.section, encoded >> 20);
     XCTAssertEqual(indexPath.row, encoded & 0xfffff);
@@ -90,7 +90,7 @@
 
 #ifdef __LP64__
     XCTAssertEqual((NSUInteger)indexPath.section, encoded >> 32);
-    XCTAssertEqual(indexPath.row, encoded & 0xffffffff);
+    XCTAssertEqual((NSUInteger)indexPath.row, encoded & 0xffffffff);
 #else
     XCTAssertNotEqual(indexPath.section, encoded >> 20);
     XCTAssertNotEqual(indexPath.row, encoded & 0xfffff);

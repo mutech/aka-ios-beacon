@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>00CB400A-BF94-4425-8E22-B587C34C4267</string>
+	<string>AA2A6C0F-8ADA-45DA-9918-D352D3DEA24E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>AKACommons</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,11 +14,11 @@
 		<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>AKACommons/AKACommons.xcworkspace</string>
+	<string>AKACommons/AKACommons.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>781A4A861DCFCEE44C47EBA1968BA29030FBB6B7</key>
-		<string>../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://sources.aka-labs.com/scm/git/ios.aka.commons</string>

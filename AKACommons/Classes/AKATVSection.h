@@ -78,50 +78,25 @@
 
 #pragma mark - Adding and Removing Rows
 
-/**
- * Takes the specified numberOfRows from the specified dataSource starting
- * at the specified sourceIndexPath and inserts them at the specified
- * rowIndex in this section.
- *
- * @note The source section has to contain a sufficient amount of rows
- *      and the target indexPath has to reference a valid insertion point.
- *
- * @note This method (in contrast to the corresponding multiplexed data source
- *      method) does not update the table view.
- *
- * @param dataSource the data source providing the rows
- * @param sourceIndexPath the indexPath specifying the first row to insert
- * @param numberOfRows the number of rows to insert
- * @param indexPath the location where the rows should be inserted.
- * @param tableView the table view which is passed to data sources in queries.
- *
- * @return YES if the rows have been inserted, NO if the specified rowIndex is
- *      out of range 0..<numberOfRows>
- */
 - (BOOL)insertRowsFromDataSource:(AKATVDataSourceSpecification*__nonnull)dataSource
                  sourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
                            count:(NSUInteger)numberOfRows
-                      atRowIndex:(NSUInteger)rowIndex
-                       tableView:(UITableView*__nullable)tableView;
+                      atRowIndex:(NSUInteger)rowIndex;
 
 - (BOOL)insertRowSegment:(AKATVRowSegment*__nonnull)segment
-              atRowIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*__nullable)tableView;
+              atRowIndex:(NSUInteger)rowIndex;
+
+- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
+           rowsFromIndex:(NSUInteger)rowIndex;
 
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
            rowsFromIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*__nullable)tableView;
-
-- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-           rowsFromIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*__nullable)tableView
       removedRowSegments:(NSMutableArray*__nullable)removedRowSegments;
 
 #pragma mark - Moving Rows
 // @name Moving Rows
 
 - (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
-                 toIndex:(NSUInteger)targetRowIndex
-               tableView:(UITableView*__nullable)tableView;
+                 toIndex:(NSUInteger)targetRowIndex;
 
 @end

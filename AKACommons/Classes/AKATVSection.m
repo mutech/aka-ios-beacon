@@ -136,7 +136,6 @@
                  sourceIndexPath:(NSIndexPath*)sourceIndexPath
                            count:(NSUInteger)numberOfRows
                       atRowIndex:(NSUInteger)rowIndex
-                       tableView:(UITableView*)tableView
 {
     NSParameterAssert(sourceIndexPath != nil);
     NSParameterAssert(numberOfRows > 0);
@@ -146,17 +145,13 @@
                                       indexPath:sourceIndexPath
                                           count:numberOfRows];
     return [self insertRowSegment:segment
-                       atRowIndex:rowIndex
-                        tableView:tableView];
+                       atRowIndex:rowIndex];
 }
 
 - (BOOL)insertRowSegment:(AKATVRowSegment*)segment
               atRowIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*)tableView
 {
     NSParameterAssert(rowIndex >= 0);
-
-    (void)tableView; // not used. TODO: see if we need it
 
     NSUInteger segmentIndex = NSNotFound;
     NSUInteger rowsVisited = NSNotFound;
@@ -200,22 +195,18 @@
 
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
            rowsFromIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*)tableView
 {
     return [self removeUpTo:numberOfRows
               rowsFromIndex:rowIndex
-                  tableView:tableView
          removedRowSegments:nil];
 }
 
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
            rowsFromIndex:(NSUInteger)rowIndex
-               tableView:(UITableView*)tableView
       removedRowSegments:(NSMutableArray*)removedRowSegments
 {
     NSParameterAssert(numberOfRows > 0);
     NSParameterAssert(rowIndex >= 0);
-    (void)tableView; // not used. TODO: see if we need it
 
     NSUInteger numberOfRowsToRemove = numberOfRows;
 
@@ -308,14 +299,12 @@
 
 - (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
                  toIndex:(NSUInteger)targetRowIndex
-               tableView:(UITableView*)tableView
 {
     // TODO: check indexes before doing anything
 
     NSMutableArray* removedSegments = [NSMutableArray new];
     BOOL result = (1 == [self removeUpTo:1
                            rowsFromIndex:rowIndex
-                               tableView:tableView
                       removedRowSegments:removedSegments]);
 
     if (result)
@@ -334,8 +323,7 @@
 
         // TODO: make sure this does not fail or rollback:
         result = [self insertRowSegment:removedRows
-                             atRowIndex:effectiveTarget
-                              tableView:tableView];
+                             atRowIndex:effectiveTarget];
     }
     return result;
 }

@@ -33,22 +33,22 @@
     AKAIPNetmask* mask1 = [[AKAIPNetmask alloc] initWithString:@"255.255.255.0" error:nil];
     XCTAssertNotNil(mask1);
     XCTAssert(mask1.isValid);
-    XCTAssertEqual(24, mask1.length);
+    XCTAssertEqual(24, (int)mask1.length);
 
     AKAIPNetmask* mask2 = [[AKAIPNetmask alloc] initWithString:@"255.255.0.0" error:nil];
     XCTAssertNotNil(mask2);
     XCTAssert(mask2.isValid);
-    XCTAssertEqual(16, mask2.length);
+    XCTAssertEqual(16, (int)mask2.length);
 
     AKAIPNetmask* mask3 = [[AKAIPNetmask alloc] initWithString:@"255.255.255.240" error:nil];
     XCTAssertNotNil(mask3);
     XCTAssert(mask3.isValid);
-    XCTAssertEqual(28, mask3.length);
+    XCTAssertEqual(28, (int)mask3.length);
 
     AKAIPNetmask* mask4 = [[AKAIPNetmask alloc] initWithString:@"255.255.255.1" error:nil];
     XCTAssertNotNil(mask4);
     XCTAssert(!mask4.isValid);
-    XCTAssertEqual(24, mask4.length);
+    XCTAssertEqual(24, (int)mask4.length);
 }
 
 @end

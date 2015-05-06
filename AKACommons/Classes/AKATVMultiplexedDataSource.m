@@ -40,19 +40,19 @@
 + (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
                                      inTableView:(UITableView*)tableView
 {
-    AKATVMultiplexedDataSource* result = [[self alloc] init];
+    AKATVMultiplexedDataSource* result = [[self alloc] initWithTableView:tableView];
     if (tableView.dataSource != nil)
     {
         NSString* key = dataSourceKey;
         id<UITableViewDataSource> dataSource = [result addDataSource:tableView.dataSource
                                                         withDelegate:tableView.delegate
                                                               forKey:key].dataSource;
+        NSUInteger nbSections = (NSUInteger)[dataSource numberOfSectionsInTableView:tableView];
         [result insertSectionsFromDataSource:key
                           sourceSectionIndex:0
-                                       count:(NSUInteger)[dataSource numberOfSectionsInTableView:tableView]
+                                       count:nbSections
                               atSectionIndex:0
                            useRowsFromSource:YES
-                                   tableView:tableView
                                       update:NO
                             withRowAnimation:UITableViewRowAnimationNone];
         tableView.dataSource = result;
@@ -74,13 +74,12 @@
     [result addDataSource:dataSource
              withDelegate:delegate
                    forKey:key];
+    NSUInteger nbSections = (NSUInteger)[dataSource numberOfSectionsInTableView:tableView];
     [result insertSectionsFromDataSource:key
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dataSource numberOfSectionsInTableView:tableView]
-                          atSectionIndex:(NSUInteger)[result numberOfSectionsInTableView:tableView]
+                                   count:nbSections
+                          atSectionIndex:nbSections
                        useRowsFromSource:YES
-                               tableView:tableView
-                                  update:NO
                         withRowAnimation:UITableViewRowAnimationNone];
     [tableView reloadData];
     return result;
@@ -95,6 +94,15 @@
 
         _sectionSegments = [NSMutableArray new];
         _updateBatch = [AKATVUpdateBatch new];
+    }
+    return self;
+}
+
+- (instancetype)initWithTableView:(UITableView*)tableView
+{
+    if (self = [self init])
+    {
+        _tableView = tableView;
     }
     return self;
 }
@@ -136,14 +144,14 @@
 
 #pragma mark - Batch Table View Updates
 
-- (void)beginUpdatesForTableView:(UITableView*)tableView
+- (void)beginUpdates
 {
-    [self.updateBatch beginUpdatesForTableView:tableView];
+    [self.updateBatch beginUpdatesForTableView:self.tableView];
 }
 
-- (void)endUpdatesForTableView:(UITableView*)tableView
+- (void)endUpdates
 {
-    [self.updateBatch endUpdatesForTableView:tableView];
+    [self.updateBatch endUpdatesForTableView:self.tableView];
 }
 
 #pragma mark - Adding and Removing Sections
@@ -153,16 +161,15 @@
                                count:(NSUInteger)numberOfSections
                       atSectionIndex:(NSUInteger)targetSectionIndex
                    useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView *)tableView
+                    withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     [self insertSectionsFromDataSource:dataSourceKey
                     sourceSectionIndex:sourceSectionIndex
                                  count:numberOfSections
                         atSectionIndex:targetSectionIndex
                      useRowsFromSource:useRowsFromSource
-                             tableView:tableView
                                 update:YES
-                      withRowAnimation:UITableViewRowAnimationAutomatic];
+                      withRowAnimation:rowAnimation];
 }
 
 - (void)insertSectionsFromDataSource:(NSString*)dataSourceKey
@@ -170,8 +177,7 @@
                                count:(NSUInteger)numberOfSections
                       atSectionIndex:(NSUInteger)targetSectionIndex
                    useRowsFromSource:(BOOL)useRowsFromSource
-                           tableView:(UITableView *)tableView
-                              update:(BOOL)updateTableView
+                              update:(BOOL)update
                     withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSParameterAssert(targetSectionIndex >= 0 && targetSectionIndex <= self.numberOfSections);
@@ -187,39 +193,28 @@
             [section insertRowsFromDataSource:dataSourceEntry
                               sourceIndexPath:[NSIndexPath indexPathForRow:0
                                                                  inSection:(NSInteger)(sourceSectionIndex + i)]
-                                        count:(NSUInteger)[dataSource tableView:tableView
+                                        count:(NSUInteger)[dataSource tableView:self.tableView
                                                           numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)]
-                                   atRowIndex:0
-                                    tableView:tableView];
+                                   atRowIndex:0];
         }
-        [self insertSection:section atIndex:i + targetSectionIndex
-                  tableView:tableView
-                     update:updateTableView
+        [self insertSection:section
+                    atIndex:i + targetSectionIndex
+                     update:update
            withRowAnimation:rowAnimation];
     }
 }
 
 - (void)insertSection:(AKATVSection*)section
               atIndex:(NSUInteger)sectionIndex
-{
-    [self insertSection:section
-                atIndex:sectionIndex
-              tableView:nil
-                 update:NO
-       withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (void)insertSection:(AKATVSection*)section
-              atIndex:(NSUInteger)sectionIndex
-            tableView:(UITableView *)tableView
-               update:(BOOL)updateTableView
+               update:(BOOL)update
      withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSParameterAssert(sectionIndex >= 0 && sectionIndex <= self.numberOfSections);
+    UITableView* tableView = self.tableView;
 
     [self.sectionSegments insertObject:section atIndex:(NSUInteger)sectionIndex];
 
-    if (tableView && updateTableView)
+    if (tableView && update)
     {
         NSInteger correctedSectionIndex = [self.updateBatch insertionIndexForSection:(NSInteger)sectionIndex
                                                            forBatchUpdateInTableView:tableView
@@ -231,28 +226,15 @@
 
 - (void)        remove:(NSUInteger)numberOfSections
        sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView *)tableView
-{
-    [self           remove:numberOfSections
-           sectionsAtIndex:sectionIndex
-                 tableView:tableView
-                    update:YES
-          withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)        remove:(NSUInteger)numberOfSections
-       sectionsAtIndex:(NSUInteger)sectionIndex
-             tableView:(UITableView *)tableView
-                update:(BOOL)updateTableView
       withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSParameterAssert(sectionIndex + numberOfSections <= self.numberOfSections);
 
     NSRange range = NSMakeRange(sectionIndex, numberOfSections);
     [self.sectionSegments removeObjectsInRange:range];
+    UITableView* tableView = self.tableView;
 
-
-    if (tableView && updateTableView)
+    if (tableView)
     {
         NSInteger correctedSectionIndex = [self.updateBatch deletionIndexForSection:(NSInteger)sectionIndex
                                                           forBatchUpdateInTableView:tableView
@@ -269,41 +251,13 @@
 - (void)moveRowAtIndex:(NSInteger)rowIndex
              inSection:(NSInteger)sectionIndex
             toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView*)tableView
-{
-    [self moveRowAtIndex:rowIndex
-               inSection:sectionIndex
-              toRowIndex:targetIndex
-               tableView:tableView
-                  update:YES];
-}
-
-- (void)moveRowAtIndex:(NSInteger)rowIndex
-             inSection:(NSInteger)sectionIndex
-            toRowIndex:(NSInteger)targetIndex
-             tableView:(UITableView *)tableView
-                update:(BOOL)updateTableView
 {
     [self moveRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]
-                 toIndexPath:[NSIndexPath indexPathForRow:targetIndex inSection:sectionIndex]
-                   tableView:tableView
-                      update:updateTableView];
+                 toIndexPath:[NSIndexPath indexPathForRow:targetIndex inSection:sectionIndex]];
 }
 
 - (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
                toIndexPath:(NSIndexPath*)targetIndexPath
-                 tableView:(UITableView *)tableView
-{
-    [self moveRowAtIndexPath:indexPath
-                 toIndexPath:targetIndexPath
-                   tableView:tableView
-                      update:YES];
-}
-
-- (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
-               toIndexPath:(NSIndexPath*)targetIndexPath
-                 tableView:(UITableView *)tableView
-                    update:(BOOL)updateTableView
 {
     NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
 
@@ -316,15 +270,13 @@
         if (indexPath.section == targetIndexPath.section)
         {
             result = [section moveRowFromIndex:(NSUInteger)indexPath.row
-                                       toIndex:(NSUInteger)targetIndexPath.row
-                                     tableView:tableView];
+                                       toIndex:(NSUInteger)targetIndexPath.row];
         }
         else
         {
             NSMutableArray* segments = [NSMutableArray new];
             result = (1 == [section removeUpTo:1
                                  rowsFromIndex:(NSUInteger)indexPath.row
-                                     tableView:tableView
                             removedRowSegments:segments]);
             NSAssert(segments.count == 1, nil);
 
@@ -333,8 +285,7 @@
                                      sectionIndex:targetIndexPath.section])
             {
                 [targetSection insertRowSegment:segments.firstObject
-                                     atRowIndex:(NSUInteger)targetIndexPath.row
-                                      tableView:tableView];
+                                     atRowIndex:(NSUInteger)targetIndexPath.row];
             }
         }
     }
@@ -343,7 +294,8 @@
         // TODO: error handling
     }
 
-    if (result && tableView && updateTableView)
+    UITableView* tableView = self.tableView;
+    if (result && tableView)
     {
         NSIndexPath* srcIndexPath = indexPath;
         NSIndexPath* tgtIndexPath = targetIndexPath;
@@ -364,23 +316,6 @@
                  sourceIndexPath:(NSIndexPath*)sourceIndexPath
                            count:(NSUInteger)numberOfRows
                      atIndexPath:(NSIndexPath*)indexPath
-                       tableView:(UITableView*)tableView
-{
-    [self insertRowsFromDataSource:dataSourceKey
-                   sourceIndexPath:sourceIndexPath
-                             count:numberOfRows
-                       atIndexPath:indexPath
-                         tableView:tableView
-                            update:(tableView != nil)
-                  withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)insertRowsFromDataSource:(NSString*)dataSourceKey
-                 sourceIndexPath:(NSIndexPath*)sourceIndexPath
-                           count:(NSUInteger)numberOfRows
-                     atIndexPath:(NSIndexPath*)indexPath
-                       tableView:(UITableView*)tableView
-                          update:(BOOL)updateTableView
                 withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSParameterAssert([self dataSourceForKey:dataSourceKey] != nil);
@@ -392,16 +327,16 @@
     if ([self resolveSectionSpecification:&section
                              sectionIndex:indexPath.section])
     {
+        UITableView* tableView = self.tableView;
         if ([section insertRowsFromDataSource:dataSource
                               sourceIndexPath:sourceIndexPath
                                         count:numberOfRows
-                                   atRowIndex:(NSUInteger)indexPath.row
-                                    tableView:tableView])
+                                   atRowIndex:(NSUInteger)indexPath.row])
         {
-            if (tableView && updateTableView)
+            if (tableView)
             {
                 NSMutableArray* indexPaths = NSMutableArray.new;
-                for (NSInteger i=0; i < numberOfRows; ++i)
+                for (NSUInteger i=0; i < numberOfRows; ++i)
                 {
                     NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row+i
                                                                                        inSection:indexPath.section
@@ -443,25 +378,22 @@
 
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
        rowsFromIndexPath:(NSIndexPath*)indexPath
-               tableView:(UITableView*)tableView
-                  update:(BOOL)updateTableView
         withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
 
     NSUInteger rowsRemoved = 0;
-
+    UITableView* tableView = self.tableView;
     AKATVSection* section = nil;
     if ([self resolveSectionSpecification:&section
                              sectionIndex:indexPath.section])
     {
         rowsRemoved = [section removeUpTo:numberOfRows
-                            rowsFromIndex:(NSUInteger)indexPath.row
-                                tableView:tableView];
-        if (rowsRemoved > 0 && tableView && updateTableView)
+                            rowsFromIndex:(NSUInteger)indexPath.row];
+        if (rowsRemoved > 0 && tableView)
         {
             NSMutableArray* indexPaths = NSMutableArray.new;
-            for (NSInteger i=0; i < rowsRemoved; ++i)
+            for (NSUInteger i=0; i < rowsRemoved; ++i)
             {
                 NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row + i
                                                                                   inSection:indexPath.section
@@ -475,17 +407,6 @@
     }
 
     return rowsRemoved;
-}
-
-- (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
-       rowsFromIndexPath:(NSIndexPath*)indexPath
-               tableView:(UITableView*)tableView
-{
-    return [self removeUpTo:numberOfRows
-          rowsFromIndexPath:indexPath
-                  tableView:tableView
-                     update:YES
-           withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Resolution
@@ -540,7 +461,7 @@
     [self.sectionSegments enumerateObjectsUsingBlock:^(id obj, NSUInteger sectionIndex, BOOL *stop) {
         AKATVSection* section = obj;
         if (section.dataSource == dataSource &&
-            section.sectionIndex == sourceSection)
+            section.sectionIndex == (NSUInteger)sourceSection)
         {
             result = *stop = YES;
             if (sectionStorage != nil)
@@ -555,7 +476,7 @@
 - (BOOL)resolveSectionSpecification:(out AKATVSection*__autoreleasing* __nullable)sectionStorage
                        sectionIndex:(NSInteger)sectionIndex
 {
-    BOOL result = sectionIndex >= 0 && sectionIndex < self.numberOfSections;
+    BOOL result = sectionIndex >= 0 && (NSUInteger)sectionIndex < self.numberOfSections;
     if (result)
     {
         if (sectionStorage != nil)

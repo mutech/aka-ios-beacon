@@ -78,20 +78,18 @@
 
 - (BOOL)isValid
 {
-    return [self isMaskContiguous:self.address];
+    return [self isContiguous];
 }
 
 #pragma mark - Implementation
 
 - (BOOL) bitAtIndex:(uint8_t)index
 {
-    NSUInteger value = self.unsignedIntegerValue;
-    value = value >> (31 - index);
-    value = value & 1;
-    return value == 1;
+    uint32_t bit = ((uint32_t)1) << (31 - index);
+    return (self.unsignedIntegerValue & bit) != 0;
 }
 
-- (BOOL)isMaskContiguous:(uint32_t)mask
+- (BOOL)isContiguous
 {
     BOOL result = YES;
     for (uint8_t i = (uint8_t)self.length; result && i < 32; ++i)

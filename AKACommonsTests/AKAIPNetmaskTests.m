@@ -51,4 +51,22 @@
     XCTAssertEqual(24, (int)mask4.length);
 }
 
+- (void)testNetmaskContiguity
+{
+    AKAIPNetmask* mask1 = [[AKAIPNetmask alloc] initWithString:@"255.255.253.0" error:nil];
+    XCTAssertNotNil(mask1);
+    XCTAssertFalse(mask1.isValid);
+
+    AKAIPNetmask* mask2 = [[AKAIPNetmask alloc] initWithString:@"255.254.255.0" error:nil];
+    XCTAssertNotNil(mask2);
+    XCTAssertFalse(mask2.isValid);
+
+    AKAIPNetmask* mask3 = [[AKAIPNetmask alloc] initWithString:@"254.255.255.0" error:nil];
+    XCTAssertNotNil(mask3);
+    XCTAssertFalse(mask3.isValid);
+
+    AKAIPNetmask* mask4 = [[AKAIPNetmask alloc] initWithString:@"127.255.255.0" error:nil];
+    XCTAssertNotNil(mask4);
+    XCTAssertFalse(mask4.isValid);
+}
 @end

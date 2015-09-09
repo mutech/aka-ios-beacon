@@ -24,8 +24,8 @@
  */
 @interface AKATVProxy()
 
-@property(nonnull, readonly, weak) UITableView* aka_proxiedTableView;
-@property(nonnull, readonly, weak) AKATVDataSourceSpecification* aka_dataSource;
+@property(nonatomic, nonnull, readonly, weak) UITableView* aka_proxiedTableView;
+@property(nonatomic, nonnull, readonly, weak) AKATVDataSourceSpecification* aka_dataSource;
 
 @end
 

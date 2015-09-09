@@ -681,7 +681,8 @@
 
 - (id)valueForTarget:(id)target
 {
-    return [self targetAsArray:target][self.index];
+    NSAssert(self.index >= 0, @"Invalid index %ld", self.index);
+    return [self targetAsArray:target][(NSUInteger)self.index];
 }
 
 - (void)setValue:(id)value forTarget:(id)target

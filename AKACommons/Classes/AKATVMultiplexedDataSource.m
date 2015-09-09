@@ -855,8 +855,8 @@ typedef enum {
             AKALogDebug(@"[%@.delegate %@] indexPath=[%ld-%ld] ([%ld-%ld])",
                         dataSource.key,
                         NSStringFromSelector(invocation.selector),
-                        indexPath.section, indexPath.row,
-                        sourceIndexPath.section, sourceIndexPath.row);
+                        (long)indexPath.section, (long)indexPath.row,
+                        (long)sourceIndexPath.section, (long)sourceIndexPath.row);
             [invocation invokeWithTarget:delegate];
 
             if (resolveIndexPathResult)

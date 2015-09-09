@@ -15,7 +15,7 @@
 
 #pragma mark - Initialization
 
-+ (AKAInterfaceInfo*)wlanInterface;
++ (AKAInterfaceInfo* __nullable)wlanInterface;
 
 /**
  *  Uses getifaddrs(3) to query for all interfaces.
@@ -24,7 +24,7 @@
  *
  *  @return AKAInterfaceInfo instances for all interfaces visible through getifaddrs(3).
  */
-+ (NSArray*)getAllInterfaceInfos:(NSError**)error;
++ (NSArray* __nullable)getAllInterfaceInfos:(NSError*__nullable*__nullable)error;
 
 /**
  *  Returns information about the interface with the specified
@@ -35,7 +35,7 @@
  *
  *  @return an AKAInterfaceInfo instance or nil if no matching interface was found or if an error occured.
  */
-+ (AKAInterfaceInfo*)getInterfaceInfoForName:(NSString*)interfaceName errror:(NSError**)error;
++ (AKAInterfaceInfo*__nullable)getInterfaceInfoForName:(NSString*__nonnull)interfaceName errror:(NSError*__nullable*__nullable)error;
 
 /**
  *  Initializes the instance with the specified information.
@@ -48,11 +48,11 @@
  *
  *  @return the instance
  */
-- (instancetype)initWithName:(NSString*)name
-                     address:(AKAIPAddress*)address
-                     netmask:(AKAIPNetmask*)netmask
-            broadcastAddress:(AKAIPAddress*)broadcastAddress
-                       flags:(NSUInteger)flags;
+- (nullable instancetype)initWithName:(NSString*__nonnull)name
+                              address:(AKAIPAddress*__nonnull)address
+                              netmask:(AKAIPNetmask*__nonnull)netmask
+                     broadcastAddress:(AKAIPAddress*__nonnull)broadcastAddress
+                                flags:(NSUInteger)flags;
 
 #pragma mark - Properties
 
@@ -65,47 +65,52 @@
 /**
  *  Interface name (f.e. en0)
  */
-@property (nonatomic, readonly) NSString* name;
+@property (nonatomic, readonly) NSString* __nonnull name;
 
 /**
  *  Interface address
  */
-@property (nonatomic, readonly) AKAIPAddress* address;
+@property (nonatomic, readonly) AKAIPAddress* __nonnull address;
 
 /**
  *  Netmask of the connected network
  */
-@property (nonatomic, readonly) AKAIPNetmask* netmask;
+@property (nonatomic, readonly) AKAIPNetmask* __nonnull netmask;
 
 /**
  *  The network address computed from address and netmask
  */
-@property (nonatomic, readonly) AKAIPAddress* networkAddress;
+@property (nonatomic, readonly) AKAIPAddress* __nonnull networkAddress;
 
 /**
  *  The broadcast address (from dstaddr)
  */
-@property (nonatomic, readonly) AKAIPAddress* broadcastAddress;
+@property (nonatomic, readonly) AKAIPAddress* __nonnull broadcastAddress;
 
 /**
  *  The broadcast address computed from address and netmask
  */
-@property (nonatomic, readonly) AKAIPAddress* computedBroadcastAddress;
+@property (nonatomic, readonly) AKAIPAddress* __nonnull computedBroadcastAddress;
 
 /**
  *  The gateway
  */
-@property (nonatomic, readonly) AKAIPAddress* gateway;
+@property (nonatomic, readonly) AKAIPAddress* __nullable gateway;
 
 /**
  *  flags (see ifconfig(8), even though you won't find a documentation of values there either - sorry)
  */
 @property (nonatomic, readonly) NSUInteger flags;
 
+/**
+ * The SSID of the interface, if the interface is a WLAN interface, otherwise nil
+ */
+@property (nonnull, readonly) NSString* SSID;
+
 #pragma mark - Iterating over addresses in the connected network
 
-- (id)objectAtIndexedSubscript:(NSUInteger)index;
+- (id __nonnull)objectAtIndexedSubscript:(NSUInteger)index;
 
-- (AKAIPAddress*)addressAtIndexedSubscript:(NSUInteger)index;
+- (AKAIPAddress* __nonnull)addressAtIndexedSubscript:(NSUInteger)index;
 
 @end

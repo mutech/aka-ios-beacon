@@ -32,6 +32,22 @@
 
 @end
 
+#pragma mark - AKAKVOProperty (Cluster Interface)
+#pragma mark -
+
+@interface AKAIndexedProperty: AKAProperty
+
+#pragma mark - Initialization
+
+- (instancetype)initWithWeakTarget:(NSObject*)target
+                             index:(NSInteger)index
+                    changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+
+#pragma mark - Configuration
+
+@property(nonatomic, readonly) NSInteger index;
+
+@end
 
 #pragma mark - AKACustomProperty (Cluster Interface)
 #pragma mark -
@@ -124,6 +140,15 @@
 #pragma mark - Initialization
 
 + (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
+                                       index:(NSInteger)index
+                              changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+{
+    return [[AKAIndexedProperty alloc] initWithWeakTarget:target
+                                                index:index
+                                       changeObserver:valueDidChange];
+}
+
++ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
                                      keyPath:(NSString*)keyPath
                               changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
@@ -200,6 +225,11 @@
                 }
             }
         }
+        else if ([@"$self" isEqualToString:keyPath])
+        {
+            *propertyStorage = self;
+            *keyPathStorage = nil;
+        }
         else
         {
             *propertyStorage = self;
@@ -219,21 +249,46 @@
 {
     AKAProperty* result = nil;
 
-    AKAProperty* source = nil;
-    NSString* effectiveKeyPath = nil;
-    if ([self resolveProperty:&source
-                   andKeyPath:&effectiveKeyPath
-           forExtendedKeyPath:keyPath])
+    // TODO: do something more robust for indexed property key paths. This only works in simplest cases:
+    if ([keyPath hasPrefix:@"#"])
     {
-        if (source != nil)
+        // Only supports keypaths of the form #<digits>, without leading or trailing segments.
+        // Observation doesn't work either
+        NSInteger index = [keyPath substringFromIndex:1].integerValue;
+        result = [self propertyAtIndex:index withChangeObserver:valueDidChange];
+    }
+    else
+    {
+        AKAProperty* source = nil;
+        NSString* effectiveKeyPath = nil;
+        if ([self resolveProperty:&source
+                       andKeyPath:&effectiveKeyPath
+               forExtendedKeyPath:keyPath])
         {
-            result = [AKAProperty propertyOfWeakKeyValueTarget:source.value
-                                                       keyPath:effectiveKeyPath
-                                                changeObserver:valueDidChange];
-            [source addDependentProperty:result];
-            [result addDependencyProperty:source];
+            if (source != nil)
+            {
+                result = [AKAProperty propertyOfWeakKeyValueTarget:source.value
+                                                           keyPath:effectiveKeyPath
+                                                    changeObserver:valueDidChange];
+                [source addDependentProperty:result];
+                [result addDependencyProperty:source];
+            }
         }
     }
+    return result;
+}
+
+- (AKAProperty *)propertyAtIndex:(NSInteger)index
+                withChangeObserver:(void (^)(id, id))valueDidChange
+{
+    AKAProperty* result = nil;
+
+    result = [AKAProperty propertyOfWeakKeyValueTarget:self.value
+                                                 index:index
+                                        changeObserver:valueDidChange];
+    [self addDependentProperty:result];
+    [result addDependencyProperty:self];
+
     return result;
 }
 
@@ -534,6 +589,123 @@
             self.changeObserver(oldValue, newValue);
         }
     }
+}
+
+#pragma mark - Dependent Properties
+
+- (void)dependencyDidChangeValueFrom:(id)oldValue to:(id)newValue
+{
+    __strong id target = self.target;
+    BOOL wasObservingChanges = self.isObservingChanges;
+    if (target == oldValue || target == nil)
+    {
+        [self stopObservingChanges];
+        id myOldValue = self.value;
+        self.target = newValue;
+        id myNewValue = self.value;
+        if (wasObservingChanges)
+        {
+            [self startObservingChanges];
+        }
+        if (myOldValue != myNewValue)
+        {
+            [self propertyValueDidChangeFrom:myOldValue to:myNewValue];
+        }
+    }
+}
+
+@end
+
+/////
+#pragma mark - AKAIndexedProperty (Implementation)
+#pragma mark -
+
+@interface AKAIndexedProperty()
+
+@property(nonatomic, readonly) void(^changeObserver)();
+
+@end
+
+@implementation AKAIndexedProperty
+
+@synthesize index = _index;
+@synthesize isObservingChanges = _isObservingChanges;
+@synthesize changeObserver = _changeObserver;
+
+#pragma mark - Initialization
+
+- (instancetype)initWithWeakTarget:(NSObject*)target
+                             index:(NSInteger)index
+                    changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+{
+    self = [super initWithWeakTarget:target];
+    if (self)
+    {
+        _index = index;
+        _isObservingChanges = NO;
+        _changeObserver = valueDidChange;
+    }
+    return self;
+}
+
+#pragma mark - Value Access
+
+- (NSArray*)targetAsArray:(id)target
+{
+    NSArray* array = nil;
+    if ([target isKindOfClass:[NSSet class]])
+    {
+        array = [((NSSet*)target) allObjects];
+    }
+    else if ([target isKindOfClass:[NSArray class]])
+    {
+        array = target;
+    }
+    return array;
+}
+
+- (NSMutableArray*)targetAsMutableArray:(id)target
+{
+    NSMutableArray* array = nil;
+    if ([target isKindOfClass:[NSMutableArray class]])
+    {
+        array = target;
+    }
+    return array;
+}
+
+- (void)setValue:(id)value
+{
+    [self setValue:value forTarget:self.target];
+}
+
+- (id)valueForTarget:(id)target
+{
+    return [self targetAsArray:target][self.index];
+}
+
+- (void)setValue:(id)value forTarget:(id)target
+{
+    [self targetAsMutableArray:target][self.index] = value;
+}
+
+#pragma mark - Validation
+
+#pragma mark - Notifications
+
+- (BOOL)isObservingChanges
+{
+    return _isObservingChanges;
+}
+
+- (BOOL)startObservingChanges
+{
+    return NO;
+}
+
+- (BOOL)stopObservingChanges
+{
+    return !self.isObservingChanges;
 }
 
 #pragma mark - Dependent Properties

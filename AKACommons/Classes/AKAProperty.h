@@ -111,6 +111,9 @@
 - (AKAProperty*)propertyAtKeyPath:(NSString*)keyPath
                withChangeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
 
+- (AKAProperty *)propertyAtIndex:(NSInteger)index
+              withChangeObserver:(void (^)(id, id))valueDidChange;
+
 - (AKAProperty*)propertyComputedBy:(id(^)(id value))computation;
 
 @end

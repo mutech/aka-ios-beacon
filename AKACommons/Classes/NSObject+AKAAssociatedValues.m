@@ -61,12 +61,18 @@ static char associationKey;
 
 - (void)aka_setAssociatedValue:(id)value forKey:(NSString*)key
 {
-    id associatedValues = [self aka_associatedValuesCreateIfMissing:YES];
-    if ([associatedValues isKindOfClass:[NSMutableDictionary class]])
+    if (value == nil)
     {
-        [((NSMutableDictionary*)associatedValues) setObject:value forKey:key];
+        [self aka_removeValueAssociatedWithKey:key];
     }
-    return;
+    else
+    {
+        id associatedValues = [self aka_associatedValuesCreateIfMissing:YES];
+        if ([associatedValues isKindOfClass:[NSMutableDictionary class]])
+        {
+            [((NSMutableDictionary*)associatedValues) setObject:value forKey:key];
+        }
+    }
 }
 
 - (void)aka_removeValueAssociatedWithKey:(NSString*)key

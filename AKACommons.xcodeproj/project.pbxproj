@@ -63,6 +63,8 @@
 		8E90F9471AF8E69A00CBBB52 /* AKACommons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E90F9461AF8E69A00CBBB52 /* AKACommons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E90F94D1AF8E69A00CBBB52 /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */; };
 		8E90F9541AF8E69A00CBBB52 /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */; };
+		8EDBBB8D1B63F0D200875D5F /* AKAArrayComparer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */; };
+		8EDBBB8E1B63F0D200875D5F /* AKAArrayComparer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */; };
 		A677E50747F837365B479A33 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68E1B59A0220B66D1F7D2C1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -138,6 +140,8 @@
 		8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKACommonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E90F9521AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKACommonsTests.m; sourceTree = "<group>"; };
+		8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAArrayComparer.h; sourceTree = "<group>"; };
+		8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAArrayComparer.m; sourceTree = "<group>"; };
 		D68E1B59A0220B66D1F7D2C1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -173,6 +177,7 @@
 		8E6C86BE1AF8E7D600FDAD7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8EDBBB8A1B63F09F00875D5F /* DataStructures */,
 				8E7232061AF8F31900D647A9 /* Error Handling */,
 				8E7232051AF8F30C00D647A9 /* Logging */,
 				8E7232041AF8F2F900D647A9 /* Networking */,
@@ -317,6 +322,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8EDBBB8A1B63F09F00875D5F /* DataStructures */ = {
+			isa = PBXGroup;
+			children = (
+				8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */,
+				8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */,
+			);
+			name = DataStructures;
+			sourceTree = "<group>";
+		};
 		C5798B8136FBB491E2427ED2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +367,7 @@
 				8E6C86F41AF8E7D600FDAD7B /* AKAIPNetmask.h in Headers */,
 				8E6C87091AF8E7D600FDAD7B /* AKATVSection.h in Headers */,
 				8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */,
+				8EDBBB8D1B63F0D200875D5F /* AKAArrayComparer.h in Headers */,
 				8E6C870B1AF8E7D600FDAD7B /* AKATVUpdateBatch.h in Headers */,
 				8E6C87071AF8E7D600FDAD7B /* AKATVRowSegment.h in Headers */,
 				8E6C86FA1AF8E7D600FDAD7B /* AKAObservableCollection.h in Headers */,
@@ -413,6 +428,7 @@
 				TargetAttributes = {
 					8E90F9401AF8E69A00CBBB52 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = PUB728ZT9Y;
 					};
 					8E90F94B1AF8E69A00CBBB52 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -518,6 +534,7 @@
 				8E6C86F71AF8E7D600FDAD7B /* AKALog.m in Sources */,
 				8E6C86FD1AF8E7D600FDAD7B /* AKAProperty.m in Sources */,
 				8E6C86FB1AF8E7D600FDAD7B /* AKAObservableCollection.m in Sources */,
+				8EDBBB8E1B63F0D200875D5F /* AKAArrayComparer.m in Sources */,
 				8E6C87041AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m in Sources */,
 				8E6C87101AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m in Sources */,
 				8E6C86F91AF8E7D600FDAD7B /* AKANetworkingErrors.m in Sources */,
@@ -607,7 +624,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -660,7 +677,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -674,6 +691,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -690,6 +708,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79483621CA7D059E6F07B696 /* Pods.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;

@@ -252,9 +252,9 @@
 
         // Remove row segments until the number of rows is reached; here we can remove from the first
         // row in the segment (no offset).
-        while (rowSegment != nil && numberOfRowsToRemove > 0)
+        while (rowSegment != nil && (numberOfRowsToRemove > 0 || rowSegment.numberOfRows == 0))
         {
-            if (numberOfRowsToRemove > rowSegment.numberOfRows)
+            if (numberOfRowsToRemove >= rowSegment.numberOfRows)
             {
                 numberOfRowsToRemove -= rowSegment.numberOfRows;
 

@@ -26,7 +26,7 @@
 + (instancetype)dataSource:(id<UITableViewDataSource>)dataSource
               withDelegate:(id<UITableViewDelegate>)delegate
                     forKey:(NSString*)key
-             inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer
+             inMultiplexer:(NSObject<AKATVDataSourceSpecificationDelegate>*)multiplexer
 {
     return [[AKATVDataSourceSpecification alloc] initWithDataSource:dataSource
                                               delegate:delegate
@@ -37,7 +37,7 @@
 - (instancetype)initWithDataSource:(id<UITableViewDataSource>)dataSource
                           delegate:(id<UITableViewDelegate>)delegate
                             forKey:(NSString*)key
-                     inMultiplexer:(AKATVMultiplexedDataSource*)multiplexer
+                     inMultiplexer:(NSObject<AKATVDataSourceSpecificationDelegate>*)multiplexer
 {
     if (self = [self init])
     {
@@ -84,7 +84,7 @@
 
 - (NSInteger)dataSourceSection:(NSInteger)section
 {
-    AKATVMultiplexedDataSource* mds = self.multiplexer;
+    NSObject<AKATVDataSourceSpecificationDelegate>* mds = self.multiplexer;
     NSInteger resolvedSection = NSNotFound;
     [mds resolveAKADataSource:nil
          sourceSectionIndex:&resolvedSection
@@ -108,7 +108,7 @@
 
 - (NSInteger)tableViewSection:(NSInteger)section
 {
-    AKATVMultiplexedDataSource* mds = self.multiplexer;
+    NSObject<AKATVDataSourceSpecificationDelegate>* mds = self.multiplexer;
     NSInteger resolvedSection = NSNotFound;
     [mds resolveSection:&resolvedSection
        forSourceSection:section
@@ -134,7 +134,7 @@
 
 - (NSIndexPath *)dataSourceIndexPath:(NSIndexPath *)indexPath
 {
-    AKATVMultiplexedDataSource* mds = self.multiplexer;
+    NSObject<AKATVDataSourceSpecificationDelegate>* mds = self.multiplexer;
     NSIndexPath* resolvedIndexPath = nil;
     [mds resolveAKADataSource:nil
            sourceIndexPath:&resolvedIndexPath
@@ -159,7 +159,7 @@
 
 - (NSIndexPath *)tableViewMappedIndexPath:(NSIndexPath *)indexPath
 {
-    AKATVMultiplexedDataSource* mds = self.multiplexer;
+    NSObject<AKATVDataSourceSpecificationDelegate>* mds = self.multiplexer;
     NSIndexPath* resolvedIndexPath = nil;
     [mds resolveIndexPath:&resolvedIndexPath
        forSourceIndexPath:indexPath

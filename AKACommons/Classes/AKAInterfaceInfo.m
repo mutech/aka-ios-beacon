@@ -9,6 +9,7 @@
 #import "AKAInterfaceInfo.h"
 #import "AKANetworkingErrors.h"
 
+#import <SystemConfiguration/CaptiveNetwork.h>
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
@@ -28,7 +29,15 @@
 
 + (AKAInterfaceInfo *)wlanInterface
 {
-    return [self getInterfaceInfoForName:@"en0" errror:nil];
+    // To support the simulator, we look for the first interface starting with "en" instead:
+    //return [self getInterfaceInfoForName:@"en0" errror:nil];
+
+    AKAInterfaceInfo* result = [self getInterfaceInfosMatching:^BOOL(struct ifaddrs *ifaddr) {
+        NSString* name = [NSString stringWithUTF8String:ifaddr->ifa_name];
+        return ifaddr->ifa_addr->sa_family == AF_INET && [name hasPrefix:@"en"];
+    } error:nil].firstObject;
+
+    return result;
 }
 
 + (NSArray*)getInterfaceInfosForName:(NSString*)name error:(NSError*__autoreleasing*)error
@@ -126,6 +135,19 @@
 }
 
 #pragma mark - Derived Properties
+
+- (NSString *)SSID
+{
+    NSString *ssid = nil;
+
+    CFDictionaryRef rawInfo =
+        CNCopyCurrentNetworkInfo((__bridge CFStringRef)self.name);
+    NSDictionary *info =
+        CFBridgingRelease(rawInfo);
+    ssid = info[@"SSID"];
+
+    return ssid;
+}
 
 - (NSUInteger)networkSize
 {

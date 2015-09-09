@@ -138,7 +138,7 @@
     NSMutableIndexSet* insertions = [self insertedRowsInSection:indexPath.section
                                                 createIfMissing:YES];
     [insertions shiftIndexesStartingAtIndex:(NSUInteger)rowIndex by:1];
-    [insertions addIndex:rowIndex];
+    [insertions addIndex:(NSUInteger)rowIndex];
 }
 
 - (NSMutableIndexSet*)deletedRowsInSection:(NSInteger)sectionIndex

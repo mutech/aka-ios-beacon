@@ -41,7 +41,7 @@ typedef enum {
 @property(nonatomic, readonly) NSUInteger numberOfSections;
 @property(nonatomic, readonly) AKATVUpdateBatch* updateBatch;
 
-@property(nonatomic, weak) NSString* defaultDataSourceKey;
+@property(nonatomic) NSString* defaultDataSourceKey;
 
 @end
 
@@ -353,7 +353,7 @@ typedef enum {
                 NSMutableArray* indexPaths = NSMutableArray.new;
                 for (NSUInteger i=0; i < numberOfRows; ++i)
                 {
-                    NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row+i
+                    NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row+(NSInteger)i
                                                                                        inSection:indexPath.section
                                                                        forBatchUpdateInTableView:tableView
                                                                            recordAsInsertedIndex:YES];
@@ -412,7 +412,7 @@ typedef enum {
             NSMutableArray* indexPaths = NSMutableArray.new;
             for (NSUInteger i=0; i < rowsRemoved; ++i)
             {
-                NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row + i
+                NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row + (NSInteger)i
                                                                                   inSection:indexPath.section
                                                                   forBatchUpdateInTableView:tableView
                                                                        recordAsDeletedIndex:YES];
@@ -746,7 +746,7 @@ typedef enum {
           sectionParameterAtIndex:(NSInteger)parameterIndex
                resolveCoordinates:(BOOL)resolveCoordinates
                 useTableViewProxy:(BOOL)useTableViewProxy
-                 resolvedDelegate:(id <UITableViewDelegate> *)delegateStorage
+                 resolvedDelegate:(id <UITableViewDelegate> __autoreleasing*)delegateStorage
 {
     id<UITableViewDelegate> delegate = nil;
     AKATVDataSourceSpecification* dataSource = nil;
@@ -798,7 +798,7 @@ typedef enum {
         indexPathParameterAtIndex:(NSInteger)parameterIndex
                resolveCoordinates:(BOOL)resolveCoordinates
                 useTableViewProxy:(BOOL)useTableViewProxy
-                 resolvedDelegate:(id <UITableViewDelegate> *)delegateStorage
+                 resolvedDelegate:(id <UITableViewDelegate> __autoreleasing*)delegateStorage
 {
     return [self forwardDelegateInvocation:invocation
              withTableViewParameterAtIndex:tvParameterIndex
@@ -815,7 +815,7 @@ typedef enum {
                   indexPathResult:(BOOL)resolveIndexPathResult
                resolveCoordinates:(BOOL)resolveCoordinates
                 useTableViewProxy:(BOOL)useTableViewProxy
-                 resolvedDelegate:(id <UITableViewDelegate> *)delegateStorage
+                 resolvedDelegate:(id <UITableViewDelegate> __autoreleasing*)delegateStorage
 {
     id<UITableViewDelegate> delegate = nil;
     AKATVDataSourceSpecification* dataSource = nil;
@@ -879,22 +879,24 @@ typedef enum {
 
 - (BOOL)forwardDelegateInvocation:(NSInvocation *)invocation
    withScrollViewParameterAtIndex:(NSInteger)tvParameterIndex
-                 resolvedDelegate:(id <UITableViewDelegate> *)delegateStorage
+                 resolvedDelegate:(id <UITableViewDelegate> __autoreleasing*)delegateStorage
 {
+    (void)tvParameterIndex; // TODO: remove parameter reference or proxy scrollview if needed
     AKATVDataSourceSpecification* dataSource = (self.defaultDataSourceKey.length > 0
                                                 ? self.dataSourcesByKey[self.defaultDataSourceKey]
                                                 : nil);
-    BOOL result = dataSource.delegate != nil;
+    id <UITableViewDelegate> delegate = dataSource.delegate;
+    BOOL result = delegate != nil;
     if (result)
     {
         if (delegateStorage != nil)
         {
-            *delegateStorage = dataSource.delegate;
+            *delegateStorage = delegate;
         }
-        result = [dataSource.delegate respondsToSelector:invocation.selector];
+        result = [delegate respondsToSelector:invocation.selector];
         if (result)
         {
-            [invocation invokeWithTarget:dataSource.delegate];
+            [invocation invokeWithTarget:delegate];
         }
     }
 
@@ -1102,6 +1104,8 @@ typedef enum {
                                         resolvedDelegate:nil];
                 break;
         }
+        // TODO: check if we should call [super forwardInvocation:invocation]; if result is NO
+        (void)result;
     }
     else
     {

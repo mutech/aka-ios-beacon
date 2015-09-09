@@ -21,7 +21,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL) = (void*)imp;
+        id(*function)(id, SEL) = (id(*)(id, SEL))imp;
         id value = function(self, selector);
         if (resultStorage)
         {
@@ -45,7 +45,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL) = (void*)imp;
+        id(*function)(id, SEL) = (id(*)(id, SEL))imp;
         id value = function(self, selector);
         if (resultStorage)
         {
@@ -70,7 +70,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL) = (void*)imp;
+        void(*function)(id, SEL) = (void(*)(id, SEL))imp;
         function(self, selector);
         result = YES;
     }
@@ -90,7 +90,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL, id) = (void*)imp;
+        void(*function)(id, SEL, id) = (void(*)(id, SEL, id))imp;
         function(self, selector, object1);
         result = YES;
     }
@@ -111,7 +111,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL, id) = (void*)imp;
+        id(*function)(id, SEL, id) = (id(*)(id, SEL, id))imp;
         id value = function(self, selector, object1);
         if (resultStorage)
         {
@@ -136,7 +136,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL, id, id) = (void*)imp;
+        void(*function)(id, SEL, id, id) = (void(*)(id, SEL, id, id))imp;
         function(self, selector, object1, object2);
         result = YES;
     }
@@ -158,7 +158,7 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL, id, id) = (void*)imp;
+        id(*function)(id, SEL, id, id) = (id(*)(id, SEL, id, id))imp;
         id value = function(self, selector, object1, object2);
         if (resultStorage)
         {

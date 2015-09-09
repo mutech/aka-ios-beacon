@@ -90,7 +90,7 @@
 
 #pragma mark - Configuration
 
-@property(nonnull, readonly, weak) UITableView* tableView;
+@property(nonatomic, nonnull, readonly, weak) UITableView* tableView;
 
 #pragma mark - Managing Data Sources and associated Delegates
 

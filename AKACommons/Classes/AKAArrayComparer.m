@@ -43,32 +43,32 @@
 - (void)analyzeArrays
 {
     self.oldIndexesByItems = NSMutableDictionary.new;
-    for (NSInteger i=self.oldArray.count - 1; i >= 0; --i)
+    for (NSInteger i=(NSInteger)self.oldArray.count - 1; i >= 0; --i)
     {
-        id item = self.oldArray[i];
+        id item = self.oldArray[(NSUInteger)i];
         self.oldIndexesByItems[item] = @(i);
     }
 
     self.indexesByItems = NSMutableDictionary.new;
-    for (NSInteger i=self.array.count - 1; i >= 0; --i)
+    for (NSInteger i=(NSInteger)self.array.count - 1; i >= 0; --i)
     {
-        id item = self.array[i];
+        id item = self.array[(NSUInteger)i];
 
         NSNumber* oldIndex = self.oldIndexesByItems[item];
         if (oldIndex == nil)
         {
-            [self.insertedItemIndexes addIndex:i];
+            [self.insertedItemIndexes addIndex:(NSUInteger)i];
         }
         self.indexesByItems[item] = @(i);
     }
 
-    for (NSInteger i=self.oldArray.count - 1; i >= 0; --i)
+    for (NSInteger i=(NSInteger)self.oldArray.count - 1; i >= 0; --i)
     {
-        id item = self.oldArray[i];
+        id item = self.oldArray[(NSUInteger)i];
         NSNumber* newIndex = self.indexesByItems[item];
         if (newIndex == nil)
         {
-            [self.deletedItemIndexes addIndex:i];
+            [self.deletedItemIndexes addIndex:(NSUInteger)i];
         }
     }
 

@@ -74,7 +74,7 @@
 
 - (void)removeAllItems
 {
-    return [self.itemsStorage removeAllObjects];
+    [self.itemsStorage removeAllObjects];
 }
 
 #pragma mark - Mutable Array Proxy

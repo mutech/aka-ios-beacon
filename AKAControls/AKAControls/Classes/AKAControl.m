@@ -36,6 +36,7 @@
 
 @synthesize owner = _owner;
 @synthesize isActive = _isActive;
+@synthesize converter = _converter;
 
 #pragma mark - Initialization
 
@@ -100,6 +101,20 @@
 
 #pragma mark - Configuration
 
+- (AKAProperty*)basePropertyForModelValue
+{
+    AKAProperty* result = _dataContextProperty;
+    if (!result)
+    {
+        result = self.owner.modelValueProperty;
+    }
+    if (!result)
+    {
+        result = self.owner.basePropertyForModelValue;
+    }
+    return result;
+}
+
 - (BOOL)setupWithConfiguration:(id<AKAControlConfigurationProtocol>)configuration
 {
     BOOL result = YES;
@@ -108,9 +123,9 @@
     if (configuration.valueKeyPath.length > 0)
     {
         __weak typeof(self) weakSelf = self;
-        self.modelValueProperty =
-        [self.dataContextProperty propertyAtKeyPath:configuration.valueKeyPath
-                                 withChangeObserver:^(id oldValue, id newValue)
+        AKAProperty* base = self.basePropertyForModelValue;
+        self.modelValueProperty = [base propertyAtKeyPath:configuration.valueKeyPath
+                                       withChangeObserver:^(id oldValue, id newValue)
          {
              [weakSelf modelValueDidChangeFrom:oldValue
                                             to:newValue];
@@ -163,7 +178,7 @@
     AKACompositeControl* currentOwner = _owner;
     if (currentOwner != owner)
     {
-        if (currentOwner != nil)
+        if (currentOwner != nil && owner != nil)
         {
             [AKAControlsErrors invalidAttemptToSetOwnerOfControl:self
                                                         ownedBy:currentOwner
@@ -187,32 +202,48 @@
         if (_viewBinding != nil && viewBinding != nil)
         {
             // TODO: error handling
+            AKALogError(@"Attempt to bind a control %@ which is already bound to view %@ to %@. Rebinding requires the controls viewBinding to be reset to nil first.", self, _viewBinding.view, viewBinding.view);
         }
         else
         {
             _viewBinding = viewBinding;
             if (viewBinding != nil)
             {
-                NSString* converterKeyPath = viewBinding.configuration.converterKeyPath;
-                if (converterKeyPath.length > 0)
-                {
-                    _converterProperty = [self.dataContextProperty propertyAtKeyPath:converterKeyPath
-                                                                      withChangeObserver:nil];
-                }
-                else
-                {
-                    _converter = [viewBinding.class defaultConverter];
-                }
-                NSString* validatorKeyPath = viewBinding.configuration.validatorKeyPath;
-                if (validatorKeyPath.length > 0)
-                {
-                    _validatorProperty = [self.dataContextProperty propertyAtKeyPath:validatorKeyPath
-                                                                      withChangeObserver:nil];
-                }
+                [self initializeBindingProperties];
+            }
+            else
+            {
+                [self resetBindingProperties];
             }
         }
-
     }
+}
+
+- (void)initializeBindingProperties
+{
+    NSString* converterKeyPath = self.viewBinding.configuration.converterKeyPath;
+    if (converterKeyPath.length > 0)
+    {
+        _converterProperty = [self.dataContextProperty propertyAtKeyPath:converterKeyPath
+                                                      withChangeObserver:nil];
+    }
+    else
+    {
+        _converter = [self.viewBinding.class defaultConverter];
+    }
+    NSString* validatorKeyPath = self.viewBinding.configuration.validatorKeyPath;
+    if (validatorKeyPath.length > 0)
+    {
+        _validatorProperty = [self.dataContextProperty propertyAtKeyPath:validatorKeyPath
+                                                      withChangeObserver:nil];
+    }
+}
+
+- (void)resetBindingProperties
+{
+    _converterProperty = nil;
+    _converter = nil;
+    _validatorProperty = nil;
 }
 
 #pragma mark - Value Access
@@ -267,9 +298,16 @@
     self.modelValueProperty.value = modelValue;
 }
 
+- (id)dataContextValueAtKeyPath:(NSString*)keyPath
+{
+    return [self dataContextPropertyAtKeyPath:keyPath withChangeObserver:nil].value;
+}
+
 - (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
                           withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver
 {
+    return [self.dataContextProperty propertyAtKeyPath:keyPath withChangeObserver:nil];
+    /*
     // TODO: create a data context property
     if (self.owner)
     {
@@ -283,11 +321,22 @@
         return [self.modelValueProperty propertyAtKeyPath:keyPath
                                        withChangeObserver:changeObserver];
     }
+     */
 }
 
 - (id<AKAControlValidatorProtocol>)validator
 {
     return self.validatorProperty.value;
+}
+
+- (id<AKAControlConverterProtocol>)converter
+{
+    id<AKAControlConverterProtocol> result = _converter;
+    if (result == nil)
+    {
+        result = self.converterProperty.value;
+    }
+    return result;
 }
 
 #pragma mark - Conversion
@@ -754,10 +803,9 @@
     [self.validatorProperty stopObservingChanges];
 }
 
-
 - (BOOL)isObservingViewValueChanges
 {
-    return self.viewValueProperty.isObservingChanges;
+    return self.viewBinding.isObservingViewValueChanges;
 }
 
 - (BOOL)startObservingViewValueChanges
@@ -780,8 +828,11 @@
     BOOL result = self.modelValueProperty.isObservingChanges;
     if (!result)
     {
-        // We don't get prior change events, so here is where we set the initial view value.
-        [self updateViewValueForModelValueChangeTo:self.modelValueProperty.value];
+        if (self.modelValueProperty)
+        {
+            // We don't get prior change events, so here is where we set the initial view value.
+            [self updateViewValueForModelValueChangeTo:self.modelValueProperty.value];
+        }
         result = [self.modelValueProperty startObservingChanges];
     }
     return result;

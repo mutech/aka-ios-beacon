@@ -54,6 +54,14 @@
 + (void)invalidAttemptToBindView:(id)view
                        toBinding:(AKAViewBinding*)binding;
 
+#pragma mark - Validation Errors
+
++ (NSError*)errorForInvalidEmailAddress:(NSString*)text
+                  withRegularExpression:(NSString*)failedRegEx;
+
++ (NSError*)errorForInvalidEmailAddressValueType:(id)value;
+
+
 #pragma mark - Themes
 
 + (void)invalidLayoutRelationSpecification:(id)relationSpecification;

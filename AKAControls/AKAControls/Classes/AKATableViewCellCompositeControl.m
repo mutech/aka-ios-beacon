@@ -7,6 +7,8 @@
 //
 
 #import "AKATableViewCellCompositeControl.h"
+#import "AKADynamicPlaceholderTableViewCell.h"
+#import "AKACompositeControl_Internal.h"
 
 @implementation AKATableViewCellCompositeControl
 

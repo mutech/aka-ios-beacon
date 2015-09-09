@@ -89,6 +89,7 @@
 #pragma mark - View Value Access
 /// @name View Value Access
 
+@property(nonatomic, readonly) BOOL isObservingViewValueChanges;
 @property(nonatomic, readonly) AKAProperty* viewValueProperty;
 
 #pragma mark - Conversion

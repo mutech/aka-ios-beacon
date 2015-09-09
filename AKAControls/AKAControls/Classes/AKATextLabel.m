@@ -1,24 +1,39 @@
 //
-//  AKALabel.m
+//  AKATextLabel.m
 //  AKACommons
 //
 //  Created by Michael Utech on 14.03.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKALabel.h"
-#import "AKALabelBinding.h"
+#import "AKATextLabel.h"
+#import "AKATextLabelBinding.h"
 #import "AKAControl.h"
 
-@implementation AKALabel
+@implementation AKATextLabel
 
 @synthesize bindingConfiguration = _bindingConfiguration;
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder])
+    {
+        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+}
 
 - (AKAViewBindingConfiguration*)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {
-        _bindingConfiguration = AKALabelBindingConfiguration.new;
+        _bindingConfiguration = AKATextLabelBindingConfiguration.new;
     }
     return _bindingConfiguration;
 }
@@ -78,6 +93,15 @@
 - (void)setValidatorKeyPath:(NSString *)validatorKeyPath
 {
     self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
+}
+
+- (BOOL)readOnly
+{
+    return self.bindingConfiguration.readOnly;
+}
+- (void)setReadOnly:(BOOL)readOnly
+{
+    self.bindingConfiguration.readOnly = readOnly;
 }
 
 @end

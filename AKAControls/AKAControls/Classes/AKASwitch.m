@@ -14,6 +14,21 @@
 
 @synthesize bindingConfiguration = _bindingConfiguration;
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder])
+    {
+        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+}
+
 - (AKAViewBindingConfiguration*)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
@@ -78,6 +93,16 @@
 - (void)setValidatorKeyPath:(NSString *)validatorKeyPath
 {
     self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
+}
+
+- (BOOL)readOnly
+{
+    return self.bindingConfiguration.readOnly;
+}
+- (void)setReadOnly:(BOOL)readOnly
+{
+    self.bindingConfiguration.readOnly = readOnly;
+    self.userInteractionEnabled = !readOnly;
 }
 
 @end

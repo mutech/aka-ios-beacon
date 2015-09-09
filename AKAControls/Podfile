@@ -6,5 +6,12 @@ xcodeproj 'AKAControls.xcodeproj'
 use_frameworks!
 
 platform :ios, '8.0'
+
+target :AKAControls do
+end
+
+target :AKAControlsTests do
+end
+
+#pod 'AKACommons'
 pod 'AKACommons', :path => '..'
-xcodeproj 'AKAControls.xcodeproj'

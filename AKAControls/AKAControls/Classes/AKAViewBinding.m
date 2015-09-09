@@ -17,6 +17,9 @@
 @synthesize delegate = _delegate;
 @synthesize viewValueProperty = _viewValueProperty;
 
+#pragma mark - Initialization
+/// @name Initialization
+
 - (instancetype)initWithView:(UIView *)view
                configuration:(AKAViewBindingConfiguration*)configuration
                     delegate:(id<AKAViewBindingDelegate>)delegate
@@ -33,6 +36,11 @@
 }
 
 #pragma mark - View Value
+
+- (BOOL)isObservingViewValueChanges
+{
+    return _viewValueProperty != nil;
+}
 
 - (AKAProperty *)viewValueProperty
 {

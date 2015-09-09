@@ -27,12 +27,18 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithCoder:aDecoder];
-    if (self)
+    if (self = [super initWithCoder:aDecoder])
     {
+        _textFieldBindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
         [self setupDefaultValues];
     }
     return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.textFieldBindingConfiguration forKey:@"bindingConfiguration"];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -47,15 +53,18 @@
 
 - (void)setupDefaultValues
 {
-    _textFieldBindingConfiguration = [self createTextFieldBindingConfiguration];
-    self.controlName = nil;
-    self.role = nil;
-    self.valueKeyPath = nil;
+    if (_textFieldBindingConfiguration == nil)
+    {
+        _textFieldBindingConfiguration = [self createTextFieldBindingConfiguration];
 
-    self.liveModelUpdates = YES;
-    self.KBActivationSequence = YES;
-    self.autoActivate = YES;
-}
+        self.controlName = nil;
+        self.role = nil;
+        self.valueKeyPath = nil;
+
+        self.liveModelUpdates = YES;
+        self.KBActivationSequence = YES;
+        self.autoActivate = YES;
+    }}
 
 #pragma mark - Control View Protocol
 
@@ -124,6 +133,16 @@
 - (void)setValidatorKeyPath:(NSString *)validatorKeyPath
 {
     self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
+}
+
+- (BOOL)readOnly
+{
+    return self.bindingConfiguration.readOnly;
+}
+- (void)setReadOnly:(BOOL)readOnly
+{
+    self.bindingConfiguration.readOnly = readOnly;
+    self.userInteractionEnabled = !readOnly;
 }
 
 - (BOOL)liveModelUpdates

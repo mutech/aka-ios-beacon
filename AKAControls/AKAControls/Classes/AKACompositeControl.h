@@ -16,18 +16,22 @@
 
 @property(nonatomic, readonly)NSArray* controls;
 
+- (NSUInteger)countOfControls;
+
+- (id)objectInControlsAtIndex:(NSUInteger)index;
+
 - (NSUInteger)indexOfControl:(AKAControl*)control;
 
 #pragma mark - Adding and Removing Member Controls
 
 - (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index;
 
-- (NSUInteger)insertControl:(out AKAControl**)controlStorage
-                    forView:(UIView*)view
-          withConfiguration:(AKAViewBindingConfiguration*)configuration
-                    atIndex:(NSUInteger)index;
+- (AKAControl*)createControlForView:(UIView*)view
+                  withConfiguration:(AKAViewBindingConfiguration*)configuration;
 
 - (BOOL)removeControlAtIndex:(NSUInteger)index;
+
+- (NSUInteger)removeAllControls;
 
 #pragma mark - Activation
 
@@ -68,23 +72,22 @@
 
 - (BOOL)removeControl:(AKAControl*)control;
 
-
-- (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
+- (NSUInteger)   addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
                                                    atIndex:(NSUInteger)index;
 
-- (NSUInteger)addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection;
-- (NSUInteger)insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
-                                                      atIndex:(NSUInteger)index;
+- (void)      addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection;
+- (void)   insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+                                                   atIndex:(NSUInteger)index;
 
-- (NSUInteger)addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections;
-- (NSUInteger)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
-                                                       atIndex:(NSUInteger)index;
+- (void)     addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections;
+- (void)  insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+                                                   atIndex:(NSUInteger)index;
 
-- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView
-                                               dataSource:(id<UITableViewDataSource>)dataSource;
-- (NSUInteger)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
-                                                  dataSource:(id<UITableViewDataSource>)dataSource
-                                                     atIndex:(NSUInteger)index;
+- (void)       addControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                                dataSource:(id<UITableViewDataSource>)dataSource;
+- (void)    insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
+                                                dataSource:(id<UITableViewDataSource>)dataSource
+                                                   atIndex:(NSUInteger)index;
 
 @end

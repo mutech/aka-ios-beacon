@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import <AKAControls/AKATheme.h>
-#import <AKAControls/AKALabel.h>
+#import <AKAControls/AKATextLabel.h>
 
 @interface AKAThemeTests : XCTestCase
 
@@ -43,7 +43,7 @@
 
     NSDictionary* spec = @{ @"view": @"label",
                             @"requirements": @{ @"type": @[[UILabel class], [UITextField class]],
-                                                @"notType": [AKALabel class] },
+                                                @"notType": [AKATextLabel class] },
                             @"properties": @{ @"text": @"Hello there" },
                             };
     AKAViewCustomization* customization = [[AKAViewCustomization alloc] initWithDictionary:spec];

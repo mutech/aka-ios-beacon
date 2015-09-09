@@ -1,27 +1,23 @@
 //
-//  AKALabel.h
-//  AKACommons
-//
-//  Created by Michael Utech on 14.03.15.
-//  Copyright (c) 2015 AKA Sarl. All rights reserved.
+// Created by Michael Utech on 08.09.15.
+// Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
 #import "AKAControlViewProtocol.h"
-#import "AKALabelBinding.h"
+#import "AKAThemableContainerView.h"
+#import "AKACompositeViewBindingConfiguration.h"
 
-IB_DESIGNABLE
-/**
- * Extends UILabel to implement the AKAControlViewProtocol which makes the label
- * recognizable as control view. AKALabel supports read-only data binding.
- */
-@interface AKALabel : UILabel<AKAControlViewProtocol>
+@interface AKAThemableCompositeControlView : AKAThemableContainerView<AKAControlViewProtocol>
 
-@property(nonatomic, readonly) AKAViewBindingConfiguration* bindingConfiguration;
+#pragma mark - Configuration
+#pragma mark -
+
+@property(nonatomic, readonly) AKACompositeViewBindingConfiguration* bindingConfiguration;
 
 #pragma mark - Interface Builder Properties
-/// @name Interface Builder Properties
+#pragma mark -
 
 /**
  * Configures the name of the control, which has to be unique in the scope of its owner
@@ -30,7 +26,6 @@ IB_DESIGNABLE
  * should mark the redeclaration of this property as IBInspectable.
  */
 @property(nonatomic) IBInspectable NSString* controlName;
-
 
 /**
  * A space separated list of tag names. A tag name has to start with a
@@ -49,12 +44,6 @@ IB_DESIGNABLE
 @property(nonatomic) IBInspectable NSString* role;
 
 /**
- * The key path refering to the controls model value relative to
- * the controls data context.
- */
-@property(nonatomic) IBInspectable NSString* valueKeyPath;
-
-/**
  * The key path refering to the converter used to convert between model and view values.
  *
  * @note Since converters are rarely defined relative to a controls data context,
@@ -71,5 +60,19 @@ IB_DESIGNABLE
  * data context.
  */
 @property(nonatomic) IBInspectable NSString* validatorKeyPath;
+
+/**
+ * Determines whether the control is restricted to display the model value and will
+ * not change the model value as a result of user interactions.
+ */
+@property(nonatomic) IBInspectable BOOL readOnly;
+
+@end
+
+@interface AKAThemableCompositeControlView(Protected)
+
+- (AKACompositeViewBindingConfiguration*)createBindingConfiguration;
+
+- (void)setupDefaultValues;
 
 @end

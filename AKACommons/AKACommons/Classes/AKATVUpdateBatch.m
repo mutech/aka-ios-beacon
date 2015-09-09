@@ -138,6 +138,7 @@
     NSMutableIndexSet* insertions = [self insertedRowsInSection:indexPath.section
                                                 createIfMissing:YES];
     [insertions shiftIndexesStartingAtIndex:(NSUInteger)rowIndex by:1];
+    [insertions addIndex:rowIndex];
 }
 
 - (NSMutableIndexSet*)deletedRowsInSection:(NSInteger)sectionIndex
@@ -225,6 +226,11 @@
     NSIndexSet* deletedRows = [self deletedRowsInSection:sectionIndex
                                          createIfMissing:NO];
     NSUInteger deletedPrecedingRows = [deletedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)rowIndex)];
+
+    NSIndexSet* insertedRows = [self insertedRowsInSection:sectionIndex
+                                           createIfMissing:NO];
+    NSUInteger insertedPrecedingRows = [insertedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)rowIndex)];
+    deletedPrecedingRows = (insertedPrecedingRows > deletedPrecedingRows) ? 0 : deletedPrecedingRows - insertedPrecedingRows;
 
     result = [NSIndexPath indexPathForRow:rowIndex + (NSInteger)deletedPrecedingRows inSection:sectionIndex];
 

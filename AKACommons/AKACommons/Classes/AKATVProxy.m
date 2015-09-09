@@ -236,7 +236,8 @@
 - (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
 {
     UITableView* tv = self.aka_proxiedTableView;
-    [tv deselectRowAtIndexPath:[self aka_tableViewIndexPathFor:indexPath]
+    NSIndexPath* realIndexPath = [self aka_tableViewIndexPathFor:indexPath];
+    [tv deselectRowAtIndexPath:realIndexPath
                       animated:animated];
 }
 

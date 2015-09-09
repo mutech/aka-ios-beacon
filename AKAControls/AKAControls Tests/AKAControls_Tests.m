@@ -1,19 +1,19 @@
 //
-//  AKAControlsTests.m
-//  AKAControlsTests
+//  AKAControls_Tests.m
+//  AKAControls Tests
 //
-//  Created by Michael Utech on 17.03.15.
+//  Created by Michael Utech on 09.09.15.
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface AKAControlsTests : XCTestCase
+@interface AKAControls_Tests : XCTestCase
 
 @end
 
-@implementation AKAControlsTests
+@implementation AKAControls_Tests
 
 - (void)setUp {
     [super setUp];

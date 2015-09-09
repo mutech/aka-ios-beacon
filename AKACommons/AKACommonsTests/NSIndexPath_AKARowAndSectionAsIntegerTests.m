@@ -42,8 +42,8 @@
     XCTAssertEqual((NSUInteger)indexPath.section, encoded >> 32);
     XCTAssertEqual((NSUInteger)indexPath.row, encoded & 0xffffffff);
 #else
-    XCTAssertEqual(indexPath.section, encoded >> 20);
-    XCTAssertEqual(indexPath.row, encoded & 0xfffff);
+    XCTAssertEqual(indexPath.section, (int)(encoded >> 20));
+    XCTAssertEqual(indexPath.row, (int)(encoded & 0xfffff));
 #endif
 }
 
@@ -92,8 +92,8 @@
     XCTAssertEqual((NSUInteger)indexPath.section, encoded >> 32);
     XCTAssertEqual((NSUInteger)indexPath.row, encoded & 0xffffffff);
 #else
-    XCTAssertNotEqual(indexPath.section, encoded >> 20);
-    XCTAssertNotEqual(indexPath.row, encoded & 0xfffff);
+    XCTAssertNotEqual(indexPath.section, (int)(encoded >> 20));
+    XCTAssertNotEqual(indexPath.row, (int)(encoded & 0xfffff));
     XCTAssertNotNil(caught);
 #endif
 }

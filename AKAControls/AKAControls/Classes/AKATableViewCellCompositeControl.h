@@ -14,4 +14,6 @@
 @property(nonatomic, weak) id<UITableViewDataSource> dataSource;
 @property(nonatomic) NSIndexPath* indexPath;
 
+@property(nonatomic) NSUInteger actualNumberOfRows;
+
 @end

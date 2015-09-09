@@ -60,6 +60,12 @@
  */
 @property(nonatomic)/*IBInspectable*/ NSString* validatorKeyPath;
 
+/**
+ * Determines whether the control is restricted to display the model value and will
+ * not change the model value as a result of user interactions.
+ */
+@property(nonatomic)/*IBInspectable*/ BOOL readOnly;
+
 @end
 
 /**
@@ -73,7 +79,7 @@
  * to use control views, or if they are missing, binding configurations can be used
  * instead.
  */
-@interface AKAViewBindingConfiguration: NSObject<AKAControlConfigurationProtocol>
+@interface AKAViewBindingConfiguration: NSObject<AKAControlConfigurationProtocol, NSCoding>
 
 #pragma mark - Structural configuration
 /// @name Structural configuration
@@ -146,6 +152,12 @@
  * data context.
  */
 @property(nonatomic)/*IBInspectable*/ NSString* validatorKeyPath;
+
+/**
+ * Determines whether the control is restricted to display the model value and will
+ * not change the model value as a result of user interactions.
+ */
+@property(nonatomic)/*IBInspectable*/ BOOL readOnly;
 
 @end
 

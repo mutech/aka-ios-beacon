@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import <AKACommons/AKAErrors.h>
 
 typedef enum AKAControlsErrorCodes
@@ -18,6 +17,10 @@ typedef enum AKAControlsErrorCodes
     AKAConversionErrorInvalidModelValueType,
     AKAConversionErrorInvalidViewValueType,
     AKAConversionErrorInvalidViewValueNumberParseError,
+
+    // Validation Error Codes
+    AKAValidationErrorInvalidEmailValueType,
+    AKAValidationErrorInvalidEmailNotMatchingRegEx,
 }
 AKAControlsErrorCodes;
 

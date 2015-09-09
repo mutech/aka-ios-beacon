@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class AKAControl;
+@class AKACompositeControl;
 
 @protocol AKAControlConverterDelegate <NSObject>
 
@@ -109,10 +110,35 @@
 
 @end
 
+@protocol AKAControlMembershipDelegate <NSObject>
+
+@optional
+- (void)        control:(AKACompositeControl*)compositeControl
+         willAddControl:(AKAControl*)memberControl
+                atIndex:(NSUInteger)index;
+
+@optional
+- (void)        control:(AKACompositeControl*)compositeControl
+          didAddControl:(AKAControl*)memberControl
+                atIndex:(NSUInteger)index;
+
+@optional
+- (void)        control:(AKACompositeControl*)compositeControl
+      willRemoveControl:(AKAControl*)memberControl
+              fromIndex:(NSUInteger)index;
+
+@optional
+- (void)        control:(AKACompositeControl*)compositeControl
+       didRemoveControl:(AKAControl*)memberControl
+              fromIndex:(NSUInteger)index;
+
+@end
+
 @protocol AKAControlDelegate <
     AKAControlConverterDelegate,
     AKAControlValidationDelegate,
-    AKAControlActivationDelegate
+    AKAControlActivationDelegate,
+    AKAControlMembershipDelegate
 >
 
 @optional

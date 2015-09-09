@@ -140,8 +140,6 @@
     {
         [mds removeUpTo:2
       rowsFromIndexPath:indexPath_0_1
-              tableView:self.tableView
-                 update:YES
        withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else if (rowsInSection0 == 1)
@@ -150,8 +148,6 @@
                       sourceIndexPath:indexPath_0_1
                                 count:2
                           atIndexPath:indexPath_0_1
-                            tableView:self.tableView
-                               update:YES
                      withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else if (rowsInSection0 == 4)
@@ -169,36 +165,32 @@
 
     if (self.alternative1Active)
     {
-        [mds beginUpdatesForTableView:self.tableView];
+        [mds beginUpdates];
 
         [mds        removeUpTo:1
              rowsFromIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                     tableView:self.tableView];
+           withRowAnimation:UITableViewRowAnimationAutomatic];
 
         [mds moveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]
-                    toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]
-                  tableView:self.tableView
-                     update:YES];
+                    toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 
 
-        [mds endUpdatesForTableView:self.tableView];
+        [mds endUpdates];
     }
     else
     {
-        [mds beginUpdatesForTableView:self.tableView];
+        [mds beginUpdates];
 
         [mds insertRowsFromDataSource:@"default"
                       sourceIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                                 count:1
                           atIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
-                            tableView:self.tableView];
+                     withRowAnimation:UITableViewRowAnimationAutomatic];
 
         [mds moveRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]
-                    toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]
-                      tableView:self.tableView
-                         update:YES];
+                    toIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
 
-        [mds endUpdatesForTableView:self.tableView];
+        [mds endUpdates];
     }
 }
 

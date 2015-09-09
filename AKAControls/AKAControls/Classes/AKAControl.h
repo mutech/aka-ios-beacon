@@ -118,8 +118,12 @@
  */
 @property(nonatomic, readonly, weak, nullable)AKACompositeControl* owner;
 
+#pragma mark - Rebinding
+
 #pragma mark - Value Access
 /// @name Accessing view and model values
+
+@property(nonatomic, readonly, nullable) AKAViewBinding* viewBinding;
 
 /**
  * The view presenting the control's state or nil if there is none.

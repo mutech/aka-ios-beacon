@@ -1,5 +1,5 @@
 //
-//  AKALabelControlViewBinding.m
+//  AKATextLabelControlViewBinding.m
 //  AKAControls
 //
 //  Created by Michael Utech on 31.03.15.
@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AKACommons/AKAProperty.h>
 
-#import "AKALabelBinding.h"
-#import "AKALabel.h"
+#import "AKATextLabelBinding.h"
+#import "AKATextLabel.h"
 
-@implementation AKALabelBinding
+@implementation AKATextLabelBinding
 
 #pragma mark - View Value Binding
 
@@ -56,19 +56,19 @@
 
 @end
 
-#pragma mark - AKALabelControlViewBindingConfiguration
+#pragma mark - AKATextLabelControlViewBindingConfiguration
 #pragma mark -
 
-@implementation AKALabelBindingConfiguration
+@implementation AKATextLabelBindingConfiguration
 
 - (Class)preferredBindingType
 {
-    return [AKALabelBinding class];
+    return [AKATextLabelBinding class];
 }
 
 - (Class)preferredViewType
 {
-    return [AKALabel class];
+    return [AKATextLabel class];
 }
 
 @end

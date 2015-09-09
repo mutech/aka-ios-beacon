@@ -11,6 +11,22 @@
 
 @implementation AKATableViewCell
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super initWithCoder:aDecoder])
+    {
+        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+}
+
+
 - (void)awakeFromNib
 {
     // Initialization code
@@ -27,11 +43,16 @@
 
 @synthesize bindingConfiguration = _bindingConfiguration;
 
+- (AKATableViewCellBindingConfiguration *)newBindingConfiguration
+{
+    return AKATableViewCellBindingConfiguration.new;
+}
+
 - (AKAViewBindingConfiguration*)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {
-        _bindingConfiguration = AKATableViewCellBindingConfiguration.new;
+        _bindingConfiguration = [self newBindingConfiguration];
     }
     return _bindingConfiguration;
 }
@@ -93,6 +114,16 @@
     self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
 }
 
+- (BOOL)readOnly
+{
+    return self.bindingConfiguration.readOnly;
+}
+- (void)setReadOnly:(BOOL)readOnly
+{
+    self.bindingConfiguration.readOnly = readOnly;
+    self.userInteractionEnabled = !readOnly;
+}
+
 @end
 
 @implementation AKATableViewCellBindingConfiguration
@@ -115,5 +146,4 @@
 @end
 
 @implementation AKATableViewCellBinding
-
 @end

@@ -46,6 +46,16 @@
     return [NSArray arrayWithArray:self.controlsStorage];
 }
 
+- (NSUInteger)countOfControls
+{
+    return self.controlsStorage.count;
+}
+
+- (id)objectInControlsAtIndex:(NSUInteger)index
+{
+    return [self.controlsStorage objectAtIndex:index];
+}
+
 - (NSUInteger)indexOfControl:(AKAControl*)control
 {
     return [self.controlsStorage indexOfObjectIdenticalTo:control];
@@ -53,38 +63,36 @@
 
 #pragma mark Adding and Removing Member Controls
 
-- (NSUInteger)insertControl:(out AKAControl**)controlStorage
-                    forView:(UIView*)view
-          withConfiguration:(AKAViewBindingConfiguration*)configuration
-                    atIndex:(NSUInteger)index
+- (AKAControl*)createControlForView:(UIView*)view
+                  withConfiguration:(AKAViewBindingConfiguration*)configuration
 {
-    NSUInteger count = 0;
-
     Class controlType = configuration.preferredControlType;
-    AKAControl* control;
-    control = [[controlType alloc] initWithOwner:self
-                                   configuration:configuration];
+    AKAControl* control = [[controlType alloc] initWithOwner:self
+                                               configuration:configuration];
 
     Class bindingType = configuration.preferredBindingType;
     AKAViewBinding* binding = [[bindingType alloc] initWithView:view
                                                   configuration:configuration
                                                        delegate:control];
     control.viewBinding = binding;
-    if ([self insertControl:control atIndex:index + count])
+
+    if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)
     {
-        ++count;
-        if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)
-        {
-            AKACompositeControl* composite = (AKACompositeControl*)control;
-            [composite addControlsForControlViewsInViewHierarchy:binding.view];
-        }
+        AKACompositeControl* composite = (AKACompositeControl*)control;
+        [composite autoAddControlsForBoundView];
     }
 
-    if (controlStorage != nil)
-    {
-        *controlStorage = control;
-    }
-    return count;
+    return control;
+}
+
+- (NSUInteger)autoAddControlsForBoundView
+{
+    return [self addControlsForBoundView];
+}
+
+- (NSUInteger)addControlsForBoundView
+{
+    return [self addControlsForControlViewsInViewHierarchy:self.viewBinding.view];
 }
 
 - (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index
@@ -108,6 +116,7 @@
     if (result)
     {
         AKAControl* control = [self.controlsStorage objectAtIndex:index];
+        [control stopObservingChanges];
         result = [self removeControl:control atIndex:index];
     }
     return result;
@@ -125,7 +134,70 @@
     return result;
 }
 
+- (NSUInteger)removeAllControls
+{
+    NSUInteger result = 0;
+
+    NSAssert(self.countOfControls <= NSIntegerMax, @"index overflow");
+    for (NSInteger i=self.countOfControls - 1; i >= 0; --i)
+    {
+        if ([self removeControlAtIndex:(NSUInteger)i])
+        {
+            ++result;
+        }
+    }
+    return result;
+}
+
 #pragma mark Delegat'ish Methods for Notifications and Customization
+
+- (void)        control:(AKACompositeControl *)compositeControl
+         willAddControl:(AKAControl *)memberControl atIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willAddControl:atIndex:)])
+    {
+        [delegate control:self willAddControl:memberControl atIndex:index];
+    }
+    [self.owner control:self willAddControl:memberControl atIndex:index];
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+          didAddControl:(AKAControl *)memberControl atIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didAddControl:atIndex:)])
+    {
+        [delegate control:self didAddControl:memberControl atIndex:index];
+    }
+    [self.owner control:self didAddControl:memberControl atIndex:index];
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+      willRemoveControl:(AKAControl *)memberControl fromIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willRemoveControl:fromIndex:)])
+    {
+        [delegate control:self willRemoveControl:memberControl fromIndex:index];
+    }
+    [self.owner control:self willRemoveControl:memberControl fromIndex:index];
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+       didRemoveControl:(AKAControl *)memberControl fromIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didRemoveControl:fromIndex:)])
+    {
+        [delegate control:self didRemoveControl:memberControl fromIndex:index];
+    }
+    [self.owner control:self didRemoveControl:memberControl fromIndex:index];
+}
 
 // TODO: add corresponding delegate methods and call them here
 
@@ -139,7 +211,7 @@
 
 - (void)willAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
-    (void)index; // not used
+    [self control:self willAddControl:control atIndex:index];
 
     // If by some ugly means the control changed ownership after we
     // tested it in shouldAddControl, this should throw an exception:
@@ -148,8 +220,19 @@
 
 - (void)didAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
-    (void)control; // not used
-    (void)index; // not used
+    [self control:self didAddControl:control atIndex:index];
+    if (!self.isObservingModelValueChanges && !self.isObservingViewValueChanges)
+    {
+        [control startObservingChanges];
+    }
+    else if (!self.isObservingViewValueChanges)
+    {
+        [control startObservingViewValueChanges];
+    }
+    else if (!self.isObservingModelValueChanges)
+    {
+        [control startObservingModelValueChanges];
+    }
 }
 
 - (BOOL)shouldRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
@@ -161,15 +244,15 @@
 
 - (void)willRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
-    (void)control; // not used
-    (void)index; // not used
+    [self control:self willRemoveControl:control fromIndex:index];
+    [control stopObservingChanges];
 }
 
 - (void)didRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
     (void)index; // not used
-
     [control setOwner:nil];
+    [self control:self didRemoveControl:control fromIndex:index];
 }
 
 #pragma mark - Change Tracking
@@ -290,11 +373,14 @@
 - (BOOL)activate
 {
     BOOL result = self.isActive;
+
     if (!result)
     {
         result = [super activate];
     }
-    if (!result)
+
+    AKAControl* activeMemberLeafControl = [self activeMemberLeafControl];
+    if (self.shouldAutoActivate && (activeMemberLeafControl == nil ||[activeMemberLeafControl isKindOfClass:[AKACompositeControl class]]))
     {
         __block AKAControl* autoActivatable;
         __block AKAControl* activatable;
@@ -667,17 +753,6 @@
     return [self removeControl:control atIndex:index];
 }
 
-- (NSUInteger)insertControl:(out AKAControl**)controlStorage
-             forControlView:(UIView<AKAControlViewProtocol>*)view
-                    atIndex:(NSUInteger)index
-{
-    AKAViewBindingConfiguration* configuration = view.bindingConfiguration;
-    return [self insertControl:controlStorage
-                       forView:view
-             withConfiguration:configuration
-                       atIndex:index];
-}
-
 - (NSUInteger)addControlsForControlViewsInViewHierarchy:(UIView*)rootView
 {
     return [self insertControlsForControlViewsInViewHierarchy:rootView
@@ -692,10 +767,11 @@
         (void)stop; // not used
         if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
         {
-            AKAControl* control = nil;
-            count += [self insertControl:&control
-                          forControlView:(id)view
-                                 atIndex:index + count];
+            UIView<AKAControlViewProtocol>* controlView = (id)view;
+            AKAControl* control = [self createControlForView:controlView
+                                           withConfiguration:controlView.bindingConfiguration];
+            [self insertControl:control atIndex:index + count];
+            ++count;
             if ([control isKindOfClass:[AKACompositeControl class]])
             {
                 *doNotDescend = YES;
@@ -705,13 +781,13 @@
     return count;
 }
 
-- (NSUInteger)addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+- (void)addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
 {
-    return [self insertControlsForControlViewsInOutletCollection:outletCollection
-                                                         atIndex:0];
+    [self insertControlsForControlViewsInOutletCollection:outletCollection
+                                                  atIndex:0];
 }
 
-- (NSUInteger)insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+- (void)insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
                                                       atIndex:(NSUInteger)index
 {
     NSUInteger count = 0;
@@ -719,9 +795,11 @@
     {
         if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
         {
-            count += [self insertControl:nil
-                          forControlView:(id)view
-                                 atIndex:index + count];
+            UIView<AKAControlViewProtocol>* controlView = (id)view;
+            AKAControl* control = [self createControlForView:controlView
+                                           withConfiguration:controlView.bindingConfiguration];
+            [self insertControl:control atIndex:index + count];
+            ++count;
         }
         else
         {
@@ -729,17 +807,16 @@
                                                                 atIndex:index + count];
         }
     }
-    return count;
 }
 
-- (NSUInteger)addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+- (void)addControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
 {
-    return [self insertControlsForControlViewsInOutletCollections:arrayOfOutletCollections
+    [self insertControlsForControlViewsInOutletCollections:arrayOfOutletCollections
                                                           atIndex:0];
 }
 
-- (NSUInteger)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
-                                                       atIndex:(NSUInteger)index
+- (void)insertControlsForControlViewsInOutletCollections:(NSArray*)arrayOfOutletCollections
+                                                 atIndex:(NSUInteger)index
 {
     NSUInteger count = 0;
     for (NSArray* outletCollection in arrayOfOutletCollections)
@@ -751,18 +828,17 @@
             [collectionControl addControlsForControlViewsInOutletCollection:outletCollection];
         }
     }
-    return count;
 }
 
-- (NSUInteger)addControlsForControlViewsInStaticTableView:(UITableView*)tableView
+- (void)addControlsForControlViewsInStaticTableView:(UITableView*)tableView
                                                dataSource:(id<UITableViewDataSource>)dataSource
 {
-    return [self insertControlsForControlViewsInStaticTableView:tableView
-                                                     dataSource:dataSource
-                                                        atIndex:self.controlsStorage.count];
+    [self insertControlsForControlViewsInStaticTableView:tableView
+                                              dataSource:dataSource
+                                                 atIndex:self.controlsStorage.count];
 }
 
-- (NSUInteger)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
+- (void)insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
                                                   dataSource:(id<UITableViewDataSource>)dataSource
                                                      atIndex:(NSUInteger)index
 {
@@ -777,14 +853,19 @@
             UITableViewCell* cell = [tableView cellForRowAtIndexPath:indexPath];
             if (cell == nil)
             {
+                // Offscreen cells will not be delivered by the table view. Since this method
+                // is restricted to static table views, we can reasonably expect that
+                // the cells returned by the data source will be the same instances that
+                // we would get from the table view. Handling dynamic cells is much more
+                // complicated and will hopefully be implemented in a later version.
                 cell = [dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
             }
             if ([cell conformsToProtocol:@protocol(AKAControlViewProtocol)])
             {
-                AKAControl* control = nil;
-                count += [self insertControl:&control
-                              forControlView:(UITableViewCell<AKAControlViewProtocol>*)cell
-                                     atIndex:index + count];
+                UIView<AKAControlViewProtocol>* controlView = (id)cell;
+                AKAControl* control = [self createControlForView:controlView
+                                               withConfiguration:controlView.bindingConfiguration];
+
                 if ([control isKindOfClass:[AKATableViewCellCompositeControl class]])
                 {
                     // Record the indexPath (and while we are at it, also tableView and dataSource)
@@ -796,8 +877,12 @@
                     tvccp.indexPath = indexPath;
                     tvccp.tableView = tableView;
                     tvccp.dataSource = dataSource;
-                    // Content controls are handle below
-                }            }
+                    // Content controls are handled below
+                }
+
+                [self insertControl:control atIndex:index + count];
+                ++count;
+            }
             else if (cell != nil)
             {
                 // If the cell is not a control view, handle is like any other view (scanning its
@@ -808,7 +893,6 @@
             }
         }
     }
-    return count;
 }
 
 - (void)enumerateControlsUsingBlock:(void(^)(AKAControl* control, NSUInteger index, BOOL* stop))block

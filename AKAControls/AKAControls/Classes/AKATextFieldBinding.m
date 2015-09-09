@@ -70,14 +70,20 @@
                           observationStarter:
               ^BOOL (id target)
               {
-                  // NOTE: the text field delegate is responsible to notify the property of changes!
                   AKATextFieldBinding* binding = target;
-                  binding.originalText = binding.textField.text;
-                  binding.savedTextViewDelegate = binding.textField.delegate;
-                  binding.textField.delegate = binding;
-                  [binding.textField addTarget:binding
-                                        action:@selector(textFieldDidChange:)
-                              forControlEvents:UIControlEventEditingChanged];
+                  if (binding.textField.delegate == binding)
+                  {
+                      AKALogError(@"Binding %@ is already observing %@", binding, binding.textField);
+                  }
+                  else
+                  {
+                      binding.originalText = binding.textField.text;
+                      binding.savedTextViewDelegate = binding.textField.delegate;
+                      binding.textField.delegate = binding;
+                      [binding.textField addTarget:binding
+                                            action:@selector(textFieldDidChange:)
+                                  forControlEvents:UIControlEventEditingChanged];
+                  }
                   return YES;
               }
                           observationStopper:
@@ -101,6 +107,7 @@
 
 - (void)setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
 {
+    NSParameterAssert(savedTextViewDelegate != self);
     _savedTextViewDelegate = savedTextViewDelegate;
 }
 

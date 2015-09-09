@@ -112,6 +112,36 @@ static BOOL _attemptRecoveryActions = YES;
     return result;
 }
 
+#pragma mark - Validation Errors
+
++ (NSError *)errorForInvalidEmailAddressValueType:(id)value
+{
+    NSString* reason = [NSString stringWithFormat:@"Invalid type %@, expected an instance of %@",
+                        NSStringFromClass([value class]),
+                        NSStringFromClass([NSString class])];
+    NSString* description = [NSString stringWithFormat:@"Validation error: Failed to validate `%@' as email address: %@",
+                             value,
+                             reason];
+    NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
+                                          code:AKAValidationErrorInvalidEmailValueType
+                                      userInfo:
+                       @{ NSLocalizedDescriptionKey: description,
+                          NSLocalizedFailureReasonErrorKey: reason
+                          }];
+    return result;
+}
+
++ (NSError *)errorForInvalidEmailAddress:(NSString *)text withRegularExpression:(NSString *)failedRegEx
+{
+    NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
+                                          code:AKAValidationErrorInvalidEmailNotMatchingRegEx
+                                      userInfo:
+                       @{ NSLocalizedDescriptionKey: @"Invalid email address (RFC 2822)",
+                          @"REGEX": failedRegEx
+                          }];
+    return result;
+}
+
 #pragma mark - Control Ownership
 
 + (void)invalidAttemptToSetOwnerOfControl:(AKAControl*)control

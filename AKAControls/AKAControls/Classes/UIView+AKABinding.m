@@ -34,9 +34,9 @@ static const char bindingAssociationKey;
     AKAViewBinding* oldBinding = self.aka_binding;
     if (binding != oldBinding)
     {
-        if (oldBinding == nil && binding.view == self)
+        if (YES) //oldBinding == nil && binding.view == self)
         {
-            objc_setAssociatedObject(self, &bindingAssociationKey, binding, OBJC_ASSOCIATION_ASSIGN);
+            objc_setAssociatedObject(self, &bindingAssociationKey, binding, OBJC_ASSOCIATION_RETAIN); // ASSIGN
             if ([self conformsToProtocol:@protocol(AKAControlViewProtocol)])
             {
                 if ([self respondsToSelector:@selector(viewBindingChangedFrom:to:)])
@@ -49,7 +49,7 @@ static const char bindingAssociationKey;
         }
         else
         {
-            [AKAControlsErrors invalidAttemptToBindView:self toBinding:binding];
+            //[AKAControlsErrors invalidAttemptToBindView:self toBinding:binding];
         }
     }
 }

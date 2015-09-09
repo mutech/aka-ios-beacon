@@ -27,7 +27,7 @@
  * @note This property should only be used by inheriting classes. Use the methods provided by AKAControl and its subclasses instead of calling binding methods directly. Please file a bug report if functionality is missing.
  *
  */
-@property(nonatomic, strong, readonly) AKAViewBinding* viewBinding;
+@property(nonatomic, strong) AKAViewBinding* viewBinding;
 
 #pragma mark - Value Properties
 
@@ -52,6 +52,15 @@
  */
 - (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
                           withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver;
+
+/**
+ * Returns the value of the control'data context for the specified key path.
+ *
+ * @param keyPath the key path relative to the control's data context
+ *
+ * @return the value for the specified key in the control's data context.
+ */
+- (id)dataContextValueAtKeyPath:(NSString*)keyPath;
 
 /**
  * The AKAProperty providing access to the controls modelValue.

@@ -8,7 +8,7 @@
 
 #import "AKAFormTableViewControllerDemo.h"
 #import <AKAControls/AKAControlDelegate.h>
-#import <AKAControls/AKALabel.h>
+#import <AKAControls/AKATextLabel.h>
 #import <AKAControls/UIView+AKABinding.h>
 
 @interface AKAFormTableViewControllerDemo () <AKAControlDelegate>
@@ -16,7 +16,7 @@
 @property(nonatomic) BOOL showPersonalInformation;
 @property(nonatomic) BOOL showPersonalInformation2;
 
-@property (weak, nonatomic) IBOutlet AKALabel *modelValueLabel;
+@property (weak, nonatomic) IBOutlet AKATextLabel *modelValueLabel;
 
 @end
 

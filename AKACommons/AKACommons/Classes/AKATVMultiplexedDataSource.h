@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AKATVCoordinateMappingProtocol.h"
-@class AKATVDataSourceSpecification;
+#import "AKATVDataSourceSpecification.h"
 
 #pragma mark - AKAMultiplexedTableViewDataSourceBase
 #pragma mark -
@@ -40,7 +40,8 @@
  */
 @interface AKATVMultiplexedDataSource: NSObject<
     UITableViewDataSource,
-    UITableViewDelegate
+    UITableViewDelegate,
+    AKATVDataSourceSpecificationDelegate
 >
 
 #pragma mark - Initialization
@@ -237,7 +238,7 @@
 
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
 
-- (BOOL)resolveIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage
+- (BOOL)resolveIndexPath:(out NSIndexPath*__strong __nullable* __nullable)indexPathStorage
       forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
             inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource;
 

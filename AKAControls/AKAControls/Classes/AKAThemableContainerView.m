@@ -52,6 +52,10 @@
     if (self)
     {
         [self setupDefaultValues];
+        if (self.subviews.count > 0)
+        {
+            [self valdiateAndSetupSubviews];
+        }
     }
     return self;
 }

@@ -63,13 +63,10 @@
 
     if (result)
     {
-        editor.valueKeyPath = self.valueKeyPath;
         editor.autoActivate = self.autoActivate;
         editor.KBActivationSequence = self.KBActivationSequence;
         editor.liveModelUpdates = self.liveModelUpdates;
-        editor.validatorKeyPath = self.validatorKeyPath;
-        editor.converterKeyPath = self.converterKeyPath;
-        
+
         editor.text = @"";
 
         *createdView = editor;

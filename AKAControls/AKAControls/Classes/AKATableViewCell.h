@@ -48,7 +48,7 @@ IB_DESIGNABLE
  * The key path refering to the controls model value relative to
  * the controls data context.
  */
-@property(nonatomic) /*IBInspectable*/ NSString* valueKeyPath;
+@property(nonatomic) IBInspectable NSString* valueKeyPath;
 
 /**
  * The key path refering to the converter used to convert between model and view values.
@@ -67,6 +67,13 @@ IB_DESIGNABLE
  * data context.
  */
 @property(nonatomic) /*IBInspectable*/ NSString* validatorKeyPath;
+
+/**
+ * Determines whether the control is restricted to display the model value and will
+ * not change the model value as a result of user interactions. Setting this property
+ * to YES will disable user interactions.
+ */
+@property(nonatomic) IBInspectable BOOL readOnly;
 
 #pragma mark - Outlets
 

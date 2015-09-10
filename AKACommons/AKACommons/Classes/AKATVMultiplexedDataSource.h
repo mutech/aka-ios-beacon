@@ -90,7 +90,7 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, nonnull, readonly, weak) UITableView* tableView;
+@property(nonatomic, readonly, weak) UITableView* tableView;
 
 #pragma mark - Managing Data Sources and associated Delegates
 
@@ -227,6 +227,11 @@
        rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
         withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
+#pragma mark - Updating rows
+
+- (void)reloadRowsAtIndexPaths:(NSArray*__nonnull)indexPaths
+              withRowAnimation:(UITableViewRowAnimation)rowAnimation;
+
 #pragma mark - Moving Rows
 
 - (void)moveRowAtIndex:(NSInteger)rowIndex
@@ -235,6 +240,17 @@
 
 - (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
                toIndexPath:(NSIndexPath*__nonnull)targetIndexPath;
+
+/**
+ * This announces to the tableview that the row moved as specified but does not make
+ * any changes to the index path mapping of the multiplexer. Update batches are however
+ * aware of the moved row and will correct index paths accordingly.
+ *
+ * @param indexPath the previous index path of the moved row.
+ * @param targetIndexPath the new index path of the moved row.
+ */
+- (void)rowAtIndexPath:(NSIndexPath*__nonnull)indexPath
+    didMoveToIndexPath:(NSIndexPath*__nonnull)targetIndexPath;
 
 #pragma mark - Resolve Source Data Sources, Delegates and Coordinates
 

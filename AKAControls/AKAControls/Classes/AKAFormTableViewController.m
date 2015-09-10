@@ -79,7 +79,7 @@
             // placeholder cell as a prototype for instances.
             NSData* archived = [NSKeyedArchiver archivedDataWithRootObject:self.placeholderCell];
             result = [NSKeyedUnarchiver unarchiveObjectWithData:archived];
-            AKALogDebug(@"Cloned placeholder cell %@ for row at index path %@: %@", self.placeholderCell, indexPath, result);
+            //AKALogDebug(@"Cloned placeholder cell %@ for row at index path %@: %@", self.placeholderCell, indexPath, result);
             [memberControl aka_setAssociatedValue:result forKey:@"strongCellReference"];
         }
         [memberControl removeAllControls];
@@ -175,7 +175,7 @@ static NSString* const defaultDataSourceKey = @"default";
     {
         [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableHeaderView];
     }
-    // Create controls for control views in tableview cells
+
     [self.formControl addControlsForControlViewsInStaticTableView:self.tableView
                                                        dataSource:self.tableView.dataSource];
     if (self.tableView.tableFooterView)
@@ -204,6 +204,10 @@ static NSString* const defaultDataSourceKey = @"default";
 {
     if ([memberControl isKindOfClass:[AKADynamicPlaceholderTableViewCellCompositeControl class]])
     {
+        // Please note that instances for placeholder controls which are added to the
+        // placeholder are using AKACompositeControl's and will not be covered here
+        // (which would result in some chaotic recursion)
+
         AKADynamicPlaceholderTableViewCellCompositeControl* placeholder = (id)memberControl;
 
         [self.dynamicPlaceholderCellControls addObject:placeholder];
@@ -267,7 +271,10 @@ static NSString* const defaultDataSourceKey = @"default";
 
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
-    AKATVDataSourceSpecification* dataSource = [self dataSourceForKey:key inMultiplexer:self.multiplexedDataSource];
+    // Entry point for sub classes to provide an alternative data source by redefining
+    // the dataSourceForKey:inMultiplexer method:
+    AKATVDataSourceSpecification* dataSource = [self dataSourceForKey:key
+                                                        inMultiplexer:self.multiplexedDataSource];
 
     if (dataSource == nil && config.valueKeyPath.length > 0)
     {
@@ -276,11 +283,15 @@ static NSString* const defaultDataSourceKey = @"default";
 
         if (config.dataSourceKeyPath.length > 0)
         {
+            // Use the configured data source
             uitvDataSource = [placeholder dataContextValueAtKeyPath:config.dataSourceKeyPath];
         }
         else if (config.valueKeyPath.length > 0)
         {
+            // Create a data source for configured value (-> expecting a collection value)
             uitvDataSource = [[AKAArrayTableViewDataSourceAndDelegate alloc] initWithControl:placeholder];
+            // Use the delegate implementation provided by the data source by default, might
+            // be overwritten below
             uitvDelegate = (id)uitvDataSource;
             // Keep a strong reference of the data source:
             [placeholder aka_setAssociatedValue:uitvDataSource forKey:@"arrayDataSource"];
@@ -288,6 +299,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
         if (config.delegateKeyPath.length > 0)
         {
+            // Use the configured delegate
             uitvDelegate = [placeholder dataContextValueAtKeyPath:config.delegateKeyPath];
         }
 
@@ -318,65 +330,74 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
+- (NSArray*)rowControls:(NSArray*)rowControls
+          sortedInOrder:(NSComparisonResult)order
+{
+    __block NSArray* result = rowControls;
+    if (order != NSOrderedSame)
+    {
+        AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
+        result = [rowControls sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            AKATableViewCellCompositeControl* cell1 = obj1;
+            AKATableViewCellCompositeControl* cell2 = obj2;
+            NSIndexPath* i1 = [dsSpec tableViewMappedIndexPath:cell1.indexPath];
+            NSIndexPath* i2 = [dsSpec tableViewMappedIndexPath:cell2.indexPath];
+            NSComparisonResult result = order == NSOrderedAscending ? [i1 compare:i2] : [i2 compare:i1];
+            return result;
+        }];
+    }
+    return result;
+}
+
+- (void)hideRowControl:(AKATableViewCellCompositeControl*)rowControl
+         withAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
+    __strong NSIndexPath* tableViewIndexPath = [dsSpec tableViewMappedIndexPath:rowControl.indexPath];
+    if (tableViewIndexPath)
+    {
+        [self.multiplexedDataSource removeUpTo:1
+                             rowsFromIndexPath:tableViewIndexPath
+                              withRowAnimation:rowAnimation];
+        self.hiddenControlCellsInfo[rowControl.indexPath] = tableViewIndexPath;
+    }
+}
+
 - (void)hideRowControls:(NSArray*)rowControls
        withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
-    NSArray* sortedByIndexPath = [rowControls sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        AKATableViewCellCompositeControl* cell1 = obj1;
-        AKATableViewCellCompositeControl* cell2 = obj2;
-        NSIndexPath* i1 = [dsSpec tableViewMappedIndexPath:cell1.indexPath];
-        NSIndexPath* i2 = [dsSpec tableViewMappedIndexPath:cell2.indexPath];
-        NSComparisonResult result = [i1 compare:i2];
-        if (result == NSOrderedAscending)
-        {
-            result = NSOrderedDescending;
-        }
-        else if (result == NSOrderedDescending)
-        {
-            result = NSOrderedAscending;
-        }
-        return result;
-    }];
+    NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedDescending];
     [self.multiplexedDataSource beginUpdates];
-    for (AKATableViewCellCompositeControl* controlCell in sortedByIndexPath)
+    for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
     {
-        __strong NSIndexPath* tableViewIndexPath = [dsSpec tableViewMappedIndexPath:controlCell.indexPath];
-        if (tableViewIndexPath)
-        {
-            [self.multiplexedDataSource removeUpTo:1
-                                 rowsFromIndexPath:tableViewIndexPath
-                                  withRowAnimation:rowAnimation];
-            self.hiddenControlCellsInfo[controlCell.indexPath] = tableViewIndexPath;
-        }
+        [self hideRowControl:rowControl withAnimation:rowAnimation];
     }
     [self.multiplexedDataSource endUpdates];
+}
+
+- (void)unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
+           withAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    NSIndexPath* tableViewIndexPath = self.hiddenControlCellsInfo[rowControl.indexPath];
+    if (tableViewIndexPath)
+    {
+        [self.multiplexedDataSource insertRowsFromDataSource:@"default"
+                                             sourceIndexPath:rowControl.indexPath
+                                                       count:1
+                                                 atIndexPath:tableViewIndexPath
+                                            withRowAnimation:rowAnimation];
+        [self.hiddenControlCellsInfo removeObjectForKey:rowControl.indexPath];
+    }
 }
 
 - (void)unhideRowControls:(NSArray*)rowControls
          withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    NSArray* sortedByIndexPath = [rowControls sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        AKATableViewCellCompositeControl* cell1 = obj1;
-        AKATableViewCellCompositeControl* cell2 = obj2;
-        NSIndexPath* i1 = self.hiddenControlCellsInfo[cell1.indexPath];
-        NSIndexPath* i2 = self.hiddenControlCellsInfo[cell2.indexPath];
-        NSComparisonResult result = [i1 compare:i2];
-        return result;
-    }];
+    NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedAscending];
     [self.multiplexedDataSource beginUpdates];
-    for (AKATableViewCellCompositeControl* controlCell in sortedByIndexPath)
+    for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
     {
-        NSIndexPath* tableViewIndexPath = self.hiddenControlCellsInfo[controlCell.indexPath];
-        if (tableViewIndexPath)
-        {
-            [self.multiplexedDataSource insertRowsFromDataSource:@"default"
-                                                 sourceIndexPath:controlCell.indexPath
-                                                           count:1
-                                                     atIndexPath:tableViewIndexPath
-                                                withRowAnimation:rowAnimation];
-            [self.hiddenControlCellsInfo removeObjectForKey:controlCell.indexPath];
-        }
+        [self unhideRowControl:rowControl withAnimation:rowAnimation];
     }
     [self.multiplexedDataSource endUpdates];
 }
@@ -401,89 +422,147 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (BOOL)updateDynamicRowsForPlaceholderControl:(AKATableViewCellCompositeControl*)placeholder
+- (BOOL)updateDynamicRowsForPlaceholderControl:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
-    // Update control structure for model value item collection:
-    [placeholder removeAllControls];
-    id items = placeholder.modelValue;
-    if ([items isKindOfClass:[NSSet class]])
-    {
-        items = [((NSSet*)items) allObjects];
-    }
-    if ([items isKindOfClass:[NSArray class]])
-    {
-        int i=0;
-        for (id item in (NSArray*)items)
-        {
-            AKACompositeViewBindingConfiguration* configuration = AKACompositeViewBindingConfiguration.new;
-            configuration.valueKeyPath = [NSString stringWithFormat:@"#%d", i++];
-            // TODO: create a configuration based on placeholder config
-            AKACompositeControl* composite = [AKACompositeControl controlWithOwner:placeholder
-                                                                     configuration:configuration];
-            // keep a strong reference to the item
-            [composite aka_setAssociatedValue:item forKey:@"data_item"];
-            [placeholder addControl:composite];
-        }
-    }
-
-    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config =
-        (AKADynamicPlaceholderTableViewCellBindingConfiguraton*)placeholder.viewBinding.configuration;
-
-    NSUInteger currentActualNumberOfRows = placeholder.actualNumberOfRows;
-
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
     AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:@"default"];
-    AKATVDataSourceSpecification* placeholderDS = [self dataSourceForKey:key
-                                                   inMultiplexer:self.multiplexedDataSource];
+//    AKATVDataSourceSpecification* placeholderDS = [self dataSourceForKey:key                                                           inMultiplexer:self.multiplexedDataSource];
+    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config =
+        (id)placeholder.viewBinding.configuration;
 
+    NSInteger placeholderOffset = 1; // Set to 0 if placeholder is removed
     NSIndexPath* targetIndexPath = [defaultDS tableViewMappedIndexPath:placeholder.indexPath];
     BOOL result = (targetIndexPath != nil);
 
-    if (result)
+    id modelValue = placeholder.modelValue;
+    NSArray* items = nil;
+    if ([modelValue isKindOfClass:[NSSet class]])
     {
-        targetIndexPath = [NSIndexPath indexPathForRow:targetIndexPath.row + 1
-                                             inSection:targetIndexPath.section];
-
-        NSIndexPath* sourceIndexPath = [NSIndexPath indexPathForRow:config.rowIndex
-                                                          inSection:config.sectionIndex];
-
-        NSUInteger count = config.numberOfRows;
-        if (count == 0)
-        {
-            count = [placeholderDS.dataSource tableView:self.multiplexedDataSource.tableView
-                                  numberOfRowsInSection:0];
-        }
-
-        [self.multiplexedDataSource beginUpdates];
-        if (currentActualNumberOfRows > 0)
-        {
-            [self.multiplexedDataSource removeUpTo:currentActualNumberOfRows
-                                 rowsFromIndexPath:targetIndexPath
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
-
-        }
-        if (count > 0)
-        {
-            [self.multiplexedDataSource insertRowsFromDataSource:key
-                                                 sourceIndexPath:sourceIndexPath
-                                                           count:count
-                                                     atIndexPath:targetIndexPath
-                                                withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-        placeholder.actualNumberOfRows = count;
-        [self.multiplexedDataSource endUpdates];
-
-        [self.tableView reloadData];
+        items = [((NSSet*)modelValue) allObjects];
+    }
+    else if ([modelValue isKindOfClass:[NSMutableArray class]])
+    {
+        items = [NSArray arrayWithArray:modelValue];
+    }
+    else if ([modelValue isKindOfClass:[NSArray class]])
+    {
+        items = modelValue;
     }
     else
     {
-        placeholder.actualNumberOfRows = 0;
+        items = @[];
     }
 
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    NSMutableArray* deferredReloadIndexes = NSMutableArray.new;
 
+    [self.multiplexedDataSource beginUpdates];
+
+    // Controls are recreated on every call to make things a bit easier
+    [placeholder removeAllControls];
+
+    // Remove items no longer in new items collection
+    NSMutableArray* oldItems = nil;
+    if (placeholder.actualItems.count > 0)
+    {
+        oldItems = [NSMutableArray arrayWithArray:placeholder.actualItems];
+        for (NSInteger i=oldItems.count-1; i >= 0; --i)
+        {
+            id oldItem = oldItems[i];
+            if ([items indexOfObject:oldItem] == NSNotFound)
+            {
+                [oldItems removeObjectAtIndex:i];
+                NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                                                      inSection:targetIndexPath.section];
+                if (result)
+                {
+                    [self.multiplexedDataSource removeUpTo:1
+                                         rowsFromIndexPath:tip
+                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
+            }
+        }
+    }
+    else
+    {
+        oldItems = NSMutableArray.new;
+    }
+
+    // Process insertions and movements
+    NSUInteger insertedItemCount = 0;
+
+    for (NSInteger i=0; i < ((NSArray*)items).count; ++i)
+    {
+        id item = ((NSArray*)items)[i];
+        NSInteger oldIndex = [oldItems indexOfObject:item];
+
+        if (oldIndex == NSNotFound)
+        {
+            NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                                                  inSection:targetIndexPath.section];
+            NSIndexPath* sourceIndexPath = [NSIndexPath indexPathForRow:config.rowIndex+i
+                                                              inSection:config.sectionIndex];
+            if (result)
+            {
+                [self.multiplexedDataSource insertRowsFromDataSource:key
+                                                     sourceIndexPath:sourceIndexPath
+                                                               count:1
+                                                         atIndexPath:tip
+                                                    withRowAnimation:UITableViewRowAnimationFade];
+            }
+            ++insertedItemCount;
+        }
+        else if (oldIndex + insertedItemCount != i)
+        {
+            NSAssert(oldIndex + insertedItemCount > i, @"");
+
+            [oldItems removeObjectAtIndex:oldIndex];
+
+            if (result)
+            {
+                NSIndexPath* fromTip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+oldIndex + insertedItemCount
+                                                          inSection:targetIndexPath.section];
+                NSIndexPath* toTip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                                                        inSection:targetIndexPath.section];
+                [self.multiplexedDataSource rowAtIndexPath:fromTip
+                                            didMoveToIndexPath:toTip];
+            }
+            ++insertedItemCount;
+        }
+        else
+        {
+            // Assume a content change for non-inserted/deleted/moved items
+            if (result)
+            {
+                [deferredReloadIndexes addObject:[NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                                                                    inSection:targetIndexPath.section]];
+            }
+        }
+    }
+
+    // (Re-)create controls for dynamic rows
+    NSInteger i=0;
+    for (id item in items)
+    {
+        AKACompositeViewBindingConfiguration* configuration = AKACompositeViewBindingConfiguration.new;
+        configuration.valueKeyPath = [NSString stringWithFormat:@"#%ld", (long)i++];
+        AKACompositeControl* composite = [AKACompositeControl controlWithOwner:placeholder
+                                                                 configuration:configuration];
+        // keep a strong reference to the item
+        [composite aka_setAssociatedValue:item forKey:@"data_item"];
+        [placeholder addControl:composite];
+    }
+
+    placeholder.actualItems = items;
+    placeholder.actualNumberOfRows = 0;
+    
+    [self.multiplexedDataSource endUpdates];
+    if (deferredReloadIndexes.count > 0)
+    {
+        [self.multiplexedDataSource reloadRowsAtIndexPaths:deferredReloadIndexes
+                                          withRowAnimation:UITableViewRowAnimationFade];
+    }
+    
     return result;
 }
 

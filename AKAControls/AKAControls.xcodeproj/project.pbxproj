@@ -96,6 +96,14 @@
 		8E7233B81B0022A200D647A9 /* UIView+AKAThemeProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7233621B0022A200D647A9 /* UIView+AKAThemeProvider.m */; };
 		8E81B6691B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E81B6671B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */; };
+		8E979A431B9FE28500E0D29C /* AKABooleanLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E979A411B9FE28500E0D29C /* AKABooleanLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E979A441B9FE28500E0D29C /* AKABooleanLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E979A421B9FE28500E0D29C /* AKABooleanLabel.m */; };
+		8E979A471B9FE30500E0D29C /* AKABooleanLabelBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E979A451B9FE30500E0D29C /* AKABooleanLabelBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E979A481B9FE30500E0D29C /* AKABooleanLabelBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E979A461B9FE30500E0D29C /* AKABooleanLabelBinding.m */; };
+		8E979A4B1B9FE6B100E0D29C /* AKABooleanTextConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */; };
+		8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */; };
+		8ECEEC421BA08F4000B73FC0 /* AKACompositeControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8ECEEC431BA08F4000B73FC0 /* AKACompositeControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */; };
 		8EEFCAE11B9FC490004ACBD2 /* AKAControls_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EEFCAE01B9FC490004ACBD2 /* AKAControls_Tests.m */; };
 		8EEFCAE21B9FC490004ACBD2 /* AKAControls.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E7232F01B00224400D647A9 /* AKAControls.framework */; };
 		8EEFCAE91B9FC882004ACBD2 /* AKAControls.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */; };
@@ -220,6 +228,14 @@
 		8E7233DA1B00D6DD00D647A9 /* Pods_AKAControlsTests.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_AKAControlsTests.framework; path = "Pods/../build/Debug-iphoneos/Pods_AKAControlsTests.framework"; sourceTree = "<group>"; };
 		8E81B6671B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKADynamicPlaceholderTableViewCellCompositeControl.h; sourceTree = "<group>"; };
 		8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKADynamicPlaceholderTableViewCellCompositeControl.m; sourceTree = "<group>"; };
+		8E979A411B9FE28500E0D29C /* AKABooleanLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABooleanLabel.h; sourceTree = "<group>"; };
+		8E979A421B9FE28500E0D29C /* AKABooleanLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanLabel.m; sourceTree = "<group>"; };
+		8E979A451B9FE30500E0D29C /* AKABooleanLabelBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABooleanLabelBinding.h; sourceTree = "<group>"; };
+		8E979A461B9FE30500E0D29C /* AKABooleanLabelBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanLabelBinding.m; sourceTree = "<group>"; };
+		8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABooleanTextConverter.h; sourceTree = "<group>"; };
+		8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanTextConverter.m; sourceTree = "<group>"; };
+		8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACompositeControlView.h; sourceTree = "<group>"; };
+		8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACompositeControlView.m; sourceTree = "<group>"; };
 		8EEFCADC1B9FC490004ACBD2 /* AKAControlsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EEFCADF1B9FC490004ACBD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8EEFCAE01B9FC490004ACBD2 /* AKAControls_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControls_Tests.m; sourceTree = "<group>"; };
@@ -343,8 +359,6 @@
 				8E7233CA1B00348400D647A9 /* Converter */,
 				8E7233CB1B0034AD00D647A9 /* Validators */,
 				8E7233CC1B0034C800D647A9 /* ControlViews */,
-				8E7233101B0022A200D647A9 /* AKACompositeViewBindingConfiguration.h */,
-				8E7233111B0022A200D647A9 /* AKACompositeViewBindingConfiguration.m */,
 				8E72331E1B0022A200D647A9 /* AKAControlViewProtocol.h */,
 				8E7233281B0022A200D647A9 /* AKAFormTableViewController.h */,
 				8E7233291B0022A200D647A9 /* AKAFormTableViewController.m */,
@@ -366,10 +380,6 @@
 				8E7233561B0022A200D647A9 /* AKAThemeProviderProtocol.h */,
 				8E7233571B0022A200D647A9 /* AKAThemeViewApplicability.h */,
 				8E7233581B0022A200D647A9 /* AKAThemeViewApplicability.m */,
-				8E7233591B0022A200D647A9 /* AKAViewBinding.h */,
-				8E72335A1B0022A200D647A9 /* AKAViewBinding.m */,
-				8E72335B1B0022A200D647A9 /* AKAViewBindingConfiguration.h */,
-				8E72335C1B0022A200D647A9 /* AKAViewBindingConfiguration.m */,
 				8E72335D1B0022A200D647A9 /* AKAViewCustomization.h */,
 				8E72335E1B0022A200D647A9 /* AKAViewCustomization.m */,
 				8E72335F1B0022A200D647A9 /* UIView+AKABinding.h */,
@@ -407,6 +417,8 @@
 				8E7233161B0022A200D647A9 /* AKAControlConverterProtocol.h */,
 				8E7233361B0022A200D647A9 /* AKANumberTextConverter.h */,
 				8E7233371B0022A200D647A9 /* AKANumberTextConverter.m */,
+				8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */,
+				8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */,
 			);
 			name = Converter;
 			sourceTree = "<group>";
@@ -424,6 +436,10 @@
 		8E7233CC1B0034C800D647A9 /* ControlViews */ = {
 			isa = PBXGroup;
 			children = (
+				8E7233591B0022A200D647A9 /* AKAViewBinding.h */,
+				8E72335A1B0022A200D647A9 /* AKAViewBinding.m */,
+				8E72335B1B0022A200D647A9 /* AKAViewBindingConfiguration.h */,
+				8E72335C1B0022A200D647A9 /* AKAViewBindingConfiguration.m */,
 				8E7233CE1B00350300D647A9 /* ScalarControlViews */,
 				8E7233CD1B0034D600D647A9 /* CompositeControlViews */,
 			);
@@ -433,6 +449,12 @@
 		8E7233CD1B0034D600D647A9 /* CompositeControlViews */ = {
 			isa = PBXGroup;
 			children = (
+				8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */,
+				8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */,
+				8E7233101B0022A200D647A9 /* AKACompositeViewBindingConfiguration.h */,
+				8E7233111B0022A200D647A9 /* AKACompositeViewBindingConfiguration.m */,
+				DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */,
+				DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */,
 				8E7233211B0022A200D647A9 /* AKAEditorControlView.h */,
 				8E7233221B0022A200D647A9 /* AKAEditorControlView.m */,
 				8E7233231B0022A200D647A9 /* AKAEditorControlView_Protected.h */,
@@ -448,8 +470,6 @@
 				8E7233451B0022A200D647A9 /* AKATableViewCell.m */,
 				8E72331F1B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.h */,
 				8E7233201B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m */,
-				DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */,
-				DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */,
 			);
 			name = CompositeControlViews;
 			sourceTree = "<group>";
@@ -461,6 +481,10 @@
 				8E72332F1B0022A200D647A9 /* AKATextLabel.m */,
 				8E7233301B0022A200D647A9 /* AKATextLabelBinding.h */,
 				8E7233311B0022A200D647A9 /* AKATextLabelBinding.m */,
+				8E979A411B9FE28500E0D29C /* AKABooleanLabel.h */,
+				8E979A421B9FE28500E0D29C /* AKABooleanLabel.m */,
+				8E979A451B9FE30500E0D29C /* AKABooleanLabelBinding.h */,
+				8E979A461B9FE30500E0D29C /* AKABooleanLabelBinding.m */,
 				8E72334A1B0022A200D647A9 /* AKATextField.h */,
 				8E72334B1B0022A200D647A9 /* AKATextField.m */,
 				8E72334C1B0022A200D647A9 /* AKATextField_Protected.h */,
@@ -500,6 +524,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E979A4B1B9FE6B100E0D29C /* AKABooleanTextConverter.h in Headers */,
 				8E7232F61B00224400D647A9 /* AKAControls.h in Headers */,
 				8E72336E1B0022A200D647A9 /* AKAControlsErrors.h in Headers */,
 				8E7233711B0022A200D647A9 /* AKAControlsStyleKit.h in Headers */,
@@ -526,6 +551,7 @@
 				8E7233A21B0022A200D647A9 /* AKATextField_Protected.h in Headers */,
 				8E7233A31B0022A200D647A9 /* AKATextFieldBinding.h in Headers */,
 				8E72338E1B0022A200D647A9 /* AKANumberTextField.h in Headers */,
+				8E979A431B9FE28500E0D29C /* AKABooleanLabel.h in Headers */,
 				8E7233941B0022A200D647A9 /* AKASwitch.h in Headers */,
 				8E7233961B0022A200D647A9 /* AKASwitchBinding.h in Headers */,
 				8E7233771B0022A200D647A9 /* AKAEditorControlView.h in Headers */,
@@ -541,10 +567,12 @@
 				8E81B6691B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h in Headers */,
 				8E7233A81B0022A200D647A9 /* AKATheme.h in Headers */,
 				8E72336A1B0022A200D647A9 /* AKAControl_Internal.h in Headers */,
+				8ECEEC421BA08F4000B73FC0 /* AKACompositeControlView.h in Headers */,
 				8E7233AD1B0022A200D647A9 /* AKAThemeViewApplicability.h in Headers */,
 				8E7233B31B0022A200D647A9 /* AKAViewCustomization.h in Headers */,
 				8E7233AA1B0022A200D647A9 /* AKAThemeLayout.h in Headers */,
 				8E7233881B0022A200D647A9 /* AKALayoutConstraintSpecification.h in Headers */,
+				8E979A471B9FE30500E0D29C /* AKABooleanLabelBinding.h in Headers */,
 				8E7233A51B0022A200D647A9 /* AKAThemableContainerView.h in Headers */,
 				8E7233A71B0022A200D647A9 /* AKAThemableContainerView_Protected.h in Headers */,
 				8E7233921B0022A200D647A9 /* AKASubviewsSpecification.h in Headers */,
@@ -689,6 +717,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E72338B1B0022A200D647A9 /* AKANumberEditorControlView.m in Sources */,
+				8ECEEC431BA08F4000B73FC0 /* AKACompositeControlView.m in Sources */,
 				8E7233AB1B0022A200D647A9 /* AKAThemeLayout.m in Sources */,
 				8E7233B41B0022A200D647A9 /* AKAViewCustomization.m in Sources */,
 				8E7233871B0022A200D647A9 /* AKATextLabelBinding.m in Sources */,
@@ -696,6 +725,7 @@
 				8E72337B1B0022A200D647A9 /* AKAEmailValidator.m in Sources */,
 				8E7233B01B0022A200D647A9 /* AKAViewBinding.m in Sources */,
 				8E7233A61B0022A200D647A9 /* AKAThemableContainerView.m in Sources */,
+				8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */,
 				8E72339D1B0022A200D647A9 /* AKATableViewCellCompositeControl.m in Sources */,
 				8E7233851B0022A200D647A9 /* AKATextLabel.m in Sources */,
 				8E72339B1B0022A200D647A9 /* AKATableViewCell.m in Sources */,
@@ -705,6 +735,7 @@
 				8E7233B61B0022A200D647A9 /* UIView+AKABinding.m in Sources */,
 				8E7233761B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m in Sources */,
 				8E7233911B0022A200D647A9 /* AKAPasswordEditorControlView.m in Sources */,
+				8E979A441B9FE28500E0D29C /* AKABooleanLabel.m in Sources */,
 				8E7233971B0022A200D647A9 /* AKASwitchBinding.m in Sources */,
 				8E7233641B0022A200D647A9 /* AKACompositeControl.m in Sources */,
 				8E72338D1B0022A200D647A9 /* AKANumberTextConverter.m in Sources */,
@@ -721,6 +752,7 @@
 				8E7233781B0022A200D647A9 /* AKAEditorControlView.m in Sources */,
 				8E7233A11B0022A200D647A9 /* AKATextField.m in Sources */,
 				8E7233A91B0022A200D647A9 /* AKATheme.m in Sources */,
+				8E979A481B9FE30500E0D29C /* AKABooleanLabelBinding.m in Sources */,
 				8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */,
 				8E7233831B0022A200D647A9 /* AKAKeyboardActivationSequenceAccessoryView.m in Sources */,
 				8E7233931B0022A200D647A9 /* AKASubviewsSpecification.m in Sources */,

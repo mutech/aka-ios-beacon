@@ -261,6 +261,22 @@ typedef enum {
     }
 }
 
+#pragma mark - Updating rows
+
+- (void)reloadRowsAtIndexPaths:(NSArray*)indexPaths
+        withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    UITableView* tableView = self.tableView;
+    if (tableView)
+    {
+
+        [tableView reloadRowsAtIndexPaths:[self.updateBatch correctedIndexPaths:indexPaths]
+                         withRowAnimation:rowAnimation];
+    }
+
+    return;
+}
+
 #pragma mark - Moving Rows
 
 - (void)moveRowAtIndex:(NSInteger)rowIndex
@@ -269,6 +285,27 @@ typedef enum {
 {
     [self moveRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]
                  toIndexPath:[NSIndexPath indexPathForRow:targetIndex inSection:sectionIndex]];
+}
+
+- (void)rowAtIndexPath:(NSIndexPath*)indexPath
+    didMoveToIndexPath:(NSIndexPath*)targetIndexPath
+{
+    NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
+
+    UITableView* tableView = self.tableView;
+    if (tableView)
+    {
+        NSIndexPath* srcIndexPath = indexPath;
+        NSIndexPath* tgtIndexPath = targetIndexPath;
+        [self.updateBatch movementSourceRowIndex:&srcIndexPath
+                                  targetRowIndex:&tgtIndexPath
+                       forBatchUpdateInTableView:tableView
+                                recordAsMovedRow:YES];
+        [tableView moveRowAtIndexPath:srcIndexPath
+                          toIndexPath:tgtIndexPath];
+    }
+    
+    return;
 }
 
 - (void)moveRowAtIndexPath:(NSIndexPath*)indexPath
@@ -852,11 +889,11 @@ typedef enum {
                 [invocation setArgument:&sourceIndexPath atIndex:2+parameterIndex];
             }
 
-            AKALogDebug(@"[%@.delegate %@] indexPath=[%ld-%ld] ([%ld-%ld])",
+            /*AKALogDebug(@"[%@.delegate %@] indexPath=[%ld-%ld] ([%ld-%ld])",
                         dataSource.key,
                         NSStringFromSelector(invocation.selector),
                         (long)indexPath.section, (long)indexPath.row,
-                        (long)sourceIndexPath.section, (long)sourceIndexPath.row);
+                        (long)sourceIndexPath.section, (long)sourceIndexPath.row);*/
             [invocation invokeWithTarget:delegate];
 
             if (resolveIndexPathResult)
@@ -1018,7 +1055,7 @@ typedef enum {
         fallback = YES;
         result = [super respondsToSelector:aSelector];
     }
-    AKALogDebug(@"%@: respondsToSelector:%@ %@ (fallback: %@)", self.description, NSStringFromSelector(aSelector), result?@"YES":@"NO", fallback?@"YES":@"NO");
+    /*AKALogDebug(@"%@: respondsToSelector:%@ %@ (fallback: %@)", self.description, NSStringFromSelector(aSelector), result?@"YES":@"NO", fallback?@"YES":@"NO");*/
     return result;
 }
 

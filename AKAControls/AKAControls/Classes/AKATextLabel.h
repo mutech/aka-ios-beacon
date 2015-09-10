@@ -18,7 +18,7 @@ IB_DESIGNABLE
  */
 @interface AKATextLabel : UILabel<AKAControlViewProtocol>
 
-@property(nonatomic, readonly) AKAViewBindingConfiguration* bindingConfiguration;
+@property(nonatomic, readonly) AKATextLabelBindingConfiguration* bindingConfiguration;
 
 #pragma mark - Interface Builder Properties
 /// @name Interface Builder Properties
@@ -78,5 +78,11 @@ IB_DESIGNABLE
  * YES does not have any effect.
  */
 @property(nonatomic) IBInspectable BOOL readOnly;
+
+@end
+
+@interface AKATextLabel(Protected)
+
+- (AKATextLabelBindingConfiguration*)createBindingConfiguration;
 
 @end

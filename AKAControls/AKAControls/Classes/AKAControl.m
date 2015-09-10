@@ -221,29 +221,19 @@
 
 - (void)initializeBindingProperties
 {
-    NSString* converterKeyPath = self.viewBinding.configuration.converterKeyPath;
-    if (converterKeyPath.length > 0)
+    _converterProperty = [self.viewBinding createConverterPropertyWithDataContextProperty:self.dataContextProperty];
+    if (_converterProperty == nil)
     {
-        _converterProperty = [self.dataContextProperty propertyAtKeyPath:converterKeyPath
-                                                      withChangeObserver:nil];
+        _converter = self.viewBinding.defaultConverter;
     }
-    else
-    {
-        _converter = [self.viewBinding.class defaultConverter];
-    }
-    NSString* validatorKeyPath = self.viewBinding.configuration.validatorKeyPath;
-    if (validatorKeyPath.length > 0)
-    {
-        _validatorProperty = [self.dataContextProperty propertyAtKeyPath:validatorKeyPath
-                                                      withChangeObserver:nil];
-    }
+    _validatorProperty = [self.viewBinding createValidatorPropertyWithDataContextProperty:self.dataContextProperty];
 }
 
 - (void)resetBindingProperties
 {
+    _validatorProperty = nil;
     _converterProperty = nil;
     _converter = nil;
-    _validatorProperty = nil;
 }
 
 #pragma mark - Value Access

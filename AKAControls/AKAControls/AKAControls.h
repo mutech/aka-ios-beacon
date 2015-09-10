@@ -48,6 +48,8 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 // AKAControls/ControlViews/ScalarControlViews
 #import <AKAControls/AKATextLabel.h>
 #import <AKAControls/AKATextLabelBinding.h>
+#import <AKAControls/AKABooleanLabel.h>
+#import <AKAControls/AKABooleanLabelBinding.h>
 #import <AKAControls/AKATextField.h>
 #import <AKAControls/AKATextField_Protected.h>
 #import <AKAControls/AKATextFieldBinding.h>
@@ -56,6 +58,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKASwitchBinding.h>
 
 // AKAControls/ControlViews/CompositeControlViews
+#import <AKAControls/AKACompositeControlView.h>
 #import <AKAControls/AKAThemableCompositeControlView.h>
 #import <AKAControls/AKAEditorControlView.h>
 #import <AKAControls/AKAEditorControlView_Protected.h>

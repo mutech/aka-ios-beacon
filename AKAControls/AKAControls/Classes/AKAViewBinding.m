@@ -8,6 +8,7 @@
 
 #import "AKAViewBinding.h"
 #import "AKAControlsErrors.h"
+#import "AKAProperty.h"
 #import "UIView+AKABinding.h"
 
 @implementation AKAViewBinding
@@ -51,11 +52,30 @@
     return _viewValueProperty;
 }
 
-#pragma mark - Conversion
-
-+ (id<AKAControlConverterProtocol>)defaultConverter
+- (AKAProperty*)createViewValueProperty
 {
     return nil;
+    // TODO: no view value required for composite controls, other controls should probably have one:
+    //AKAErrorAbstractMethodImplementationMissing();
+}
+
+#pragma mark - Conversion
+
+- (id<AKAControlConverterProtocol>)defaultConverter
+{
+    return nil;
+}
+
+- (AKAProperty *)createConverterPropertyWithDataContextProperty:(AKAProperty*)dataContextProperty
+{
+    AKAProperty* result = nil;
+    NSString* converterKeyPath = self.configuration.converterKeyPath;
+    if (converterKeyPath.length > 0)
+    {
+        result = [dataContextProperty propertyAtKeyPath:converterKeyPath
+                                     withChangeObserver:nil];
+    }
+    return result;
 }
 
 #pragma mark - Validation
@@ -88,6 +108,18 @@
 {
 }
 
+- (AKAProperty*)createValidatorPropertyWithDataContextProperty:(AKAProperty*)dataContextProperty
+{
+    AKAProperty* result = nil;
+    NSString* validatorKeyPath = self.configuration.validatorKeyPath;
+    if (validatorKeyPath.length > 0)
+    {
+        result = [dataContextProperty propertyAtKeyPath:validatorKeyPath
+                                          withChangeObserver:nil];
+    }
+    return result;
+}
+
 #pragma mark - Activation
 
 - (BOOL)supportsActivation
@@ -103,15 +135,6 @@
 - (BOOL)deactivate
 {
     return YES;
-}
-
-#pragma mark - Protected Interface - Abstract Methods
-
-- (AKAProperty *)createViewValueProperty
-{
-    return nil;
-    // TODO: no view value required for composite controls, other controls should probably have one:
-    //AKAErrorAbstractMethodImplementationMissing();
 }
 
 #pragma mark - Protected Interface - Delegate Support Methods

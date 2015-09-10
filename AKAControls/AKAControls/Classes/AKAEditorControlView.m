@@ -22,7 +22,6 @@
 @interface AKAEditorControlView()
 
 @property(nonatomic, assign) BOOL setupActive;
-@property(nonatomic, readonly) AKAEditorBindingConfiguration* editorBindingConfiguration;
 
 @end
 
@@ -32,13 +31,16 @@ static NSString* const kEditorRole = @"editor";
 static NSString* const kLabelRole = @"label";
 static NSString* const kMessageRole = @"message";
 
-@synthesize editorBindingConfiguration = _editorBindingConfiguration;
-
 #pragma mark - Initialization
 #pragma mark -
 
 #pragma mark - Binding Configuration
 /// @name Binding configuration
+
+- (AKAEditorBindingConfiguration*)bindingConfiguration
+{
+    return (AKAEditorBindingConfiguration*)super.bindingConfiguration;
+}
 
 - (AKAEditorBindingConfiguration*)createBindingConfiguration
 {
@@ -64,29 +66,29 @@ static NSString* const kMessageRole = @"message";
 
 - (NSString *)labelText
 {
-    return self.editorBindingConfiguration.labelText;
+    return self.bindingConfiguration.labelText;
 }
 - (void)setLabelText:(NSString *)labelText
 {
-    self.editorBindingConfiguration.labelText = labelText;
+    self.bindingConfiguration.labelText = labelText;
 }
 
 - (NSString *)labelKeyPath
 {
-    return self.editorBindingConfiguration.labelKeyPath;
+    return self.bindingConfiguration.labelKeyPath;
 }
 - (void)setLabelKeyPath:(NSString *)labelKeyPath
 {
-    self.editorBindingConfiguration.labelKeyPath = labelKeyPath;
+    self.bindingConfiguration.labelKeyPath = labelKeyPath;
 }
 
 - (NSString *)editorKeyPath
 {
-    return self.editorBindingConfiguration.editorKeyPath;
+    return self.bindingConfiguration.editorKeyPath;
 }
 - (void)setEditorKeyPath:(NSString*)editorKeyPath
 {
-    self.editorBindingConfiguration.editorKeyPath = editorKeyPath;
+    self.bindingConfiguration.editorKeyPath = editorKeyPath;
 }
 
 #pragma mark - Outlets
@@ -496,6 +498,7 @@ static NSString* const kMessageRole = @"message";
 {
     if (self = [super initWithCoder:decoder])
     {
+        self.editorKeyPath = [decoder decodeObjectForKey:@"editorKeyPath"];
         self.labelText = [decoder decodeObjectForKey:@"labelText"];
         self.labelKeyPath = [decoder decodeObjectForKey:@"labelKeyPath"];
     }
@@ -504,6 +507,7 @@ static NSString* const kMessageRole = @"message";
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
+    [coder encodeObject:self.editorKeyPath forKey:@"editorKeyPath"];
     [coder encodeObject:self.labelText forKey:@"labelText"];
     [coder encodeObject:self.labelKeyPath forKey:@"labelKeyPath"];
 }

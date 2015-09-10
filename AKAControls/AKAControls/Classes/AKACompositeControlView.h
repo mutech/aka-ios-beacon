@@ -1,18 +1,18 @@
 //
-// Created by Michael Utech on 08.09.15.
-// Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  AKACompositeControlView.h
+//  AKAControls
+//
+//  Created by Michael Utech on 09.09.15.
+//  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "AKAControlViewProtocol.h"
-#import "AKAThemableContainerView.h"
 #import "AKACompositeViewBindingConfiguration.h"
 
-@interface AKAThemableCompositeControlView : AKAThemableContainerView<AKAControlViewProtocol>
+@interface AKACompositeControlView : UIView<AKAControlViewProtocol>
 
 #pragma mark - Configuration
-#pragma mark -
 
 @property(nonatomic, readonly) AKACompositeViewBindingConfiguration* bindingConfiguration;
 
@@ -75,7 +75,7 @@
 
 @end
 
-@interface AKAThemableCompositeControlView(Protected)
+@interface AKACompositeControlView(Protected)
 
 - (AKACompositeViewBindingConfiguration*)createBindingConfiguration;
 

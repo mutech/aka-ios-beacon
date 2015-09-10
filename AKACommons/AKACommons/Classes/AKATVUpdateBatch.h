@@ -47,6 +47,10 @@
                     targetRowIndex:(inout NSIndexPath*__autoreleasing*)targetRowIndex
          forBatchUpdateInTableView:(UITableView*)tableView
                   recordAsMovedRow:(BOOL)recordAsMovedRow;
+
+- (NSArray*)correctedIndexPaths:(NSArray*)indexPaths;
+- (NSIndexPath*)correctedIndexPath:(NSIndexPath*)indexPath;
+
 @end
 
 @interface AKATVUpdateBatch()

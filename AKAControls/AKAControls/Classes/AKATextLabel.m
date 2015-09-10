@@ -12,7 +12,8 @@
 
 @implementation AKATextLabel
 
-@synthesize bindingConfiguration = _bindingConfiguration;
+#pragma mark - Initialization
+#pragma mark -
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -29,13 +30,22 @@
     [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
 }
 
-- (AKAViewBindingConfiguration*)bindingConfiguration
+#pragma mark - Configuration
+#pragma mark -
+
+@synthesize bindingConfiguration = _bindingConfiguration;
+- (AKATextLabelBindingConfiguration*)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {
-        _bindingConfiguration = AKATextLabelBindingConfiguration.new;
+        _bindingConfiguration = [self createBindingConfiguration];
     }
     return _bindingConfiguration;
+}
+
+- (AKATextLabelBindingConfiguration*)createBindingConfiguration
+{
+    return AKATextLabelBindingConfiguration.new;
 }
 
 #pragma mark - Interface Builder Properties

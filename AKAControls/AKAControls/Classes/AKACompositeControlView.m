@@ -1,20 +1,15 @@
 //
-// Created by Michael Utech on 08.09.15.
-// Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  AKACompositeControlView.m
+//  AKAControls
+//
+//  Created by Michael Utech on 09.09.15.
+//  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKACompositeControl.h"
+#import "AKACompositeControlView.h"
+#import "AKACompositeViewBindingConfiguration.h"
 
-#import "AKAThemableCompositeControlView.h"
-#import "AKAThemableContainerView_Protected.h"
-
-@interface AKAThemableCompositeControlView()
-
-@property(nonatomic) AKAProperty* themeNameProperty;
-
-@end
-
-@implementation AKAThemableCompositeControlView
+@implementation AKACompositeControlView
 
 #pragma mark - Initialization
 #pragma mark -
@@ -35,13 +30,17 @@
     [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
 }
 
+- (void)setupDefaultValues
+{
+}
+
 #pragma mark - Configuration
 #pragma mark -
 
 #pragma mark - Binding Configuration
 
 @synthesize bindingConfiguration = _bindingConfiguration;
-- (AKACompositeViewBindingConfiguration *)bindingConfiguration
+- (AKACompositeViewBindingConfiguration*)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {
@@ -53,30 +52,6 @@
 - (AKACompositeViewBindingConfiguration*)createBindingConfiguration
 {
     return AKACompositeViewBindingConfiguration.new;
-}
-
-- (void)viewBindingChangedFrom:(AKAViewBinding *)oldBinding
-                            to:(AKAViewBinding *)newBinding
-{
-    self.themeNameProperty = nil;
-    __weak typeof(self) weakSelf = self;
-    self.themeNameProperty = [newBinding.delegate themeNamePropertyForView:self
-                                                            changeObserver:^(
-                                                                             id oldValue,
-                                                                             id newValue) {
-                                                                [weakSelf setNeedsApplySelectedTheme];
-                                                                [weakSelf setNeedsLayout];
-
-                                                                [weakSelf updateConstraintsIfNeeded];
-                                                                [weakSelf layoutIfNeeded];
-                                                            }];
-    [self.themeNameProperty startObservingChanges];
-    if (super.themeName.length == 0)
-    {
-        [self setNeedsApplySelectedTheme];
-        [self setNeedsUpdateConstraints];
-        [self setNeedsLayout];
-    }
 }
 
 #pragma mark - Interface Builder Properties
@@ -143,18 +118,6 @@
 - (void)setReadOnly:(BOOL)readOnly
 {
     self.bindingConfiguration.readOnly = readOnly;
-}
-
-#pragma mark - Themes
-
-- (NSString *)themeName
-{
-    NSString* result = super.themeName;
-    if (result.length == 0)
-    {
-        result = self.themeNameProperty.value;
-    }
-    return result;
 }
 
 @end

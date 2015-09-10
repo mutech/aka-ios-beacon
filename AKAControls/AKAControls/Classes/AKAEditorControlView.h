@@ -13,6 +13,27 @@
 #import "AKACompositeViewBindingConfiguration.h"
 #import "AKAViewBinding.h"
 
+@interface AKAEditorBindingConfiguration : AKACompositeViewBindingConfiguration
+
+/**
+ * The key path refering to the view's editor's value
+ */
+@property(nonatomic) NSString* editorKeyPath;
+
+/**
+ * The text of the editor view's label. Please note that if a labelKeyPath is defined, it
+ * will override the label text.
+ */
+@property(nonatomic) NSString* labelText;
+
+/**
+ * The key path refering to the view's label's text relative to the controls data context.
+ */
+@property(nonatomic) NSString* labelKeyPath;
+
+@end
+
+
 IB_DESIGNABLE
 /**
  * Control view comprised of a label, an editor and an optional
@@ -54,13 +75,12 @@ IB_DESIGNABLE
  */
 @interface AKAEditorControlView : AKAThemableCompositeControlView
 
-#pragma mark - Interface Builder and Binding Configuration Properties
+#pragma mark - Configuration
+#pragma mark -
 
-/**
- * The key path refering to the controls model value relative to
- * the controls data context.
- */
-@property(nonatomic) IBInspectable NSString* valueKeyPath;
+@property(nonatomic, readonly) AKAEditorBindingConfiguration* bindingConfiguration;
+
+#pragma mark - Interface Builder and Binding Configuration Properties
 
 /**
  * The key path refering to the view's editor's value
@@ -83,26 +103,6 @@ IB_DESIGNABLE
 @property(nonatomic, weak) IBOutlet UILabel* label;
 @property(nonatomic, weak) IBOutlet UIView* editor;
 @property(nonatomic, weak) IBOutlet UILabel* messageLabel;
-
-@end
-
-@interface AKAEditorBindingConfiguration : AKACompositeViewBindingConfiguration
-
-/**
- * The key path refering to the view's editor's value
- */
-@property(nonatomic) NSString* editorKeyPath;
-
-/**
- * The text of the editor view's label. Please note that if a labelKeyPath is defined, it
- * will override the label text.
- */
-@property(nonatomic) NSString* labelText;
-
-/**
- * The key path refering to the view's label's text relative to the controls data context.
- */
-@property(nonatomic) NSString* labelKeyPath;
 
 @end
 

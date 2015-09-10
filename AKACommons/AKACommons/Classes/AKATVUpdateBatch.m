@@ -143,7 +143,6 @@
 
 - (NSMutableIndexSet*)deletedRowsInSection:(NSInteger)sectionIndex
                            createIfMissing:(BOOL)createIfMissing
-
 {
     NSNumber* section = @(sectionIndex);
     NSMutableIndexSet* result = self.deletedRows[section];
@@ -158,7 +157,6 @@
 
 - (NSMutableIndexSet*)insertedRowsInSection:(NSInteger)sectionIndex
                             createIfMissing:(BOOL)createIfMissing
-
 {
     NSNumber* section = @(sectionIndex);
     NSMutableIndexSet* result = self.insertedRows[section];
@@ -278,6 +276,37 @@
     // are reordered inside of begin/endUpdate.
     
     // TODO: record movement or refactor the interface of this class alltogether
+}
+
+- (NSArray*)correctedIndexPaths:(NSArray*)indexPaths
+{
+    NSMutableArray* result = NSMutableArray.new;
+    for (NSIndexPath* indexPath in indexPaths)
+    {
+        [result addObject:[self correctedIndexPath:indexPath]];
+    }
+    return result;
+}
+
+- (NSIndexPath*)correctedIndexPath:(NSIndexPath*)indexPath
+{
+    NSIndexPath* result = nil;
+
+    // Determine the number of preceeding rows which have been previously deleted.
+    // The specified rowIndex is expected to account for all previous deletions
+    // and that's what we have to undo.
+    NSIndexSet* deletedRows = [self deletedRowsInSection:indexPath.section
+                                         createIfMissing:NO];
+    NSUInteger deletedPrecedingRows = [deletedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)indexPath.row)];
+
+    NSIndexSet* insertedRows = [self insertedRowsInSection:indexPath.section
+                                           createIfMissing:NO];
+    NSUInteger insertedPrecedingRows = [insertedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)indexPath.row)];
+    deletedPrecedingRows = (insertedPrecedingRows > deletedPrecedingRows) ? 0 : deletedPrecedingRows - insertedPrecedingRows;
+
+    result = [NSIndexPath indexPathForRow:indexPath.row + (NSInteger)deletedPrecedingRows inSection:indexPath.section];
+
+    return result;
 }
 
 @end

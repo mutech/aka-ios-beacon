@@ -30,7 +30,7 @@
 
 @implementation AKANumberTextFieldBinding
 
-+ (id<AKAControlConverterProtocol>)defaultConverter
+- (id<AKAControlConverterProtocol>)defaultConverter
 {
     return [[AKANumberTextConverter alloc] init];
 }

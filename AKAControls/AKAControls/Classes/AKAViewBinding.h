@@ -94,7 +94,7 @@
 
 #pragma mark - Conversion
 
-+ (id<AKAControlConverterProtocol>) defaultConverter;
+- (id<AKAControlConverterProtocol>) defaultConverter;
 
 #pragma mark - Validation
 /// @name Validation
@@ -154,12 +154,15 @@
 
 @end
 
-@interface AKAViewBinding()
+
+@interface AKAViewBinding(Protected)
 
 #pragma mark - Protected Interface - Abstract Methods
 /// @name Protected: Abstract Methods
 
-- (AKAProperty *)createViewValueProperty;
+- (AKAProperty*)createViewValueProperty;
+- (AKAProperty*)createConverterPropertyWithDataContextProperty:(AKAProperty*)dataContextProperty;
+- (AKAProperty*)createValidatorPropertyWithDataContextProperty:(AKAProperty*)dataContextProperty;
 
 #pragma mark - Protected Interface - Delegate Support Methods
 /// @name Protected: Delegate Support Methods

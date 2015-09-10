@@ -47,7 +47,7 @@
                                         inMultiplexer:(AKATVMultiplexedDataSource* __nullable)multiplexer;
 
 @property(nonatomic, readonly, nonnull) NSString* key;
-@property(nonatomic, weak, readonly, nonnull) id<UITableViewDataSource> dataSource;
+@property(nonatomic, weak, readonly) id<UITableViewDataSource> dataSource;
 @property(nonatomic, weak, readonly, nullable) id<UITableViewDelegate> delegate;
 @property(nonatomic, weak, readonly, nullable) NSObject<AKATVDataSourceSpecificationDelegate>* multiplexer;
 

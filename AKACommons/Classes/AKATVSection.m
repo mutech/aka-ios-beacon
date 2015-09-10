@@ -309,7 +309,8 @@
 
     if (result)
     {
-        NSAssert(removedSegments.count == 1, nil);
+        // Might be more than one segment, if empty segments have been lazily removed, check this though...
+        //NSAssert(removedSegments.count == 1, nil);
         NSAssert([removedSegments.firstObject isKindOfClass:[AKATVRowSegment class]], nil);
 
         AKATVRowSegment* removedRows = removedSegments.firstObject;

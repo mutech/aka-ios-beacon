@@ -100,28 +100,33 @@
 {
     __block BOOL result = NO;
     __block NSUInteger rowsVisited = 0;
-    [self enumerateRowSegmentsUsingBlock:^void(AKATVRowSegment* segment, NSUInteger idx, BOOL *stop) {
-        if (rowIndex - rowsVisited < segment.numberOfRows)
-        {
-            result = *stop = YES;
-            if (rowSegmentStorage)
-            {
-                *rowSegmentStorage = segment;
-            }
-            if (segmentIndexStorage)
-            {
-                *segmentIndexStorage = idx;
-            }
-            if (offsetStorage)
-            {
-                *offsetStorage = (NSUInteger)(rowIndex - rowsVisited);
-            }
-        }
-        else
-        {
-            rowsVisited += segment.numberOfRows;
-        }
-    }];
+    [self enumerateRowSegmentsUsingBlock:^void(AKATVRowSegment* segment, NSUInteger idx, BOOL *stop)
+     {
+         NSUInteger relativeRowIndex = rowIndex - rowsVisited;
+
+         if (relativeRowIndex < segment.numberOfRows)
+         {
+             NSAssert(!segment.isExcluded, @"Non-empty excluded row segment breaks this implementation");
+
+             result = *stop = YES;
+             if (rowSegmentStorage)
+             {
+                 *rowSegmentStorage = segment;
+             }
+             if (segmentIndexStorage)
+             {
+                 *segmentIndexStorage = idx;
+             }
+             if (offsetStorage)
+             {
+                 *offsetStorage = (NSUInteger)(relativeRowIndex);
+             }
+         }
+         else
+         {
+             rowsVisited += segment.numberOfRows;
+         }
+     }];
 
     if (rowsVisitedStorage)
     {
@@ -193,6 +198,82 @@
     return result;
 }
 
+- (BOOL)excludeRowAtOffset:(NSUInteger)offsetInSegment
+              inRowSegment:(AKATVRowSegment *)rowSegment
+            atSegmentIndex:(NSUInteger)rowSegmentIndex
+{
+    AKATVRowSegment* excludedSegment;
+    AKATVRowSegment* trailingSegment;
+    BOOL result = [rowSegment excludeRowAtOffset:offsetInSegment
+                                excludedRow:&excludedSegment
+                               trailingRows:&trailingSegment];
+    if (result)
+    {
+        if (trailingSegment)
+        {
+            [self.rowSegments insertObject:trailingSegment atIndex:rowSegmentIndex + 1];
+        }
+        if (excludedSegment != nil)
+        {
+            [self.rowSegments insertObject:excludedSegment atIndex:rowSegmentIndex + 1];
+        }
+    }
+    return result;
+}
+
+- (BOOL)includeRowSegment:(AKATVRowSegment*)rowSegment
+           atSegmentIndex:(NSUInteger)segmentIndex
+{
+    NSAssert(self.rowSegments[segmentIndex] == rowSegment, @"rowSegment %@ is not located at segment index %lu", rowSegment, (unsigned long)segmentIndex);
+
+    return [rowSegment includeExcludedRow];
+}
+
+- (BOOL)excludeRowFromIndex:(NSInteger)rowIndex
+{
+    NSParameterAssert(rowIndex >= 0);
+
+    NSUInteger segmentIndex = NSNotFound;
+    NSUInteger segmentFirstRowIndex = NSNotFound;
+    NSUInteger offset = NSNotFound;
+
+    AKATVRowSegment* rowSegment = nil;
+
+    BOOL result = [self locateRowSegment:&rowSegment
+                            segmentIndex:&segmentIndex
+                         offsetInSegment:&offset
+                             rowsVisited:&segmentFirstRowIndex
+                             forRowIndex:rowIndex];
+    if (result)
+    {
+        NSAssert(offset >= 0 && offset < rowSegment.numberOfRows,
+                 @"offset %lu out of bounds 0..%lu",
+                 (unsigned long)offset,
+                 (unsigned long)(rowSegment.numberOfRows - 1));
+        NSAssert(!rowSegment.isExcluded, @"locateRowSegment invalidly returned excluded row segment");
+
+        AKATVRowSegment* trailingRowsSegment = nil;
+        AKATVRowSegment* exclusionRowSegment = nil;
+        result = [rowSegment excludeRowAtOffset:offset
+                                    excludedRow:&exclusionRowSegment
+                                   trailingRows:&trailingRowsSegment];
+        if (result)
+        {
+            if (exclusionRowSegment != nil)
+            {
+                [self.rowSegments insertObject:exclusionRowSegment atIndex:segmentIndex + 1];
+                ++segmentIndex;
+            }
+            if (trailingRowsSegment != nil)
+            {
+                [self.rowSegments insertObject:trailingRowsSegment atIndex:segmentIndex + 1];
+            }
+        }
+    }
+
+    return result;
+}
+
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
            rowsFromIndex:(NSUInteger)rowIndex
 {
@@ -254,7 +335,13 @@
         // row in the segment (no offset).
         while (rowSegment != nil && (numberOfRowsToRemove > 0 || rowSegment.numberOfRows == 0))
         {
-            if (numberOfRowsToRemove >= rowSegment.numberOfRows)
+            if (rowSegment.numberOfRows == 0 && rowSegment.isExcluded)
+            {
+                // Empty excluded row segments are not removed
+                ++segmentIndex;
+                rowSegment = self.rowSegments.count > segmentIndex ? self.rowSegments[segmentIndex] : nil;
+            }
+            else if (numberOfRowsToRemove >= rowSegment.numberOfRows)
             {
                 numberOfRowsToRemove -= rowSegment.numberOfRows;
 

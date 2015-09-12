@@ -52,6 +52,14 @@
  */
 @property(nonatomic, readonly) NSUInteger numberOfRows;
 
+/**
+ * Row segments which are included contain no rows but will be kept in the
+ * section's row segments collection to preserve them as markers for the index path
+ * at which an excluded row was located. This is used for dynamic placeholder cells
+ * to hide the placeholder and still be able to insert intances at the right position.
+ */
+@property(nonatomic, readonly) BOOL isExcluded;
+
 #pragma mark - Removing Rows from the Segment
 /// @name Removing Rows from the Segment
 
@@ -87,6 +95,12 @@
             rowsAtOffset:(NSUInteger)index
             trailingRows:(AKATVRowSegment*__autoreleasing __nullable* __nonnull)trailingRowsStorage
              removedRows:(AKATVRowSegment*__autoreleasing __nullable* __nullable)removedRowsStorage;
+
+- (BOOL)excludeRowAtOffset:(NSUInteger)offset
+               excludedRow:(AKATVRowSegment*__autoreleasing __nullable* __nonnull)excludedRowsSegment
+              trailingRows:(AKATVRowSegment*__autoreleasing __nullable* __nonnull)trailingRowsSegment;
+
+- (BOOL)includeExcludedRow;
 
 @end
 

@@ -44,6 +44,75 @@
     return result;
 }
 
+- (BOOL)includeExcludedRow
+{
+    BOOL result = self.isExcluded && self.numberOfRows == 0;
+    if (result)
+    {
+        _isExcluded = NO;
+        _numberOfRows = 1;
+    }
+    return result;
+}
+
+- (BOOL)excludeRowAtOffset:(NSUInteger)offset
+               excludedRow:(AKATVRowSegment*__autoreleasing*)excludedRowsSegment
+              trailingRows:(AKATVRowSegment*__autoreleasing*)trailingRowsSegment
+{
+    AKATVDataSourceSpecification* dataSource = self.dataSource;
+
+    BOOL result = offset < self.numberOfRows && !self.isExcluded;
+
+    if (result)
+    {
+        // Decide whether this segment becomes excluded or a new exclusion segment will be created
+        if (offset == 0)
+        {
+            // The first row is excluded, so this segment will become marked as excluded
+            _isExcluded = YES;
+        }
+        else if (excludedRowsSegment != nil)
+        {
+            // A new exclusion segment will be created, this segment keeps leading rows
+            NSIndexPath* excludedIndexPath = [NSIndexPath indexPathForRow:self.indexPath.row + (NSInteger)offset
+                                                                inSection:self.indexPath.section];
+            *excludedRowsSegment = [[AKATVRowSegment alloc] initWithDataSource:dataSource
+                                                                     indexPath:excludedIndexPath
+                                                                         count:0];
+            (*excludedRowsSegment)->_isExcluded = YES;
+        }
+        else
+        {
+            AKALogError(@"Exclusion of %ld rows from row segment %@ starting at index %ld resulted in a new exclusion rows segment, which should/has to be inserted following this segement. The caller did not supply a excludedRowsSegment reference and will probably fail to update the containing section correctly", (long)1, self, (long)offset);
+        }
+
+        // Decrease count of this segment and create a trailing segment if needed
+        if (offset + 1 < self.numberOfRows)
+        {
+            NSUInteger trailingRows = self.numberOfRows - (offset + 1);
+            _numberOfRows -= trailingRows + 1;
+            if (trailingRowsSegment != nil)
+            {
+                NSIndexPath* trailingIndexPath = [NSIndexPath indexPathForRow:self.indexPath.row + (NSInteger)(offset) + 1
+                                                                    inSection:self.indexPath.section];
+                *trailingRowsSegment = [[AKATVRowSegment alloc] initWithDataSource:dataSource
+                                                                         indexPath:trailingIndexPath
+                                                                             count:trailingRows];
+            }
+            else
+            {
+                AKALogError(@"Exclusion of %ld rows from row segment %@ starting at index %ld resulted in a trailing rows segment, which should/has to be inserted following this segement. The caller did not supply a trailingRowsSegment reference and will probably fail to update the containing section correctly", (long)1, self, (long)offset);
+            }
+        }
+        else
+        {
+            _numberOfRows -= 1;
+        }
+    }
+
+    return result;
+}
+
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
             rowsAtOffset:(NSUInteger)offset
             trailingRows:(AKATVRowSegment*__autoreleasing*)trailingRowsSegment

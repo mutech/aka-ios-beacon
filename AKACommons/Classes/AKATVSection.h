@@ -86,6 +86,15 @@
 - (BOOL)insertRowSegment:(AKATVRowSegment*__nonnull)segment
               atRowIndex:(NSUInteger)rowIndex;
 
+- (BOOL)excludeRowFromIndex:(NSInteger)rowIndex;
+
+- (BOOL)includeRowSegment:(AKATVRowSegment*__nonnull)rowSegment
+           atSegmentIndex:(NSUInteger)segmentIndex;
+
+- (BOOL)excludeRowAtOffset:(NSUInteger)offsetInSegment
+              inRowSegment:(AKATVRowSegment*__nonnull)rowSegment
+            atSegmentIndex:(NSUInteger)rowSegmentIndex;
+
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
            rowsFromIndex:(NSUInteger)rowIndex;
 

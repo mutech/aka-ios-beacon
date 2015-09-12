@@ -429,7 +429,6 @@ static NSString* const defaultDataSourceKey = @"default";
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
     AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
-    AKATVDataSourceSpecification* placeholderDS = [self dataSourceForKey:key                                                           inMultiplexer:self.multiplexedDataSource];
     AKADynamicPlaceholderTableViewCellBindingConfiguraton* config =
         (id)placeholder.viewBinding.configuration;
 

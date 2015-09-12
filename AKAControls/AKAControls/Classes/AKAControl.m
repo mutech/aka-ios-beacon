@@ -99,6 +99,32 @@
     return self;
 }
 
+#pragma mark - Diagnostics
+
+- (NSString *)debugDescription
+{
+    NSString* details = self.debugDescriptionDetails;
+    NSString* result = nil;
+
+    if (details.length > 0)
+    {
+        return [NSString stringWithFormat:@"<%@ %p; %@>", self.class, self, details];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"<%@ %p>", self.class, self];
+    }
+    return result;
+}
+
+- (NSString *)debugDescriptionDetails
+{
+    NSString* result = [NSString stringWithFormat:@"view: %@, configuration: { %@ }",
+                        self.view.description,
+                        self.viewBinding.configuration.description];
+    return result;
+}
+
 #pragma mark - Configuration
 
 - (AKAProperty*)basePropertyForModelValue

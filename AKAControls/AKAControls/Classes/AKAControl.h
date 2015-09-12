@@ -67,6 +67,10 @@
 + (nullable instancetype)controlWithDataContext:(id __nullable)dataContext
                          configuration:(id<AKAControlConfigurationProtocol>__nullable)configuration;
 
+#pragma mark - Diagnostics
+
+@property(nonatomic, readonly, nullable) NSString* debugDescriptionDetails;
+
 #pragma mark - Configuration
 /// @name Configuration
 

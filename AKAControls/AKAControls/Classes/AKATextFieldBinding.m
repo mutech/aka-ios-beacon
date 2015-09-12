@@ -71,11 +71,7 @@
               ^BOOL (id target)
               {
                   AKATextFieldBinding* binding = target;
-                  if (binding.textField.delegate == binding)
-                  {
-                      AKALogError(@"Binding %@ is already observing %@", binding, binding.textField);
-                  }
-                  else
+                  if (binding.textField.delegate != binding)
                   {
                       binding.originalText = binding.textField.text;
                       binding.savedTextViewDelegate = binding.textField.delegate;
@@ -83,6 +79,10 @@
                       [binding.textField addTarget:binding
                                             action:@selector(textFieldDidChange:)
                                   forControlEvents:UIControlEventEditingChanged];
+                  }
+                  else
+                  {
+                      //AKALogDebug(@"Binding %@ is already observing %@", binding, binding.textField);
                   }
                   return YES;
               }

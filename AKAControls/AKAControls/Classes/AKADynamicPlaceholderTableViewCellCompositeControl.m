@@ -10,6 +10,8 @@
 
 @implementation AKADynamicPlaceholderTableViewCellCompositeControl
 
+#pragma mark - Configuration
+
 - (NSUInteger)autoAddControlsForBoundView
 {
     // Do not automatically add controls in the cells contentView hierarchy, because

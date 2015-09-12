@@ -227,6 +227,36 @@
        rowsFromIndexPath:(NSIndexPath*__nonnull)indexPath
         withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
+/**
+ * Removes the row originating from the specified data source at the specified index path
+ * temporarily from the table view. The excluded row will leave a marker and can be included
+ * at the same logical position. Subsequent insertions or removals will at preceeding
+ * locations will affect an excluded row as if it was still there.
+ *
+ * @param sourceIndexPath the rows index path in its original data source
+ * @param dataSource the data source from which the row orignated
+ * @param rowAnimation the animation used for removal from the table view
+ *
+ * @return YES if the row was found and could be excluded
+ */
+- (BOOL)excludeRowFromSourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
+                         inDataSource:(AKATVDataSourceSpecification*__nonnull)dataSource
+                     withRowAnimation:(UITableViewRowAnimation)rowAnimation;
+
+/**
+ * Undoes the effect of a previous exclusion of the row specified by its data source and
+ * source index path.
+ *
+ * @param sourceIndexPath the rows index path in its original data source
+ * @param dataSource the data source from which the row orignated
+ * @param rowAnimation the animation used for insertion to the table view
+ *
+ * @return YES if the row was found, previously excluded and could be included
+ */
+- (BOOL)includeRowFromSourceIndexPath:(NSIndexPath*__nonnull)sourceIndexPath
+                         inDataSource:(AKATVDataSourceSpecification*__nonnull)dataSource
+                     withRowAnimation:(UITableViewRowAnimation)rowAnimation;
+
 #pragma mark - Updating rows
 
 - (void)reloadRowsAtIndexPaths:(NSArray*__nonnull)indexPaths

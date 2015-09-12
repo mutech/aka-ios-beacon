@@ -430,6 +430,104 @@ typedef enum {
     }
 }
 
+- (BOOL)excludeRowFromSourceIndexPath:(NSIndexPath*)sourceIndexPath
+                         inDataSource:(AKATVDataSourceSpecification*)dataSource
+                     withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    AKATVSection* section = nil;
+    AKATVRowSegment* rowSegment = nil;
+    NSUInteger rowSegmentIndex = NSNotFound;
+    NSIndexPath* indexPath = nil;
+
+    BOOL result = [self resolveSectionSpecification:&section
+                                         rowSegment:&rowSegment
+                                    rowSegmentIndex:&rowSegmentIndex
+                                          indexPath:&indexPath
+                                 forSourceIndexPath:sourceIndexPath
+                                       inDataSource:dataSource];
+    if (result)
+    {
+        NSUInteger offsetInSegment = sourceIndexPath.row - rowSegment.indexPath.row;
+        result = [section excludeRowAtOffset:offsetInSegment
+                                inRowSegment:rowSegment
+                              atSegmentIndex:rowSegmentIndex];
+        UITableView* tableView = self.tableView;
+        if (result && tableView)
+        {
+            NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row
+                                                                              inSection:indexPath.section
+                                                              forBatchUpdateInTableView:tableView
+                                                                   recordAsDeletedIndex:YES];
+            [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
+                             withRowAnimation:rowAnimation];
+        }
+    }
+    return result;
+}
+
+- (BOOL)includeRowFromSourceIndexPath:(NSIndexPath*)sourceIndexPath
+                         inDataSource:(AKATVDataSourceSpecification*)dataSource
+                     withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    AKATVSection* section = nil;
+    AKATVRowSegment* rowSegment = nil;
+    NSUInteger rowSegmentIndex = NSNotFound;
+    NSIndexPath* indexPath = nil;
+
+    BOOL result = [self resolveSectionSpecification:&section
+                                         rowSegment:&rowSegment
+                                    rowSegmentIndex:&rowSegmentIndex
+                                          indexPath:&indexPath
+                                 forSourceIndexPath:sourceIndexPath
+                                       inDataSource:dataSource];
+    if (result)
+    {
+        NSAssert(rowSegment.isExcluded && rowSegment.numberOfRows == 0, @"Expected %@ to be an excluded row segment with numberOfRows==0", rowSegment);
+
+        result = [section includeRowSegment:rowSegment
+                             atSegmentIndex:rowSegmentIndex];
+
+        UITableView* tableView = self.tableView;
+        if (result && tableView)
+        {
+            NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row
+                                                                               inSection:indexPath.section
+                                                               forBatchUpdateInTableView:tableView recordAsInsertedIndex:YES];
+            [tableView insertRowsAtIndexPaths:@[ correctedIndexPath ]
+                             withRowAnimation:rowAnimation];
+        }
+
+    }
+    return result;
+}
+
+- (BOOL)excludeRowAtIndexPath:(NSIndexPath*)indexPath
+             withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    NSParameterAssert(indexPath.section >= 0 && indexPath.row >= 0);
+
+    BOOL result = NO;
+
+    AKATVSection* section = nil;
+    if ([self resolveSectionSpecification:&section
+                             sectionIndex:indexPath.section])
+    {
+        result = [section excludeRowFromIndex:(NSUInteger)indexPath.row];
+        UITableView* tableView = self.tableView;
+        if (result && tableView)
+        {
+            NSIndexPath* correctedIndexPath = [self.updateBatch deletionIndexPathForRow:indexPath.row
+                                                                              inSection:indexPath.section
+                                                              forBatchUpdateInTableView:tableView
+                                                                   recordAsDeletedIndex:YES];
+            [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
+                             withRowAnimation:rowAnimation];
+        }
+    }
+
+    return result;
+}
+
 - (NSUInteger)removeUpTo:(NSUInteger)numberOfRows
        rowsFromIndexPath:(NSIndexPath*)indexPath
         withRowAnimation:(UITableViewRowAnimation)rowAnimation
@@ -467,9 +565,12 @@ typedef enum {
 
 #pragma mark - Resolution
 
-- (BOOL)resolveIndexPath:(out NSIndexPath* __strong* __nullable)indexPathStorage
-      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
-            inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
+- (BOOL)resolveSectionSpecification:(out AKATVSection* __strong* __nullable)sectionStorage
+                         rowSegment:(out AKATVRowSegment* __strong* __nullable)rowSegmentStorage
+                    rowSegmentIndex:(out NSUInteger* __nullable)rowSegmentIndexStorage
+                          indexPath:(out NSIndexPath* __strong* __nullable)indexPathStorage
+                 forSourceIndexPath:(NSIndexPath*)sourceIndexPath
+                       inDataSource:(AKATVDataSourceSpecification*)dataSource
 {
     __block BOOL result = NO;
 
@@ -492,9 +593,24 @@ typedef enum {
             if (dataSource == rowSegment.dataSource &&
                 sourceSection == segmentSection &&
                 sourceRow >= segmentRow &&
-                sourceRow < segmentRow + (NSInteger)segmentRowCount)
+                (sourceRow < segmentRow + (NSInteger)segmentRowCount ||
+                 (rowSegment.isExcluded && sourceRow == segmentRow)
+                 )
+                )
             {
                 result = *stop = *stopSection = YES;
+                if (sectionStorage != nil)
+                {
+                    *sectionStorage = section;
+                }
+                if (rowSegmentIndexStorage != nil)
+                {
+                    *rowSegmentIndexStorage = rowSegmentIndex;
+                }
+                if (rowSegmentStorage != nil)
+                {
+                    *rowSegmentStorage = rowSegment;
+                }
                 if (indexPathStorage != nil)
                 {
                     NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)offset + (sourceRow - segmentRow)
@@ -506,6 +622,18 @@ typedef enum {
         }];
     }];
     return result;
+}
+
+- (BOOL)resolveIndexPath:(out NSIndexPath* __strong* __nullable)indexPathStorage
+      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
+            inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
+{
+    return [self resolveSectionSpecification:nil
+                                  rowSegment:nil
+                             rowSegmentIndex:nil
+                                   indexPath:indexPathStorage
+                          forSourceIndexPath:sourceIndexPath
+                                inDataSource:dataSource];
 }
 
 - (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
@@ -777,6 +905,210 @@ typedef enum {
 #endif
 
 #pragma mark - UITableViewDelegate
+
+#if 0
+- (CGFloat)                 tableView:(UITableView *)tableView
+             heightForHeaderInSection:(NSInteger)section
+{
+    return [self            tableView:tableView
+             heightForHeaderInSection:section
+                          withDefault:tableView.sectionHeaderHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+             heightForHeaderInSection:(NSInteger)section
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSInteger sourceSection = NSNotFound;
+    if ([self resolveAKADataSource:&dataSource
+                sourceSectionIndex:&sourceSection
+                   forSectionIndex:section])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)])
+        {
+            result = [delegate tableView:[dataSource proxyForTableView:tableView]
+                heightForHeaderInSection:sourceSection];
+        }
+    }
+
+    return result;
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+    estimatedHeightForHeaderInSection:(NSInteger)section
+{
+    return [self            tableView:tableView
+    estimatedHeightForHeaderInSection:section
+                          withDefault:tableView.estimatedSectionHeaderHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+    estimatedHeightForHeaderInSection:(NSInteger)section
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSInteger sourceSection = NSNotFound;
+    if ([self resolveAKADataSource:&dataSource
+                sourceSectionIndex:&sourceSection
+                   forSectionIndex:section])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)])
+        {
+            result = [delegate          tableView:[dataSource proxyForTableView:tableView]
+                estimatedHeightForHeaderInSection:sourceSection];
+        }
+    }
+
+    return result;
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+             heightForFooterInSection:(NSInteger)section
+{
+    return [self            tableView:tableView
+             heightForFooterInSection:section
+                          withDefault:tableView.sectionFooterHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+             heightForFooterInSection:(NSInteger)section
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSInteger sourceSection = NSNotFound;
+    if ([self resolveAKADataSource:&dataSource
+                sourceSectionIndex:&sourceSection
+                   forSectionIndex:section])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)])
+        {
+            result = [delegate tableView:[dataSource proxyForTableView:tableView]
+                heightForFooterInSection:sourceSection];
+        }
+    }
+
+    return result;
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+    estimatedHeightForFooterInSection:(NSInteger)section
+{
+    return [self            tableView:tableView
+    estimatedHeightForFooterInSection:section
+                          withDefault:tableView.estimatedSectionFooterHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+    estimatedHeightForFooterInSection:(NSInteger)section
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSInteger sourceSection = NSNotFound;
+    if ([self resolveAKADataSource:&dataSource
+                sourceSectionIndex:&sourceSection
+                   forSectionIndex:section])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)])
+        {
+            result = [delegate          tableView:[dataSource proxyForTableView:tableView]
+                estimatedHeightForFooterInSection:sourceSection];
+        }
+    }
+
+    return result;
+}
+#endif
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+              heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self            tableView:tableView
+              heightForRowAtIndexPath:indexPath
+                          withDefault:tableView.rowHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+              heightForRowAtIndexPath:(NSIndexPath *)indexPath
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSIndexPath* sourceIndexPath = nil;
+    if ([self resolveAKADataSource:&dataSource
+                   sourceIndexPath:&sourceIndexPath
+                      forIndexPath:indexPath])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)])
+        {
+            result = [delegate tableView:[dataSource proxyForTableView:tableView]
+                 heightForRowAtIndexPath:sourceIndexPath];
+        }
+        AKALogDebug(@"row %ld-%ld height %lf from delegate %@ (%ld-%ld)",
+                    (long)indexPath.section, (long)indexPath.row, result,
+                    delegate, (long)sourceIndexPath.section, (long)sourceIndexPath.row);
+    }
+    else
+    {
+        AKALogDebug(@"row %ld-%ld height %lf (default)",
+                    (long)indexPath.section, (long)indexPath.row, result);
+    }
+
+    return result;
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+    estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self            tableView:tableView
+     estimatedHeightForRowAtIndexPath:indexPath
+                          withDefault:tableView.estimatedRowHeight];
+}
+
+- (CGFloat)                 tableView:(UITableView *)tableView
+     estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+                          withDefault:(CGFloat)defaultHeight
+{
+    CGFloat result = defaultHeight;
+
+    AKATVDataSourceSpecification* dataSource = nil;
+    NSIndexPath* sourceIndexPath = nil;
+    if ([self resolveAKADataSource:&dataSource
+                   sourceIndexPath:&sourceIndexPath
+                      forIndexPath:indexPath])
+    {
+        id<UITableViewDelegate> delegate = dataSource.delegate;
+        if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)])
+        {
+            result = [delegate          tableView:[dataSource proxyForTableView:tableView]
+                 estimatedHeightForRowAtIndexPath:sourceIndexPath];
+        }
+        AKALogDebug(@"row %ld-%ld estimated height %lf from delegate %@ (%ld-%ld)",
+                    (long)indexPath.section, (long)indexPath.row, result,
+                    delegate, (long)sourceIndexPath.section, (long)sourceIndexPath.row);
+    }
+    else
+    {
+        AKALogDebug(@"row %ld-%ld estimated height %lf (default)",
+                    (long)indexPath.section, (long)indexPath.row, result);
+    }
+
+    return result;
+}
 
 - (BOOL)forwardDelegateInvocation:(NSInvocation *)invocation
     withTableViewParameterAtIndex:(NSInteger)tvParameterIndex

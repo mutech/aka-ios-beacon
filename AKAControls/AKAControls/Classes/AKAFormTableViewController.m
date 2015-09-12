@@ -170,14 +170,16 @@ static NSString* const defaultDataSourceKey = @"default";
     _multiplexedDataSource =
     [AKATVMultiplexedDataSource proxyDataSourceAndDelegateForKey:defaultDataSourceKey
                                                      inTableView:self.tableView];
+    AKATVDataSourceSpecification* defaultDataSource = [_multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
+    UITableView* tvProxy = [defaultDataSource proxyForTableView:self.tableView];
 
     if (self.tableView.tableHeaderView)
     {
         [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableHeaderView];
     }
 
-    [self.formControl addControlsForControlViewsInStaticTableView:self.tableView
-                                                       dataSource:self.tableView.dataSource];
+    [self.formControl addControlsForControlViewsInStaticTableView:tvProxy
+                                                       dataSource:defaultDataSource.dataSource];
     if (self.tableView.tableFooterView)
     {
         [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableFooterView];
@@ -212,13 +214,18 @@ static NSString* const defaultDataSourceKey = @"default";
 
         [self.dynamicPlaceholderCellControls addObject:placeholder];
 
-        AKATVDataSourceSpecification* dataSource = [self dataSourceForDynamicPlaceholder:placeholder];
+        AKATVDataSourceSpecification* defaultDataSource = [self dataSourceForKey:@"default"
+                                                                   inMultiplexer:self.multiplexedDataSource];
+        [self.multiplexedDataSource excludeRowFromSourceIndexPath:placeholder.indexPath
+                                                     inDataSource:defaultDataSource
+                                                 withRowAnimation:UITableViewRowAnimationNone];
 
+        AKATVDataSourceSpecification* dataSource = [self dataSourceForDynamicPlaceholder:placeholder];
         if (dataSource != nil)
         {
             [self updateDynamicRowsForPlaceholderControl:placeholder];
         }
-}
+    }
 }
 
 - (void)    control:(AKACompositeControl *)compositeControl
@@ -349,18 +356,14 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
-- (void)hideRowControl:(AKATableViewCellCompositeControl*)rowControl
+- (BOOL)hideRowControl:(AKATableViewCellCompositeControl*)rowControl
          withAnimation:(UITableViewRowAnimation)rowAnimation
 {
     AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
-    __strong NSIndexPath* tableViewIndexPath = [dsSpec tableViewMappedIndexPath:rowControl.indexPath];
-    if (tableViewIndexPath)
-    {
-        [self.multiplexedDataSource removeUpTo:1
-                             rowsFromIndexPath:tableViewIndexPath
-                              withRowAnimation:rowAnimation];
-        self.hiddenControlCellsInfo[rowControl.indexPath] = tableViewIndexPath;
-    }
+    BOOL result = [self.multiplexedDataSource excludeRowFromSourceIndexPath:rowControl.indexPath
+                                                               inDataSource:dsSpec
+                                                           withRowAnimation:rowAnimation];
+    return result;
 }
 
 - (void)hideRowControls:(NSArray*)rowControls
@@ -375,19 +378,18 @@ static NSString* const defaultDataSourceKey = @"default";
     [self.multiplexedDataSource endUpdates];
 }
 
-- (void)unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
+- (BOOL)unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
            withAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    NSIndexPath* tableViewIndexPath = self.hiddenControlCellsInfo[rowControl.indexPath];
-    if (tableViewIndexPath)
+    BOOL result = NO;
+    if (![rowControl isKindOfClass:[AKADynamicPlaceholderTableViewCellCompositeControl class]])
     {
-        [self.multiplexedDataSource insertRowsFromDataSource:@"default"
-                                             sourceIndexPath:rowControl.indexPath
-                                                       count:1
-                                                 atIndexPath:tableViewIndexPath
-                                            withRowAnimation:rowAnimation];
-        [self.hiddenControlCellsInfo removeObjectForKey:rowControl.indexPath];
+        AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
+        result = [self.multiplexedDataSource includeRowFromSourceIndexPath:rowControl.indexPath
+                                                              inDataSource:dsSpec
+                                                          withRowAnimation:rowAnimation];
     }
+    return result;
 }
 
 - (void)unhideRowControls:(NSArray*)rowControls
@@ -426,12 +428,11 @@ static NSString* const defaultDataSourceKey = @"default";
 {
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
-    AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:@"default"];
-//    AKATVDataSourceSpecification* placeholderDS = [self dataSourceForKey:key                                                           inMultiplexer:self.multiplexedDataSource];
+    AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
+    AKATVDataSourceSpecification* placeholderDS = [self dataSourceForKey:key                                                           inMultiplexer:self.multiplexedDataSource];
     AKADynamicPlaceholderTableViewCellBindingConfiguraton* config =
         (id)placeholder.viewBinding.configuration;
 
-    NSInteger placeholderOffset = 1; // Set to 0 if placeholder is removed
     NSIndexPath* targetIndexPath = [defaultDS tableViewMappedIndexPath:placeholder.indexPath];
     BOOL result = (targetIndexPath != nil);
 
@@ -472,7 +473,7 @@ static NSString* const defaultDataSourceKey = @"default";
             if ([items indexOfObject:oldItem] == NSNotFound)
             {
                 [oldItems removeObjectAtIndex:i];
-                NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                       inSection:targetIndexPath.section];
                 if (result)
                 {
@@ -498,7 +499,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
         if (oldIndex == NSNotFound)
         {
-            NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+            NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                   inSection:targetIndexPath.section];
             NSIndexPath* sourceIndexPath = [NSIndexPath indexPathForRow:config.rowIndex+i
                                                               inSection:config.sectionIndex];
@@ -520,9 +521,9 @@ static NSString* const defaultDataSourceKey = @"default";
 
             if (result)
             {
-                NSIndexPath* fromTip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+oldIndex + insertedItemCount
+                NSIndexPath* fromTip = [NSIndexPath indexPathForRow:targetIndexPath.row+oldIndex + insertedItemCount
                                                           inSection:targetIndexPath.section];
-                NSIndexPath* toTip = [NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                NSIndexPath* toTip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                         inSection:targetIndexPath.section];
                 [self.multiplexedDataSource rowAtIndexPath:fromTip
                                             didMoveToIndexPath:toTip];
@@ -534,7 +535,7 @@ static NSString* const defaultDataSourceKey = @"default";
             // Assume a content change for non-inserted/deleted/moved items
             if (result)
             {
-                [deferredReloadIndexes addObject:[NSIndexPath indexPathForRow:targetIndexPath.row+placeholderOffset+i
+                [deferredReloadIndexes addObject:[NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                                     inSection:targetIndexPath.section]];
             }
         }
@@ -562,7 +563,10 @@ static NSString* const defaultDataSourceKey = @"default";
         [self.multiplexedDataSource reloadRowsAtIndexPaths:deferredReloadIndexes
                                           withRowAnimation:UITableViewRowAnimationFade];
     }
-    
+
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+
     return result;
 }
 

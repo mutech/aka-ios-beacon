@@ -56,4 +56,30 @@
     [coder encodeObject:@(self.readOnly) forKey:@"readOnly"];
 }
 
+#pragma mark - Diagnostics
+
+- (NSString *)description
+{
+    NSMutableString* result = NSMutableString.new;
+    for (NSString* property in @[ @"controlName", @"controlTags", @"role", @"valueKeyPath", @"converterKeyPath", @"validatorKeyPath", @"readOnly" ])
+    {
+        @try {
+            id value = [self valueForKey:property];
+            if (value != nil)
+            {
+                if (result.length > 0)
+                {
+                    [result appendString:@", "];
+                }
+                [result appendFormat:@"%@=%@", property, value];
+            }
+        }
+        @catch(NSException* e)
+        {
+            (void)e;
+        }
+    }
+    return result;
+}
+
 @end

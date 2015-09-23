@@ -12,6 +12,7 @@
 
 #import "AKAErrors.h"
 
+
 #pragma mark - AKAKVOProperty (Cluster Interface)
 #pragma mark -
 
@@ -32,6 +33,7 @@
 
 @end
 
+
 #pragma mark - AKAKVOProperty (Cluster Interface)
 #pragma mark -
 
@@ -48,6 +50,7 @@
 @property(nonatomic, readonly) NSInteger index;
 
 @end
+
 
 #pragma mark - AKACustomProperty (Cluster Interface)
 #pragma mark -
@@ -106,10 +109,9 @@
 
 @end
 
-#pragma mark - AKAProperty
-#pragma mark -
 
 #pragma mark - AKAProperty (Private Interface)
+#pragma mark -
 
 @interface AKAProperty()
 
@@ -119,7 +121,9 @@
 
 @end
 
+
 #pragma mark - AKAProperty (Protected Interface)
+#pragma mark -
 
 @interface  AKAProperty(Protected)
 
@@ -133,7 +137,9 @@
 
 @end
 
+
 #pragma mark - AKAProperty (Implementation)
+#pragma mark -
 
 @implementation AKAProperty
 
@@ -433,6 +439,7 @@
 }
 
 @end
+
 
 #pragma mark - AKAKVOProperty (Implementation)
 #pragma mark -

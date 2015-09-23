@@ -210,6 +210,22 @@
 
 #pragma mark - Activation
 
+- (BOOL)prepareToActivateItemAtIndex:(NSUInteger)index
+{
+    BOOL result = index < self.items.count;
+    if (result)
+    {
+        UIResponder* responder = [self responderAtIndex:index];
+        result = responder != nil;
+        if (result)
+        {
+            result = [self registerActiveResponder:responder
+                                    forItemAtIndex:index];
+        }
+    }
+    return result;
+}
+
 - (BOOL)activateItemAtIndex:(NSUInteger)index
 {
     BOOL result = index < self.items.count;
@@ -237,6 +253,17 @@
                 }
             }
         }
+    }
+    return result;
+}
+
+- (BOOL)prepareToActivateItem:(id)item
+{
+    BOOL result = NO;
+    NSUInteger index = [self indexOfItem:item];
+    if (index != NSNotFound)
+    {
+        result = [self prepareToActivateItemAtIndex:index];
     }
     return result;
 }

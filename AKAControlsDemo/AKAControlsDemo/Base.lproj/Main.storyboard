@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1Xv-Pw-tMw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1Xv-Pw-tMw">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -36,11 +37,14 @@
                             <tableViewSection id="pxo-gb-FYZ">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="hfh-kO-3NP" style="IBUITableViewCellStyleDefault" id="uKT-Re-yO8">
+                                        <rect key="frame" x="0.0" y="64" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uKT-Re-yO8" id="Xry-Gs-r5k">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Text fields, binding, activation sequence" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hfh-kO-3NP">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,11 +57,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="HjE-qO-OuX" style="IBUITableViewCellStyleDefault" id="bQn-cu-N48">
+                                        <rect key="frame" x="0.0" y="108" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bQn-cu-N48" id="hJK-gq-rHd">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Themed editor controls" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HjE-qO-OuX">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -70,12 +77,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="gB2-7g-cth" style="IBUITableViewCellStyleDefault" id="5UW-Q6-TYs">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="152" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5UW-Q6-TYs" id="1JK-Uh-EBC">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Forms table view controller" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gB2-7g-cth">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -88,12 +97,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="7wB-Jh-Sc3" style="IBUITableViewCellStyleDefault" id="fk4-LR-qfP">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="196" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fk4-LR-qfP" id="4gh-H1-p3W">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Multiplexed TableView" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7wB-Jh-Sc3">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -103,6 +114,26 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="NBP-VU-9bY" kind="show" id="evQ-oG-p1l"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="ykv-qk-lng" style="IBUITableViewCellStyleDefault" id="Gxu-Yw-HOX">
+                                        <rect key="frame" x="0.0" y="240" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Gxu-Yw-HOX" id="gBZ-nc-F7J">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Choice Controls" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ykv-qk-lng">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Mpb-iy-GvQ" kind="show" id="mP9-aN-frc"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -132,11 +163,14 @@
                             <tableViewSection headerTitle="Static Cells" id="vtS-pF-MB4">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="UA8-sg-SS1" style="IBUITableViewCellStyleDefault" id="0Ef-zk-ys8">
+                                        <rect key="frame" x="0.0" y="114" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Ef-zk-ys8" id="Phs-mp-GrX">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Static Cell 1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UA8-sg-SS1">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <gestureRecognizers/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -150,11 +184,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="iAC-xM-pqK" style="IBUITableViewCellStyleDefault" id="XQc-0w-eV7">
+                                        <rect key="frame" x="0.0" y="158" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XQc-0w-eV7" id="l2s-zu-RvP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Static Cell 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iAC-xM-pqK">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <gestureRecognizers/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -168,11 +205,14 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="zvA-Is-6Tn" style="IBUITableViewCellStyleDefault" id="H00-F8-Jxz">
+                                        <rect key="frame" x="0.0" y="202" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="H00-F8-Jxz" id="Ug6-9E-0LE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Static Cell 3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zvA-Is-6Tn">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -387,7 +427,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Editor Controls Demo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-sB-4fl">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Editor Controls Demo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-sB-4fl">
                                 <rect key="frame" x="105" y="72" width="166" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -402,7 +442,7 @@
                                     <action selector="switchTheme:" destination="o5i-N2-XrK" eventType="touchUpInside" id="b8Q-QJ-tZO"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9H-ls-c3J" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="101" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
@@ -410,7 +450,7 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Name"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hDs-lv-70o" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="155" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
@@ -420,7 +460,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATextEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v77-a2-mYd" customClass="AKATextEditorControlView">
                                 <rect key="frame" x="16" y="209" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
@@ -428,7 +468,7 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.email"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cqy-Jp-e2u" customClass="AKANumberEditorControlView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqy-Jp-e2u" customClass="AKANumberEditorControlView">
                                 <rect key="frame" x="16" y="263" width="343" height="46"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
@@ -469,13 +509,15 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="cPu-iS-56Z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Personal Information" id="oc9-lV-qoA">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="3Er-sa-HrB" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="114" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Er-sa-HrB" id="w81-l8-4cV">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7wv-Hc-8gy" customClass="AKASwitchEditorControlView">
@@ -497,8 +539,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KTf-yn-DwJ" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="158" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KTf-yn-DwJ" id="pah-hS-KRQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IwB-1T-v9g" customClass="AKATextEditorControlView">
@@ -524,8 +568,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="VY4-eu-35h" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="202" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VY4-eu-35h" id="QKf-lf-tId">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r8f-ho-PLM" customClass="AKATextEditorControlView">
@@ -551,8 +597,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="BDC-Mf-o3l" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="246" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BDC-Mf-o3l" id="SXK-6U-kYr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ez8-Z8-prC" customClass="AKATextEditorControlView">
@@ -582,8 +630,10 @@
                             <tableViewSection headerTitle="Personal Information" id="I2J-Ff-op2">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Zhe-Mg-tdw" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="332" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zhe-Mg-tdw" id="xIO-dX-Y1U">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6uA-qq-FsE" customClass="AKASwitchEditorControlView">
@@ -605,8 +655,10 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8qR-JV-oKv" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="376" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8qR-JV-oKv" id="4FQ-yl-to0">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vza-3X-Ms7" customClass="AKATextEditorControlView">
@@ -632,8 +684,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="0RJ-gf-umI" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="420" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0RJ-gf-umI" id="gCD-6O-K9s">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lno-Re-mcO" customClass="AKATextEditorControlView">
@@ -659,8 +713,10 @@
                                         </userDefinedRuntimeAttributes>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jXb-H9-yIh" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="464" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jXb-H9-yIh" id="Vqa-Gy-e1h">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Zs-nv-n72" customClass="AKATextEditorControlView">
@@ -690,14 +746,16 @@
                             <tableViewSection headerTitle="Model Data" id="0Iy-gA-lDH">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="cZs-aF-OLC" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="550" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cZs-aF-OLC" id="oTr-MP-P4N">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AAP-PK-Fh5" customClass="AKATextLabel">
                                                     <rect key="frame" x="8" y="8" width="359" height="27"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model"/>
@@ -713,14 +771,16 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="VGH-sA-Bqo" customClass="AKATableViewCell">
+                                        <rect key="frame" x="0.0" y="594" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VGH-sA-Bqo" id="XMv-yp-bCM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yhc-fP-cXK" customClass="AKATextLabel">
                                                     <rect key="frame" x="8" y="8" width="359" height="27"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="model.name"/>
@@ -750,6 +810,205 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U0A-II-VAU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1332.5" y="1949.5"/>
+        </scene>
+        <!--Choice Demo Table View Controller-->
+        <scene sceneID="KNa-l6-KAZ">
+            <objects>
+                <tableViewController id="Mpb-iy-GvQ" customClass="AKAChoiceDemoTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="97n-Ph-DAE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection headerTitle="Manual Picker, collapsed" id="qlg-Xh-VK8">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="yfy-Oz-29g" userLabel="Manual Picker Cell">
+                                        <rect key="frame" x="0.0" y="114" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yfy-Oz-29g" id="mQE-Bp-oWd">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nrd-Cq-B56" customClass="AKATextLabel">
+                                                    <rect key="frame" x="16" y="8" width="351" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="fFD-fo-UTN"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="selectedValue"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                                <pickerView hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ic3-6n-uVu" customClass="AKAPickerView">
+                                                    <rect key="frame" x="16" y="-49" width="351" height="162"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" id="TGj-Ua-id0"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="selectedValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="pickerValuesKeyPath" value="pickerValues"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="undefinedValueTitle" value="(keine Auswahl)"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Mpb-iy-GvQ" id="5o7-3w-ABV"/>
+                                                    </connections>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Nrd-Cq-B56" firstAttribute="top" secondItem="mQE-Bp-oWd" secondAttribute="topMargin" id="3GM-za-05U"/>
+                                                <constraint firstAttribute="bottom" secondItem="ic3-6n-uVu" secondAttribute="bottom" priority="999" id="4wy-gA-U4d"/>
+                                                <constraint firstAttribute="trailing" secondItem="Nrd-Cq-B56" secondAttribute="trailing" constant="8" id="HHf-Ji-GUq"/>
+                                                <constraint firstAttribute="trailing" secondItem="ic3-6n-uVu" secondAttribute="trailing" constant="8" id="Jzs-hw-fmb"/>
+                                                <constraint firstItem="Nrd-Cq-B56" firstAttribute="leading" secondItem="mQE-Bp-oWd" secondAttribute="leading" constant="16" id="SFx-si-PGd"/>
+                                                <constraint firstItem="ic3-6n-uVu" firstAttribute="leading" secondItem="mQE-Bp-oWd" secondAttribute="leading" constant="16" id="UPu-cM-wnL"/>
+                                                <constraint firstItem="ic3-6n-uVu" firstAttribute="top" secondItem="Nrd-Cq-B56" secondAttribute="bottom" id="eNH-VE-xb8"/>
+                                                <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="Nrd-Cq-B56" secondAttribute="bottom" constant="4" id="r9r-sQ-8kE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="AKA Picker always visible" id="KaI-aY-6nE">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ync-ij-wCS" userLabel="Manual Picker Cell">
+                                        <rect key="frame" x="0.0" y="200" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ync-ij-wCS" id="Prq-iC-7hC">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RxW-Yz-DYK" customClass="AKATextLabel">
+                                                    <rect key="frame" x="16" y="8" width="351" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="DTq-eB-Yva"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="selectedValue"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="RxW-Yz-DYK" firstAttribute="leading" secondItem="Prq-iC-7hC" secondAttribute="leading" constant="16" id="0wX-oR-4tT"/>
+                                                <constraint firstItem="RxW-Yz-DYK" firstAttribute="top" secondItem="Prq-iC-7hC" secondAttribute="topMargin" id="LFX-Ih-B2h"/>
+                                                <constraint firstAttribute="trailing" secondItem="RxW-Yz-DYK" secondAttribute="trailing" constant="8" id="bWD-Zy-hei"/>
+                                                <constraint firstAttribute="bottom" secondItem="RxW-Yz-DYK" secondAttribute="bottom" constant="8" id="ceD-Oj-r4g"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" placeholderIntrinsicWidth="375" placeholderIntrinsicHeight="162" selectionStyle="default" indentationWidth="10" rowHeight="162" id="RGc-Lx-5Lq">
+                                        <rect key="frame" x="0.0" y="244" width="375" height="162"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RGc-Lx-5Lq" id="TYR-qR-jSz">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="162"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c15-NH-r5U" customClass="AKAPickerView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="162"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="selectedValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="pickerValuesKeyPath" value="pickerValues"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="undefinedValueTitle" value="(keine Auswahl)"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="otherValueTitle" value="(manuelle Eingabe)"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="c15-NH-r5U" secondAttribute="bottom" id="0yJ-6I-UGg"/>
+                                                <constraint firstItem="c15-NH-r5U" firstAttribute="leading" secondItem="TYR-qR-jSz" secondAttribute="leading" id="SVt-Sw-wo1"/>
+                                                <constraint firstItem="c15-NH-r5U" firstAttribute="top" secondItem="TYR-qR-jSz" secondAttribute="top" id="ZtX-Gi-VmO"/>
+                                                <constraint firstAttribute="trailing" secondItem="c15-NH-r5U" secondAttribute="trailing" id="gYb-qp-tZE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="AKA Picker Keyboard" id="TdJ-ds-mNu" userLabel="AKA Picker Keyboard">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="3Ek-WK-vmm">
+                                        <rect key="frame" x="0.0" y="448" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Ek-WK-vmm" id="kAp-Pc-LXA">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jme-j4-hdh" customClass="AKASingleChoiceEditorControlView">
+                                                    <rect key="frame" x="16" y="0.0" width="351" height="44"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="pickerValuesKeyPath" value="pickerValues"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="otherValueTitle" value="(manuelle Eingabe)"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="undefinedValueTitle" value="(keine Auswahl)"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="editorKeyPath" value="selectedValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="labelText" value="Auswahl"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Jme-j4-hdh" secondAttribute="trailing" constant="8" id="DHy-GO-Ukc"/>
+                                                <constraint firstItem="Jme-j4-hdh" firstAttribute="top" secondItem="kAp-Pc-LXA" secondAttribute="top" id="NZs-6s-WXf"/>
+                                                <constraint firstAttribute="bottom" secondItem="Jme-j4-hdh" secondAttribute="bottom" id="hYM-fz-ChH"/>
+                                                <constraint firstItem="Jme-j4-hdh" firstAttribute="leading" secondItem="kAp-Pc-LXA" secondAttribute="leading" constant="16" id="jSU-MK-19q"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Textfield Picker Keyboard" id="odE-T2-qA7" userLabel="AKA Picker Keyboard">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Z21-bj-jrn">
+                                        <rect key="frame" x="0.0" y="534" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z21-bj-jrn" id="7rp-iz-7pr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JNq-e5-8Ep" customClass="AKATextField">
+                                                    <rect key="frame" x="8" y="8" width="359" height="28"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value=" "/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="KBActivationSequence" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="autoActivate" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="JNq-e5-8Ep" secondAttribute="trailing" constant="8" id="8Vv-oH-EcD"/>
+                                                <constraint firstAttribute="bottom" secondItem="JNq-e5-8Ep" secondAttribute="bottom" constant="8" id="Dw1-DC-1Xd"/>
+                                                <constraint firstItem="JNq-e5-8Ep" firstAttribute="top" secondItem="7rp-iz-7pr" secondAttribute="top" constant="8" id="f4N-SC-769"/>
+                                                <constraint firstItem="JNq-e5-8Ep" firstAttribute="leading" secondItem="7rp-iz-7pr" secondAttribute="leading" constant="8" id="j7P-dM-prN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="Mpb-iy-GvQ" id="1dQ-Bq-UeD"/>
+                            <outlet property="delegate" destination="Mpb-iy-GvQ" id="3Xb-Mr-lVJ"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="keyboardPickerCell" destination="3Ek-WK-vmm" id="TW9-dD-XhA"/>
+                        <outlet property="keyboardPickerTextField" destination="JNq-e5-8Ep" id="t1p-eh-EPn"/>
+                        <outlet property="manualPickerCell" destination="yfy-Oz-29g" id="4fv-2m-Gtp"/>
+                        <outlet property="manualPickerHeightConstraint" destination="TGj-Ua-id0" id="dod-s5-NAO"/>
+                        <outlet property="pickerView" destination="ic3-6n-uVu" id="wwd-Ds-Rxu"/>
+                        <outlet property="selectedValueLabel" destination="Nrd-Cq-B56" id="KJv-7J-3fp"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E4B-Lr-k4G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="3u1-af-gFK"/>
+            </objects>
+            <point key="canvasLocation" x="1840.5" y="1949.5"/>
         </scene>
     </scenes>
 </document>

@@ -56,6 +56,8 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKANumberTextField.h>
 #import <AKAControls/AKASwitch.h>
 #import <AKAControls/AKASwitchBinding.h>
+//#import <AKAControls/AKAPickerView.h>
+//#import <AKAControls/AKAPickerViewBinding.h>
 
 // AKAControls/ControlViews/CompositeControlViews
 #import <AKAControls/AKACompositeControlView.h>
@@ -83,3 +85,11 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 
 // AKAControls/ViewControllers
 #import <AKAControls/AKAFormTableViewController.h>
+
+// AKAControls/Bindings (new)
+#import <AKAControls/AKABinding.h>
+#import <AKAControls/AKABindingExpression.h>
+#import <AKAControls/NSScanner+AKABindingExpressionParser.h>
+#import <AKAControls/AKABindingProvider.h>
+#import <AKAControls/AKABindingContextProtocol.h>
+

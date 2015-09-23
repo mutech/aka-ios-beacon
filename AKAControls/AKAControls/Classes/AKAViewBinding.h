@@ -27,7 +27,7 @@
 - (BOOL)viewBindingShouldActivate:(AKAViewBinding*)viewBinding;
 
 - (void)        viewBinding:(AKAViewBinding*)viewBinding
-            viewWillActivate:(UIView*)view;
+           viewWillActivate:(UIView*)view;
 
 - (void)        viewBinding:(AKAViewBinding*)viewBinding
             viewDidActivate:(UIView*)view;
@@ -39,6 +39,12 @@
 
 - (void)        viewBinding:(AKAViewBinding*)viewBinding
          viewWillDeactivate:(UIView*)view;
+
+#pragma mark - Data Context Access
+/// @name Data Context Access
+
+- (AKAProperty *)dataContextPropertyAtKeyPath:(NSString *)keyPath
+                           withChangeObserver:(void (^)(id, id))changeObserver;
 
 @property(nonatomic, readonly)AKAKeyboardActivationSequence* keyboardActivationSequence;
 

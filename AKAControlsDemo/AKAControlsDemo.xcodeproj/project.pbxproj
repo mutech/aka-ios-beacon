@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E61FFC51BA641C400A4022F /* AKAChoiceDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E61FFC41BA641C400A4022F /* AKAChoiceDemoTableViewController.m */; };
 		8E7D6EAF1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7D6EAE1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m */; };
 		8EBA332C1ABAFA82007436AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332B1ABAFA82007436AA /* main.m */; };
 		8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA332E1ABAFA82007436AA /* AppDelegate.m */; };
@@ -32,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		8E61FFC31BA641C400A4022F /* AKAChoiceDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAChoiceDemoTableViewController.h; sourceTree = "<group>"; };
+		8E61FFC41BA641C400A4022F /* AKAChoiceDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAChoiceDemoTableViewController.m; sourceTree = "<group>"; };
 		8E7D6EAD1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMultiplexedTableViewControllerDemoTableViewController.h; sourceTree = "<group>"; };
 		8E7D6EAE1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMultiplexedTableViewControllerDemoTableViewController.m; sourceTree = "<group>"; };
 		8EBA33261ABAFA82007436AA /* AKAControlsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKAControlsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +125,8 @@
 				8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */,
 				8E7D6EAD1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.h */,
 				8E7D6EAE1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m */,
+				8E61FFC31BA641C400A4022F /* AKAChoiceDemoTableViewController.h */,
+				8E61FFC41BA641C400A4022F /* AKAChoiceDemoTableViewController.m */,
 				8EBA33361ABAFA82007436AA /* Images.xcassets */,
 				8EBA33381ABAFA82007436AA /* LaunchScreen.xib */,
 				8EBA33291ABAFA82007436AA /* Supporting Files */,
@@ -312,6 +317,7 @@
 				8E7D6EAF1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.m in Sources */,
 				8EBD27471AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m in Sources */,
 				8EBA33321ABAFA82007436AA /* AKAControlsDemoBaseViewController.m in Sources */,
+				8E61FFC51BA641C400A4022F /* AKAChoiceDemoTableViewController.m in Sources */,
 				8EBA332F1ABAFA82007436AA /* AppDelegate.m in Sources */,
 				8EBA332C1ABAFA82007436AA /* main.m in Sources */,
 			);

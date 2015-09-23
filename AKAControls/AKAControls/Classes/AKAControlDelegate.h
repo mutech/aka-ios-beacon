@@ -113,6 +113,11 @@
 @protocol AKAControlMembershipDelegate <NSObject>
 
 @optional
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+             addControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index;
+
+@optional
 - (void)        control:(AKACompositeControl*)compositeControl
          willAddControl:(AKAControl*)memberControl
                 atIndex:(NSUInteger)index;
@@ -120,6 +125,11 @@
 @optional
 - (void)        control:(AKACompositeControl*)compositeControl
           didAddControl:(AKAControl*)memberControl
+                atIndex:(NSUInteger)index;
+
+@optional
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+          removeControl:(AKAControl *)memberControl
                 atIndex:(NSUInteger)index;
 
 @optional

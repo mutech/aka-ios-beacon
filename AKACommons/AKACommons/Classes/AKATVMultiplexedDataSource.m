@@ -54,11 +54,12 @@ typedef enum {
 + (instancetype)proxyDataSourceAndDelegateForKey:(NSString*)dataSourceKey
                                      inTableView:(UITableView*)tableView
 {
+    id<UITableViewDataSource> originalDataSource = tableView.dataSource;
     AKATVMultiplexedDataSource* result = [[self alloc] initWithTableView:tableView];
-    if (tableView.dataSource != nil)
+    if (originalDataSource != nil)
     {
         NSString* key = dataSourceKey;
-        id<UITableViewDataSource> dataSource = [result addDataSource:tableView.dataSource
+        id<UITableViewDataSource> dataSource = [result addDataSource:originalDataSource
                                                         withDelegate:tableView.delegate
                                                               forKey:key].dataSource;
         NSUInteger nbSections = (NSUInteger)[dataSource numberOfSectionsInTableView:tableView];
@@ -447,7 +448,7 @@ typedef enum {
                                        inDataSource:dataSource];
     if (result)
     {
-        NSUInteger offsetInSegment = sourceIndexPath.row - rowSegment.indexPath.row;
+        NSUInteger offsetInSegment = (NSUInteger)(sourceIndexPath.row - rowSegment.indexPath.row);
         result = [section excludeRowAtOffset:offsetInSegment
                                 inRowSegment:rowSegment
                               atSegmentIndex:rowSegmentIndex];
@@ -512,7 +513,7 @@ typedef enum {
     if ([self resolveSectionSpecification:&section
                              sectionIndex:indexPath.section])
     {
-        result = [section excludeRowFromIndex:(NSUInteger)indexPath.row];
+        result = [section excludeRowFromIndex:indexPath.row];
         UITableView* tableView = self.tableView;
         if (result && tableView)
         {
@@ -1058,6 +1059,7 @@ typedef enum {
             result = [delegate tableView:[dataSource proxyForTableView:tableView]
                  heightForRowAtIndexPath:sourceIndexPath];
         }
+#if 0
         AKALogDebug(@"row %ld-%ld height %lf from delegate %@ (%ld-%ld)",
                     (long)indexPath.section, (long)indexPath.row, result,
                     delegate, (long)sourceIndexPath.section, (long)sourceIndexPath.row);
@@ -1066,6 +1068,8 @@ typedef enum {
     {
         AKALogDebug(@"row %ld-%ld height %lf (default)",
                     (long)indexPath.section, (long)indexPath.row, result);
+
+#endif
     }
 
     return result;
@@ -1097,6 +1101,7 @@ typedef enum {
             result = [delegate          tableView:[dataSource proxyForTableView:tableView]
                  estimatedHeightForRowAtIndexPath:sourceIndexPath];
         }
+#if 0
         AKALogDebug(@"row %ld-%ld estimated height %lf from delegate %@ (%ld-%ld)",
                     (long)indexPath.section, (long)indexPath.row, result,
                     delegate, (long)sourceIndexPath.section, (long)sourceIndexPath.row);
@@ -1105,8 +1110,8 @@ typedef enum {
     {
         AKALogDebug(@"row %ld-%ld estimated height %lf (default)",
                     (long)indexPath.section, (long)indexPath.row, result);
+#endif
     }
-
     return result;
 }
 

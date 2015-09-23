@@ -70,6 +70,8 @@
 
 #pragma mark - Activation
 
+- (BOOL)prepareToActivateItem:(id)item;
+
 - (BOOL)activatePrevious;
 - (BOOL)activateNext;
 - (BOOL)activateItem:(id)item;

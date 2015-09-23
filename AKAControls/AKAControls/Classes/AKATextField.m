@@ -64,7 +64,8 @@
         self.liveModelUpdates = YES;
         self.KBActivationSequence = YES;
         self.autoActivate = YES;
-    }}
+    }
+}
 
 #pragma mark - Control View Protocol
 

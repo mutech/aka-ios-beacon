@@ -31,6 +31,7 @@
         _keyboardActivationSequence = [AKAKeyboardActivationSequence new];
         _keyboardActivationSequence.delegate = self;
         [_keyboardActivationSequence update];
+        result = _keyboardActivationSequence;
     }
     return result;
 }
@@ -38,7 +39,7 @@
 - (void)enumerateItemsInKeyboardActivationSequenceUsingBlock:(void (^)(id, NSUInteger, BOOL *))block
 {
     __block int count = 0;
-    [self enumerateLeafControlsUsingBlock:^(AKAControl *control,
+    [self enumerateControlsRecursivelyUsingBlock:^(AKAControl *control,
                                             AKACompositeControl *owner,
                                             NSUInteger index,
                                             BOOL *stop)

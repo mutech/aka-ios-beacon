@@ -207,7 +207,7 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
     _backBarButtonItemIconTargets = backBarButtonItemIconTargets;
 
     for (id target in self.backBarButtonItemIconTargets)
-        [target setImage: AKAControlsStyleKit.imageOfBackBarButtonItemIcon];
+        [target setImage:AKAControlsStyleKit.imageOfBackBarButtonItemIcon.CIImage];
 }
 
 - (void)setForthBarButtonItemIconTargets: (NSArray*)forthBarButtonItemIconTargets
@@ -215,7 +215,7 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
     _forthBarButtonItemIconTargets = forthBarButtonItemIconTargets;
 
     for (id target in self.forthBarButtonItemIconTargets)
-        [target setImage: AKAControlsStyleKit.imageOfForthBarButtonItemIcon];
+        [target setImage:AKAControlsStyleKit.imageOfForthBarButtonItemIcon.CIImage];
 }
 
 - (void)setCloseKeyboardBarButtonItemIconTargets: (NSArray*)closeKeyboardBarButtonItemIconTargets
@@ -223,7 +223,7 @@ static UIImage* _imageOfCloseKeyboardBarButtonItemIcon = nil;
     _closeKeyboardBarButtonItemIconTargets = closeKeyboardBarButtonItemIconTargets;
 
     for (id target in self.closeKeyboardBarButtonItemIconTargets)
-        [target setImage: AKAControlsStyleKit.imageOfCloseKeyboardBarButtonItemIcon];
+        [target setImage:AKAControlsStyleKit.imageOfCloseKeyboardBarButtonItemIcon.CIImage];
 }
 
 

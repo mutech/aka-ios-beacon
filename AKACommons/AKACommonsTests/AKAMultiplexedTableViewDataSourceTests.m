@@ -63,19 +63,20 @@
 - (void)assertDataSource:(id<UITableViewDataSource>)dsTest
           equalsExpected:(id<UITableViewDataSource>)dsExpected
 {
-    NSInteger expectedNumberOfSections = [dsExpected numberOfSectionsInTableView:nil];
-    XCTAssertEqual([dsTest numberOfSectionsInTableView:nil], expectedNumberOfSections);
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+    NSInteger expectedNumberOfSections = [dsExpected numberOfSectionsInTableView:tableView];
+    XCTAssertEqual([dsTest numberOfSectionsInTableView:tableView], expectedNumberOfSections);
     for (NSInteger section=0; section < expectedNumberOfSections; ++section)
     {
-        NSInteger expectedNumberOfRows = [dsExpected tableView:nil numberOfRowsInSection:section];
-        NSInteger actualNumberOfRows = [dsTest tableView:nil numberOfRowsInSection:section];
+        NSInteger expectedNumberOfRows = [dsExpected tableView:tableView numberOfRowsInSection:section];
+        NSInteger actualNumberOfRows = [dsTest tableView:tableView numberOfRowsInSection:section];
         XCTAssertEqual(actualNumberOfRows, expectedNumberOfRows);
 
         for (NSInteger row=0; row < expectedNumberOfRows; ++row)
         {
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-            NSString* abCell = [dsExpected tableView:nil cellForRowAtIndexPath:indexPath].textLabel.text;
-            NSString* testCell = [dsTest tableView:nil cellForRowAtIndexPath:indexPath].textLabel.text;
+            NSString* abCell = [dsExpected tableView:tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+            NSString* testCell = [dsTest tableView:tableView cellForRowAtIndexPath:indexPath].textLabel.text;
 
             XCTAssertEqualObjects(abCell, testCell);
         }
@@ -84,6 +85,7 @@
 
 - (void)testCombineTwoDataSources
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                              @[ @[ @"A0-1", @"A0-2", @"A0-3" ] ]];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -104,7 +106,7 @@
     [dsTest insertSectionsFromDataSource:@"dsB"
                       sourceSectionIndex:0
                                    count:1
-                          atSectionIndex:(NSUInteger)[dsTest numberOfSectionsInTableView:nil]
+                          atSectionIndex:(NSUInteger)[dsTest numberOfSectionsInTableView:tableView]
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
 
@@ -113,6 +115,7 @@
 
 - (void)testSectionWithRowsFromTwoDataSourcesAppendSecond
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -121,8 +124,8 @@
                              @[ @[ @"A0-1", @"A0-2", @"A0-3", @"B0-1", @"B0-2" ] ] ];
     AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rowsA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
@@ -150,6 +153,7 @@
 
 - (void)testSectionWithRowsFromTwoDataSourcesPrependSecond
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -158,8 +162,8 @@
                              @[ @[ @"B0-1", @"B0-2" , @"A0-1", @"A0-2", @"A0-3" ] ] ];
     AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
 
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
@@ -186,6 +190,7 @@
 
 - (void)testSectionWithRowsFromTwoDataSourcesInsertSecond
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -194,8 +199,8 @@
                              @[ @[ @"A0-1", @"B0-1", @"B0-2", @"A0-2", @"A0-3" ] ] ];
     AKATVMultiplexedDataSource* dsTest = AKATVMultiplexedDataSource.new;
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_1 = [NSIndexPath indexPathForRow:1 inSection:0];
 
@@ -223,6 +228,7 @@
 
 - (void)testRemoveLeadingRows
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ]  ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
@@ -232,7 +238,7 @@
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -246,6 +252,7 @@
 
 - (void)testRemoveTrailingRows
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ] ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
@@ -255,7 +262,7 @@
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -270,6 +277,7 @@
 
 - (void)testRemoveInnerRows
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2", @"A0-3" ], @[ @"A1-1" ] ] ];
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
@@ -279,7 +287,7 @@
     [dsTest addDataSource:dsA withDelegate:nil forKey:@"dsA"];
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -293,6 +301,7 @@
 
 - (void)testRemoveSuffixAndPrefixOfRowsSpanningSegments
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -303,8 +312,8 @@
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"A0-1", @"B0-2" ] ] ];
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
@@ -314,7 +323,7 @@
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -334,6 +343,7 @@
 
 - (void)testRemoveFirstAndPrefixOfRowsSpanningSegments
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -344,8 +354,8 @@
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"B0-2" ] ] ];
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
@@ -355,7 +365,7 @@
     [dsTest addDataSource:dsB withDelegate:nil forKey:@"dsB"];
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -375,6 +385,7 @@
 
 - (void)testRemoveSuffixAndSecondOfRowsSpanningSegments
 {
+    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     ArrayDataSource* dsA = [ArrayDataSource dataSourceWithArray:
                             @[ @[ @"A0-1", @"A0-2" ] ] ];
     ArrayDataSource* dsB = [ArrayDataSource dataSourceWithArray:
@@ -385,8 +396,8 @@
     ArrayDataSource* dsExpected = [ArrayDataSource dataSourceWithArray:
                                    @[ @[ @"A0-1"] ] ];
 
-    NSInteger numberOfRowsInA0 = [dsA tableView:nil numberOfRowsInSection:0];
-    NSInteger numberOfRowsInB0 = [dsB tableView:nil numberOfRowsInSection:0];
+    NSInteger numberOfRowsInA0 = [dsA tableView:tableView numberOfRowsInSection:0];
+    NSInteger numberOfRowsInB0 = [dsB tableView:tableView numberOfRowsInSection:0];
     NSIndexPath* indexPath_0_0 = [NSIndexPath indexPathForRow:0 inSection:0];
     NSIndexPath* indexPath_0_rA0 = [NSIndexPath indexPathForRow:numberOfRowsInA0 inSection:0];
 
@@ -397,7 +408,7 @@
 
     [dsTest insertSectionsFromDataSource:@"dsA"
                       sourceSectionIndex:0
-                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:nil]
+                                   count:(NSUInteger)[dsA numberOfSectionsInTableView:tableView]
                           atSectionIndex:0
                        useRowsFromSource:YES
                         withRowAnimation:UITableViewRowAnimationAutomatic];

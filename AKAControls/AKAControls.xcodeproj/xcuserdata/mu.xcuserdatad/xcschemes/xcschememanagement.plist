@@ -17,7 +17,12 @@
 		<key>AKAControls Tests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>2</integer>
+		</dict>
+		<key>AKAControlsUITests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -28,6 +33,16 @@
 			<true/>
 		</dict>
 		<key>8E7232FA1B00224400D647A9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8E91E6E81BB16E8800F7618F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8E91E6F71BB16ED400F7618F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

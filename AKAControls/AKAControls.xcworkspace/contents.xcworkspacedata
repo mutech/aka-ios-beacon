@@ -5,6 +5,9 @@
       location = "group:AKAControls.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:AKAControlsGallery/AKAControlsGallery.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

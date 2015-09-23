@@ -14,11 +14,16 @@
 #import "AKAKeyboardActivationSequence.h"
 #import "AKAControlsErrors_Internal.h"
 
+// next gen binding
+#import "UIView+AKABindingSupport.h"
+#import "AKABindingProvider.h"
+@import AKACommons.NSObject_AKAAssociatedValues; // TODO: remove when viewBindings property is implemented
+
 #import "UIView+AKAHierarchyVisitor.h"
 
-@interface AKACompositeControl()
+@interface AKACompositeControl() <AKABindingDelegate, AKABindingContextProtocol>
 
-@property(nonatomic, strong) NSMutableArray* controlsStorage;
+@property(nonatomic, strong) NSMutableArray<AKAControl*>* controlsStorage;
 @property(nonatomic) NSUInteger activeControlIndex;
 
 @end
@@ -37,6 +42,79 @@
         self.controlsStorage = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
+#pragma mark - Binding Context Protocol
+
+- (opt_AKAProperty)dataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [self dataContextPropertyAtKeyPath:keyPath
+                           withChangeObserver:valueDidChange];
+}
+
+- (opt_id)dataContextValueForKeyPath:(req_NSString)keyPath
+{
+    return [self.dataContextProperty valueForKeyPath:keyPath];
+}
+
+- (opt_AKAProperty)rootDataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [[self rootControl] controlPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+}
+
+- (opt_id)rootDataContextValueForKeyPath:(req_NSString)keyPath
+{
+    return [self rootDataContextPropertyForKeyPath:keyPath withChangeObserver:nil].value;
+}
+
+- (opt_AKAProperty)controlPropertyForKeyPath:(req_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [AKAProperty propertyOfWeakKeyValueTarget:self keyPath:keyPath changeObserver:valueDidChange];
+}
+
+- (opt_id)controlValueForKeyPath:(req_NSString)keyPath
+{
+    return [self controlPropertyForKeyPath:keyPath withChangeObserver:nil].value;
+}
+
+- (AKACompositeControl*)rootControl
+{
+    AKACompositeControl* result;
+    for (result = self; result.owner != nil; result = result.owner)
+        ;
+    return result;
+}
+
+#pragma mark - Binding Delegate
+
+- (void)                                binding:(req_AKABinding)binding
+         targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
+                         toTargetValueWithError:(opt_NSError)error
+{
+    // TODO: implement
+}
+
+- (void)                                binding:(req_AKABinding)binding
+        targetUpdateFailedToValidateTargetValue:(opt_id)targetValue
+                       convertedFromSourceValue:(opt_id)sourceValue
+                                      withError:(opt_NSError)error
+{
+    // TODO: implement
+}
+
+- (void)                                binding:(req_AKABinding)binding
+         sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue
+                         toSourceValueWithError:(opt_NSError)error
+{
+    // TODO: implement
+}
+
+- (void)                                binding:(req_AKABinding)binding
+        sourceUpdateFailedToValidateSourceValue:(opt_id)sourceValue
+                       convertedFromTargetValue:(opt_id)targetValue
+                                      withError:(opt_NSError)error
+{
+    // TODO: implement
 }
 
 #pragma mark Access to Member Controls
@@ -151,8 +229,36 @@
 
 #pragma mark Delegat'ish Methods for Notifications and Customization
 
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+             addControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
+{
+    BOOL result = YES;
+
+    if (result)
+    {
+        id<AKAControlMembershipDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(shouldControl:addControl:atIndex:)])
+        {
+            result = [delegate shouldControl:compositeControl addControl:memberControl atIndex:index];
+        }
+    }
+
+    if (result)
+    {
+        AKACompositeControl* owner = self.owner;
+        if (owner != nil)
+        {
+            result = [owner shouldControl:compositeControl addControl:memberControl atIndex:index];
+        }
+    }
+
+    return result;
+}
+
 - (void)        control:(AKACompositeControl *)compositeControl
-         willAddControl:(AKAControl *)memberControl atIndex:(NSUInteger)index
+         willAddControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
 {
     id<AKAControlMembershipDelegate> delegate = self.delegate;
 
@@ -164,7 +270,8 @@
 }
 
 - (void)        control:(AKACompositeControl *)compositeControl
-          didAddControl:(AKAControl *)memberControl atIndex:(NSUInteger)index
+          didAddControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
 {
     id<AKAControlMembershipDelegate> delegate = self.delegate;
 
@@ -175,8 +282,36 @@
     [self.owner control:self didAddControl:memberControl atIndex:index];
 }
 
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+          removeControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
+{
+    BOOL result = YES;
+
+    if (result)
+    {
+        id<AKAControlMembershipDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(shouldControl:removeControl:atIndex:)])
+        {
+            result = [delegate shouldControl:compositeControl removeControl:memberControl atIndex:index];
+        }
+    }
+
+    if (result)
+    {
+        AKACompositeControl* owner = self.owner;
+        if (owner != nil)
+        {
+            result = [owner shouldControl:compositeControl removeControl:memberControl atIndex:index];
+        }
+    }
+
+    return result;
+}
+
 - (void)        control:(AKACompositeControl *)compositeControl
-      willRemoveControl:(AKAControl *)memberControl fromIndex:(NSUInteger)index
+      willRemoveControl:(AKAControl *)memberControl
+              fromIndex:(NSUInteger)index
 {
     id<AKAControlMembershipDelegate> delegate = self.delegate;
 
@@ -188,7 +323,8 @@
 }
 
 - (void)        control:(AKACompositeControl *)compositeControl
-       didRemoveControl:(AKAControl *)memberControl fromIndex:(NSUInteger)index
+       didRemoveControl:(AKAControl *)memberControl
+              fromIndex:(NSUInteger)index
 {
     id<AKAControlMembershipDelegate> delegate = self.delegate;
 
@@ -199,14 +335,19 @@
     [self.owner control:self didRemoveControl:memberControl fromIndex:index];
 }
 
-// TODO: add corresponding delegate methods and call them here
-
 - (BOOL)shouldAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
     AKACompositeControl* owner = control.owner;
-    return (index <= self.controlsStorage.count &&
-            (owner == nil || owner == self) &&
-            ![self.controlsStorage containsObject:control]);
+    BOOL result = (index <= self.controlsStorage.count &&
+                   (owner == nil || owner == self) &&
+                   ![self.controlsStorage containsObject:control]);
+
+    if (result)
+    {
+        result = [self shouldControl:self addControl:control atIndex:index];
+    }
+
+    return result;
 }
 
 - (void)willAddControl:(AKAControl*)control atIndex:(NSUInteger)index
@@ -237,9 +378,16 @@
 
 - (BOOL)shouldRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
-    return (index <= self.controlsStorage.count &&
-            control.owner == self &&
-            control == [self.controlsStorage objectAtIndex:index]);
+    BOOL result = (index <= self.controlsStorage.count &&
+                   control.owner == self &&
+                   control == [self.controlsStorage objectAtIndex:index]);
+
+    if (result)
+    {
+        result = [self shouldControl:self removeControl:control atIndex:index];
+    }
+
+    return result;
 }
 
 - (void)willRemoveControl:(AKAControl*)control atIndex:(NSUInteger)index
@@ -519,7 +667,8 @@
     return self.owner.keyboardActivationSequence;
 }
 
-- (BOOL)participatesInKeyboardActivationSequence
+// TODO: probably not needed, each control defines by itself if it participates
+- (BOOL)recursiveMembersParticipatesInKeyboardActivationSequence
 {
     BOOL __block result = NO;
     [self enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
@@ -777,6 +926,31 @@
                 *doNotDescend = YES;
             }
         }
+        else
+        {
+            NSArray* bindingPropertyNames = [view aka_definedBindingPropertyNames];
+            for (NSString* propertyName in bindingPropertyNames)
+            {
+                AKABindingExpression* bindingExpression = [view aka_bindingExpressionForPropertyNamed:propertyName];
+                AKABindingProvider* provider = bindingExpression.bindingProvider;
+                AKABinding* binding = [provider bindingWithView:view
+                                                     expression:bindingExpression
+                                                        context:self
+                                                       delegate:self];
+                if (binding)
+                {
+                    NSMutableSet* bindings = [self aka_associatedValueForKey:@"bindings"];
+                    if (bindings == nil)
+                    {
+                        bindings = [NSMutableSet new];
+                        [self aka_setAssociatedValue:bindings forKey:@"bindings"];
+                    }
+                    [bindings addObject:binding];
+
+                    [binding startObservingChanges];
+                }
+            }
+        }
     }];
     return count;
 }
@@ -922,6 +1096,34 @@
         NSUInteger index = [owner indexOfControl:self];
         [owner enumerateControlsUsingBlock:block startIndex:index+1 continueInOwner:continueInOwner];
     }
+}
+
+- (void)enumerateControlsRecursivelyUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
+{
+    [self enumerateControlsRecursivelyUsingBlock:block
+                                      startIndex:0
+                                 continueInOwner:NO];
+}
+
+- (void)enumerateControlsRecursivelyUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
+                             startIndex:(NSUInteger)startIndex
+                        continueInOwner:(BOOL)continueInOwner
+{
+    [self enumerateControlsUsingBlock:^(AKAControl* control, NSUInteger idx, BOOL *stop) {
+        __block BOOL localStop = NO;
+        block(control, self, idx, &localStop);
+        if (!localStop && [control isKindOfClass:[AKACompositeControl class]])
+        {
+            AKACompositeControl* composite = (AKACompositeControl*)control;
+            [composite enumerateControlsRecursivelyUsingBlock:^(AKAControl* control, AKACompositeControl* owner, NSUInteger idx, BOOL* stop) {
+                block(control, owner, idx, &localStop);
+                *stop = localStop;
+            }];
+        }
+        *stop = localStop;
+    }
+                           startIndex:startIndex
+                      continueInOwner:continueInOwner];
 }
 
 - (void)enumerateLeafControlsUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block

@@ -1,0 +1,429 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8E91E73F1BB228A900F7618F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E73E1BB228A900F7618F /* main.m */; };
+		8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7411BB228A900F7618F /* AppDelegate.m */; };
+		8E91E7481BB228A900F7618F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E7461BB228A900F7618F /* Main.storyboard */; };
+		8E91E74A1BB228A900F7618F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E7491BB228A900F7618F /* Assets.xcassets */; };
+		8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */; };
+		8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */; };
+		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; settings = {ASSET_TAGS = (); }; };
+		8E91E7661BB22CE900F7618F /* AKAControls.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E91E7651BB22CE900F7618F /* AKAControls.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8E91E7541BB228A900F7618F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8E91E7321BB228A900F7618F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8E91E7391BB228A900F7618F;
+			remoteInfo = AKAControlsGallery;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKAControlsGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E91E73E1BB228A900F7618F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8E91E7401BB228A900F7618F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		8E91E7411BB228A900F7618F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		8E91E7471BB228A900F7618F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8E91E7491BB228A900F7618F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8E91E74C1BB228A900F7618F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8E91E74E1BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsGalleryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsGalleryUITests.m; sourceTree = "<group>"; };
+		8E91E7591BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
+		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
+		8E91E7651BB22CE900F7618F /* AKAControls.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKAControls.framework; path = "../build/Debug-iphoneos/AKAControls.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8E91E7371BB228A900F7618F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E91E7661BB22CE900F7618F /* AKAControls.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E91E7501BB228A900F7618F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8E91E7311BB228A900F7618F = {
+			isa = PBXGroup;
+			children = (
+				8E91E7651BB22CE900F7618F /* AKAControls.framework */,
+				8E91E73C1BB228A900F7618F /* AKAControlsGallery */,
+				8E91E7561BB228A900F7618F /* AKAControlsGalleryUITests */,
+				8E91E73B1BB228A900F7618F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8E91E73B1BB228A900F7618F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */,
+				8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8E91E73C1BB228A900F7618F /* AKAControlsGallery */ = {
+			isa = PBXGroup;
+			children = (
+				8E91E7401BB228A900F7618F /* AppDelegate.h */,
+				8E91E7411BB228A900F7618F /* AppDelegate.m */,
+				8E91E7461BB228A900F7618F /* Main.storyboard */,
+				8E91E7671BB22DAF00F7618F /* ViewControllers */,
+				8E91E7491BB228A900F7618F /* Assets.xcassets */,
+				8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */,
+				8E91E74E1BB228A900F7618F /* Info.plist */,
+				8E91E73D1BB228A900F7618F /* Supporting Files */,
+			);
+			path = AKAControlsGallery;
+			sourceTree = "<group>";
+		};
+		8E91E73D1BB228A900F7618F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8E91E73E1BB228A900F7618F /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8E91E7561BB228A900F7618F /* AKAControlsGalleryUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */,
+				8E91E7591BB228A900F7618F /* Info.plist */,
+			);
+			path = AKAControlsGalleryUITests;
+			sourceTree = "<group>";
+		};
+		8E91E7671BB22DAF00F7618F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */,
+				8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8E91E7391BB228A900F7618F /* AKAControlsGallery */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGallery" */;
+			buildPhases = (
+				8E91E7361BB228A900F7618F /* Sources */,
+				8E91E7371BB228A900F7618F /* Frameworks */,
+				8E91E7381BB228A900F7618F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AKAControlsGallery;
+			productName = AKAControlsGallery;
+			productReference = 8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8E91E7521BB228A900F7618F /* AKAControlsGalleryUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGalleryUITests" */;
+			buildPhases = (
+				8E91E74F1BB228A900F7618F /* Sources */,
+				8E91E7501BB228A900F7618F /* Frameworks */,
+				8E91E7511BB228A900F7618F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8E91E7551BB228A900F7618F /* PBXTargetDependency */,
+			);
+			name = AKAControlsGalleryUITests;
+			productName = AKAControlsGalleryUITests;
+			productReference = 8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8E91E7321BB228A900F7618F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "AKA Sarl";
+				TargetAttributes = {
+					8E91E7391BB228A900F7618F = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					8E91E7521BB228A900F7618F = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 8E91E7391BB228A900F7618F;
+					};
+				};
+			};
+			buildConfigurationList = 8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKAControlsGallery" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8E91E7311BB228A900F7618F;
+			productRefGroup = 8E91E73B1BB228A900F7618F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8E91E7391BB228A900F7618F /* AKAControlsGallery */,
+				8E91E7521BB228A900F7618F /* AKAControlsGalleryUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8E91E7381BB228A900F7618F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */,
+				8E91E74A1BB228A900F7618F /* Assets.xcassets in Resources */,
+				8E91E7481BB228A900F7618F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E91E7511BB228A900F7618F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8E91E7361BB228A900F7618F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */,
+				8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */,
+				8E91E73F1BB228A900F7618F /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E91E74F1BB228A900F7618F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8E91E7551BB228A900F7618F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8E91E7391BB228A900F7618F /* AKAControlsGallery */;
+			targetProxy = 8E91E7541BB228A900F7618F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8E91E7461BB228A900F7618F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E91E7471BB228A900F7618F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8E91E74C1BB228A900F7618F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8E91E75A1BB228A900F7618F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8E91E75B1BB228A900F7618F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8E91E75D1BB228A900F7618F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8E91E75E1BB228A900F7618F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8E91E7601BB228A900F7618F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AKAControlsGallery;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		8E91E7611BB228A900F7618F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = AKAControlsGallery;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKAControlsGallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E91E75A1BB228A900F7618F /* Debug */,
+				8E91E75B1BB228A900F7618F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E91E75D1BB228A900F7618F /* Debug */,
+				8E91E75E1BB228A900F7618F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGalleryUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E91E7601BB228A900F7618F /* Debug */,
+				8E91E7611BB228A900F7618F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8E91E7321BB228A900F7618F /* Project object */;
+}

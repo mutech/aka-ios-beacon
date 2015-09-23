@@ -322,7 +322,7 @@
 - (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
                           withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver
 {
-    return [self.dataContextProperty propertyAtKeyPath:keyPath withChangeObserver:nil];
+    return [self.dataContextProperty propertyAtKeyPath:keyPath withChangeObserver:changeObserver];
     /*
     // TODO: create a data context property
     if (self.owner)
@@ -398,12 +398,12 @@
     BOOL result = NO;
     if ([self.delegate respondsToSelector:@selector(control:viewValue:conversionFailedWithError:)])
     {
-        result = [self.delegate control:self
+        result = [self.delegate control:control
                               viewValue:viewValueStorage
               conversionFailedWithError:error];
         if (!result && self.owner)
         {
-            result = [self.owner control:self
+            result = [self.owner control:control
                                viewValue:viewValueStorage
                conversionFailedWithError:error];
         }
@@ -705,9 +705,13 @@
     // result in UI updates, we have to make sure that updates are performed in
     // the main thread.
     __weak typeof(self)weakSelf = self;
-    [self aka_performBlockInMainThreadOrQueue:^{
-        [weakSelf updateViewValueForModelValueChangeTo:newValue];
-    }];
+    
+    [self aka_performBlockInMainThreadOrQueue:
+     ^{
+         [weakSelf updateViewValueForModelValueChangeTo:newValue];
+     }
+                            waitForCompletion:NO];
+
     [self control:self modelValueChangedFrom:oldValue to:newValue];
 }
 
@@ -716,9 +720,9 @@
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:modelValueChangedFrom:to:)])
     {
-        [delegate control:self modelValueChangedFrom:oldValue to:newValue];
+        [delegate control:control modelValueChangedFrom:oldValue to:newValue];
     }
-    [self.owner control:self modelValueChangedFrom:oldValue to:newValue];
+    [self.owner control:control modelValueChangedFrom:oldValue to:newValue];
 }
 
 - (void)updateViewValueForModelValueChangeTo:(id)newValue
@@ -903,6 +907,11 @@
         [self.delegate controlWillActivate:self];
     }
     [self.owner controlWillActivate:self];
+    if (self.participatesInKeyboardActivationSequence)
+    {
+        // Ensure that input accessory view is installed before a control becomes first responder. This is needed in cases where a view overrides becomeFirstResponder and calls willActivate.
+        [self.keyboardActivationSequence prepareToActivateItem:self];
+    }
 }
 
 - (void)didActivate

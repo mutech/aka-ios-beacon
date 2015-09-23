@@ -9,7 +9,7 @@ LICENSE
     spec.homepage      = 'https://www-akalabs.rhcloud.com/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
     spec.summary       = 'Reusable components.'
-    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.6-b004' }
+    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.6-b005' }
 
     spec.source_files  = 'AKACommons/AKACommons/**/*.{h,m}'
     spec.exclude_files = 'AKACommons/AKACommons/AKAKVO/**/*'

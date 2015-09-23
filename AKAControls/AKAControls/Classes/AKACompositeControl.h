@@ -54,6 +54,12 @@
                          startIndex:(NSUInteger)startIndex
                     continueInOwner:(BOOL)continueInOwner;
 
+- (void)enumerateControlsRecursivelyUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block;
+
+- (void)enumerateControlsRecursivelyUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
+                                    startIndex:(NSUInteger)startIndex
+                               continueInOwner:(BOOL)continueInOwner;
+
 - (void)enumerateLeafControlsUsingBlock:(void(^)(AKAControl* control,
                                                  AKACompositeControl* owner,
                                                  NSUInteger index,

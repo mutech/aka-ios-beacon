@@ -20,6 +20,7 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/AKAErrors.h>
 #import <AKACommons/AKAReference.h>
 #import <AKACommons/AKAProperty.h>
+#import <AKACommons/AKANullability.h>
 
 // UI/TableViews/
 #import <AKACommons/AKATVMultiplexedDataSource.h>
@@ -31,6 +32,8 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/NSObject+AKASelectorTools.h>
 #import <AKACommons/NSObject+AKAConcurrencyTools.h>
 #import <AKACommons/NSString+AKATools.h>
+#import <AKACommons/NSString+AKAKeyPathUtilities.h>
+#import <AKACommons/NSMutableString+AKATools.h>
 #import <AKACommons/NSIndexPath+AKARowAndSectionAsInteger.h>
 #import <AKACommons/UIView+AKAHierarchyVisitor.h>
 #import <AKACommons/UIView+AKAReusableViewsSupport.h>

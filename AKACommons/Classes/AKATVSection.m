@@ -243,7 +243,7 @@
                             segmentIndex:&segmentIndex
                          offsetInSegment:&offset
                              rowsVisited:&segmentFirstRowIndex
-                             forRowIndex:rowIndex];
+                             forRowIndex:(NSUInteger)rowIndex];
     if (result)
     {
         NSAssert(offset >= 0 && offset < rowSegment.numberOfRows,

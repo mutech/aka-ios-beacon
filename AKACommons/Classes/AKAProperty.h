@@ -8,12 +8,49 @@
 
 #import <Foundation/Foundation.h>
 
+#import "AKANullability.h"
+
+@class AKAProperty;
+@class AKAUnboundProperty;
+
+typedef AKAUnboundProperty* _Nullable                   opt_AKAUnboundProperty;
+typedef AKAUnboundProperty* _Nonnull                    req_AKAUnboundProperty;
+typedef AKAProperty* _Nullable                          opt_AKAProperty;
+typedef AKAProperty* _Nonnull                           req_AKAProperty;
+
+typedef void(^AKAPropertySetter)(req_id target, opt_id value);
+typedef AKAPropertySetter _Nullable                     opt_AKAPropertySetter;
+typedef AKAPropertySetter _Nonnull                      req_AKAPropertySetter;
+
+typedef opt_id(^AKAPropertyGetter)(req_id target);
+typedef AKAPropertyGetter _Nullable                     opt_AKAPropertyGetter;
+typedef AKAPropertyGetter _Nonnull                      req_AKAPropertyGetter;
+
+typedef void(^AKAPropertyChangeObserver)(opt_id oldValue, opt_id newValue);
+typedef AKAPropertyChangeObserver _Nullable             opt_AKAPropertyChangeObserver;
+typedef AKAPropertyChangeObserver _Nonnull              req_AKAPropertyChangeObserver;
+
+typedef BOOL(^AKAPropertyObservationStarter)(req_id target);
+typedef AKAPropertyObservationStarter _Nullable         opt_AKAPropertyObservationStarter;
+
+typedef BOOL(^AKAPropertyObservationStopper)(req_id target);
+typedef AKAPropertyObservationStopper _Nullable         opt_AKAPropertyObservationStopper;
+
+typedef opt_id(^AKAPropertyComputation)(opt_id value);
+typedef AKAPropertyComputation _Nonnull                 req_AKAPropertyComputation;
+
+
+#pragma mark - AKAUnboundProperty
+#pragma mark -
+
 @interface AKAUnboundProperty: NSObject
 
-+ (AKAUnboundProperty*)unboundPropertyWithKeyPath:(NSString*)keyPath;
+#pragma mark - Initialization
 
-+ (AKAUnboundProperty*)unboundPropertyWithGetter:(id(^)(id target))getter
-                                          setter:(void(^)(id target, id value))setter;
++ (req_AKAUnboundProperty)  unboundPropertyWithKeyPath:(req_NSString)keyPath;
+
++ (req_AKAUnboundProperty)   unboundPropertyWithGetter:(opt_AKAPropertyGetter)getter
+                                                setter:(opt_AKAPropertySetter)setter;
 
 #pragma mark - Value Access
 
@@ -26,7 +63,7 @@
  *
  * @return the value of the property in the specified target.
  */
-- (id)valueForTarget:(id)target;
+- (opt_id)                              valueForTarget:(req_id)target;
 
 /**
  * Changes the value of the property in the specified target to the specified new value.
@@ -34,17 +71,22 @@
  * @param value the new value
  * @param target the target object in which to change the property.
  */
-- (void)setValue:(id)value forTarget:(id)target;
+- (void)                                      setValue:(opt_id)value
+                                             forTarget:(req_id)target;
 
 @end
+
+
+#pragma mark - AKAProperty
+#pragma mark -
 
 @interface AKAProperty: AKAUnboundProperty
 
 #pragma mark - Initialization
 
-+ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
-                                 keyPath:(NSString*)keyPath
-                          changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
++ (req_AKAProperty)       propertyOfWeakKeyValueTarget:(req_NSObject)target
+                                               keyPath:(opt_NSString)keyPath
+                                        changeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
 /**
  * Creates a new custom property with the specified block implementations.
@@ -61,18 +103,18 @@
  *
  * @return a new property.
  */
-+ (AKAProperty*)propertyOfWeakTarget:(id)target
-                            getter:(id(^)(id target))getter
-                            setter:(void(^)(id target, id value))setter
-                observationStarter:(BOOL(^)(id target))observationStarter
-                observationStopper:(BOOL(^)(id target))observationStopper;
++ (req_AKAProperty)               propertyOfWeakTarget:(req_id)target
+                                                getter:(opt_AKAPropertyGetter)getter
+                                                setter:(opt_AKAPropertySetter)setter
+                                    observationStarter:(opt_AKAPropertyObservationStarter)observationStarter
+                                    observationStopper:(opt_AKAPropertyObservationStopper)observationStopper;
 
 #pragma mark - Value Access
 
 /**
  * The value of the property in the target bound to this instance.
  */
-@property(nonatomic) id value;
+@property(nonatomic) opt_id value;
 
 /**
  * If the property is bound (has a defined target), then this function returns
@@ -83,37 +125,38 @@
  *
  * @return the property value of this target if bound, otherwise the property value of the default target.
  */
-- (id)valueWithDefaultTarget:(id)defaultTarget;
+- (opt_id)                      valueWithDefaultTarget:(req_id)defaultTarget;
 
 #pragma mark - Validation
 
-- (BOOL)    validateValue:(inout __autoreleasing id *)ioValue
-                    error:(out NSError *__autoreleasing *)outError;
+- (BOOL)                                 validateValue:(inout_id)ioValue
+                                                 error:(out_NSError)outError;
 
 #pragma mark - Notifications
 
 @property(nonatomic, readonly) BOOL isObservingChanges;
 
-- (BOOL)startObservingChanges;
+- (BOOL)    startObservingChanges;
 
-- (BOOL)stopObservingChanges;
+- (BOOL)    stopObservingChanges;
 
 /**
  * Notifies the property, that its value changed. This is only used for custom properties
- * (those using getters and setters) and has no effect for other property types.
+ * (those using getters and setters) and has no effect for KVO property types.
  */
-- (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue;
+- (void)              notifyPropertyValueDidChangeFrom:(opt_id)oldValue
+                                                    to:(opt_id)newValue;
 
 #pragma mark - Dependent Properties
 
-@property(nonatomic, readonly) NSSet* dependentProperties;
+@property(nonatomic, readonly, nullable) NSSet* dependentProperties;
 
-- (AKAProperty*)propertyAtKeyPath:(NSString*)keyPath
-               withChangeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
+- (req_AKAProperty)                  propertyAtKeyPath:(req_NSString)keyPath
+                                    withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
-- (AKAProperty *)propertyAtIndex:(NSInteger)index
-              withChangeObserver:(void (^)(id, id))valueDidChange;
+- (req_AKAProperty)                    propertyAtIndex:(NSInteger)index
+                                    withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
-- (AKAProperty*)propertyComputedBy:(id(^)(id value))computation;
+- (req_AKAProperty)                 propertyComputedBy:(req_AKAPropertyComputation)computation;
 
 @end

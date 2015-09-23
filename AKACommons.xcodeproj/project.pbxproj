@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E225FF61BAEF8E200BC070F /* AKANullability.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E225FF51BAEEB4A00BC070F /* AKANullability.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */; };
 		8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,8 +64,12 @@
 		8E90F9471AF8E69A00CBBB52 /* AKACommons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E90F9461AF8E69A00CBBB52 /* AKACommons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E90F94D1AF8E69A00CBBB52 /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */; };
 		8E90F9541AF8E69A00CBBB52 /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */; };
+		8ED5EFC01BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8ED5EFC11BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */; settings = {ASSET_TAGS = (); }; };
 		8EDBBB8D1B63F0D200875D5F /* AKAArrayComparer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */; };
 		8EDBBB8E1B63F0D200875D5F /* AKAArrayComparer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */; };
+		8EED828E1BAF51DA00E45721 /* NSMutableString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EED828F1BAF51DA00E45721 /* NSMutableString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */; settings = {ASSET_TAGS = (); }; };
 		A677E50747F837365B479A33 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68E1B59A0220B66D1F7D2C1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -81,6 +86,7 @@
 /* Begin PBXFileReference section */
 		16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		79483621CA7D059E6F07B696 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		8E225FF51BAEEB4A00BC070F /* AKANullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKANullability.h; sourceTree = "<group>"; };
 		8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAErrors.h; sourceTree = "<group>"; };
 		8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAErrors.m; sourceTree = "<group>"; };
 		8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAInterfaceInfo.h; sourceTree = "<group>"; };
@@ -140,8 +146,12 @@
 		8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKACommonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E90F9521AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKACommonsTests.m; sourceTree = "<group>"; };
+		8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AKAKeyPathUtilities.h"; sourceTree = "<group>"; };
+		8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AKAKeyPathUtilities.m"; sourceTree = "<group>"; };
 		8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAArrayComparer.h; sourceTree = "<group>"; };
 		8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAArrayComparer.m; sourceTree = "<group>"; };
+		8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+AKATools.h"; sourceTree = "<group>"; };
+		8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+AKATools.m"; sourceTree = "<group>"; };
 		D68E1B59A0220B66D1F7D2C1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -177,6 +187,7 @@
 		8E6C86BE1AF8E7D600FDAD7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				8E225FF51BAEEB4A00BC070F /* AKANullability.h */,
 				8EDBBB8A1B63F09F00875D5F /* DataStructures */,
 				8E7232061AF8F31900D647A9 /* Error Handling */,
 				8E7232051AF8F30C00D647A9 /* Logging */,
@@ -210,6 +221,10 @@
 				8E6C86E51AF8E7D600FDAD7B /* NSObject+AKASelectorTools.m */,
 				8E6C86E61AF8E7D600FDAD7B /* NSString+AKATools.h */,
 				8E6C86E71AF8E7D600FDAD7B /* NSString+AKATools.m */,
+				8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */,
+				8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */,
+				8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */,
+				8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */,
 				8E6C86E81AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h */,
 				8E6C86E91AF8E7D600FDAD7B /* UIView+AKAConstraintTools.m */,
 				8E6C86EA1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h */,
@@ -356,10 +371,12 @@
 				8E6C87011AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h in Headers */,
 				8E6C87001AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h in Headers */,
 				8E6C87131AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h in Headers */,
+				8E225FF61BAEF8E200BC070F /* AKANullability.h in Headers */,
 				8E6C87111AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h in Headers */,
 				8E6C87151AF8E7D600FDAD7B /* NSString+AKATools.h in Headers */,
 				8E6C870D1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */,
 				8E6C87191AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h in Headers */,
+				8ED5EFC01BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h in Headers */,
 				8E6C871B1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h in Headers */,
 				8E6C87171AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h in Headers */,
 				8E6C86F81AF8E7D600FDAD7B /* AKANetworkingErrors.h in Headers */,
@@ -368,6 +385,7 @@
 				8E6C87091AF8E7D600FDAD7B /* AKATVSection.h in Headers */,
 				8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */,
 				8EDBBB8D1B63F0D200875D5F /* AKAArrayComparer.h in Headers */,
+				8EED828E1BAF51DA00E45721 /* NSMutableString+AKATools.h in Headers */,
 				8E6C870B1AF8E7D600FDAD7B /* AKATVUpdateBatch.h in Headers */,
 				8E6C87071AF8E7D600FDAD7B /* AKATVRowSegment.h in Headers */,
 				8E6C86FA1AF8E7D600FDAD7B /* AKAObservableCollection.h in Headers */,
@@ -423,7 +441,8 @@
 		8E90F9381AF8E69A00CBBB52 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "AKA Sarl";
 				TargetAttributes = {
 					8E90F9401AF8E69A00CBBB52 = {
@@ -543,11 +562,13 @@
 				8E6C87061AF8E7D600FDAD7B /* AKATVProxy.m in Sources */,
 				8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */,
 				8E6C86F51AF8E7D600FDAD7B /* AKAIPNetmask.m in Sources */,
+				8EED828F1BAF51DA00E45721 /* NSMutableString+AKATools.m in Sources */,
 				8E6C86F11AF8E7D600FDAD7B /* AKAInterfaceInfo.m in Sources */,
 				8E6C87121AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m in Sources */,
 				8E6C87081AF8E7D600FDAD7B /* AKATVRowSegment.m in Sources */,
 				8E6C870A1AF8E7D600FDAD7B /* AKATVSection.m in Sources */,
 				8E6C87161AF8E7D600FDAD7B /* NSString+AKATools.m in Sources */,
+				8ED5EFC11BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +627,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -724,6 +746,7 @@
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -741,6 +764,7 @@
 				INFOPLIST_FILE = AKACommons/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -749,10 +773,7 @@
 		8E90F95B1AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -760,6 +781,7 @@
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -767,13 +789,11 @@
 		8E90F95C1AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = AKACommonsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

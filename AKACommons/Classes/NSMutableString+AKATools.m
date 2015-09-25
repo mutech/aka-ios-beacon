@@ -12,9 +12,12 @@
 
 - (void)aka_appendString:(NSString*)string repeat:(NSUInteger)times
 {
-    for (NSUInteger i=0; i < times; ++i)
+    if (string.length > 0)
     {
-        [self appendString:string];
+        for (NSUInteger i=0; i < times; ++i)
+        {
+            [self appendString:string];
+        }
     }
 }
 

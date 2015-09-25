@@ -128,6 +128,9 @@
 		8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */; };
 		8EA9AB461BAC06DA0070F13E /* AKABindingExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EA9AB441BAC06DA0070F13E /* AKABindingExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EA9AB471BAC06DA0070F13E /* AKABindingExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EA9AB451BAC06DA0070F13E /* AKABindingExpression.m */; settings = {ASSET_TAGS = (); }; };
+		8EB1BC9F1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EB1BC9D1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EB1BCA01BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB1BC9E1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.m */; settings = {ASSET_TAGS = (); }; };
+		8EB1BCA21BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EB1BCA11BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m */; settings = {ASSET_TAGS = (); }; };
 		8EC0F15E1BAD76FB0066890A /* AKABindingContextProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC0F15D1BAD76FB0066890A /* AKABindingContextProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EC0F1611BADB64A0066890A /* NSScanner+AKABindingExpressionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EC0F15F1BADB64A0066890A /* NSScanner+AKABindingExpressionParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EC0F1621BADB64A0066890A /* NSScanner+AKABindingExpressionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC0F1601BADB64A0066890A /* NSScanner+AKABindingExpressionParser.m */; settings = {ASSET_TAGS = (); }; };
@@ -285,6 +288,9 @@
 		8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanTextConverter.m; sourceTree = "<group>"; };
 		8EA9AB441BAC06DA0070F13E /* AKABindingExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingExpression.h; sourceTree = "<group>"; };
 		8EA9AB451BAC06DA0070F13E /* AKABindingExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingExpression.m; sourceTree = "<group>"; };
+		8EB1BC9D1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+AKABindingExpressionSpecification.h"; sourceTree = "<group>"; };
+		8EB1BC9E1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+AKABindingExpressionSpecification.m"; sourceTree = "<group>"; };
+		8EB1BCA11BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingExpressionSpecificationTest.m; sourceTree = "<group>"; };
 		8EC0F15D1BAD76FB0066890A /* AKABindingContextProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingContextProtocol.h; sourceTree = "<group>"; };
 		8EC0F15F1BADB64A0066890A /* NSScanner+AKABindingExpressionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScanner+AKABindingExpressionParser.h"; sourceTree = "<group>"; };
 		8EC0F1601BADB64A0066890A /* NSScanner+AKABindingExpressionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScanner+AKABindingExpressionParser.m"; sourceTree = "<group>"; };
@@ -583,6 +589,7 @@
 				8E7233B91B00240200D647A9 /* AKAEmailValidatorTest.m */,
 				8E7233BA1B00240200D647A9 /* AKAThemeTests.m */,
 				8E225FDE1BADBED000BC070F /* AKABindingExpressionTest.m */,
+				8EB1BCA11BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m */,
 				8EC64DD91BB0CDDB00508CB3 /* AKABindingProviderTest.m */,
 				8E91E6ED1BB16E8800F7618F /* Info.plist */,
 			);
@@ -597,6 +604,8 @@
 				8EA9AB451BAC06DA0070F13E /* AKABindingExpression.m */,
 				8EC0F15F1BADB64A0066890A /* NSScanner+AKABindingExpressionParser.h */,
 				8EC0F1601BADB64A0066890A /* NSScanner+AKABindingExpressionParser.m */,
+				8EB1BC9D1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.h */,
+				8EB1BC9E1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.m */,
 			);
 			name = Specification;
 			sourceTree = "<group>";
@@ -647,6 +656,7 @@
 				8E7233791B0022A200D647A9 /* AKAEditorControlView_Protected.h in Headers */,
 				8E72339E1B0022A200D647A9 /* AKATextEditorControlView.h in Headers */,
 				8E72338A1B0022A200D647A9 /* AKANumberEditorControlView.h in Headers */,
+				8EB1BC9F1BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.h in Headers */,
 				8EA9AB461BAC06DA0070F13E /* AKABindingExpression.h in Headers */,
 				8E7233901B0022A200D647A9 /* AKAPasswordEditorControlView.h in Headers */,
 				8E7233981B0022A200D647A9 /* AKASwitchEditorControlView.h in Headers */,
@@ -890,6 +900,7 @@
 				8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */,
 				8E7233831B0022A200D647A9 /* AKAKeyboardActivationSequenceAccessoryView.m in Sources */,
 				8E7233931B0022A200D647A9 /* AKASubviewsSpecification.m in Sources */,
+				8EB1BCA01BB58C2D0006CBDD /* NSDictionary+AKABindingExpressionSpecification.m in Sources */,
 				8E225FFA1BAF014600BC070F /* AKABindingProviderRegistry.m in Sources */,
 				8E72339F1B0022A200D647A9 /* AKATextEditorControlView.m in Sources */,
 				8E7233991B0022A200D647A9 /* AKASwitchEditorControlView.m in Sources */,
@@ -904,6 +915,7 @@
 			files = (
 				8E91E7681BB2BB8200F7618F /* AKAEmailValidatorTest.m in Sources */,
 				8E91E7691BB2BB8200F7618F /* AKAThemeTests.m in Sources */,
+				8EB1BCA21BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m in Sources */,
 				8E91E76A1BB2BB8200F7618F /* AKABindingExpressionTest.m in Sources */,
 				8E91E76B1BB2BB8200F7618F /* AKABindingProviderTest.m in Sources */,
 			);
@@ -1128,6 +1140,7 @@
 				8E91E6F31BB16E8800F7618F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8E91E6FD1BB16ED400F7618F /* Build configuration list for PBXNativeTarget "AKAControlsUITests" */ = {
 			isa = XCConfigurationList;
@@ -1136,6 +1149,7 @@
 				8E91E6FF1BB16ED400F7618F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

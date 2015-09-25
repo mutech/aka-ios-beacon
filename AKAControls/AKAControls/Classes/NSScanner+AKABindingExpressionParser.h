@@ -24,7 +24,10 @@ typedef enum AKABindingExpressionParseErrorCode
     AKAParseErrorKeyPathOperatorNameExpectedAfterAtSign,
     AKAParseErrorUnterminatedKeyPathAfterDot,
 
-    AKAParseErrorUnterminatedAttributeSpecification,
+    AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd,
+
+    // Expression and attribute list errors
+    AKAParseErrorUnterminatedBindingExpressionList,
     AKAParseErrorInvalidAttributeName,
     
     // String literal parsing errors
@@ -33,10 +36,15 @@ typedef enum AKABindingExpressionParseErrorCode
     AKAParseErrorUnsupportedCharacterEscapeSequence,
     AKAParseErrorInvalidCharacterEscapeSequence,
 
+    // Identifier errors
+    AKAParseErrorInvalidIdentifierCharacter,
+
     AKAParseErrorUnterminatedParenthizedExpression,
 
+    // Class errors
     AKAParseErrorUnknownClass,
     AKAParseErrorUnterminatedClassReference
+    
 } AKABindingExpressionParseErrorCode;
 
 typedef NSScanner AKABindingExpressionParser;
@@ -56,6 +64,7 @@ typedef NSScanner AKABindingExpressionParser;
                              error:(out_NSError)error;
 
 - (BOOL)      parseConstantOrScope:(out_id)constantStore
+                      withProvider:(opt_AKABindingProvider)provider
                               type:(out_Class)bindingExpressionType
                              error:(out_NSError)error;
 
@@ -90,5 +99,16 @@ typedef NSScanner AKABindingExpressionParser;
 - (BOOL)    isAtValidFirstIdentifierCharacter;
 
 - (BOOL)    isAtValidIdentifierCharacter;
+
+#pragma mark - Scanner Tools (Error Reporting)
+
+- (void)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
+                          withCode:(AKABindingExpressionParseErrorCode)errorCode
+                        atPosition:(NSUInteger)position
+                            reason:(req_NSString)reason;
+
+- (req_NSString)contextMessageWithMaxLeading:(NSUInteger)maxLeading
+                                 maxTrailing:(NSUInteger)maxTrailing;
+
 
 @end

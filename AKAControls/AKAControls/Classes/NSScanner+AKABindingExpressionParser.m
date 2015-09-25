@@ -9,6 +9,7 @@
 #import "NSScanner+AKABindingExpressionParser.h"
 
 #import "AKABindingExpression_Internal.h"
+#import "AKABindingProvider.h"
 
 // TODO: reimplement this and move to AKACommons:
 #import "AKAMutableOrderedDictionary.h"
@@ -91,6 +92,7 @@ static NSString* const keywordControl = @"control";
     Class bindingExpressionType = nil;
 
     result = [self parseConstantOrScope:&primaryExpression
+                           withProvider:provider
                                    type:&bindingExpressionType
                                   error:error];
 
@@ -144,6 +146,7 @@ static NSString* const keywordControl = @"control";
 }
 
 - (BOOL)      parseConstantOrScope:(out_id)constantStore
+                      withProvider:(opt_AKABindingProvider)provider
                               type:(out_Class)typeStore
                              error:(out_NSError)error
 {
@@ -205,6 +208,37 @@ static NSString* const keywordControl = @"control";
             }
         }
     }
+    else if ([self skipCharacter:'['])
+    {
+        type = [AKAArrayBindingExpression class];
+        NSMutableArray* array = [NSMutableArray new];
+
+        [self skipWhitespaceAndNewlineCharacters];
+        BOOL done=(self.isAtEnd || [self skipCharacter:']']);
+        for (NSUInteger i=0; result && !done; ++i)
+        {
+            AKABindingExpression* item = nil;
+
+            AKABindingProvider* itemProvider = [provider providerForBindingExpressionInPrimaryExpressionArrayAtIndex:i];
+
+            result = [self parseBindingExpression:&item
+                                     withProvider:itemProvider
+                                            error:error];
+            if (result)
+            {
+                [array addObject:item];
+
+                result = [self parseListSeparator:','
+                                     orTerminator:']'
+                                  terminatorFound:&done
+                                            error:error];
+            }
+        }
+        if (result && array.count > 0)
+        {
+            constant = [NSArray arrayWithArray:array];
+        }
+    }
     else if ([self isAtValidFirstNumberCharacter])
     {
         result = [self parseNumberConstant:&constant
@@ -246,7 +280,8 @@ static NSString* const keywordControl = @"control";
             *typeStore = type;
         }
 
-        if (constantStore != nil && [type isSubclassOfClass:[AKAConstantBindingExpression class]])
+        if (constantStore != nil && ([type isSubclassOfClass:[AKAConstantBindingExpression class]] ||
+                                     [type isSubclassOfClass:[AKAArrayBindingExpression class]]))
         {
             *constantStore = constant;
         }
@@ -411,37 +446,10 @@ static NSString* const keywordControl = @"control";
         if (result)
         {
             attributes[identifier] = attributeExpression;
-            [self skipWhitespaceAndNewlineCharacters];
-            done = [self skipCharacter:'}'];
-
-            if (!done)
-            {
-                [self skipWhitespaceAndNewlineCharacters];
-                result = [self skipCharacter:','];
-                if (result)
-                {
-                    // Allow for trailing ','
-                    [self skipWhitespaceAndNewlineCharacters];
-                    done = [self skipCharacter:'}'];
-                }
-                else
-                {
-                    if (attributeExpression == nil && !self.isAtEnd)
-                    {
-                        [self registerParseError:error
-                                        withCode:AKAParseErrorUnterminatedAttributeSpecification
-                                      atPosition:self.scanLocation
-                                          reason:@"Invalid character, expected a binding expression"];
-                    }
-                    else
-                    {
-                        [self registerParseError:error
-                                        withCode:AKAParseErrorUnterminatedAttributeSpecification
-                                      atPosition:self.scanLocation
-                                          reason:@"Unterminated attribute specification, expected ',' or '}'"];
-                    }
-                }
-            }
+            result = [self parseListSeparator:','
+                                 orTerminator:'}'
+                              terminatorFound:&done
+                                        error:error];
         }
     }
 
@@ -453,18 +461,60 @@ static NSString* const keywordControl = @"control";
     return result;
 }
 
+- (BOOL)parseListSeparator:(unichar)separator
+              orTerminator:(unichar)terminator
+           terminatorFound:(BOOL*_Nonnull)terminatorFound
+                     error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    [self skipWhitespaceAndNewlineCharacters];
+    BOOL done = [self skipCharacter:terminator];
+
+    if (!done)
+    {
+        [self skipWhitespaceAndNewlineCharacters];
+        result = [self skipCharacter:separator];
+        if (result)
+        {
+            // Allow for trailing ','
+            [self skipWhitespaceAndNewlineCharacters];
+            done = [self skipCharacter:terminator];
+        }
+        else
+        {
+            [self registerParseError:error
+                            withCode:AKAParseErrorUnterminatedBindingExpressionList
+                          atPosition:self.scanLocation
+                              reason:[NSString stringWithFormat:@"Unterminated binding expression list, expected '%C' or '%C'", separator, terminator]];
+        }
+    }
+    *terminatorFound = done;
+    return result;
+}
+
 - (BOOL)           parseIdentifier:(out_NSString)store
                              error:(out_NSError)error
 {
     BOOL result = [self isAtValidFirstIdentifierCharacter];
-    NSInteger start = self.scanLocation++;
-    while ([self isAtValidIdentifierCharacter])
+    if (result)
     {
-        ++self.scanLocation;
+        NSInteger start = self.scanLocation++;
+        while ([self isAtValidIdentifierCharacter])
+        {
+            ++self.scanLocation;
+        }
+        if (result && store)
+        {
+            *store = [self.string substringWithRange:NSMakeRange(start, self.scanLocation - start)];
+        }
     }
-    if (result && store)
+    if (!result)
     {
-        *store = [self.string substringWithRange:NSMakeRange(start, self.scanLocation - start)];
+        [self registerParseError:error
+                        withCode:AKAParseErrorInvalidIdentifierCharacter
+                      atPosition:self.scanLocation
+                              reason:@"Invalid character, expected a valid identifier character"];
     }
     return result;
 }
@@ -637,6 +687,76 @@ static NSString* const keywordControl = @"control";
 
 #pragma mark - Error Handling
 
+- (NSString*)contextMessage
+{
+    return [self contextMessageWithMaxLeading:16
+                                             maxTrailing:10];
+}
+
+- (NSString*)contextMessageWithMaxLeading:(NSUInteger)maxLeading
+                              maxTrailing:(NSUInteger)maxTrailing
+{
+    NSString* result = nil;
+
+    NSString* leadingContextElipsis = @"";
+    NSString* leadingContext = @"";
+    if (self.scanLocation > 0)
+    {
+        // Number of characters to the left of current location;
+        NSUInteger leadingContextLength = self.scanLocation;
+
+        if (leadingContextLength > maxLeading)
+        {
+            leadingContextLength = maxLeading;
+            leadingContextElipsis = @"…";
+        }
+
+        NSRange range = NSMakeRange(self.scanLocation - leadingContextLength,
+                                    leadingContextLength);
+
+        leadingContext = [self.string substringWithRange:range];
+    }
+
+    NSString* trailingContextElipsis = @"";
+    NSString* trailingContext = @"";
+    if (self.string.length >= self.scanLocation+1)
+    {
+        NSUInteger trailingContextLength = self.string.length - (self.scanLocation + 1);
+
+        if (trailingContextLength > maxTrailing)
+        {
+            trailingContextLength = maxTrailing;
+            trailingContextElipsis = @"…";
+        }
+
+        NSRange range = NSMakeRange(self.scanLocation + 1, trailingContextLength);
+
+        trailingContext = [self.string substringWithRange:range];
+    }
+
+    if (self.scanLocation < self.string.length)
+    {
+        result = [NSString stringWithFormat:@"“%@%@»%C«%@%@”",
+                  leadingContextElipsis,
+                  leadingContext,
+
+                  [self.string characterAtIndex:self.scanLocation],
+
+                  trailingContext,
+                  trailingContextElipsis];
+    }
+    else
+    {
+        result = [NSString stringWithFormat:@"“%@%@»«%@%@”",
+                  leadingContextElipsis,
+                  leadingContext,
+
+                  trailingContext,
+                  trailingContextElipsis];
+    }
+    return result;
+}
+
 - (void)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
                           withCode:(AKABindingExpressionParseErrorCode)errorCode
                         atPosition:(NSUInteger)position
@@ -645,28 +765,12 @@ static NSString* const keywordControl = @"control";
     if (error != nil)
     {
         NSString* context = @"";
-        BOOL isOff = self.scanLocation >= self.string.length;
+        BOOL isOff = self.scanLocation > self.string.length;
         if (!isOff)
         {
-            NSUInteger maxLDisp = 16;
-            NSUInteger maxTDisp = 10;
-            NSUInteger leadingContextLength =  MAX(0, self.scanLocation-2);
-            NSRange leadingContextRange = NSMakeRange(self.scanLocation - MIN(maxLDisp, leadingContextLength), MIN(maxLDisp, leadingContextLength));
-
-            NSUInteger trailingContextLength = MAX(0, self.string.length - (self.scanLocation+2));
-            NSRange trailingContextRange = NSMakeRange(self.scanLocation + 1, MIN(maxTDisp, trailingContextLength));
-
-            context = [NSString stringWithFormat:@": “%@%@»%C«%@%@”)",
-
-                       leadingContextLength > maxLDisp ? @"…" : @"",
-                       [self.string substringWithRange:leadingContextRange],
-
-                       [self.string characterAtIndex:self.scanLocation],
-
-                       [self.string substringWithRange:trailingContextRange],
-                       trailingContextLength > maxTDisp ? @"…" : @""];
+            context = [self contextMessage];
         }
-        NSString* description = [NSString stringWithFormat:@"%@\nPosition %lu%@", reason, (unsigned long)position, context];
+        NSString* description = [NSString stringWithFormat:@"%@\nPosition %lu%@%@", reason, (unsigned long)position, (context.length ? @": " : @""), context];
         *error = [NSError errorWithDomain:@"AKABindingExpressionParseError"
                                      code:errorCode
                                  userInfo:@{ NSLocalizedDescriptionKey: description,

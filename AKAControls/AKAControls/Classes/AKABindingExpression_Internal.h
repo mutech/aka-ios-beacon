@@ -37,6 +37,16 @@
 @end
 
 
+@interface AKAArrayBindingExpression: AKABindingExpression
+
+- (instancetype _Nonnull)initWithArray:(NSArray<AKABindingExpression*>*_Nullable)array
+                            attributes:(opt_AKABindingExpressionAttributes)attributes
+                              provider:(opt_AKABindingProvider)provider;
+
+@property(nonatomic, readonly, nullable) NSArray<AKABindingExpression*>* array;
+
+@end
+
 @interface AKAConstantBindingExpression: AKABindingExpression
 
 - (instancetype _Nonnull)initWithConstant:(opt_id)constant

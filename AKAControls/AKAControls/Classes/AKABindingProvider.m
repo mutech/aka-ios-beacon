@@ -11,7 +11,10 @@
 
 #import "AKABindingProvider.h"
 #import "AKABindingExpression_Internal.h"
+#import "NSDictionary+AKABindingExpressionSpecification.h"
+
 #import "UIView+AKABindingSupport.h"
+
 
 @interface AKABindingAttributeBindingProvider: AKABindingProvider
 
@@ -20,12 +23,14 @@
 
 @property(nonatomic, readonly, nonnull) NSString* attributeName;
 
-- (instancetype)                        initWithOwner:(req_AKABindingProvider)owner
-                                        attributeName:(req_NSString)attributeName;
+- (instancetype)                 initWithOwner:(req_AKABindingProvider)owner
+                                 attributeName:(req_NSString)attributeName
+                bindingExpressionSpecification:(opt_NSDictionary)specification;
 
-- (instancetype)                        initWithOwner:(req_AKABindingProvider)owner
-                                        attributeName:(req_NSString)attributeName
-                                targetBindingProvider:(req_AKABindingProvider)targetBindingProvider;
+- (instancetype)                 initWithOwner:(req_AKABindingProvider)owner
+                                 attributeName:(req_NSString)attributeName
+                         targetBindingProvider:(req_AKABindingProvider)targetBindingProvider
+                bindingExpressionSpecification:(opt_NSDictionary)specification;
 
 @end
 
@@ -105,9 +110,18 @@
 - (BOOL)             validatePrimaryBindingExpression:(req_AKABindingExpression)bindingExpression
                                                 error:(out_NSError)error
 {
-    (void)bindingExpression;
-    (void)error;
-    return YES;
+    return [self validatePrimaryBindingExpression:bindingExpression
+                               usingSpecification:[self bindingExpressionSpecification]
+                                            error:error];
+}
+
+- (BOOL)             validatePrimaryBindingExpression:(req_AKABindingExpression)bindingExpression
+                                   usingSpecification:(opt_NSDictionary)specification
+                                                error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    return result;
 }
 
 - (BOOL)        validateAttributesInBindingExpression:(req_AKABindingExpression)bindingExpression
@@ -115,11 +129,13 @@
 {
     __block BOOL result = YES;
     __block NSError* e;
+
     [bindingExpression.attributes enumerateKeysAndObjectsUsingBlock:
                    ^(NSString* _Nonnull key, AKABindingExpression * _Nonnull obj, BOOL * _Nonnull stop)
                    {
                        AKABindingProvider* attributeBindingProvider = obj.bindingProvider;
                        result = [attributeBindingProvider validateBindingExpression:obj error:error?&e:nil];
+
                        *stop = !result;
                    }];
     if (!result && error)
@@ -136,20 +152,65 @@
                                            withResult:(BOOL)result
                                                 error:(out_NSError)error
 {
-    BOOL finalResult = result;
-    if (result && targetBindingProvider == nil)
+    return result;
+}
+
+- (BOOL) validateBindingExpression:(req_AKABindingExpression)bindingExpression
+                 forAttributeNamed:(req_NSString)attributeName
+                usingSpecification:(opt_NSDictionary)specification
+               supportedByProvider:(BOOL)providerSupportsAttribute
+                             error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    NSDictionary* attributeSpec = [specification aka_specificationForAttributeWithName:attributeName];
+
+    if (attributeSpec == nil && !providerSupportsAttribute && !specification.aka_acceptsUnspecifiedAttributes)
     {
-        finalResult = NO;
+        result = NO;
         if (error)
         {
-            NSString* description = [NSString stringWithFormat:@"Binding attribute %@ not supported by binding provider %@", attributeKeyPath, self];
-            *error = [NSError errorWithDomain:NSStringFromClass(self.class)
-                                         code:1
-                                     userInfo:@{ NSLocalizedDescriptionKey: description}];
+            NSString* description = [NSString stringWithFormat:@"Binding attribute %@ not supported by binding provider %@", attributeName, self];
+            *error = [NSError errorWithDomain:NSStringFromClass(self.class) code:AKABindingExpressionErrorCodeUnspecifiedAttributeNotAllowed userInfo:@{ NSLocalizedDescriptionKey: description}];
         }
     }
-    return finalResult;
+    if (result)
+    {
+        // TODO: validate attribute (not recursively!)
+    }
+    return result;
 }
+
+typedef enum AKABindingExpressionErrorCode {
+    AKABindingExpressionErrorCodeArrayPrimaryNotAllowed,
+    AKABindingExpressionErrorCodeUnspecifiedAttributeNotAllowed,
+} AKABindingExpressionErrorCode;
+
+- (NSDictionary*)bindingExpressionSpecification
+{
+    return @{ @"allowArrayType": @NO,
+              @"allowUnspecifiedAttributes": @NO,
+              @"attributes":
+                  @{ @"unknownAttribute": @YES,
+                     @"unknownAttribute.nestedAttribute": @YES},
+              };
+}
+
+- (NSDictionary*)bindingExpressionSpecificationForAttributeAtKeyPath:(NSString*)attributeKeyPath
+{
+    id result = [[self bindingExpressionSpecification] valueForKey:@"attributes"];
+    if (![result isKindOfClass:[NSDictionary class]])
+    {
+        // Ignore things like @NO or YES
+        result = nil;
+    }
+    else
+    {
+        result = [result valueForKeyPath:attributeKeyPath];
+    }
+    return result;
+}
+
 
 - (req_AKABindingProvider)  providerForAttributeNamed:(req_NSString)attributeName
 {
@@ -157,7 +218,13 @@
 
     return [[AKABindingAttributeBindingProvider alloc] initWithOwner:self
                                                        attributeName:attributeName
-                                               targetBindingProvider:targetBindingProvider];
+                                               targetBindingProvider:targetBindingProvider
+            bindingExpressionSpecification:[self bindingExpressionSpecificationForAttributeAtKeyPath:attributeName]];
+}
+
+- (req_AKABindingProvider) providerForBindingExpressionInPrimaryExpressionArrayAtIndex:(NSUInteger)index
+{
+    return nil;
 }
 
 - (opt_AKABindingProvider)targetProviderForAttributeAtKeyPath:(req_NSString)attributeKeyPath
@@ -167,19 +234,26 @@
 
 @end
 
+@interface AKABindingAttributeBindingProvider()
+@property(nonatomic, readonly) NSDictionary* bindingExpressionSpecification;
+@end
 
 @implementation AKABindingAttributeBindingProvider
+
+@synthesize bindingExpressionSpecification = _bindingExpressionSpecification;
 
 #pragma mark - Initialization
 
 - (instancetype)                 initWithOwner:(req_AKABindingProvider)owner
                                  attributeName:(req_NSString)attributeName
+                                 specification:(opt_NSDictionary)specification
 {
     if (self = [self init])
     {
         _owner = owner;
         _attributeName = attributeName;
         _targetBindingProvider = nil;
+        _bindingExpressionSpecification = specification;
     }
     return self;
 }
@@ -187,12 +261,14 @@
 - (instancetype)                 initWithOwner:(req_AKABindingProvider)owner
                                  attributeName:(req_NSString)attributeName
                          targetBindingProvider:(req_AKABindingProvider)targetBindingProvider
+                                 specification:(opt_NSDictionary)specification
 {
     if (self = [self init])
     {
         _owner = owner;
         _attributeName = attributeName;
         _targetBindingProvider = targetBindingProvider;
+        _bindingExpressionSpecification = specification;
     }
     return self;
 }
@@ -212,6 +288,12 @@
         // upward the owner chain of this (self) binding provider:
         result = [self.targetBindingProvider validateBindingExpression:bindingExpression
                                                                  error:error];
+        if (result)
+        {
+            result = [self validatePrimaryBindingExpression:bindingExpression
+                                         usingSpecification:self.bindingExpressionSpecification
+                                                      error:error];
+        }
         result = [self.owner validateBindingExpression:bindingExpression
                                  forAttributeAtKeyPath:self.attributeName
                                            validatedBy:self.targetBindingProvider

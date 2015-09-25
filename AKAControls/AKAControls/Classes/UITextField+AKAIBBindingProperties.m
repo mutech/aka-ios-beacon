@@ -54,6 +54,8 @@
 
 @implementation AKABindingProvider_UITextField_textBinding
 
+#pragma mark - Initialization
+
 + (instancetype)    sharedInstance
 {
     static AKABindingProvider_UITextField_textBinding* instance = nil;
@@ -63,6 +65,8 @@
     });
     return instance;
 }
+
+#pragma mark - Binding Support
 
 - (req_AKABinding)  bindingWithView:(req_UIView)view
                          expression:(req_AKABindingExpression)bindingExpression
@@ -77,6 +81,46 @@
                                                   expression:bindingExpression
                                                      context:bindingContext
                                                     delegate:delegate];
+}
+
+#pragma mark - Binding Expression Validation
+
+
+- (NSDictionary*)expressionSpecification
+{
+    id booleanType = @{ @"class": [NSNumber class],
+                        @"value": [NSString stringWithUTF8String:@encode(BOOL)]
+                        };
+    return @{ @"type": @{ @"reject": [NSArray class] },
+              @"attributes":
+                  @{ @"liveModelUpdates":
+                         @{ @"required":        @NO,
+                            @"type":            booleanType,
+                            @"observe":         @NO,
+                            @"default":         @YES,
+                            @"bindingProperty": @YES,
+                            @"provider":        @NO, // can be a type or an instance or @NO or not there
+                            @"attributes":      @NO
+                            },
+                     @"autoActivate":
+                         @{ @"required":        @NO,
+                            @"type":            booleanType,
+                            @"observe":         @NO,
+                            @"default":         @YES,
+                            @"bindingProperty": @"autoActivate",
+                            @"attributes":      @NO
+                            },
+                     @"KBActivationSequence":
+                         @{ @"required":        @NO,
+                            @"type":            booleanType,
+                            @"observe":         @NO,
+                            @"default":         @YES,
+                            @"bindingProperty": @YES,
+                            @"attributes":      @NO
+                            }
+                     },
+              @"allowUnspecifiedAttributes": @NO
+             };
 }
 
 @end

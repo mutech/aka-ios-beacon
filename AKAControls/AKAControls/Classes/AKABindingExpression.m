@@ -58,6 +58,16 @@
 
 #endif
     }
+
+    if (!parser.isAtEnd)
+    {
+        result = NO;
+        [parser registerParseError:error
+                          withCode:AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd
+                        atPosition:parser.scanLocation
+                          reason:@"Invalid character, expected attributes (starting with '{') or end of binding expression"];
+    }
+
     return result;
 }
 
@@ -111,9 +121,15 @@
                                indent:@""];
 }
 
-- (NSString*)textForPrimaryExpression
+- (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
+                                               indent:(NSString*)indent
 {
     return nil;
+}
+
+- (NSString*)textForPrimaryExpression
+{
+    return [self textForPrimaryExpressionWithNestingLevel:0 indent:@""];
 }
 
 - (NSString*)textWithNestingLevel:(NSUInteger)level
@@ -187,6 +203,98 @@
 
 @end
 
+#pragma mark - AKAArrayBindingExpression
+#pragma mark -
+
+@implementation AKAArrayBindingExpression
+
+#pragma mark - Initialization
+
+- (instancetype)initWithArray:(NSArray<AKABindingExpression *> *)array
+                   attributes:(opt_AKABindingExpressionAttributes)attributes
+                     provider:(opt_AKABindingProvider)provider
+{
+    if (self = [super initWithAttributes:attributes
+                                provider:provider])
+    {
+        _array = array;
+    }
+    return self;
+}
+
+- (instancetype)initWithPrimaryExpression:(opt_id)primaryExpression
+                               attributes:(opt_AKABindingExpressionAttributes)attributes
+                                 provider:(opt_AKABindingProvider)provider
+{
+    NSAssert(primaryExpression == nil || [primaryExpression isKindOfClass:[NSArray class]], @"AKAArrayBindingExpression requires a primary expression of type NSArray, got %@", primaryExpression);
+
+    return [self initWithArray:(NSArray*)primaryExpression
+                    attributes:attributes
+                      provider:provider];
+}
+
+
+#pragma mark - Binding Support
+
+- (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
+                                    changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
+{
+    AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
+    return [AKAProperty propertyOfWeakKeyValueTarget:self.array
+                                             keyPath:nil
+                                      changeObserver:changeObserver];
+}
+
+#pragma mark - Serialization
+
+- (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
+                                               indent:(NSString*)indent
+{
+    static NSString* const kArrayOpen = @"[";
+    static NSString* const kArrayClose = @"]";
+    static NSString* const kArrayItemSeparator = @",";
+
+    NSMutableString* result = [NSMutableString new];
+
+    [result appendString:kArrayOpen];
+    NSString* itemPrefix;
+    if (indent.length > 0)
+    {
+        itemPrefix = @"\n";
+    }
+    else
+    {
+        itemPrefix = @" ";
+    }
+
+    if (self.array.count > 0)
+    {
+        NSUInteger count = self.array.count;
+        [self.array enumerateObjectsUsingBlock:
+         ^(AKABindingExpression * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+         {
+            NSString* itemText = [obj textWithNestingLevel:level+1
+                                                    indent:indent];
+
+            [result appendString:itemPrefix];
+            [result aka_appendString:indent repeat:level + 1];
+
+            [result appendString:itemText];
+            if (idx < count - 1)
+            {
+                [result appendString:kArrayItemSeparator];
+            }
+         }];
+    }
+
+    [result appendString:itemPrefix];
+    [result aka_appendString:indent repeat:level];
+    [result appendString:kArrayClose];
+
+    return result;
+}
+
+@end
 
 #pragma mark - AKAConstantBindingExpression
 #pragma mark -
@@ -440,7 +548,7 @@
     NSString* result = nil;
     if (self.constant)
     {
-        result = [NSString stringWithFormat:@"%f", self.constant.doubleValue];
+        result = [NSString stringWithFormat:@"%g", self.constant.doubleValue];
     }
     return result;
 }

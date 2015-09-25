@@ -28,6 +28,19 @@
     [super tearDown];
 }
 
+#pragma mark - Provider Validation Tests
+
+- (void)testBindingProviderValidation
+{
+    NSString* text = @"\"test\" { unknownAttribute: $true { nestedAttribute: $true } }";
+
+    AKABindingProvider* provider = [AKABindingProvider new];
+    NSError* error = nil;
+    AKABindingExpression* expression = [AKABindingExpression bindingExpressionWithString:text
+                                                                         bindingProvider:provider error:&error];
+    XCTAssertNil(expression);
+}
+
 #pragma mark - Key Path Parser Tests
 
 - (void)testBindingExpressionPerformance
@@ -126,9 +139,6 @@
                               @"$false",
                               @"1",
                               @"-1",
-                              @"2.000000",
-                              @"0.100000",
-                              @"3140000000000000.000000",
                               @"a",
                               @"$data.b",
                               @"$root.c",
@@ -146,6 +156,147 @@
         XCTAssert(result, @"%@ failed to parse: %@", text, error.localizedDescription);
         XCTAssertEqualObjects(text, expression.description);
         XCTAssertNil(error);
+    }
+}
+
+- (void)testParseArrayValidItems
+{
+    NSArray* validArrayExpressions =
+    @[ @"[ [ ], $true ]",
+       @"[ 0.1, 1, \"zwei\", <NSNumber>, [ \"another array\" ], [ ], $true, $data.model.name ]"
+       ];
+
+    for (NSString* text in validArrayExpressions)
+    {
+        AKABindingExpression* bindingExpression = nil;
+        AKABindingProvider* provider = nil;
+        NSError* error;
+
+        bindingExpression = [AKABindingExpression bindingExpressionWithString:text
+                                                              bindingProvider:provider
+                                                                        error:&error];
+
+        XCTAssertNotNil(bindingExpression);
+        XCTAssertNil(error);
+        XCTAssertEqual([AKAArrayBindingExpression class], bindingExpression.class);
+        XCTAssertEqualObjects(text, bindingExpression.text);
+    }
+}
+
+- (void)testParseInvalidTopLevelPrimaryExpressionList
+{
+    NSArray* invalidArrayExpressions =
+    @[ @"[ ], $true",
+       @"1, 2",
+       @"1, 2 { a: 1 }"
+       ];
+
+    for (NSString* text in invalidArrayExpressions)
+    {
+        AKABindingExpression* bindingExpression = nil;
+        AKABindingProvider* provider = nil;
+        NSError* error;
+
+        bindingExpression = [AKABindingExpression bindingExpressionWithString:text
+                                                              bindingProvider:provider
+                                                                        error:&error];
+
+        XCTAssertNil(bindingExpression);
+        XCTAssertNotNil(error);
+        XCTAssertEqual(AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd, error.code);
+    }
+}
+
+- (void)testParseClassConstant
+{
+    NSArray* validClassNames = @[ @"$<NSString>",
+                                  @"<NSString>"
+                                ];
+
+    for (NSString* text in validClassNames)
+    {
+        Class type = nil;
+        id constant = nil;
+        NSError* error = nil;
+
+        BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
+                                                                          type:&type
+                                                                         error:&error];
+        XCTAssert(result);
+        XCTAssert(type == [AKAClassConstantBindingExpression class]);
+        XCTAssertEqual([NSString class], constant);
+        XCTAssertNil(error);
+    }
+}
+
+- (void)testParseClassConstantNonexistingClasses
+{
+    NSArray* validClassNames = @[ @"$<NopeString>",
+                                  @"<NopeString>"
+                                  ];
+
+    for (NSString* text in validClassNames)
+    {
+        Class type = nil;
+        id constant = nil;
+        NSError* error = nil;
+
+        BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
+                                                                          type:&type
+                                                                         error:&error];
+        XCTAssert(!result);
+        XCTAssertNotNil(error);
+        XCTAssertEqual(error.code, AKAParseErrorUnknownClass);
+    }
+}
+
+- (void)testParseClassConstantInvalidClassNamesFirstCharacter
+{
+    NSArray* invalidClassNames = @[ @"<_NSString>",
+                                    @"<0NSString>",
+                                    @"<ÄNSString>",
+                                    @"<&NSSting>"
+                                  ];
+
+    for (NSString* text in invalidClassNames)
+    {
+        Class type = nil;
+        id constant = nil;
+        NSError* error = nil;
+
+        BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
+                                                                          type:&type
+                                                                         error:&error];
+        XCTAssert(!result);
+        XCTAssertNotNil(error);
+        XCTAssertEqual(AKAParseErrorInvalidIdentifierCharacter, error.code);
+    }
+}
+
+
+- (void)testParseClassConstantInvalidClassNamesCharacter
+{
+    NSArray* invalidClassNames = @[ @"<NSString<>",
+                                    @"<NSStringÄ>",
+                                    @"<NSString&>"
+                                    ];
+
+    for (NSString* text in invalidClassNames)
+    {
+        Class type = nil;
+        id constant = nil;
+        NSError* error = nil;
+
+        BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
+                                                                          type:&type
+                                                                         error:&error];
+        XCTAssert(!result);
+        XCTAssertNotNil(error);
+        XCTAssertEqual(AKAParseErrorUnterminatedClassReference, error.code);
     }
 }
 
@@ -167,6 +318,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(result);
@@ -194,6 +346,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
+                                                                  withProvider:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(result, @"Failed to parse %@", text);
@@ -209,6 +362,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[NSScanner scannerWithString:@"$true"] parseConstantOrScope:&constant
+                                                                  withProvider:nil
                                                                           type:&type
                                                                          error:&error];
     XCTAssert(result);
@@ -223,6 +377,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[NSScanner scannerWithString:@"$false"] parseConstantOrScope:&constant
+                                                                   withProvider:nil
                                                                            type:&type
                                                                           error:&error];
     XCTAssert(result);
@@ -505,6 +660,29 @@
         result = [scanner skipCurrentCharacter];
         XCTAssert(result);
         XCTAssert(scanner.scanLocation == i+1);
+    }
+}
+
+- (void)testLocationAndContextMessage
+{
+    NSScanner* scanner = [NSScanner scannerWithString:@"0123456789"];
+    NSArray* expectedResults = @[ @"“»0«1234…”",
+                                  @"“0»1«2345…”",
+                                  @"“01»2«3456…”",
+                                  @"“012»3«4567…”",
+                                  @"“…123»4«5678…”",
+                                  @"“…234»5«6789”",
+                                  @"“…345»6«789”",
+                                  @"“…456»7«89”",
+                                  @"“…567»8«9”",
+                                  @"“…678»9«”",
+                                  @"“…789»«”"];
+    for (NSUInteger i=0; i<expectedResults.count; ++i)
+    {
+        scanner.scanLocation = i;
+        NSString* result = [scanner contextMessageWithMaxLeading:3
+                                                     maxTrailing:4];
+        XCTAssertEqualObjects(expectedResults[i], result);
     }
 }
 

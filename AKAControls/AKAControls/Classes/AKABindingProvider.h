@@ -67,6 +67,8 @@ typedef AKABindingProvider* _Nonnull  req_AKABindingProvider;
 
 #pragma mark - Binding Expression Validation
 
+@property(nonatomic, readonly, nonnull) NSDictionary* specification;
+
 /**
  * Validates the specified binding expression.
  *
@@ -127,6 +129,8 @@ typedef AKABindingProvider* _Nonnull  req_AKABindingProvider;
                                            error:(out_NSError)error;
 
 - (req_AKABindingProvider)providerForAttributeNamed:(req_NSString)attributeName;
+
+- (req_AKABindingProvider) providerForBindingExpressionInPrimaryExpressionArrayAtIndex:(NSUInteger)index;
 
 /**
  * Returns the binding provider to be used to create and control the binding

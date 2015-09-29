@@ -173,38 +173,6 @@
     return result;
 }
 
-- (void)setupKeyboardActivationSequenceWithPredecessor:(UIView*)previous
-                                             successor:(UIView*)next
-{
-    // TODO: support keyboard toolbar to add previous/next buttons for keyboards not
-    // supporting them and maybe always provide close keyboard button.
-    UITextField* textField = self.textField;
-    if (textField != nil)
-    {
-        //AKALogDebug(@"Setting up return style for %@ in sequence (%p-%p-%p)", textField, previous.view, textField, next.view);
-
-        // TODO: save properties in this object (not text field) and also restore on dealloc
-        if (next != nil)
-        {
-            if (self.originalReturnKeyType == nil)
-            {
-                self.originalReturnKeyType = @(textField.returnKeyType);
-            }
-            textField.returnKeyType = UIReturnKeyNext;
-            //AKALogDebug(@"Set return key type of %@ to %@ (%@)", textField, @(UIReturnKeyNext), @(textField.returnKeyType));
-        }
-        else
-        {
-            if (self.originalReturnKeyType != nil)
-            {
-                textField.returnKeyType = self.originalReturnKeyType.unsignedIntegerValue;
-                //AKALogDebug(@"Restored return key type of %@ to %@ (%@)", textField, self.originalReturnKeyType, @(textField.returnKeyType));
-                self.originalReturnKeyType = nil;
-            }
-        }
-    }
-}
-
 - (BOOL)activate
 {
     UITextField* textField = self.textField;

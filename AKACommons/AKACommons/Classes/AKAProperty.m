@@ -34,7 +34,7 @@
 @end
 
 
-#pragma mark - AKAKVOProperty (Cluster Interface)
+#pragma mark - AKAIndexedProperty (Cluster Interface)
 #pragma mark -
 
 @interface AKAIndexedProperty: AKAProperty

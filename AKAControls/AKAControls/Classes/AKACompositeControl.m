@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.NSObject_AKAConcurrencyTools;
+
 #import "AKACompositeControl.h"
 #import "AKATableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
@@ -48,8 +50,8 @@
 
 - (opt_AKAProperty)dataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
 {
-    return [self dataContextPropertyAtKeyPath:keyPath
-                           withChangeObserver:valueDidChange];
+    return [self.dataContextProperty propertyAtKeyPath:keyPath
+                                    withChangeObserver:valueDidChange];
 }
 
 - (opt_id)dataContextValueForKeyPath:(req_NSString)keyPath
@@ -362,17 +364,9 @@
 - (void)didAddControl:(AKAControl*)control atIndex:(NSUInteger)index
 {
     [self control:self didAddControl:control atIndex:index];
-    if (!self.isObservingModelValueChanges && !self.isObservingViewValueChanges)
+    if (self.isObservingChanges)
     {
         [control startObservingChanges];
-    }
-    else if (!self.isObservingViewValueChanges)
-    {
-        [control startObservingViewValueChanges];
-    }
-    else if (!self.isObservingModelValueChanges)
-    {
-        [control startObservingModelValueChanges];
     }
 }
 
@@ -407,113 +401,38 @@
 
 #pragma mark Controlling Observation
 
-- (void)startObservingOtherChanges
+- (void)startObservingChanges
 {
-    [super startObservingOtherChanges];
-    for (AKAControl* control in self.controlsStorage)
-    {
-        [control startObservingOtherChanges];
-    }
-}
+    NSAssert([[NSThread currentThread] isMainThread], @"Observation started outside main thread");
 
-- (void)stopObservingOtherChanges
-{
-    for (AKAControl* control in self.controlsStorage)
-    {
-        [control stopObservingOtherChanges];
-    }
-    [super stopObservingOtherChanges];
-}
-
-- (BOOL)isObservingViewValueChanges
-{
-    // return YES if any control is observing
-    BOOL result = NO;
-
-    result |= [super isObservingViewValueChanges];
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result |= control.isObservingViewValueChanges;
-        if (result)
+    [self aka_performBlockInMainThreadOrQueue:^{
+        if (!self.isObservingChanges)
         {
-            break;
+            [super startObservingChanges];
+            for (AKAControl* control in self.controlsStorage)
+            {
+                [control startObservingChanges];
+            }
         }
-    }
-
-    return result;
+    } waitForCompletion:YES];
 }
 
-- (BOOL)startObservingViewValueChanges
+- (void)stopObservingChanges
 {
-    // return YES if any control started, start self then members
-    BOOL result = NO;
+    NSAssert([[NSThread currentThread] isMainThread], @"Observation stopped outside main thread");
 
-    result |= [super startObservingViewValueChanges];
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result |= [control startObservingViewValueChanges];
-    }
-
-    return result;
-}
-
-- (BOOL)stopObservingViewValueChanges
-{
-    // return YES if all controls stopped, stop members then self
-    BOOL result = YES;
-
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result &= [control stopObservingViewValueChanges];
-    }
-    result &= [super stopObservingViewValueChanges];
-
-    return result;
-}
-
-- (BOOL)isObservingModelValueChanges
-{
-    // return YES if any control is observing
-    BOOL result = NO;
-
-    result |= [super isObservingModelValueChanges];
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result |= control.isObservingModelValueChanges;
-        if (result)
+    [self aka_performBlockInMainThreadOrQueue:^{
+        // We are not checking if we are observing changes to make double sure to
+        // not to leave observations behind which will end in a crash.
+        //if (self.isObservingChanges)
+        //{
+        for (AKAControl* control in self.controlsStorage)
         {
-            break;
+            [control stopObservingChanges];
         }
-    }
-    return result;
-}
-
-- (BOOL)startObservingModelValueChanges
-{
-    // return YES if any control started, start self then members
-    BOOL result = NO;
-
-    result |= [super startObservingModelValueChanges];
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result |= [control startObservingModelValueChanges];
-    }
-
-    return result;
-}
-
-- (BOOL)stopObservingModelValueChanges
-{
-    // return YES if all controls stopped, stop members then self
-    BOOL result = YES;
-
-    for (AKAControl* control in self.controlsStorage)
-    {
-        result &= [control stopObservingModelValueChanges];
-    }
-    result &= [super stopObservingModelValueChanges];
-
-    return result;
+        [super stopObservingChanges];
+        //}
+    } waitForCompletion:YES];
 }
 
 #pragma mark - Activation
@@ -928,28 +847,7 @@
         }
         else
         {
-            NSArray* bindingPropertyNames = [view aka_definedBindingPropertyNames];
-            for (NSString* propertyName in bindingPropertyNames)
-            {
-                AKABindingExpression* bindingExpression = [view aka_bindingExpressionForPropertyNamed:propertyName];
-                AKABindingProvider* provider = bindingExpression.bindingProvider;
-                AKABinding* binding = [provider bindingWithView:view
-                                                     expression:bindingExpression
-                                                        context:self
-                                                       delegate:self];
-                if (binding)
-                {
-                    NSMutableSet* bindings = [self aka_associatedValueForKey:@"bindings"];
-                    if (bindings == nil)
-                    {
-                        bindings = [NSMutableSet new];
-                        [self aka_setAssociatedValue:bindings forKey:@"bindings"];
-                    }
-                    [bindings addObject:binding];
-
-                    [binding startObservingChanges];
-                }
-            }
+            [self addBindingsForView:view];
         }
     }];
     return count;

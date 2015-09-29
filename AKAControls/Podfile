@@ -1,17 +1,30 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://sources.aka-labs.com/scm/git/cocoapods'
+
 workspace 'AKAControls.xcworkspace'
 xcodeproj 'AKAControls.xcodeproj'
+xcodeproj 'AKAControlsGallery.xcodeproj'
+
 use_frameworks!
 
 platform :ios, '8.0'
 
 target :AKAControls do
+    xcodeproj 'AKAControls.xcodeproj'
 end
 
 target :AKAControlsTests do
+    xcodeproj 'AKAControls.xcodeproj'
 end
+
+target :AKAControlsGallery do
+    xcodeproj 'AKAControlsGallery.xcodeproj'
+end
+
+#target :AKAControlsGalleryUITests do
+#    xcodeproj 'AKAControlsGallery.xcodeproj'
+#end
 
 #pod 'AKACommons'
 pod 'AKACommons', :path => '..'

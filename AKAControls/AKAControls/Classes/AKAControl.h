@@ -6,15 +6,20 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AKACommons/AKAProperty.h>
+@import Foundation;
+@import AKACommons.AKAProperty;
+
 #import "AKAControlDelegate.h"
+#import "AKABindingContextProtocol.h"
+#import "AKAKeyboardActivationSequence.h"
+
+// Obsolete: TODO: remove if new binding infrastruct is finished:
 #import "AKAControlConverterProtocol.h"
 #import "AKAControlValidatorProtocol.h"
 #import "AKAViewBinding.h"
+@class AKAViewBinding;
 
 @class AKACompositeControl;
-@class AKAViewBinding;
 @protocol AKAControlConfigurationProtocol;
 
 #pragma mark - AKAControl Interface
@@ -40,7 +45,7 @@
  *
  * @see AKAControlViewBinding
  */
-@interface AKAControl: NSObject
+@interface AKAControl: NSObject<AKABindingContextProtocol, AKAKeyboardActivationSequenceItemProtocol>
 
 #pragma mark - Initialization
 /// @name Initialization
@@ -67,10 +72,6 @@
 + (nullable instancetype)controlWithDataContext:(id __nullable)dataContext
                          configuration:(id<AKAControlConfigurationProtocol>__nullable)configuration;
 
-#pragma mark - Diagnostics
-
-@property(nonatomic, readonly, nullable) NSString* debugDescriptionDetails;
-
 #pragma mark - Configuration
 /// @name Configuration
 
@@ -84,7 +85,21 @@
  */
 @property(nonatomic, weak, nullable) id<AKAControlDelegate> delegate;
 
+
+#pragma mark - New Bindings Support
+
+@property(nonatomic, nonnull) NSMutableArray* bindings;
+
+- (NSUInteger)                     addBindingsForView:(req_UIView)view;
+- (BOOL)                            addBindingForView:(req_UIView)view
+                              bindingPropertyWithName:(req_NSString)propertyName;
+
 #pragma mark - Properties
+
+/**
+ * The AKAProperty providing access to the control's data context.
+ */
+@property(nonatomic, strong, readonly, nullable) AKAProperty* dataContextProperty;
 
 /**
  * Tags (typically specified in the control view's binding configuration)
@@ -160,10 +175,6 @@
 
 #pragma mark - Change Tracking
 
-- (void)startObservingOtherChanges;
-
-- (void)stopObservingOtherChanges;
-
 /// @name Controlling change tracking
 
 /**
@@ -177,52 +188,9 @@
 - (void)stopObservingChanges;
 
 /**
- * Indicates whether changes to the view value are observed.
- *
- * @note Only changes originating from the view (thus the user) are observed. Programmatic changes
- * will not trigger change events.
+ * Indicates whether the control is observing changes.
  */
-@property(nonatomic, readonly) BOOL isObservingViewValueChanges;
-
-/**
- * Starts observing changes to the controls view value.
- *
- * @note Only changes originating from the view (thus the user) are observed. Programmatic changes
- * will not trigger change events.
- *
- * @return YES, if observation of view values was started or if the control was already observing them.
- */
-- (BOOL)startObservingViewValueChanges;
-
-/**
- * Starts observing changes to the controls view value.
- *
- * @return YES, if observation of view values was stopped or if the control was not observing them.
- */
-- (BOOL)stopObservingViewValueChanges;
-
-/**
- * Indicates whether changes to the model value are observed.
- *
- * @note Unlike for view value changes, all changes to model values are observed.
- */
-@property(nonatomic, readonly) BOOL isObservingModelValueChanges;
-
-/**
- * Starts observing changes to the controls model value.
- *
- * @note Unlike for view value changes, all changes to model values are observed.
- *
- * @return YES, if observation of model values was started or if the control was already observing them.
- */
-- (BOOL)startObservingModelValueChanges;
-
-/**
- * Stops observing changes to the controls model value.
- *
- * @return YES, if observation of model values was stopped or if the control was not observing them.
- */
-- (BOOL)stopObservingModelValueChanges;
+@property(nonatomic, readonly) BOOL isObservingChanges;
 
 #pragma mark - Activation
 /// @name Activation
@@ -342,5 +310,9 @@
                           changeObserver:(void(^__nullable)(id __nullable oldValue, id __nullable newValue))themeNameChanged;
 
 - (void)setThemeName:(NSString* __nullable)themeName forClass:(Class __nonnull)type;
+
+#pragma mark - Diagnostics
+
+@property(nonatomic, readonly, nullable) NSString* debugDescriptionDetails;
 
 @end

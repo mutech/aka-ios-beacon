@@ -19,7 +19,10 @@
 - (instancetype)initWithDataContext:(id)dataContext
                       configuration:(id<AKAControlConfigurationProtocol>)configuration;
 
-#pragma mark - View Binding
+#pragma mark - Value Properties
+
+#pragma mark - Obsolete
+// TODO: remove when new binding mechanism is ready:
 
 /**
  * The binding connecting this control to its view.
@@ -28,39 +31,6 @@
  *
  */
 @property(nonatomic, strong) AKAViewBinding* viewBinding;
-
-#pragma mark - Value Properties
-
-/**
- * The AKAProperty providing access to the controls data context.
- *
- * @note This property should only be used by inheriting classes. Use the modelValue property instead to access the model value.
- */
-@property(nonatomic, strong, readonly) AKAProperty* dataContextProperty;
-
-/**
- * Creates a new property instance accessing the control's data context's property at the
- * specified <keyPath>.
- *
- * @note The key path may use extensions, for example to access the root data context,
- * the key path can be prefixed with '$root'.
- *
- * @param keyPath the key path relative to the control's data context.
- * @param changeObserver the change observer for the value at the specified key path.
- *
- * @return a property providing access to the specified value.
- */
-- (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
-                          withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver;
-
-/**
- * Returns the value of the control'data context for the specified key path.
- *
- * @param keyPath the key path relative to the control's data context
- *
- * @return the value for the specified key in the control's data context.
- */
-- (id)dataContextValueAtKeyPath:(NSString*)keyPath;
 
 /**
  * The AKAProperty providing access to the controls modelValue.

@@ -126,7 +126,7 @@ IB_DESIGNABLE
                 AKACompositeControl* composite = control;
                 AKAControl* control = [composite createControlForView:_pickerView withConfiguration:_pickerView.bindingConfiguration];
                 [composite addControl:control];
-                if (composite.isObservingModelValueChanges && composite.isObservingViewValueChanges)
+                if (composite.isObservingChanges)
                 {
                     [control startObservingChanges];
                 }

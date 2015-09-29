@@ -219,7 +219,7 @@ static NSString* const keywordControl = @"control";
         {
             AKABindingExpression* item = nil;
 
-            AKABindingProvider* itemProvider = [provider providerForBindingExpressionInPrimaryExpressionArrayAtIndex:i];
+            AKABindingProvider* itemProvider = [provider providerForBindingExpressionInPrimaryExpressionArray];
 
             result = [self parseBindingExpression:&item
                                      withProvider:itemProvider

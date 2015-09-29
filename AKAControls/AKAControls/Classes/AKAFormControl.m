@@ -6,9 +6,11 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKALog;
+
 #import "AKAFormControl.h"
 #import "AKAKeyboardActivationSequence.h"
-#import <AKACommons/AKALog.h>
+#import "AKABinding.h"
 
 @interface AKAFormControl() <AKAKeyboardActivationSequenceDelegate> {
     __strong AKAKeyboardActivationSequence* _keyboardActivationSequence;
@@ -36,13 +38,31 @@
     return result;
 }
 
-- (void)enumerateItemsInKeyboardActivationSequenceUsingBlock:(void (^)(id, NSUInteger, BOOL *))block
+- (void)enumerateItemsInKeyboardActivationSequenceUsingBlock:(void (^)(req_AKAKeyboardActivationSequenceItem, NSUInteger, outreq_BOOL))block
 {
     __block int count = 0;
+
+    BOOL stop = NO;
+    for (AKABinding* binding in self.bindings)
+    {
+        if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+        {
+            AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
+            if ([item participatesInKeyboardActivationSequence])
+            {
+                block(item, count++, &stop);
+            }
+        }
+        if (stop)
+        {
+            return;
+        }
+    }
+
     [self enumerateControlsRecursivelyUsingBlock:^(AKAControl *control,
-                                            AKACompositeControl *owner,
-                                            NSUInteger index,
-                                            BOOL *stop)
+                                                   AKACompositeControl *owner,
+                                                   NSUInteger index,
+                                                   BOOL *stop)
      {
          (void)owner; // not needed
          (void)index; // not needed
@@ -52,47 +72,20 @@
              // sequence.
              block(control, count++, stop);
          }
+         for (AKABinding* binding in control.bindings)
+         {
+             if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+             {
+                 AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
+                 if ([item participatesInKeyboardActivationSequence])
+                 {
+                     block(item, count++, stop);
+                 }
+             }
+         }
      }
-                               startIndex:0
-                          continueInOwner:NO];
-}
-
-- (UIResponder *)responderForKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence
-                                                   item:(id)item
-{
-    UIResponder* result = nil;
-    if (item != nil)
-    {
-        if ([item isKindOfClass:[AKAControl class]])
-        {
-            AKAControl* control = item;
-            result = control.view;
-        }
-        else if ([item isKindOfClass:[UIResponder class]])
-        {
-            AKALogWarn(@"%@: Invalid request to resolve responder for keyboard activation sequence %@ item %@ which is not an instance of AKAControl. The specified item is a responder, recovering by returning the item", self, keyboardActivationSequence, item);
-            result = item;
-        }
-    }
-    return result;
-}
-
-- (BOOL)        activateResponder:(UIResponder*)responder
-                          forItem:(id)item
-                          atIndex:(NSUInteger)index
-     inKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence
-{
-    BOOL result = NO;
-    if ([item isKindOfClass:[AKAControl class]])
-    {
-        // TODO: maybe test for shouldActivate:
-        result = [((AKAControl*)item) activate];
-    }
-    else
-    {
-        AKALogError(@"Invalid request to activate keyboard activation sequence %@ item %@ which is not an instance of AKAControl", keyboardActivationSequence, item);
-    }
-    return result;
+                                      startIndex:0
+                                 continueInOwner:NO];
 }
 
 #pragma mark -

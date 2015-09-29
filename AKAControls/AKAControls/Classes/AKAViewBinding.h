@@ -6,16 +6,20 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+// Obsolete: TODO: remove once new binding infrastructure is finished
+
 #import <UIKit/UIKit.h>
 #import <AKACommons/AKAProperty.h>
 
 #import "AKAViewBindingConfiguration.h"
 
+#import "AKABindingContextProtocol.h"
+
 @class AKAViewBinding;
 @class AKAKeyboardActivationSequence;
 @protocol AKAControlConverterProtocol;
 
-@protocol AKAViewBindingDelegate <NSObject>
+@protocol AKAViewBindingDelegate <AKABindingContextProtocol>
 
 #pragma mark - Activation
 /// @name Activation
@@ -39,12 +43,6 @@
 
 - (void)        viewBinding:(AKAViewBinding*)viewBinding
          viewWillDeactivate:(UIView*)view;
-
-#pragma mark - Data Context Access
-/// @name Data Context Access
-
-- (AKAProperty *)dataContextPropertyAtKeyPath:(NSString *)keyPath
-                           withChangeObserver:(void (^)(id, id))changeObserver;
 
 @property(nonatomic, readonly)AKAKeyboardActivationSequence* keyboardActivationSequence;
 

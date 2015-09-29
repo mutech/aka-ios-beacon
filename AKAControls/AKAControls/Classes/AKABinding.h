@@ -9,6 +9,7 @@
 @import UIKit;
 @import AKACommons.AKAProperty;
 
+#import "AKABindingExpression.h"
 
 @class AKABinding;
 @protocol AKABindingDelegate;
@@ -85,12 +86,14 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
 
 @interface AKABinding : NSObject
 
+- (instancetype _Nullable)         initWithTarget:(id _Nonnull)target
+                                       expression:(req_AKABindingExpression)bindingExpression
+                                          context:(req_AKABindingContext)bindingContext
+                                         delegate:(opt_AKABindingDelegate)delegate;
+
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
-
-
-- (instancetype _Nullable)           initWithDelegate:(opt_AKABindingDelegate)delegate;
 
 - (void)             sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                            toNewValue:(opt_id)newSourceValue;

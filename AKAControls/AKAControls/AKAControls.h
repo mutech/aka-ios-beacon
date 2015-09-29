@@ -39,6 +39,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 
 // AKAControls/Converters
 #import <AKAControls/AKANumberTextConverter.h>
+#import <AKAControls/AKABooleanTextConverter.h>
 
 // AKAControls/Validators
 #import <AKAControls/AKAEmailValidator.h>
@@ -86,11 +87,22 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 // AKAControls/ViewControllers
 #import <AKAControls/AKAFormTableViewController.h>
 
+// To be moved to AKACommons:
+#import <AKAControls/AKAMutableOrderedDictionary.h>
+
+#import <AKAControls/AKAPickerView.h>
+#import <AKAControls/AKAPickerViewBinding.h>
+#import <AKAControls/AKASingleChoiceEditorControlView.h>
+
 // AKAControls/Bindings (new)
 #import <AKAControls/AKABinding.h>
 #import <AKAControls/AKABindingExpression.h>
-#import <AKAControls/NSDictionary+AKABindingExpressionSpecification.h>
+#import <AKAControls/AKABindingSpecification.h>
 #import <AKAControls/NSScanner+AKABindingExpressionParser.h>
 #import <AKAControls/AKABindingProvider.h>
+#import <AKAControls/AKABindingProviderRegistry.h>
 #import <AKAControls/AKABindingContextProtocol.h>
+
+#import <AKAControls/UIView+AKABindingSupport.h>
+#import <AKAControls/UITextField+AKAIBBindingProperties.h>
 

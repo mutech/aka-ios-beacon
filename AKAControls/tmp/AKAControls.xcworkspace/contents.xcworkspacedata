@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AKAControls.xcodeproj">
+      location = "group:AKAControlsGallery.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:AKAControlsGallery.xcodeproj">
+      location = "group:AKAControls.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

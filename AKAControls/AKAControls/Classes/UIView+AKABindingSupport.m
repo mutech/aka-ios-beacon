@@ -14,34 +14,33 @@
 
 @implementation UIView(AKABindingSupport)
 
-- (NSArray<NSString *> *)aka_definedBindingPropertyNames
+- (NSArray<NSString *> *)            aka_definedBindingPropertyNames
 {
     return [self aka_bindingExpressionsBySelectorName].allKeys;
 }
 
 
-- (opt_AKABindingExpression)aka_bindingExpressionForPropertyNamed:(req_NSString)key
+- (opt_AKABindingExpression)   aka_bindingExpressionForPropertyNamed:(req_NSString)key
 {
     return [self aka_bindingExpressionsBySelectorName][key];
 }
 
-- (opt_AKABindingExpression)aka_bindingExpressionForProperty:(req_SEL)selector
+- (opt_AKABindingExpression)        aka_bindingExpressionForProperty:(req_SEL)selector
 {
     NSString* key = NSStringFromSelector(selector);
     return [self aka_bindingExpressionForPropertyNamed:key];
 }
 
-
-- (void)aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                     forProperty:(req_SEL)selector
+- (void)                                    aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
+                                                         forProperty:(req_SEL)selector
 {
     NSString* key = NSStringFromSelector(selector);
     [self aka_setBindingExpression:bindingExpression
                   forPropertyNamed:key];
 }
 
-- (void)aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                forPropertyNamed:(req_NSString)key
+- (void)                                    aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
+                                                    forPropertyNamed:(req_NSString)key
 {
     if (bindingExpression == nil || bindingExpression == (id)[NSNull null])
     {
@@ -55,12 +54,13 @@
 
 #pragma mark - Implementation
 
-- (opt_NSMutableDictionary)aka_bindingExpressionsBySelectorName
+- (opt_NSMutableDictionary)     aka_bindingExpressionsBySelectorName
 {
     return [self aka_bindingExpressionsBySelectorNameCreateIfMissing:NO];
 }
 
-- (opt_NSMutableDictionary)aka_bindingExpressionsBySelectorNameCreateIfMissing:(BOOL)createMissing
+- (opt_NSMutableDictionary)
+                 aka_bindingExpressionsBySelectorNameCreateIfMissing:(BOOL)createMissing
 {
     NSAssert([NSThread isMainThread], @"Invalid attempt to access associated value aka_bindingExpressionsBySelectorName outside of main thread");
 

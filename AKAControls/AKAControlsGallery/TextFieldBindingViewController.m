@@ -29,6 +29,12 @@
 
     self.formControl = [[AKAFormControl alloc] initWithDataContext:self configuration:nil];
     [self.formControl addControlsForControlViewsInViewHierarchy:self.view];
+    [self.formControl startObservingChanges];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.formControl stopObservingChanges];
 }
 
 - (void)didReceiveMemoryWarning

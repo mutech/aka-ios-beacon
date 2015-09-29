@@ -284,7 +284,7 @@
         NSString* keyPath = self.configuration.pickerValuesKeyPath;
         if (keyPath.length > 0)
         {
-            _choicesProperty = [self.delegate dataContextPropertyAtKeyPath:keyPath
+            _choicesProperty = [self.delegate dataContextPropertyForKeyPath:keyPath
                                                         withChangeObserver:
                                 ^(id oldValue, id newValue)
                                 {
@@ -360,7 +360,7 @@
     {
         if (self.configuration.titleConverterKeyPath.length > 0)
         {
-            AKAProperty* titleConverterProperty = [self.delegate dataContextPropertyAtKeyPath:self.configuration.titleConverterKeyPath
+            AKAProperty* titleConverterProperty = [self.delegate dataContextPropertyForKeyPath:self.configuration.titleConverterKeyPath
                                                                            withChangeObserver:nil];
             _titleConverter = titleConverterProperty.value;
         }

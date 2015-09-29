@@ -14,3 +14,4 @@ IB_DESIGNABLE
 @property(nonatomic, nullable) IBInspectable NSString* textBinding;
 
 @end
+

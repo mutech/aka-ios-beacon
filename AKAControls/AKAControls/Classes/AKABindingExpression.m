@@ -38,34 +38,18 @@
     AKABindingExpression* result = nil;
 
     if ([parser parseBindingExpression:&result
-                          withProvider:bindingProvider
-                                 error:error])
+                                    withProvider:bindingProvider
+                                        error:error])
     {
-#if DEBUG
-        if (result.bindingProvider != nil)
+        if (!parser.isAtEnd)
         {
-            if (![result.bindingProvider validateBindingExpression:result error:error])
-            {
-                NSString* message = error ? (*error).description : @"(nothing)";
-                AKALogError(@"Failed to validate binding expression %@, binding provider reported: %@", result, message);
-                result = nil;
-            }
+            result = nil;
+            [parser registerParseError:error
+                              withCode:AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd
+                            atPosition:parser.scanLocation
+                                reason:@"Invalid character, expected attributes (starting with '{') or end of binding expression"];
         }
-#else
-        // Binding expressions are typically defined in story boards and should be tested
-        // during development. The overhead of detailed validation for the sake of a better
-        // error reporting is most probably not justified. So we skip it in non-DEBUG builds.
-
-#endif
-    }
-
-    if (!parser.isAtEnd)
-    {
-        result = NO;
-        [parser registerParseError:error
-                          withCode:AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd
-                        atPosition:parser.scanLocation
-                          reason:@"Invalid character, expected attributes (starting with '{') or end of binding expression"];
+        // TODO: perform semantic validation (using bindingProvider.specification)
     }
 
     return result;
@@ -101,6 +85,11 @@
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
     AKAErrorAbstractMethodImplementationMissing();
 }
@@ -245,6 +234,12 @@
                                       changeObserver:changeObserver];
 }
 
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
+    return self.array;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
@@ -332,6 +327,11 @@
     return [AKAProperty propertyOfWeakKeyValueTarget:self.constant
                                                keyPath:nil
                                         changeObserver:changeObserver];
+}
+
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    return self.constant;
 }
 
 #pragma mark - Serialization
@@ -595,6 +595,11 @@
                                       withChangeObserver:changeObserver];
 }
 
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    return [bindingContext dataContextValueForKeyPath:self.keyPath];
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForPrimaryExpression
@@ -632,6 +637,12 @@
                                       withChangeObserver:changeObserver];
 }
 
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    return [bindingContext dataContextValueForKeyPath:self.keyPath];
+}
+
+
 #pragma mark - Serialization
 
 - (NSString*)textForScope
@@ -656,6 +667,11 @@
                                           withChangeObserver:changeObserver];
 }
 
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    return [bindingContext rootDataContextValueForKeyPath:self.keyPath];
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForScope
@@ -678,6 +694,11 @@
 {
     return [bindingContext controlPropertyForKeyPath:self.keyPath
                                   withChangeObserver:changeObserver];
+}
+
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+{
+    return [bindingContext controlValueForKeyPath:self.keyPath];
 }
 
 #pragma mark - Serialization

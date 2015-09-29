@@ -14,11 +14,19 @@
 
 #import "AKAControlsErrors_Internal.h"
 
-#import <AKACommons/AKALog.h>
-#import <AKACommons/NSObject+AKAConcurrencyTools.h>
+// New bindings infrastructure
+#import "UIView+AKABindingSupport.h"
+#import "AKABinding.h"
+#import "AKABindingProvider.h"
+#import "AKABindingExpression.h"
+
+@import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAConcurrencyTools;
+
 #import <objc/runtime.h>
 
 @interface AKAControl() <
+    AKABindingDelegate,
     AKAControlConverterDelegate,
     AKAControlValidationDelegate
 > {
@@ -40,16 +48,16 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)controlWithDataContext:(id)dataContext
-                         configuration:(id<AKAControlConfigurationProtocol>)configuration
++ (instancetype)               controlWithDataContext:(id)dataContext
+                                        configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     NSParameterAssert(dataContext != nil);
 
     return [[self alloc] initWithDataContext:dataContext configuration:configuration];
 }
 
-+ (instancetype)controlWithOwner:(AKACompositeControl *)owner
-                   configuration:(id<AKAControlConfigurationProtocol>)configuration
++ (instancetype)                     controlWithOwner:(AKACompositeControl *)owner
+                                        configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     NSParameterAssert(owner != nil);
 
@@ -60,13 +68,14 @@
 {
     if (self = [super init])
     {
+        _bindings = [NSMutableArray new];
         _tags = [NSMutableSet new];
     }
     return self;
 }
 
-- (instancetype)initWithDataContext:(id)dataContext
-                      configuration:(id<AKAControlConfigurationProtocol>)configuration
+- (instancetype)                  initWithDataContext:(id)dataContext
+                                        configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     if (self = [self init])
     {
@@ -84,8 +93,8 @@
     return self;
 }
 
-- (instancetype)initWithOwner:(AKACompositeControl*)owner
-                configuration:(id<AKAControlConfigurationProtocol>)configuration
+- (instancetype)                        initWithOwner:(AKACompositeControl*)owner
+                                        configuration:(id<AKAControlConfigurationProtocol>)configuration
 {
     if (self = [self init])
     {
@@ -99,30 +108,122 @@
     return self;
 }
 
-#pragma mark - Diagnostics
+#pragma mark - New Bindings Support
 
-- (NSString *)debugDescription
+- (NSUInteger)                     addBindingsForView:(req_UIView)view
 {
-    NSString* details = self.debugDescriptionDetails;
-    NSString* result = nil;
-
-    if (details.length > 0)
+    NSUInteger result = 0;
+    NSArray* bindingPropertyNames = [view aka_definedBindingPropertyNames];
+    for (NSString* propertyName in bindingPropertyNames)
     {
-        return [NSString stringWithFormat:@"<%@ %p; %@>", self.class, self, details];
-    }
-    else
-    {
-        return [NSString stringWithFormat:@"<%@ %p>", self.class, self];
+        if ([self addBindingForView:view
+            bindingPropertyWithName:propertyName])
+        {
+            ++result;
+        }
     }
     return result;
 }
 
-- (NSString *)debugDescriptionDetails
+- (BOOL)                            addBindingForView:(req_UIView)view
+                              bindingPropertyWithName:(req_NSString)propertyName;
 {
-    NSString* result = [NSString stringWithFormat:@"view: %@, configuration: { %@ }",
-                        self.view.description,
-                        self.viewBinding.configuration.description];
+    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
+
+    __block BOOL result = NO;
+    AKABindingExpression* bindingExpression = [view aka_bindingExpressionForPropertyNamed:propertyName];
+    AKABindingProvider* provider = bindingExpression.bindingProvider;
+    AKABinding* binding = [provider bindingWithTarget:view
+                                           expression:bindingExpression
+                                              context:self
+                                             delegate:self];
+    if (binding)
+    {
+        // Paranoia: Binding should only be manipulated from main thread, on the other hand
+        // if this is called from a different thread, there is a possibility for a dead lock
+        // since we are and probably have to wait for completion. So better make sure this
+        // is called from main than to rely on this:
+        [self aka_performBlockInMainThreadOrQueue:^{
+            result = YES;
+            [self.bindings addObject:binding];
+            if (self.isObservingChanges)
+            {
+                [binding startObservingChanges];
+            }
+        } waitForCompletion:YES];
+    }
     return result;
+}
+
+- (BOOL)removeBinding:(AKABinding*)binding
+{
+    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
+
+    __block BOOL result = NO;
+    // Paranoia: Binding should only be manipulated from main thread, on the other hand
+    // if this is called from a different thread, there is a possibility for a dead lock
+    // since we are and probably have to wait for completion. So better make sure this
+    // is called from main than to rely on this:
+    [self aka_performBlockInMainThreadOrQueue:^{
+        NSUInteger index = [self.bindings indexOfObjectIdenticalTo:binding];
+        BOOL result = index != NSNotFound;
+        if (result)
+        {
+            [binding stopObservingChanges];
+            [self.bindings removeObjectAtIndex:index];
+        }
+    } waitForCompletion:YES];
+    return result;
+}
+
+#pragma mark AKABindings
+
+#pragma mark AKABindingContextProtocol
+
+- (AKACompositeControl*)rootControl
+{
+    AKACompositeControl* result = self.owner;
+    while (result.owner != nil)
+    {
+        result = result.owner;
+    }
+    return result;
+}
+
+- (opt_AKAProperty)     dataContextPropertyForKeyPath:(opt_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [self.dataContextProperty propertyAtKeyPath:keyPath
+                                    withChangeObserver:valueDidChange];
+}
+
+- (id)                     dataContextValueForKeyPath:(NSString *)keyPath
+{
+    return [self dataContextPropertyForKeyPath:keyPath withChangeObserver:nil].value;
+}
+
+- (opt_AKAProperty) rootDataContextPropertyForKeyPath:(opt_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+}
+
+- (opt_id)             rootDataContextValueForKeyPath:(req_NSString)keyPath
+{
+    return [[self rootControl] dataContextValueForKeyPath:keyPath];
+}
+
+- (opt_AKAProperty)         controlPropertyForKeyPath:(req_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [AKAProperty propertyOfWeakKeyValueTarget:self
+                                             keyPath:keyPath
+                                      changeObserver:valueDidChange];
+}
+
+- (opt_id)                     controlValueForKeyPath:(req_NSString)keyPath
+{
+    return [self valueForKeyPath:keyPath];
 }
 
 #pragma mark - Configuration
@@ -312,32 +413,6 @@
 - (void)setModelValue:(id)modelValue
 {
     self.modelValueProperty.value = modelValue;
-}
-
-- (id)dataContextValueAtKeyPath:(NSString*)keyPath
-{
-    return [self dataContextPropertyAtKeyPath:keyPath withChangeObserver:nil].value;
-}
-
-- (AKAProperty*)dataContextPropertyAtKeyPath:(NSString*)keyPath
-                          withChangeObserver:(void(^)(id oldValue, id newValue))changeObserver
-{
-    return [self.dataContextProperty propertyAtKeyPath:keyPath withChangeObserver:changeObserver];
-    /*
-    // TODO: create a data context property
-    if (self.owner)
-    {
-        // data context is the owners model value
-        return [self.owner.modelValueProperty propertyAtKeyPath:keyPath
-                                             withChangeObserver:changeObserver];
-    }
-    else
-    {
-        // without owner, data context is the controls model value
-        return [self.modelValueProperty propertyAtKeyPath:keyPath
-                                       withChangeObserver:changeObserver];
-    }
-     */
 }
 
 - (id<AKAControlValidatorProtocol>)validator
@@ -799,48 +874,36 @@
 
 - (void)startObservingChanges
 {
-    [self startObservingModelValueChanges];
-    [self startObservingViewValueChanges];
-    [self startObservingOtherChanges];
+    if (!self.isObservingChanges)
+    {
+        [self startObservingModelValueChanges];
+        [self startObservingViewValueChanges];
+        [self startObservingOtherChanges];
+
+        for (AKABinding* binding in self.bindings)
+        {
+            [binding startObservingChanges];
+        }
+
+        _isObservingChanges = YES;
+    }
 }
 
 - (void)stopObservingChanges
 {
-    [self stopObservingModelValueChanges];
-    [self stopObservingViewValueChanges];
-    [self stopObservingOtherChanges];
-}
+    if (self.isObservingChanges)
+    {
+        [self stopObservingModelValueChanges];
+        [self stopObservingViewValueChanges];
+        [self stopObservingOtherChanges];
 
-- (void)startObservingOtherChanges
-{
-    [self.converterProperty startObservingChanges];
-    [self.validatorProperty startObservingChanges];
-}
+        for (AKABinding* binding in self.bindings)
+        {
+            [binding stopObservingChanges];
+        }
 
-- (void)stopObservingOtherChanges
-{
-    [self.converterProperty stopObservingChanges];
-    [self.validatorProperty stopObservingChanges];
-}
-
-- (BOOL)isObservingViewValueChanges
-{
-    return self.viewBinding.isObservingViewValueChanges;
-}
-
-- (BOOL)startObservingViewValueChanges
-{
-    return [self.viewValueProperty startObservingChanges];
-}
-
-- (BOOL)stopObservingViewValueChanges
-{
-    return [self.viewValueProperty stopObservingChanges];
-}
-
-- (BOOL)isObservingModelValueChanges
-{
-    return self.modelValueProperty.isObservingChanges;
+        _isObservingChanges = NO;
+    }
 }
 
 - (BOOL)startObservingModelValueChanges
@@ -855,12 +918,46 @@
         }
         result = [self.modelValueProperty startObservingChanges];
     }
+
     return result;
+}
+
+- (BOOL)startObservingViewValueChanges
+{
+    BOOL result = [self.viewValueProperty startObservingChanges];
+    return result;
+}
+
+- (void)startObservingOtherChanges
+{
+    [self.converterProperty startObservingChanges];
+    [self.validatorProperty startObservingChanges];
 }
 
 - (BOOL)stopObservingModelValueChanges
 {
     return [self.modelValueProperty stopObservingChanges];
+}
+
+- (BOOL)stopObservingViewValueChanges
+{
+    return [self.viewValueProperty stopObservingChanges];
+}
+
+- (void)stopObservingOtherChanges
+{
+    [self.converterProperty stopObservingChanges];
+    [self.validatorProperty stopObservingChanges];
+}
+
+- (BOOL)isObservingViewValueChanges
+{
+    return self.viewBinding.isObservingViewValueChanges;
+}
+
+- (BOOL)isObservingModelValueChanges
+{
+    return self.modelValueProperty.isObservingChanges;
 }
 
 #pragma mark - Activation
@@ -1004,6 +1101,68 @@
     return self.owner.keyboardActivationSequence;
 }
 
+#pragma mark - AKAKeyboardActivationSequenceItemProtocol
+
+- (opt_UIResponder)responderForKeyboardActivationSequence
+{
+    return self.viewBinding.view;
+}
+
+- (BOOL)installInputAccessoryView:(req_UIView)inputAccessoryView
+{
+    // TODO: refactor this to let view bindings take care
+    BOOL result = NO;
+    UIResponder* responder = [self responderForKeyboardActivationSequence];
+    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
+    {
+        /*
+        if (oldView)
+        {
+            *oldView = responder.inputAccessoryView;
+        }
+         */
+        [responder performSelector:@selector(setInputAccessoryView:)
+                        withObject:inputAccessoryView];
+        result = YES;
+    }
+    else if ([responder isKindOfClass:[UITextField class]])
+    {
+        UITextField* textField = (UITextField*)responder;
+        textField.inputAccessoryView = inputAccessoryView;
+    }
+    return result;
+}
+
+- (BOOL)restoreInputAccessoryView
+{
+    BOOL result = NO;
+
+    // TODO: refactor this to let view bindings take care
+
+    UIResponder* responder = [self responderForKeyboardActivationSequence];
+    UIView* originalInputAccessoryView = nil;
+
+    if (responder.inputAccessoryView != self.keyboardActivationSequence.inputAccessoryView)
+    {
+        AKALogWarn(@"Input accessory view in responder %@ is not the expected view %@, found %@ instead. If the responders input accessory view was not changed after activation, this indicates an internal inconsistency of the activation sequence %@ or an unexpected behavior of the responder",
+                   responder, self.keyboardActivationSequence.inputAccessoryView, responder.inputAccessoryView, self);
+    }
+
+    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
+    {
+        [responder performSelector:@selector(setInputAccessoryView:)
+                        withObject:originalInputAccessoryView];
+        result = YES;
+    }
+    else if ([responder isKindOfClass:[UITextField class]])
+    {
+        UITextField* textField = (UITextField*)responder;
+        textField.inputAccessoryView = originalInputAccessoryView;
+    }
+
+    return result;
+}
+
 #pragma mark - View Binding Delegate
 
 - (void)viewBinding:(AKAViewBinding *)viewBinding
@@ -1090,6 +1249,32 @@
         self.themeNameByType = NSMutableDictionary.new;
     }
     self.themeNameByType[NSStringFromClass(type)] = themeName;
+}
+
+#pragma mark - Diagnostics
+
+- (NSString *)debugDescription
+{
+    NSString* details = self.debugDescriptionDetails;
+    NSString* result = nil;
+
+    if (details.length > 0)
+    {
+        return [NSString stringWithFormat:@"<%@ %p; %@>", self.class, self, details];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"<%@ %p>", self.class, self];
+    }
+    return result;
+}
+
+- (NSString *)debugDescriptionDetails
+{
+    NSString* result = [NSString stringWithFormat:@"view: %@, configuration: { %@ }",
+                        self.view.description,
+                        self.viewBinding.configuration.description];
+    return result;
 }
 
 @end

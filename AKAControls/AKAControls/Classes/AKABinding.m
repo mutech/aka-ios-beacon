@@ -6,12 +6,18 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKANullability;
 @import AKACommons.AKAErrors;
+@import AKACommons.AKALog;
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKABinding.h"
+#import "AKABindingExpression.h"
 
 @interface AKABinding()
+
+@property(nonatomic, readonly)BOOL isUpdatingSourceValueForTargetValueChange;
+@property(nonatomic, readonly)BOOL isUpdatingTargetValueForSourceValueChange;
 
 @end
 
@@ -20,18 +26,40 @@
 
 @implementation AKABinding
 
-- (instancetype)initWithDelegate:(id<AKABindingDelegate>)delegate
+- (instancetype _Nullable)         initWithTarget:(id)target
+                                       expression:(req_AKABindingExpression)bindingExpression
+                                          context:(req_AKABindingContext)bindingContext
+                                         delegate:(opt_AKABindingDelegate)delegate
 {
     if (self = [super init])
     {
+        // Sub classes take care of attaching to the target.
+        (void)target;
+
+        __weak AKABinding* weakSelf = self;
+        _bindingSource = [bindingExpression bindingSourcePropertyInContext:bindingContext
+                                                             changeObserer:
+                          ^(opt_id oldValue, opt_id newValue)
+                          {
+                              [weakSelf sourceValueDidChangeFromOldValue:oldValue
+                                                              toNewValue:newValue];
+                          }];
+
         _delegate = delegate;
     }
     return self;
 }
 
-- (AKAProperty *)bindingSource
+- (void)dealloc
 {
-    AKAErrorAbstractMethodImplementationMissing();
+    if (self.bindingSource.isObservingChanges)
+    {
+        [self.bindingSource stopObservingChanges];
+    }
+    if (self.bindingTarget.isObservingChanges)
+    {
+        [self.bindingTarget stopObservingChanges];
+    }
 }
 
 #pragma mark - Delegate Support
@@ -73,8 +101,8 @@
     }
 }
 
-- (void)sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue
-                        toSourceValueWithError:(opt_NSError)error
+- (void)             sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue
+                                     toSourceValueWithError:(opt_NSError)error
 {
     if ([self.delegate respondsToSelector:@selector(binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
     {
@@ -85,18 +113,18 @@
 }
 
 
-- (void)sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
-                          toInvalidValue:(opt_id)newSourceValue
-                               withError:(opt_NSError)error
+- (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                             toInvalidValue:(opt_id)newSourceValue
+                                                  withError:(opt_NSError)error
 {
-
 }
 
-- (BOOL)shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
-                                     changeTo:(opt_id)newSourceValue
-                                  validatedTo:(opt_id)sourceValue
+- (BOOL)              shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue
+                                                validatedTo:(opt_id)sourceValue
 {
-    return YES;
+    // Prevent updating target value if currently updating source value.
+    return !self.isUpdatingSourceValueForTargetValueChange;
 }
 
 - (void)targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
@@ -110,6 +138,13 @@
                                      changeTo:(opt_id)newTargetValue
                                   validatedTo:(opt_id)targetValue
 {
+    // It should not be necessary to skip source updates when target value is updated for source
+    // change, because UIControls only fire on user input. We leave the log to see if there
+    // are edge cases.
+    if (self.isUpdatingTargetValueForSourceValueChange)
+    {
+        AKALogError(@"%@: Unexpected source value update while target value is being updated", self);
+    }
     return YES;
 }
 
@@ -118,6 +153,8 @@
 - (void)updateTargetValueForSourceValue:(opt_id)oldSourceValue
                                changeTo:(opt_id)newSourceValue
 {
+    AKALogTrace(@"%@: Updating target value for source value '%@' change to '%@'",
+                self, oldSourceValue, newSourceValue);
     [self aka_performBlockInMainThreadOrQueue:
      ^{
          id targetValue = nil;
@@ -128,7 +165,9 @@
          {
              if ([self validateTargetValue:&targetValue error:&error])
              {
+                 _isUpdatingTargetValueForSourceValueChange = YES;
                  self.bindingTarget.value = targetValue;
+                 _isUpdatingTargetValueForSourceValueChange = NO;
              }
              else
              {
@@ -170,6 +209,8 @@
 - (void)updateSourceValueForTargetValue:(opt_id)oldTargetValue
                                changeTo:(opt_id)newTargetValue
 {
+    AKALogTrace(@"%@: Updating source value for target value '%@' change to '%@'",
+                self, oldTargetValue, newTargetValue);
     [self aka_performBlockInMainThreadOrQueue:
      ^{
          NSError* error;
@@ -181,7 +222,10 @@
          {
              if ([self validateSourceValue:&sourceValue error:&error])
              {
+                 NSAssert(!self.isUpdatingSourceValueForTargetValueChange, @"Nested source value update for target value change.");
+                 _isUpdatingSourceValueForTargetValueChange = YES;
                  self.bindingSource.value = sourceValue;
+                 _isUpdatingSourceValueForTargetValueChange = NO;
              }
              else
              {
@@ -245,12 +289,20 @@
     id sourceValue = newSourceValue;
     if ([self validateSourceValue:&sourceValue error:&error])
     {
+        AKALogTrace(@"%@: Source value changed from: '%@' to '%@'",
+                    self, oldSourceValue, newSourceValue);
+
         if ([self shouldUpdateTargetValueForSourceValue:oldSourceValue
                                                changeTo:newSourceValue
                                             validatedTo:sourceValue])
         {
             [self updateTargetValueForSourceValue:oldSourceValue
                                          changeTo:sourceValue];
+        }
+        else
+        {
+            AKALogTrace(@"%@: Skipped target value update for source value '%@' change to '%@'",
+                        self, oldSourceValue, newSourceValue);
         }
     }
     else
@@ -272,6 +324,11 @@
                                             validatedTo:targetValue])
         {
             [self updateSourceValueForTargetValue:oldTargetValue changeTo:targetValue];
+        }
+        else
+        {
+            AKALogTrace(@"%@: Skipped source value update for target value '%@' change to '%@'",
+                        self, oldTargetValue, newTargetValue);
         }
     }
     else

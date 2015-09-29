@@ -66,36 +66,34 @@
 {
     _items = [NSMutableArray new];
 
-    [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:^(id object, NSUInteger idx, BOOL *stop)
-     {
-         (void)stop; // not needed
-         UIResponder* responder = [self.delegate responderForKeyboardActivationSequence:self
-                                                                                   item:object];
-         if (responder != nil)
-         {
-             [self.items addObject:[AKAWeakReference weakReferenceTo:object]];
-             UIResponder* activeResponder = self.activeResponder;
-             if (activeResponder != nil || self.activeItemIndex != NSNotFound)
-             {
-                 if (responder == activeResponder)
-                 {
-                     // Update possibly changed index of active responder
-                     self->_activeItemIndex = idx;
-                 }
-                 else if (self.activeItemIndex == idx)
-                 {
-                     // Reset the index of active responder, which is different after the update
-                     self->_activeItemIndex = NSNotFound;
-                 }
-             }
+    [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:^(req_AKAKeyboardActivationSequenceItem item, NSUInteger idx, outreq_BOOL stop) {
+        (void)stop; // not needed
+        UIResponder* responder = [item responderForKeyboardActivationSequence];
+        if (responder != nil)
+        {
+            [self.items addObject:[AKAWeakReference weakReferenceTo:item]];
+            UIResponder* activeResponder = self.activeResponder;
+            if (activeResponder != nil || self.activeItemIndex != NSNotFound)
+            {
+                if (responder == activeResponder)
+                {
+                    // Update possibly changed index of active responder
+                    self->_activeItemIndex = idx;
+                }
+                else if (self.activeItemIndex == idx)
+                {
+                    // Reset the index of active responder, which is different after the update
+                    self->_activeItemIndex = NSNotFound;
+                }
+            }
 
-             if (responder.isFirstResponder)
-             {
-                 // This will take care or unregistering a currently active item
-                 [self registerActiveResponder:responder forItem:object atIndex:idx];
-             }
-         }
-     }];
+            if (responder.isFirstResponder)
+            {
+                // This will take care or unregistering a currently active item
+                [self registerActiveResponder:responder forItem:item atIndex:idx];
+            }
+        }
+    }];
 
     UIResponder* activeResponder = self.activeResponder;
     if (activeResponder != nil)
@@ -115,18 +113,18 @@
 
 #pragma mark - Access
 
-- (id)activeItem
+- (opt_AKAKeyboardActivationSequenceItem)activeItem
 {
     return self.activeItemIndex == NSNotFound ? nil : [self itemAtIndex:self.activeItemIndex];
 }
 
-- (NSUInteger)indexOfItem:(id)item
+- (NSUInteger)indexOfItem:(req_AKAKeyboardActivationSequenceItem)item
 {
     AKAWeakReference* reference = [AKAWeakReference weakReferenceTo:item];
     return [self.items indexOfObject:reference];
 }
 
-- (id)itemAtIndex:(NSUInteger)index
+- (opt_AKAKeyboardActivationSequenceItem)itemAtIndex:(NSUInteger)index
 {
     AKAWeakReference* reference = [self.items objectAtIndex:index];
     return reference.value;
@@ -134,14 +132,7 @@
 
 - (UIResponder*)responderAtIndex:(NSUInteger)index
 {
-    UIResponder* result = nil;
-    id item = [self itemAtIndex:index];
-    id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
-    if (item != nil && delegate != nil)
-    {
-        result = [delegate responderForKeyboardActivationSequence:self
-                                                                  item:item];
-    }
+    UIResponder* result = [[self itemAtIndex:index] responderForKeyboardActivationSequence];
     return result;
 }
 
@@ -155,7 +146,7 @@
     return result;
 }
 
-- (id)nextItem
+- (opt_AKAKeyboardActivationSequenceItem)nextItem
 {
     id result = nil;
     NSUInteger index = [self nextItemIndex];
@@ -210,20 +201,14 @@
 
 #pragma mark - Activation
 
-- (BOOL)prepareToActivateItemAtIndex:(NSUInteger)index
+- (BOOL)prepareToActivateItem:(req_AKAKeyboardActivationSequenceItem)item
 {
-    BOOL result = index < self.items.count;
-    if (result)
-    {
-        UIResponder* responder = [self responderAtIndex:index];
-        result = responder != nil;
-        if (result)
-        {
-            result = [self registerActiveResponder:responder
-                                    forItemAtIndex:index];
-        }
-    }
-    return result;
+    // Typically called by items which know they will activate and need to ensure
+    // that their responder's input accessory view is setup before becoming
+    // first responder.
+    return [self registerActiveResponder:[item responderForKeyboardActivationSequence]
+                                 forItem:item
+                                 atIndex:[self indexOfItem:item]];
 }
 
 - (BOOL)activateItemAtIndex:(NSUInteger)index
@@ -231,39 +216,14 @@
     BOOL result = index < self.items.count;
     if (result)
     {
-        UIResponder* responder = [self responderAtIndex:index];
-        result = responder != nil;
-        if (result)
+        opt_AKAKeyboardActivationSequenceItem item = [self itemAtIndex:index];
+        result = [self registerActiveResponder:item.responderForKeyboardActivationSequence
+                                       forItem:item
+                                       atIndex:index];
+        if (result && !item.isActive)
         {
-            result = [self registerActiveResponder:responder
-                                    forItemAtIndex:index];
-            if (result && !responder.isFirstResponder)
-            {
-                id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
-                if ([delegate respondsToSelector:@selector(activateResponder:forItem:atIndex:inKeyboardActivationSequence:)])
-                {
-                    result = [delegate activateResponder:responder
-                                                      forItem:[self itemAtIndex:index]
-                                                      atIndex:index
-                                 inKeyboardActivationSequence:self];
-                }
-                else
-                {
-                    result = [responder becomeFirstResponder];
-                }
-            }
+            result = [item activate];
         }
-    }
-    return result;
-}
-
-- (BOOL)prepareToActivateItem:(id)item
-{
-    BOOL result = NO;
-    NSUInteger index = [self indexOfItem:item];
-    if (index != NSNotFound)
-    {
-        result = [self prepareToActivateItemAtIndex:index];
     }
     return result;
 }
@@ -310,7 +270,7 @@
 {
     if (self.activeResponder != nil)
     {
-        [self restoreInputAccessoryViewForActiveResponder];
+        [self restoreInputAccessoryViewForActiveItem];
         self.activeResponder = nil;
     }
     self.activeItemIndex = NSNotFound;
@@ -319,13 +279,6 @@
 - (BOOL)registerActiveResponder:(UIResponder*)responder
                         forItem:(id)item
                         atIndex:(NSUInteger)index
-{
-    (void)item; // not used
-    return [self registerActiveResponder:responder forItemAtIndex:index];
-}
-
-- (BOOL)registerActiveResponder:(UIResponder*)responder
-                 forItemAtIndex:(NSUInteger)index
 {
     BOOL result = NO;
     if ((self.activeItemIndex != index && self.activeItemIndex != NSNotFound) ||
@@ -340,7 +293,7 @@
         result = YES;
         self.activeResponder = responder;
         self.activeItemIndex = index;
-        [self setInputAccessoryViewForActiveResponder];
+        [self setInputAccessoryViewForActiveItem];
     }
     return result;
 }
@@ -382,22 +335,35 @@
     return result;
 }
 
-- (BOOL)setInputAccessoryViewForActiveResponder
+- (BOOL)setInputAccessoryViewForActiveItem
 {
-    UIView* oldView = nil;
-    BOOL result = [self setInputAccessoryView:self.inputAccessoryView
-                                 forResponder:self.activeResponder
-                                      oldView:&oldView];
-    if (oldView != self.inputAccessoryView)
+    AKAKeyboardActivationSequenceItem item = self.activeItem;
+
+    BOOL result = item != nil;
+
+    if (result)
     {
-        self.savedActiveResponderInputAccessoryView = oldView;
-    }
-    else
-    {
-        self.savedActiveResponderInputAccessoryView = nil;
+        result = [item installInputAccessoryView:self.inputAccessoryView];
+        if (result)
+        {
+            [self updateInputAccessoryView];
+        }
     }
 
-    [self updateInputAccessoryView];
+    return result;
+}
+
+- (BOOL)restoreInputAccessoryViewForActiveItem
+{
+    AKAKeyboardActivationSequenceItem item = self.activeItem;
+
+    BOOL result = item != nil;
+
+    if (result)
+    {
+        result = [item restoreInputAccessoryView];
+    }
+
     return result;
 }
 
@@ -405,15 +371,7 @@
 {
     if (self.activeResponder != nil)
     {
-        if ([self.delegate respondsToSelector:@selector(setupInputAccessoryView:forKeyboardActivationSequence:previousItem:activeItem:nextItem:)])
-        {
-            [self.delegate setupInputAccessoryView:self.inputAccessoryView
-                     forKeyboardActivationSequence:self
-                                      previousItem:[self previousItem]
-                                        activeItem:[self activeItem]
-                                          nextItem:[self nextItem]];
-        }
-        else if ([self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]])
+        if ([self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]])
         {
             AKAKeyboardActivationSequenceAccessoryView* inputAccessoryView = (AKAKeyboardActivationSequenceAccessoryView*)self.inputAccessoryView;
             [inputAccessoryView updateBarItemStates];
@@ -421,58 +379,9 @@
     }
 }
 
-- (BOOL)setInputAccessoryView:(UIView*)inputAccessoryView
-                 forResponder:(UIResponder*)responder
-                      oldView:(out UIView*__autoreleasing*)oldView
+@end
 
-{
-    BOOL result = NO;
-    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
-    {
-        if (oldView)
-        {
-            *oldView = responder.inputAccessoryView;
-        }
-        [responder performSelector:@selector(setInputAccessoryView:)
-                        withObject:self.inputAccessoryView];
-        result = YES;
-    }
-    else if ([responder isKindOfClass:[UITextField class]])
-    {
-        UITextField* textField = (UITextField*)responder;
-        textField.inputAccessoryView = inputAccessoryView;
-    }
-    return result;
-}
-
-- (BOOL)restoreInputAccessoryViewForActiveResponder
-{
-    UIResponder* responder = self.activeResponder;
-    BOOL result = NO;
-    UIView* inputAccessoryView = self.inputAccessoryView;
-    if (responder.inputAccessoryView == self.inputAccessoryView)
-    {
-        result = [self setInputAccessoryView:self.inputAccessoryView
-                                forResponder:responder
-                                     oldView:nil];
-    }
-    else
-    {
-        AKALogWarn(@"Input accessory view in responder %@ is not the expected view %@, found %@ instead. If the responders input accessory view was not changed after activation, this indicates an internal inconsistency of the activation sequence %@ or an unexpected behavior of the responder",
-                   responder, inputAccessoryView, responder.inputAccessoryView, self);
-    }
-
-    if (!result && self.savedActiveResponderInputAccessoryView != nil && responder != nil)
-    {
-        AKALogError(@"Failed to restore input accessory view %@ for responder %@. This indicates an internal inconsistency in the keyboard activation sequence %@ or an unexpected behavior of the responder",
-                    self.savedActiveResponderInputAccessoryView, responder, self);
-    }
-
-    // Release saved view in any case, because we keep a strong reference to it.
-    self.savedActiveResponderInputAccessoryView = nil;
-
-    return result;
-}
+@implementation AKAKeyboardActivationSequence(Convenience)
 
 #pragma mark - Exposed Actions
 

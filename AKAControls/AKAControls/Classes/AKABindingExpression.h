@@ -71,4 +71,6 @@ typedef AKABindingProvider* _Nonnull                                req_AKABindi
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver;
 
+- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext;
+
 @end

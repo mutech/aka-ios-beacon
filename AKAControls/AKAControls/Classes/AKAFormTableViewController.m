@@ -291,7 +291,7 @@ static NSString* const defaultDataSourceKey = @"default";
         if (config.dataSourceKeyPath.length > 0)
         {
             // Use the configured data source
-            uitvDataSource = [placeholder dataContextValueAtKeyPath:config.dataSourceKeyPath];
+            uitvDataSource = [placeholder dataContextValueForKeyPath:config.dataSourceKeyPath];
         }
         else if (config.valueKeyPath.length > 0)
         {
@@ -307,7 +307,7 @@ static NSString* const defaultDataSourceKey = @"default";
         if (config.delegateKeyPath.length > 0)
         {
             // Use the configured delegate
-            uitvDelegate = [placeholder dataContextValueAtKeyPath:config.delegateKeyPath];
+            uitvDelegate = [placeholder dataContextValueForKeyPath:config.delegateKeyPath];
         }
 
         if (uitvDataSource != nil)

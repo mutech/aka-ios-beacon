@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-@import UIKit.UIView;
+@import UIKit;
 
 #ifndef AKANullability_h
 #define AKANullability_h

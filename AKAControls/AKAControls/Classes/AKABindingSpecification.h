@@ -69,12 +69,24 @@ typedef NS_ENUM(NSInteger, AKABindingExpressionType)
                                                  AKABindingExpressionTypeArray)
 };
 
+
+#pragma mark - AKABindingSpecification
+#pragma mark -
+
 @interface AKABindingSpecification : NSObject
 
+#pragma mark - Initialization
+
 - (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
+
+#pragma mark - Conversion
+
 - (void)addToDictionary:(req_NSMutableDictionary)specDictionary;
 
+#pragma mark - Properties
+
 @property(nonatomic, readonly, nullable)Class                               bindingType;
+
 @property(nonatomic, readonly, nonnull) AKABindingProvider*                 bindingProvider;
 
 @property(nonatomic, readonly, nonnull) AKABindingTargetSpecification*      bindingTargetSpecification;

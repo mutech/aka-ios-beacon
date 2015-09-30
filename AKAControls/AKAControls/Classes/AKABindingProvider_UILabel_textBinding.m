@@ -49,7 +49,14 @@
                        @{ @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
                           },
                    @"attributes":
-                       @{ },
+                       @{ @"typeMap":
+                              @{ @"required":        @NO,
+                                 @"expressionType":  @(AKABindingExpressionTypeArray),
+                                 @"attributes":      @{},
+                                 @"use":             @(AKABindingAttributeUseAsBindingProperty),
+                                 @"bindingProperty": @"typeMap"
+                                 },
+                          },
                    @"allowUnspecifiedAttributes": @NO
                    }
            };

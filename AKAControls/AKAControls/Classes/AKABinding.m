@@ -44,7 +44,6 @@
                               [weakSelf sourceValueDidChangeFromOldValue:oldValue
                                                               toNewValue:newValue];
                           }];
-
         _delegate = delegate;
     }
     return self;
@@ -338,5 +337,40 @@
                                      withError:error];
     }
 }
+
+#pragma mark - UIResponder Events
+
+- (void)                  responderWillActivate:(req_UIResponder)responder
+{
+    if ([self.delegate respondsToSelector:@selector(binding:responderWillActivate:)])
+    {
+        [self.delegate binding:self responderWillActivate:responder];
+    }
+}
+
+- (void)                   responderDidActivate:(req_UIResponder)responder
+{
+    if ([self.delegate respondsToSelector:@selector(binding:responderDidActivate:)])
+    {
+        [self.delegate binding:self responderDidActivate:responder];
+    }
+}
+
+- (void)                responderWillDeactivate:(req_UIResponder)responder
+{
+    if ([self.delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
+    {
+        [self.delegate binding:self responderWillDeactivate:responder];
+    }
+}
+
+- (void)                 responderDidDeactivate:(req_UIResponder)responder
+{
+    if ([self.delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
+    {
+        [self.delegate binding:self responderDidDeactivate:responder];
+    }
+}
+
 
 @end

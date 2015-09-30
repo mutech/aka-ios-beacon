@@ -12,22 +12,36 @@
 #import "AKAKeyboardActivationSequence.h"
 #import "AKAKeyboardActivationSequenceAccessoryView.h"
 
+#pragma mark - AKAKeyboardActivationSequence - Private Interface
+#pragma mark -
+
 @interface AKAKeyboardActivationSequence()
 
-@property(nonatomic, readonly)NSMutableArray* items;
-@property(nonatomic)NSUInteger activeItemIndex;
-@property(nonatomic, weak)UIResponder* activeResponder;
-// Using a strong reference, since we are replacing a probably strong reference:
-@property(nonatomic)UIView* savedActiveResponderInputAccessoryView;
+@property(nonatomic, readonly)  NSMutableArray*                 items;
+@property(nonatomic)            NSUInteger            activeItemIndex;
+@property(nonatomic, nullable)  UIResponder*          activeResponder;
 
 @end
 
+
+#pragma mark - AKAKeyboardActivationSequence - Implementation
+#pragma mark -
+
 @implementation AKAKeyboardActivationSequence
 
-@synthesize items = _items;
-@synthesize inputAccessoryView = _inputAccessoryView;
+#pragma mark - Properties
 
-- (instancetype)init
+@synthesize                                        items = _items;
+
+@synthesize                           inputAccessoryView = _inputAccessoryView;
+
+@synthesize                              activeItemIndex = _activeItemIndex;
+
+@synthesize                              activeResponder = _activeResponder;
+
+#pragma mark - Initialization
+
+- (instancetype)                                    init
 {
     if (self = [super init])
     {
@@ -37,7 +51,7 @@
     return self;
 }
 
-- (instancetype)initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>)delegate
+- (instancetype)                        initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>)delegate
 {
     if (self = [self init])
     {
@@ -46,9 +60,9 @@
     return self;
 }
 
-#pragma mark - Updating
+#pragma mark - Items
 
-- (NSMutableArray *)items
+- (NSMutableArray *)                               items
 {
     if (_items == nil)
     {
@@ -57,16 +71,44 @@
     return _items;
 }
 
-- (void)setNeedsUpdate
+- (NSUInteger)                              countOfItems
+{
+    return self.items.count;
+}
+
+- (NSUInteger)                               indexOfItem:(req_AKAKeyboardActivationSequenceItem)item
+{
+    AKAWeakReference* reference = [AKAWeakReference weakReferenceTo:item];
+    return [self.items indexOfObject:reference];
+}
+
+- (opt_AKAKeyboardActivationSequenceItem)    itemAtIndex:(NSUInteger)index
+{
+    AKAKeyboardActivationSequenceItem result = nil;
+    if (index != NSNotFound)
+    {
+        AKAWeakReference* reference = [self.items objectAtIndex:index];
+        result = reference.value;
+    }
+    return result;
+}
+
+#pragma mark Updating items
+
+- (void)                                  setNeedsUpdate
 {
     _items = nil;
 }
 
-- (void)update
+- (void)                                          update
 {
     _items = [NSMutableArray new];
 
-    [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:^(req_AKAKeyboardActivationSequenceItem item, NSUInteger idx, outreq_BOOL stop) {
+    [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:
+     ^(req_AKAKeyboardActivationSequenceItem    item,
+       NSUInteger                               idx,
+       outreq_BOOL                              stop)
+     {
         (void)stop; // not needed
         UIResponder* responder = [item responderForKeyboardActivationSequence];
         if (responder != nil)
@@ -111,97 +153,90 @@
     [self updateInputAccessoryView];
 }
 
-#pragma mark - Access
+#pragma mark - Input Accessory View
 
-- (opt_AKAKeyboardActivationSequenceItem)activeItem
+- (UIView*)                           inputAccessoryView
 {
-    return self.activeItemIndex == NSNotFound ? nil : [self itemAtIndex:self.activeItemIndex];
-}
-
-- (NSUInteger)indexOfItem:(req_AKAKeyboardActivationSequenceItem)item
-{
-    AKAWeakReference* reference = [AKAWeakReference weakReferenceTo:item];
-    return [self.items indexOfObject:reference];
-}
-
-- (opt_AKAKeyboardActivationSequenceItem)itemAtIndex:(NSUInteger)index
-{
-    AKAWeakReference* reference = [self.items objectAtIndex:index];
-    return reference.value;
-}
-
-- (UIResponder*)responderAtIndex:(NSUInteger)index
-{
-    UIResponder* result = [[self itemAtIndex:index] responderForKeyboardActivationSequence];
-    return result;
-}
-
-- (NSUInteger)nextItemIndex
-{
-    NSUInteger result = NSNotFound;
-    if (self.activeItemIndex != NSNotFound && self.activeItemIndex + 1 < self.items.count)
+    if (!_inputAccessoryView)
     {
-        result = self.activeItemIndex + 1;
+        _inputAccessoryView = [self createInputAccessoryView];
+        if (_inputAccessoryView != nil && [self.delegate respondsToSelector:@selector(customizeInputAccessoryView:forKeyboardActivationSequence:)])
+        {
+            [self.delegate customizeInputAccessoryView:_inputAccessoryView
+                         forKeyboardActivationSequence:self];
+        }
+    }
+    return _inputAccessoryView;
+}
+
+- (UIView*)                     createInputAccessoryView
+{
+    UIView* result = nil;
+    if ([self.delegate respondsToSelector:@selector(createInputAccessoryViewForKeyboardActivationSequence:activatePreviousAction:activateNextAction:closeKeyboardAction:)])
+    {
+        result =
+        [self.delegate createInputAccessoryViewForKeyboardActivationSequence:self
+                                                      activatePreviousAction:@selector(activatePrevious:)
+                                                          activateNextAction:@selector(activateNext:)
+                                                         closeKeyboardAction:@selector(closeKeyboard:)];
+    }
+    else
+    {
+        AKAKeyboardActivationSequenceAccessoryView* inputAccessoryView =
+        [[AKAKeyboardActivationSequenceAccessoryView alloc] initWithFrame:CGRectZero];
+        inputAccessoryView.keyboardActivationSequence = self;
+        result = inputAccessoryView;
     }
     return result;
 }
 
-- (opt_AKAKeyboardActivationSequenceItem)nextItem
+- (BOOL)              setInputAccessoryViewForActiveItem
 {
-    id result = nil;
-    NSUInteger index = [self nextItemIndex];
-    if (index != NSNotFound)
+    AKAKeyboardActivationSequenceItem item = self.activeItem;
+
+    BOOL result = item != nil;
+
+    if (result)
     {
-        result = [self itemAtIndex:index];
+        result = [item installInputAccessoryView:self.inputAccessoryView];
+        if (result)
+        {
+            [self updateInputAccessoryView];
+        }
     }
+
     return result;
 }
 
-- (UIResponder*)nextResponder
+- (BOOL)          restoreInputAccessoryViewForActiveItem
 {
-    UIResponder* result = nil;
-    NSUInteger index = [self nextItemIndex];
-    if (index != NSNotFound)
+    AKAKeyboardActivationSequenceItem item = self.activeItem;
+
+    BOOL result = item != nil;
+
+    if (result)
     {
-        result = [self responderAtIndex:index];
+        result = [item restoreInputAccessoryView];
     }
+
     return result;
 }
 
-- (NSUInteger)previousItemIndex
+- (void)                        updateInputAccessoryView
 {
-    NSUInteger result = NSNotFound;
-    if (self.activeItemIndex != NSNotFound && self.activeItemIndex >= 1)
+    if (self.activeResponder != nil)
     {
-        result = self.activeItemIndex - 1;
+        if ([self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]])
+        {
+            AKAKeyboardActivationSequenceAccessoryView* inputAccessoryView = (AKAKeyboardActivationSequenceAccessoryView*)self.inputAccessoryView;
+            [inputAccessoryView updateBarItemStates];
+        }
     }
-    return result;
-}
-
-- (UIResponder*)previousItem
-{
-    UIResponder* result = nil;
-    NSUInteger index = [self previousItemIndex];
-    if (index != NSNotFound)
-    {
-        result = [self responderAtIndex:index];
-    }
-    return result;
-}
-- (UIResponder*)previousResponder
-{
-    UIResponder* result = nil;
-    NSUInteger index = [self previousItemIndex];
-    if (index != NSNotFound)
-    {
-        result = [self responderAtIndex:index];
-    }
-    return result;
 }
 
 #pragma mark - Activation
 
-- (BOOL)prepareToActivateItem:(req_AKAKeyboardActivationSequenceItem)item
+- (BOOL)                           prepareToActivateItem:(req_AKAKeyboardActivationSequenceItem)item
 {
     // Typically called by items which know they will activate and need to ensure
     // that their responder's input accessory view is setup before becoming
@@ -211,47 +246,28 @@
                                  atIndex:[self indexOfItem:item]];
 }
 
-- (BOOL)activateItemAtIndex:(NSUInteger)index
+- (BOOL)                                    activateItem:(req_AKAKeyboardActivationSequenceItem)item
+                                                 atIndex:(NSUInteger)index
 {
+    NSParameterAssert(item != nil);
+    NSParameterAssert(index != NSNotFound);
+    NSParameterAssert([self itemAtIndex:index] == item);
+
     BOOL result = index < self.items.count;
     if (result)
     {
-        opt_AKAKeyboardActivationSequenceItem item = [self itemAtIndex:index];
         result = [self registerActiveResponder:item.responderForKeyboardActivationSequence
                                        forItem:item
                                        atIndex:index];
-        if (result && !item.isActive)
+        if (result && !item.isResponderActive)
         {
-            result = [item activate];
+            result = [item activateResponder];
         }
     }
     return result;
 }
 
-- (BOOL)activateItem:(id)item
-{
-    BOOL result = NO;
-    NSUInteger index = [self indexOfItem:item];
-    if (index != NSNotFound)
-    {
-        result = [self activateItemAtIndex:index];
-    }
-    return result;
-}
-
-- (BOOL)activatePrevious
-{
-    NSUInteger index = [self previousItemIndex];
-    return [self activateItemAtIndex:index];
-}
-
-- (BOOL)activateNext
-{
-    NSUInteger index = [self nextItemIndex];
-    return [self activateItemAtIndex:index];
-}
-
-- (BOOL)deactivate
+- (BOOL)                                      deactivate
 {
     BOOL result = YES;
     UIResponder* responder = self.activeResponder;
@@ -266,7 +282,7 @@
     return result;
 }
 
-- (void)unregisterActiveResponder
+- (void)                       unregisterActiveResponder
 {
     if (self.activeResponder != nil)
     {
@@ -276,9 +292,9 @@
     self.activeItemIndex = NSNotFound;
 }
 
-- (BOOL)registerActiveResponder:(UIResponder*)responder
-                        forItem:(id)item
-                        atIndex:(NSUInteger)index
+- (BOOL)                         registerActiveResponder:(UIResponder*)responder
+                                                 forItem:(id)item
+                                                 atIndex:(NSUInteger)index
 {
     BOOL result = NO;
     if ((self.activeItemIndex != index && self.activeItemIndex != NSNotFound) ||
@@ -298,90 +314,96 @@
     return result;
 }
 
-#pragma mark - Input Accessory View
-
-- (UIView*)inputAccessoryView
-{
-    if (!_inputAccessoryView)
-    {
-        _inputAccessoryView = [self createInputAccessoryView];
-        if (_inputAccessoryView != nil && [self.delegate respondsToSelector:@selector(customizeInputAccessoryView:forKeyboardActivationSequence:)])
-        {
-            [self.delegate customizeInputAccessoryView:_inputAccessoryView
-                         forKeyboardActivationSequence:self];
-        }
-    }
-    return _inputAccessoryView;
-}
-
-- (UIView*)createInputAccessoryView
-{
-    UIView* result = nil;
-    if ([self.delegate respondsToSelector:@selector(createInputAccessoryViewForKeyboardActivationSequence:activatePreviousAction:activateNextAction:closeKeyboardAction:)])
-    {
-        result =
-        [self.delegate createInputAccessoryViewForKeyboardActivationSequence:self
-                                                      activatePreviousAction:@selector(activatePrevious:)
-                                                          activateNextAction:@selector(activateNext:)
-                                                         closeKeyboardAction:@selector(closeKeyboard:)];
-    }
-    else
-    {
-        AKAKeyboardActivationSequenceAccessoryView* inputAccessoryView =
-            [[AKAKeyboardActivationSequenceAccessoryView alloc] initWithFrame:CGRectZero];
-        inputAccessoryView.keyboardActivationSequence = self;
-        result = inputAccessoryView;
-    }
-    return result;
-}
-
-- (BOOL)setInputAccessoryViewForActiveItem
-{
-    AKAKeyboardActivationSequenceItem item = self.activeItem;
-
-    BOOL result = item != nil;
-
-    if (result)
-    {
-        result = [item installInputAccessoryView:self.inputAccessoryView];
-        if (result)
-        {
-            [self updateInputAccessoryView];
-        }
-    }
-
-    return result;
-}
-
-- (BOOL)restoreInputAccessoryViewForActiveItem
-{
-    AKAKeyboardActivationSequenceItem item = self.activeItem;
-
-    BOOL result = item != nil;
-
-    if (result)
-    {
-        result = [item restoreInputAccessoryView];
-    }
-
-    return result;
-}
-
-- (void)updateInputAccessoryView
-{
-    if (self.activeResponder != nil)
-    {
-        if ([self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]])
-        {
-            AKAKeyboardActivationSequenceAccessoryView* inputAccessoryView = (AKAKeyboardActivationSequenceAccessoryView*)self.inputAccessoryView;
-            [inputAccessoryView updateBarItemStates];
-        }
-    }
-}
-
 @end
 
+
+#pragma mark - AKAKeyboardActivationSequence - Convenience Implementation
+#pragma mark
+
 @implementation AKAKeyboardActivationSequence(Convenience)
+
+#pragma mark - Activation
+
+#pragma mark State
+
+- (opt_AKAKeyboardActivationSequenceItem)     activeItem
+{
+    AKAKeyboardActivationSequenceItem result = [self itemAtIndex:self.activeItemIndex];
+    return result;
+}
+
+- (NSUInteger)                             nextItemIndex
+{
+    NSUInteger result = NSNotFound;
+    if (self.activeItemIndex != NSNotFound && self.activeItemIndex + 1 < self.countOfItems)
+    {
+        result = self.activeItemIndex + 1;
+    }
+    return result;
+}
+
+- (opt_AKAKeyboardActivationSequenceItem)       nextItem
+{
+    AKAKeyboardActivationSequenceItem result = [self itemAtIndex:[self nextItemIndex]];
+    return result;
+}
+
+- (NSUInteger)                         previousItemIndex
+{
+    NSUInteger result = NSNotFound;
+    if (self.activeItemIndex != NSNotFound && self.activeItemIndex >= 1)
+    {
+        result = self.activeItemIndex - 1;
+    }
+    return result;
+}
+
+- (opt_AKAKeyboardActivationSequenceItem)   previousItem
+{
+    AKAKeyboardActivationSequenceItem result = [self itemAtIndex:[self previousItemIndex]];
+    return result;
+}
+
+#pragma mark Control
+
+- (BOOL)                             activateItemAtIndex:(NSUInteger)index
+{
+    BOOL result = index != NSNotFound;
+
+    if (result)
+    {
+        NSParameterAssert(index != NSNotFound);
+        NSParameterAssert(index >= 0 && index < self.items.count);
+
+        AKAKeyboardActivationSequenceItem item = [self itemAtIndex:index];
+        result = [self activateItem:item atIndex:index];
+    }
+    return result;
+}
+
+- (BOOL)                                    activateItem:(req_AKAKeyboardActivationSequenceItem)item
+{
+    BOOL result = NO;
+    NSUInteger index = [self indexOfItem:item];
+    if (index != NSNotFound)
+    {
+        result = [self activateItem:item atIndex:index];
+    }
+    return result;
+}
+
+- (BOOL)                                    activateNext
+{
+    NSUInteger index = [self nextItemIndex];
+    return [self activateItemAtIndex:index];
+}
+
+- (BOOL)                                activatePrevious
+{
+    NSUInteger index = [self previousItemIndex];
+    return [self activateItemAtIndex:index];
+}
+
 
 #pragma mark - Exposed Actions
 

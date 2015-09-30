@@ -15,6 +15,8 @@
 @property(nonatomic) AKAFormControl* formControl;
 @property(nonatomic) NSString* modelValue;
 
+@property (weak, nonatomic) IBOutlet UITextField *textField1;
+
 @end
 
 @implementation TextFieldBindingViewController

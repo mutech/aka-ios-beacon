@@ -7,6 +7,7 @@
 //
 
 @import UIKit;
+@import AKACommons.AKANullability;
 @import AKACommons.AKAProperty;
 
 #import "AKABindingExpression.h"
@@ -81,6 +82,31 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
                        convertedFromTargetValue:(opt_id)targetValue
                                       withError:(opt_NSError)error;
 
+#pragma mark - AKAKeyboardActivationSequence Control
+
+- (BOOL)                                binding:(req_AKABinding)binding
+                 responderRequestedActivateNext:(req_UIResponder)responder;
+
+#pragma mark - UIResponder Events
+
+@optional
+- (void)                                binding:(req_AKABinding)binding
+                          responderWillActivate:(req_UIResponder)responder;
+
+@optional
+- (void)                                binding:(req_AKABinding)binding
+                           responderDidActivate:(req_UIResponder)responder;
+
+@optional
+- (void)                                binding:(req_AKABinding)binding
+                        responderWillDeactivate:(req_UIResponder)responder;
+
+@optional
+- (void)                                binding:(req_AKABinding)binding
+                         responderDidDeactivate:(req_UIResponder)responder;
+
+
+
 @end
 
 
@@ -93,6 +119,7 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
 
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
+@property(nonatomic, readonly, nullable) SEL                bindingProperty;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
 
 - (void)             sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
@@ -101,7 +128,21 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
 - (void)             targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
                                            toNewValue:(opt_id)newTargetValue;
 
-- (BOOL)startObservingChanges;
-- (BOOL)stopObservingChanges;
+- (BOOL)                        startObservingChanges;
+- (BOOL)                         stopObservingChanges;
+
+@end
+
+@interface AKABinding(Protected)
+
+#pragma mark - UIResponder Events
+
+- (void)                  responderWillActivate:(req_UIResponder)responder;
+
+- (void)                   responderDidActivate:(req_UIResponder)responder;
+
+- (void)                responderWillDeactivate:(req_UIResponder)responder;
+
+- (void)                 responderDidDeactivate:(req_UIResponder)responder;
 
 @end

@@ -1004,20 +1004,11 @@
         [self.delegate controlWillActivate:self];
     }
     [self.owner controlWillActivate:self];
-    if (self.participatesInKeyboardActivationSequence)
-    {
-        // Ensure that input accessory view is installed before a control becomes first responder. This is needed in cases where a view overrides becomeFirstResponder and calls willActivate.
-        [self.keyboardActivationSequence prepareToActivateItem:self];
-    }
 }
 
 - (void)didActivate
 {
     [self setIsActive:YES];
-    if (self.participatesInKeyboardActivationSequence)
-    {
-        [self.keyboardActivationSequence activateItem:self];
-    }
     [self.owner controlDidActivate:self];
     if ([self.delegate respondsToSelector:@selector(controlDidActivate:)])
     {
@@ -1061,13 +1052,6 @@
 - (void)didDeactivate
 {
     [self setIsActive:NO];
-    if (self.participatesInKeyboardActivationSequence)
-    {
-        if (self == self.keyboardActivationSequence.activeItem)
-        {
-            [self.keyboardActivationSequence deactivate];
-        }
-    }
 
     [self.owner controlDidDeactivate:self];
     if ([self.delegate respondsToSelector:@selector(controlDidDeactivate:)])
@@ -1093,7 +1077,14 @@
 
 - (BOOL)participatesInKeyboardActivationSequence
 {
-    return [self.viewBinding participatesInKeyboardActivationSequence];
+    BOOL result = [self.viewBinding participatesInKeyboardActivationSequence];
+
+    if (!result)
+    {
+        result = [self shouldParticipateInKeyboardActivationSequence];
+    }
+
+    return result;
 }
 
 - (AKAKeyboardActivationSequence*)keyboardActivationSequence
@@ -1101,7 +1092,79 @@
     return self.owner.keyboardActivationSequence;
 }
 
+#pragma mark - AKABindingDelegate
+
+- (void)binding:(req_AKABinding)binding responderWillActivate:(req_UIResponder)responder
+{
+    [self willActivate];
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+        [self.keyboardActivationSequence prepareToActivateItem:item];
+    }
+}
+
+- (void)binding:(req_AKABinding)binding responderDidActivate:(req_UIResponder)responder
+{
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+        [self.keyboardActivationSequence activateItem:item];
+    }
+    [self didActivate];
+}
+
+- (void)binding:(req_AKABinding)binding responderWillDeactivate:(req_UIResponder)responder
+{
+    [self willDeactivate];
+}
+
+- (void)binding:(req_AKABinding)binding responderDidDeactivate:(req_UIResponder)responder
+{
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        if (binding == self.keyboardActivationSequence.activeItem)
+        {
+            [self.keyboardActivationSequence deactivate];
+        }
+    }
+    [self didDeactivate];
+}
+
 #pragma mark - AKAKeyboardActivationSequenceItemProtocol
+
+- (BOOL)shouldParticipateInKeyboardActivationSequence
+{
+    BOOL result = NO;
+    for (AKABinding* binding in self.bindings)
+    {
+        if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+        {
+            id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+            result |= [item shouldParticipateInKeyboardActivationSequence];
+            if (result)
+            {
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+- (BOOL)isResponderActive
+{
+    return self.isActive;
+}
+
+- (BOOL)activateResponder
+{
+    return [self activate];
+}
+
+- (BOOL)deactivateResponder
+{
+    return [self deactivate];
+}
 
 - (opt_UIResponder)responderForKeyboardActivationSequence
 {
@@ -1186,11 +1249,20 @@
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     [self willActivate];
+    if (self.viewBinding.participatesInKeyboardActivationSequence)
+    {
+        // Ensure that input accessory view is installed before a control becomes first responder. This is needed in cases where a view overrides becomeFirstResponder and calls willActivate.
+        [self.keyboardActivationSequence prepareToActivateItem:self];
+    }
 }
 
 - (void)viewBinding:(AKAViewBinding *)viewBinding viewDidActivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
+    if (viewBinding.participatesInKeyboardActivationSequence)
+    {
+        [self.keyboardActivationSequence activateItem:self];
+    }
     [self didActivate];
 }
 
@@ -1209,6 +1281,14 @@
 - (void)viewBinding:(AKAViewBinding *)viewBinding viewDidDeactivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
+
+    if (self.viewBinding.participatesInKeyboardActivationSequence)
+    {
+        if (self == self.keyboardActivationSequence.activeItem)
+        {
+            [self.keyboardActivationSequence deactivate];
+        }
+    }
     [self didDeactivate];
 }
 

@@ -13,16 +13,6 @@
 #import "UIView+AKABinding.h"
 #import "AKACompositeControl.h"
 
-IB_DESIGNABLE
-@interface UIView(DemoInspecatable)
-@property(nonatomic) IBInspectable BOOL testFlag;
-@end
-@implementation UIView(DemoInspecatable)
-- (BOOL)testFlag { return YES; }
-- (void)setTestFlag:(BOOL)testFlag {}
-@end
-
-
 @interface AKASingleChoiceEditorControlView() <UIKeyInput>
 
 @property(nonatomic, readonly) AKASingleChoiceEditorBindingConfiguration* bindingConfiguration;

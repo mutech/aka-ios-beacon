@@ -131,7 +131,6 @@
                              context:bindingContext
                             delegate:delegate])
     {
-        // TODO: setup configuration from binding expression:
         _liveModelUpdates = YES;
 
         _textField = textField;
@@ -228,7 +227,7 @@
     id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
 
     [self updateOriginalTextBeforeEditing];
-    [self viewDidActivate];
+    [self responderDidActivate:self.textField];
     if ([secondary respondsToSelector:@selector(textFieldDidBeginEditing:)])
     {
         [secondary textFieldDidBeginEditing:textField];
@@ -253,9 +252,9 @@
             case UIReturnKeyNext:
                 if ([self shouldDeactivate])
                 {
-                    if (![self activateNextInActivationSequence])
+                    if (![self.delegate binding:self responderRequestedActivateNext:self.textField])
                     {
-                        [self deactivate];
+                        [self deactivateResponder];
                     }
                 }
                 break;
@@ -265,7 +264,7 @@
                 // TODO: check if committing the form is appropriate for these return key styles.
             default:
                 // This will call the corresponding should/did end editing handlers
-                [self deactivate];
+                [self deactivateResponder];
                 break;
         }
     }
@@ -357,7 +356,7 @@
     {
         [self viewValueDidChange];
     }
-    [self viewDidDeactivate];
+    [self responderDidDeactivate:textField];
 }
 
 #pragma mark - Change Observation
@@ -408,7 +407,7 @@
 
 #pragma mark - Keyboard Activation Sequence
 
-- (BOOL)          participatesInKeyboardActivationSequence
+- (BOOL)     shouldParticipateInKeyboardActivationSequence
 {
     BOOL result = self.supportsActivation && self.KBActivationSequence;
     return result;
@@ -419,30 +418,30 @@
     return self.textField;
 }
 
-- (BOOL)isActive
+- (BOOL)                                 isResponderActive
 {
     return self.textField.isFirstResponder;
 }
 
-- (BOOL)                                          activate
+- (BOOL)                                 activateResponder
 {
     UITextField* textField = self.textField;
     BOOL result = textField != nil;
     if (result)
     {
-        [self viewWillActivate];
+        [self responderWillActivate:textField];
         result = [textField becomeFirstResponder];
     }
     return result;
 }
 
-- (BOOL)                                        deactivate
+- (BOOL)                               deactivateResponder
 {
     UITextField* textField = self.textField;
     BOOL result = textField != nil;
     if (result)
     {
-        [self viewWillDeactivate];
+        [self responderWillDeactivate:textField];
         result = [textField resignFirstResponder];
     }
     return result;
@@ -469,12 +468,6 @@
     return result;
 }
 
-- (BOOL)                  activateNextInActivationSequence
-{
-    //[self.delegate.keyboardActivationSequence activateNext]
-    return NO;
-}
-
 #pragma mark - Obsolete (probably) Delegate Support Methods
 
 - (BOOL)                                    shouldActivate
@@ -482,25 +475,9 @@
     return YES;
 }
 
-- (void)                                  viewWillActivate
-{
-}
-
-- (void)                                   viewDidActivate
-{
-}
-
 - (BOOL)                                  shouldDeactivate
 {
     return YES;
-}
-
-- (void)                                viewWillDeactivate
-{
-}
-
-- (void)                                 viewDidDeactivate
-{
 }
 
 @end

@@ -48,7 +48,7 @@
         if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
         {
             AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
-            if ([item participatesInKeyboardActivationSequence])
+            if ([item shouldParticipateInKeyboardActivationSequence])
             {
                 block(item, count++, &stop);
             }
@@ -77,7 +77,7 @@
              if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
              {
                  AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
-                 if ([item participatesInKeyboardActivationSequence])
+                 if ([item shouldParticipateInKeyboardActivationSequence])
                  {
                      block(item, count++, stop);
                  }
@@ -100,7 +100,7 @@
                                       continueInOwner:(BOOL)continueInOwner
 {
     [self enumerateLeafControlsUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop) {
-        if ([control participatesInKeyboardActivationSequence])
+        if ([control shouldParticipateInKeyboardActivationSequence])
         {
             block(control, owner, index, stop);
         }

@@ -7,6 +7,7 @@
 //
 
 #import "NSString+AKAKeyPathUtilities.h"
+#import "AKANullability.h"
 
 @implementation NSString (AKAKeyPathUtilities)
 
@@ -87,7 +88,7 @@
     return result;
 }
 
-- (BOOL)aka_splitIntoBaseKeyPath:(NSString**)keyPath key:(NSString**)key
+- (BOOL)aka_splitIntoBaseKeyPath:(out_NSString)keyPath key:(out_NSString)key
 {
     BOOL result = NO;
     NSInteger index = [self aka_indexOfLastOccurenceOfCharacter:'.'];
@@ -111,10 +112,11 @@
 {
     NSInteger result = NSNotFound;
     NSUInteger length = self.length;
-    for (long i = (long)length - 1; i >=0; --i)
+
+    for (NSInteger i = (long)length - 1; i >=0; --i)
     {
-        unichar c = [self characterAtIndex:i];
-        if (c == '.')
+        unichar c = [self characterAtIndex:(NSUInteger)i];
+        if (c == character)
         {
             result = i;
             break;
@@ -123,20 +125,20 @@
     return result;
 }
 
-- (BOOL)aka_splitIntoLeft:(NSString**)left
-                right:(NSString**)right
-              atIndex:(NSInteger)index
+- (BOOL)aka_splitIntoLeft:(out_NSString)left
+                    right:(out_NSString)right
+                  atIndex:(NSInteger)index
 {
-    BOOL result = index >= 0 && index < self.length;
+    BOOL result = index >= 0 && (NSUInteger)index < self.length;
     if (result)
     {
         if (left)
         {
-            (*left) = [self substringToIndex:index];
+            (*left) = [self substringToIndex:(NSUInteger)index];
         }
         if (right)
         {
-            (*right) = [self substringFromIndex:index + 1];
+            (*right) = [self substringFromIndex:(NSUInteger)index + 1];
         }
     }
     return result;

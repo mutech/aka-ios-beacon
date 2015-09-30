@@ -9,28 +9,86 @@
 @import UIKit;
 @import AKACommons.AKANullability;
 
+#import "AKAKeyboardActivationSequenceItemProtocol.h"
+
+@protocol AKAKeyboardActivationSequenceDelegate;
 @class AKAKeyboardActivationSequence;
 typedef AKAKeyboardActivationSequence* _Nonnull                     req_AKAKeyboardActivationSequence;
 typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeyboardActivationSequence;
 
-@protocol AKAKeyboardActivationSequenceItemProtocol <NSObject>
 
-@property(nonatomic, readonly, weak) opt_UIResponder responderForKeyboardActivationSequence;
-@property(nonatomic, readonly)       BOOL            isActive;
+#pragma mark - AKAKeyboardActivationSequence
+#pragma mark -
 
-- (BOOL)participatesInKeyboardActivationSequence;
+@interface AKAKeyboardActivationSequence : NSObject
 
-- (BOOL)activate;
-- (BOOL)deactivate;
+#pragma mark - Initialization
 
-- (BOOL)installInputAccessoryView:(req_UIView)inputAccessoryView;
-- (BOOL)restoreInputAccessoryView;
+- (instancetype _Nonnull)                                     init;
+
+- (instancetype _Nonnull)                         initWithDelegate:(id<AKAKeyboardActivationSequenceDelegate>_Nullable)delegate;
+
+#pragma mark - Configuration
+
+@property(nonatomic, weak) id<AKAKeyboardActivationSequenceDelegate>
+                                                          delegate;
+
+#pragma mark - Items
+
+@property(nonatomic, readonly) NSUInteger             countOfItems;
+
+- (void)                                            setNeedsUpdate;
+
+- (void)                                                    update;
+
+#pragma mark - Properties
+
+@property(nonatomic, readonly) NSUInteger          activeItemIndex;
+
+@property(nonatomic, readonly, nonnull) UIView* inputAccessoryView;
+
+- (NSUInteger)                                         indexOfItem:(req_AKAKeyboardActivationSequenceItem)item;
+
+- (opt_AKAKeyboardActivationSequenceItem)              itemAtIndex:(NSUInteger)index;
+
+#pragma mark - Activation
+
+- (BOOL)                                     prepareToActivateItem:(req_AKAKeyboardActivationSequenceItem)item;
+
+- (BOOL)                                                deactivate;
+
 
 @end
 
-typedef id<AKAKeyboardActivationSequenceItemProtocol>               AKAKeyboardActivationSequenceItem;
-typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nullable     opt_AKAKeyboardActivationSequenceItem;
-typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nonnull      req_AKAKeyboardActivationSequenceItem;
+
+#pragma mark - AKAKeyboardActivationSequence(Convenience)
+#pragma mark -
+
+@interface AKAKeyboardActivationSequence(Convenience)
+
+@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  activeItem;
+@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  previousItem;
+@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  nextItem;
+
+- (BOOL)                                     activateItemAtIndex:(NSUInteger)index;
+
+- (BOOL)                                            activateItem:(req_AKAKeyboardActivationSequenceItem)item;
+
+- (BOOL)                                        activatePrevious;
+
+- (BOOL)                                            activateNext;
+
+#pragma mark - Actions (For input accessory views)
+
+- (IBAction)                                    activatePrevious:(req_AKAKeyboardActivationSequenceItem)sender;
+- (IBAction)                                        activateNext:(req_AKAKeyboardActivationSequenceItem)sender;
+- (IBAction)                                       closeKeyboard:(req_AKAKeyboardActivationSequenceItem)sender;
+
+@end
+
+
+#pragma mark - AKAKeyboardActivationSequenceDelegate
+#pragma mark -
 
 @protocol AKAKeyboardActivationSequenceDelegate <NSObject>
 
@@ -56,57 +114,3 @@ typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nonnull      req_AKAKeybo
                                    forKeyboardActivationSequence:(req_AKAKeyboardActivationSequence)keyboardActivationSequence;
 
 @end
-
-@interface AKAKeyboardActivationSequence : NSObject
-
-#pragma mark - Configuration
-
-@property(nonatomic, weak) id<AKAKeyboardActivationSequenceDelegate> delegate;
-
-#pragma mark - Access
-
-@property(nonatomic, readonly) NSUInteger                               activeItemIndex;
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  activeItem;
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  previousItem;
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  nextItem;
-@property(nonatomic, readonly, weak) UIResponder*                       activeResponder;
-@property(nonatomic, readonly, nullable) UIView*                        inputAccessoryView;
-@property(nonatomic, readonly) NSUInteger                               count;
-
-- (NSUInteger)                                       indexOfItem:(req_AKAKeyboardActivationSequenceItem)item;
-- (opt_AKAKeyboardActivationSequenceItem)            itemAtIndex:(NSUInteger)index;
-
-#pragma mark - Updating the sequence
-
-- (void)                                          setNeedsUpdate;
-- (void)                                                  update;
-
-#pragma mark - Activation
-
-- (BOOL)                                   prepareToActivateItem:(req_AKAKeyboardActivationSequenceItem)item;
-
-- (BOOL)                                        activatePrevious;
-- (BOOL)                                            activateNext;
-- (BOOL)                                            activateItem:(req_AKAKeyboardActivationSequenceItem)item
-                                                         atIndex:(NSUInteger)index;
-
-- (BOOL)                                              deactivate;
-
-
-@end
-
-@interface AKAKeyboardActivationSequence(Convenience)
-
-
-- (opt_UIResponder)                             responderAtIndex:(NSUInteger)index;
-
-- (BOOL)                                            activateItem:(req_AKAKeyboardActivationSequenceItem)item;
-
-#pragma mark - Actions (For input accessory views)
-
-- (IBAction)                                    activatePrevious:(req_AKAKeyboardActivationSequenceItem)sender;
-- (IBAction)                                        activateNext:(req_AKAKeyboardActivationSequenceItem)sender;
-- (IBAction)                                       closeKeyboard:(req_AKAKeyboardActivationSequenceItem)sender;
-
-@end
-

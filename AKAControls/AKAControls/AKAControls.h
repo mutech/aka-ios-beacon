@@ -35,6 +35,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKAControlValidatorProtocol.h>
 #import <AKAControls/AKAControlConverterProtocol.h>
 #import <AKAControls/AKAKeyboardActivationSequence.h>
+#import <AKAControls/AKAKeyboardActivationSequenceItemProtocol.h>
 #import <AKAControls/AKAKeyboardActivationSequenceAccessoryView.h>
 
 // AKAControls/Converters

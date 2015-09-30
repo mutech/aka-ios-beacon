@@ -22,9 +22,9 @@
 
 - (Class)aka_classTypeForKey:(req_NSString)key required:(BOOL)required;
 
-- (int)aka_enumValueForKey:(req_NSString)key required:(BOOL)required;
+- (NSInteger)aka_enumValueForKey:(req_NSString)key required:(BOOL)required;
 
-- (int)aka_enumValueForKey:(req_NSString)key defaultValue:(int)defaultValue;
+- (NSInteger)aka_enumValueForKey:(req_NSString)key defaultValue:(int)defaultValue;
 
 - (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required;
 
@@ -99,9 +99,9 @@
     return result;
 }
 
-- (int)aka_enumValueForKey:(req_NSString)key required:(BOOL)required
+- (NSInteger)aka_enumValueForKey:(req_NSString)key required:(BOOL)required
 {
-    int result = NSNotFound;
+    NSInteger result = NSNotFound;
     id value = [self objectForKey:key];
     if ([value isKindOfClass:[NSNumber class]])
     {
@@ -119,9 +119,9 @@
     return result;
 }
 
-- (int)aka_enumValueForKey:(req_NSString)key defaultValue:(int)defaultValue
+- (NSInteger)aka_enumValueForKey:(req_NSString)key defaultValue:(int)defaultValue
 {
-    int result = NSNotFound;
+    NSInteger result = NSNotFound;
     id value = [self objectForKey:key];
     if ([value isKindOfClass:[NSNumber class]])
     {

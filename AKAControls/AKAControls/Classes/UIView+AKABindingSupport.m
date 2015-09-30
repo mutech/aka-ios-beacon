@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 
 @import AKACommons.AKANullability;
+@import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "UIView+AKABindingSupport.h"
 

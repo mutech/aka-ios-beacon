@@ -61,7 +61,7 @@
 
 - (opt_AKAProperty)rootDataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
 {
-    return [[self rootControl] controlPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+    return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
 }
 
 - (opt_id)rootDataContextValueForKeyPath:(req_NSString)keyPath

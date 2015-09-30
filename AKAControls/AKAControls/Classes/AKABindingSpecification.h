@@ -17,12 +17,12 @@ typedef AKABindingProvider* _Nullable opt_AKABindingProvider;
 @class AKABindingExpressionSpecification;
 @class AKABindingAttributeSpecification;
 
-typedef enum AKABindingAttributeUse
+typedef NS_ENUM(NSInteger, AKABindingAttributeUse)
 {
     AKABindingAttributeUseAsBindingProperty
-} AKABindingAttributeUse;
+};
 
-typedef enum AKABindingExpressionType
+typedef NS_ENUM(NSInteger, AKABindingExpressionType)
 {
     AKABindingExpressionTypeNone =                          0,
 
@@ -67,7 +67,7 @@ typedef enum AKABindingExpressionType
     AKABindingExpressionTypeAny               = (AKABindingExpressionTypeAnyKeyPath             |
                                                  AKABindingExpressionTypeAnyConstant            |
                                                  AKABindingExpressionTypeArray)
-} AKABindingExpressionType;
+};
 
 @interface AKABindingSpecification : NSObject
 

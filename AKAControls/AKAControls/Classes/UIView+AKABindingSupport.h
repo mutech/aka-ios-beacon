@@ -8,8 +8,11 @@
 
 @import UIKit.UIView;
 @import AKACommons.AKANullability;
+@import AKACommons.AKAReference;
 
 #import "AKABindingExpression.h"
+
+@class AKABinding;
 
 @interface UIView(AKABindingSupport)
 

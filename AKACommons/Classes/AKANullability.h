@@ -27,7 +27,7 @@
 
 typedef id _Nullable                                    opt_id;
 typedef id _Nonnull                                     req_id;
-typedef id __autoreleasing _Nullable * _Nullable        out_id;
+typedef id __autoreleasing _Nullable * _Nullable         out_id;
 typedef out_id                                          inout_id;
 
 typedef id<NSCopying> _Nullable                         opt_id_NSCopying;
@@ -40,6 +40,8 @@ typedef NSObject* _Nonnull                              req_NSObject;
 typedef Class _Nullable                                 opt_Class;
 typedef Class _Nonnull                                  req_Class;
 typedef Class _Nullable* _Nullable                      out_Class;
+
+typedef BOOL* _Nonnull                                  outreq_BOOL;
 
 typedef NSError* _Nullable                              opt_NSError;
 typedef NSError* _Nullable __autoreleasing*_Nullable    out_NSError;
@@ -63,15 +65,20 @@ typedef NSSet* _Nonnull                                 req_NSSet;
 
 typedef NSDictionary* _Nullable                         opt_NSDictionary;
 typedef NSDictionary* _Nonnull                          req_NSDictionary;
-typedef NSDictionary* _Nullable __autoreleasing*_Nullable out_NSDictionary;
+typedef NSDictionary* _Nullable __autoreleasing* _Nullable out_NSDictionary;
 typedef NSMutableDictionary* _Nullable                  opt_NSMutableDictionary;
 typedef NSMutableDictionary* _Nonnull                   req_NSMutableDictionary;
 
 typedef SEL _Nullable                                   opt_SEL;
 typedef SEL _Nonnull                                    req_SEL;
 
+typedef UIResponder* _Nullable                          opt_UIResponder;
+typedef UIResponder* _Nonnull                           req_UIResponder;
+
 typedef UIView* _Nullable                               opt_UIView;
 typedef UIView* _Nonnull                                req_UIView;
+typedef UILabel* _Nullable                              opt_UILabel;
+typedef UILabel* _Nonnull                               req_UILabel;
 typedef UITextField* _Nullable                          opt_UITextField;
 typedef UITextField* _Nonnull                           req_UITextField;
 

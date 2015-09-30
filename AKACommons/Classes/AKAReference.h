@@ -8,26 +8,35 @@
 
 #import <Foundation/Foundation.h>
 
-@class AKAStrongReference;
-@class AKAWeakReference;
+@class AKAWeakReference<__covariant ObjectType>;
+@class AKAStrongReference<__covariant ObjectType>;
 
-@interface AKAReference : NSObject
+@interface AKAReference<__covariant ObjectType> : NSObject
 
-+ (AKAStrongReference*)strongReferenceTo:(id)value;
-+ (AKAWeakReference*)weakReferenceTo:(id)value;
++ (AKAStrongReference<ObjectType>*)strongReferenceTo:(id)value;
++ (AKAWeakReference<ObjectType>*)weakReferenceTo:(id)value;
 
-@property(nonatomic, readonly) id value;
-
-@end
-
-@interface AKAWeakReference: AKAReference
-
-@property(nonatomic, weak, readonly) id value;
+@property(nonatomic, readonly) ObjectType value;
 
 @end
 
-@interface AKAStrongReference: AKAReference
+@interface AKAWeakReference<__covariant ObjectType>: AKAReference
 
-@property(nonatomic, strong, readonly) id value;
+@property(nonatomic, weak, readonly) ObjectType value;
+
+@end
+
+@interface AKAStrongReference<__covariant ObjectType>: AKAReference
+
+@property(nonatomic, strong, readonly) ObjectType value;
+
+@end
+
+@interface AKAWeakReferenceProxy<__covariant ObjectType>: NSProxy
+
++ (id)weakReferenceProxyFor:(id)value;
+
++ (id)weakReferenceProxyFor:(id)value
+               deallocation:(void(^)())deallocationBlock;
 
 @end

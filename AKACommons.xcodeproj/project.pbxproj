@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		8E225FF61BAEF8E200BC070F /* AKANullability.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E225FF51BAEEB4A00BC070F /* AKANullability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E3F06CC1BBC84DD00E2B164 /* AKAKVOChangeEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */; settings = {ASSET_TAGS = (); }; };
+		8E3F06CD1BBC84DD00E2B164 /* AKAKVOChangeEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */; settings = {ASSET_TAGS = (); }; };
+		8E3F06CE1BBC84DD00E2B164 /* AKAKVOPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */; settings = {ASSET_TAGS = (); }; };
+		8E3F06CF1BBC84DD00E2B164 /* AKAKVOPublisher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F06C81BBC84DD00E2B164 /* AKAKVOPublisher.m */; settings = {ASSET_TAGS = (); }; };
+		8E3F06D01BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C91BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h */; };
+		8E3F06D11BBC84DD00E2B164 /* AKAKVOSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06CA1BBC84DD00E2B164 /* AKAKVOSubscription.h */; settings = {ASSET_TAGS = (); }; };
+		8E3F06D21BBC84DD00E2B164 /* AKAKVOSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F06CB1BBC84DD00E2B164 /* AKAKVOSubscription.m */; settings = {ASSET_TAGS = (); }; };
 		8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */; };
 		8E6C86F01AF8E7D600FDAD7B /* AKAInterfaceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -71,7 +78,9 @@
 		8EE131171BBB1DFE00E765A2 /* AKAReferenceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE131161BBB1DFE00E765A2 /* AKAReferenceTests.m */; settings = {ASSET_TAGS = (); }; };
 		8EED828E1BAF51DA00E45721 /* NSMutableString+AKATools.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EED828F1BAF51DA00E45721 /* NSMutableString+AKATools.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */; settings = {ASSET_TAGS = (); }; };
-		A677E50747F837365B479A33 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68E1B59A0220B66D1F7D2C1 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		8EFBE8611BBC6343004E264F /* AKAMutableOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EFBE85F1BBC6343004E264F /* AKAMutableOrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EFBE8621BBC6343004E264F /* AKAMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EFBE8601BBC6343004E264F /* AKAMutableOrderedDictionary.m */; settings = {ASSET_TAGS = (); }; };
+		D7737F320E3FF974B8B953B7 /* Pods_AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA66AE127BA0FDD818B553B8 /* Pods_AKACommons.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,9 +94,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		79483621CA7D059E6F07B696 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		592748D7CA6CFED1DEB67A8D /* Pods-AKACommons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKACommons.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKACommons/Pods-AKACommons.debug.xcconfig"; sourceTree = "<group>"; };
+		5C4648AFD0185172FB8FD368 /* Pods-AKACommons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKACommons.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKACommons/Pods-AKACommons.release.xcconfig"; sourceTree = "<group>"; };
 		8E225FF51BAEEB4A00BC070F /* AKANullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKANullability.h; sourceTree = "<group>"; };
+		8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOChangeEvent.h; sourceTree = "<group>"; };
+		8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKVOChangeEvent.m; sourceTree = "<group>"; };
+		8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOPublisher.h; sourceTree = "<group>"; };
+		8E3F06C81BBC84DD00E2B164 /* AKAKVOPublisher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKVOPublisher.m; sourceTree = "<group>"; };
+		8E3F06C91BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOSubscription_Internal.h; sourceTree = "<group>"; };
+		8E3F06CA1BBC84DD00E2B164 /* AKAKVOSubscription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOSubscription.h; sourceTree = "<group>"; };
+		8E3F06CB1BBC84DD00E2B164 /* AKAKVOSubscription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKVOSubscription.m; sourceTree = "<group>"; };
 		8E6C86BF1AF8E7D600FDAD7B /* AKAErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAErrors.h; sourceTree = "<group>"; };
 		8E6C86C01AF8E7D600FDAD7B /* AKAErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAErrors.m; sourceTree = "<group>"; };
 		8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAInterfaceInfo.h; sourceTree = "<group>"; };
@@ -154,7 +170,10 @@
 		8EE131161BBB1DFE00E765A2 /* AKAReferenceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAReferenceTests.m; sourceTree = "<group>"; };
 		8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+AKATools.h"; sourceTree = "<group>"; };
 		8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+AKATools.m"; sourceTree = "<group>"; };
+		8EFBE85F1BBC6343004E264F /* AKAMutableOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMutableOrderedDictionary.h; sourceTree = "<group>"; };
+		8EFBE8601BBC6343004E264F /* AKAMutableOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMutableOrderedDictionary.m; sourceTree = "<group>"; };
 		D68E1B59A0220B66D1F7D2C1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA66AE127BA0FDD818B553B8 /* Pods_AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,7 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A677E50747F837365B479A33 /* Pods.framework in Frameworks */,
+				D7737F320E3FF974B8B953B7 /* Pods_AKACommons.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,27 +196,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A96352C13C6F13B37BFD605 /* Pods */ = {
+		8E3F06C41BBC847900E2B164 /* KVO */ = {
 			isa = PBXGroup;
 			children = (
-				16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */,
-				79483621CA7D059E6F07B696 /* Pods.release.xcconfig */,
+				8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */,
+				8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */,
+				8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */,
+				8E3F06C81BBC84DD00E2B164 /* AKAKVOPublisher.m */,
+				8E3F06C91BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h */,
+				8E3F06CA1BBC84DD00E2B164 /* AKAKVOSubscription.h */,
+				8E3F06CB1BBC84DD00E2B164 /* AKAKVOSubscription.m */,
 			);
-			name = Pods;
+			name = KVO;
 			sourceTree = "<group>";
 		};
 		8E6C86BE1AF8E7D600FDAD7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				8EE131141BBB1DA000E765A2 /* Properties */,
 				8E225FF51BAEEB4A00BC070F /* AKANullability.h */,
+				8E3F06C41BBC847900E2B164 /* KVO */,
+				8EE131141BBB1DA000E765A2 /* Properties */,
 				8EDBBB8A1B63F09F00875D5F /* DataStructures */,
 				8E7232061AF8F31900D647A9 /* Error Handling */,
 				8E7232051AF8F30C00D647A9 /* Logging */,
 				8E7232041AF8F2F900D647A9 /* Networking */,
 				8EE131131BBB1D6900E765A2 /* TableViews */,
-				8E6C86DE1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h */,
-				8E6C86DF1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m */,
 				8E6C86E01AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.h */,
 				8E6C86E11AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m */,
 				8E6C86E21AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.h */,
@@ -267,8 +290,8 @@
 				8E90F9431AF8E69A00CBBB52 /* AKACommons */,
 				8E90F9501AF8E69A00CBBB52 /* AKACommonsTests */,
 				8E90F9421AF8E69A00CBBB52 /* Products */,
-				3A96352C13C6F13B37BFD605 /* Pods */,
 				C5798B8136FBB491E2427ED2 /* Frameworks */,
+				E5BEB53F2B69BA9C1C2027A3 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -326,6 +349,8 @@
 		8EDBBB8A1B63F09F00875D5F /* DataStructures */ = {
 			isa = PBXGroup;
 			children = (
+				8EFBE85F1BBC6343004E264F /* AKAMutableOrderedDictionary.h */,
+				8EFBE8601BBC6343004E264F /* AKAMutableOrderedDictionary.m */,
 				8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */,
 				8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */,
 				8E6C86CB1AF8E7D600FDAD7B /* AKAObservableCollection.h */,
@@ -350,6 +375,8 @@
 				8E6C86DB1AF8E7D600FDAD7B /* AKATVSection.m */,
 				8E6C86DC1AF8E7D600FDAD7B /* AKATVUpdateBatch.h */,
 				8E6C86DD1AF8E7D600FDAD7B /* AKATVUpdateBatch.m */,
+				8E6C86DE1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h */,
+				8E6C86DF1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.m */,
 			);
 			name = TableViews;
 			sourceTree = "<group>";
@@ -377,8 +404,18 @@
 			isa = PBXGroup;
 			children = (
 				D68E1B59A0220B66D1F7D2C1 /* Pods.framework */,
+				EA66AE127BA0FDD818B553B8 /* Pods_AKACommons.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E5BEB53F2B69BA9C1C2027A3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				592748D7CA6CFED1DEB67A8D /* Pods-AKACommons.debug.xcconfig */,
+				5C4648AFD0185172FB8FD368 /* Pods-AKACommons.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -389,12 +426,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E90F9471AF8E69A00CBBB52 /* AKACommons.h in Headers */,
+				8EFBE8611BBC6343004E264F /* AKAMutableOrderedDictionary.h in Headers */,
 				8E6C86F61AF8E7D600FDAD7B /* AKALog.h in Headers */,
+				8E3F06D01BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h in Headers */,
 				8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */,
 				8E6C86FE1AF8E7D600FDAD7B /* AKAReference.h in Headers */,
 				8E6C86FC1AF8E7D600FDAD7B /* AKAProperty.h in Headers */,
 				8E6C87031AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h in Headers */,
 				8E6C87051AF8E7D600FDAD7B /* AKATVProxy.h in Headers */,
+				8E3F06CC1BBC84DD00E2B164 /* AKAKVOChangeEvent.h in Headers */,
+				8E3F06D11BBC84DD00E2B164 /* AKAKVOSubscription.h in Headers */,
 				8E6C87011AF8E7D600FDAD7B /* AKATVDataSourceSpecification.h in Headers */,
 				8E6C87001AF8E7D600FDAD7B /* AKATVCoordinateMappingProtocol.h in Headers */,
 				8E6C87131AF8E7D600FDAD7B /* NSObject+AKASelectorTools.h in Headers */,
@@ -404,6 +445,7 @@
 				8E6C870D1AF8E7D600FDAD7B /* NSIndexPath+AKARowAndSectionAsInteger.h in Headers */,
 				8E6C87191AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.h in Headers */,
 				8ED5EFC01BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h in Headers */,
+				8E3F06CE1BBC84DD00E2B164 /* AKAKVOPublisher.h in Headers */,
 				8E6C871B1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h in Headers */,
 				8E6C87171AF8E7D600FDAD7B /* UIView+AKAConstraintTools.h in Headers */,
 				8E6C86F81AF8E7D600FDAD7B /* AKANetworkingErrors.h in Headers */,
@@ -427,13 +469,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E90F9571AF8E69A00CBBB52 /* Build configuration list for PBXNativeTarget "AKACommons" */;
 			buildPhases = (
-				33E6C62738198F12C2DC32FC /* Check Pods Manifest.lock */,
+				BC790E910101C9AC56B2E155 /* Check Pods Manifest.lock */,
 				8E90F93C1AF8E69A00CBBB52 /* Sources */,
 				8E90F93D1AF8E69A00CBBB52 /* Frameworks */,
 				8E90F93E1AF8E69A00CBBB52 /* Headers */,
 				8E90F93F1AF8E69A00CBBB52 /* Resources */,
-				53E76633E5879A46F2180906 /* Embed Pods Frameworks */,
-				ADA96839DE3136830FEAF1E5 /* Copy Pods Resources */,
+				6CA87ED07EBE741E7D60E15B /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -518,7 +559,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		33E6C62738198F12C2DC32FC /* Check Pods Manifest.lock */ = {
+		6CA87ED07EBE741E7D60E15B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKACommons/Pods-AKACommons-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BC790E910101C9AC56B2E155 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -531,36 +587,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		53E76633E5879A46F2180906 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ADA96839DE3136830FEAF1E5 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -583,15 +609,19 @@
 				8EDBBB8E1B63F0D200875D5F /* AKAArrayComparer.m in Sources */,
 				8E6C87041AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.m in Sources */,
 				8E6C87101AF8E7D600FDAD7B /* NSObject+AKAAssociatedValues.m in Sources */,
+				8E3F06D21BBC84DD00E2B164 /* AKAKVOSubscription.m in Sources */,
 				8E6C86F91AF8E7D600FDAD7B /* AKANetworkingErrors.m in Sources */,
 				8E6C87021AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m in Sources */,
 				8E6C871A1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m in Sources */,
 				8E6C87061AF8E7D600FDAD7B /* AKATVProxy.m in Sources */,
 				8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */,
 				8E6C86F51AF8E7D600FDAD7B /* AKAIPNetmask.m in Sources */,
+				8E3F06CF1BBC84DD00E2B164 /* AKAKVOPublisher.m in Sources */,
+				8EFBE8621BBC6343004E264F /* AKAMutableOrderedDictionary.m in Sources */,
 				8EED828F1BAF51DA00E45721 /* NSMutableString+AKATools.m in Sources */,
 				8E6C86F11AF8E7D600FDAD7B /* AKAInterfaceInfo.m in Sources */,
 				8E6C87121AF8E7D600FDAD7B /* NSObject+AKAConcurrencyTools.m in Sources */,
+				8E3F06CD1BBC84DD00E2B164 /* AKAKVOChangeEvent.m in Sources */,
 				8E6C87081AF8E7D600FDAD7B /* AKATVRowSegment.m in Sources */,
 				8E6C870A1AF8E7D600FDAD7B /* AKATVSection.m in Sources */,
 				8E6C87161AF8E7D600FDAD7B /* NSString+AKATools.m in Sources */,
@@ -761,7 +791,7 @@
 		};
 		8E90F9581AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16B2BE28B2EC375FA0597773 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 592748D7CA6CFED1DEB67A8D /* Pods-AKACommons.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -784,7 +814,7 @@
 		};
 		8E90F9591AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79483621CA7D059E6F07B696 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 5C4648AFD0185172FB8FD368 /* Pods-AKACommons.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;

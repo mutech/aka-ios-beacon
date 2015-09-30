@@ -6,7 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
 #import "AKATVCoordinateMappingProtocol.h"
 
 @class AKATVMultiplexedDataSource;
@@ -52,5 +53,7 @@
 @property(nonatomic, weak, readonly, nullable) NSObject<AKATVDataSourceSpecificationDelegate>* multiplexer;
 
 - (UITableView* __nonnull)proxyForTableView:(UITableView* __nonnull)tableView;
+
+- (NSIndexPath *_Nullable)tableViewMappedIndexPath:(NSIndexPath *_Nonnull)indexPath;
 
 @end

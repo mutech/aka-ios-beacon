@@ -10,7 +10,7 @@
 #import "AKAKeyboardActivationSequence.h"
 #import "AKAControlsStyleKit.h"
 
-#import <AKACommons/AKALog.h>
+@import AKACommons.AKALog;
 
 @implementation AKAKeyboardActivationSequenceAccessoryView
 

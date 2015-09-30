@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8EEFCADB1B9FC490004ACBD2"
+            BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
             BuildableName = "AKAControlsTests.xctest"
             BlueprintName = "AKAControlsTests"
             ReferencedContainer = "container:AKAControls.xcodeproj">
@@ -64,7 +64,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8EEFCADB1B9FC490004ACBD2"
+            BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
             BuildableName = "AKAControlsTests.xctest"
             BlueprintName = "AKAControlsTests"
             ReferencedContainer = "container:AKAControls.xcodeproj">
@@ -82,7 +82,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8EEFCADB1B9FC490004ACBD2"
+            BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
             BuildableName = "AKAControlsTests.xctest"
             BlueprintName = "AKAControlsTests"
             ReferencedContainer = "container:AKAControls.xcodeproj">

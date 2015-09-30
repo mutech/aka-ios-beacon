@@ -6,13 +6,13 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.NSObject_AKAConcurrencyTools;
+@import AKACommons.AKAProperty;
+
 #import "AKAPickerViewBinding.h"
 #import "AKAPickerView.h"
-
-#import "AKAProperty.h"
 #import "AKAControlConverterProtocol.h"
 
-#import <AKACommons/NSObject+AKAConcurrencyTools.h>
 
 @interface AKAPickerViewBinding() <UIPickerViewDelegate, UIPickerViewDataSource>
 

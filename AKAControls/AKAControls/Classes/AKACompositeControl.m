@@ -20,8 +20,7 @@
 #import "UIView+AKABindingSupport.h"
 #import "AKABindingProvider.h"
 @import AKACommons.NSObject_AKAAssociatedValues; // TODO: remove when viewBindings property is implemented
-
-#import "UIView+AKAHierarchyVisitor.h"
+@import AKACommons.UIView_AKAHierarchyVisitor;
 
 @interface AKACompositeControl() <AKABindingDelegate, AKABindingContextProtocol>
 

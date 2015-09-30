@@ -12,9 +12,10 @@
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKAControlDelegate.h"
-#import <AKACommons/AKATVMultiplexedDataSource.h>
-#import <AKACommons/AKALog.h>
-#import "NSObject+AKAAssociatedValues.h"
+
+@import AKACommons.AKATVMultiplexedDataSource;
+@import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAAssociatedValues;
 
 @interface AKAArrayTableViewDataSourceAndDelegate: NSObject<UITableViewDelegate, UITableViewDataSource>
 

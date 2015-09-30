@@ -3,7 +3,7 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKACommons/AKAProperty.h>
+@import AKACommons.AKAProperty;
 #import "AKATheme.h"
 #import "AKAViewCustomization.h"
 #import "AKAThemeViewApplicability.h"

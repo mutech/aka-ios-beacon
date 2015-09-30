@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AKACommons/AKAErrors.h>
+@import Foundation;
+@import AKACommons.AKAErrors;
 
 typedef enum AKAControlsErrorCodes
 {

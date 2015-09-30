@@ -3,7 +3,8 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKACommons/AKAReference.h>
+@import AKACommons.AKAReference;
+
 #import "AKAThemeLayout.h"
 #import "AKATheme.h"
 #import "AKALayoutConstraintSpecification.h"

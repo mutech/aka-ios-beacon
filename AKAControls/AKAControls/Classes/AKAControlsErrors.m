@@ -7,7 +7,7 @@
 //
 
 #import "AKAControlsErrors_Internal.h"
-#import "AKALog.h"
+@import AKACommons.AKALog;
 
 @implementation AKAControlsErrors
 

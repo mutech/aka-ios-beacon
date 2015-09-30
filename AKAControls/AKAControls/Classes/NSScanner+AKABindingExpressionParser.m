@@ -6,13 +6,12 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKAMutableOrderedDictionary;
+
 #import "NSScanner+AKABindingExpressionParser.h"
 
 #import "AKABindingExpression_Internal.h"
 #import "AKABindingProvider.h"
-
-// TODO: reimplement this and move to AKACommons:
-#import "AKAMutableOrderedDictionary.h"
 
 @implementation NSScanner(BindingExpressionParser)
 

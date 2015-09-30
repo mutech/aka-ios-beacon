@@ -18,7 +18,7 @@
 		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
 		8EBD27471AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */; };
 		8EECDABD1AC97C53001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDABC1AC97C53001A6826 /* Podfile */; };
-		FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AD591E74E4A6B018CDD9320 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		ED8AAF800C94DEA7BAF7475D /* Pods_AKAControlsDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3569AD6CB43A7544DEA5267C /* Pods_AKAControlsDemo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		3569AD6CB43A7544DEA5267C /* Pods_AKAControlsDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKAControlsDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		40CBAA5025054444FECF4F72 /* Pods-AKAControlsDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsDemo/Pods-AKAControlsDemo.release.xcconfig"; sourceTree = "<group>"; };
+		5F56F71FDA93B42321413D5C /* Pods-AKAControlsDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsDemo/Pods-AKAControlsDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8E61FFC31BA641C400A4022F /* AKAChoiceDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAChoiceDemoTableViewController.h; sourceTree = "<group>"; };
 		8E61FFC41BA641C400A4022F /* AKAChoiceDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAChoiceDemoTableViewController.m; sourceTree = "<group>"; };
 		8E7D6EAD1AE0359200EE636E /* AKAMultiplexedTableViewControllerDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMultiplexedTableViewControllerDemoTableViewController.h; sourceTree = "<group>"; };
@@ -54,7 +56,6 @@
 		8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFormTableViewControllerDemo.m; sourceTree = "<group>"; };
 		8EECDABC1AC97C53001A6826 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
 		9AD591E74E4A6B018CDD9320 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF2EF2BF51015F41AB47EBB3 /* Pods.framework in Frameworks */,
+				ED8AAF800C94DEA7BAF7475D /* Pods_AKAControlsDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,19 +77,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2827A9E4C05D558919AF730C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */,
-				AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		8A2220E4A0C31716F48B2522 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				9AD591E74E4A6B018CDD9320 /* Pods.framework */,
+				3569AD6CB43A7544DEA5267C /* Pods_AKAControlsDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -99,8 +92,8 @@
 				8EBA33281ABAFA82007436AA /* AKAControlsDemo */,
 				8EBA33421ABAFA82007436AA /* AKAControlsDemoTests */,
 				8EBA33271ABAFA82007436AA /* Products */,
-				2827A9E4C05D558919AF730C /* Pods */,
 				8A2220E4A0C31716F48B2522 /* Frameworks */,
+				C505041EACAADD460A8E9DDB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -161,6 +154,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C505041EACAADD460A8E9DDB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5F56F71FDA93B42321413D5C /* Pods-AKAControlsDemo.debug.xcconfig */,
+				40CBAA5025054444FECF4F72 /* Pods-AKAControlsDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -168,12 +170,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8EBA33491ABAFA82007436AA /* Build configuration list for PBXNativeTarget "AKAControlsDemo" */;
 			buildPhases = (
-				7F220329D4020F957C315627 /* Check Pods Manifest.lock */,
+				83113F564103E5884BFD187C /* Check Pods Manifest.lock */,
 				8EBA33221ABAFA82007436AA /* Sources */,
 				8EBA33231ABAFA82007436AA /* Frameworks */,
 				8EBA33241ABAFA82007436AA /* Resources */,
-				4695536667FA0B004631F92D /* Copy Pods Resources */,
-				47FB53A0AC811FC79A57050F /* Embed Pods Frameworks */,
+				8B8E4EEC133F5E52D7DAE493 /* Embed Pods Frameworks */,
+				DDAF6E7BAFA53FCBBD2C19EA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -208,7 +210,7 @@
 		8EBA331E1ABAFA82007436AA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "AKA Sarl";
 				TargetAttributes = {
 					8EBA33251ABAFA82007436AA = {
@@ -262,37 +264,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4695536667FA0B004631F92D /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		47FB53A0AC811FC79A57050F /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7F220329D4020F957C315627 /* Check Pods Manifest.lock */ = {
+		83113F564103E5884BFD187C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -305,6 +277,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8B8E4EEC133F5E52D7DAE493 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsDemo/Pods-AKAControlsDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDAF6E7BAFA53FCBBD2C19EA /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsDemo/Pods-AKAControlsDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -381,6 +383,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -395,7 +398,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -431,7 +434,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -441,13 +444,14 @@
 		};
 		8EBA334A1ABAFA82007436AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5AF087C7CB8CF20873CE6BCD /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 5F56F71FDA93B42321413D5C /* Pods-AKAControlsDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = AKAControlsDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -455,13 +459,14 @@
 		};
 		8EBA334B1ABAFA82007436AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE482CE8A09A3D3963CE7174 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 40CBAA5025054444FECF4F72 /* Pods-AKAControlsDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = AKAControlsDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -481,6 +486,7 @@
 				);
 				INFOPLIST_FILE = AKAControlsDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AKAControlsDemo.app/AKAControlsDemo";
 			};
@@ -496,6 +502,7 @@
 				);
 				INFOPLIST_FILE = AKAControlsDemoTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AKAControlsDemo.app/AKAControlsDemo";
 			};

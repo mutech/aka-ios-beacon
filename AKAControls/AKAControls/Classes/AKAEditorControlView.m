@@ -17,7 +17,7 @@
 
 #import "UIView+AKABinding.h"
 
-#import <AKACommons/AKALog.h>
+@import AKACommons.AKALog;
 
 @interface AKAEditorControlView()
 

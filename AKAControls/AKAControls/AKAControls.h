@@ -88,8 +88,6 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 // AKAControls/ViewControllers
 #import <AKAControls/AKAFormTableViewController.h>
 
-// To be moved to AKACommons:
-#import <AKAControls/AKAMutableOrderedDictionary.h>
 
 #import <AKAControls/AKAPickerView.h>
 #import <AKAControls/AKAPickerViewBinding.h>

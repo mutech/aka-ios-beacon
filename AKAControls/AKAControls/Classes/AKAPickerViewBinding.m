@@ -126,7 +126,7 @@
 - (NSInteger)rowForOtherValue
 {
     NSInteger result =  self.supportsOtherValue ? self.choices.count : NSNotFound;
-    if (self.supportsUndefinedValue)
+    if (result != NSNotFound && self.supportsUndefinedValue)
     {
         ++result;
     }

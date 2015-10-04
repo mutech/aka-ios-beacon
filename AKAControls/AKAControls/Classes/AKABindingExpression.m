@@ -83,6 +83,12 @@
 
 #pragma mark - Binding Support
 
+- (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
+{
+    // Most binding expressions do not support unbound properties (key path expressions only, for now)
+    return nil;
+}
+
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
@@ -587,12 +593,21 @@
 
 #pragma mark - Binding Support
 
+- (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
+{
+    (void)bindingContext; // Not used yet, this will most likely be needed for computations requiring the context in addition to a property target
+    return [AKAProperty unboundPropertyWithKeyPath:self.keyPath];
+}
+
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
+    AKAProperty* result;
+
     // Use data context property if no scope is defined
-    return [bindingContext dataContextPropertyForKeyPath:self.keyPath
-                                      withChangeObserver:changeObserver];
+    result = [bindingContext dataContextPropertyForKeyPath:self.keyPath
+                                        withChangeObserver:changeObserver];
+    return result;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext

@@ -56,6 +56,13 @@
                                  @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                                  @"bindingProperty": @"typeMap"
                                  },
+                          @"textForUndefinedValue":
+                              @{ @"required":        @NO,
+                                 @"expressionType":  @(AKABindingExpressionTypeString),
+                                 @"attributes":      @{},
+                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                                 @"bindingProperty": @"textForUndefinedValue"
+                                 },
                           },
                    @"allowUnspecifiedAttributes": @NO
                    }
@@ -128,14 +135,21 @@
                           ^(id target, id value)
                           {
                               AKABinding_UILabel_textBinding* binding = target;
-                              if (value == nil || [value isKindOfClass:[NSString class]])
+                              NSString* text;
+                              if ([value isKindOfClass:[NSString class]])
                               {
-                                  binding.label.text = value;
+                                  text = value;
                               }
-                              else if (value != nil)
+                              else if (value != nil && value != [NSNull null])
                               {
-                                  binding.label.text = [NSString stringWithFormat:@"%@", value];
+                                  text = [NSString stringWithFormat:@"%@", value];
                               }
+                              else
+                              {
+                                  text = self.textForUndefinedValue;
+                              }
+
+                              binding.label.text = text;
                           }
                                         observationStarter:
                           ^BOOL (id target)

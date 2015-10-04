@@ -73,4 +73,6 @@ typedef AKABindingProvider* _Nonnull                                req_AKABindi
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext;
 
+- (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext;
+
 @end

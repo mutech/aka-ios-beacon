@@ -27,9 +27,10 @@ typedef NS_ENUM(NSInteger, AKABindingExpressionType)
 {
     AKABindingExpressionTypeNone =                          0,
 
-    AKABindingExpressionTypeDataContextKeyPath =            (1 <<  0),
-    AKABindingExpressionTypeRootDataContextKeyPath =        (1 <<  1),
-    AKABindingExpressionTypeControlKeyPath =                (1 <<  2),
+    AKABindingExpressionTypeUnqualifiedKeyPath =            (1 <<  0),
+    AKABindingExpressionTypeDataContextKeyPath =            (1 <<  1),
+    AKABindingExpressionTypeRootDataContextKeyPath =        (1 <<  2),
+    AKABindingExpressionTypeControlKeyPath =                (1 <<  3),
 
     AKABindingExpressionTypeClassConstant =                 (1 <<  5),
     AKABindingExpressionTypeStringConstant =                (1 <<  6),

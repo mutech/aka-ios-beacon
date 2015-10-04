@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@import AKAControls.AKAPickerKeyboardTriggerView;
+
 @interface PickerKeyboardViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet AKAPickerKeyboardTriggerView *stringPickerTriggerView;
+@property (weak, nonatomic) IBOutlet AKAPickerKeyboardTriggerView *objectPickerTriggerView;
 
 @end

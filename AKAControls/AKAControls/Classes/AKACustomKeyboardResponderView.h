@@ -53,6 +53,7 @@
  */
 @protocol AKACustomKeyboardResponderDelegate <NSObject>
 
+@optional
 /**
  * Determines the result of the specified views canBecomeFirstResponder method.
  *
@@ -62,6 +63,7 @@
  */
 - (BOOL)    customKeyboardResponderViewCanBecomeFirstResponder:(AKACustomKeyboardResponderView*)view;
 
+@optional
 /**
  * The view that the specified view should return as as result of its inputView method.
  *

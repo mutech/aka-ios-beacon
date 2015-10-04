@@ -10,12 +10,14 @@
 
 @interface AKABindingProvider_UILabel_textBinding : AKABindingProvider
 
-+ (instancetype)sharedInstance;
++ (instancetype _Nonnull)sharedInstance;
 
 @end
 
 @interface AKABinding_UILabel_textBinding: AKABinding
 
 #pragma mark - Binding Configuration
+
+@property(nonatomic, nullable) NSString* textForUndefinedValue;
 
 @end

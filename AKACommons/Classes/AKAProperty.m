@@ -329,6 +329,16 @@
     [self setValue:value forTarget:self.target];
 }
 
+- (id)targetValueForKey:(NSString *)key
+{
+    return [self.target valueForKey:key];
+}
+
+- (id)targetValueForKeyPath:(NSString *)keyPath
+{
+    return [self.target valueForKeyPath:keyPath];
+}
+
 #pragma mark - Validation
 
 - (BOOL)    validateValue:(inout __autoreleasing id *)ioValue

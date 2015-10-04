@@ -127,6 +127,10 @@ typedef AKAPropertyComputation _Nonnull                 req_AKAPropertyComputati
  */
 - (opt_id)                      valueWithDefaultTarget:(req_id)defaultTarget;
 
+- (opt_id)                           targetValueForKey:(req_NSString)key;
+
+- (opt_id)                       targetValueForKeyPath:(req_NSString)keyPath;
+
 #pragma mark - Validation
 
 - (BOOL)                                 validateValue:(inout_id)ioValue

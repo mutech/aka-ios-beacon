@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -12,6 +12,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="pEz-eH-A3U">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="sDV-xf-zJW">
@@ -26,14 +27,40 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UITextField - textBinding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CSy-lE-aZH">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <connections>
                                             <segue destination="hlW-R9-3by" kind="show" id="ANK-5Z-H6B"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Qyg-tj-Zee" style="IBUITableViewCellStyleDefault" id="fnJ-gK-AI4">
+                                        <rect key="frame" x="0.0" y="108" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fnJ-gK-AI4" id="uZB-3G-rKG">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="AKAPickerKeyboardTriggerView" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qyg-tj-Zee">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                        <connections>
+                                            <segue destination="ATC-xp-zTx" kind="show" id="ZMe-ag-cIf"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -64,12 +91,14 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value editor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X2I-Oi-me6">
                                 <rect key="frame" x="16" y="72" width="343" height="14"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-N4-6Bj">
                                 <rect key="frame" x="16" y="94" width="343" height="30"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="LVi-Ds-g9J"/>
                                 </constraints>
@@ -91,6 +120,7 @@
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-EM-WEF">
                                 <rect key="frame" x="16" y="153" width="343" height="30"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
@@ -103,13 +133,15 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Another model value editor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
-                                <rect key="frame" x="16" y="132" width="343" height="14"/>
+                                <rect key="frame" x="16" y="132" width="343" height="13"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JLM-Lm-lYS" customClass="AKATextField">
                                 <rect key="frame" x="16" y="213" width="343" height="30"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
@@ -119,20 +151,23 @@
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AKATextField (obsolete):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4Z-Uu-QK2">
                                 <rect key="frame" x="16" y="191" width="343" height="14"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzf-1v-dGL">
-                                <rect key="frame" x="16" y="251" width="343" height="14"/>
+                                <rect key="frame" x="16" y="251" width="343" height="13"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETl-So-aum">
                                 <rect key="frame" x="16" y="272" width="343" height="21"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="modelValue"/>
@@ -140,11 +175,13 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
                                 <rect key="frame" x="310" y="311" width="51" height="31"/>
+                                <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="stateBinding" value="$root.textField1.hidden"/>
                                 </userDefinedRuntimeAttributes>
                             </switch>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="trailing" secondItem="S5K-zJ-ZY5" secondAttribute="trailingMargin" id="1G1-ge-FSP"/>
@@ -183,7 +220,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8OO-Gw-F46" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="331.5" y="388.5"/>
+            <point key="canvasLocation" x="-572.5" y="1267.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jMY-qu-2Pv">
@@ -193,6 +230,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ryS-KY-yM2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <connections>
                         <segue destination="tjz-Jc-o9z" kind="relationship" relationship="rootViewController" id="6HF-d5-1ru"/>
@@ -201,6 +239,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pLO-Fs-oit" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-658" y="389"/>
+        </scene>
+        <!--Picker Keyboard View Controller-->
+        <scene sceneID="XIr-XP-Kmh">
+            <objects>
+                <viewController id="ATC-xp-zTx" customClass="PickerKeyboardViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EoT-lE-sac"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ta0-Mi-qCQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YPx-Cf-QHs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose string value from array of strings, no options:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
+                                <rect key="frame" x="16" y="72" width="343" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
+                                <rect key="frame" x="16" y="94" width="343" height="20"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="leading" secondItem="ri5-zv-jXS" secondAttribute="leading" id="HYa-EE-wcR"/>
+                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="top" secondItem="ri5-zv-jXS" secondAttribute="top" id="fT7-4B-ddT"/>
+                                    <constraint firstAttribute="trailing" secondItem="tKJ-rE-QKb" secondAttribute="trailing" id="lgR-rE-N9y"/>
+                                    <constraint firstAttribute="bottom" secondItem="tKJ-rE-QKb" secondAttribute="bottom" id="tc9-kp-xzL"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
+                                        <string key="value">stringValue {
+	choices: stringArrayValue,
+	liveModelUpdates: $false
+}</string>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bnr-Cb-aOu" appends="YES" id="CFC-ux-6tI"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ta0-Mi-qCQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ri5-zv-jXS" secondAttribute="bottom" constant="16" id="A2k-2h-bqt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="GFb-j9-8Mr"/>
+                            <constraint firstItem="ri5-zv-jXS" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="LQB-o4-oyn"/>
+                            <constraint firstItem="ri5-zv-jXS" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="goM-SZ-8hW"/>
+                            <constraint firstItem="ri5-zv-jXS" firstAttribute="top" secondItem="ItR-l1-CLW" secondAttribute="bottom" constant="8" id="prZ-a4-ObK"/>
+                            <constraint firstItem="ItR-l1-CLW" firstAttribute="top" secondItem="EoT-lE-sac" secondAttribute="bottom" constant="8" id="sBk-Xm-Apl"/>
+                            <constraint firstItem="ItR-l1-CLW" firstAttribute="leading" secondItem="YPx-Cf-QHs" secondAttribute="leadingMargin" id="zfC-x6-VRe"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7DZ-BM-ZCu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="bnr-Cb-aOu">
+                    <connections>
+                        <action selector="becomeFirstResponderForSender:" destination="ri5-zv-jXS" id="smx-Jl-5ej"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-123.5" y="1267.5"/>
         </scene>
     </scenes>
 </document>

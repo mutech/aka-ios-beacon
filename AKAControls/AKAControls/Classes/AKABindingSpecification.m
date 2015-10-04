@@ -304,14 +304,26 @@
                       @"Binding expression attribute specification key is required to be a string, the name of the attribute or '*' representing all unspecified attributes: %@", key);
              NSString* attributeName = key;
 
-             NSAssert([obj isKindOfClass:[NSDictionary class]] | [obj isKindOfClass:[NSNumber class]],
-                      @"Binding expression attribute specification is required to be a dictionary or a boolean value indicating whether the attribute is supported");
-             NSDictionary* attributeSpec = ([obj isKindOfClass:[NSDictionary class]]
-                                            ? obj
-                                            : @{ @"expressionType": @(AKABindingExpressionTypeNone),
-                                                 @"suported":       @NO,
-                                                 });
-             attributeSpecifications[attributeName] = [[AKABindingAttributeSpecification alloc] initWithDictionary:attributeSpec];
+             if ([obj isKindOfClass:[AKABindingAttributeSpecification class]])
+             {
+                 attributeSpecifications[attributeName] = obj;
+             }
+             else if ([obj isKindOfClass:[NSDictionary class]])
+             {
+                 attributeSpecifications[attributeName] = [[AKABindingAttributeSpecification alloc] initWithDictionary:obj];
+             }
+             else if ([obj isKindOfClass:[NSNumber class]])
+             {
+                 NSDictionary* spec = @{ @"expressionType": @(AKABindingExpressionTypeNone),
+                                         @"suported":       obj,
+                                         };
+                 attributeSpecifications[attributeName] = [[AKABindingAttributeSpecification alloc] initWithDictionary:spec];
+             }
+             else
+             {
+                 NSAssert(NO,
+                          @"Binding expression attribute specification is required to be an attribute specification, a dictionary or a boolean value indicating whether the attribute is supported");
+             }
          }];
         _attributes = [NSDictionary dictionaryWithDictionary:attributeSpecifications];
 
@@ -368,13 +380,17 @@
         _attributeUse = [specDictionary aka_enumValueForKey:@"use" required:YES];
         switch (self.attributeUse)
         {
-            case AKABindingAttributeUseAsBindingProperty:
+            case AKABindingAttributeUseAssignValueToBindingProperty:
+            case AKABindingAttributeUseAssignExpressionToBindingProperty:
             {
                 _bindingPropertyName = [specDictionary objectForKey:@"bindingProperty"];
                 break;
             }
             default:
+            {
+                // TODO: error handling: add NSError parameter or throw exception
                 self = nil;
+            }
         }
     }
 

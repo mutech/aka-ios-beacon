@@ -19,7 +19,8 @@ typedef AKABindingProvider* _Nullable opt_AKABindingProvider;
 
 typedef NS_ENUM(NSInteger, AKABindingAttributeUse)
 {
-    AKABindingAttributeUseAsBindingProperty
+    AKABindingAttributeUseAssignValueToBindingProperty,
+    AKABindingAttributeUseAssignExpressionToBindingProperty,
 };
 
 typedef NS_ENUM(NSInteger, AKABindingExpressionType)

@@ -55,7 +55,7 @@
 
 - (opt_id)dataContextValueForKeyPath:(req_NSString)keyPath
 {
-    return [self.dataContextProperty valueForKeyPath:keyPath];
+    return [self.dataContextProperty targetValueForKeyPath:keyPath];
 }
 
 - (opt_AKAProperty)rootDataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange

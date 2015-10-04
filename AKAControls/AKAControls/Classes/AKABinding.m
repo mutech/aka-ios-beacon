@@ -262,7 +262,7 @@
     return result;
 }
 
-#pragma mark - Change Observation
+#pragma mark - Change Tracking
 
 - (BOOL)startObservingChanges
 {

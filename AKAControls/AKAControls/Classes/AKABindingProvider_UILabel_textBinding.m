@@ -53,7 +53,7 @@
                               @{ @"required":        @NO,
                                  @"expressionType":  @(AKABindingExpressionTypeArray),
                                  @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAsBindingProperty),
+                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                                  @"bindingProperty": @"typeMap"
                                  },
                           },

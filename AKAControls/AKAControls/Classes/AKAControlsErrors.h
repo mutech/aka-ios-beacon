@@ -9,7 +9,7 @@
 @import Foundation;
 @import AKACommons.AKAErrors;
 
-typedef enum AKAControlsErrorCodes
+typedef NS_ENUM(NSInteger, AKAControlsErrorCodes)
 {
     AKATextEditorControlViewRequiresUITextFieldEditor,
 
@@ -21,8 +21,7 @@ typedef enum AKAControlsErrorCodes
     // Validation Error Codes
     AKAValidationErrorInvalidEmailValueType,
     AKAValidationErrorInvalidEmailNotMatchingRegEx,
-}
-AKAControlsErrorCodes;
+};
 
 @class AKAControl;
 @class AKACompositeControl;

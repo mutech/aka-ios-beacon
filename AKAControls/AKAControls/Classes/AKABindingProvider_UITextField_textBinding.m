@@ -52,14 +52,14 @@
                               @{ @"required":        @NO,
                                  @"expressionType":  @(AKABindingExpressionTypeBoolean),
                                  @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAsBindingProperty),
+                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                                  @"bindingProperty": @"liveModelUpdates"
                                  },
                           @"autoActivate":
                               @{ @"required":        @NO,
                                  @"expressionType":  @(AKABindingExpressionTypeBoolean),
                                  @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAsBindingProperty),
+                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                                  @"bindingProperty": @"autoActivate"
 
                                  },
@@ -67,9 +67,8 @@
                               @{ @"required":        @NO,
                                  @"expressionType":  @(AKABindingExpressionTypeBoolean),
                                  @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAsBindingProperty),
+                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                                  @"bindingProperty": @"KBActivationSequence"
-
                                  }
                           },
                    @"allowUnspecifiedAttributes": @NO

@@ -112,15 +112,40 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
 
 @interface AKABinding : NSObject
 
+#pragma mark - Initialization
+
 - (instancetype _Nullable)         initWithTarget:(id _Nonnull)target
                                        expression:(req_AKABindingExpression)bindingExpression
                                           context:(req_AKABindingContext)bindingContext
                                          delegate:(opt_AKABindingDelegate)delegate;
 
+#pragma mark - Configuration
+
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
 @property(nonatomic, readonly, nullable) SEL                bindingProperty;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
+
+#pragma mark - Conversion
+
+
+- (BOOL)convertSourceValue:(opt_id)sourceValue
+             toTargetValue:(out_id)targetValueStore
+                     error:(out_NSError)error;
+
+- (BOOL)convertTargetValue:(opt_id)targetValue
+             toSourceValue:(out_id)sourceValueStore
+                     error:(out_NSError)error;
+
+#pragma mark - Validation
+
+- (BOOL)validateSourceValue:(inout_id)sourceValueStore
+                      error:(out_NSError)error;
+
+- (BOOL)validateTargetValue:(inout_id)targetValueStore
+                      error:(out_NSError)error;
+
+#pragma mark - Change Tracking
 
 - (void)             sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                            toNewValue:(opt_id)newSourceValue;

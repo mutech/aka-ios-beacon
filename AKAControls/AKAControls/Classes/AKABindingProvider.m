@@ -160,7 +160,7 @@
          {
              switch (attributeSpec.attributeUse)
              {
-                 case AKABindingAttributeUseAsBindingProperty:
+                 case AKABindingAttributeUseAssignValueToBindingProperty:
                  {
                      NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
                      if (bindingPropertyName == nil)
@@ -171,6 +171,19 @@
                      {
                          id value = [attribute bindingSourceValueInContext:bindingContext];
                          [binding setValue:value forKey:bindingPropertyName];
+                     }
+                     break;
+                 }
+                 case AKABindingAttributeUseAssignExpressionToBindingProperty:
+                 {
+                     NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+                     if (bindingPropertyName == nil)
+                     {
+                         bindingPropertyName = attributeName;
+                     }
+                     if (attribute)
+                     {
+                         [binding setValue:attribute forKey:bindingPropertyName];
                      }
                      break;
                  }

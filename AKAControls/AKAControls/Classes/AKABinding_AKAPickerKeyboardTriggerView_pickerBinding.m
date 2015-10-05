@@ -19,9 +19,7 @@
     AKACustomKeyboardResponderDelegate,
     UIPickerViewDelegate,
     UIPickerViewDataSource
-> {
-    AKAProperty* __strong _bindingTarget;
-}
+>
 
 @property(nonatomic, readonly)       AKAPickerKeyboardTriggerView*          triggerView;
 @property(nonatomic, readonly)       UIPickerView*                          pickerView;
@@ -62,7 +60,7 @@
                                                        context:(req_AKABindingContext)bindingContext
                                                       delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:triggerView
+    if (self = [super initWithTarget:[self createTargetProperty]
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate])
@@ -73,7 +71,6 @@
 
         _triggerView = triggerView;
 
-        _bindingTarget = [self createTargetProperty];
         _bindingContext = bindingContext;
     }
     return self;
@@ -153,11 +150,6 @@
         _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
     return _pickerView;
-}
-
-- (AKAProperty *)                                bindingTarget
-{
-    return _bindingTarget;
 }
 
 - (void)                           setSavedTriggerViewDelegate:(id<AKACustomKeyboardResponderDelegate>)savedTriggerViewDelegate

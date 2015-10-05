@@ -210,35 +210,29 @@
 {
     if (self = [super init])
     {
-        NSDictionary* binding = [dictionary aka_dictionaryForKey:@"binding" required:NO];
-        if (binding != nil)
-        {
-            _bindingType = [binding aka_classTypeForKey:@"type" required:YES];
-        }
+        _bindingType = [dictionary aka_classTypeForKey:@"bindingType" required:NO];
+        _bindingProvider = [dictionary aka_bindingProviderForKey:@"bindingProviderType" required:NO];
 
-        _bindingTargetSpecification = [[AKABindingTargetSpecification alloc] initWithDictionary:[dictionary aka_dictionaryForKey:@"target" required:NO]];
 
-        _bindingSourceSpecification = [[AKABindingExpressionSpecification alloc] initWithDictionary:[dictionary aka_dictionaryForKey:@"source" required:YES]];
+        _bindingTargetSpecification = [[AKABindingTargetSpecification alloc] initWithDictionary:dictionary];
+        _bindingSourceSpecification = [[AKABindingExpressionSpecification alloc] initWithDictionary:dictionary];
     }
     return self;
 }
 
 - (void)                                       addToDictionary:(req_NSMutableDictionary)dictionary
 {
-    NSMutableDictionary* binding = [NSMutableDictionary new];
     if (self.bindingType)
     {
-        binding[@"binding"] = self.bindingType;
+        dictionary[@"bindingType"] = self.bindingType;
     }
-    dictionary[@"binding"] = binding;
+    if (self.bindingProvider)
+    {
+        dictionary[@"bindingProviderType"] = self.bindingProvider.class;
+    }
 
-    NSMutableDictionary* target = [NSMutableDictionary new];
-    [self.bindingTargetSpecification addToDictionary:target];
-    dictionary[@"target"] = target;
-
-    NSMutableDictionary* source = [NSMutableDictionary new];
-    [self.bindingSourceSpecification addToDictionary:target];
-    dictionary[@"source"] = source;
+    [self.bindingTargetSpecification addToDictionary:dictionary];
+    [self.bindingSourceSpecification addToDictionary:dictionary];
 }
 
 - (opt_AKABindingProvider) bindingProviderForAttributeWithName:(req_NSString)attributeName
@@ -263,7 +257,7 @@
 {
     if (self = [super init])
     {
-        _typePattern = [specDictionary aka_classTypePatternForKey:@"type" required:NO];
+        _typePattern = [specDictionary aka_classTypePatternForKey:@"targetType" required:NO];
     }
     return self;
 }
@@ -274,7 +268,7 @@
     {
         NSMutableDictionary* type = [NSMutableDictionary new];
         [self.typePattern addToDictionary:type];
-        specDictionary[@"type"] = type;
+        specDictionary[@"targetType"] = type;
     }
 }
 
@@ -290,8 +284,7 @@
 {
     if (self = [super init])
     {
-        NSDictionary* primary = [specDictionary aka_dictionaryForKey:@"primaryExpression" required:NO];
-        _expressionType = [primary aka_enumValueForKey:@"expressionType" defaultValue:AKABindingExpressionTypeAny];
+        _expressionType = [specDictionary aka_enumValueForKey:@"expressionType" defaultValue:AKABindingExpressionTypeAny];
 
         _arrayItemBindingProvider = [specDictionary aka_bindingProviderForKey:@"arrayItemBindingProvider"
                                                                  required:NO];
@@ -344,15 +337,17 @@
          attributes[key] = value;
 
     }];
-    specDictionary[@"attributes"] = attributes;
+    if (attributes.count > 0)
+    {
+        specDictionary[@"attributes"] = attributes;
+    }
 
-    NSMutableDictionary* primaryExpression = [NSMutableDictionary new];
-    primaryExpression[@"expressionType"] = @(self.expressionType);
+    specDictionary[@"expressionType"] = @(self.expressionType);
+
     if (self.arrayItemBindingProvider)
     {
-        primaryExpression[@"arrayItemBindingProvider"] = self.arrayItemBindingProvider;
+        specDictionary[@"arrayItemBindingProvider"] = self.arrayItemBindingProvider;
     }
-    specDictionary[@"primaryExpression"] = primaryExpression;
 }
 
 @end
@@ -365,16 +360,7 @@
 
 - (instancetype)                            initWithDictionary:(req_NSDictionary)specDictionary
 {
-    AKABindingExpressionType expressionType = [specDictionary aka_enumValueForKey:@"expressionType" defaultValue:AKABindingExpressionTypeAny];
-    NSDictionary* attributes = [specDictionary aka_dictionaryForKey:@"attributes"
-                                                           required:YES];
-    NSDictionary* adhocSpec =
-    @{ @"source":
-           @{ @"primaryExpression": @{ @"expressionType": @(expressionType) },
-              @"attributes": attributes }
-       };
-
-    if (self = [super initWithDictionary:adhocSpec])
+    if (self = [super initWithDictionary:specDictionary])
     {
         _required = [specDictionary aka_booleanForKey:@"required" withDefault:NO];
         _attributeUse = [specDictionary aka_enumValueForKey:@"use" required:YES];
@@ -382,6 +368,11 @@
         {
             case AKABindingAttributeUseAssignValueToBindingProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
+            {
+                _bindingPropertyName = [specDictionary objectForKey:@"bindingProperty"];
+                break;
+            }
+            case AKABindingAttributeUseBindToBindingProperty:
             {
                 _bindingPropertyName = [specDictionary objectForKey:@"bindingProperty"];
                 break;
@@ -402,6 +393,8 @@
     [super addToDictionary:specDictionary];
 
     specDictionary[@"required"] = @(self.required);
+    // TODO: implement
+    NSAssert(NO, @"implementation mostly missing");
 }
 
 @end

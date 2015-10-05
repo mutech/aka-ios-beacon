@@ -19,6 +19,106 @@ typedef AKABinding* _Nonnull                                req_AKABinding;
 typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelegate;
 
 
+@interface AKABinding : NSObject
+
+#pragma mark - Initialization
+
+- (instancetype _Nullable)         initWithTarget:(id _Nonnull)target
+                                       expression:(req_AKABindingExpression)bindingExpression
+                                          context:(req_AKABindingContext)bindingContext
+                                         delegate:(opt_AKABindingDelegate)delegate;
+
+#pragma mark - Configuration
+
+@property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
+@property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
+@property(nonatomic, readonly, nullable) SEL                bindingProperty;
+@property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
+
+#pragma mark - Conversion
+
+
+- (BOOL)convertSourceValue:(opt_id)sourceValue
+             toTargetValue:(out_id)targetValueStore
+                     error:(out_NSError)error;
+
+- (BOOL)convertTargetValue:(opt_id)targetValue
+             toSourceValue:(out_id)sourceValueStore
+                     error:(out_NSError)error;
+
+#pragma mark - Validation
+
+- (BOOL)validateSourceValue:(inout_id)sourceValueStore
+                      error:(out_NSError)error;
+
+- (BOOL)validateTargetValue:(inout_id)targetValueStore
+                      error:(out_NSError)error;
+
+#pragma mark - Change Tracking
+
+- (void)             sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                           toNewValue:(opt_id)newSourceValue;
+
+- (void)             targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                           toNewValue:(opt_id)newTargetValue;
+
+- (BOOL)                        startObservingChanges;
+
+- (BOOL)                         stopObservingChanges;
+
+#pragma mark - Change Propagation
+
+/**
+ * Determines if the source (f.e. model-) value should be updated as a result of a changed
+ * target (f.e. view-) value. The default implementation returns NO, if the target value is
+ * currently being updated (and thus would trigger an update cycle).
+ *
+ * @warning: Sub classes redefining this method should always call the super implementation and never return YES if it returned NO.
+ *
+ * @param oldTargetValue the old target value
+ * @param newTargetValue the new target value
+ * @param targetValue the new target value or the result of the target value validation replacing an invalid value.
+ *
+ * @return YES if the source value should be updated, NO otherwise.
+ */
+- (BOOL)        shouldUpdateSourceValueForTargetValue:(opt_id)oldTargetValue
+                                             changeTo:(opt_id)newTargetValue
+                                          validatedTo:(opt_id)targetValue;
+
+/**
+ * Determines if the target (f.e. view-) value should be updated as a result of a changed
+ * source (f.e. model-) value. The default implementation returns NO, if the source value
+ * is currently being updated (and thus would trigger an update cycle).
+ *
+ * @warning: Sub class redefining this method should always call the super implementation and never return YES if it returned NO.
+ *
+ * @param oldSourceValue the old source value
+ * @param newSourceValue the new source value
+ * @param sourceValue the new source value or the result of the source value validation replacing an invalid value.
+ *
+ * @return YES if the target value should be updated, NO otherwise.
+ */
+- (BOOL)        shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
+                                             changeTo:(opt_id)newSourceValue
+                                          validatedTo:(opt_id)sourceValue;
+
+@end
+
+@interface AKABinding(Protected)
+
+#pragma mark - UIResponder Events
+
+- (void)                  responderWillActivate:(req_UIResponder)responder;
+
+- (void)                   responderDidActivate:(req_UIResponder)responder;
+
+- (void)                responderWillDeactivate:(req_UIResponder)responder;
+
+- (void)                 responderDidDeactivate:(req_UIResponder)responder;
+
+@end
+
+
 @protocol AKABindingDelegate<NSObject>
 
 @optional
@@ -106,68 +206,5 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
                          responderDidDeactivate:(req_UIResponder)responder;
 
 
-
-@end
-
-
-@interface AKABinding : NSObject
-
-#pragma mark - Initialization
-
-- (instancetype _Nullable)         initWithTarget:(id _Nonnull)target
-                                       expression:(req_AKABindingExpression)bindingExpression
-                                          context:(req_AKABindingContext)bindingContext
-                                         delegate:(opt_AKABindingDelegate)delegate;
-
-#pragma mark - Configuration
-
-@property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
-@property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
-@property(nonatomic, readonly, nullable) SEL                bindingProperty;
-@property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
-
-#pragma mark - Conversion
-
-
-- (BOOL)convertSourceValue:(opt_id)sourceValue
-             toTargetValue:(out_id)targetValueStore
-                     error:(out_NSError)error;
-
-- (BOOL)convertTargetValue:(opt_id)targetValue
-             toSourceValue:(out_id)sourceValueStore
-                     error:(out_NSError)error;
-
-#pragma mark - Validation
-
-- (BOOL)validateSourceValue:(inout_id)sourceValueStore
-                      error:(out_NSError)error;
-
-- (BOOL)validateTargetValue:(inout_id)targetValueStore
-                      error:(out_NSError)error;
-
-#pragma mark - Change Tracking
-
-- (void)             sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
-                                           toNewValue:(opt_id)newSourceValue;
-
-- (void)             targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
-                                           toNewValue:(opt_id)newTargetValue;
-
-- (BOOL)                        startObservingChanges;
-- (BOOL)                         stopObservingChanges;
-
-@end
-
-@interface AKABinding(Protected)
-
-#pragma mark - UIResponder Events
-
-- (void)                  responderWillActivate:(req_UIResponder)responder;
-
-- (void)                   responderDidActivate:(req_UIResponder)responder;
-
-- (void)                responderWillDeactivate:(req_UIResponder)responder;
-
-- (void)                 responderDidDeactivate:(req_UIResponder)responder;
 
 @end

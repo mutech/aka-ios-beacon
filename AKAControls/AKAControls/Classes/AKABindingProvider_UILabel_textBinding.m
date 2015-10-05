@@ -10,6 +10,7 @@
 
 #import "AKABindingProvider_UILabel_textBinding.h"
 
+#import "AKABinding_AKABinding_numberFormatter.h"
 
 #pragma mark - AKABindingProvider_UILabel_textBinding - Implementation
 #pragma mark -
@@ -36,36 +37,27 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"binding":
-               @{ @"type":              [AKABinding_UILabel_textBinding class],
-                  @"bindingProvider":   [AKABindingProvider_UILabel_textBinding class]
+        @{ @"bindingType":          [AKABinding_UILabel_textBinding class],
+           @"bindingProviderType":  [AKABindingProvider_UILabel_textBinding class],
+           @"targetType":           [UILabel class],
+           @"expressionType":       @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"attributes":
+               @{ @"numberFormatter":
+                      @{ @"bindingType":     [AKABinding_AKABinding_numberFormatter class],
+                         @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
+                         @"targetType":      [AKABinding class],
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
+                             AKABindingExpressionTypeNone),
+                         @"allowUnspecifiedAttributes": @YES,
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"numberFormatter"
+                         },
+                  @"textForUndefinedValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForUndefinedValue"
+                         },
                   },
-           @"target":
-               @{ @"type":              [UILabel class]
-                  },
-           @"source":
-               @{
-                   @"primaryExpression":
-                       @{ @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
-                          },
-                   @"attributes":
-                       @{ @"typeMap":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeArray),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"typeMap"
-                                 },
-                          @"textForUndefinedValue":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeString),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"textForUndefinedValue"
-                                 },
-                          },
-                   @"allowUnspecifiedAttributes": @NO
-                   }
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });
@@ -78,9 +70,7 @@
 #pragma mark - AKABinding_UILabel_textBinding - Private Interface
 #pragma mark -
 
-@interface AKABinding_UILabel_textBinding() <UITextFieldDelegate> {
-    AKAProperty* __strong _bindingTarget;
-}
+@interface AKABinding_UILabel_textBinding() <UITextFieldDelegate>
 
 #pragma mark - Saved UILabel State
 
@@ -117,59 +107,82 @@
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:label
+    if (self = [super initWithTarget:[self createTargetProperty]
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate])
     {
         _label = label;
-
-        _bindingTarget = [AKAProperty propertyOfWeakTarget:self
-                                                    getter:
-                          ^id (id target)
-                          {
-                              AKABinding_UILabel_textBinding* binding = target;
-                              return binding.label.text;
-                          }
-                                                    setter:
-                          ^(id target, id value)
-                          {
-                              AKABinding_UILabel_textBinding* binding = target;
-                              NSString* text;
-                              if ([value isKindOfClass:[NSString class]])
-                              {
-                                  text = value;
-                              }
-                              else if (value != nil && value != [NSNull null])
-                              {
-                                  text = [NSString stringWithFormat:@"%@", value];
-                              }
-                              else
-                              {
-                                  text = self.textForUndefinedValue;
-                              }
-
-                              binding.label.text = text;
-                          }
-                                        observationStarter:
-                          ^BOOL (id target)
-                          {
-                              return YES;
-                          }
-                                        observationStopper:
-                          ^BOOL (id target)
-                          {
-                              return YES;
-                          }];
     }
     return self;
 }
 
-#pragma mark - Properties
-
-- (AKAProperty *)                            bindingTarget
+- (AKAProperty*)createTargetProperty
 {
-    return _bindingTarget;
+    return [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+            ^id (id target)
+            {
+                AKABinding_UILabel_textBinding* binding = target;
+                return binding.label.text;
+            }
+                                      setter:
+            ^(id target, id value)
+            {
+                AKABinding_UILabel_textBinding* binding = target;
+                NSString* text;
+                if ([value isKindOfClass:[NSString class]])
+                {
+                    text = value;
+                }
+                else if (value != nil && value != [NSNull null])
+                {
+                    text = [NSString stringWithFormat:@"%@", value];
+                }
+                else
+                {
+                    text = self.textForUndefinedValue;
+                }
+
+                binding.label.text = text;
+            }
+                          observationStarter:
+            ^BOOL (id target)
+            {
+                return YES;
+            }
+                          observationStopper:
+            ^BOOL (id target)
+            {
+                return YES;
+            }];
+}
+
+#pragma mark - Conversion
+
+- (BOOL)convertSourceValue:(opt_id)sourceValue
+             toTargetValue:(out_id)targetValueStore
+                     error:(out_NSError)error
+{
+    BOOL result = NO;
+    NSParameterAssert(targetValueStore != nil);
+    if ([sourceValue isKindOfClass:[NSNumber class]])
+    {
+        if (self.numberFormatter)
+        {
+            *targetValueStore = [self.numberFormatter stringFromNumber:sourceValue];
+        }
+        else
+        {
+            *targetValueStore = ((NSNumber*)sourceValue).stringValue;
+        }
+        result = YES;
+    }
+    else
+    {
+        result = [super convertSourceValue:sourceValue toTargetValue:targetValueStore error:error];
+    }
+    return result;
 }
 
 @end

@@ -40,8 +40,31 @@
                                             <segue destination="hlW-R9-3by" kind="show" id="ANK-5Z-H6B"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Qyg-tj-Zee" style="IBUITableViewCellStyleDefault" id="fnJ-gK-AI4">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="bPk-nD-Vo4" style="IBUITableViewCellStyleDefault" id="gR6-fh-mpz">
                                         <rect key="frame" x="0.0" y="108" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gR6-fh-mpz" id="xpT-pP-ANb">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UILabel - textBinding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bPk-nD-Vo4">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                        <connections>
+                                            <segue destination="qMP-8j-QMv" kind="show" id="X9e-aE-OI0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Qyg-tj-Zee" style="IBUITableViewCellStyleDefault" id="fnJ-gK-AI4">
+                                        <rect key="frame" x="0.0" y="152" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fnJ-gK-AI4" id="uZB-3G-rKG">
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
@@ -106,7 +129,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
-                                        <string key="value">modelValue {
+                                        <string key="value">stringValue {
 	liveModelUpdates: $true,
 	autoActivate: $true, 	KBActivationSequence: $true
 }</string>
@@ -125,7 +148,7 @@
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
-                                        <string key="value">modelValue {
+                                        <string key="value">stringValue {
 	liveModelUpdates: $true,
 	autoActivate: $true, 	KBActivationSequence: $false
 }</string>
@@ -145,7 +168,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="modelValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="stringValue"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
@@ -170,7 +193,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="modelValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
@@ -220,7 +243,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8OO-Gw-F46" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-572.5" y="1267.5"/>
+            <point key="canvasLocation" x="-630.5" y="1267.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jMY-qu-2Pv">
@@ -387,7 +410,84 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-123.5" y="1267.5"/>
+            <point key="canvasLocation" x="275.5" y="1267.5"/>
+        </scene>
+        <!--Label Binding View Controller-->
+        <scene sceneID="1zf-32-E1e">
+            <objects>
+                <viewController id="qMP-8j-QMv" userLabel="Label Binding View Controller" customClass="TextFieldBindingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oZK-Oh-bDM"/>
+                        <viewControllerLayoutGuide type="bottom" id="ofB-E7-tHM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="t6W-x1-9iJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="String value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAk-Dr-qv6">
+                                <rect key="frame" x="16" y="72" width="343" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUn-eG-IuT">
+                                <rect key="frame" x="16" y="130" width="343" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ce3-DS-hmv">
+                                <rect key="frame" x="16" y="93" width="343" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTR-V6-8pR">
+                                <rect key="frame" x="16" y="152" width="343" height="20"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
+                                        <string key="value">numberValue {
+	numberFormatter: {
+		format: "#,##0.00 ¤",
+		numberStyle: "Currency",
+		locale: "de_DE"
+	}
+}</string>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fTR-V6-8pR" firstAttribute="trailing" secondItem="MAk-Dr-qv6" secondAttribute="trailing" id="20G-Zs-BQR"/>
+                            <constraint firstItem="MAk-Dr-qv6" firstAttribute="top" secondItem="oZK-Oh-bDM" secondAttribute="bottom" constant="8" id="25m-hm-Ah4"/>
+                            <constraint firstItem="SUn-eG-IuT" firstAttribute="leading" secondItem="MAk-Dr-qv6" secondAttribute="leading" id="27t-Id-cPc"/>
+                            <constraint firstAttribute="trailing" secondItem="MAk-Dr-qv6" secondAttribute="trailing" constant="16" id="31x-d8-LJW"/>
+                            <constraint firstItem="MAk-Dr-qv6" firstAttribute="leading" secondItem="t6W-x1-9iJ" secondAttribute="leading" constant="16" id="6GF-gr-Le5"/>
+                            <constraint firstItem="fTR-V6-8pR" firstAttribute="top" secondItem="SUn-eG-IuT" secondAttribute="bottom" constant="8" id="GKB-NY-qC5"/>
+                            <constraint firstItem="ce3-DS-hmv" firstAttribute="top" secondItem="MAk-Dr-qv6" secondAttribute="bottom" constant="8" id="MTJ-v2-Ope"/>
+                            <constraint firstItem="ce3-DS-hmv" firstAttribute="trailing" secondItem="MAk-Dr-qv6" secondAttribute="trailing" id="PJb-aK-9UP"/>
+                            <constraint firstItem="SUn-eG-IuT" firstAttribute="trailing" secondItem="MAk-Dr-qv6" secondAttribute="trailing" id="Q03-bw-9Ms"/>
+                            <constraint firstItem="ce3-DS-hmv" firstAttribute="leading" secondItem="MAk-Dr-qv6" secondAttribute="leading" id="QwL-G2-39Z"/>
+                            <constraint firstItem="SUn-eG-IuT" firstAttribute="top" secondItem="ce3-DS-hmv" secondAttribute="bottom" constant="16" id="WHa-xg-w5e"/>
+                            <constraint firstItem="fTR-V6-8pR" firstAttribute="leading" secondItem="MAk-Dr-qv6" secondAttribute="leading" id="WaX-MD-MBm"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yhw-SQ-XmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-177.5" y="1267.5"/>
         </scene>
     </scenes>
 </document>

@@ -92,7 +92,7 @@
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
-    AKAErrorAbstractMethodImplementationMissing();
+    return nil;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext

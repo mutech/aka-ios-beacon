@@ -35,44 +35,24 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"binding":
-               @{ @"type":              [AKABinding_UITextField_textBinding class],
-                  @"bindingProvider":   [AKABindingProvider_UITextField_textBinding class]
-                  },
-           @"target":
-               @{ @"type":              [UITextField class]
-                  },
-           @"source":
-               @{
-                   @"primaryExpression":
-                       @{ @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
-                          },
-                   @"attributes":
-                       @{ @"liveModelUpdates":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"liveModelUpdates"
-                                 },
-                          @"autoActivate":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"autoActivate"
-
-                                 },
-                          @"KBActivationSequence":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"KBActivationSequence"
-                                 }
-                          },
-                   @"allowUnspecifiedAttributes": @NO
-                   }
+        @{ @"bindingType":          [AKABinding_UITextField_textBinding class],
+           @"bindingProviderType":  [AKABindingProvider_UITextField_textBinding class],
+           @"targetType":           [UITextField class],
+           @"expressionType":       @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"attributes":
+               @{ @"liveModelUpdates":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         },
+                  @"autoActivate":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         },
+                  @"KBActivationSequence":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         }
+                  }
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });
@@ -85,9 +65,7 @@
 #pragma mark - AKABinding_UITextField_textBinding - Private Interface
 #pragma mark -
 
-@interface AKABinding_UITextField_textBinding() <UITextFieldDelegate> {
-    AKAProperty* __strong _bindingTarget;
-}
+@interface AKABinding_UITextField_textBinding() <UITextFieldDelegate>
 
 #pragma mark - Saved UITextField State
 
@@ -125,7 +103,7 @@
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:textField
+    if (self = [super initWithTarget:[self createTargetProperty]
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate])
@@ -133,67 +111,65 @@
         _liveModelUpdates = YES;
 
         _textField = textField;
-
-        _bindingTarget = [AKAProperty propertyOfWeakTarget:self
-                                                    getter:
-                          ^id (id target)
-                          {
-                              AKABinding_UITextField_textBinding* binding = target;
-                              return binding.textField.text;
-                          }
-                                                    setter:
-                          ^(id target, id value)
-                          {
-                              AKABinding_UITextField_textBinding* adapter = target;
-                              if (value == nil || [value isKindOfClass:[NSString class]])
-                              {
-                                  adapter.textField.text = value;
-                              }
-                              else if (value != nil)
-                              {
-                                  adapter.textField.text = [NSString stringWithFormat:@"%@", value];
-                              }
-                          }
-                                        observationStarter:
-                          ^BOOL (id target)
-                          {
-                              AKABinding_UITextField_textBinding* binding = target;
-                              if (binding.textField.delegate != binding)
-                              {
-                                  binding.originalText = binding.textField.text;
-                                  binding.savedTextViewDelegate = binding.textField.delegate;
-                                  binding.textField.delegate = binding;
-                                  [binding.textField addTarget:binding
-                                                        action:@selector(textFieldDidChange:)
-                                              forControlEvents:UIControlEventEditingChanged];
-                              }
-                              else
-                              {
-                                  //AKALogDebug(@"Binding %@ is already observing %@", binding, binding.textField);
-                              }
-                              return YES;
-                          }
-                                        observationStopper:
-                          ^BOOL (id target)
-                          {
-                              AKABinding_UITextField_textBinding* binding = target;
-                              [binding.textField removeTarget:target
-                                                       action:@selector(textFieldDidChange:)
-                                             forControlEvents:UIControlEventEditingChanged];
-                              binding.textField.delegate = binding.savedTextViewDelegate;
-                              binding.originalText = nil;
-                              return YES;
-                          }];
     }
     return self;
 }
 
-#pragma mark - Properties
-
-- (AKAProperty *)                            bindingTarget
+- (AKAProperty*)createTargetProperty
 {
-    return _bindingTarget;
+    return [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+            ^id (id target)
+            {
+                AKABinding_UITextField_textBinding* binding = target;
+                return binding.textField.text;
+            }
+                                      setter:
+            ^(id target, id value)
+            {
+                AKABinding_UITextField_textBinding* adapter = target;
+                if (value == nil || [value isKindOfClass:[NSString class]])
+                {
+                    adapter.textField.text = value;
+                }
+                else if (value != nil)
+                {
+                    adapter.textField.text = [NSString stringWithFormat:@"%@", value];
+                }
+            }
+                          observationStarter:
+            ^BOOL (id target)
+            {
+                AKABinding_UITextField_textBinding* binding = target;
+                if (binding.textField.delegate != binding)
+                {
+                    binding.originalText = binding.textField.text;
+                    binding.savedTextViewDelegate = binding.textField.delegate;
+                    binding.textField.delegate = binding;
+                    [binding.textField addTarget:binding
+                                          action:@selector(textFieldDidChange:)
+                                forControlEvents:UIControlEventEditingChanged];
+                }
+                else
+                {
+                    //AKALogDebug(@"Binding %@ is already observing %@", binding, binding.textField);
+                }
+                return YES;
+            }
+                          observationStopper:
+            ^BOOL (id target)
+            {
+                AKABinding_UITextField_textBinding* binding = target;
+                [binding.textField removeTarget:target
+                                         action:@selector(textFieldDidChange:)
+                               forControlEvents:UIControlEventEditingChanged];
+                binding.textField.delegate = binding.savedTextViewDelegate;
+                binding.originalText = nil;
+                return YES;
+            }];
 }
+
+#pragma mark - Properties
 
 - (void)                          setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
 {

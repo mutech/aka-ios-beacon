@@ -33,8 +33,7 @@
 {
     if (self = [super init])
     {
-        // Sub classes take care of attaching to the target.
-        (void)target;
+        _bindingTarget = target;
 
         __weak AKABinding* weakSelf = self;
         _bindingSource = [bindingExpression bindingSourcePropertyInContext:bindingContext
@@ -122,29 +121,23 @@
                                                    changeTo:(opt_id)newSourceValue
                                                 validatedTo:(opt_id)sourceValue
 {
-    // Prevent updating target value if currently updating source value.
+    // Break update cycles
     return !self.isUpdatingSourceValueForTargetValueChange;
 }
 
-- (void)targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
-                          toInvalidValue:(opt_id)newTargetValue
-                               withError:(opt_NSError)error
+- (void)                   targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                             toInvalidValue:(opt_id)newTargetValue
+                                                  withError:(opt_NSError)error
 {
 
 }
 
-- (BOOL)shouldUpdateSourceValueForTargetValue:(opt_id)oldTargetValue
-                                     changeTo:(opt_id)newTargetValue
-                                  validatedTo:(opt_id)targetValue
+- (BOOL)              shouldUpdateSourceValueForTargetValue:(opt_id)oldTargetValue
+                                                   changeTo:(opt_id)newTargetValue
+                                                validatedTo:(opt_id)targetValue
 {
-    // It should not be necessary to skip source updates when target value is updated for source
-    // change, because UIControls only fire on user input. We leave the log to see if there
-    // are edge cases.
-    if (self.isUpdatingTargetValueForSourceValueChange)
-    {
-        AKALogError(@"%@: Unexpected source value update while target value is being updated", self);
-    }
-    return YES;
+    // Break update cycles
+    return !self.isUpdatingTargetValueForSourceValueChange;
 }
 
 #pragma mark - Target Value Updates

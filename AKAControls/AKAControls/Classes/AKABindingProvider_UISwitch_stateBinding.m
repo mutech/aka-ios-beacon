@@ -34,22 +34,10 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"binding":
-               @{ @"type":              [AKABinding_UISwitch_stateBinding class],
-                  @"bindingProvider":   [AKABindingProvider_UISwitch_stateBinding class]
-                  },
-           @"target":
-               @{ @"type":              [UISwitch class]
-                  },
-           @"source":
-               @{
-                   @"primaryExpression":
-                       @{ @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
-                          },
-                   @"attributes":
-                       @{ },
-                   @"allowUnspecifiedAttributes": @NO
-                   }
+        @{ @"bindingType":              [AKABinding_UISwitch_stateBinding class],
+           @"bindingProviderType":      [AKABindingProvider_UISwitch_stateBinding class],
+           @"targetType":               [UISwitch class],
+           @"expressionType":           @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });
@@ -62,9 +50,7 @@
 #pragma mark - AKABinding_UISwitch_stateBinding - Private Interface
 #pragma mark -
 
-@interface AKABinding_UISwitch_stateBinding() <UITextFieldDelegate> {
-    AKAProperty* __strong _bindingTarget;
-}
+@interface AKABinding_UISwitch_stateBinding() <UITextFieldDelegate>
 
 #pragma mark - Convenience
 
@@ -97,63 +83,60 @@
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:uiSwitch
+    if (self = [super initWithTarget:[self createTargetProperty]
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate])
     {
         _uiSwitch = uiSwitch;
-        _bindingTarget = [AKAProperty propertyOfWeakTarget:self
-                                                    getter:
-                          ^id (id target)
-                          {
-                              AKABinding_UISwitch_stateBinding* binding = target;
-                              return @(binding.uiSwitch.on);
-                          }
-                                                    setter:
-                          ^(id target, id value)
-                          {
-                              AKABinding_UISwitch_stateBinding* binding = target;
-                              if ([value isKindOfClass:[NSNumber class]])
-                              {
-                                  binding.uiSwitch.on = ((NSNumber*)value).boolValue;
-                              }
-                          }
-                                        observationStarter:
-                          ^BOOL (id target)
-                          {
-                              AKABinding_UISwitch_stateBinding* binding = target;
-                              BOOL result = binding.uiSwitch != nil;
-                              if (result)
-                              {
-                                  [binding.uiSwitch addTarget:binding
-                                                       action:@selector(targetValueDidChangeSender:)
-                                             forControlEvents:UIControlEventValueChanged];
-                              }
-                              return result;
-                          }
-                                        observationStopper:
-                          ^BOOL (id target)
-                          {
-                              AKABinding_UISwitch_stateBinding* binding = target;
-                              BOOL result = binding.uiSwitch != nil;
-                              if (result)
-                              {
-                                  [self.uiSwitch removeTarget:binding
-                                                       action:@selector(targetValueDidChangeSender:)
-                                             forControlEvents:UIControlEventValueChanged];
-                              }
-                              return result;
-                          }];
     }
     return self;
 }
 
-#pragma mark - Properties
-
-- (AKAProperty *)                            bindingTarget
+- (AKAProperty*)createTargetProperty
 {
-    return _bindingTarget;
+    return [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+            ^id (id target)
+            {
+                AKABinding_UISwitch_stateBinding* binding = target;
+                return @(binding.uiSwitch.on);
+            }
+                                      setter:
+            ^(id target, id value)
+            {
+                AKABinding_UISwitch_stateBinding* binding = target;
+                if ([value isKindOfClass:[NSNumber class]])
+                {
+                    binding.uiSwitch.on = ((NSNumber*)value).boolValue;
+                }
+            }
+                          observationStarter:
+            ^BOOL (id target)
+            {
+                AKABinding_UISwitch_stateBinding* binding = target;
+                BOOL result = binding.uiSwitch != nil;
+                if (result)
+                {
+                    [binding.uiSwitch addTarget:binding
+                                         action:@selector(targetValueDidChangeSender:)
+                               forControlEvents:UIControlEventValueChanged];
+                }
+                return result;
+            }
+                          observationStopper:
+            ^BOOL (id target)
+            {
+                AKABinding_UISwitch_stateBinding* binding = target;
+                BOOL result = binding.uiSwitch != nil;
+                if (result)
+                {
+                    [self.uiSwitch removeTarget:binding
+                                         action:@selector(targetValueDidChangeSender:)
+                               forControlEvents:UIControlEventValueChanged];
+                }
+                return result;
+            }];
 }
 
 #pragma mark - Change Observation

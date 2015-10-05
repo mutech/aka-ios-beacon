@@ -20,4 +20,6 @@
 
 @property(nonatomic, nullable) NSString* textForUndefinedValue;
 
+@property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
+
 @end

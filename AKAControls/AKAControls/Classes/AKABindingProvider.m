@@ -10,6 +10,7 @@
 
 @import AKACommons.NSString_AKATools;
 @import AKACommons.AKAErrors;
+@import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "AKABindingProvider.h"
 #import "AKABindingExpression_Internal.h"
@@ -124,6 +125,25 @@
                               context:(req_AKABindingContext)bindingContext
                              delegate:(opt_AKABindingDelegate)delegate
 {
+    AKABinding* binding = [self createBindingWithTarget:bindingTarget
+                                             expression:bindingExpression
+                                                context:bindingContext
+                                               delegate:delegate];
+    if (binding)
+    {
+        [self setupBinding:binding
+            withAttributes:bindingExpression.attributes
+                   context:bindingContext];
+    }
+
+    return binding;
+}
+
+- (req_AKABinding)createBindingWithTarget:(req_id)bindingTarget
+                               expression:(req_AKABindingExpression)bindingExpression
+                                  context:(req_AKABindingContext)bindingContext
+                                 delegate:(opt_AKABindingDelegate)delegate
+{
     AKATypePattern* targetTypePattern = self.specification.bindingTargetSpecification.typePattern;
     NSAssert(targetTypePattern == nil || [targetTypePattern matchesObject:bindingTarget], @"bindingTarget %@ does not match the type constraint %@ defined by the binding provider's specification.", bindingTarget, targetTypePattern);
 
@@ -134,13 +154,6 @@
                                                    expression:bindingExpression
                                                       context:bindingContext
                                                      delegate:delegate];
-    if (binding)
-    {
-        [self setupBinding:binding
-            withAttributes:bindingExpression.attributes
-                   context:bindingContext];
-    }
-
     return binding;
 }
 
@@ -174,6 +187,7 @@
                      }
                      break;
                  }
+
                  case AKABindingAttributeUseAssignExpressionToBindingProperty:
                  {
                      NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
@@ -187,6 +201,36 @@
                      }
                      break;
                  }
+
+                 case AKABindingAttributeUseBindToBindingProperty:
+                 {
+                     NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+                     if (bindingPropertyName == nil)
+                     {
+                         bindingPropertyName = attributeName;
+                     }
+                     if (attribute)
+                     {
+                         AKABindingProvider* provider = attributeSpec.bindingProvider;
+                         if (provider != nil)
+                         {
+                             AKAProperty* targetProperty = [AKAProperty propertyOfWeakKeyValueTarget:binding
+                                                                                             keyPath:bindingPropertyName
+                                                                                      changeObserver:nil];
+                             AKABinding* propertyBinding = [provider bindingWithTarget:targetProperty
+                                                                            expression:attribute
+                                                                               context:bindingContext
+                                                                              delegate:nil];
+                             // Keep the property binding alive
+                             // TODO: Generalize binding ownership (get rid of associative storage or at least of this local hack).
+                             // TODO: Check for retain cycles
+                             [binding aka_setAssociatedValue:propertyBinding
+                                                      forKey:[NSString stringWithFormat:@"_%@_binding", bindingPropertyName]];
+                         }
+                     }
+                     break;
+                 }
+
                  default:
                      break;
              }

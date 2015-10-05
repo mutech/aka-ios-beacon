@@ -13,7 +13,8 @@
 @interface TextFieldBindingViewController ()
 
 @property(nonatomic) AKAFormControl* formControl;
-@property(nonatomic) NSString* modelValue;
+@property(nonatomic) NSString* stringValue;
+@property(nonatomic) NSNumber* numberValue;
 
 @property (weak, nonatomic) IBOutlet UITextField *textField1;
 
@@ -27,8 +28,9 @@
 {
     [super viewDidLoad];
 
-    self.modelValue = @"Initial value";
-
+    self.stringValue = @"Initial value";
+    self.numberValue = @(12345.678);
+    
     self.formControl = [[AKAFormControl alloc] initWithDataContext:self configuration:nil];
     [self.formControl addControlsForControlViewsInViewHierarchy:self.view];
     [self.formControl startObservingChanges];

@@ -45,73 +45,45 @@
         [AKABindingProvider_UILabel_textBinding sharedInstance];
 
         NSDictionary* spec =
-        @{ @"binding":
-               @{ @"type":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
-                  @"bindingProvider":   [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding class]
-                  },
-           @"target":
-               @{ @"type":              [AKAPickerKeyboardTriggerView class]
-                  },
-           @"source":
-               @{
-                   @"primaryExpression":
-                       @{ @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
-                          },
-                   @"attributes":
-                       @{ @"choices":
-                              @{ @"required":        @YES,
-                                 @"expressionType":  @(labelTextBindingProvider.specification.bindingSourceSpecification.expressionType),
-                                 @"attributes":      labelTextBindingProvider.specification.bindingSourceSpecification.attributes ? labelTextBindingProvider.specification.bindingSourceSpecification.attributes : @{},
-                                 @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                                 @"bindingProperty": @"choicesBindingExpression"
-                                 },
-                          @"title":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                                 @"bindingProperty": @"titleBindingExpression",
-                                 },
-                          @"titleForUndefinedValue":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeString),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"titleForUndefinedValue"
-                                 },
-                          @"titleForOtherValue":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeString),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"titleForOtherValue"
-                                 },
+        @{ @"bindingType":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
+           @"bindingProviderType":      [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding class],
+           @"targetType":               [AKAPickerKeyboardTriggerView class],
+           @"expressionType": @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"attributes":
+               @{ @"choices":
+                      @{ @"required":        @YES,
+                         @"expressionType":  @(labelTextBindingProvider.specification.bindingSourceSpecification.expressionType),
+                         @"attributes":      labelTextBindingProvider.specification.bindingSourceSpecification.attributes ? labelTextBindingProvider.specification.bindingSourceSpecification.attributes : @{},
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"choicesBindingExpression"
+                         },
+                  @"title":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath),
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"titleBindingExpression",
+                         },
+                  @"titleForUndefinedValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"titleForOtherValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
 
-                          @"liveModelUpdates":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"liveModelUpdates"
-                                 },
-                          @"autoActivate":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"autoActivate"
-
-                                 },
-                          @"KBActivationSequence":
-                              @{ @"required":        @NO,
-                                 @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                                 @"attributes":      @{},
-                                 @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                                 @"bindingProperty": @"KBActivationSequence"
-                                 }
-                          },
-                   @"allowUnspecifiedAttributes": @NO
-                   }
+                  @"liveModelUpdates":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"autoActivate":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"KBActivationSequence":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         }
+                  }
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });

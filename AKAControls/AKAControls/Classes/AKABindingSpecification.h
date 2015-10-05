@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, AKABindingAttributeUse)
 {
     AKABindingAttributeUseAssignValueToBindingProperty,
     AKABindingAttributeUseAssignExpressionToBindingProperty,
+    AKABindingAttributeUseBindToBindingProperty
 };
 
 typedef NS_ENUM(NSInteger, AKABindingExpressionType)

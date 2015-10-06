@@ -73,12 +73,12 @@
 
 - (BOOL)hasOldValue
 {
-    return self.change[NSKeyValueChangeOldKey] != nil;
+    return self.subscription.providesOldValue && self.change[NSKeyValueChangeOldKey] != nil;
 }
 
 - (BOOL)hasNewValue
 {
-    return self.change[NSKeyValueChangeNewKey] != nil;
+    return self.subscription.providesNewValue && self.change[NSKeyValueChangeNewKey];
 }
 
 - (id)oldValue

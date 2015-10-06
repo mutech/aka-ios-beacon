@@ -49,20 +49,20 @@
  * Queries the current value of the subcriptions target item using the keyPath relative
  * to the publishers target object.
  */
-@property(nonatomic) id value;
+@property(nonatomic, readonly) id currentValue;
 
 /**
  * Suspends change notification to handlers temporarily. The subscription can subsequently
  * be resumed. Has no effect if the subscription is inactive (already resumed or
  * cancelled).
  */
-- (void)suspendSubscription;
+- (void)suspend;
 
 /**
  * Resumes a previously suspended subscription. Has no effect if the subscription is active
  * or if it was cancelled before.
  */
-- (void)resumeSubscription;
+- (void)resume;
 
 /**
  * Cancels the subscription and resets handlers (to release resources potitially bound to
@@ -70,6 +70,6 @@
  * If only the publisher holds a reference to the subscription, the instance will be
  * released.
  */
-- (void)cancelSubscription;
+- (void)cancel;
 
 @end

@@ -13,8 +13,8 @@
 #import "AKAControl.h"
 #import "AKAProperty.h"
 
-#import <AKACommons/NSObject+AKAAssociatedValues.h>
-#import <AKACommons/AKALog.h>
+@import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAAssociatedValues;
 
 @interface AKATextFieldBinding() <UITextFieldDelegate> {
     NSString* _originalText;

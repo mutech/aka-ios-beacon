@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <AKACommons/AKAProperty.h>
+@import UIKit;
+@import AKACommons.AKAProperty;
+
 #import "AKAThemeViewApplicability.h"
 
 @class AKASubviewsSpecification;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <AKACommons/AKAProperty.h>
+@import AKACommons.AKAProperty;
 
 #import "AKASwitchBinding.h"
 #import "AKASwitch.h"

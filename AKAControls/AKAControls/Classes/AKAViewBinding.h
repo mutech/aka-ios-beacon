@@ -8,8 +8,8 @@
 
 // Obsolete: TODO: remove once new binding infrastructure is finished
 
-#import <UIKit/UIKit.h>
-#import <AKACommons/AKAProperty.h>
+@import UIKit;
+@import AKACommons.AKAProperty;
 
 #import "AKAViewBindingConfiguration.h"
 

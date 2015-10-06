@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.UIView_AKAConstraintTools;
 #import "AKATheme.h"
 #import "AKAViewCustomization.h"
 #import "AKAThemeLayout.h"
-#import <AKACommons/UIView+AKAConstraintTools.h>
 
 @interface AKATheme()<
         AKAViewCustomizationDelegate,

@@ -10,7 +10,7 @@
 #import "AKATheme.h"
 #import "AKASubviewsSpecification.h"
 
-#import <AKACommons/AKAErrors.h>
+@import AKACommons.AKAErrors;
 
 @interface AKAThemableContainerView()
 

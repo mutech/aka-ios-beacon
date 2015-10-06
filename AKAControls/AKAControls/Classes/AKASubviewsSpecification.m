@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import AKACommons.NSString_AKATools;
+@import AKACommons.NSObject_AKASelectorTools;
 
-#import <AKACommons/NSString+AKATools.h>
-#import <AKACommons/NSObject+AKASelectorTools.h>
 #import "AKASubviewsSpecification.h"
 
 @interface AKASubviewsSpecification ()

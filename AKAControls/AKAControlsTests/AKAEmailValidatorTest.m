@@ -6,10 +6,11 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import AKACommons.AKALog;
+
 #import <XCTest/XCTest.h>
 #import <AKAControls/AKAEmailValidator.h>
-#import <AKACommons/AKALog.h>
 
 @interface AKAEmailValidatorTest : XCTestCase
 

@@ -21,7 +21,7 @@ target :AKACommons, :exclusive => true do
 end
 
 target :AKAControls, :exclusive => true do
-    pod 'AKACommons', :path => '.'
+    pod 'AKACommons', '~> 0.0.8' #:path => '.'
     target :AKAControlsTests, :exclusive => true do
         xcodeproj 'AKAControls/AKAControls.xcodeproj'
     end
@@ -30,7 +30,6 @@ end
 
 target :AKAControlsGallery, :exclusive => true do
     pod 'AKAControls', :path => '.'
-    pod 'AKACommons', :path => '.'
     target :AKAControlsGalleryUITests do
         xcodeproj 'AKAControls/AKAControlsGallery.xcodeproj'
     end
@@ -39,7 +38,6 @@ end
 
 target :AKAControlsDemo, :exclusive => true do
     pod 'AKAControls', :path => '.'
-    pod 'AKACommons', :path => '.'
     xcodeproj 'AKAControlsDemo/AKAControlsDemo.xcodeproj'
 end
 

@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKAControls;
+@import AKAControls.AKAFormControl;
 
 #import "TextFieldBindingViewController.h"
 

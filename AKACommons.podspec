@@ -11,7 +11,7 @@ LICENSE
     spec.summary       = 'Reusable components.'
     spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.8-b002' }
 
-    spec.source_files  = 'AKACommons/AKACommons/**/*.{h,m}'
+    spec.source_files  = 'AKACommons/AKACommons/Classes/**/*.{h,m}'
     #spec.private_header_files = 'AKACommons/AKACommons/**/*_Internal.h'
 
     spec.platform      = :ios, "8.0"
@@ -20,4 +20,5 @@ LICENSE
     spec.framework     = 'Foundation'
     spec.module_name   = 'AKACommons'
 
+#    spec.module_map    =
 end

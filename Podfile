@@ -13,7 +13,7 @@ use_frameworks!
 platform :ios, '8.0'
 
 target :AKACommons, :exclusive => true do
-    pod 'CocoaLumberjack', '~> 2.0.1'
+    #pod 'CocoaLumberjack', '~> 2.0.1'
     target :AKACommonsTests, :exclusive => true do
 	xcodeproj 'AKACommons/AKACommons.xcodeproj'
     end
@@ -41,8 +41,8 @@ target :AKAControlsDemo, :exclusive => true do
     xcodeproj 'AKAControlsDemo/AKAControlsDemo.xcodeproj'
 end
 
-post_install do |installer|
-    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
-        configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
-    end
-end
+#post_install do |installer|
+#    installer.pods_project.build_configuration_list.build_configurations.each do |configuration|
+#        configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+#    end
+#end

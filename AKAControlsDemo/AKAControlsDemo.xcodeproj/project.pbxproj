@@ -18,7 +18,7 @@
 		8EBA33461ABAFA82007436AA /* AKAControlsDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBA33451ABAFA82007436AA /* AKAControlsDemoTests.m */; };
 		8EBD27471AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD27461AEA4C08009A68F2 /* AKAFormTableViewControllerDemo.m */; };
 		8EECDABD1AC97C53001A6826 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 8EECDABC1AC97C53001A6826 /* Podfile */; };
-		ED8AAF800C94DEA7BAF7475D /* Pods_AKAControlsDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3569AD6CB43A7544DEA5267C /* Pods_AKAControlsDemo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		ED8AAF800C94DEA7BAF7475D /* Pods_AKAControlsDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3569AD6CB43A7544DEA5267C /* Pods_AKAControlsDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

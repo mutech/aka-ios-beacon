@@ -13,7 +13,7 @@
 #import "AKABindingContextProtocol.h"
 #import "AKAKeyboardActivationSequence.h"
 
-// Obsolete: TODO: remove if new binding infrastruct is finished:
+// Obsolete: TODO: remove when new binding infrastruct is finished:
 #import "AKAControlConverterProtocol.h"
 #import "AKAControlValidatorProtocol.h"
 #import "AKAViewBinding.h"

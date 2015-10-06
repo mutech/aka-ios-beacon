@@ -13,7 +13,7 @@ use_frameworks!
 platform :ios, '8.0'
 
 target :AKACommons, :exclusive => true do
-    #pod 'CocoaLumberjack', '~> 2.0.1'
+    pod 'CocoaLumberjack', '~> 2.0.1'
     target :AKACommonsTests, :exclusive => true do
 	xcodeproj 'AKACommons/AKACommons.xcodeproj'
     end

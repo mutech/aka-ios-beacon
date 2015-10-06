@@ -5,7 +5,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAKVOPublisher.h"
+#import "AKAKVOPublisher_Internal.h"
 #import "AKAKVOSubscription_Internal.h"
 #import "AKAKVOChangeEvent.h"
 
@@ -19,10 +19,17 @@
 @implementation AKAKVOPublisher
 
 @synthesize target = _target;
+@synthesize defaultNotificationQueue = _defaultNotificationQueue;
 
 #pragma mark - Initialization
 
 - (instancetype)initWithTarget:(NSObject*)target
+{
+    return [self initWithTarget:target defaultNotificationQueue:nil];
+}
+
+- (instancetype)initWithTarget:(NSObject*)target
+      defaultNotificationQueue:(dispatch_queue_t)notificationQueue
 {
     self = [super init];
     if (self)
@@ -32,6 +39,7 @@
             self.activeSubscriptions = [[NSMutableSet alloc] init];
             self.suspendedSubscriptions = [[NSMutableSet alloc] init];
             _target = target;
+            _defaultNotificationQueue = notificationQueue;
         }
     }
     return self;
@@ -48,9 +56,18 @@
     return result;
 }
 
++ (AKAKVOPublisher *)publisherForTarget:(NSObject *)target
+              defaultNotificationQueue:(dispatch_queue_t)notificationQueue
+{
+    AKAKVOPublisher* result = [[AKAKVOPublisher alloc] initWithTarget:target
+                                             defaultNotificationQueue:notificationQueue];
+    return result;
+}
+
 #pragma mark - Properties
 
 - (NSObject *)target { return _target; }
+- (dispatch_queue_t)defaultNotificationQueue { return _defaultNotificationQueue; }
 
 #pragma mark - Subscriptions
 
@@ -81,10 +98,28 @@
                           provideOldValue:(BOOL)provideOldValue
                           provideNewValue:(BOOL)provideNewValue
 {
+    return [self subscribeToKeyPath:keyPath
+                  notificationQueue:nil
+                subscriptionStarted:subscriptionStarted
+                    valueWillChange:valueWillChange
+                     valueDidChange:valueDidChange
+                    provideOldValue:provideOldValue
+                    provideNewValue:provideNewValue];
+}
+
+- (AKAKVOSubscription*)subscribeToKeyPath:(NSString*)keyPath
+                        notificationQueue:(dispatch_queue_t)notificationQueue
+                      subscriptionStarted:(void(^)(AKAKVOSubscription* s))subscriptionStarted
+                          valueWillChange:(void(^)(AKAKVOChangeEvent* e))valueWillChange
+                           valueDidChange:(void(^)(AKAKVOChangeEvent* e))valueDidChange
+                          provideOldValue:(BOOL)provideOldValue
+                          provideNewValue:(BOOL)provideNewValue
+{
     AKAKVOSubscription* result;
 
     result = [[AKAKVOSubscription alloc] initWithPublisher:self
                                                   keyPath:keyPath
+                                         notificationQueue:notificationQueue
                                       subscriptionStarted:subscriptionStarted
                                           valueWillChange:valueWillChange
                                            valueDidChange:valueDidChange
@@ -266,7 +301,8 @@
                          context:(__bridge void *)(subscription)];
         if (subscription.subscriptionStartedHandler)
         {
-            subscription.subscriptionStartedHandler(subscription);
+            [self performBlock:^{ subscription.subscriptionStartedHandler(subscription); }
+                       inQueue:[subscription notificationQueue]];
         }
         [subscription publisherActivatedSubscription:self];
     }
@@ -307,7 +343,37 @@
 {
     AKAKVOChangeEvent* event = [[AKAKVOChangeEvent alloc] initWithSubscription:subscription
                                                                         change:change];
-    subscription.valueWillChangeHandler(event);
+    [self publishChangeEvent:event];
+}
+
+- (void)publishChangeEvent:(AKAKVOChangeEvent*)event
+{
+    if (event.isPriorNotification)
+    {
+        event.subscription.valueWillChangeHandler(event);
+    }
+    else
+    {
+        [self performBlock:^{ event.subscription.valueDidChangeHandler(event); }
+                   inQueue:event.subscription.notificationQueue];
+    }
+}
+
+- (void)performBlock:(void(^)())block
+             inQueue:(dispatch_queue_t)queue
+{
+    if (queue != nil)
+    {
+        dispatch_async(queue, block);
+    }
+    else if (self.defaultNotificationQueue != nil)
+    {
+        dispatch_async(self.defaultNotificationQueue, block);
+    }
+    else
+    {
+        block();
+    }
 }
 
 @end

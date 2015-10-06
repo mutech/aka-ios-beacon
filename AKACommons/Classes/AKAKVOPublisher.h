@@ -9,6 +9,7 @@
 
 #import "AKAKVOSubscription.h"
 #import "AKAKVOChangeEvent.h"
+#import "NSObject+AKAConcurrencyTools.h" // Convenience methods
 
 @interface AKAKVOPublisher : NSObject
 
@@ -80,6 +81,7 @@
 - (BOOL)enumerateActiveSubscriptionsUsingBlock:(void(^)(AKAKVOSubscription* subscription, BOOL* stop))block;
 - (BOOL)enumerateSuspendedSubscriptionsUsingBlock:(void(^)(AKAKVOSubscription* subscription, BOOL* stop))block;
 - (BOOL)enumerateSubscriptionsUsingBlock:(void(^)(AKAKVOSubscription* subscription, BOOL* stop))block;
+
 
 - (void)suspendAllActiveSubscriptions;
 - (void)suspendSubscription:(AKAKVOSubscription*)subscription;

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "NSIndexPath+AKARowAndSectionAsInteger.h"
+//#import "NSIndexPath+AKARowAndSectionAsInteger.h"
+@import AKACommons;
 
 @interface NSIndexPath_AKARowAndSectionAsIntegerTests : XCTestCase
 

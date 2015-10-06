@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8E225FF61BAEF8E200BC070F /* AKANullability.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E225FF51BAEEB4A00BC070F /* AKANullability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E29292A1BC434FA00B666B3 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2929291BC434FA00B666B3 /* Dummy.swift */; settings = {ASSET_TAGS = (); }; };
 		8E3F06CC1BBC84DD00E2B164 /* AKAKVOChangeEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */; settings = {ASSET_TAGS = (); }; };
 		8E3F06CD1BBC84DD00E2B164 /* AKAKVOChangeEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */; settings = {ASSET_TAGS = (); }; };
 		8E3F06CE1BBC84DD00E2B164 /* AKAKVOPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */; settings = {ASSET_TAGS = (); }; };
@@ -97,6 +98,7 @@
 		592748D7CA6CFED1DEB67A8D /* Pods-AKACommons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKACommons.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKACommons/Pods-AKACommons.debug.xcconfig"; sourceTree = "<group>"; };
 		5C4648AFD0185172FB8FD368 /* Pods-AKACommons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKACommons.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKACommons/Pods-AKACommons.release.xcconfig"; sourceTree = "<group>"; };
 		8E225FF51BAEEB4A00BC070F /* AKANullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKANullability.h; sourceTree = "<group>"; };
+		8E2929291BC434FA00B666B3 /* Dummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOChangeEvent.h; sourceTree = "<group>"; };
 		8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKVOChangeEvent.m; sourceTree = "<group>"; };
 		8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKVOPublisher.h; sourceTree = "<group>"; };
@@ -172,7 +174,6 @@
 		8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+AKATools.m"; sourceTree = "<group>"; };
 		8EFBE85F1BBC6343004E264F /* AKAMutableOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		8EFBE8601BBC6343004E264F /* AKAMutableOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMutableOrderedDictionary.m; sourceTree = "<group>"; };
-		D68E1B59A0220B66D1F7D2C1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA66AE127BA0FDD818B553B8 /* Pods_AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -239,6 +240,7 @@
 				8E6C86EB1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m */,
 				8E6C86EC1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.h */,
 				8E6C86ED1AF8E7D600FDAD7B /* UIView+AKAReusableViewsSupport.m */,
+				8E2929291BC434FA00B666B3 /* Dummy.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -403,7 +405,6 @@
 		C5798B8136FBB491E2427ED2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D68E1B59A0220B66D1F7D2C1 /* Pods.framework */,
 				EA66AE127BA0FDD818B553B8 /* Pods_AKACommons.framework */,
 			);
 			name = Frameworks;
@@ -613,6 +614,7 @@
 				8E6C86F91AF8E7D600FDAD7B /* AKANetworkingErrors.m in Sources */,
 				8E6C87021AF8E7D600FDAD7B /* AKATVDataSourceSpecification.m in Sources */,
 				8E6C871A1AF8E7D600FDAD7B /* UIView+AKAHierarchyVisitor.m in Sources */,
+				8E29292A1BC434FA00B666B3 /* Dummy.swift in Sources */,
 				8E6C87061AF8E7D600FDAD7B /* AKATVProxy.m in Sources */,
 				8E6C86EF1AF8E7D600FDAD7B /* AKAErrors.m in Sources */,
 				8E6C86F51AF8E7D600FDAD7B /* AKAIPNetmask.m in Sources */,
@@ -793,6 +795,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 592748D7CA6CFED1DEB67A8D /* Pods-AKACommons.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -809,6 +812,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -816,6 +820,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5C4648AFD0185172FB8FD368 /* Pods-AKACommons.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

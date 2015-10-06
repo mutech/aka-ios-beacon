@@ -11,6 +11,7 @@
 #import "AKABindingProvider_UILabel_textBinding.h"
 
 #import "AKABinding_AKABinding_numberFormatter.h"
+#import "AKABinding_AKABinding_dateFormatter.h"
 
 #pragma mark - AKABindingProvider_UILabel_textBinding - Implementation
 #pragma mark -
@@ -51,6 +52,16 @@
                          @"allowUnspecifiedAttributes": @YES,
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"numberFormatter"
+                         },
+                  @"dateFormatter":
+                      @{ @"bindingType":     [AKABinding_AKABinding_dateFormatter class],
+                         @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
+                         @"targetType":      [AKABinding class],
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
+                             AKABindingExpressionTypeNone),
+                         @"allowUnspecifiedAttributes": @YES,
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"dateFormatter"
                          },
                   @"textForUndefinedValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeString),
@@ -175,6 +186,18 @@
         else
         {
             *targetValueStore = ((NSNumber*)sourceValue).stringValue;
+        }
+        result = YES;
+    }
+    else if ([sourceValue isKindOfClass:[NSDate class]])
+    {
+        if (self.dateFormatter)
+        {
+            *targetValueStore = [self.dateFormatter stringFromDate:sourceValue];
+        }
+        else
+        {
+            *targetValueStore = ((NSDate*)sourceValue).description;
         }
         result = YES;
     }

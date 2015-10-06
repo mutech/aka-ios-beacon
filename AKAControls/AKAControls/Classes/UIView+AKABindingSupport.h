@@ -14,10 +14,32 @@
 
 @class AKABinding;
 
+
+#pragma mark - UIView+AKABindingSupport - Public Interface
+#pragma mark -
+
+/**
+ * Provides methods to loosely associate binding expressions to views implementing the storage
+ * facility for binding properties which can be added to existing views by defining categories.
+ *
+ * Binding support methods defined here are typically used through AKABindingProviders which
+ * take care of parsing and serializing binding expressions.
+ */
 @interface UIView(AKABindingSupport)
 
+/**
+ * The names of all properties of this view which define a binding expression.
+ */
 @property(nonatomic, readonly, nullable) NSArray<NSString*>* aka_definedBindingPropertyNames;
 
+/**
+ * The binding expression associated with the specified property or @c nil if the property
+ * does not have a defined binding expression.
+ *
+ * @param selector the selector identifying the properties getter.
+ *
+ * @return the binding expression associated with the specified property.
+ */
 - (opt_AKABindingExpression)aka_bindingExpressionForProperty:(req_SEL)selector;
 
 - (opt_AKABindingExpression)aka_bindingExpressionForPropertyNamed:(req_NSString)key;

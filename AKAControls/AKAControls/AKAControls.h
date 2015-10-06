@@ -105,7 +105,10 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/UIView+AKABindingSupport.h>
 #import <AKAControls/UITextField+AKAIBBindingProperties.h>
 
+#import <AKAControls/AKAPropertyBinding.h>
+#import <AKAControls/AKABinding_AKABinding_formatter.h>
 #import <AKAControls/AKABinding_AKABinding_numberFormatter.h>
+#import <AKAControls/AKABinding_AKABinding_dateFormatter.h>
 
 #import <AKAControls/AKAPickerKeyboardTriggerView.h>
 #import <AKAControls/AKACustomKeyboardResponderView.h>

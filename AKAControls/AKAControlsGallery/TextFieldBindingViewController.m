@@ -15,6 +15,7 @@
 @property(nonatomic) AKAFormControl* formControl;
 @property(nonatomic) NSString* stringValue;
 @property(nonatomic) NSNumber* numberValue;
+@property(nonatomic) NSDate* dateValue;
 
 @property (weak, nonatomic) IBOutlet UITextField *textField1;
 
@@ -29,8 +30,9 @@
     [super viewDidLoad];
 
     self.stringValue = @"Initial value";
-    self.numberValue = @(12345.678);
-    
+    self.numberValue = @(-12345.6789);
+    self.dateValue = [NSDate new];
+
     self.formControl = [[AKAFormControl alloc] initWithDataContext:self configuration:nil];
     [self.formControl addControlsForControlViewsInViewHierarchy:self.view];
     [self.formControl startObservingChanges];

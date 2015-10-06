@@ -21,5 +21,6 @@
 @property(nonatomic, nullable) NSString* textForUndefinedValue;
 
 @property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
+@property(nonatomic, nullable) NSDateFormatter* dateFormatter;
 
 @end

@@ -156,7 +156,7 @@
 		8E7231F31AF8E87300D647A9 /* KVCValidationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVCValidationTest.m; sourceTree = "<group>"; };
 		8E7231F41AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSIndexPath_AKARowAndSectionAsIntegerTests.m; sourceTree = "<group>"; };
 		8E7231F51AF8E87300D647A9 /* SwiftTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftTest.swift; sourceTree = "<group>"; };
-		8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = ../../AKACommons.podspec; sourceTree = "<group>"; };
+		8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKACommons.podspec; path = /Users/mu/git/aka.commons/AKACommons.podspec; sourceTree = "<absolute>"; };
 		8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKACommons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E90F9451AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E90F9461AF8E69A00CBBB52 /* AKACommons.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKACommons.h; sourceTree = "<group>"; };
@@ -286,6 +286,7 @@
 		8E90F9371AF8E69A00CBBB52 = {
 			isa = PBXGroup;
 			children = (
+				8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */,
 				8E90F9431AF8E69A00CBBB52 /* AKACommons */,
 				8E90F9501AF8E69A00CBBB52 /* AKACommonsTests */,
 				8E90F9421AF8E69A00CBBB52 /* Products */,
@@ -316,7 +317,6 @@
 		8E90F9441AF8E69A00CBBB52 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */,
 				8E90F9451AF8E69A00CBBB52 /* Info.plist */,
 			);
 			name = "Supporting Files";

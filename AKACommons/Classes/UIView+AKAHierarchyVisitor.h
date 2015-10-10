@@ -15,4 +15,7 @@
 - (BOOL)aka_enumerateSelfAndSubviewsUsingBlock:(void(^)(UIView* view, BOOL* stop, BOOL* doNotDescend))visitor
 ;
 
+- (id)aka_superviewOfType:(Class)type;
+- (id)aka_selfOrSuperviewOfType:(Class)type;
+
 @end

@@ -81,6 +81,8 @@ typedef UILabel* _Nullable                              opt_UILabel;
 typedef UILabel* _Nonnull                               req_UILabel;
 typedef UITextField* _Nullable                          opt_UITextField;
 typedef UITextField* _Nonnull                           req_UITextField;
+typedef UITextView* _Nullable                           opt_UITextView;
+typedef UITextView* _Nonnull                            req_UITextView;
 typedef UISwitch* _Nullable                             opt_UISwitch;
 typedef UISwitch* _Nonnull                              req_UISwitch;
 

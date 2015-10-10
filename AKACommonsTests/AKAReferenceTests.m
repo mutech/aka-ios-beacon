@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 
-@import AKACommons;
+@import AKACommons.AKAReference;
 
 @interface AKAReferenceTests : XCTestCase
 

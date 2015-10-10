@@ -348,14 +348,15 @@
 
 - (void)publishChangeEvent:(AKAKVOChangeEvent*)event
 {
+    AKAKVOSubscription* subscription = event.subscription;
     if (event.isPriorNotification)
     {
-        event.subscription.valueWillChangeHandler(event);
+        subscription.valueWillChangeHandler(event);
     }
     else
     {
-        [self performBlock:^{ event.subscription.valueDidChangeHandler(event); }
-                   inQueue:event.subscription.notificationQueue];
+        [self performBlock:^{ subscription.valueDidChangeHandler(event); }
+                   inQueue:subscription.notificationQueue];
     }
 }
 

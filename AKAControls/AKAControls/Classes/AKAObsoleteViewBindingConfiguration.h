@@ -79,7 +79,7 @@
  * to use control views, or if they are missing, binding configurations can be used
  * instead.
  */
-@interface AKAViewBindingConfiguration: NSObject<AKAControlConfigurationProtocol, NSCoding>
+@interface AKAObsoleteViewBindingConfiguration : NSObject<AKAControlConfigurationProtocol, NSCoding>
 
 #pragma mark - Structural configuration
 /// @name Structural configuration

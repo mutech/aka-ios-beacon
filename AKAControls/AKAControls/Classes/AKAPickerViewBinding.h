@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBinding.h"
 
 #pragma mark - AKATextFieldBinding
 #pragma mark -
@@ -19,7 +19,7 @@
  *
  * @bug Support for UITextField's is not yet implemented.
  */
-@interface AKAPickerViewBinding : AKAViewBinding
+@interface AKAPickerViewBinding : AKAObsoleteViewBinding
 @end
 
 #pragma mark - AKATextFieldBindingConfiguration
@@ -30,7 +30,7 @@
  * which is supposed to be used to configure bindings of UITextField instances which
  * are not AKATextField's.
  */
-@interface AKAPickerBindingConfiguration: AKAViewBindingConfiguration
+@interface AKAPickerBindingConfiguration: AKAObsoleteViewBindingConfiguration
 
 #pragma mark - Interface Builder Properties
 /// @name Interface Builder Properties
@@ -50,7 +50,7 @@
 @end
 
 
-@interface AKAPickerViewBindingConfiguration: AKAViewBindingConfiguration
+@interface AKAPickerViewBindingConfiguration: AKAObsoleteViewBindingConfiguration
 
 @property(nonatomic, strong) /*IBInspectable*/ NSString* pickerValuesKeyPath;
 @property(nonatomic, strong) /*IBInspectable*/ NSString* titleKeyPath;

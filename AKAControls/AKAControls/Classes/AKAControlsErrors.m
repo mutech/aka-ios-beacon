@@ -188,7 +188,7 @@ static BOOL _attemptRecoveryActions = YES;
 #pragma mark - Binding Errors
 
 + (void)invalidAttemptToBindView:(id)view
-                       toBinding:(AKAViewBinding*)binding
+                       toBinding:(AKAObsoleteViewBinding *)binding
 {
     NSString* message = [NSString stringWithFormat:@"Invalid attempt to bind view %@ to binding %@", view, binding];
     [self handleErrorWithMessage:message recovery:nil];

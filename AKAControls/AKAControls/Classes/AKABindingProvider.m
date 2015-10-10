@@ -30,6 +30,9 @@
 
 + (instancetype)sharedInstanceOfType:(Class)type
 {
+#if !TARGET_INTEFACE_BUILDER
+    return [type sharedInstance];
+#else
     NSParameterAssert(type != nil);
     NSParameterAssert([type isSubclassOfClass:[AKABindingProvider class]]);
 
@@ -49,6 +52,7 @@
         }
     }
     return result;
+#endif
 }
 
 + (instancetype)sharedInstanceForSpecificationItem:(id)spec

@@ -105,7 +105,7 @@
 
         _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-        AKAViewBinding* binding = self.aka_binding;
+        AKAObsoleteViewBinding * binding = self.aka_binding;
         NSAssert(binding != nil, @"TODO: may need defered initialization here");
         if (binding != nil)
         {
@@ -137,7 +137,10 @@
 {
     [self.aka_binding viewWillActivate];
     BOOL result = [super becomeFirstResponder];
-    [self.aka_binding viewDidActivate];
+    if (result)
+    {
+        [self.aka_binding viewDidActivate];
+    }
     return result;
 }
 
@@ -145,7 +148,10 @@
 {
     [self.aka_binding viewWillDeactivate];
     BOOL result = [super resignFirstResponder];
-    [self.aka_binding viewDidDeactivate];
+    if (result)
+    {
+        [self.aka_binding viewDidDeactivate];
+    }
     return result;
 }
 

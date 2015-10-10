@@ -6,16 +6,17 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKATVMultiplexedDataSource;
+@import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAAssociatedValues;
+@import AKACommons.UIView_AKAHierarchyVisitor;
+
 #import "AKAControl_Protected.h"
 #import "AKAFormTableViewController.h"
 #import "AKAEditorControlView.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKAControlDelegate.h"
-
-@import AKACommons.AKATVMultiplexedDataSource;
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAAssociatedValues;
 
 @interface AKAArrayTableViewDataSourceAndDelegate: NSObject<UITableViewDelegate, UITableViewDataSource>
 
@@ -569,5 +570,106 @@ static NSString* const defaultDataSourceKey = @"default";
 
     return result;
 }
+
+#pragma mark - Managing Activation
+
+- (NSIndexPath*)indexPathForInvisibleCell:(UITableViewCell*)cell
+{
+    NSIndexPath* result = nil;
+    for (NSInteger si = 0; si < [self numberOfSectionsInTableView:self.tableView]; ++si)
+    {
+        for(NSInteger ri = 0; ri < [self tableView:self.tableView numberOfRowsInSection:si]; ++ri)
+        {
+            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:ri inSection:si];
+            id c = [self.tableView.dataSource tableView:self.tableView cellForRowAtIndexPath:indexPath];
+            if (c == cell)
+            {
+                result = indexPath;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+
+- (BOOL)tableView:(UITableView*)tableView
+     scrollToCell:(UITableViewCell*)cell
+ atScrollPosition:(UITableViewScrollPosition)scrollPosition
+         animated:(BOOL)animated
+{
+    BOOL result = NO;
+    NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+    if (indexPath == nil)
+    {
+        indexPath = [self indexPathForInvisibleCell:cell];
+    }
+    if (indexPath && indexPath.row != NSNotFound)
+    {
+        result = YES;
+        [self.tableView scrollToRowAtIndexPath:indexPath
+                              atScrollPosition:UITableViewScrollPositionNone
+                                      animated:animated];
+    }
+    return result;
+}
+
+- (void)                                              control:(req_AKAControl)control
+                                                      binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder
+{
+    if ([responder isKindOfClass:[UIView class]])
+    {
+        UIView* view = (UIView*)responder;
+        UITableViewCell* cell = (UITableViewCell*)[view aka_superviewOfType:[UITableViewCell class]];
+        if (cell != nil)
+        {
+            if (![[self.tableView visibleCells] containsObject:cell])
+            {
+                // TODO: This should be animated, but if we animate it, a subsequent
+                // keyboard resize (resulting from possible change of suggestion bar)
+                // will not be animated
+                [self tableView:self.tableView
+                   scrollToCell:cell
+               atScrollPosition:UITableViewScrollPositionBottom
+                       animated:YES];
+            }
+        }
+    }
+}
+
+- (BOOL)                control:(AKAControl *)control
+                validationState:(NSError *)oldError
+                      changedTo:(NSError *)newError
+ updateValidationMessageDisplay:(void (^)())block
+{
+    __block BOOL result = NO;
+    // Make sure the table view cell's layout is updated to accomodate for a possible error message
+    [UIView animateWithDuration:.2
+                          delay:0
+                        options:(UIViewAnimationOptionCurveEaseInOut)
+                     animations:^
+     {
+         block();
+         [self.tableView beginUpdates];
+         [self.tableView endUpdates];
+
+         UITableViewCell* cell = (id)[control.view aka_superviewOfType:[UITableViewCell class]];
+         if (cell)
+         {
+             [self tableView:self.tableView
+                scrollToCell:cell
+            atScrollPosition:UITableViewScrollPositionNone
+                    animated:YES];
+         }
+
+         result = YES;
+     }
+                     completion:^(BOOL finished) {
+
+                     }];
+    return result;
+}
+
 
 @end

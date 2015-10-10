@@ -9,11 +9,13 @@
 #import "AKABindingProvider.h"
 #import "AKAKeyboardActivationSequence.h"
 
+
 @interface AKABindingProvider_UITextField_textBinding: AKABindingProvider
 
 + (instancetype)sharedInstance;
 
 @end
+
 
 @interface AKABinding_UITextField_textBinding: AKABinding<AKAKeyboardActivationSequenceItemProtocol>
 

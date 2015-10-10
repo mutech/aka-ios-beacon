@@ -51,4 +51,23 @@
     return !stop;
 }
 
+- (id)aka_superviewOfType:(Class)type
+{
+    return [self.superview aka_selfOrSuperviewOfType:type];
+}
+
+- (id)aka_selfOrSuperviewOfType:(Class)type
+{
+    UIView* result = nil;
+    if ([self isKindOfClass:type])
+    {
+        result = self;
+    }
+    else
+    {
+        result = [self.superview aka_selfOrSuperviewOfType:type];
+    }
+    return result;
+}
+
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "AKAViewBindingConfiguration.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
 
 @class AKAControl;
 
@@ -25,7 +25,7 @@
  */
 @protocol AKAControlViewProtocol
 
-@property (nonatomic, readonly) AKAViewBindingConfiguration* bindingConfiguration;
+@property (nonatomic, readonly) AKAObsoleteViewBindingConfiguration * bindingConfiguration;
 
 @optional
 /**

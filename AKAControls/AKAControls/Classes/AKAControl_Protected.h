@@ -30,7 +30,7 @@
  * @note This property should only be used by inheriting classes. Use the methods provided by AKAControl and its subclasses instead of calling binding methods directly. Please file a bug report if functionality is missing.
  *
  */
-@property(nonatomic, strong) AKAViewBinding* viewBinding;
+@property(nonatomic, strong) AKAObsoleteViewBinding * viewBinding;
 
 /**
  * The AKAProperty providing access to the controls modelValue.

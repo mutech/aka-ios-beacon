@@ -48,7 +48,7 @@
     return AKATableViewCellBindingConfiguration.new;
 }
 
-- (AKAViewBindingConfiguration*)bindingConfiguration
+- (AKAObsoleteViewBindingConfiguration *)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {

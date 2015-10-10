@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBindingConfiguration.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
 
-@interface AKACompositeViewBindingConfiguration : AKAViewBindingConfiguration
+@interface AKACompositeViewBindingConfiguration : AKAObsoleteViewBindingConfiguration
 
 @end

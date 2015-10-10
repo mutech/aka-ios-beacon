@@ -27,7 +27,7 @@
 - (BOOL)insertControl:(AKAControl*)control atIndex:(NSUInteger)index;
 
 - (AKAControl*)createControlForView:(UIView*)view
-                  withConfiguration:(AKAViewBindingConfiguration*)configuration;
+                  withConfiguration:(AKAObsoleteViewBindingConfiguration *)configuration;
 
 - (BOOL)removeControlAtIndex:(NSUInteger)index;
 

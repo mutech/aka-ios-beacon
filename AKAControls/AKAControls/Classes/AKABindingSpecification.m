@@ -110,11 +110,11 @@
     }
     else if (value != nil)
     {
-        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: %@.", key, value);
+        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: '%@'.", key, value);
     }
     else if (required)
     {
-        NSAssert(NO, @"Dictionary %@ does not contain a value for key %@, expected an NSNumber (enumeration value).", self, key);
+        NSAssert(NO, @"Dictionary %@ does not contain a value for key '%@', expected an NSNumber (enumeration value).", self, key);
     }
     return result;
 }
@@ -130,7 +130,7 @@
     }
     else if (value != nil)
     {
-        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: %@.", key, value);
+        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: '%@'.", key, value);
     }
     else
     {

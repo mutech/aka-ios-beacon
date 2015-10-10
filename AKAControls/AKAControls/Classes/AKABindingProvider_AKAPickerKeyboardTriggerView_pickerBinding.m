@@ -87,6 +87,7 @@
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });
+
     return result;
 }
 

@@ -17,21 +17,21 @@
 
 static const char bindingAssociationKey;
 
-- (AKAViewBinding*)aka_binding
+- (AKAObsoleteViewBinding *)aka_binding
 {
     id result = objc_getAssociatedObject(self, &bindingAssociationKey);
-    NSAssert(result == nil || [result isKindOfClass:[AKAViewBinding class]],
+    NSAssert(result == nil || [result isKindOfClass:[AKAObsoleteViewBinding class]],
              @"Value for associated property '%s' in %@ is not an instance of %@",
              sel_getName(@selector(aka_binding)),
              self,
-             NSStringFromClass([AKAViewBinding class]));
+             NSStringFromClass([AKAObsoleteViewBinding class]));
 
     return result;
 }
 
-- (void)setAka_binding:(AKAViewBinding *)binding
+- (void)setAka_binding:(AKAObsoleteViewBinding *)binding
 {
-    AKAViewBinding* oldBinding = self.aka_binding;
+    AKAObsoleteViewBinding * oldBinding = self.aka_binding;
     if (binding != oldBinding)
     {
         if (YES) //oldBinding == nil && binding.view == self)

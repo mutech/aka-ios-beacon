@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import AKACommons
+import AKACommons.AKALog;
 
 class SwiftTest: XCTestCase {
 

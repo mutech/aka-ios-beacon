@@ -12,12 +12,9 @@
 #import "AKATableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
 #import "AKAControlViewProtocol.h"
-#import "AKAViewBinding.h"
-#import "AKAKeyboardActivationSequence.h"
 #import "AKAControlsErrors_Internal.h"
 
 // next gen binding
-#import "UIView+AKABindingSupport.h"
 #import "AKABindingProvider.h"
 @import AKACommons.NSObject_AKAAssociatedValues; // TODO: remove when viewBindings property is implemented
 @import AKACommons.UIView_AKAHierarchyVisitor;
@@ -143,14 +140,14 @@
 #pragma mark Adding and Removing Member Controls
 
 - (AKAControl*)createControlForView:(UIView*)view
-                  withConfiguration:(AKAViewBindingConfiguration*)configuration
+                  withConfiguration:(AKAObsoleteViewBindingConfiguration *)configuration
 {
     Class controlType = configuration.preferredControlType;
     AKAControl* control = [[controlType alloc] initWithOwner:self
                                                configuration:configuration];
 
     Class bindingType = configuration.preferredBindingType;
-    AKAViewBinding* binding = [[bindingType alloc] initWithView:view
+    AKAObsoleteViewBinding * binding = [[bindingType alloc] initWithView:view
                                                   configuration:configuration
                                                        delegate:control];
     control.viewBinding = binding;

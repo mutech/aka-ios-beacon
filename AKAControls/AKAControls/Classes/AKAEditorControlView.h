@@ -11,7 +11,7 @@
 #import "AKAThemableCompositeControlView.h"
 
 #import "AKACompositeViewBindingConfiguration.h"
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBinding.h"
 
 @interface AKAEditorBindingConfiguration : AKACompositeViewBindingConfiguration
 
@@ -106,5 +106,5 @@ IB_DESIGNABLE
 
 @end
 
-@interface AKAEditorBinding: AKAViewBinding
+@interface AKAEditorBinding: AKAObsoleteViewBinding
 @end

@@ -6,7 +6,16 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
+@import UIKit;
+
 #import "AKACustomKeyboardResponderView.h"
+
+@interface AKACustomKeyboardResponderView ()
+
+@property(nonatomic, strong) IBOutlet UITapGestureRecognizer* currentTapToOpenGestureRecognizer;
+@property(nonatomic) BOOL highlight;
+
+@end
 
 @implementation AKACustomKeyboardResponderView
 
@@ -20,6 +29,71 @@
     }
 }
 
+#pragma mark - Tap To Open
+
+- (BOOL)tapToOpen
+{
+    return self.currentTapToOpenGestureRecognizer != nil;
+}
+
+- (void)setTapToOpen:(BOOL)tapToOpen
+{
+    if (tapToOpen != self.tapToOpen)
+    {
+        if (tapToOpen)
+        {
+            self.currentTapToOpenGestureRecognizer = self.tapToOpenGestureRecognizer;
+
+            if (!self.currentTapToOpenGestureRecognizer)
+            {
+                self.currentTapToOpenGestureRecognizer = [UITapGestureRecognizer new];
+                [self.currentTapToOpenGestureRecognizer
+                 addTarget:self
+                    action:@selector(becomeFirstResponderForSender:)];
+            }
+
+            if (![self.gestureRecognizers containsObject:self.currentTapToOpenGestureRecognizer])
+            {
+                [self addGestureRecognizer:self.currentTapToOpenGestureRecognizer];
+            }
+        }
+        else
+        {
+            [self removeGestureRecognizer:self.currentTapToOpenGestureRecognizer];
+
+            if (self.currentTapToOpenGestureRecognizer != self.tapToOpenGestureRecognizer)
+            {
+                [self.currentTapToOpenGestureRecognizer
+                 removeTarget:self
+                       action:@selector(becomeFirstResponderForSender:)];
+            }
+            self.currentTapToOpenGestureRecognizer = nil;
+        }
+    }
+}
+
+- (void)setTapToOpenGestureRecognizer:(UITapGestureRecognizer*)tapToOpenGestureRecognizer
+{
+    BOOL activate = NO;
+
+    if (tapToOpenGestureRecognizer != self.currentTapToOpenGestureRecognizer && self.tapToOpen)
+    {
+        [self removeGestureRecognizer:self.currentTapToOpenGestureRecognizer];
+
+        if (self.currentTapToOpenGestureRecognizer != self.tapToOpenGestureRecognizer)
+        {
+            [self.currentTapToOpenGestureRecognizer
+             removeTarget:self
+                   action:@selector(becomeFirstResponderForSender:)];
+        }
+        self.currentTapToOpenGestureRecognizer = nil;
+        activate = YES;
+    }
+
+    _tapToOpenGestureRecognizer = tapToOpenGestureRecognizer;
+    self.tapToOpen = activate;
+}
+
 #pragma mark - UIResponder redefinitions
 
 - (BOOL)becomeFirstResponder
@@ -30,11 +104,13 @@
     {
         [self willBecomeFirstResponder];
         result = [super becomeFirstResponder];
+
         if (result)
         {
             [self didBecomeFirstResponder];
         }
     }
+
     return result;
 }
 
@@ -46,6 +122,7 @@
     {
         [self willResignFirstResponder];
         result = [super resignFirstResponder];
+
         if (result)
         {
             [self didResignFirstResponder];
@@ -55,9 +132,10 @@
     return result;
 }
 
-- (UIView *)inputView
+- (UIView*)inputView
 {
     UIView* result;
+
     if ([self.delegate respondsToSelector:@selector(inputViewForCustomKeyboardResponderView:)])
     {
         result = [self.delegate inputViewForCustomKeyboardResponderView:self];
@@ -66,12 +144,14 @@
     {
         result = [super inputView];
     }
+
     return result;
 }
 
-- (UIView *)inputAccessoryView
+- (UIView*)inputAccessoryView
 {
     UIView* result;
+
     if ([self.delegate respondsToSelector:@selector(inputAccessoryViewForCustomKeyboardResponderView:)])
     {
         result = [self.delegate inputAccessoryViewForCustomKeyboardResponderView:self];
@@ -80,6 +160,7 @@
     {
         result = [super inputAccessoryView];
     }
+
     return result;
 }
 
@@ -93,10 +174,11 @@
     {
         result = [self.delegate customKeyboardResponderViewHasText:self];
     }
+
     return result;
 }
 
-- (void)insertText:(NSString *)text
+- (void)insertText:(NSString*)text
 {
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderView:insertText:)])
     {
@@ -117,16 +199,19 @@
 - (BOOL)canBecomeFirstResponder
 {
     BOOL result = NO;
+
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderViewCanBecomeFirstResponder:)])
     {
         result = [self.delegate customKeyboardResponderViewCanBecomeFirstResponder:self];
     }
+
     return result;
 }
 
 - (BOOL)shouldBecomeFirstResponder
 {
     BOOL result = NO;
+
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderViewShouldBecomeFirstResponder:)])
     {
         result = [self.delegate customKeyboardResponderViewShouldBecomeFirstResponder:self];
@@ -135,11 +220,14 @@
     {
         result = [self canBecomeFirstResponder];
     }
+
     return result;
 }
 
 - (void)willBecomeFirstResponder
 {
+    self.highlight = YES;
+
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderViewWillBecomeFirstResponder:)])
     {
         [self.delegate customKeyboardResponderViewWillBecomeFirstResponder:self];
@@ -157,15 +245,19 @@
 - (BOOL)shouldResignFirstResponder
 {
     BOOL result = YES;
+
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderViewShouldResignFirstResponder:)])
     {
         result = [self.delegate customKeyboardResponderViewShouldResignFirstResponder:self];
     }
+
     return result;
 }
 
 - (void)willResignFirstResponder
 {
+    self.highlight = NO;
+
     if ([self.delegate respondsToSelector:@selector(customKeyboardResponderViewWillResignFirstResponder:)])
     {
         [self.delegate customKeyboardResponderViewWillResignFirstResponder:self];
@@ -178,6 +270,88 @@
     {
         [self.delegate customKeyboardResponderViewDidResignFirstResponder:self];
     }
+}
+
+#pragma mark -
+
+- (void)setHighlight:(BOOL)highight
+{
+    _highlight = highight;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+}
+
+- (void)applyHighlight
+{
+    if (self.highlight)
+    {
+        CALayer* layer = self.layer;
+        [layer setMasksToBounds:YES];
+        [layer setCornerRadius:5.0];
+
+        [UIView animateWithDuration:.075
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:
+         ^{
+             [layer setBorderWidth:2.0];
+             [layer setBorderColor:[self.tintColor CGColor]];
+             [layer setBackgroundColor:[[self.tintColor
+                                         colorWithAlphaComponent:.25] CGColor]];
+             CGFloat vf = 1.0 + (6.0 / self.frame.size.height);
+             CGFloat hf = 1.0 + (6.0 / self.frame.size.width);
+             CGAffineTransform transform = CGAffineTransformMakeScale(1.0 / hf,
+                                                                      1.0 / vf);
+             for (UIView* view in self.subviews)
+             {
+                 view.transform = transform;
+             }
+         }
+                         completion:
+         ^(BOOL finished)
+         {
+             [UIView animateWithDuration:.3
+                                   delay:0
+                                 options:UIViewAnimationOptionCurveEaseOut
+                              animations:
+              ^{
+                  [layer setBorderWidth:1.5];
+                  [layer setBackgroundColor:[[self.tintColor
+                                              colorWithAlphaComponent:.16] CGColor]];              }
+                              completion:
+              ^(BOOL finished) {
+              }
+              ];
+         }
+         ];
+    }
+    else
+    {
+        CALayer* layer = self.layer;
+        [layer setMasksToBounds:YES];
+        [UIView animateWithDuration:.2
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseIn
+                         animations:
+         ^{
+             [layer setCornerRadius:0.0];
+             [layer setBorderWidth:0.0];
+             [layer setBorderColor:[[UIColor clearColor] CGColor]];
+             [layer setBackgroundColor:[[UIColor clearColor] CGColor]];
+
+             for (UIView* view in self.subviews)
+             {
+                 view.transform = CGAffineTransformIdentity;
+             }
+         } completion:^(BOOL finished) { }];
+    }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    [self applyHighlight];
 }
 
 @end

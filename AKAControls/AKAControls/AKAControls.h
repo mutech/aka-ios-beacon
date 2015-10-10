@@ -28,9 +28,9 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKAFormControl.h>
 
 #import <AKAControls/AKAControlViewProtocol.h>
-#import <AKAControls/AKAViewBinding.h>
+#import "AKAObsoleteViewBinding.h"
 #import <AKAControls/UIView+AKABinding.h>
-#import <AKAControls/AKAViewBindingConfiguration.h>
+#import "AKAObsoleteViewBindingConfiguration.h"
 #import <AKAControls/AKACompositeViewBindingConfiguration.h>
 #import <AKAControls/AKAControlValidatorProtocol.h>
 #import <AKAControls/AKAControlConverterProtocol.h>
@@ -115,11 +115,19 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h>
 #import <AKAControls/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h>
 
+#import <AKAControls/AKADatePickerKeyboardTriggerView.h>
+#import <AKAControls/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
+#import <AKAControls/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
+
 #import <AKAControls/UILabel+AKAIBBindingProperties.h>
 #import <AKAControls/AKABindingProvider_UILabel_textBinding.h>
 
 #import <AKAControls/UITextField+AKAIBBindingProperties.h>
 #import <AKAControls/AKABindingProvider_UITextField_textBinding.h>
+
+#import <AKAControls/UITextView+AKAIBBindingProperties.h>
+#import <AKAControls/AKABindingProvider_UITextView_textBinding.h>
+#import <AKAControls/AKABinding_UITextView_textBinding.h>
 
 #import <AKAControls/UISwitch+AKAIBBindingProperties.h>
 #import <AKAControls/AKABindingProvider_UISwitch_stateBinding.h>

@@ -12,12 +12,10 @@
 
 @implementation AKAPickerKeyboardTriggerView
 
-#pragma mark - UIResponder Overrides
-
-- (NSString *)              pickerBinding
+- (NSString*)              pickerBinding
 {
     AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding* provider =
-    [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
+        [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
 
     return [provider bindingExpressionTextForSelector:@selector(pickerBinding)
                                                inView:self];
@@ -26,7 +24,7 @@
 - (void)                 setPickerBinding:(opt_NSString)pickerBinding
 {
     AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding* provider =
-    [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
+        [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
 
     [provider setBindingExpressionText:pickerBinding
                            forSelector:@selector(pickerBinding)
@@ -34,4 +32,3 @@
 }
 
 @end
-

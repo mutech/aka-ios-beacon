@@ -52,7 +52,7 @@
 #pragma mark - Binding Errors
 
 + (void)invalidAttemptToBindView:(id)view
-                       toBinding:(AKAViewBinding*)binding;
+                       toBinding:(AKAObsoleteViewBinding *)binding;
 
 #pragma mark - Validation Errors
 

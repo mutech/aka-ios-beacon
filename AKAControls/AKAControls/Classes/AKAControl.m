@@ -7,10 +7,7 @@
 //
 
 #import "AKAControl_Internal.h"
-#import "AKAControl_Protected.h" // To make appledoc find it
 #import "AKACompositeControl.h"
-#import "AKAViewBinding.h"
-#import "AKAKeyboardActivationSequence.h"
 
 #import "AKAControlsErrors_Internal.h"
 
@@ -18,12 +15,15 @@
 #import "UIView+AKABindingSupport.h"
 #import "AKABinding.h"
 #import "AKABindingProvider.h"
-#import "AKABindingExpression.h"
 
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
+@import AKACommons;
+//@import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import <objc/runtime.h>
+
+@interface AKAControl(Convenience)
+
+@end
 
 @interface AKAControl() <
     AKABindingDelegate,
@@ -32,7 +32,7 @@
 > {
     AKAProperty* _dataContextProperty;
     AKAProperty* _modelValueProperty;
-    AKAViewBinding* _viewBinding;
+    AKAObsoleteViewBinding * _viewBinding;
     NSMutableSet* _tags;
 }
 
@@ -155,7 +155,7 @@
     return result;
 }
 
-- (BOOL)removeBinding:(AKABinding*)binding
+- (BOOL)                                removeBinding:(AKABinding*)binding
 {
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
@@ -166,8 +166,8 @@
     // is called from main than to rely on this:
     [self aka_performBlockInMainThreadOrQueue:^{
         NSUInteger index = [self.bindings indexOfObjectIdenticalTo:binding];
-        BOOL result = index != NSNotFound;
-        if (result)
+        BOOL localResult = index != NSNotFound;
+        if (localResult)
         {
             [binding stopObservingChanges];
             [self.bindings removeObjectAtIndex:index];
@@ -180,7 +180,7 @@
 
 #pragma mark AKABindingContextProtocol
 
-- (AKACompositeControl*)rootControl
+- (AKACompositeControl*)                  rootControl
 {
     AKACompositeControl* result = self.owner;
     while (result.owner != nil)
@@ -317,12 +317,12 @@
 
 #pragma mark - Binding
 
-- (AKAViewBinding *)viewBinding
+- (AKAObsoleteViewBinding *)viewBinding
 {
     return _viewBinding;
 }
 
-- (void)setViewBinding:(AKAViewBinding *)viewBinding
+- (void)setViewBinding:(AKAObsoleteViewBinding *)viewBinding
 {
     if (viewBinding != _viewBinding)
     {
@@ -466,8 +466,8 @@
     return result;
 }
 
-- (BOOL)                control:(AKAControl *)control
-                      viewValue:(inout __autoreleasing id *)viewValueStorage
+- (BOOL)                control:(req_AKAControl)control
+                      viewValue:(inout_id)viewValueStorage
       conversionFailedWithError:(NSError *__autoreleasing *)error
 {
     BOOL result = NO;
@@ -667,8 +667,8 @@
 }
 
 - (BOOL)                control:(AKAControl *)control
-                     modelValue:(inout __autoreleasing id *)modelValueStorage
-      validationFailedWithError:(inout NSError *__autoreleasing *)error
+                     modelValue:(inout_id)modelValueStorage
+      validationFailedWithError:(inout_NSError)error
 {
     BOOL result = NO;
     if (!result && [self.delegate respondsToSelector:@selector(control:modelValue:validationFailedWithError:)])
@@ -742,8 +742,8 @@
 
 - (BOOL)                control:(AKAControl *)control
                       viewValue:(id)viewValue
-          convertedToModelValue:(inout id*)modelValueStorage
-      validationFailedWithError:(inout NSError *__autoreleasing *)error
+          convertedToModelValue:(inout_id)modelValueStorage
+      validationFailedWithError:(inout_NSError)error
 {
     BOOL result = NO;
     if (!result && [self.delegate respondsToSelector:@selector(control:viewValue:convertedToModelValue:validationFailedWithError:)])
@@ -1094,9 +1094,25 @@
 
 #pragma mark - AKABindingDelegate
 
-- (void)binding:(req_AKABinding)binding responderWillActivate:(req_UIResponder)responder
+- (void)                                              control:(req_AKAControl)control
+                                                      binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder
 {
-    [self willActivate];
+    id<AKAControlActivationDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    {
+        [delegate control:control binding:binding responderWillActivate:responder];
+    }
+    if ([self.owner respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    {
+        [self.owner control:control binding:binding responderWillActivate:responder];
+    }
+}
+
+- (void)                                              binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder
+{
+    [self control:self binding:binding responderWillActivate:responder];
     if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
     {
         id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
@@ -1228,7 +1244,7 @@
 
 #pragma mark - View Binding Delegate
 
-- (void)viewBinding:(AKAViewBinding *)viewBinding
+- (void)viewBinding:(AKAObsoleteViewBinding *)viewBinding
                view:(UIView *)view
  valueDidChangeFrom:(id)oldValue
                  to:(id)newValue
@@ -1239,13 +1255,13 @@
     [self viewValueDidChangeFrom:oldValue to:newValue];
 }
 
-- (BOOL)viewBindingShouldActivate:(AKAViewBinding *)viewBinding
+- (BOOL)viewBindingShouldActivate:(AKAObsoleteViewBinding *)viewBinding
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     return [self shouldActivate];
 }
 
-- (void)viewBinding:(AKAViewBinding *)viewBinding viewWillActivate:(UIView *)view
+- (void)viewBinding:(AKAObsoleteViewBinding *)viewBinding viewWillActivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     [self willActivate];
@@ -1256,7 +1272,7 @@
     }
 }
 
-- (void)viewBinding:(AKAViewBinding *)viewBinding viewDidActivate:(UIView *)view
+- (void)viewBinding:(AKAObsoleteViewBinding *)viewBinding viewDidActivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     if (viewBinding.participatesInKeyboardActivationSequence)
@@ -1266,19 +1282,19 @@
     [self didActivate];
 }
 
-- (BOOL)viewBindingShouldDeactivate:(AKAViewBinding *)viewBinding
+- (BOOL)viewBindingShouldDeactivate:(AKAObsoleteViewBinding *)viewBinding
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     return [self shouldDeactivate];
 }
 
-- (void)viewBinding:(AKAViewBinding *)viewBinding viewWillDeactivate:(UIView *)view
+- (void)viewBinding:(AKAObsoleteViewBinding *)viewBinding viewWillDeactivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
     [self willDeactivate];
 }
 
-- (void)viewBinding:(AKAViewBinding *)viewBinding viewDidDeactivate:(UIView *)view
+- (void)viewBinding:(AKAObsoleteViewBinding *)viewBinding viewDidDeactivate:(UIView *)view
 {
     NSParameterAssert(viewBinding == self.viewBinding);
 
@@ -1356,5 +1372,13 @@
                         self.viewBinding.configuration.description];
     return result;
 }
+
+@end
+
+
+@implementation AKAControl(Convenience)
+
+#pragma mark - Properties
+
 
 @end

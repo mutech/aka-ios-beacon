@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AKAControlViewProtocol.h"
 #import "AKACompositeViewBindingConfiguration.h"
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBinding.h"
 
 IB_DESIGNABLE
 @interface AKATableViewCell : UITableViewCell<AKAControlViewProtocol>
@@ -83,5 +83,5 @@ IB_DESIGNABLE
 
 @end
 
-@interface AKATableViewCellBinding: AKAViewBinding
+@interface AKATableViewCellBinding: AKAObsoleteViewBinding
 @end

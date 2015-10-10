@@ -55,8 +55,8 @@
     return AKACompositeViewBindingConfiguration.new;
 }
 
-- (void)viewBindingChangedFrom:(AKAViewBinding *)oldBinding
-                            to:(AKAViewBinding *)newBinding
+- (void)viewBindingChangedFrom:(AKAObsoleteViewBinding *)oldBinding
+                            to:(AKAObsoleteViewBinding *)newBinding
 {
     self.themeNameProperty = nil;
     __weak typeof(self) weakSelf = self;

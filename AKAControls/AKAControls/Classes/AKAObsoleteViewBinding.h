@@ -11,11 +11,11 @@
 @import UIKit;
 @import AKACommons.AKAProperty;
 
-#import "AKAViewBindingConfiguration.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
 
 #import "AKABindingContextProtocol.h"
 
-@class AKAViewBinding;
+@class AKAObsoleteViewBinding;
 @class AKAKeyboardActivationSequence;
 @protocol AKAControlConverterProtocol;
 
@@ -24,24 +24,24 @@
 #pragma mark - Activation
 /// @name Activation
 
-- (void)        viewBinding:(AKAViewBinding*)viewBinding
+- (void)        viewBinding:(AKAObsoleteViewBinding *)viewBinding
                        view:(UIView*)view
          valueDidChangeFrom:(id)oldValue to:(id)newValue;
 
-- (BOOL)viewBindingShouldActivate:(AKAViewBinding*)viewBinding;
+- (BOOL)viewBindingShouldActivate:(AKAObsoleteViewBinding *)viewBinding;
 
-- (void)        viewBinding:(AKAViewBinding*)viewBinding
+- (void)        viewBinding:(AKAObsoleteViewBinding *)viewBinding
            viewWillActivate:(UIView*)view;
 
-- (void)        viewBinding:(AKAViewBinding*)viewBinding
+- (void)        viewBinding:(AKAObsoleteViewBinding *)viewBinding
             viewDidActivate:(UIView*)view;
 
-- (BOOL)viewBindingShouldDeactivate:(AKAViewBinding*)viewBinding;
+- (BOOL)viewBindingShouldDeactivate:(AKAObsoleteViewBinding *)viewBinding;
 
-- (void)        viewBinding:(AKAViewBinding*)viewBinding
+- (void)        viewBinding:(AKAObsoleteViewBinding *)viewBinding
           viewDidDeactivate:(UIView*)view;
 
-- (void)        viewBinding:(AKAViewBinding*)viewBinding
+- (void)        viewBinding:(AKAObsoleteViewBinding *)viewBinding
          viewWillDeactivate:(UIView*)view;
 
 @property(nonatomic, readonly)AKAKeyboardActivationSequence* keyboardActivationSequence;
@@ -74,20 +74,20 @@
 
 @end
 
-@interface AKAViewBinding: NSObject
+@interface AKAObsoleteViewBinding : NSObject
 
 #pragma mark - Initialization
 /// @name Initialization
 
 - (instancetype)initWithView:(UIView*)view
-               configuration:(AKAViewBindingConfiguration*)configuration
+               configuration:(AKAObsoleteViewBindingConfiguration *)configuration
                     delegate:(id<AKAViewBindingDelegate>)delegate;
 
 #pragma mark - Configuration
 /// @name Configuration
 
 @property(nonatomic, weak, readonly) UIView* view;
-@property(nonatomic, weak, readonly) AKAViewBindingConfiguration* configuration;
+@property(nonatomic, weak, readonly) AKAObsoleteViewBindingConfiguration * configuration;
 @property(nonatomic, weak, readonly) id<AKAViewBindingDelegate> delegate;
 
 #pragma mark - View Value Access
@@ -159,7 +159,7 @@
 @end
 
 
-@interface AKAViewBinding(Protected)
+@interface AKAObsoleteViewBinding (Protected)
 
 #pragma mark - Protected Interface - Abstract Methods
 /// @name Protected: Abstract Methods

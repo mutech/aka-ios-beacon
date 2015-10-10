@@ -6,17 +6,23 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import UIKit;
 
 @class AKAControl;
+typedef AKAControl*_Nonnull req_AKAControl;
+
+@class AKABinding;
+typedef AKABinding*_Nonnull req_AKABinding;
+
 @class AKACompositeControl;
+typedef AKACompositeControl*_Nonnull req_AKACompositeControl;
 
 @protocol AKAControlConverterDelegate <NSObject>
 
 @optional
-- (BOOL)                control:(AKAControl*)control
-                      viewValue:(inout id*)viewValueStorage
-      conversionFailedWithError:(NSError*__autoreleasing*)error;
+- (BOOL)                control:(AKAControl*_Nonnull)control
+                      viewValue:(inout_id)viewValueStorage
+      conversionFailedWithError:(out_NSError)error;
 
 @end
 
@@ -46,15 +52,15 @@
  *
  * @return YES if the delegate corrected the view value, NO otherwise.
  */
-- (BOOL)                        control:(AKAControl*)control
-                              viewValue:(id)viewValue
-                  convertedToModelValue:(inout id*)modelValueStorage
-              validationFailedWithError:(inout NSError*__autoreleasing*)error;
+- (BOOL)                        control:(req_AKAControl)control
+                              viewValue:(opt_id)viewValue
+                  convertedToModelValue:(inout_id)modelValueStorage
+              validationFailedWithError:(out_NSError)error;
 
 @optional
-- (BOOL)                        control:(AKAControl*)control
-                             modelValue:(inout id*)viewValueStorage
-              validationFailedWithError:(inout NSError*__autoreleasing*)error;
+- (BOOL)                        control:(req_AKAControl)control
+                             modelValue:(inout_id)viewValueStorage
+              validationFailedWithError:(out_NSError)error;
 
 @optional
 /**
@@ -79,67 +85,72 @@
  * @return YES if the delegate called the specified block (or if it wishes to suppress the
  *          update of the validation display), NO otherwise
  */
-- (BOOL)                        control:(AKAControl*)control
-                        validationState:(NSError*)oldError
-                              changedTo:(NSError*)newError
-         updateValidationMessageDisplay:(void(^)())block;
+- (BOOL)                        control:(req_AKAControl)control
+                        validationState:(opt_NSError)oldError
+                              changedTo:(opt_NSError)newError
+         updateValidationMessageDisplay:(void(^_Nullable)())block;
 
 @end
 
 @protocol AKAControlActivationDelegate <NSObject>
 
-#pragma mark Activation
+#pragma mark - Binding Activation
+
+- (void)                                              control:(req_AKAControl)control
+                                                      binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder;
+#pragma mark - Activation
 
 @optional
-- (BOOL)shouldControlActivate:(AKAControl*)memberControl;
+- (BOOL)shouldControlActivate:(req_AKAControl)memberControl;
 
 @optional
-- (void)controlWillActivate:(AKAControl*)memberControl;
+- (void)controlWillActivate:(req_AKAControl)memberControl;
 
 @optional
-- (void)controlDidActivate:(AKAControl*)memberControl;
+- (void)controlDidActivate:(req_AKAControl)memberControl;
 
 @optional
-- (BOOL)shouldControlDeactivate:(AKAControl*)memberControl;
+- (BOOL)shouldControlDeactivate:(req_AKAControl)memberControl;
 
 @optional
-- (void)controlWillDeactivate:(AKAControl*)memberControl;
+- (void)controlWillDeactivate:(req_AKAControl)memberControl;
 
 @optional
-- (void)controlDidDeactivate:(AKAControl*)memberControl;
+- (void)controlDidDeactivate:(req_AKAControl)memberControl;
 
 @end
 
 @protocol AKAControlMembershipDelegate <NSObject>
 
 @optional
-- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
-             addControl:(AKAControl *)memberControl
+- (BOOL)  shouldControl:(req_AKACompositeControl)compositeControl
+             addControl:(req_AKAControl)memberControl
                 atIndex:(NSUInteger)index;
 
 @optional
-- (void)        control:(AKACompositeControl*)compositeControl
-         willAddControl:(AKAControl*)memberControl
+- (void)        control:(req_AKACompositeControl)compositeControl
+         willAddControl:(req_AKAControl)memberControl
                 atIndex:(NSUInteger)index;
 
 @optional
-- (void)        control:(AKACompositeControl*)compositeControl
-          didAddControl:(AKAControl*)memberControl
+- (void)        control:(req_AKACompositeControl)compositeControl
+          didAddControl:(req_AKAControl)memberControl
                 atIndex:(NSUInteger)index;
 
 @optional
-- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
-          removeControl:(AKAControl *)memberControl
+- (BOOL)  shouldControl:(req_AKACompositeControl)compositeControl
+          removeControl:(req_AKAControl)memberControl
                 atIndex:(NSUInteger)index;
 
 @optional
-- (void)        control:(AKACompositeControl*)compositeControl
-      willRemoveControl:(AKAControl*)memberControl
+- (void)        control:(req_AKACompositeControl)compositeControl
+      willRemoveControl:(req_AKAControl)memberControl
               fromIndex:(NSUInteger)index;
 
 @optional
-- (void)        control:(AKACompositeControl*)compositeControl
-       didRemoveControl:(AKAControl*)memberControl
+- (void)        control:(req_AKACompositeControl)compositeControl
+       didRemoveControl:(req_AKAControl)memberControl
               fromIndex:(NSUInteger)index;
 
 @end
@@ -152,6 +163,6 @@
 >
 
 @optional
-- (void)control:(AKAControl*)control modelValueChangedFrom:(id)oldValue to:(id)newValue;
+- (void)control:(req_AKAControl)control modelValueChangedFrom:(opt_id)oldValue to:(opt_id)newValue;
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class AKAViewBinding;
+@class AKAObsoleteViewBinding;
 
 /**
  * This category provides a weak link to the control view binding which binds the view to its control.
@@ -22,6 +22,6 @@
  * @note This property should not be changed manually, it is maintained
  * by its binding instance.
  */
-@property(nonatomic, weak) AKAViewBinding* aka_binding;
+@property(nonatomic, weak) AKAObsoleteViewBinding * aka_binding;
 
 @end

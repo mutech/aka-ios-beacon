@@ -16,11 +16,13 @@
 // Obsolete: TODO: remove when new binding infrastruct is finished:
 #import "AKAControlConverterProtocol.h"
 #import "AKAControlValidatorProtocol.h"
-#import "AKAViewBinding.h"
-@class AKAViewBinding;
+#import "AKAObsoleteViewBinding.h"
 
 @class AKACompositeControl;
 @protocol AKAControlConfigurationProtocol;
+
+typedef AKAControl* _Nullable opt_AKAControl;
+typedef AKAControl* _Nonnull  req_AKAControl;
 
 #pragma mark - AKAControl Interface
 #pragma mark -
@@ -91,10 +93,14 @@
 @property(nonatomic, nonnull) NSMutableArray* bindings;
 
 - (NSUInteger)                     addBindingsForView:(req_UIView)view;
+
 - (BOOL)                            addBindingForView:(req_UIView)view
                               bindingPropertyWithName:(req_NSString)propertyName;
 
+- (BOOL)                                removeBinding:(req_AKABinding)binding;
+
 #pragma mark - Properties
+
 
 /**
  * The AKAProperty providing access to the control's data context.
@@ -142,7 +148,7 @@
 #pragma mark - Value Access
 /// @name Accessing view and model values
 
-@property(nonatomic, readonly, nullable) AKAViewBinding* viewBinding;
+@property(nonatomic, readonly, nullable) AKAObsoleteViewBinding * viewBinding;
 
 /**
  * The view presenting the control's state or nil if there is none.

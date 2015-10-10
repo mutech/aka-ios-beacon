@@ -6,17 +6,17 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBindingConfiguration.h"
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
+#import "AKAObsoleteViewBinding.h"
 
 #pragma mark - AKATextLabelBinding
 #pragma mark -
 
-@interface AKATextLabelBinding: AKAViewBinding
+@interface AKATextLabelBinding: AKAObsoleteViewBinding
 @end
 
 #pragma mark - AKATextLabelControlViewBindingConfiguration
 #pragma mark -
 
-@interface AKATextLabelBindingConfiguration: AKAViewBindingConfiguration
+@interface AKATextLabelBindingConfiguration: AKAObsoleteViewBindingConfiguration
 @end

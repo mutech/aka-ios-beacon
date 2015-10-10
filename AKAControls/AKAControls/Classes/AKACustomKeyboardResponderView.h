@@ -22,11 +22,28 @@
  */
 @interface AKACustomKeyboardResponderView : UIView
 
+#pragma mark - IB Binding Properties
+
+@property(nonatomic) IBInspectable BOOL tapToOpen;
+
+#pragma mark - Outlets
+
 /**
  * The delegate which defines the keyboard related behavior of the view and
  * optionally controls and monitors its first responder state.
  */
 @property(nonatomic, weak) IBOutlet id<AKACustomKeyboardResponderDelegate> delegate;
+
+/**
+ * The tap gesture recognizer to use for "tapToOpen". If not specified,
+ * setting tapToOpen to YES will create a new tap gesture recognizer.
+ *
+ * @note A manually specified tap gesture recognizer should be
+ *      connected to the action becomeFirstResponderForSender. This view will only connect the recognizer if it created it.
+ */
+@property(nonatomic, strong) IBOutlet UITapGestureRecognizer* tapToOpenGestureRecognizer;
+
+#pragma mark - Actions
 
 /**
  * Makes the view first responder, if both canBecomeFirstResponder and
@@ -35,6 +52,8 @@
  * @param sender the sender
  */
 - (IBAction)becomeFirstResponderForSender:(id)sender;
+
+#pragma mark - UIResponder redefinitions
 
 /**
  * Determines if the view should become first responder. This returns YES, if

@@ -24,6 +24,18 @@
 		8E225FFA1BAF014600BC070F /* AKABindingProviderRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E225FF81BAF014600BC070F /* AKABindingProviderRegistry.m */; settings = {ASSET_TAGS = (); }; };
 		8E26A51C1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E26A51A1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E26A51D1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E26A51B1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.m */; settings = {ASSET_TAGS = (); }; };
+		8E3154471BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3154451BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E3154481BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3154461BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.m */; settings = {ASSET_TAGS = (); }; };
+		8E31544B1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3154491BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E31544C1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E31544A1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m */; settings = {ASSET_TAGS = (); }; };
+		8E31544F1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E31544D1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E3154501BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E31544E1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m */; settings = {ASSET_TAGS = (); }; };
+		8E3154541BC726A5003FD085 /* AKABinding_UITextView_textBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E3154551BC726A5003FD085 /* AKABinding_UITextView_textBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */; settings = {ASSET_TAGS = (); }; };
+		8E3154581BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3154561BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E3154591BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3154571BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m */; settings = {ASSET_TAGS = (); }; };
+		8E31545C1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E31545A1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E31545D1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E31545B1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m */; settings = {ASSET_TAGS = (); }; };
 		8E367A051BBA3C8F0094EF33 /* AKAKeyboardActivationSequenceItemProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E367A041BBA3C8F0094EF33 /* AKAKeyboardActivationSequenceItemProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E367A091BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E367A071BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E367A0A1BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E367A081BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.m */; settings = {ASSET_TAGS = (); }; };
@@ -124,10 +136,10 @@
 		8E7233AC1B0022A200D647A9 /* AKAThemeProviderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E7233561B0022A200D647A9 /* AKAThemeProviderProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E7233AD1B0022A200D647A9 /* AKAThemeViewApplicability.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E7233571B0022A200D647A9 /* AKAThemeViewApplicability.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E7233AE1B0022A200D647A9 /* AKAThemeViewApplicability.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7233581B0022A200D647A9 /* AKAThemeViewApplicability.m */; };
-		8E7233AF1B0022A200D647A9 /* AKAViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E7233591B0022A200D647A9 /* AKAViewBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E7233B01B0022A200D647A9 /* AKAViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E72335A1B0022A200D647A9 /* AKAViewBinding.m */; };
-		8E7233B11B0022A200D647A9 /* AKAViewBindingConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E72335B1B0022A200D647A9 /* AKAViewBindingConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E7233B21B0022A200D647A9 /* AKAViewBindingConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E72335C1B0022A200D647A9 /* AKAViewBindingConfiguration.m */; };
+		8E7233AF1B0022A200D647A9 /* AKAObsoleteViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E7233591B0022A200D647A9 /* AKAObsoleteViewBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E7233B01B0022A200D647A9 /* AKAObsoleteViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E72335A1B0022A200D647A9 /* AKAObsoleteViewBinding.m */; };
+		8E7233B11B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E72335B1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E7233B21B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E72335C1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.m */; };
 		8E7233B31B0022A200D647A9 /* AKAViewCustomization.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E72335D1B0022A200D647A9 /* AKAViewCustomization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E7233B41B0022A200D647A9 /* AKAViewCustomization.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E72335E1B0022A200D647A9 /* AKAViewCustomization.m */; };
 		8E7233B51B0022A200D647A9 /* UIView+AKABinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E72335F1B0022A200D647A9 /* UIView+AKABinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -196,6 +208,18 @@
 		8E225FF81BAF014600BC070F /* AKABindingProviderRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingProviderRegistry.m; sourceTree = "<group>"; };
 		8E26A51A1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_AKABinding_numberFormatter.h; sourceTree = "<group>"; };
 		8E26A51B1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_AKABinding_numberFormatter.m; sourceTree = "<group>"; };
+		8E3154451BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKADatePickerKeyboardTriggerView.h; sourceTree = "<group>"; };
+		8E3154461BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKADatePickerKeyboardTriggerView.m; sourceTree = "<group>"; };
+		8E3154491BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h; sourceTree = "<group>"; };
+		8E31544A1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m; sourceTree = "<group>"; };
+		8E31544D1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h; sourceTree = "<group>"; };
+		8E31544E1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m; sourceTree = "<group>"; };
+		8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UITextView_textBinding.h; sourceTree = "<group>"; };
+		8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UITextView_textBinding.m; sourceTree = "<group>"; };
+		8E3154561BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingProvider_UITextView_textBinding.h; sourceTree = "<group>"; };
+		8E3154571BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingProvider_UITextView_textBinding.m; sourceTree = "<group>"; };
+		8E31545A1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+AKAIBBindingProperties.h"; sourceTree = "<group>"; };
+		8E31545B1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+AKAIBBindingProperties.m"; sourceTree = "<group>"; };
 		8E367A041BBA3C8F0094EF33 /* AKAKeyboardActivationSequenceItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKeyboardActivationSequenceItemProtocol.h; sourceTree = "<group>"; };
 		8E367A071BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+AKAIBBindingProperties.h"; sourceTree = "<group>"; };
 		8E367A081BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+AKAIBBindingProperties.m"; sourceTree = "<group>"; };
@@ -298,10 +322,10 @@
 		8E7233561B0022A200D647A9 /* AKAThemeProviderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemeProviderProtocol.h; sourceTree = "<group>"; };
 		8E7233571B0022A200D647A9 /* AKAThemeViewApplicability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemeViewApplicability.h; sourceTree = "<group>"; };
 		8E7233581B0022A200D647A9 /* AKAThemeViewApplicability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAThemeViewApplicability.m; sourceTree = "<group>"; };
-		8E7233591B0022A200D647A9 /* AKAViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAViewBinding.h; sourceTree = "<group>"; };
-		8E72335A1B0022A200D647A9 /* AKAViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAViewBinding.m; sourceTree = "<group>"; };
-		8E72335B1B0022A200D647A9 /* AKAViewBindingConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAViewBindingConfiguration.h; sourceTree = "<group>"; };
-		8E72335C1B0022A200D647A9 /* AKAViewBindingConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAViewBindingConfiguration.m; sourceTree = "<group>"; };
+		8E7233591B0022A200D647A9 /* AKAObsoleteViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAObsoleteViewBinding.h; sourceTree = "<group>"; };
+		8E72335A1B0022A200D647A9 /* AKAObsoleteViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAObsoleteViewBinding.m; sourceTree = "<group>"; };
+		8E72335B1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAObsoleteViewBindingConfiguration.h; sourceTree = "<group>"; };
+		8E72335C1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAObsoleteViewBindingConfiguration.m; sourceTree = "<group>"; };
 		8E72335D1B0022A200D647A9 /* AKAViewCustomization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAViewCustomization.h; sourceTree = "<group>"; };
 		8E72335E1B0022A200D647A9 /* AKAViewCustomization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAViewCustomization.m; sourceTree = "<group>"; };
 		8E72335F1B0022A200D647A9 /* UIView+AKABinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AKABinding.h"; sourceTree = "<group>"; };
@@ -337,7 +361,7 @@
 		8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACompositeControlView.m; sourceTree = "<group>"; };
 		8ED585491BB9876E00378565 /* AKABindingProvider_UITextField_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingProvider_UITextField_textBinding.h; sourceTree = "<group>"; };
 		8ED5854A1BB9876E00378565 /* AKABindingProvider_UITextField_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingProvider_UITextField_textBinding.m; sourceTree = "<group>"; };
-		8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKAControls.podspec; path = ../../AKAControls.podspec; sourceTree = "<group>"; };
+		8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKAControls.podspec; path = /Users/mu/git/aka.commons/AKAControls.podspec; sourceTree = "<absolute>"; };
 		927185F1BA467DC655BF0444 /* Pods-AKAControls.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControls.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControls/Pods-AKAControls.debug.xcconfig"; sourceTree = "<group>"; };
 		BE380D986EFA43DB6E690B8F /* Pods_AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKAControls.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAThemableCompositeControlView.m; sourceTree = "<group>"; };
@@ -392,6 +416,29 @@
 			name = Bindings;
 			sourceTree = "<group>";
 		};
+		8E0FFC351BC53C4300CEDACD /* CustomKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				8E5A165C1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h */,
+				8E5A165D1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.m */,
+				8E5A16571BBEE864008EF06F /* AKAPickerKeyboard */,
+			);
+			name = CustomKeyboard;
+			sourceTree = "<group>";
+		};
+		8E3154511BC7265A003FD085 /* UITextView */ = {
+			isa = PBXGroup;
+			children = (
+				8E31545A1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h */,
+				8E31545B1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m */,
+				8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */,
+				8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */,
+				8E3154561BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h */,
+				8E3154571BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m */,
+			);
+			name = UITextView;
+			sourceTree = "<group>";
+		};
 		8E367A061BBA8B230094EF33 /* UILabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -434,10 +481,8 @@
 		8E482C7A1BC2D97C00FF7484 /* ViewBindings */ = {
 			isa = PBXGroup;
 			children = (
-				8E5A16571BBEE864008EF06F /* AKAPickerKeyboard */,
+				8EC9468C1BC908BE00F0CD05 /* ControlViewBindings */,
 				8E367A061BBA8B230094EF33 /* UILabel */,
-				8ED585481BB9873C00378565 /* UITextField */,
-				8E367A0F1BBADFC60094EF33 /* UISwitch */,
 			);
 			name = ViewBindings;
 			sourceTree = "<group>";
@@ -447,12 +492,16 @@
 			children = (
 				8E5A16581BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.h */,
 				8E5A16591BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m */,
-				8E5A165C1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h */,
-				8E5A165D1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.m */,
 				8E592FAA1BC0AD440066E888 /* AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h */,
 				8E592FAB1BC0AD440066E888 /* AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.m */,
 				8E14D4681BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h */,
 				8E14D4691BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m */,
+				8E3154451BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.h */,
+				8E3154461BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.m */,
+				8E3154491BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h */,
+				8E31544A1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m */,
+				8E31544D1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h */,
+				8E31544E1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m */,
 			);
 			name = AKAPickerKeyboard;
 			sourceTree = "<group>";
@@ -460,6 +509,7 @@
 		8E7232E61B00224400D647A9 = {
 			isa = PBXGroup;
 			children = (
+				8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */,
 				8E7232F21B00224400D647A9 /* AKAControls */,
 				8E91E6EA1BB16E8800F7618F /* AKAControlsTests */,
 				8E7232F11B00224400D647A9 /* Products */,
@@ -490,7 +540,6 @@
 		8E7232F31B00224400D647A9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */,
 				8E7232F41B00224400D647A9 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -587,10 +636,10 @@
 		8E7233CC1B0034C800D647A9 /* Obsolete-ControlViews */ = {
 			isa = PBXGroup;
 			children = (
-				8E7233591B0022A200D647A9 /* AKAViewBinding.h */,
-				8E72335A1B0022A200D647A9 /* AKAViewBinding.m */,
-				8E72335B1B0022A200D647A9 /* AKAViewBindingConfiguration.h */,
-				8E72335C1B0022A200D647A9 /* AKAViewBindingConfiguration.m */,
+				8E7233591B0022A200D647A9 /* AKAObsoleteViewBinding.h */,
+				8E72335A1B0022A200D647A9 /* AKAObsoleteViewBinding.m */,
+				8E72335B1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.h */,
+				8E72335C1B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.m */,
 				8E7233CE1B00350300D647A9 /* ScalarControlViews */,
 				8E7233CD1B0034D600D647A9 /* CompositeControlViews */,
 			);
@@ -684,6 +733,17 @@
 			name = Specification;
 			sourceTree = "<group>";
 		};
+		8EC9468C1BC908BE00F0CD05 /* ControlViewBindings */ = {
+			isa = PBXGroup;
+			children = (
+				8E0FFC351BC53C4300CEDACD /* CustomKeyboard */,
+				8ED585481BB9873C00378565 /* UITextField */,
+				8E3154511BC7265A003FD085 /* UITextView */,
+				8E367A0F1BBADFC60094EF33 /* UISwitch */,
+			);
+			name = ControlViewBindings;
+			sourceTree = "<group>";
+		};
 		8ED585481BB9873C00378565 /* UITextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -728,17 +788,20 @@
 				8E72339C1B0022A200D647A9 /* AKATableViewCellCompositeControl.h in Headers */,
 				8E72337C1B0022A200D647A9 /* AKAFormControl.h in Headers */,
 				8E7233741B0022A200D647A9 /* AKAControlViewProtocol.h in Headers */,
+				8E31544B1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h in Headers */,
 				8E225FED1BAEB63400BC070F /* UITextField+AKAIBBindingProperties.h in Headers */,
-				8E7233AF1B0022A200D647A9 /* AKAViewBinding.h in Headers */,
+				8E7233AF1B0022A200D647A9 /* AKAObsoleteViewBinding.h in Headers */,
 				8E7233B51B0022A200D647A9 /* UIView+AKABinding.h in Headers */,
-				8E7233B11B0022A200D647A9 /* AKAViewBindingConfiguration.h in Headers */,
+				8E7233B11B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.h in Headers */,
 				8E7233661B0022A200D647A9 /* AKACompositeViewBindingConfiguration.h in Headers */,
 				8E7233731B0022A200D647A9 /* AKAControlValidatorProtocol.h in Headers */,
 				8E72336C1B0022A200D647A9 /* AKAControlConverterProtocol.h in Headers */,
 				8E592FAC1BC0AD440066E888 /* AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h in Headers */,
 				8E7233801B0022A200D647A9 /* AKAKeyboardActivationSequence.h in Headers */,
+				8E31545C1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h in Headers */,
 				8E26A51C1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.h in Headers */,
 				8E7233821B0022A200D647A9 /* AKAKeyboardActivationSequenceAccessoryView.h in Headers */,
+				8E31544F1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h in Headers */,
 				8E72338C1B0022A200D647A9 /* AKANumberTextConverter.h in Headers */,
 				8E72337A1B0022A200D647A9 /* AKAEmailValidator.h in Headers */,
 				8EC264C71BC34DD200DE89B5 /* AKABinding_AKABinding_formatter.h in Headers */,
@@ -769,7 +832,9 @@
 				8E7233B71B0022A200D647A9 /* UIView+AKAThemeProvider.h in Headers */,
 				8E81B6691B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h in Headers */,
 				8E7233A81B0022A200D647A9 /* AKATheme.h in Headers */,
+				8E3154541BC726A5003FD085 /* AKABinding_UITextView_textBinding.h in Headers */,
 				8E72336A1B0022A200D647A9 /* AKAControl_Internal.h in Headers */,
+				8E3154471BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.h in Headers */,
 				8E14D46A1BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h in Headers */,
 				8ECEEC421BA08F4000B73FC0 /* AKACompositeControlView.h in Headers */,
 				8E7233AD1B0022A200D647A9 /* AKAThemeViewApplicability.h in Headers */,
@@ -788,6 +853,7 @@
 				8E61FFC81BA6900900A4022F /* AKASingleChoiceEditorControlView.h in Headers */,
 				8E61FFD01BA69A1E00A4022F /* AKAPickerView.h in Headers */,
 				8E7233921B0022A200D647A9 /* AKASubviewsSpecification.h in Headers */,
+				8E3154581BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h in Headers */,
 				8E72337E1B0022A200D647A9 /* AKAFormTableViewController.h in Headers */,
 				8E7233651B0022A200D647A9 /* AKACompositeControl_Internal.h in Headers */,
 				8E367A091BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.h in Headers */,
@@ -932,20 +998,23 @@
 				8E72338B1B0022A200D647A9 /* AKANumberEditorControlView.m in Sources */,
 				8E367A131BBADFF70094EF33 /* UISwitch+AKAIBBindingProperties.m in Sources */,
 				8ECEEC431BA08F4000B73FC0 /* AKACompositeControlView.m in Sources */,
+				8E31544C1BC5F2AE003FD085 /* AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m in Sources */,
 				8E592FAD1BC0AD440066E888 /* AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.m in Sources */,
 				8E7233AB1B0022A200D647A9 /* AKAThemeLayout.m in Sources */,
+				8E3154501BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m in Sources */,
 				8ED5854C1BB9876E00378565 /* AKABindingProvider_UITextField_textBinding.m in Sources */,
 				8E7233B41B0022A200D647A9 /* AKAViewCustomization.m in Sources */,
 				8E7233871B0022A200D647A9 /* AKATextLabelBinding.m in Sources */,
 				8E72336F1B0022A200D647A9 /* AKAControlsErrors.m in Sources */,
 				8E72337B1B0022A200D647A9 /* AKAEmailValidator.m in Sources */,
 				8E066C041BC284DD006CADDC /* AKABinding_AKABinding_dateFormatter.m in Sources */,
-				8E7233B01B0022A200D647A9 /* AKAViewBinding.m in Sources */,
+				8E7233B01B0022A200D647A9 /* AKAObsoleteViewBinding.m in Sources */,
 				8E7233A61B0022A200D647A9 /* AKAThemableContainerView.m in Sources */,
 				8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */,
 				8E26A51D1BC18E1C003D133C /* AKABinding_AKABinding_numberFormatter.m in Sources */,
 				8E61FFC91BA6900900A4022F /* AKASingleChoiceEditorControlView.m in Sources */,
 				8E72339D1B0022A200D647A9 /* AKATableViewCellCompositeControl.m in Sources */,
+				8E31545D1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m in Sources */,
 				8EA9AB471BAC06DA0070F13E /* AKABindingExpression.m in Sources */,
 				8E7233851B0022A200D647A9 /* AKATextLabel.m in Sources */,
 				8E72339B1B0022A200D647A9 /* AKATableViewCell.m in Sources */,
@@ -980,17 +1049,20 @@
 				8E72337F1B0022A200D647A9 /* AKAFormTableViewController.m in Sources */,
 				8E72338F1B0022A200D647A9 /* AKANumberTextField.m in Sources */,
 				8E7233691B0022A200D647A9 /* AKAControl.m in Sources */,
-				8E7233B21B0022A200D647A9 /* AKAViewBindingConfiguration.m in Sources */,
+				8E7233B21B0022A200D647A9 /* AKAObsoleteViewBindingConfiguration.m in Sources */,
 				8E482C781BC2D96400FF7484 /* AKAPropertyBinding.m in Sources */,
 				8E7233AE1B0022A200D647A9 /* AKAThemeViewApplicability.m in Sources */,
 				8E7233781B0022A200D647A9 /* AKAEditorControlView.m in Sources */,
 				8E367A171BBAE2470094EF33 /* AKABindingProvider_UISwitch_stateBinding.m in Sources */,
+				8E3154551BC726A5003FD085 /* AKABinding_UITextView_textBinding.m in Sources */,
 				8EC0F1621BADB64A0066890A /* NSScanner+AKABindingExpressionParser.m in Sources */,
 				8E7233A11B0022A200D647A9 /* AKATextField.m in Sources */,
+				8E3154591BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m in Sources */,
 				8E7233A91B0022A200D647A9 /* AKATheme.m in Sources */,
 				8E979A481B9FE30500E0D29C /* AKABooleanLabelBinding.m in Sources */,
 				8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */,
 				8E7233831B0022A200D647A9 /* AKAKeyboardActivationSequenceAccessoryView.m in Sources */,
+				8E3154481BC5F1D6003FD085 /* AKADatePickerKeyboardTriggerView.m in Sources */,
 				8E7233931B0022A200D647A9 /* AKASubviewsSpecification.m in Sources */,
 				8E225FFA1BAF014600BC070F /* AKABindingProviderRegistry.m in Sources */,
 				8E5A165B1BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m in Sources */,

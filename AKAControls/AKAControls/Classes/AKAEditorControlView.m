@@ -9,7 +9,7 @@
 #import "AKAEditorControlView.h"
 #import "AKAThemableContainerView_Protected.h"
 
-#import "AKAViewBindingConfiguration.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
 #import "AKATextLabel.h"
 
 #import "AKAControlsErrors.h"

@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBinding.h"
 #import "AKAControlsErrors.h"
 #import "AKAProperty.h"
 #import "UIView+AKABinding.h"
 
-@implementation AKAViewBinding
+@implementation AKAObsoleteViewBinding
 
 @synthesize view = _view;
 @synthesize configuration = _configuration;
@@ -22,7 +22,7 @@
 /// @name Initialization
 
 - (instancetype)initWithView:(UIView *)view
-               configuration:(AKAViewBindingConfiguration*)configuration
+               configuration:(AKAObsoleteViewBindingConfiguration *)configuration
                     delegate:(id<AKAViewBindingDelegate>)delegate
 {
     self = [self init];

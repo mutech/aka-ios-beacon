@@ -6,12 +6,12 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBinding.h"
 
 #pragma mark - AKASwitchControlViewBinding
 #pragma mark -
 
-@interface AKASwitchBinding: AKAViewBinding
+@interface AKASwitchBinding: AKAObsoleteViewBinding
 
 #pragma mark - State
 
@@ -22,5 +22,5 @@
 #pragma mark - AKASwitchControlViewBindingConfiguration
 #pragma mark -
 
-@interface AKASwitchBindingConfiguration: AKAViewBindingConfiguration
+@interface AKASwitchBindingConfiguration: AKAObsoleteViewBindingConfiguration
 @end

@@ -16,6 +16,6 @@
 
 #pragma mark - Binding
 
-- (void)setViewBinding:(AKAViewBinding *)viewBinding;
+- (void)setViewBinding:(AKAObsoleteViewBinding *)viewBinding;
 
 @end

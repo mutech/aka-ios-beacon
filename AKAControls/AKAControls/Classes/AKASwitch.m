@@ -29,7 +29,7 @@
     [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
 }
 
-- (AKAViewBindingConfiguration*)bindingConfiguration
+- (AKAObsoleteViewBindingConfiguration *)bindingConfiguration
 {
     if (_bindingConfiguration == nil)
     {

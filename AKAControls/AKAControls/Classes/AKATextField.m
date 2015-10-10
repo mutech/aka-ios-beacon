@@ -74,7 +74,7 @@
     return AKATextFieldBindingConfiguration.new;
 }
 
-- (AKAViewBindingConfiguration*)bindingConfiguration
+- (AKAObsoleteViewBindingConfiguration *)bindingConfiguration
 {
     return self.textFieldBindingConfiguration;
 }

@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBindingConfiguration.h"
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
+#import "AKAObsoleteViewBinding.h"
 
 #pragma mark - AKATextFieldBinding
 #pragma mark -
@@ -20,7 +20,7 @@
  *
  * @bug Support for UITextField's is not yet implemented.
  */
-@interface AKATextFieldBinding: AKAViewBinding
+@interface AKATextFieldBinding: AKAObsoleteViewBinding
 @end
 
 #pragma mark - AKATextFieldBindingConfiguration
@@ -31,7 +31,7 @@
  * which is supposed to be used to configure bindings of UITextField instances which
  * are not AKATextField's.
  */
-@interface AKATextFieldBindingConfiguration: AKAViewBindingConfiguration
+@interface AKATextFieldBindingConfiguration: AKAObsoleteViewBindingConfiguration
 
 #pragma mark - Interface Builder Properties
 /// @name Interface Builder Properties

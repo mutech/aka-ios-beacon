@@ -6,15 +6,15 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBindingConfiguration.h"
-#import "AKAViewBinding.h"
+#import "AKAObsoleteViewBindingConfiguration.h"
+#import "AKAObsoleteViewBinding.h"
 #import "AKAControl.h"
 
-@implementation AKAViewBindingConfiguration
+@implementation AKAObsoleteViewBindingConfiguration
 
 - (Class)preferredBindingType
 {
-    return [AKAViewBinding class];
+    return [AKAObsoleteViewBinding class];
 }
 
 - (Class)preferredControlType

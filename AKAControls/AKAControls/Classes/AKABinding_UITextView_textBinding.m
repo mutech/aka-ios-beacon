@@ -109,6 +109,13 @@
 
 #pragma mark - Properties
 
+- (UITextView *)textView
+{
+    UIView* result = self.view;
+    NSParameterAssert(result == nil || [result isKindOfClass:[UITextView class]]);
+    return (UITextView*)result;
+}
+
 - (void)                          setSavedTextViewDelegate:(id<UITextViewDelegate>)savedTextViewDelegate
 {
     NSAssert(savedTextViewDelegate != self, @"Cannot register text view binding as saved delegate, it already acts as replacement/proxy delegate");

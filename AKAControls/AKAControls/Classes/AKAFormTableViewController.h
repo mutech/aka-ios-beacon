@@ -20,6 +20,16 @@
 @property(nonatomic, readonly) AKAFormControl* formControl;
 @property(nonatomic, readonly) AKATVDataSourceSpecification* defaultDataSource;
 
+#pragma mark - Initialization
+
+- (void)initializeTableViewMultiplexedDataSourceAndDelegate;
+- (void)                              initializeFormControl;
+- (void)                         initializeFormControlTheme;
+- (void)                       initializeFormControlMembers;
+- (void)                        activateFormControlBindings;
+- (void)                      deactivateFormControlBindings;
+
+
 #pragma mark - Configuration
 
 /**

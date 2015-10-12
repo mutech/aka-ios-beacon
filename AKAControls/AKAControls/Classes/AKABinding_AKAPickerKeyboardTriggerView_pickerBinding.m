@@ -66,6 +66,7 @@
                           delegate:delegate])
     {
         _bindingContext = bindingContext;
+        triggerView.delegate = self;
     }
     return self;
 }
@@ -650,6 +651,19 @@
     {
         [secondary customKeyboardResponderViewDidBecomeFirstResponder:view];
     }
+
+/*    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(deviceOrientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+ */
+}
+
+- (void)deviceOrientationChanged:(NSNotification*)notification
+{
+    // Not working:
+    //[self.pickerView.superview setNeedsLayout];
+    //[self.pickerView.superview layoutIfNeeded];
 }
 
 - (BOOL) customKeyboardResponderViewShouldResignFirstResponder:(AKACustomKeyboardResponderView*)view
@@ -683,6 +697,10 @@
 - (void)    customKeyboardResponderViewDidResignFirstResponder:(AKACustomKeyboardResponderView*)view
 {
     NSParameterAssert(view == self.triggerView);
+
+    /*[[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIDeviceOrientationDidChangeNotification
+                                                  object:nil];*/
 
     if (!self.liveModelUpdates)
     {

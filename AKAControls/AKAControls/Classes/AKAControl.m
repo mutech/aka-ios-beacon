@@ -881,7 +881,7 @@
 
 - (AKAControl*)                  rootControl
 {
-    AKACompositeControl* result = self;
+    AKAControl* result = self;
     while (result.owner != nil)
     {
         result = result.owner;

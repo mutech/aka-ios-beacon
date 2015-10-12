@@ -15,7 +15,7 @@
 		8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */; };
 		8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */; };
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; settings = {ASSET_TAGS = (); }; };
-		A5D68F1D36C2F714365AE64B /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9642C7BE27AD3DCFE6FA1FE /* Pods_AKAControlsGallery.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E6DDACC8B75AFC11B9778AFF /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 713C2BEBD1DCA64ADFBC9EA9 /* Pods_AKAControlsGallery.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +43,8 @@
 
 /* Begin PBXFileReference section */
 		5EE7DFAB46B4CDC640EF258D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		86583677145D7579775A9BBD /* Pods-AKAControlsGallery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.release.xcconfig"; sourceTree = "<group>"; };
+		713C2BEBD1DCA64ADFBC9EA9 /* Pods_AKAControlsGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKAControlsGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F9B42C8E18E4C9B653AEB67 /* Pods-AKAControlsGallery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.release.xcconfig"; sourceTree = "<group>"; };
 		8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKACommons.framework; path = "Pods/../build/Debug-iphoneos/AKACommons.framework"; sourceTree = "<group>"; };
 		8E5720871BBFDD650056A013 /* PickerKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerKeyboardViewController.h; sourceTree = "<group>"; };
 		8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerKeyboardViewController.m; sourceTree = "<group>"; };
@@ -61,8 +62,7 @@
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
 		8EFBE8521BBC4331004E264F /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = AKAControls.framework; path = "/Users/mu/Library/Developer/Xcode/DerivedData/AKAControls-aadmbzgjzjwucihjrebfyucxwbsh/Build/Products/Debug-iphoneos/AKAControls.framework"; sourceTree = "<absolute>"; };
-		D9642C7BE27AD3DCFE6FA1FE /* Pods_AKAControlsGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKAControlsGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E1E86FCF5F9B6EDE9D7C3E35 /* Pods-AKAControlsGallery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.debug.xcconfig"; sourceTree = "<group>"; };
+		E947A973723769FC4B1371D1 /* Pods-AKAControlsGallery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A5D68F1D36C2F714365AE64B /* Pods_AKAControlsGallery.framework in Frameworks */,
+				E6DDACC8B75AFC11B9778AFF /* Pods_AKAControlsGallery.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,23 +84,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		06DF70DDF75426724DE24798 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E1E86FCF5F9B6EDE9D7C3E35 /* Pods-AKAControlsGallery.debug.xcconfig */,
-				86583677145D7579775A9BBD /* Pods-AKAControlsGallery.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		496D7E3F4BC1D8C3B8EB2345 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */,
 				5EE7DFAB46B4CDC640EF258D /* Pods.framework */,
-				D9642C7BE27AD3DCFE6FA1FE /* Pods_AKAControlsGallery.framework */,
+				713C2BEBD1DCA64ADFBC9EA9 /* Pods_AKAControlsGallery.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		693E0E70BB1EFC16D615A1BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E947A973723769FC4B1371D1 /* Pods-AKAControlsGallery.debug.xcconfig */,
+				7F9B42C8E18E4C9B653AEB67 /* Pods-AKAControlsGallery.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		8E91E7311BB228A900F7618F = {
@@ -111,7 +111,7 @@
 				8E91E7561BB228A900F7618F /* AKAControlsGalleryUITests */,
 				8E91E73B1BB228A900F7618F /* Products */,
 				496D7E3F4BC1D8C3B8EB2345 /* Frameworks */,
-				06DF70DDF75426724DE24798 /* Pods */,
+				693E0E70BB1EFC16D615A1BB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -174,13 +174,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGallery" */;
 			buildPhases = (
-				E545F6301FEF6587F32AA469 /* Check Pods Manifest.lock */,
+				DD7C0D7A365A30B3181D2BD2 /* Check Pods Manifest.lock */,
 				8E91E7361BB228A900F7618F /* Sources */,
 				8E91E7371BB228A900F7618F /* Frameworks */,
 				8E91E7381BB228A900F7618F /* Resources */,
 				8EFBE8591BBC4370004E264F /* Embed Frameworks */,
-				74CA1605C1B339EFC48ED53A /* Embed Pods Frameworks */,
-				FAB0E6480EB89469094B5A5E /* Copy Pods Resources */,
+				2A55DEAA7D16A125FFCEC236 /* Embed Pods Frameworks */,
+				18AADF75B484D26524E2B17F /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -267,7 +267,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		74CA1605C1B339EFC48ED53A /* Embed Pods Frameworks */ = {
+		18AADF75B484D26524E2B17F /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2A55DEAA7D16A125FFCEC236 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -282,7 +297,7 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E545F6301FEF6587F32AA469 /* Check Pods Manifest.lock */ = {
+		DD7C0D7A365A30B3181D2BD2 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -295,21 +310,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		FAB0E6480EB89469094B5A5E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -454,7 +454,7 @@
 		};
 		8E91E75D1BB228A900F7618F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E1E86FCF5F9B6EDE9D7C3E35 /* Pods-AKAControlsGallery.debug.xcconfig */;
+			baseConfigurationReference = E947A973723769FC4B1371D1 /* Pods-AKAControlsGallery.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -467,7 +467,7 @@
 		};
 		8E91E75E1BB228A900F7618F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86583677145D7579775A9BBD /* Pods-AKAControlsGallery.release.xcconfig */;
+			baseConfigurationReference = 7F9B42C8E18E4C9B653AEB67 /* Pods-AKAControlsGallery.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

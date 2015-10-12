@@ -12,7 +12,7 @@ LICENSE
     spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v0.0.8-b006' }
 
     spec.source_files  = 'AKAControls/AKAControls/Classes/*.{h,m}'
-    #spec.private_header_files = '**/*_Internal.h'
+    spec.private_header_files = '**/*_Internal.h' 'AKAControls/AKAControls/AKAControls.h'
 
     spec.platform      = :ios, "8.0"
     spec.ios.deployment_target = "8.0"

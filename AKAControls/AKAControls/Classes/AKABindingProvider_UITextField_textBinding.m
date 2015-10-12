@@ -129,14 +129,18 @@
                                       setter:
             ^(id target, id value)
             {
-                AKABinding_UITextField_textBinding* adapter = target;
-                if (value == nil || [value isKindOfClass:[NSString class]])
+                AKABinding_UITextField_textBinding* binding = target;
+                if (value == nil)
                 {
-                    adapter.textField.text = value;
+                    binding.textField.text = @"";
+                }
+                if ([value isKindOfClass:[NSString class]])
+                {
+                    binding.textField.text = value;
                 }
                 else if (value != nil)
                 {
-                    adapter.textField.text = [NSString stringWithFormat:@"%@", value];
+                    binding.textField.text = [NSString stringWithFormat:@"%@", value];
                 }
             }
                           observationStarter:

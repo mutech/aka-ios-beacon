@@ -150,9 +150,13 @@
                 {
                     text = [NSString stringWithFormat:@"%@", value];
                 }
-                else
+                else if (self.textForUndefinedValue.length > 0)
                 {
                     text = self.textForUndefinedValue;
+                }
+                else
+                {
+                    text = @" ";
                 }
 
                 binding.label.text = text;

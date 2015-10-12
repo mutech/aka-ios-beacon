@@ -1,0 +1,6 @@
+framework module Pods_AKACommons {
+    umbrella header "AKACommons.h"
+
+    export *
+    module * { export * }
+}

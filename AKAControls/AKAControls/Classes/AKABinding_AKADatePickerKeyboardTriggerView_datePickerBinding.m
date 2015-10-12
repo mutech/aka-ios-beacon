@@ -37,35 +37,32 @@
                                                       delegate:(opt_AKABindingDelegate)delegate
 {
     NSParameterAssert([target isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
-    return [self initWithTriggerView:(AKADatePickerKeyboardTriggerView*)target
+    return [self        initWithView:(AKADatePickerKeyboardTriggerView*)target
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate];
 }
 
-- (instancetype)                           initWithTriggerView:(AKADatePickerKeyboardTriggerView* _Nonnull)triggerView
+- (instancetype)                                  initWithView:(AKADatePickerKeyboardTriggerView* _Nonnull)triggerView
                                                     expression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
                                                       delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:[self createTargetProperty]
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate])
+    if (self = [super initWithView:triggerView
+                        expression:bindingExpression
+                           context:bindingContext
+                          delegate:delegate])
     {
-        _KBActivationSequence = YES;
-        _autoActivate = YES;
-        _liveModelUpdates = YES;
-
-        _triggerView = triggerView;
-
         _bindingContext = bindingContext;
     }
     return self;
 }
 
-- (AKAProperty*)                          createTargetProperty
+- (req_AKAProperty)         createBindingTargetPropertyForView:(req_UIView)view
 {
+    NSParameterAssert(view == nil || [view isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
+    (void)view;
+
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -148,6 +145,13 @@
 }
 
 #pragma mark - Properties
+
+- (AKADatePickerKeyboardTriggerView *)triggerView
+{
+    UIView* result = self.view;
+    NSParameterAssert(result == nil || [result isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
+    return (AKADatePickerKeyboardTriggerView*)result;
+}
 
 @synthesize pickerView = _pickerView;
 - (UIDatePicker *)                                  pickerView
@@ -399,55 +403,19 @@
 
 - (BOOL)         shouldParticipateInKeyboardActivationSequence
 {
-    BOOL result = self.supportsActivation && self.KBActivationSequence;
+    BOOL result = self.supportsActivation && [super shouldParticipateInKeyboardActivationSequence];
     return result;
 }
 
-- (opt_UIResponder)     responderForKeyboardActivationSequence
+- (UIView *)responderInputAccessoryView
 {
-    return self.triggerView;
+    return self.triggerView.inputAccessoryView;
 }
 
-- (BOOL)                                     isResponderActive
+- (void)setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
 {
-    return self.triggerView.isFirstResponder;
-}
-
-- (BOOL)                                     activateResponder
-{
-    AKACustomKeyboardResponderView* triggerView = self.triggerView;
-    BOOL result = triggerView != nil;
-    if (result)
-    {
-        [self responderWillActivate:triggerView];
-        result = [triggerView becomeFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                                   deactivateResponder
-{
-    AKACustomKeyboardResponderView* triggerView = self.triggerView;
-    BOOL result = triggerView != nil;
-    if (result)
-    {
-        [self responderWillDeactivate:triggerView];
-        result = [triggerView resignFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                             installInputAccessoryView:(req_UIView)inputAccessoryView
-{
-    self.inputAccessoryView = inputAccessoryView;
-    return self.triggerView.inputAccessoryView == inputAccessoryView;
-}
-
-- (BOOL)                             restoreInputAccessoryView
-{
-    self.inputAccessoryView = nil;
-
-    return YES;
+    // self.triggerView.inputAccessory view will access self.inputAccessoryView via delegation
+    self.inputAccessoryView = responderInputAccessoryView;
 }
 
 #pragma mark - Obsolete (probably) Delegate Support Methods

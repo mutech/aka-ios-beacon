@@ -19,7 +19,7 @@
 @class AKAKeyboardActivationSequence;
 @protocol AKAControlConverterProtocol;
 
-@protocol AKAViewBindingDelegate <AKABindingContextProtocol>
+@protocol AKAObsoleteViewBindingDelegate <AKABindingContextProtocol>
 
 #pragma mark - Activation
 /// @name Activation
@@ -81,14 +81,14 @@
 
 - (instancetype)initWithView:(UIView*)view
                configuration:(AKAObsoleteViewBindingConfiguration *)configuration
-                    delegate:(id<AKAViewBindingDelegate>)delegate;
+                    delegate:(id<AKAObsoleteViewBindingDelegate>)delegate;
 
 #pragma mark - Configuration
 /// @name Configuration
 
 @property(nonatomic, weak, readonly) UIView* view;
 @property(nonatomic, weak, readonly) AKAObsoleteViewBindingConfiguration * configuration;
-@property(nonatomic, weak, readonly) id<AKAViewBindingDelegate> delegate;
+@property(nonatomic, weak, readonly) id<AKAObsoleteViewBindingDelegate> delegate;
 
 #pragma mark - View Value Access
 /// @name View Value Access

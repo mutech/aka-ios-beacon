@@ -69,13 +69,12 @@
 
 #pragma mark - Saved UITextField State
 
-@property(nonatomic, weak) id<UITextFieldDelegate>        savedTextViewDelegate;
-@property(nonatomic, nullable) NSString*                  originalText;
-@property(nonatomic) UIView*                              originalInputAccessoryView;
+@property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
+@property(nonatomic, nullable) NSString*                   originalText;
 
 #pragma mark - Convenience
 
-@property(nonatomic, readonly) UITextField*               textField;
+@property(nonatomic, readonly) UITextField*                textField;
 
 @end
 
@@ -92,31 +91,34 @@
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
     NSParameterAssert([target isKindOfClass:[UITextField class]]);
-    return [self initWithTextField:(UITextField*)target
+    return [self      initWithView:(UITextField*)target
                         expression:bindingExpression
                            context:bindingContext
                           delegate:delegate];
 }
 
-- (instancetype)                         initWithTextField:(req_UITextField)textField
+- (instancetype)                              initWithView:(req_UITextField)textField
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:[self createTargetProperty]
+    NSParameterAssert([textField isKindOfClass:[UITextField class]]);
+    if (self = [super initWithView:textField
                           expression:bindingExpression
                              context:bindingContext
                             delegate:delegate])
     {
-        _liveModelUpdates = YES;
-
-        _textField = textField;
+        NSAssert(self.textField == self.view && self.textField == textField, @"initWithView failed to initialize view property");
+        self.liveModelUpdates = YES;
     }
     return self;
 }
 
-- (AKAProperty*)createTargetProperty
+- (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
 {
+    NSAssert([view isKindOfClass:[UITextField class]], @"Expected a UITextField, got %@", view);
+    (void)view;
+
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -170,6 +172,13 @@
 }
 
 #pragma mark - Properties
+
+- (UITextField *)                                 textField
+{
+    UIView* view = self.view;
+    NSParameterAssert(view == nil || [view isKindOfClass:[UITextField class]]);
+    return (UITextField*)view;
+}
 
 - (void)                          setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
 {
@@ -366,7 +375,21 @@
     }
 }
 
-#pragma mark - Activation
+#pragma mark - Keyboard Activation Sequence
+
+- (BOOL)     shouldParticipateInKeyboardActivationSequence
+{
+    BOOL result = ([super shouldParticipateInKeyboardActivationSequence] &&
+                   self.supportsActivation);
+    return result;
+}
+
+- (void)setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
+{
+    self.textField.inputAccessoryView = responderInputAccessoryView;
+}
+
+#pragma mark - Obsolete (probably) Activation
 
 - (BOOL)                                supportsActivation
 {
@@ -377,69 +400,6 @@
 - (BOOL)                                shouldAutoActivate
 {
     BOOL result = self.supportsActivation && self.autoActivate;
-    return result;
-}
-
-#pragma mark - Keyboard Activation Sequence
-
-- (BOOL)     shouldParticipateInKeyboardActivationSequence
-{
-    BOOL result = self.supportsActivation && self.KBActivationSequence;
-    return result;
-}
-
-- (opt_UIResponder) responderForKeyboardActivationSequence
-{
-    return self.textField;
-}
-
-- (BOOL)                                 isResponderActive
-{
-    return self.textField.isFirstResponder;
-}
-
-- (BOOL)                                 activateResponder
-{
-    UITextField* textField = self.textField;
-    BOOL result = textField != nil;
-    if (result)
-    {
-        [self responderWillActivate:textField];
-        result = [textField becomeFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                               deactivateResponder
-{
-    UITextField* textField = self.textField;
-    BOOL result = textField != nil;
-    if (result)
-    {
-        [self responderWillDeactivate:textField];
-        result = [textField resignFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                         installInputAccessoryView:(req_UIView)inputAccessoryView
-{
-    if (inputAccessoryView != self.textField.inputAccessoryView)
-    {
-        NSAssert(self.originalInputAccessoryView == nil, @"previously installed input accessory view was not restored");
-        self.originalInputAccessoryView = self.textField.inputAccessoryView;
-
-        self.textField.inputAccessoryView = inputAccessoryView;
-    }
-    return self.textField.inputAccessoryView == inputAccessoryView;
-}
-
-- (BOOL)                         restoreInputAccessoryView
-{
-    self.textField.inputAccessoryView = self.originalInputAccessoryView;
-    BOOL result = self.originalInputAccessoryView == self.textField.inputAccessoryView;
-    self.originalInputAccessoryView = nil;
-
     return result;
 }
 

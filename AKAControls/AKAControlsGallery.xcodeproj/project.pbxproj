@@ -15,7 +15,7 @@
 		8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */; };
 		8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */; };
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; settings = {ASSET_TAGS = (); }; };
-		A5D68F1D36C2F714365AE64B /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9642C7BE27AD3DCFE6FA1FE /* Pods_AKAControlsGallery.framework */; };
+		A5D68F1D36C2F714365AE64B /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9642C7BE27AD3DCFE6FA1FE /* Pods_AKAControlsGallery.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

@@ -23,7 +23,7 @@
 
 - (instancetype)initWithView:(UIView *)view
                configuration:(AKAObsoleteViewBindingConfiguration *)configuration
-                    delegate:(id<AKAViewBindingDelegate>)delegate
+                    delegate:(id<AKAObsoleteViewBindingDelegate>)delegate
 {
     self = [self init];
     if (self)

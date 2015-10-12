@@ -11,10 +11,6 @@
 #import "AKAKeyboardActivationSequenceItemProtocol.h"
 
 
-@interface AKABinding_UITextView_textBinding : AKABinding<AKAKeyboardActivationSequenceItemProtocol>
-
-@property(nonatomic, readonly) BOOL                       liveModelUpdates;
-@property(nonatomic, readonly) BOOL                       autoActivate;
-@property(nonatomic, readonly) BOOL                       KBActivationSequence;
+@interface AKABinding_UITextView_textBinding : AKAKeyboardControlViewBinding
 
 @end

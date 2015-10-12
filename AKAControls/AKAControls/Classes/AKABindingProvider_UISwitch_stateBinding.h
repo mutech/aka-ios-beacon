@@ -14,7 +14,7 @@
 
 @end
 
-@interface AKABinding_UISwitch_stateBinding : AKABinding
+@interface AKABinding_UISwitch_stateBinding : AKAControlViewBinding
 
 #pragma mark - Binding Configuration
 

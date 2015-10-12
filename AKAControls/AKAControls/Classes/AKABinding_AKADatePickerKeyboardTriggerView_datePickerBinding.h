@@ -11,12 +11,6 @@
 #import "AKAKeyboardActivationSequenceItemProtocol.h"
 
 
-@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding: AKABinding<
-    AKAKeyboardActivationSequenceItemProtocol
->
-
-@property(nonatomic, readonly) BOOL autoActivate;
-@property(nonatomic, readonly) BOOL KBActivationSequence;
-@property(nonatomic, readonly) BOOL liveModelUpdates;
+@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding: AKAKeyboardControlViewBinding
 
 @end

@@ -11,22 +11,22 @@
 
 @implementation UILabel (AKAIBBindingProperties)
 
-- (NSString *)              textBinding
+- (NSString *)textBinding_aka
 {
     AKABindingProvider_UILabel_textBinding* provider =
         [AKABindingProvider_UILabel_textBinding sharedInstance];
 
-    return [provider bindingExpressionTextForSelector:@selector(textBinding)
+    return [provider bindingExpressionTextForSelector:@selector(textBinding_aka)
                                                inView:self];
 }
 
-- (void)                 setTextBinding:(opt_NSString)textBinding
+- (void)                 setTextBinding_aka:(opt_NSString)textBinding_aka
 {
     AKABindingProvider_UILabel_textBinding* provider =
         [AKABindingProvider_UILabel_textBinding sharedInstance];
 
-    [provider setBindingExpressionText:textBinding
-                           forSelector:@selector(textBinding)
+    [provider setBindingExpressionText:textBinding_aka
+                           forSelector:@selector(textBinding_aka)
                                 inView:self];
 }
 

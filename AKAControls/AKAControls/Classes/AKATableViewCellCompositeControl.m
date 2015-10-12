@@ -18,8 +18,8 @@
 {
     NSString* result = [NSString stringWithFormat:@"cell@[%ld-%ld]: %@, configuration: { %@ }",
                         (long)self.indexPath.section, (long)self.indexPath.row,
-                        self.view.description,
-                        self.viewBinding.configuration.description];
+                        @"-"/*self.view.description*/,
+                        @"-"/*self.viewBinding.configuration.description*/];
     return result;
 }
 

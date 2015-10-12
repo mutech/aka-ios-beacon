@@ -15,13 +15,12 @@
 
 #pragma mark - Saved UITextView State
 
-@property(nonatomic, weak) id<UITextViewDelegate>         savedTextViewDelegate;
-@property(nonatomic, nullable) NSString*                  originalText;
-@property(nonatomic) UIView*                              originalInputAccessoryView;
+@property(nonatomic, weak) id<UITextViewDelegate>          savedTextViewDelegate;
+@property(nonatomic, nullable) NSString*                   originalText;
 
 #pragma mark - Convenience
 
-@property(nonatomic, readonly) UITextView*               textView;
+@property(nonatomic, readonly) UITextView*                 textView;
 
 @end
 
@@ -36,32 +35,32 @@
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
     NSParameterAssert([target isKindOfClass:[UITextView class]]);
-    return [self  initWithTextView:(UITextView*)target
+    return [self      initWithView:(UITextView*)target
                         expression:bindingExpression
                            context:bindingContext
                           delegate:delegate];
 }
 
-- (instancetype)                          initWithTextView:(req_UITextView)textView
+- (instancetype)                              initWithView:(req_UITextView)textView
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:[self createTargetProperty]
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate])
+    if (self = [super initWithView:textView
+                        expression:bindingExpression
+                           context:bindingContext
+                          delegate:delegate])
     {
-        _liveModelUpdates = NO;
-        _KBActivationSequence = YES;
-
-        _textView = textView;
+        self.liveModelUpdates = NO;
     }
     return self;
 }
 
-- (AKAProperty*)createTargetProperty
+- (req_AKAProperty)     createBindingTargetPropertyForView:(req_UIView)view
 {
+    NSParameterAssert(view == nil || [view isKindOfClass:[UITextView class]]);
+    (void)view;
+
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -176,54 +175,9 @@
     return self.textView;
 }
 
-- (BOOL)                                 isResponderActive
+- (void)                    setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
 {
-    return self.textView.isFirstResponder;
-}
-
-- (BOOL)                                 activateResponder
-{
-    UITextView* textView = self.textView;
-    BOOL result = textView != nil;
-    if (result)
-    {
-        [self responderWillActivate:textView];
-        result = [textView becomeFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                               deactivateResponder
-{
-    UITextView* textView = self.textView;
-    BOOL result = textView != nil;
-    if (result)
-    {
-        [self responderWillDeactivate:textView];
-        result = [textView resignFirstResponder];
-    }
-    return result;
-}
-
-- (BOOL)                         installInputAccessoryView:(req_UIView)inputAccessoryView
-{
-    if (inputAccessoryView != self.textView.inputAccessoryView)
-    {
-        NSAssert(self.originalInputAccessoryView == nil, @"previously installed input accessory view was not restored");
-        self.originalInputAccessoryView = self.textView.inputAccessoryView;
-
-        self.textView.inputAccessoryView = inputAccessoryView;
-    }
-    return self.textView.inputAccessoryView == inputAccessoryView;
-}
-
-- (BOOL)                         restoreInputAccessoryView
-{
-    self.textView.inputAccessoryView = self.originalInputAccessoryView;
-    BOOL result = self.originalInputAccessoryView == self.textView.inputAccessoryView;
-    self.originalInputAccessoryView = nil;
-
-    return result;
+    self.textView.inputAccessoryView = responderInputAccessoryView;
 }
 
 #pragma mark - Obsolete (probably) Delegate Support Methods
@@ -397,8 +351,10 @@
 
 #pragma mark - Hacks
 
-- (void)autoScrollToVisibleIfNeeded
+- (void)                       autoScrollToVisibleIfNeeded
 {
+    // see also https://github.com/damienpontifex/BlogCodeSamples/issues/1#issuecomment-147236647
+
     UITextView* textView = self.textView;
 
     // We only attempt to do the scrolling if the text view has it disabled

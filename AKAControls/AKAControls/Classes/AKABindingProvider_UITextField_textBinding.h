@@ -17,13 +17,7 @@
 @end
 
 
-@interface AKABinding_UITextField_textBinding: AKABinding<AKAKeyboardActivationSequenceItemProtocol>
-
-#pragma mark - Binding Configuration
-
-@property(nonatomic, readonly) BOOL                       liveModelUpdates;
-@property(nonatomic, readonly) BOOL                       autoActivate;
-@property(nonatomic, readonly) BOOL                       KBActivationSequence;
+@interface AKABinding_UITextField_textBinding: AKAKeyboardControlViewBinding
 
 @end
 

@@ -72,29 +72,31 @@
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
     NSParameterAssert([target isKindOfClass:[UISwitch class]]);
-    return [self initWithSwitch:(UISwitch*)target
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate];
+    return [self initWithView:(UISwitch*)target
+                   expression:bindingExpression
+                      context:bindingContext
+                     delegate:delegate];
 }
 
-- (instancetype)                            initWithSwitch:(req_UISwitch)uiSwitch
+- (instancetype)                              initWithView:(req_UISwitch)uiSwitch
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super initWithTarget:[self createTargetProperty]
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate])
+    if (self = [super initWithView:uiSwitch
+                        expression:bindingExpression
+                           context:bindingContext
+                          delegate:delegate])
     {
-        _uiSwitch = uiSwitch;
     }
     return self;
 }
 
-- (AKAProperty*)createTargetProperty
+- (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
 {
+    NSParameterAssert(view == nil || [view isKindOfClass:[UISwitch class]]);
+    (void)view;
+
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -137,6 +139,16 @@
                 }
                 return result;
             }];
+}
+
+#pragma mark - Properties
+
+- (UISwitch *)uiSwitch
+{
+    UIView* result = self.view;
+    NSParameterAssert(result == nil || [result isKindOfClass:[UISwitch class]]);
+
+    return (UISwitch*)result;
 }
 
 #pragma mark - Change Observation

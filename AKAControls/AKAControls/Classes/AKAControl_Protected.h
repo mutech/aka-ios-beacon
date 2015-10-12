@@ -8,7 +8,7 @@
 
 #import "AKAControl.h"
 
-@interface AKAControl () <AKAViewBindingDelegate>
+@interface AKAControl ()
 
 #pragma mark - Initialization
 /// @name Initialization
@@ -24,30 +24,5 @@
 #pragma mark - Obsolete
 // TODO: remove when new binding mechanism is ready:
 
-/**
- * The binding connecting this control to its view.
- *
- * @note This property should only be used by inheriting classes. Use the methods provided by AKAControl and its subclasses instead of calling binding methods directly. Please file a bug report if functionality is missing.
- *
- */
-@property(nonatomic, strong) AKAObsoleteViewBinding * viewBinding;
-
-/**
- * The AKAProperty providing access to the controls modelValue.
- *
- * @note This property should only be used by inheriting classes. Use the modelValue property instead to access the model value.
- */
-@property(nonatomic, strong, readonly) AKAProperty* modelValueProperty;
-
-/**
- * The AKAProperty providing access to the controls viewValue.
- *
- * @note This property should only be used by inheriting classes. Use the viewValue property instead to access the model value.
- */
-@property(nonatomic, readonly) AKAProperty* viewValueProperty;
-
-@property(nonatomic, readonly) AKAProperty* converterProperty;
-
-@property(nonatomic, readonly) AKAProperty* validatorProperty;
 
 @end

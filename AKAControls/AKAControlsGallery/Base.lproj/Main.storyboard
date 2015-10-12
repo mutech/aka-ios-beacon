@@ -24,7 +24,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UITextField - textBinding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CSy-lE-aZH">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UITextField - textBinding_aka" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CSy-lE-aZH">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
@@ -47,7 +47,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UILabel - textBinding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bPk-nD-Vo4">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="UILabel - textBinding_aka" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bPk-nD-Vo4">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
@@ -128,7 +128,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                         <string key="value">stringValue {
 	liveModelUpdates: $true,
 	autoActivate: $true, 	KBActivationSequence: $true
@@ -147,7 +147,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Another model value editor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
@@ -188,7 +188,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
@@ -270,126 +270,201 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
-                                <rect key="frame" x="16" y="72" width="343" height="40"/>
-                                <animations/>
-                                <string key="text">Choose string value from array of strings, custom text for undefined value in label, picker updates model value on change (closing keyboard), picker supports undefined value.</string>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                <rect key="frame" x="16" y="120" width="343" height="20"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sa1-o0-prA">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="21"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
-                                                <string key="value">stringValue {
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="us9-qa-rgQ" userLabel="ContentView">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="253.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
+                                                <rect key="frame" x="20" y="20" width="335" height="40"/>
+                                                <animations/>
+                                                <string key="text">Choose string value from array of strings, custom text for undefined value in label, picker updates model value on change (closing keyboard), picker supports undefined value.</string>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
+                                                <rect key="frame" x="20" y="68" width="335" height="28"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
+                                                        <rect key="frame" x="4" y="4" width="327" height="20.5"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                                                <string key="value">stringValue {
 	textForUndefinedValue: "(tap to choose)"
 }</string>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                </subviews>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="leading" secondItem="ri5-zv-jXS" secondAttribute="leading" id="HYa-EE-wcR"/>
-                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="top" secondItem="ri5-zv-jXS" secondAttribute="top" id="fT7-4B-ddT"/>
-                                    <constraint firstAttribute="trailing" secondItem="tKJ-rE-QKb" secondAttribute="trailing" id="lgR-rE-N9y"/>
-                                    <constraint firstAttribute="bottom" secondItem="tKJ-rE-QKb" secondAttribute="bottom" id="tc9-kp-xzL"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
-                                        <string key="value">stringValue {
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="leading" secondItem="ri5-zv-jXS" secondAttribute="leading" constant="4" id="HYa-EE-wcR"/>
+                                                    <constraint firstItem="tKJ-rE-QKb" firstAttribute="top" secondItem="ri5-zv-jXS" secondAttribute="top" constant="4" id="fT7-4B-ddT"/>
+                                                    <constraint firstAttribute="trailing" secondItem="tKJ-rE-QKb" secondAttribute="trailing" constant="4" id="lgR-rE-N9y"/>
+                                                    <constraint firstAttribute="bottom" secondItem="tKJ-rE-QKb" secondAttribute="bottom" constant="4" id="tc9-kp-xzL"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
+                                                        <string key="value">stringValue {
 	choices: stringArrayValue,
 	titleForUndefinedValue: "(please choose)"
 }</string>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="bnr-Cb-aOu" appends="YES" id="CFC-ux-6tI"/>
-                                </connections>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDU-dm-w6n">
-                                <rect key="frame" x="16" y="148" width="343" height="40"/>
-                                <animations/>
-                                <string key="text">Choose object value from array of objects, update on resign first responder (end edit), object property title and value are used in label, title in picker.</string>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                <rect key="frame" x="16" y="196" width="343" height="20"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyl-gr-qGe" userLabel="Title Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="34" height="21"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="objectValue.title"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuB-G7-7Ip" userLabel="Value Label">
-                                        <rect key="frame" x="42" y="0.0" width="42" height="21"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="objectValue.value"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </label>
-                                </subviews>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstItem="kyl-gr-qGe" firstAttribute="leading" secondItem="Bz0-aN-95m" secondAttribute="leading" id="COv-jh-WsI"/>
-                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="top" secondItem="kyl-gr-qGe" secondAttribute="top" id="OHv-en-TJf"/>
-                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="bottom" secondItem="kyl-gr-qGe" secondAttribute="bottom" id="Rsz-FO-3aE"/>
-                                    <constraint firstAttribute="bottom" secondItem="kyl-gr-qGe" secondAttribute="bottom" id="TNB-cD-xuo"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SuB-G7-7Ip" secondAttribute="trailing" id="WUO-Bx-v28"/>
-                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="leading" secondItem="kyl-gr-qGe" secondAttribute="trailing" constant="8" id="cGl-gg-phR"/>
-                                    <constraint firstItem="kyl-gr-qGe" firstAttribute="top" secondItem="Bz0-aN-95m" secondAttribute="top" id="lTF-5n-U0V"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
-                                        <string key="value">objectValue {
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="bnr-Cb-aOu" appends="YES" id="CFC-ux-6tI"/>
+                                                </connections>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDU-dm-w6n">
+                                                <rect key="frame" x="20" y="104" width="335" height="39"/>
+                                                <animations/>
+                                                <string key="text">Choose object value from array of objects, update on resign first responder (end edit), object property title and value are used in label, title in picker.</string>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
+                                                <rect key="frame" x="20" y="151" width="335" height="28"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyl-gr-qGe" userLabel="Title Label">
+                                                        <rect key="frame" x="4" y="4" width="33.5" height="20.5"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="objectValue.title"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuB-G7-7Ip" userLabel="Value Label">
+                                                        <rect key="frame" x="45.5" y="4" width="42" height="20.5"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="objectValue.value"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="kyl-gr-qGe" firstAttribute="leading" secondItem="Bz0-aN-95m" secondAttribute="leading" constant="4" id="COv-jh-WsI"/>
+                                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="top" secondItem="kyl-gr-qGe" secondAttribute="top" id="OHv-en-TJf"/>
+                                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="bottom" secondItem="kyl-gr-qGe" secondAttribute="bottom" id="Rsz-FO-3aE"/>
+                                                    <constraint firstAttribute="bottom" secondItem="kyl-gr-qGe" secondAttribute="bottom" constant="4" id="TNB-cD-xuo"/>
+                                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="SuB-G7-7Ip" secondAttribute="trailing" constant="4" id="WUO-Bx-v28"/>
+                                                    <constraint firstItem="SuB-G7-7Ip" firstAttribute="leading" secondItem="kyl-gr-qGe" secondAttribute="trailing" constant="8" id="cGl-gg-phR"/>
+                                                    <constraint firstItem="kyl-gr-qGe" firstAttribute="top" secondItem="Bz0-aN-95m" secondAttribute="top" constant="4" id="lTF-5n-U0V"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
+                                                        <string key="value">objectValue {
 	title: title,
 	choices: objectArrayValue,
 	liveModelUpdates: $false
 }</string>
-                                    </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="ACP-Yb-3Pb" appends="YES" id="4eM-2Z-Zpz"/>
+                                                </connections>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
+                                                <rect key="frame" x="20" y="187" width="335" height="14"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnP-bs-nQR" userLabel="DatePickerKeyboardTriggerView" customClass="AKADatePickerKeyboardTriggerView">
+                                                <rect key="frame" x="20" y="209" width="335" height="29"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-Gt-BuC" userLabel="SelectedItemLabel">
+                                                        <rect key="frame" x="4" y="4" width="327" height="20.5"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="JDZ-Gt-BuC" secondAttribute="trailing" constant="4" id="1Bk-Hi-FtX"/>
+                                                    <constraint firstItem="JDZ-Gt-BuC" firstAttribute="leading" secondItem="jnP-bs-nQR" secondAttribute="leading" constant="4" id="XR6-mD-PvR"/>
+                                                    <constraint firstItem="JDZ-Gt-BuC" firstAttribute="top" secondItem="jnP-bs-nQR" secondAttribute="top" constant="4" id="ciO-Mf-fbA"/>
+                                                    <constraint firstAttribute="bottom" secondItem="JDZ-Gt-BuC" secondAttribute="bottom" constant="4" id="rUl-Iu-lfj"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="datePickerBinding" value="dateValue"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="0s6-Ny-4sy" appends="YES" id="CA0-pb-ORg"/>
+                                                </connections>
+                                            </view>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="jnP-bs-nQR" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="1cw-LF-4DO"/>
+                                            <constraint firstItem="Bz0-aN-95m" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="3Ky-G3-jaf"/>
+                                            <constraint firstAttribute="bottom" secondItem="jnP-bs-nQR" secondAttribute="bottom" constant="16" id="4di-xg-Gia"/>
+                                            <constraint firstItem="G07-fu-yYi" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="DrY-o9-Pzf"/>
+                                            <constraint firstItem="Bz0-aN-95m" firstAttribute="top" secondItem="zDU-dm-w6n" secondAttribute="bottom" constant="8" id="Icd-tR-pjU"/>
+                                            <constraint firstItem="ri5-zv-jXS" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="L6Z-gP-YgI"/>
+                                            <constraint firstItem="jnP-bs-nQR" firstAttribute="top" secondItem="G07-fu-yYi" secondAttribute="bottom" constant="8" id="Rve-Bo-Q3i"/>
+                                            <constraint firstItem="ItR-l1-CLW" firstAttribute="leading" secondItem="us9-qa-rgQ" secondAttribute="leading" constant="20" id="Tgl-V5-Ehi"/>
+                                            <constraint firstItem="ri5-zv-jXS" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="aDA-kY-x9A"/>
+                                            <constraint firstItem="zDU-dm-w6n" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="blv-OT-QTd"/>
+                                            <constraint firstItem="zDU-dm-w6n" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="f0I-xW-oa9"/>
+                                            <constraint firstItem="ri5-zv-jXS" firstAttribute="top" secondItem="ItR-l1-CLW" secondAttribute="bottom" constant="8" id="fW7-NB-QGk"/>
+                                            <constraint firstItem="Bz0-aN-95m" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="hXD-36-EhX"/>
+                                            <constraint firstItem="G07-fu-yYi" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="iHr-ck-Leb"/>
+                                            <constraint firstItem="ItR-l1-CLW" firstAttribute="top" secondItem="us9-qa-rgQ" secondAttribute="top" constant="20" id="mSi-oH-Qpr"/>
+                                            <constraint firstItem="jnP-bs-nQR" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="pib-a1-Tnt"/>
+                                            <constraint firstItem="G07-fu-yYi" firstAttribute="top" secondItem="Bz0-aN-95m" secondAttribute="bottom" constant="8" id="qSO-W9-rgC"/>
+                                            <constraint firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" constant="20" id="qop-kA-WuR"/>
+                                            <constraint firstItem="zDU-dm-w6n" firstAttribute="top" secondItem="ri5-zv-jXS" secondAttribute="bottom" constant="8" id="uvW-qT-zUN"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstItem="us9-qa-rgQ" firstAttribute="top" secondItem="sa1-o0-prA" secondAttribute="top" id="14Q-yS-W2e"/>
+                                    <constraint firstAttribute="bottom" secondItem="us9-qa-rgQ" secondAttribute="bottom" id="Ypx-Fx-HDi"/>
+                                    <constraint firstAttribute="trailing" secondItem="us9-qa-rgQ" secondAttribute="trailing" id="fcR-dC-kjb"/>
+                                    <constraint firstItem="us9-qa-rgQ" firstAttribute="leading" secondItem="sa1-o0-prA" secondAttribute="leading" id="oNT-L4-2Sd"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="ACP-Yb-3Pb" appends="YES" id="4eM-2Z-Zpz"/>
-                                </connections>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="zDU-dm-w6n" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="3P7-8G-JhD"/>
-                            <constraint firstItem="Bz0-aN-95m" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="A3S-Mc-fA1"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="GFb-j9-8Mr"/>
-                            <constraint firstItem="ri5-zv-jXS" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="LQB-o4-oyn"/>
-                            <constraint firstItem="Bz0-aN-95m" firstAttribute="top" secondItem="zDU-dm-w6n" secondAttribute="bottom" constant="8" id="Naa-Sg-x8v"/>
-                            <constraint firstItem="zDU-dm-w6n" firstAttribute="top" secondItem="ri5-zv-jXS" secondAttribute="bottom" constant="8" id="VyV-EN-MNL"/>
-                            <constraint firstItem="zDU-dm-w6n" firstAttribute="leading" secondItem="ItR-l1-CLW" secondAttribute="leading" id="cVY-fV-FWU"/>
-                            <constraint firstItem="Bz0-aN-95m" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="eKc-Qz-RD2"/>
-                            <constraint firstItem="ri5-zv-jXS" firstAttribute="trailing" secondItem="ItR-l1-CLW" secondAttribute="trailing" id="goM-SZ-8hW"/>
-                            <constraint firstItem="ri5-zv-jXS" firstAttribute="top" secondItem="ItR-l1-CLW" secondAttribute="bottom" constant="8" id="prZ-a4-ObK"/>
-                            <constraint firstItem="ItR-l1-CLW" firstAttribute="top" secondItem="EoT-lE-sac" secondAttribute="bottom" constant="8" id="sBk-Xm-Apl"/>
-                            <constraint firstItem="ItR-l1-CLW" firstAttribute="leading" secondItem="YPx-Cf-QHs" secondAttribute="leadingMargin" id="zfC-x6-VRe"/>
+                            <constraint firstItem="Ta0-Mi-qCQ" firstAttribute="top" secondItem="sa1-o0-prA" secondAttribute="bottom" id="67m-JS-Ehb"/>
+                            <constraint firstItem="sa1-o0-prA" firstAttribute="top" secondItem="EoT-lE-sac" secondAttribute="bottom" id="JMv-hi-MDw"/>
+                            <constraint firstItem="us9-qa-rgQ" firstAttribute="width" secondItem="YPx-Cf-QHs" secondAttribute="width" id="Kyh-oj-bRb"/>
+                            <constraint firstItem="sa1-o0-prA" firstAttribute="leading" secondItem="YPx-Cf-QHs" secondAttribute="leading" id="eiD-cH-bU3"/>
+                            <constraint firstAttribute="trailing" secondItem="sa1-o0-prA" secondAttribute="trailing" id="mb8-eW-AEy"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="objectPickerTriggerView" destination="Bz0-aN-95m" id="0ML-fd-wGZ"/>
+                        <outlet property="scrollView" destination="sa1-o0-prA" id="S7J-Eh-OqY"/>
                         <outlet property="stringPickerTriggerView" destination="ri5-zv-jXS" id="vA3-R2-lqP"/>
                     </connections>
                 </viewController>
@@ -402,6 +477,11 @@
                 <tapGestureRecognizer id="ACP-Yb-3Pb">
                     <connections>
                         <action selector="becomeFirstResponderForSender:" destination="Bz0-aN-95m" id="dbm-VC-IrO"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="0s6-Ny-4sy">
+                    <connections>
+                        <action selector="becomeFirstResponderForSender:" destination="jnP-bs-nQR" id="YUS-1x-OGl"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -440,7 +520,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding" value="stringValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTR-V6-8pR">
@@ -450,7 +530,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                         <string key="value">numberValue {
 	numberFormatter: {
 		positiveFormat: "#,##0.00# ¤",
@@ -475,7 +555,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding">
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                         <string key="value">dateValue {
 	dateFormatter: {
 		dateFormat: "'Today is 'EEE, yyyy-MM-dd'T'HH:mm:ssZ"

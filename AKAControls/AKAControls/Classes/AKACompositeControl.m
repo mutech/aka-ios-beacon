@@ -42,46 +42,6 @@
     return self;
 }
 
-#pragma mark - Binding Context Protocol
-
-- (opt_AKAProperty)dataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [self.dataContextProperty propertyAtKeyPath:keyPath
-                                    withChangeObserver:valueDidChange];
-}
-
-- (opt_id)dataContextValueForKeyPath:(req_NSString)keyPath
-{
-    return [self.dataContextProperty targetValueForKeyPath:keyPath];
-}
-
-- (opt_AKAProperty)rootDataContextPropertyForKeyPath:(opt_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
-}
-
-- (opt_id)rootDataContextValueForKeyPath:(req_NSString)keyPath
-{
-    return [self rootDataContextPropertyForKeyPath:keyPath withChangeObserver:nil].value;
-}
-
-- (opt_AKAProperty)controlPropertyForKeyPath:(req_NSString)keyPath withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [AKAProperty propertyOfWeakKeyValueTarget:self keyPath:keyPath changeObserver:valueDidChange];
-}
-
-- (opt_id)controlValueForKeyPath:(req_NSString)keyPath
-{
-    return [self controlPropertyForKeyPath:keyPath withChangeObserver:nil].value;
-}
-
-- (AKACompositeControl*)rootControl
-{
-    AKACompositeControl* result;
-    for (result = self; result.owner != nil; result = result.owner)
-        ;
-    return result;
-}
 
 #pragma mark - Binding Delegate
 
@@ -148,8 +108,8 @@
 
     Class bindingType = configuration.preferredBindingType;
     AKAObsoleteViewBinding * binding = [[bindingType alloc] initWithView:view
-                                                  configuration:configuration
-                                                       delegate:control];
+                                                           configuration:configuration
+                                                                delegate:control];
     control.viewBinding = binding;
 
     if ([control isKindOfClass:[AKACompositeControl class]] && binding.view != nil)

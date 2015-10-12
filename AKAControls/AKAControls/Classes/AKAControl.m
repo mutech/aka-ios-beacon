@@ -6,6 +6,11 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAConcurrencyTools;
+
+#import <objc/runtime.h>
+
 #import "AKAControl_Internal.h"
 #import "AKACompositeControl.h"
 
@@ -16,17 +21,8 @@
 #import "AKABinding.h"
 #import "AKABindingProvider.h"
 
-@import AKACommons;
-//@import AKACommons.NSObject_AKAConcurrencyTools;
-
-#import <objc/runtime.h>
-
-@interface AKAControl(Convenience)
-
-@end
 
 @interface AKAControl() <
-    AKABindingDelegate,
     AKAControlConverterDelegate,
     AKAControlValidationDelegate
 > {
@@ -36,7 +32,32 @@
     NSMutableSet* _tags;
 }
 
-@property(nonatomic)NSMutableDictionary* themeNameByType;
+#pragma mark - Conversion
+
+@property(nonatomic, readonly) AKAProperty*                                 converterProperty;
+@property(nonatomic, readonly, nullable) id<AKAControlConverterProtocol>    converter;
+
+#pragma mark - Validation
+
+@property(nonatomic, readonly) AKAProperty*                                 validatorProperty;
+@property(nonatomic, readonly, nullable) id<AKAControlValidatorProtocol>    validator;
+@property(nonatomic, readonly, nullable) NSError*                           validationError;
+
+#pragma mark - Theme Support
+
+@property(nonatomic)NSMutableDictionary*                                    themeNameByType;
+
+#pragma mark - Data Context
+
+@property(nonatomic, strong, readonly, nullable) AKAProperty*               dataContextProperty;
+@property(nonatomic, strong, readonly) AKAProperty*                         modelValueProperty;
+@property(nonatomic, readonly) AKAProperty*                                 viewValueProperty;
+
+@property(nonatomic, nullable) id                                           viewValue;
+
+#pragma mark - Change Tracking
+
+@property(nonatomic, readonly) BOOL                                         isObservingChanges;
 
 @end
 
@@ -110,121 +131,9 @@
 
 #pragma mark - New Bindings Support
 
-- (NSUInteger)                     addBindingsForView:(req_UIView)view
-{
-    NSUInteger result = 0;
-    NSArray* bindingPropertyNames = [view aka_definedBindingPropertyNames];
-    for (NSString* propertyName in bindingPropertyNames)
-    {
-        if ([self addBindingForView:view
-            bindingPropertyWithName:propertyName])
-        {
-            ++result;
-        }
-    }
-    return result;
-}
-
-- (BOOL)                            addBindingForView:(req_UIView)view
-                              bindingPropertyWithName:(req_NSString)propertyName;
-{
-    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
-
-    __block BOOL result = NO;
-    AKABindingExpression* bindingExpression = [view aka_bindingExpressionForPropertyNamed:propertyName];
-    AKABindingProvider* provider = bindingExpression.bindingProvider;
-    AKABinding* binding = [provider bindingWithTarget:view
-                                           expression:bindingExpression
-                                              context:self
-                                             delegate:self];
-    if (binding)
-    {
-        // Paranoia: Binding should only be manipulated from main thread, on the other hand
-        // if this is called from a different thread, there is a possibility for a dead lock
-        // since we are and probably have to wait for completion. So better make sure this
-        // is called from main than to rely on this:
-        [self aka_performBlockInMainThreadOrQueue:^{
-            result = YES;
-            [self.bindings addObject:binding];
-            if (self.isObservingChanges)
-            {
-                [binding startObservingChanges];
-            }
-        } waitForCompletion:YES];
-    }
-    return result;
-}
-
-- (BOOL)                                removeBinding:(AKABinding*)binding
-{
-    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
-
-    __block BOOL result = NO;
-    // Paranoia: Binding should only be manipulated from main thread, on the other hand
-    // if this is called from a different thread, there is a possibility for a dead lock
-    // since we are and probably have to wait for completion. So better make sure this
-    // is called from main than to rely on this:
-    [self aka_performBlockInMainThreadOrQueue:^{
-        NSUInteger index = [self.bindings indexOfObjectIdenticalTo:binding];
-        BOOL localResult = index != NSNotFound;
-        if (localResult)
-        {
-            [binding stopObservingChanges];
-            [self.bindings removeObjectAtIndex:index];
-        }
-    } waitForCompletion:YES];
-    return result;
-}
-
 #pragma mark AKABindings
 
-#pragma mark AKABindingContextProtocol
 
-- (AKACompositeControl*)                  rootControl
-{
-    AKACompositeControl* result = self.owner;
-    while (result.owner != nil)
-    {
-        result = result.owner;
-    }
-    return result;
-}
-
-- (opt_AKAProperty)     dataContextPropertyForKeyPath:(opt_NSString)keyPath
-                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [self.dataContextProperty propertyAtKeyPath:keyPath
-                                    withChangeObserver:valueDidChange];
-}
-
-- (id)                     dataContextValueForKeyPath:(NSString *)keyPath
-{
-    return [self dataContextPropertyForKeyPath:keyPath withChangeObserver:nil].value;
-}
-
-- (opt_AKAProperty) rootDataContextPropertyForKeyPath:(opt_NSString)keyPath
-                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
-}
-
-- (opt_id)             rootDataContextValueForKeyPath:(req_NSString)keyPath
-{
-    return [[self rootControl] dataContextValueForKeyPath:keyPath];
-}
-
-- (opt_AKAProperty)         controlPropertyForKeyPath:(req_NSString)keyPath
-                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
-{
-    return [AKAProperty propertyOfWeakKeyValueTarget:self
-                                             keyPath:keyPath
-                                      changeObserver:valueDidChange];
-}
-
-- (opt_id)                     controlValueForKeyPath:(req_NSString)keyPath
-{
-    return [self valueForKeyPath:keyPath];
-}
 
 #pragma mark - Configuration
 
@@ -432,9 +341,9 @@
 
 #pragma mark - Conversion
 
-- (BOOL)convertViewValue:(id)viewValue
-            toModelValue:(out __autoreleasing id *)modelValueStorage
-                   error:(out NSError *__autoreleasing *)error
+- (BOOL)                convertViewValue:(opt_id)viewValue
+                            toModelValue:(out_id)modelValueStorage
+                                   error:(out_NSError)error
 {
     BOOL result = NO;
     BOOL needsConversion = YES;
@@ -466,9 +375,9 @@
     return result;
 }
 
-- (BOOL)                control:(req_AKAControl)control
-                      viewValue:(inout_id)viewValueStorage
-      conversionFailedWithError:(NSError *__autoreleasing *)error
+- (BOOL)                         control:(req_AKAControl)control
+                               viewValue:(inout_id)viewValueStorage
+               conversionFailedWithError:(out_NSError)error
 {
     BOOL result = NO;
     if ([self.delegate respondsToSelector:@selector(control:viewValue:conversionFailedWithError:)])
@@ -488,12 +397,12 @@
 
 #pragma mark - Validation
 
-- (BOOL)isValid
+- (BOOL)                         isValid
 {
     return self.validationError == nil;
 }
 
-- (void)setIsValid:(BOOL)isValid error:(NSError*)error
+- (void)                      setIsValid:(BOOL)isValid error:(NSError*)error
 {
     NSError* previousError = _validationError;
     if (!isValid && error == nil)
@@ -513,10 +422,10 @@
     }
 }
 
-- (BOOL)            control:(AKAControl *)control
-            validationState:(NSError *)oldError
-                  changedTo:(NSError *)newError
-         updateValidationMessageDisplay:(void(^)())block
+- (BOOL)                         control:(AKAControl *)control
+                         validationState:(NSError *)oldError
+                               changedTo:(NSError *)newError
+          updateValidationMessageDisplay:(void(^)())block
 {
     // The specified block (if defined) was generated by a member control which is
     // capable of displaying its validation state. Independently, this control might
@@ -564,8 +473,8 @@
     return result;
 }
 
-- (void)validationState:(NSError *)oldError
-              changedTo:(NSError *)newError
+- (void)                 validationState:(NSError *)oldError
+                               changedTo:(NSError *)newError
 {
     void(^updateValidationMessageDisplayBlock)() = nil;
     if (self.viewBinding != nil)
@@ -588,8 +497,8 @@
     }
 }
 
-- (UIView *)viewForValidationContext:(id)validationContext
-                     validationError:(NSError *)validationError
+- (UIView *)    viewForValidationContext:(id)validationContext
+                         validationError:(NSError *)validationError
 {
     UIView* result = nil;
     if ([validationContext isKindOfClass:[AKAControl class]])
@@ -602,15 +511,15 @@
 
 #pragma mark Model Value Validation
 
-- (BOOL)validateModelValue:(inout id*)valueStorage
-                     error:(out NSError *__autoreleasing *)error
+- (BOOL)              validateModelValue:(inout_id)valueStorage
+                                   error:(out_NSError)error
 {
     return [self validateModelValue:valueStorage error:error callDelegate:YES];
 }
 
-- (BOOL)validateModelValue:(inout id*)valueStorage
-                     error:(out NSError *__autoreleasing *)error
-              callDelegate:(BOOL)callDelegate
+- (BOOL)              validateModelValue:(inout_id)valueStorage
+                                   error:(out_NSError)error
+                            callDelegate:(BOOL)callDelegate
 {
     NSParameterAssert(valueStorage != nil);
 
@@ -666,9 +575,9 @@
     return result;
 }
 
-- (BOOL)                control:(AKAControl *)control
-                     modelValue:(inout_id)modelValueStorage
-      validationFailedWithError:(inout_NSError)error
+- (BOOL)                         control:(req_AKAControl)control
+                              modelValue:(inout_id)modelValueStorage
+               validationFailedWithError:(inout_NSError)error
 {
     BOOL result = NO;
     if (!result && [self.delegate respondsToSelector:@selector(control:modelValue:validationFailedWithError:)])
@@ -688,17 +597,17 @@
 
 #pragma mark View Value Validation
 
-- (BOOL)validateViewValue:(inout id*)viewValueStorage
-                    error:(out NSError *__autoreleasing *)error
+- (BOOL)               validateViewValue:(inout_id)viewValueStorage
+                                   error:(out_NSError)error
 {
     return [self validateViewValue:viewValueStorage
                              error:error
                    storeModelValue:nil];
 }
 
-- (BOOL)validateViewValue:(inout id*)viewValueStorage
-                    error:(out NSError *__autoreleasing *)error
-          storeModelValue:(out id*)modelValueStorage
+- (BOOL)               validateViewValue:(inout_id)viewValueStorage
+                                   error:(out_NSError)error
+                         storeModelValue:(out_id)modelValueStorage
 {
     BOOL result = YES;
 
@@ -740,10 +649,10 @@
     return result;
 }
 
-- (BOOL)                control:(AKAControl *)control
-                      viewValue:(id)viewValue
-          convertedToModelValue:(inout_id)modelValueStorage
-      validationFailedWithError:(inout_NSError)error
+- (BOOL)                         control:(req_AKAControl)control
+                               viewValue:(opt_id)viewValue
+                   convertedToModelValue:(inout_id)modelValueStorage
+               validationFailedWithError:(inout_NSError)error
 {
     BOOL result = NO;
     if (!result && [self.delegate respondsToSelector:@selector(control:viewValue:convertedToModelValue:validationFailedWithError:)])
@@ -767,12 +676,14 @@
 
 #pragma mark Handling Changes
 
-- (void)viewValueDidChangeFrom:(id)oldValue to:(id)newValue
+- (void)                 viewValueDidChangeFrom:(opt_id)oldValue
+                                             to:(opt_id)newValue
 {
     [self updateModelValueForViewValueChangeTo:newValue];
 }
 
-- (void)modelValueDidChangeFrom:(id)oldValue to:(id)newValue
+- (void)                modelValueDidChangeFrom:(opt_id)oldValue
+                                             to:(opt_id)newValue
 {
     (void)oldValue; // not used.
 
@@ -790,7 +701,9 @@
     [self control:self modelValueChangedFrom:oldValue to:newValue];
 }
 
-- (void)control:(AKAControl*)control modelValueChangedFrom:(id)oldValue to:(id)newValue
+- (void)                                control:(req_AKAControl)control
+                          modelValueChangedFrom:(opt_id)oldValue
+                                             to:(opt_id)newValue
 {
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:modelValueChangedFrom:to:)])
@@ -800,7 +713,7 @@
     [self.owner control:control modelValueChangedFrom:oldValue to:newValue];
 }
 
-- (void)updateViewValueForModelValueChangeTo:(id)newValue
+- (void)   updateViewValueForModelValueChangeTo:(id)newValue
 {
     NSError* error = nil;
     BOOL isValid = [self updateViewValueForModelValueChangeTo:newValue
@@ -809,9 +722,9 @@
     [self setIsValid:isValid error:error];
 }
 
-- (BOOL)updateViewValueForModelValueChangeTo:(id)newValue
-                          validateModelValue:(BOOL)validateModelValue
-                                       error:(NSError*__autoreleasing*)error
+- (BOOL)   updateViewValueForModelValueChangeTo:(opt_id)newValue
+                             validateModelValue:(BOOL)validateModelValue
+                                          error:(out_NSError)error
 {
     BOOL result = YES;
 
@@ -840,14 +753,15 @@
     return result;
 }
 
-- (void)updateModelValueForViewValueChangeTo:(id)newValue
+- (void)   updateModelValueForViewValueChangeTo:(opt_id)newValue
 {
     NSError* error = nil;
     BOOL isValid = [self updateModelValueForViewValueChangeTo:newValue error:&error];
     [self setIsValid:isValid error:error];
 }
 
-- (BOOL)updateModelValueForViewValueChangeTo:(id)newValue error:(NSError*__autoreleasing*)error
+- (BOOL)   updateModelValueForViewValueChangeTo:(opt_id)newValue
+                                          error:(out_NSError)error
 {
     BOOL result = YES;
 
@@ -960,7 +874,329 @@
     return self.modelValueProperty.isObservingChanges;
 }
 
+@end
+
+
+@implementation AKAControl(BindingContext)
+
+- (AKAControl*)                  rootControl
+{
+    AKACompositeControl* result = self;
+    while (result.owner != nil)
+    {
+        result = result.owner;
+    }
+    return result;
+}
+
+- (opt_AKAProperty)     dataContextPropertyForKeyPath:(opt_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [self.dataContextProperty propertyAtKeyPath:keyPath
+                                    withChangeObserver:valueDidChange];
+}
+
+- (id)                     dataContextValueForKeyPath:(NSString *)keyPath
+{
+    return [self.dataContextProperty targetValueForKeyPath:keyPath];
+}
+
+- (opt_AKAProperty) rootDataContextPropertyForKeyPath:(opt_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+}
+
+- (opt_id)             rootDataContextValueForKeyPath:(req_NSString)keyPath
+{
+    return [[self rootControl] dataContextValueForKeyPath:keyPath];
+}
+
+- (opt_AKAProperty)         controlPropertyForKeyPath:(req_NSString)keyPath
+                                   withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
+{
+    return [AKAProperty propertyOfWeakKeyValueTarget:self
+                                             keyPath:keyPath
+                                      changeObserver:valueDidChange];
+}
+
+- (opt_id)                     controlValueForKeyPath:(req_NSString)keyPath
+{
+    // TODO: consider using controlPropertyForKeyPath to use the AKAProperty keyPath
+    // accessors
+    return [self valueForKeyPath:keyPath];
+}
+
+@end
+
+
+@implementation AKAControl(BindingsOwner)
+
+- (NSUInteger)                     addBindingsForView:(req_UIView)view
+{
+    NSUInteger result = 0;
+    NSArray* bindingPropertyNames = [view aka_definedBindingPropertyNames];
+    for (NSString* propertyName in bindingPropertyNames)
+    {
+        if ([self addBindingForView:view
+            bindingPropertyWithName:propertyName])
+        {
+            ++result;
+        }
+    }
+    return result;
+}
+
+- (BOOL)                            addBindingForView:(req_UIView)view
+                              bindingPropertyWithName:(req_NSString)propertyName;
+{
+    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
+
+    __block BOOL result = NO;
+    AKABindingExpression* bindingExpression = [view aka_bindingExpressionForPropertyNamed:propertyName];
+    AKABindingProvider* provider = bindingExpression.bindingProvider;
+    AKABinding* binding = [provider bindingWithTarget:view
+                                           expression:bindingExpression
+                                              context:self
+                                             delegate:self];
+    if (binding)
+    {
+        // Paranoia: Binding should only be manipulated from main thread, on the other hand
+        // if this is called from a different thread, there is a possibility for a dead lock
+        // since we are and probably have to wait for completion. So better make sure this
+        // is called from main than to rely on this:
+        [self aka_performBlockInMainThreadOrQueue:^{
+            result = YES;
+            [self.bindings addObject:binding];
+            if (self.isObservingChanges)
+            {
+                [binding startObservingChanges];
+            }
+        } waitForCompletion:YES];
+    }
+    return result;
+}
+
+- (BOOL)                                removeBinding:(AKABinding*)binding
+{
+    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
+
+    __block BOOL result = NO;
+    // Paranoia: Binding should only be manipulated from main thread, on the other hand
+    // if this is called from a different thread, there is a possibility for a dead lock
+    // since we are and probably have to wait for completion. So better make sure this
+    // is called from main than to rely on this:
+    [self aka_performBlockInMainThreadOrQueue:^{
+        NSUInteger index = [self.bindings indexOfObjectIdenticalTo:binding];
+        BOOL localResult = index != NSNotFound;
+        if (localResult)
+        {
+            [binding stopObservingChanges];
+            [self.bindings removeObjectAtIndex:index];
+        }
+    } waitForCompletion:YES];
+    return result;
+}
+
+@end
+
+
+@implementation AKAControl(Convenience)
+
+#pragma mark - Properties
+
+
+@end
+
+
+@implementation AKAControl(KeyboardActivationSequence)
+
 #pragma mark - Activation
+
+- (BOOL)shouldActivateNextControl
+{
+    return [self.owner shouldActivateNextControl];
+}
+
+- (BOOL)activateNextControl
+{
+    return [self.owner activateNextControl];
+}
+
+- (BOOL)shouldAutoActivate
+{
+    return [self.viewBinding shouldAutoActivate];
+}
+
+- (BOOL)participatesInKeyboardActivationSequence
+{
+    BOOL result = [self.viewBinding participatesInKeyboardActivationSequence];
+
+    if (!result)
+    {
+        result = [self shouldParticipateInKeyboardActivationSequence];
+    }
+
+    return result;
+}
+
+- (AKAKeyboardActivationSequence*)keyboardActivationSequence
+{
+    return self.owner.keyboardActivationSequence;
+}
+
+#pragma mark - AKABindingDelegate
+
+- (void)                                              control:(req_AKAControl)control
+                                                      binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder
+{
+    id<AKAControlActivationDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    {
+        [delegate control:control binding:binding responderWillActivate:responder];
+    }
+    if ([self.owner respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    {
+        [self.owner control:control binding:binding responderWillActivate:responder];
+    }
+}
+
+- (void)                                              binding:(req_AKABinding)binding
+                                        responderWillActivate:(req_UIResponder)responder
+{
+    [self control:self binding:binding responderWillActivate:responder];
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+        [self.keyboardActivationSequence prepareToActivateItem:item];
+    }
+}
+
+- (void)binding:(req_AKABinding)binding responderDidActivate:(req_UIResponder)responder
+{
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+        [self.keyboardActivationSequence activateItem:item];
+    }
+    [self didActivate];
+}
+
+- (void)binding:(req_AKABinding)binding responderWillDeactivate:(req_UIResponder)responder
+{
+    [self willDeactivate];
+}
+
+- (void)binding:(req_AKABinding)binding responderDidDeactivate:(req_UIResponder)responder
+{
+    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+    {
+        if (binding == self.keyboardActivationSequence.activeItem)
+        {
+            [self.keyboardActivationSequence deactivate];
+        }
+    }
+    [self didDeactivate];
+}
+
+- (BOOL)shouldParticipateInKeyboardActivationSequence
+{
+    BOOL result = NO;
+    for (AKABinding* binding in self.bindings)
+    {
+        if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+        {
+            id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
+            result |= [item shouldParticipateInKeyboardActivationSequence];
+            if (result)
+            {
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+- (BOOL)isResponderActive
+{
+    return self.isActive;
+}
+
+- (BOOL)activateResponder
+{
+    return [self activate];
+}
+
+- (BOOL)deactivateResponder
+{
+    return [self deactivate];
+}
+
+- (opt_UIResponder)responderForKeyboardActivationSequence
+{
+    return self.viewBinding.view;
+}
+
+- (BOOL)installInputAccessoryView:(req_UIView)inputAccessoryView
+{
+    // TODO: refactor this to let view bindings take care
+    BOOL result = NO;
+    UIResponder* responder = [self responderForKeyboardActivationSequence];
+    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
+    {
+        /*
+         if (oldView)
+         {
+         *oldView = responder.inputAccessoryView;
+         }
+         */
+        [responder performSelector:@selector(setInputAccessoryView:)
+                        withObject:inputAccessoryView];
+        result = YES;
+    }
+    else if ([responder isKindOfClass:[UITextField class]])
+    {
+        UITextField* textField = (UITextField*)responder;
+        textField.inputAccessoryView = inputAccessoryView;
+    }
+    return result;
+}
+
+- (BOOL)restoreInputAccessoryView
+{
+    BOOL result = NO;
+
+    // TODO: refactor this to let view bindings take care
+
+    UIResponder* responder = [self responderForKeyboardActivationSequence];
+    UIView* originalInputAccessoryView = nil;
+
+    if (responder.inputAccessoryView != self.keyboardActivationSequence.inputAccessoryView)
+    {
+        AKALogWarn(@"Input accessory view in responder %@ is not the expected view %@, found %@ instead. If the responders input accessory view was not changed after activation, this indicates an internal inconsistency of the activation sequence %@ or an unexpected behavior of the responder",
+                   responder, self.keyboardActivationSequence.inputAccessoryView, responder.inputAccessoryView, self);
+    }
+
+    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
+    {
+        [responder performSelector:@selector(setInputAccessoryView:)
+                        withObject:originalInputAccessoryView];
+        result = YES;
+    }
+    else if ([responder isKindOfClass:[UITextField class]])
+    {
+        UITextField* textField = (UITextField*)responder;
+        textField.inputAccessoryView = originalInputAccessoryView;
+    }
+
+    return result;
+}
+
+@end
+
+
+@implementation AKAControl(Activation)
 
 - (void)setIsActive:(BOOL)isActive
 {
@@ -1060,187 +1296,41 @@
     }
 }
 
-- (BOOL)shouldActivateNextControl
-{
-    return [self.owner shouldActivateNextControl];
-}
+@end
 
-- (BOOL)activateNextControl
-{
-    return [self.owner activateNextControl];
-}
 
-- (BOOL)shouldAutoActivate
-{
-    return [self.viewBinding shouldAutoActivate];
-}
+@implementation AKAControl(Diagnostics)
 
-- (BOOL)participatesInKeyboardActivationSequence
-{
-    BOOL result = [self.viewBinding participatesInKeyboardActivationSequence];
+// TODO: implement in main implementation
 
-    if (!result)
+- (NSString *)debugDescription
+{
+    NSString* details = self.debugDescriptionDetails;
+    NSString* result = nil;
+
+    if (details.length > 0)
     {
-        result = [self shouldParticipateInKeyboardActivationSequence];
+        return [NSString stringWithFormat:@"<%@ %p; %@>", self.class, self, details];
     }
-
-    return result;
-}
-
-- (AKAKeyboardActivationSequence*)keyboardActivationSequence
-{
-    return self.owner.keyboardActivationSequence;
-}
-
-#pragma mark - AKABindingDelegate
-
-- (void)                                              control:(req_AKAControl)control
-                                                      binding:(req_AKABinding)binding
-                                        responderWillActivate:(req_UIResponder)responder
-{
-    id<AKAControlActivationDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    else
     {
-        [delegate control:control binding:binding responderWillActivate:responder];
-    }
-    if ([self.owner respondsToSelector:@selector(control:binding:responderWillActivate:)])
-    {
-        [self.owner control:control binding:binding responderWillActivate:responder];
-    }
-}
-
-- (void)                                              binding:(req_AKABinding)binding
-                                        responderWillActivate:(req_UIResponder)responder
-{
-    [self control:self binding:binding responderWillActivate:responder];
-    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
-    {
-        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
-        [self.keyboardActivationSequence prepareToActivateItem:item];
-    }
-}
-
-- (void)binding:(req_AKABinding)binding responderDidActivate:(req_UIResponder)responder
-{
-    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
-    {
-        id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
-        [self.keyboardActivationSequence activateItem:item];
-    }
-    [self didActivate];
-}
-
-- (void)binding:(req_AKABinding)binding responderWillDeactivate:(req_UIResponder)responder
-{
-    [self willDeactivate];
-}
-
-- (void)binding:(req_AKABinding)binding responderDidDeactivate:(req_UIResponder)responder
-{
-    if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
-    {
-        if (binding == self.keyboardActivationSequence.activeItem)
-        {
-            [self.keyboardActivationSequence deactivate];
-        }
-    }
-    [self didDeactivate];
-}
-
-#pragma mark - AKAKeyboardActivationSequenceItemProtocol
-
-- (BOOL)shouldParticipateInKeyboardActivationSequence
-{
-    BOOL result = NO;
-    for (AKABinding* binding in self.bindings)
-    {
-        if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
-        {
-            id<AKAKeyboardActivationSequenceItemProtocol> item = (id<AKAKeyboardActivationSequenceItemProtocol>)binding;
-            result |= [item shouldParticipateInKeyboardActivationSequence];
-            if (result)
-            {
-                break;
-            }
-        }
+        return [NSString stringWithFormat:@"<%@ %p>", self.class, self];
     }
     return result;
 }
 
-- (BOOL)isResponderActive
+- (NSString *)debugDescriptionDetails
 {
-    return self.isActive;
-}
-
-- (BOOL)activateResponder
-{
-    return [self activate];
-}
-
-- (BOOL)deactivateResponder
-{
-    return [self deactivate];
-}
-
-- (opt_UIResponder)responderForKeyboardActivationSequence
-{
-    return self.viewBinding.view;
-}
-
-- (BOOL)installInputAccessoryView:(req_UIView)inputAccessoryView
-{
-    // TODO: refactor this to let view bindings take care
-    BOOL result = NO;
-    UIResponder* responder = [self responderForKeyboardActivationSequence];
-    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
-    {
-        /*
-        if (oldView)
-        {
-            *oldView = responder.inputAccessoryView;
-        }
-         */
-        [responder performSelector:@selector(setInputAccessoryView:)
-                        withObject:inputAccessoryView];
-        result = YES;
-    }
-    else if ([responder isKindOfClass:[UITextField class]])
-    {
-        UITextField* textField = (UITextField*)responder;
-        textField.inputAccessoryView = inputAccessoryView;
-    }
+    NSString* result = [NSString stringWithFormat:@"view: %@, configuration: { %@ }",
+                        self.view.description,
+                        self.viewBinding.configuration.description];
     return result;
 }
 
-- (BOOL)restoreInputAccessoryView
-{
-    BOOL result = NO;
+@end
 
-    // TODO: refactor this to let view bindings take care
 
-    UIResponder* responder = [self responderForKeyboardActivationSequence];
-    UIView* originalInputAccessoryView = nil;
-
-    if (responder.inputAccessoryView != self.keyboardActivationSequence.inputAccessoryView)
-    {
-        AKALogWarn(@"Input accessory view in responder %@ is not the expected view %@, found %@ instead. If the responders input accessory view was not changed after activation, this indicates an internal inconsistency of the activation sequence %@ or an unexpected behavior of the responder",
-                   responder, self.keyboardActivationSequence.inputAccessoryView, responder.inputAccessoryView, self);
-    }
-
-    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
-    {
-        [responder performSelector:@selector(setInputAccessoryView:)
-                        withObject:originalInputAccessoryView];
-        result = YES;
-    }
-    else if ([responder isKindOfClass:[UITextField class]])
-    {
-        UITextField* textField = (UITextField*)responder;
-        textField.inputAccessoryView = originalInputAccessoryView;
-    }
-
-    return result;
-}
+@implementation AKAControl(ObsoleteViewBindingDelegate)
 
 #pragma mark - View Binding Delegate
 
@@ -1308,10 +1398,15 @@
     [self didDeactivate];
 }
 
+@end
+
+
+@implementation AKAControl(ObsoleteThemeSupport)
+
 #pragma mark - Theme Selection
 
 - (AKAProperty*)themeNamePropertyForView:(UIView*)view
-                  changeObserver:(void(^)(id oldValue, id newValue))themeNameChanged
+                          changeObserver:(void(^)(id oldValue, id newValue))themeNameChanged
 {
     AKAProperty* result = nil;
     NSString* themeName;
@@ -1347,38 +1442,5 @@
     self.themeNameByType[NSStringFromClass(type)] = themeName;
 }
 
-#pragma mark - Diagnostics
-
-- (NSString *)debugDescription
-{
-    NSString* details = self.debugDescriptionDetails;
-    NSString* result = nil;
-
-    if (details.length > 0)
-    {
-        return [NSString stringWithFormat:@"<%@ %p; %@>", self.class, self, details];
-    }
-    else
-    {
-        return [NSString stringWithFormat:@"<%@ %p>", self.class, self];
-    }
-    return result;
-}
-
-- (NSString *)debugDescriptionDetails
-{
-    NSString* result = [NSString stringWithFormat:@"view: %@, configuration: { %@ }",
-                        self.view.description,
-                        self.viewBinding.configuration.description];
-    return result;
-}
-
 @end
 
-
-@implementation AKAControl(Convenience)
-
-#pragma mark - Properties
-
-
-@end

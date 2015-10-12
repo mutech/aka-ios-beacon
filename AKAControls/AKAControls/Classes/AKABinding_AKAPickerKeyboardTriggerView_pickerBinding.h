@@ -13,18 +13,12 @@
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Interface
 #pragma mark -
 
-@interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding: AKABinding<
-    AKAKeyboardActivationSequenceItemProtocol
->
+@interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding: AKAKeyboardControlViewBinding
 
 @property(nonatomic, readonly) AKABindingExpression*                choicesBindingExpression;
 @property(nonatomic, readonly) AKABindingExpression*                titleBindingExpression;
 @property(nonatomic, readonly) opt_NSString                         titleForUndefinedValue;
 @property(nonatomic, readonly) opt_NSString                         titleForOtherValue;
-
-@property(nonatomic, readonly) BOOL                                 autoActivate;
-@property(nonatomic, readonly) BOOL                                 KBActivationSequence;
-@property(nonatomic, readonly) BOOL                                 liveModelUpdates;
 
 @property(nonatomic, readonly) BOOL                                 needsReloadChoices;
 @property(nonatomic, readonly) id                                   otherValue;

@@ -148,33 +148,67 @@
 
 @end
 
+
 @implementation AKAFormTableViewController
 
 static NSString* const defaultDataSourceKey = @"default";
 
-- (void)viewDidLoad
+#pragma mark - View Life Cycle
+
+- (void)                                       viewDidLoad
 {
     [super viewDidLoad];
 
     _hiddenControlCellsInfo = [NSMutableDictionary new];
     _dynamicPlaceholderCellControls = [NSMutableSet new];
 
+    [self initializeTableViewMultiplexedDataSourceAndDelegate];
+    [self initializeFormControl];
+}
+
+- (void)                                    viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self activateFormControlBindings];
+}
+
+- (void)                                  viewWillDisappear:(BOOL)animated
+{
+    [self deactivateFormControlBindings];
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark - Form Control
+
+- (void)initializeTableViewMultiplexedDataSourceAndDelegate
+{
+    _multiplexedDataSource =
+        [AKATVMultiplexedDataSource proxyDataSourceAndDelegateForKey:defaultDataSourceKey
+                                                         inTableView:self.tableView];
+}
+
+- (void)                              initializeFormControl
+{
     // Initialize formControl with the original tableView/dataSource to capture all static cells
     // containing control views.
     _formControl = [AKAFormControl controlWithDataContext:self configuration:nil];
 
     self.formControl.delegate = self;
 
+    [self initializeFormControlTheme];
+    [self initializeFormControlMembers];
+}
+
+- (void)                         initializeFormControlTheme
+{
     // Setup theme name before adding controls for subviews (TODO: order should not matter)
     [self.formControl setThemeName:@"tableview" forClass:[AKAEditorControlView class]];
+}
 
-
-    _multiplexedDataSource =
-    [AKATVMultiplexedDataSource proxyDataSourceAndDelegateForKey:defaultDataSourceKey
-                                                     inTableView:self.tableView];
+- (void)                       initializeFormControlMembers
+{
     AKATVDataSourceSpecification* defaultDataSource = [_multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
     UITableView* tvProxy = [defaultDataSource proxyForTableView:self.tableView];
-
     if (self.tableView.tableHeaderView)
     {
         [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableHeaderView];
@@ -188,23 +222,21 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)                        activateFormControlBindings
 {
-    [super viewWillAppear:animated];
     [self.formControl startObservingChanges];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)                      deactivateFormControlBindings
 {
     [self.formControl stopObservingChanges];
-    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Control Membership Delegate (Setup for Controls)
 
-- (void)    control:(AKACompositeControl *)compositeControl
-      didAddControl:(AKAControl *)memberControl
-            atIndex:(NSUInteger)index
+- (void)                                            control:(AKACompositeControl *)compositeControl
+                                              didAddControl:(AKAControl *)memberControl
+                                                    atIndex:(NSUInteger)index
 {
     if ([memberControl isKindOfClass:[AKADynamicPlaceholderTableViewCellCompositeControl class]])
     {
@@ -230,9 +262,9 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (void)    control:(AKACompositeControl *)compositeControl
-  willRemoveControl:(AKAControl *)memberControl
-          fromIndex:(NSUInteger)index
+- (void)                                             control:(AKACompositeControl *)compositeControl
+                                           willRemoveControl:(AKAControl *)memberControl
+                                                   fromIndex:(NSUInteger)index
 {
     // TODO: we need to inspect the sub tree of a removed control to
     // be sure that we detect all removals of placeholder cell controls.
@@ -247,7 +279,7 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (NSString*)dataSourceKeyForDynamicPlaceholder:(AKATableViewCellCompositeControl*)placeholder
+- (NSString*)             dataSourceKeyForDynamicPlaceholder:(AKATableViewCellCompositeControl*)placeholder
 {
     NSString* key = [placeholder aka_associatedValueForKey:@"dataSourceKey"];
     if (key == nil)
@@ -268,8 +300,8 @@ static NSString* const defaultDataSourceKey = @"default";
     return key;
 }
 
-- (AKATVDataSourceSpecification*)dataSourceForKey:(NSString*)key
-                                    inMultiplexer:(AKATVMultiplexedDataSource*)multiplexedDataSource
+- (AKATVDataSourceSpecification*)           dataSourceForKey:(NSString*)key
+                                               inMultiplexer:(AKATVMultiplexedDataSource*)multiplexedDataSource
 {
     return [multiplexedDataSource dataSourceForKey:key];
 }
@@ -324,7 +356,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
 #pragma mark - Hiding and Unhiding Table View Row Controls
 
-- (NSArray*)rowControlsTaggedWith:(NSString*)tag
+- (NSArray*)                            rowControlsTaggedWith:(NSString*)tag
 {
     NSMutableArray* result = [NSMutableArray new];
     [self.formControl enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
@@ -339,8 +371,8 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
-- (NSArray*)rowControls:(NSArray*)rowControls
-          sortedInOrder:(NSComparisonResult)order
+- (NSArray*)                                      rowControls:(NSArray*)rowControls
+                                                sortedInOrder:(NSComparisonResult)order
 {
     __block NSArray* result = rowControls;
     if (order != NSOrderedSame)
@@ -358,8 +390,8 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
-- (BOOL)hideRowControl:(AKATableViewCellCompositeControl*)rowControl
-         withAnimation:(UITableViewRowAnimation)rowAnimation
+- (BOOL)                                       hideRowControl:(AKATableViewCellCompositeControl*)rowControl
+                                                withAnimation:(UITableViewRowAnimation)rowAnimation
 {
     AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
     BOOL result = [self.multiplexedDataSource excludeRowFromSourceIndexPath:rowControl.indexPath
@@ -368,8 +400,8 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
-- (void)hideRowControls:(NSArray*)rowControls
-       withRowAnimation:(UITableViewRowAnimation)rowAnimation
+- (void)                                      hideRowControls:(NSArray*)rowControls
+                                             withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedDescending];
     [self.multiplexedDataSource beginUpdates];
@@ -380,8 +412,8 @@ static NSString* const defaultDataSourceKey = @"default";
     [self.multiplexedDataSource endUpdates];
 }
 
-- (BOOL)unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
-           withAnimation:(UITableViewRowAnimation)rowAnimation
+- (BOOL)                                     unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
+                                                withAnimation:(UITableViewRowAnimation)rowAnimation
 {
     BOOL result = NO;
     if (![rowControl isKindOfClass:[AKADynamicPlaceholderTableViewCellCompositeControl class]])
@@ -394,8 +426,8 @@ static NSString* const defaultDataSourceKey = @"default";
     return result;
 }
 
-- (void)unhideRowControls:(NSArray*)rowControls
-         withRowAnimation:(UITableViewRowAnimation)rowAnimation
+- (void)                                    unhideRowControls:(NSArray*)rowControls
+                                             withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
     NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedAscending];
     [self.multiplexedDataSource beginUpdates];
@@ -408,9 +440,9 @@ static NSString* const defaultDataSourceKey = @"default";
 
 #pragma mark - Dynamic Placeholder Cell Controls
 
-- (void)addDynamicDataSource:(id<UITableViewDataSource>)dataSource
-                withDelegate:(id<UITableViewDelegate>)delegate
-                      forKey:(NSString*)key
+- (void)                                 addDynamicDataSource:(id<UITableViewDataSource>)dataSource
+                                                 withDelegate:(id<UITableViewDelegate>)delegate
+                                                       forKey:(NSString*)key
 {
     NSParameterAssert([self.multiplexedDataSource dataSourceForKey:key] == nil);
     [self.multiplexedDataSource addDataSource:dataSource
@@ -426,7 +458,7 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (BOOL)updateDynamicRowsForPlaceholderControl:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
+- (BOOL)               updateDynamicRowsForPlaceholderControl:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
@@ -573,7 +605,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
 #pragma mark - Managing Activation
 
-- (NSIndexPath*)indexPathForInvisibleCell:(UITableViewCell*)cell
+- (NSIndexPath*)                    indexPathForInvisibleCell:(UITableViewCell*)cell
 {
     NSIndexPath* result = nil;
     for (NSInteger si = 0; si < [self numberOfSectionsInTableView:self.tableView]; ++si)
@@ -593,10 +625,10 @@ static NSString* const defaultDataSourceKey = @"default";
 }
 
 
-- (BOOL)tableView:(UITableView*)tableView
-     scrollToCell:(UITableViewCell*)cell
- atScrollPosition:(UITableViewScrollPosition)scrollPosition
-         animated:(BOOL)animated
+- (BOOL)                                            tableView:(UITableView*)tableView
+                                                 scrollToCell:(UITableViewCell*)cell
+                                             atScrollPosition:(UITableViewScrollPosition)scrollPosition
+                                                     animated:(BOOL)animated
 {
     BOOL result = NO;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
@@ -638,10 +670,10 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 }
 
-- (BOOL)                control:(AKAControl *)control
-                validationState:(NSError *)oldError
-                      changedTo:(NSError *)newError
- updateValidationMessageDisplay:(void (^)())block
+- (BOOL)                                              control:(AKAControl *)control
+                                              validationState:(NSError *)oldError
+                                                    changedTo:(NSError *)newError
+                               updateValidationMessageDisplay:(void (^)())block
 {
     __block BOOL result = NO;
     // Make sure the table view cell's layout is updated to accomodate for a possible error message

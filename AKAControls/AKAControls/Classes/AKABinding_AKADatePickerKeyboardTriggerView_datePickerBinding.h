@@ -6,9 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKABinding.h"
-
-#import "AKAKeyboardActivationSequenceItemProtocol.h"
+#import "AKAKeyboardControlViewBinding.h"
 
 
 @interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding: AKAKeyboardControlViewBinding

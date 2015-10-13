@@ -6,8 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKABinding.h"
-#import "AKAKeyboardActivationSequence.h"
+#import "AKAKeyboardControlViewBinding.h"
 
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Interface

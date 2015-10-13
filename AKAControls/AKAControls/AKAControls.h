@@ -95,6 +95,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 
 // AKAControls/Bindings (new)
 #import <AKAControls/AKABinding.h>
+#import <AKAControls/AKABindingDelegate.h>
 #import <AKAControls/AKABindingExpression.h>
 #import <AKAControls/AKABindingSpecification.h>
 #import <AKAControls/NSScanner+AKABindingExpressionParser.h>

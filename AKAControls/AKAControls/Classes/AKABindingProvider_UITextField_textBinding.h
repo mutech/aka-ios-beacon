@@ -7,7 +7,6 @@
 //
 
 #import "AKABindingProvider.h"
-#import "AKAKeyboardActivationSequence.h"
 
 
 @interface AKABindingProvider_UITextField_textBinding: AKABindingProvider
@@ -16,9 +15,5 @@
 
 @end
 
-
-@interface AKABinding_UITextField_textBinding: AKAKeyboardControlViewBinding
-
-@end
 
 

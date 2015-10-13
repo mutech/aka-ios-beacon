@@ -13,9 +13,3 @@
 + (instancetype)sharedInstance;
 
 @end
-
-@interface AKABinding_UISwitch_stateBinding : AKAControlViewBinding
-
-#pragma mark - Binding Configuration
-
-@end

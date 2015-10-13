@@ -37,6 +37,7 @@
 
 @end
 
-typedef id<AKAKeyboardActivationSequenceItemProtocol>               AKAKeyboardActivationSequenceItem;
-typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nullable     opt_AKAKeyboardActivationSequenceItem;
-typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nonnull      req_AKAKeyboardActivationSequenceItem;
+
+typedef id<AKAKeyboardActivationSequenceItemProtocol>            AKAKeyboardActivationSequenceItem;
+typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nullable  opt_AKAKeyboardActivationSequenceItem;
+typedef id<AKAKeyboardActivationSequenceItemProtocol> _Nonnull   req_AKAKeyboardActivationSequenceItem;

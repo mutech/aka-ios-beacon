@@ -14,9 +14,13 @@
 #import "AKABinding.h"
 #import "AKABindingExpression.h"
 
-@interface AKABinding()
 
-@property(nonatomic, readonly)BOOL isUpdatingTargetValueForSourceValueChange;
+#pragma mark - AKABinding Private Interface
+#pragma mark -
+
+@interface AKABinding() {
+    BOOL _isUpdatingTargetValueForSourceValueChange;
+}
 
 @end
 
@@ -47,6 +51,13 @@
                           }];
     }
     return self;
+}
+
+#pragma mark - Properties
+
+- (BOOL)isUpdatingTargetValueForSourceValueChange
+{
+    return _isUpdatingTargetValueForSourceValueChange;
 }
 
 #pragma mark - Conversion
@@ -118,13 +129,49 @@
     return YES;
 }
 
+- (BOOL)                            shouldUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue
+                                             forSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue
+{
+    BOOL result = YES;
+    if ([self.delegate respondsToSelector:@selector(shouldUpdateTargetValue:to:forSourceValue:changeTo:)])
+    {
+        result = [self.delegate shouldBinding:self
+                            updateTargetValue:oldTargetValue
+                                           to:newTargetValue
+                               forSourceValue:oldSourceValue
+                                     changeTo:newSourceValue];
+    }
+    return result;
+}
+
+- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue
+{
+    _isUpdatingTargetValueForSourceValueChange = YES;
+    if ([self.delegate respondsToSelector:@selector(binding:willUpdateTargetValue:to:)])
+    {
+        [self.delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
+    }
+}
+
+- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue
+{
+    if ([self.delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
+    {
+        [self.delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
+    }
+    _isUpdatingTargetValueForSourceValueChange = NO;
+}
+
+
 #pragma mark - Target Value Updates
 
 - (void)                    updateTargetValueForSourceValue:(opt_id)oldSourceValue
                                                    changeTo:(opt_id)newSourceValue
 {
-    AKALogTrace(@"%@: Updating target value for source value '%@' change to '%@'",
-                self, oldSourceValue, newSourceValue);
     [self aka_performBlockInMainThreadOrQueue:
      ^{
          id targetValue = nil;
@@ -135,9 +182,20 @@
          {
              if ([self validateTargetValue:&targetValue error:&error])
              {
-                 _isUpdatingTargetValueForSourceValueChange = YES;
-                 self.bindingTarget.value = targetValue;
-                 _isUpdatingTargetValueForSourceValueChange = NO;
+                 id oldTargetValue = self.bindingTarget.value;
+                 if ([self shouldUpdateTargetValue:oldTargetValue
+                                                to:targetValue
+                                    forSourceValue:oldSourceValue
+                                          changeTo:newSourceValue])
+                 {
+                     [self willUpdateTargetValue:oldTargetValue
+                                              to:targetValue];
+
+                     self.bindingTarget.value = targetValue;
+
+                     [self didUpdateTargetValue:oldTargetValue
+                                             to:targetValue];
+                 }
              }
              else
              {
@@ -182,20 +240,12 @@
     id sourceValue = newSourceValue;
     if ([self validateSourceValue:&sourceValue error:&error])
     {
-        AKALogTrace(@"%@: Source value changed from: '%@' to '%@'",
-                    self, oldSourceValue, newSourceValue);
-
         if ([self shouldUpdateTargetValueForSourceValue:oldSourceValue
                                                changeTo:newSourceValue
                                             validatedTo:sourceValue])
         {
             [self updateTargetValueForSourceValue:oldSourceValue
                                          changeTo:sourceValue];
-        }
-        else
-        {
-            AKALogTrace(@"%@: Skipped target value update for source value '%@' change to '%@'",
-                        self, oldSourceValue, newSourceValue);
         }
     }
     else
@@ -208,331 +258,3 @@
 
 @end
 
-
-@implementation AKAViewBinding
-
-#pragma mark - Initialization
-
-- (instancetype _Nullable)        initWithView:(req_UIView)target
-                                    expression:(req_AKABindingExpression)bindingExpression
-                                       context:(req_AKABindingContext)bindingContext
-                                      delegate:(opt_AKABindingDelegate)delegate
-{
-    NSParameterAssert([target isKindOfClass:[UIView class]]);
-
-    if (self = [super initWithTarget:[self createBindingTargetPropertyForView:target]
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate])
-    {
-        _view = target;
-    }
-    return self;
-}
-
-- (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)target
-{
-    AKAErrorAbstractMethodImplementationMissing();
-}
-
-@end
-
-
-@interface AKAControlViewBinding()
-
-@property(nonatomic, readonly)BOOL isUpdatingSourceValueForTargetValueChange;
-
-@end
-
-
-@implementation AKAControlViewBinding
-
-#pragma mark - Conversion
-
-- (BOOL)                                 convertTargetValue:(opt_id)targetValue
-                                              toSourceValue:(out_id)sourceValueStore
-                                                      error:(out_NSError)error
-{
-    BOOL result = YES;
-    if (sourceValueStore)
-    {
-        *sourceValueStore = targetValue;
-    }
-    return result;
-}
-
-#pragma mark - Source Value Updates
-
-- (void)                    updateSourceValueForTargetValue:(opt_id)oldTargetValue
-                                                   changeTo:(opt_id)newTargetValue
-{
-    AKALogTrace(@"%@: Updating source value for target value '%@' change to '%@'",
-                self, oldTargetValue, newTargetValue);
-    [self aka_performBlockInMainThreadOrQueue:
-     ^{
-         NSError* error;
-
-         id sourceValue = nil;
-         if ([self convertTargetValue:newTargetValue
-                        toSourceValue:&sourceValue
-                                error:&error])
-         {
-             if ([self validateSourceValue:&sourceValue error:&error])
-             {
-                 NSAssert(!self.isUpdatingSourceValueForTargetValueChange, @"Nested source value update for target value change.");
-                 _isUpdatingSourceValueForTargetValueChange = YES;
-                 self.bindingSource.value = sourceValue;
-                 _isUpdatingSourceValueForTargetValueChange = NO;
-             }
-             else
-             {
-                 [self sourceUpdateFailedToValidateSourceValue:sourceValue
-                                      convertedFromTargetValue:newTargetValue
-                                                     withError:error];
-             }
-         }
-         else
-         {
-             [self sourceUpdateFailedToConvertTargetValue:newTargetValue
-                                   toSourceValueWithError:error];
-         }
-
-     }
-                            waitForCompletion:NO];
-}
-
-#pragma mark - Delegate Support
-
-- (void)            sourceUpdateFailedToValidateSourceValue:(opt_id)sourceValue
-                                   convertedFromTargetValue:(opt_id)targetValue
-                                                  withError:(opt_NSError)error
-{
-    if ([self.delegate respondsToSelector:@selector(binding:sourceUpdateFailedToValidateSourceValue:convertedFromTargetValue:withError:)])
-    {
-        [self.delegate                      binding:self
-            sourceUpdateFailedToValidateSourceValue:sourceValue
-                           convertedFromTargetValue:targetValue
-                                          withError:error];
-    }
-}
-
-- (void)             sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue
-                                     toSourceValueWithError:(opt_NSError)error
-{
-    if ([self.delegate respondsToSelector:@selector(binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
-    {
-        [self.delegate                      binding:self
-             sourceUpdateFailedToConvertTargetValue:targetValue
-                             toSourceValueWithError:error];
-    }
-}
-
-- (BOOL)              shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
-                                                   changeTo:(opt_id)newSourceValue
-                                                validatedTo:(opt_id)sourceValue
-{
-    // Break update cycles
-    return !self.isUpdatingSourceValueForTargetValueChange;
-}
-
-- (BOOL)              shouldUpdateSourceValueForTargetValue:(opt_id)oldTargetValue
-                                                   changeTo:(opt_id)newTargetValue
-                                                validatedTo:(opt_id)targetValue
-{
-    // Break update cycles
-    return !self.isUpdatingTargetValueForSourceValueChange;
-}
-
-- (void)                   targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
-                                             toInvalidValue:(opt_id)newTargetValue
-                                                  withError:(opt_NSError)error
-{
-
-}
-
-#pragma mark - Change Tracking
-
-- (void)                   targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
-                                                 toNewValue:(opt_id)newTargetValue
-{
-    NSError* error;
-    id targetValue = newTargetValue;
-    if ([self validateTargetValue:&targetValue error:&error])
-    {
-        if ([self shouldUpdateSourceValueForTargetValue:oldTargetValue
-                                               changeTo:newTargetValue
-                                            validatedTo:targetValue])
-        {
-            [self updateSourceValueForTargetValue:oldTargetValue changeTo:targetValue];
-        }
-        else
-        {
-            AKALogTrace(@"%@: Skipped source value update for target value '%@' change to '%@'",
-                        self, oldTargetValue, newTargetValue);
-        }
-    }
-    else
-    {
-        [self targetValueDidChangeFromOldValue:oldTargetValue
-                                toInvalidValue:newTargetValue
-                                     withError:error];
-    }
-}
-
-@end
-
-@interface AKAKeyboardControlViewBinding()
-
-@property(nonatomic, nullable) UIView* savedInputAccessoryView;
-
-@end
-
-@implementation AKAKeyboardControlViewBinding
-
-@dynamic delegate;
-
-#pragma mark - Initialization
-
-- (instancetype)initWithView:(req_UIView)targetView
-                  expression:(req_AKABindingExpression)bindingExpression
-                     context:(req_AKABindingContext)bindingContext
-                    delegate:(opt_AKABindingDelegate)delegate
-{
-    if (self = [super initWithView:targetView
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate])
-    {
-        self.KBActivationSequence = YES;
-        self.autoActivate = NO;
-        self.liveModelUpdates = YES;
-    }
-    return self;
-}
-
-#pragma mark - AKAKeyboardActivationSequenceItemProtocol
-
-- (opt_UIResponder)responderForKeyboardActivationSequence
-{
-    return self.view;
-}
-
-- (BOOL)shouldParticipateInKeyboardActivationSequence
-{
-    return self.KBActivationSequence && self.responderForKeyboardActivationSequence != nil;
-}
-
-- (BOOL)isResponderActive
-{
-    return self.responderForKeyboardActivationSequence.isFirstResponder;
-}
-
-- (BOOL)activateResponder
-{
-    UIResponder* responder = self.responderForKeyboardActivationSequence;
-    BOOL result = responder != nil;
-
-    if (result)
-    {
-        [self responderWillActivate:responder];
-        result = [responder becomeFirstResponder];
-        if (result)
-        {
-            [self responderDidActivate:responder];
-        }
-    }
-
-    return result;
-}
-
-- (BOOL)deactivateResponder
-{
-    UIResponder* responder = self.responderForKeyboardActivationSequence;
-    BOOL result = YES;
-
-    if (responder != nil)
-    {
-        [self responderWillDeactivate:responder];
-        BOOL result = [responder resignFirstResponder];
-        if (result)
-        {
-            [self responderDidDeactivate:responder];
-        }
-    }
-
-    return result;
-}
-
-- (opt_UIView)responderInputAccessoryView
-{
-    return self.responderForKeyboardActivationSequence.inputAccessoryView;
-}
-
-- (void)setResponderInputAccessoryView:(opt_UIView)inputAccessoryView
-{
-    UIResponder* responder = self.responderForKeyboardActivationSequence;
-    if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
-    {
-        [responder performSelector:@selector(setInputAccessoryView:) withObject:inputAccessoryView];
-    }
-    else
-    {
-        AKAErrorAbstractMethodImplementationMissing();
-    }
-}
-
-- (BOOL)installInputAccessoryView:(req_UIView)inputAccessoryView
-{
-    if (inputAccessoryView != self.responderInputAccessoryView)
-    {
-        NSAssert(self.savedInputAccessoryView == nil,
-                 @"previously installed input accessory view was not restored");
-        self.savedInputAccessoryView = self.responderInputAccessoryView;
-        self.responderInputAccessoryView = inputAccessoryView;
-    }
-    return self.responderInputAccessoryView == inputAccessoryView;
-}
-
-- (BOOL)restoreInputAccessoryView
-{
-    self.responderInputAccessoryView = self.savedInputAccessoryView;
-    BOOL result = self.responderInputAccessoryView == self.savedInputAccessoryView;
-    self.savedInputAccessoryView = nil;
-    return result;
-}
-
-#pragma mark - UIResponder Events
-
-- (void)                             responderWillActivate:(req_UIResponder)responder
-{
-    if ([self.delegate respondsToSelector:@selector(binding:responderWillActivate:)])
-    {
-        [self.delegate binding:self responderWillActivate:responder];
-    }
-}
-
-- (void)                              responderDidActivate:(req_UIResponder)responder
-{
-    if ([self.delegate respondsToSelector:@selector(binding:responderDidActivate:)])
-    {
-        [self.delegate binding:self responderDidActivate:responder];
-    }
-}
-
-- (void)                           responderWillDeactivate:(req_UIResponder)responder
-{
-    if ([self.delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
-    {
-        [self.delegate binding:self responderWillDeactivate:responder];
-    }
-}
-
-- (void)                            responderDidDeactivate:(req_UIResponder)responder
-{
-    if ([self.delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
-    {
-        [self.delegate binding:self responderDidDeactivate:responder];
-    }
-}
-
-@end

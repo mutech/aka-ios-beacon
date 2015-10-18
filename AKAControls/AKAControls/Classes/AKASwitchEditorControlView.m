@@ -19,7 +19,7 @@
 
     if (result)
     {
-        editor.stateBinding_aka = self.editorBinding;
+        editor.stateBinding_aka = self.editorValueBinding;
 
         editor.on = NO;
 

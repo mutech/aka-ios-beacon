@@ -33,7 +33,7 @@
 
     if (result)
     {
-        editor.textBinding_aka = self.editorBinding;
+        editor.textBinding_aka = self.editorValueBinding;
 
         editor.text = @"";
 

@@ -58,13 +58,13 @@ IB_DESIGNABLE
  * The binding expression to be forwarded to the editor view. This is only used if the editor
  * view is automatically created or if its control view binding is undefined.
  */
-@property(nonatomic) IBInspectable NSString* editorBinding;
+@property(nonatomic) IBInspectable NSString* editorValueBinding;
 
 /**
  * The text binding expression for the label. This is only used if the label is automatically
  * created.
  */
-@property(nonatomic) IBInspectable NSString* labelBinding;
+@property(nonatomic) IBInspectable NSString* labelTextBinding;
 
 #pragma mark - Outlets
 

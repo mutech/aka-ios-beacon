@@ -6,10 +6,10 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "PickerKeyboardViewController.h"
-
+@import UIKit;
 @import AKAControls;
 
+#import "PickerKeyboardViewController.h"
 
 @interface PickerKeyboardViewController() <AKACustomKeyboardResponderDelegate>
 

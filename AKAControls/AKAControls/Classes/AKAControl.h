@@ -16,7 +16,6 @@
 
 
 @class AKACompositeControl;
-@protocol AKAControlConfigurationProtocol;
 
 typedef AKAControl* _Nullable opt_AKAControl;
 typedef AKAControl* _Nonnull  req_AKAControl;
@@ -98,14 +97,6 @@ typedef NS_ENUM(NSInteger, AKAControlValidationState)
 
 
 @interface AKAControl(Obsolete)
-
-#pragma mark - Initialization
-
-+ (nullable instancetype)controlWithOwner:(AKACompositeControl* __nonnull)owner
-                            configuration:(id<AKAControlConfigurationProtocol> __nullable)configuration;
-
-+ (nullable instancetype)controlWithDataContext:(id __nullable)dataContext
-                         configuration:(id<AKAControlConfigurationProtocol>__nullable)configuration;
 
 #pragma mark - Change Tracking
 /// @name Change tracking

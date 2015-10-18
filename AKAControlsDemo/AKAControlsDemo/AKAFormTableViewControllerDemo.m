@@ -8,15 +8,13 @@
 
 #import "AKAFormTableViewControllerDemo.h"
 #import <AKAControls/AKAControlDelegate.h>
-#import <AKAControls/AKATextLabel.h>
-#import <AKAControls/UIView+AKABinding.h>
 
 @interface AKAFormTableViewControllerDemo () <AKAControlDelegate>
 
 @property(nonatomic) BOOL showPersonalInformation;
 @property(nonatomic) BOOL showPersonalInformation2;
 
-@property (weak, nonatomic) IBOutlet AKATextLabel *modelValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *modelValueLabel;
 
 @end
 
@@ -34,7 +32,7 @@
                      @"email": @"info@demo.org",
                      @"number": @(123.45)
                      }];
-    self.formControl.delegate = self;
+    
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 44.0f;
 }

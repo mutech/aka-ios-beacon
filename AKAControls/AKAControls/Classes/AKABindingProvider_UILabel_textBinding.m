@@ -161,9 +161,9 @@
                 {
                     text = [NSString stringWithFormat:@"%@", value];
                 }
-                else if (self.textForUndefinedValue.length > 0)
+                else if (binding.textForUndefinedValue.length > 0)
                 {
-                    text = self.textForUndefinedValue;
+                    text = binding.textForUndefinedValue;
                 }
                 else
                 {

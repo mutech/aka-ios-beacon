@@ -215,7 +215,7 @@
     [self scrollViewToVisible:self.activeResponder animated:NO];
 }
 
-- (void)scrollViewToVisible:(UIResponder*)activeResponder animated:(BOOL)animated
+- (void)                               scrollViewToVisible:(UIResponder*)activeResponder animated:(BOOL)animated
 {
     if ([activeResponder isKindOfClass:[UIView class]])
     {

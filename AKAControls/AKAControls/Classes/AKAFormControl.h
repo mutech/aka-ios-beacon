@@ -23,6 +23,6 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, readonly, nullable) id<AKAControlDelegate> delegate;
+@property(nonatomic, weak, readonly) id<AKAControlDelegate> delegate;
 
 @end

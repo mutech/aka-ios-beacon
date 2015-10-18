@@ -22,7 +22,7 @@
     UIPickerViewDataSource
 >
 
-@property(nonatomic, readonly)       AKAPickerKeyboardTriggerView*          triggerView;
+@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*          triggerView;
 @property(nonatomic, readonly)       UIPickerView*                          pickerView;
 
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol>          bindingContext;
@@ -183,9 +183,10 @@
         {
             id value = [self itemForRow:row];
             id oldValue = [self itemForRow:self.previouslySelectedRow];
+            __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
             [self animateTriggerForSelectedRow:self.originallySelectedRow changeTo:row animations:
              ^{
-                 [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
+                 [weakSelf targetValueDidChangeFromOldValue:oldValue toNewValue:value];
              }];
         }
     }
@@ -351,12 +352,13 @@
     id oldValue = [self itemForRow:self.previouslySelectedRow];
     if (self.liveModelUpdates)
     {
+        __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
         [self animateTriggerForSelectedRow:self.previouslySelectedRow
                                   changeTo:row
                                 animations:
          ^{
-             [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
-             self.previouslySelectedRow = row;
+             [weakSelf targetValueDidChangeFromOldValue:oldValue toNewValue:value];
+             weakSelf.previouslySelectedRow = row;
          }];
     }
     if ([self shouldResignFirstResponderOnSelectedRowChanged])

@@ -344,7 +344,7 @@ static NSString* const kMessageRole = @"message";
                     if ([newView isKindOfClass:[UILabel class]])
                     {
                         UILabel* label = (UILabel*)newView;
-                        label.textBinding_aka = self.labelBinding;
+                        label.textBinding_aka = self.labelTextBinding;
                     }
                 }
             }
@@ -361,7 +361,7 @@ static NSString* const kMessageRole = @"message";
                         SEL selector = NSSelectorFromString(controlViewBindingKey);
                         if ([editor respondsToSelector:selector])
                         {
-                            [editor setValue:self.editorBinding forKey:controlViewBindingKey];
+                            [editor setValue:self.editorValueBinding forKey:controlViewBindingKey];
                         }
                     }
                 }

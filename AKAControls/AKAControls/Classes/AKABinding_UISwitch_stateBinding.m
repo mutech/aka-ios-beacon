@@ -95,7 +95,7 @@
                 BOOL result = binding.uiSwitch != nil;
                 if (result)
                 {
-                    [self.uiSwitch removeTarget:binding
+                    [binding.uiSwitch removeTarget:binding
                                          action:@selector(targetValueDidChangeSender:)
                                forControlEvents:UIControlEventValueChanged];
                 }

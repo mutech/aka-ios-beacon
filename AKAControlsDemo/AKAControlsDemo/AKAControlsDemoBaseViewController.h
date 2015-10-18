@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import AKAControls.AKAFormViewController;
 
-@interface AKAControlsDemoBaseViewController : UIViewController
+@interface AKAControlsDemoBaseViewController: AKAFormViewController
 
 @end
 

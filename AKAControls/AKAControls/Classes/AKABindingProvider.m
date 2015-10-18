@@ -93,7 +93,6 @@
                                           forSelector:(req_SEL)selector
                                                inView:(req_UIView)view
 {
-    NSParameterAssert(bindingExpressionText != nil);
     NSParameterAssert(selector != nil);
     NSParameterAssert(view != nil);
 

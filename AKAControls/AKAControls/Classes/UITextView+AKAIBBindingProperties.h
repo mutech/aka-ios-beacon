@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UITextView (AKAIBBindingProperties)
+#import "AKAControlViewProtocol.h"
+
+
+@interface UITextView (AKAIBBindingProperties) <AKAControlViewProtocol>
 
 @property(nonatomic, nullable) IBInspectable NSString*textBinding_aka;
 

@@ -8,10 +8,13 @@
 
 @import UIKit.UITextField;
 
-IB_DESIGNABLE
-@interface UITextField(AKAIBBindingProperties)
+#import "AKAControlViewProtocol.h"
 
-@property(nonatomic, nullable) IBInspectable NSString*textBinding_aka;
+
+IB_DESIGNABLE
+@interface UITextField(AKAIBBindingProperties) <AKAControlViewProtocol>
+
+@property(nonatomic, nullable) IBInspectable NSString* textBinding_aka;
 
 @end
 

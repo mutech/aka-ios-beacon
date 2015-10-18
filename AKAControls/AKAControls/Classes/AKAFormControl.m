@@ -9,8 +9,11 @@
 @import AKACommons.AKALog;
 
 #import "AKAFormControl.h"
+#import "AKAControl_Internal.h"
+
 #import "AKAKeyboardActivationSequence.h"
 #import "AKABinding.h"
+#import "AKAKeyboardControl.h"
 
 @interface AKAFormControl() <AKAKeyboardActivationSequenceDelegate> {
     __strong AKAKeyboardActivationSequence* _keyboardActivationSequence;
@@ -18,6 +21,31 @@
 @end
 
 @implementation AKAFormControl
+
+#pragma mark - Initialization
+
+- (instancetype)initWithDataContext:(req_id)dataContext
+                      configuration:(AKAControlConfiguration*)configuration
+                           delegate:(opt_AKAControlDelegate)delegate
+{
+    if (self = [super initWithDataContext:dataContext
+                            configuration:configuration])
+    {
+        _delegate = delegate;
+    }
+    return self;
+}
+
+- (instancetype)initWithDataContext:(req_id)dataContext
+                           delegate:(opt_AKAControlDelegate)delegate
+{
+    if (self = [self initWithDataContext:dataContext
+                           configuration:nil
+                                delegate:delegate])
+    {
+    }
+    return self;
+}
 
 #pragma mark - Keyboard Activation Sequence
 
@@ -42,23 +70,6 @@
 {
     __block int count = 0;
 
-    BOOL stop = NO;
-    for (AKABinding* binding in self.bindings)
-    {
-        if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
-        {
-            AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
-            if ([item shouldParticipateInKeyboardActivationSequence])
-            {
-                block(item, count++, &stop);
-            }
-        }
-        if (stop)
-        {
-            return;
-        }
-    }
-
     [self enumerateControlsRecursivelyUsingBlock:^(AKAControl *control,
                                                    AKACompositeControl *owner,
                                                    NSUInteger index,
@@ -66,21 +77,12 @@
      {
          (void)owner; // not needed
          (void)index; // not needed
-         if ([control participatesInKeyboardActivationSequence])
+         if ([control isKindOfClass:[AKAKeyboardControl class]])
          {
-             // Cannot use index, since not all controls neccessarily participate in keyboard
-             // sequence.
-             block(control, count++, stop);
-         }
-         for (AKABinding* binding in control.bindings)
-         {
-             if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
+             AKAKeyboardControl* keyboardControl = (id)control;
+             if ([keyboardControl.controlViewBinding shouldParticipateInKeyboardActivationSequence])
              {
-                 AKAKeyboardActivationSequenceItem item = (AKAKeyboardActivationSequenceItem)binding;
-                 if ([item shouldParticipateInKeyboardActivationSequence])
-                 {
-                     block(item, count++, stop);
-                 }
+                 block(keyboardControl.controlViewBinding, count++, stop);
              }
          }
      }
@@ -88,41 +90,125 @@
                                  continueInOwner:NO];
 }
 
-#pragma mark -
+@end
 
-- (void)enumerateKeyboardActivationSequenceUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
-{
-    [self enumerateKeyboardActivationSequenceUsingBlock:block startIndex:0 continueInOwner:NO];
-}
 
-- (void)enumerateKeyboardActivationSequenceUsingBlock:(void(^)(AKAControl* control, AKACompositeControl* owner, NSUInteger index, BOOL* stop))block
-                                           startIndex:(NSUInteger)startIndex
-                                      continueInOwner:(BOOL)continueInOwner
+@interface AKAFormControl(DelegatePropagation)
+@end
+
+@implementation AKAFormControl(DelegatePropagation)
+
+
+#pragma mark Delegat'ish Methods for Notifications and Customization
+
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+             addControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
 {
-    [self enumerateLeafControlsUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop) {
-        if ([control shouldParticipateInKeyboardActivationSequence])
+    BOOL result = YES;
+
+    if (result)
+    {
+        id<AKAControlMembershipDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(shouldControl:addControl:atIndex:)])
         {
-            block(control, owner, index, stop);
+            result = [delegate shouldControl:compositeControl addControl:memberControl atIndex:index];
         }
     }
-                               startIndex:startIndex
-                          continueInOwner:continueInOwner];
-}
 
-#pragma mark - 
+    if (result)
+    {
+        result = [super shouldControl:compositeControl addControl:memberControl atIndex:index];
+    }
 
-- (AKAControl*)nextControlInKeyboardActivationSequenceAfter:(AKAControl*)control
-{
-    __block AKAControl* result = nil;
-    NSUInteger index = [self indexOfControl:control];
-    [self enumerateKeyboardActivationSequenceUsingBlock:^(AKAControl *control, AKACompositeControl *owner, NSUInteger index, BOOL *stop)
-     {
-         result = control;
-         *stop = YES;
-     }
-                                             startIndex:index+1
-                                        continueInOwner:YES];
     return result;
 }
 
+- (void)        control:(AKACompositeControl *)compositeControl
+         willAddControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willAddControl:atIndex:)])
+    {
+        [delegate control:self willAddControl:memberControl atIndex:index];
+    }
+    [super control:self willAddControl:memberControl atIndex:index];
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+          didAddControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didAddControl:atIndex:)])
+    {
+        [delegate control:self didAddControl:memberControl atIndex:index];
+    }
+    [super control:self didAddControl:memberControl atIndex:index];
+
+    if ([memberControl isKindOfClass:[AKAKeyboardControl class]])
+    {
+        [self.keyboardActivationSequence update];
+    }
+}
+
+- (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
+          removeControl:(AKAControl *)memberControl
+                atIndex:(NSUInteger)index
+{
+    BOOL result = YES;
+
+    if (result)
+    {
+        id<AKAControlMembershipDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(shouldControl:removeControl:atIndex:)])
+        {
+            result = [delegate shouldControl:compositeControl removeControl:memberControl atIndex:index];
+        }
+    }
+
+    if (result)
+    {
+        result = [super shouldControl:compositeControl removeControl:memberControl atIndex:index];
+    }
+
+    return result;
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+      willRemoveControl:(AKAControl *)memberControl
+              fromIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willRemoveControl:fromIndex:)])
+    {
+        [delegate control:self willRemoveControl:memberControl fromIndex:index];
+    }
+    [super control:self willRemoveControl:memberControl fromIndex:index];
+
+    if ([memberControl isKindOfClass:[AKAKeyboardControl class]])
+    {
+        [self.keyboardActivationSequence update];
+    }
+}
+
+- (void)        control:(AKACompositeControl *)compositeControl
+       didRemoveControl:(AKAControl *)memberControl
+              fromIndex:(NSUInteger)index
+{
+    id<AKAControlMembershipDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didRemoveControl:fromIndex:)])
+    {
+        [delegate control:self didRemoveControl:memberControl fromIndex:index];
+    }
+    [super control:self didRemoveControl:memberControl fromIndex:index];
+}
+
 @end
+
+

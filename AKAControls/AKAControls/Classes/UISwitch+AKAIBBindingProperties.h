@@ -6,10 +6,13 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
-@interface UISwitch (AKAIBBindingProperties)
+#import "AKAControlViewProtocol.h"
 
-@property(nonatomic, nullable) IBInspectable NSString* stateBinding;
+
+@interface UISwitch (AKAIBBindingProperties) <AKAControlViewProtocol>
+
+@property(nonatomic, nullable) IBInspectable NSString* stateBinding_aka;
 
 @end

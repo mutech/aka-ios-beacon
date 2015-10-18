@@ -19,6 +19,8 @@
 #pragma mark - Binding Configuration
 
 @property(nonatomic, nullable) NSString* textForUndefinedValue;
+@property(nonatomic, nullable) NSString* textForYes;
+@property(nonatomic, nullable) NSString* textForNo;
 
 @property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
 @property(nonatomic, nullable) NSDateFormatter* dateFormatter;

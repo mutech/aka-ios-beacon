@@ -7,7 +7,6 @@
 //
 
 #import "AKAEditorControlView.h"
-#import "AKATextFieldBinding.h"
 
 IB_DESIGNABLE
 @interface AKATextEditorControlView : AKAEditorControlView

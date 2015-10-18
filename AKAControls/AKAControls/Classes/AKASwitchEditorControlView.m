@@ -8,18 +8,18 @@
 
 #import "AKASwitchEditorControlView.h"
 #import "AKAEditorControlView_Protected.h"
-#import "AKASwitch.h"
+#import "UISwitch+AKAIBBindingProperties.h"
 
 @implementation AKASwitchEditorControlView
 
 - (BOOL)autocreateEditor:(out UIView *__autoreleasing *)createdView
 {
-    AKASwitch* editor = [[AKASwitch alloc] initWithFrame:CGRectZero];
+    UISwitch* editor = [[UISwitch alloc] initWithFrame:CGRectZero];
     BOOL result = editor != nil;
 
     if (result)
     {
-        editor.valueKeyPath = self.valueKeyPath;
+        editor.stateBinding_aka = self.editorBinding;
 
         editor.on = NO;
 

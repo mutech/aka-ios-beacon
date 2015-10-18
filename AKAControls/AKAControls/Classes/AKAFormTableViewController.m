@@ -11,7 +11,6 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 @import AKACommons.UIView_AKAHierarchyVisitor;
 
-#import "AKAControl_Protected.h"
 #import "AKAFormTableViewController.h"
 #import "AKAEditorControlView.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
@@ -191,9 +190,9 @@ static NSString* const defaultDataSourceKey = @"default";
 {
     // Initialize formControl with the original tableView/dataSource to capture all static cells
     // containing control views.
-    _formControl = [AKAFormControl controlWithDataContext:self configuration:nil];
-
-    self.formControl.delegate = self;
+    _formControl = [[AKAFormControl alloc] initWithDataContext:self
+                                                 configuration:nil
+                                                      delegate:self];
 
     [self initializeFormControlTheme];
     [self initializeFormControlMembers];
@@ -270,7 +269,7 @@ static NSString* const defaultDataSourceKey = @"default";
     // be sure that we detect all removals of placeholder cell controls.
     if ([memberControl isKindOfClass:[AKATableViewCellCompositeControl class]])
     {
-        if ([memberControl.viewBinding.configuration isKindOfClass:[AKADynamicPlaceholderTableViewCellBindingConfiguraton class]])
+        if ([memberControl.view isKindOfClass:[AKADynamicPlaceholderTableViewCell class]])
         {
             [self.dynamicPlaceholderCellControls removeObject:memberControl];
 
@@ -308,7 +307,10 @@ static NSString* const defaultDataSourceKey = @"default";
 
 - (AKATVDataSourceSpecification*)dataSourceForDynamicPlaceholder:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
-    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config = (id)placeholder.viewBinding.configuration;
+    // TODO: reimplement
+    return nil;
+    /*
+    AKADynamicPlaceholderTableViewCell* cell = (id)placeholder.view;
 
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
@@ -351,7 +353,7 @@ static NSString* const defaultDataSourceKey = @"default";
                                                             forKey:key];
         }
     }
-    return dataSource;
+    return dataSource;*/
 }
 
 #pragma mark - Hiding and Unhiding Table View Row Controls
@@ -460,11 +462,12 @@ static NSString* const defaultDataSourceKey = @"default";
 
 - (BOOL)               updateDynamicRowsForPlaceholderControl:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
+    return NO;
+    /*
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
     AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
-    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config =
-        (id)placeholder.viewBinding.configuration;
+    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config = (id)placeholder.viewBinding.configuration;
 
     NSIndexPath* targetIndexPath = [defaultDS tableViewMappedIndexPath:placeholder.indexPath];
     BOOL result = (targetIndexPath != nil);
@@ -600,7 +603,7 @@ static NSString* const defaultDataSourceKey = @"default";
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 
-    return result;
+    return result;*/
 }
 
 #pragma mark - Managing Activation

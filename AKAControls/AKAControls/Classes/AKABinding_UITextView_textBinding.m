@@ -171,17 +171,6 @@
 
 #pragma mark - Keyboard Activation Sequence
 
-- (BOOL)     shouldParticipateInKeyboardActivationSequence
-{
-    BOOL result = self.supportsActivation && self.KBActivationSequence;
-    return result;
-}
-
-- (opt_UIResponder) responderForKeyboardActivationSequence
-{
-    return self.textView;
-}
-
 - (void)                    setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
 {
     self.textView.inputAccessoryView = responderInputAccessoryView;

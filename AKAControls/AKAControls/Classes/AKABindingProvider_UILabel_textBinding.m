@@ -68,6 +68,16 @@
                          @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
                          @"bindingProperty": @"textForUndefinedValue"
                          },
+                  @"textForYes":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForYes"
+                         },
+                  @"textForNo":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForNo"
+                         },
                   },
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
@@ -85,14 +95,15 @@
 
 #pragma mark - Saved UILabel State
 
-@property(nonatomic, nullable) NSString*                  originalText;
-@property(nonatomic) UIView*                              originalInputAccessoryView;
+@property(nonatomic, nullable) NSString*       originalText;
+@property(nonatomic) UIView*     originalInputAccessoryView;
 
 #pragma mark - Convenience
 
 @property(nonatomic, readonly) UILabel*               label;
 
 @end
+
 
 #pragma mark - AKABinding_UILabel_textBinding - Implementation
 #pragma mark -
@@ -156,6 +167,7 @@
                 }
                 else
                 {
+                    // TODO: CHECK: prevent label from collapsing if value is empty but not undefined
                     text = @" ";
                 }
 
@@ -186,6 +198,10 @@
         if (self.numberFormatter)
         {
             *targetValueStore = [self.numberFormatter stringFromNumber:sourceValue];
+        }
+        else if (self.textForYes && self.textForNo) // only if both are defined
+        {
+            *targetValueStore = ((NSNumber*)sourceValue).boolValue ? self.textForYes : self.textForNo;
         }
         else
         {

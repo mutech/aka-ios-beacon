@@ -6,16 +6,28 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAControl_Protected.h"
+@import AKACommons.AKANullability;
+
+#import "AKAControl.h"
+#import "AKAControlConfiguration.h"
 
 @interface AKAControl (Internal)
 
+
+#pragma mark - Initialization
+
+- (instancetype _Nonnull)             initWithConfiguration:(opt_AKAControlConfiguration)configuration;
+
+- (instancetype _Nonnull)                     initWithOwner:(req_AKACompositeControl)owner
+                                              configuration:(opt_AKAControlConfiguration)configuration;
+
+- (instancetype _Nonnull)               initWithDataContext:(opt_id)dataContext
+                                              configuration:(opt_AKAControlConfiguration)configuration;
+
 #pragma mark - Control Hierarchy
 
-- (void)setOwner:(AKACompositeControl*)owner;
+- (void)                                          setOwner:(opt_AKACompositeControl)owner;
 
-#pragma mark - Binding
-
-- (void)setViewBinding:(AKAObsoleteViewBinding *)viewBinding;
+- (void)                                           setView:(opt_UIView)view;
 
 @end

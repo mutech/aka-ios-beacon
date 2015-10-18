@@ -8,8 +8,10 @@
 
 @import UIKit;
 
+#import "AKAControlViewProtocol.h"
 
 @protocol AKACustomKeyboardResponderDelegate;
+
 
 /**
  * Plain UIView subclass implementing UIResponder methods such that the view can
@@ -20,11 +22,15 @@
  *
  * @sa AKACustomKeyboardResponderDelegate
  */
-@interface AKACustomKeyboardResponderView : UIView
+@interface AKACustomKeyboardResponderView : UIView<AKAControlViewProtocol>
 
 #pragma mark - IB Binding Properties
 
 @property(nonatomic) IBInspectable BOOL tapToOpen;
+
+#pragma mark - Control Configuration
+
+- (void)setupControlConfiguration:(AKAMutableControlConfiguration*)controlConfiguration;
 
 #pragma mark - Outlets
 
@@ -65,6 +71,7 @@
 - (BOOL)shouldBecomeFirstResponder;
 
 @end
+
 
 /**
  * A delegate which defines the keyboard related behavior of a @c AKACustomKeyboardResponderView and optionally controls and monitors its first responder state.

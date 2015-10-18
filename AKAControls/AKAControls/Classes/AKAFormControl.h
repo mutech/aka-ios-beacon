@@ -7,6 +7,22 @@
 //
 
 #import "AKACompositeControl.h"
+#import "AKAControlConfiguration.h"
+#import "AKAControlDelegate.h"
 
 @interface AKAFormControl : AKACompositeControl
+
+#pragma mark - Initialization
+
+- (instancetype _Nonnull)                   initWithDataContext:(req_id)dataContext
+                                                       delegate:(opt_AKAControlDelegate)delegate;
+
+- (instancetype _Nonnull)                   initWithDataContext:(req_id)dataContext
+                                                  configuration:(opt_AKAControlConfiguration)configuration
+                                                       delegate:(opt_AKAControlDelegate)delegate;
+
+#pragma mark - Configuration
+
+@property(nonatomic, readonly, nullable) id<AKAControlDelegate> delegate;
+
 @end

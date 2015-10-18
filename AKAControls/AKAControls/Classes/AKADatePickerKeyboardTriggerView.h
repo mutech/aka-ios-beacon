@@ -9,10 +9,12 @@
 @import UIKit;
 
 #import "AKACustomKeyboardResponderView.h"
+#import "AKAControlViewProtocol.h"
+
 
 IB_DESIGNABLE
-@interface AKADatePickerKeyboardTriggerView : AKACustomKeyboardResponderView
+@interface AKADatePickerKeyboardTriggerView: AKACustomKeyboardResponderView<AKAControlViewProtocol>
 
-@property(nonatomic) IBInspectable NSString* datePickerBinding;
+@property(nonatomic) IBInspectable NSString* datePickerBinding_aka;
 
 @end

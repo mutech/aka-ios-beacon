@@ -14,12 +14,24 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)        initWithView:(req_UIView)target
+- (instancetype)                initWithTarget:(req_id)target
                                     expression:(req_AKABindingExpression)bindingExpression
                                        context:(req_AKABindingContext)bindingContext
                                       delegate:(opt_AKABindingDelegate)delegate
 {
     NSParameterAssert([target isKindOfClass:[UIView class]]);
+    return [self initWithView:target
+                   expression:bindingExpression
+                      context:bindingContext
+                     delegate:delegate];
+}
+
+- (instancetype _Nullable)        initWithView:(req_UIView)target
+                                    expression:(req_AKABindingExpression)bindingExpression
+                                       context:(req_AKABindingContext)bindingContext
+                                      delegate:(opt_AKABindingDelegate)delegate
+{
+    [self validateTargetView:target];
 
     if (self = [super initWithTarget:[self createBindingTargetPropertyForView:target]
                           expression:bindingExpression
@@ -29,6 +41,11 @@
         _view = target;
     }
     return self;
+}
+
+- (void)validateTargetView:(req_UIView)targetView
+{
+    NSParameterAssert([targetView isKindOfClass:[UIView class]]);
 }
 
 - (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)target

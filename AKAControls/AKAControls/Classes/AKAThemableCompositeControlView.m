@@ -4,6 +4,7 @@
 //
 
 #import "AKACompositeControl.h"
+#import "AKAControl_Internal.h"
 
 #import "AKAThemableCompositeControlView.h"
 #import "AKAThemableContainerView_Protected.h"
@@ -11,19 +12,19 @@
 @interface AKAThemableCompositeControlView()
 
 @property(nonatomic) AKAProperty* themeNameProperty;
+@property(nonatomic, readonly) AKAMutableControlConfiguration* controlConfiguration;
 
 @end
 
 @implementation AKAThemableCompositeControlView
 
 #pragma mark - Initialization
-#pragma mark -
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+        _controlConfiguration = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
         [self setupDefaultValues];
     }
     return self;
@@ -32,29 +33,61 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+    [aCoder encodeObject:_controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
+}
+
+- (void)setupDefaultValues
+{
 }
 
 #pragma mark - Configuration
-#pragma mark -
 
-#pragma mark - Binding Configuration
-
-@synthesize bindingConfiguration = _bindingConfiguration;
-- (AKACompositeViewBindingConfiguration *)bindingConfiguration
+- (AKAControlConfiguration*)aka_controlConfiguration
 {
-    if (_bindingConfiguration == nil)
+    return self.controlConfiguration;
+}
+
+@synthesize controlConfiguration = _controlConfiguration;
+- (AKAMutableControlConfiguration*)controlConfiguration
+{
+    if (_controlConfiguration == nil)
     {
-        _bindingConfiguration = [self createBindingConfiguration];
+        _controlConfiguration = [AKAMutableControlConfiguration new];
+        _controlConfiguration[kAKAControlTypeKey] = [AKACompositeControl class];
     }
-    return _bindingConfiguration;
+    return _controlConfiguration;
 }
 
-- (AKACompositeViewBindingConfiguration*)createBindingConfiguration
+#pragma mark - Interface Builder Properties
+
+- (NSString *)controlName
 {
-    return AKACompositeViewBindingConfiguration.new;
+    return self.controlConfiguration[kAKAControlNameKey];
+}
+- (void)setControlName:(NSString *)controlName
+{
+    self.controlConfiguration[kAKAControlNameKey] = controlName;
 }
 
+- (NSString *)controlTags
+{
+    return self.controlConfiguration[kAKAControlTagsKey];
+}
+- (void)setControlTags:(NSString *)controlTags
+{
+    self.controlConfiguration[kAKAControlTagsKey] = controlTags;
+}
+
+- (NSString *)controlRole
+{
+    return self.controlConfiguration[kAKAControlRoleKey];
+}
+- (void)setControlRole:(NSString *)role
+{
+    self.controlConfiguration[kAKAControlRoleKey] = role;
+}
+
+/*
 - (void)viewBindingChangedFrom:(AKAObsoleteViewBinding *)oldBinding
                             to:(AKAObsoleteViewBinding *)newBinding
 {
@@ -78,72 +111,7 @@
         [self setNeedsLayout];
     }
 }
-
-#pragma mark - Interface Builder Properties
-#pragma mark -
-
-- (NSString *)controlName
-{
-    return self.bindingConfiguration.controlName;
-}
-- (void)setControlName:(NSString *)controlName
-{
-    self.bindingConfiguration.controlName = controlName;
-}
-
-- (NSString *)controlTags
-{
-    return self.bindingConfiguration.controlTags;
-}
-- (void)setControlTags:(NSString *)controlTags
-{
-    self.bindingConfiguration.controlTags = controlTags;
-}
-
-- (NSString *)role
-{
-    return self.bindingConfiguration.role;
-}
-- (void)setRole:(NSString *)role
-{
-    self.bindingConfiguration.role = role;
-}
-
-- (NSString *)valueKeyPath
-{
-    return self.bindingConfiguration.valueKeyPath;
-}
-- (void)setValueKeyPath:(NSString *)valueKeyPath
-{
-    self.bindingConfiguration.valueKeyPath = valueKeyPath;
-}
-
-- (NSString *)converterKeyPath
-{
-    return self.bindingConfiguration.converterKeyPath;
-}
-- (void)setConverterKeyPath:(NSString *)converterKeyPath
-{
-    self.bindingConfiguration.converterKeyPath = converterKeyPath;
-}
-
-- (NSString *)validatorKeyPath
-{
-    return self.bindingConfiguration.validatorKeyPath;
-}
-- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
-{
-    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
-}
-
-- (BOOL)readOnly
-{
-    return self.bindingConfiguration.readOnly;
-}
-- (void)setReadOnly:(BOOL)readOnly
-{
-    self.bindingConfiguration.readOnly = readOnly;
-}
+*/
 
 #pragma mark - Themes
 

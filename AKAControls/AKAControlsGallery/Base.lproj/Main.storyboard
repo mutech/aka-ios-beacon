@@ -157,32 +157,15 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JLM-Lm-lYS" customClass="AKATextField">
-                                <rect key="frame" x="16" y="213" width="343" height="30"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="valueKeyPath" value="stringValue"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="liveModelUpdates" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AKATextField (obsolete):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4Z-Uu-QK2">
-                                <rect key="frame" x="16" y="191" width="343" height="14"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzf-1v-dGL">
-                                <rect key="frame" x="16" y="251" width="343" height="13"/>
+                                <rect key="frame" x="16" y="199" width="343" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETl-So-aum">
-                                <rect key="frame" x="16" y="272" width="343" height="21"/>
+                                <rect key="frame" x="16" y="221" width="343" height="20"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -192,10 +175,10 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
-                                <rect key="frame" x="310" y="311" width="51" height="31"/>
+                                <rect key="frame" x="310" y="259" width="51" height="31"/>
                                 <animations/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="stateBinding" value="$root.textField1.hidden"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="$root.textField1.hidden"/>
                                 </userDefinedRuntimeAttributes>
                             </switch>
                         </subviews>
@@ -205,26 +188,20 @@
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="trailing" secondItem="S5K-zJ-ZY5" secondAttribute="trailingMargin" id="1G1-ge-FSP"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="top" secondItem="fdx-pW-zdc" secondAttribute="bottom" constant="8" id="1j1-2Z-fnC"/>
                             <constraint firstAttribute="trailing" secondItem="ETl-So-aum" secondAttribute="trailing" constant="16" id="3sY-a9-tCa"/>
-                            <constraint firstAttribute="trailing" secondItem="t4Z-Uu-QK2" secondAttribute="trailing" constant="16" id="5HG-w9-Mrc"/>
                             <constraint firstItem="Sow-m2-G9d" firstAttribute="top" secondItem="ETl-So-aum" secondAttribute="bottom" constant="18" id="BHx-8q-4dq"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="top" secondItem="zEf-N4-6Bj" secondAttribute="bottom" constant="8" id="F7l-Cx-gft"/>
                             <constraint firstItem="ETl-So-aum" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" constant="16" id="IEs-Io-5i9"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="J90-aF-6me"/>
                             <constraint firstAttribute="trailing" secondItem="tzf-1v-dGL" secondAttribute="trailing" constant="16" id="JWo-uQ-r1S"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="top" secondItem="X2I-Oi-me6" secondAttribute="bottom" constant="8" id="JyB-9u-gVw"/>
-                            <constraint firstAttribute="trailing" secondItem="JLM-Lm-lYS" secondAttribute="trailing" constant="16" id="LZF-gK-RhO"/>
-                            <constraint firstItem="t4Z-Uu-QK2" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="8" id="OcL-sa-gM3"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="Q4C-DI-s6C"/>
-                            <constraint firstItem="JLM-Lm-lYS" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" constant="16" id="R0F-D7-Wgf"/>
-                            <constraint firstItem="tzf-1v-dGL" firstAttribute="top" secondItem="JLM-Lm-lYS" secondAttribute="bottom" constant="8" id="R9C-bv-IPL"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="U0d-wc-Cu0"/>
-                            <constraint firstItem="t4Z-Uu-QK2" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" constant="16" id="ZSi-VX-XDG"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leadingMargin" id="cMw-aH-USt"/>
+                            <constraint firstItem="tzf-1v-dGL" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="16" id="cvP-fX-BaI"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="eb4-7T-dFi"/>
                             <constraint firstItem="ETl-So-aum" firstAttribute="top" secondItem="tzf-1v-dGL" secondAttribute="bottom" constant="8" id="fey-St-gKf"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="ZmZ-QW-fDF" secondAttribute="trailing" id="nOS-8x-GmY"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="ofI-he-XEe"/>
-                            <constraint firstItem="JLM-Lm-lYS" firstAttribute="top" secondItem="t4Z-Uu-QK2" secondAttribute="bottom" constant="8" id="qad-JZ-qgv"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="ZmZ-QW-fDF" secondAttribute="leading" id="rIh-Fd-xUy"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ruQ-jP-d5I"/>
                             <constraint firstItem="tzf-1v-dGL" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" constant="16" id="uXy-E9-zzf"/>
@@ -285,7 +262,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="68" width="335" height="28"/>
+                                                <rect key="frame" x="20" y="67" width="335" height="29"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
                                                         <rect key="frame" x="4" y="4" width="327" height="21"/>
@@ -310,19 +287,17 @@
                                                     <constraint firstAttribute="bottom" secondItem="tKJ-rE-QKb" secondAttribute="bottom" constant="4" id="tc9-kp-xzL"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding_aka">
                                                         <string key="value">stringValue {
 	choices: stringArrayValue,
 	titleForUndefinedValue: "(please choose)"
 }</string>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="bnr-Cb-aOu" appends="YES" id="CFC-ux-6tI"/>
-                                                </connections>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDU-dm-w6n">
-                                                <rect key="frame" x="20" y="104" width="335" height="39"/>
+                                                <rect key="frame" x="20" y="104" width="335" height="40"/>
                                                 <animations/>
                                                 <string key="text">Choose object value from array of objects, update on resign first responder (end edit), object property title and value are used in label, title in picker.</string>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -330,7 +305,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="151" width="335" height="28"/>
+                                                <rect key="frame" x="20" y="151" width="335" height="29"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyl-gr-qGe" userLabel="Title Label">
                                                         <rect key="frame" x="4" y="4" width="34" height="21"/>
@@ -343,7 +318,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuB-G7-7Ip" userLabel="Value Label">
-                                                        <rect key="frame" x="46" y="4" width="42" height="21"/>
+                                                        <rect key="frame" x="45" y="4" width="42" height="21"/>
                                                         <animations/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -364,20 +339,18 @@
                                                     <constraint firstItem="kyl-gr-qGe" firstAttribute="top" secondItem="Bz0-aN-95m" secondAttribute="top" constant="4" id="lTF-5n-U0V"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding">
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding_aka">
                                                         <string key="value">objectValue {
 	title: title,
 	choices: objectArrayValue,
 	liveModelUpdates: $false
 }</string>
                                                     </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="ACP-Yb-3Pb" appends="YES" id="4eM-2Z-Zpz"/>
-                                                </connections>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
-                                                <rect key="frame" x="20" y="187" width="335" height="14"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
+                                                <rect key="frame" x="20" y="188" width="335" height="14"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -405,11 +378,9 @@
                                                     <constraint firstAttribute="bottom" secondItem="JDZ-Gt-BuC" secondAttribute="bottom" constant="4" id="rUl-Iu-lfj"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="datePickerBinding" value="dateValue"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="datePickerBinding_aka" value="dateValue"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <outletCollection property="gestureRecognizers" destination="0s6-Ny-4sy" appends="YES" id="CA0-pb-ORg"/>
-                                                </connections>
                                             </view>
                                         </subviews>
                                         <animations/>
@@ -469,21 +440,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7DZ-BM-ZCu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="bnr-Cb-aOu">
-                    <connections>
-                        <action selector="becomeFirstResponderForSender:" destination="ri5-zv-jXS" id="smx-Jl-5ej"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="ACP-Yb-3Pb">
-                    <connections>
-                        <action selector="becomeFirstResponderForSender:" destination="Bz0-aN-95m" id="dbm-VC-IrO"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="0s6-Ny-4sy">
-                    <connections>
-                        <action selector="becomeFirstResponderForSender:" destination="jnP-bs-nQR" id="YUS-1x-OGl"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="275.5" y="1267.5"/>
         </scene>
@@ -506,13 +462,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUn-eG-IuT">
-                                <rect key="frame" x="16" y="130" width="343" height="14"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ce3-DS-hmv">
                                 <rect key="frame" x="16" y="93" width="343" height="21"/>
                                 <animations/>
@@ -522,6 +471,13 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
                                 </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SUn-eG-IuT">
+                                <rect key="frame" x="16" y="130" width="343" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTR-V6-8pR">
                                 <rect key="frame" x="16" y="152" width="343" height="20"/>

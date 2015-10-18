@@ -11,8 +11,8 @@
 
 @interface AKADynamicPlaceholderTableViewCellCompositeControl : AKATableViewCellCompositeControl
 
-@property(nonatomic, strong) NSArray* actualItems;
-@property(nonatomic) NSUInteger actualNumberOfRows;
+@property(nonatomic, strong) NSArray*       actualItems;
+@property(nonatomic) NSUInteger             actualNumberOfRows;
 
 @end
 

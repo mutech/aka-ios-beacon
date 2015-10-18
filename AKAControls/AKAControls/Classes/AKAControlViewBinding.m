@@ -22,6 +22,22 @@
 
 @dynamic delegate;
 
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _isUpdatingSourceValueForTargetValueChange = NO;
+    }
+    return self;
+}
+
+#pragma mark - Properties
+
+- (BOOL)isUpdatingSourceValueForTargetValueChange
+{
+    return _isUpdatingSourceValueForTargetValueChange;
+}
+
 #pragma mark - Conversion
 
 - (BOOL)                                 convertTargetValue:(opt_id)targetValue

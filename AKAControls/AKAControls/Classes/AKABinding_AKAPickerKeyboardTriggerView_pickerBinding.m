@@ -12,6 +12,7 @@
 #import "AKAPickerKeyboardTriggerView.h"
 #import "AKAKeyboardActivationSequenceAccessoryView.h"
 
+
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -
 
@@ -23,13 +24,12 @@
 
 @property(nonatomic, readonly)       AKAPickerKeyboardTriggerView*          triggerView;
 @property(nonatomic, readonly)       UIPickerView*                          pickerView;
+
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol>          bindingContext;
 
-@property(nonatomic, weak)           UIView*                                inputAccessoryView;
 @property(nonatomic, readonly)       NSArray*                               choices;
 @property(nonatomic, readonly)       AKAUnboundProperty*                    titleProperty;
 
-@property(nonatomic, weak)           id<AKACustomKeyboardResponderDelegate> savedTriggerViewDelegate;
 @property(nonatomic)                 NSInteger                              originallySelectedRow;
 @property(nonatomic)                 NSInteger                              previouslySelectedRow;
 
@@ -43,18 +43,6 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                      initWithTarget:(id)target
-                                                    expression:(req_AKABindingExpression)bindingExpression
-                                                       context:(req_AKABindingContext)bindingContext
-                                                      delegate:(opt_AKABindingDelegate)delegate
-{
-    NSParameterAssert([target isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
-    return [self initWithView:(AKAPickerKeyboardTriggerView*)target
-                   expression:bindingExpression
-                      context:bindingContext
-                     delegate:delegate];
-}
-
 - (instancetype)                                  initWithView:(AKAPickerKeyboardTriggerView* _Nonnull)triggerView
                                                     expression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
@@ -66,9 +54,13 @@
                           delegate:delegate])
     {
         _bindingContext = bindingContext;
-        triggerView.delegate = self;
     }
     return self;
+}
+
+- (void)                                    validateTargetView:(req_UIView)targetView
+{
+    NSParameterAssert([targetView isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
 }
 
 - (req_AKAProperty)         createBindingTargetPropertyForView:(req_UIView)view
@@ -115,11 +107,7 @@
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
-                if (binding.triggerView.delegate != binding)
-                {
-                    binding.savedTriggerViewDelegate = binding.triggerView.delegate;
-                    binding.triggerView.delegate = binding;
-                }
+                [binding attachToCustomKeyboardResponderView];
                 binding.pickerView.delegate = binding;
                 binding.pickerView.dataSource = binding;
                 [binding setNeedsReloadChoices];
@@ -132,16 +120,16 @@
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
                 binding.pickerView.delegate = nil;
                 binding.pickerView.dataSource = nil;
-                binding.triggerView.delegate = binding.savedTriggerViewDelegate;
+                [binding detachFromCustomKeyboardResponderView];
                 return YES;
             }];
 }
 
 #pragma mark - Properties
 
-- (AKAPickerKeyboardTriggerView *)triggerView
+- (AKAPickerKeyboardTriggerView *)                 triggerView
 {
-    UIView* result = self.view;
+    UIView* result = super.triggerView;
     NSParameterAssert(result == nil || [result isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
 
     return (AKAPickerKeyboardTriggerView*)result;
@@ -152,23 +140,63 @@
 {
     if (_pickerView == nil)
     {
-        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
-        _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        UIView* inputView = [super inputViewForCustomKeyboardResponderView:self.triggerView];
+        if ([inputView isKindOfClass:[UIPickerView class]])
+        {
+            _pickerView = (UIPickerView*)inputView;
+        }
+        else
+        {
+            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, self.triggerView, inputView);
+
+            _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
+            _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        }
     }
     return _pickerView;
 }
 
-- (void)                           setSavedTriggerViewDelegate:(id<AKACustomKeyboardResponderDelegate>)savedTriggerViewDelegate
-{
-    NSAssert(savedTriggerViewDelegate != self, @"Cannot register AKA custom keyboard trigger view binding as saved delegate, it already acts as replacement/proxy delegate");
+#pragma mark - AKACustomKeyboardResponderDelegate Implementation
 
-    _savedTriggerViewDelegate = savedTriggerViewDelegate;
+- (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
+{
+    // The view returned by the super class implementation, if defined and valid, is used by
+    // self.pickerView if possible.
+    return self.pickerView;
+}
+
+#pragma mark -
+
+- (void)responderWillActivate:(req_UIResponder)responder
+{
+    [super responderWillActivate:responder];
+
+    self.originallySelectedRow = [self rowForItem:self.bindingSource.value];
+}
+
+- (void)responderDidDeactivate:(req_UIResponder)responder
+{
+    if (!self.liveModelUpdates)
+    {
+        NSInteger row = [self.pickerView selectedRowInComponent:0];
+        if (row != self.originallySelectedRow)
+        {
+            id value = [self itemForRow:row];
+            id oldValue = [self itemForRow:self.previouslySelectedRow];
+            [self animateTriggerForSelectedRow:self.originallySelectedRow changeTo:row animations:
+             ^{
+                 [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
+             }];
+        }
+    }
+
+    [super responderDidDeactivate:responder];
 }
 
 #pragma mark - Title
 
 @synthesize titleProperty = _titleProperty;
-- (AKAUnboundProperty *)titleProperty
+- (AKAUnboundProperty *)                         titleProperty
 {
     if (_titleProperty == nil && self.titleBindingExpression != nil)
     {
@@ -176,6 +204,46 @@
     }
     return _titleProperty;
 }
+
+#pragma mark - Animated Target Value Update
+
+- (void)                          animateTriggerForSelectedRow:(NSInteger)oldSelectedRow
+                                                      changeTo:(NSInteger)newSelectedRow
+                                                    animations:(void(^)())block
+{
+    if (block)
+    {
+        CGFloat duration = .3;
+        UIViewAnimationOptions options;
+        if (oldSelectedRow < newSelectedRow)
+        {
+            options = UIViewAnimationOptionTransitionFlipFromTop;
+        }
+        else if (oldSelectedRow > newSelectedRow)
+        {
+            options = UIViewAnimationOptionTransitionFlipFromBottom;
+        }
+        else
+        {
+            options = UIViewAnimationOptionTransitionCrossDissolve;
+        }
+        [UIView transitionWithView:self.triggerView
+                          duration:duration
+                           options:options
+                        animations:
+         ^{
+             block();
+         }
+                        completion:nil];
+    }
+}
+
+- (BOOL)        shouldResignFirstResponderOnSelectedRowChanged
+{
+    return (self.liveModelUpdates &&
+            ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]]);
+}
+
 
 #pragma mark - Choices
 
@@ -231,44 +299,6 @@
         [self.pickerView reloadAllComponents];
         _needsReloadChoices = NO;
     }
-}
-
-#pragma mark - Animated Target Value Update
-
-- (void)animateTriggerForSelectedRow:(NSInteger)oldSelectedRow
-                            changeTo:(NSInteger)newSelectedRow
-                          animations:(void(^)())block
-{
-    if (block)
-    {
-        CGFloat duration = .3;
-        UIViewAnimationOptions options;
-        if (oldSelectedRow < newSelectedRow)
-        {
-            options = UIViewAnimationOptionTransitionFlipFromTop;
-        }
-        else if (oldSelectedRow > newSelectedRow)
-        {
-            options = UIViewAnimationOptionTransitionFlipFromBottom;
-        }
-        else
-        {
-            options = UIViewAnimationOptionTransitionCrossDissolve;
-        }
-        [UIView transitionWithView:self.triggerView
-                          duration:duration
-                           options:options
-                        animations:
-         ^{
-             block();
-         }
-                        completion:nil];
-    }
-}
-
-- (BOOL)shouldResignFirstResponderOnSelectedRowChanged
-{
-    return self.liveModelUpdates && ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]];
 }
 
 #pragma mark - UIPickerViewDelegate Implementation
@@ -359,7 +389,7 @@
     return result;
 }
 
-#pragma mark - ...
+#pragma mark - Implementation
 
 - (BOOL)                                supportsUndefinedValue
 {
@@ -525,261 +555,6 @@
         result = [self rowForIndex:index];
     }
     return result;
-}
-
-#pragma mark - AKACustomKeyboardResponderDelegate Implementation
-
-- (BOOL)    customKeyboardResponderViewCanBecomeFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    BOOL result = YES; // We might want to make this depend on something
-
-    NSParameterAssert(view == self.triggerView);
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewCanBecomeFirstResponder:)])
-    {
-        result = [secondary customKeyboardResponderViewCanBecomeFirstResponder:view];
-    }
-
-    return result;
-}
-
-- (UIView*)            inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
-{
-    UIView* result = nil; // We might want to make this depend on something
-
-    NSParameterAssert(view == self.triggerView);
-
-    // Let the original delegate replace our picker view
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(inputViewForCustomKeyboardResponderView:)])
-    {
-        result = [secondary inputViewForCustomKeyboardResponderView:view];
-        // TODO: Add sanity checks on input view configuration:
-        // - has to be a picker view, no delegate setup? Or should we proxy it?
-    }
-
-    // If original delegate did no provide an input view (the default path), use ours
-    if (result == nil)
-    {
-        result = self.pickerView;
-    }
-
-    return result;
-}
-
-- (UIView*)   inputAccessoryViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
-{
-    return self.inputAccessoryView;
-}
-
-#pragma mark Key Input Protocol Support
-
-- (BOOL)                    customKeyboardResponderViewHasText:(AKACustomKeyboardResponderView*)view
-{
-    BOOL result = YES;
-
-    NSParameterAssert(view == self.triggerView);
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewHasText:)])
-    {
-        result = [secondary customKeyboardResponderViewHasText:view];
-    }
-
-    return result;
-}
-
-- (void)                           customKeyboardResponderView:(AKACustomKeyboardResponderView*)view
-                                                    insertText:(NSString *)text
-{
-    NSParameterAssert(view == self.triggerView);
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderView:insertText:)])
-    {
-        [secondary customKeyboardResponderView:view insertText:text];
-    }
-}
-
-- (void)             customKeyboardResponderViewDeleteBackward:(AKACustomKeyboardResponderView*)view
-{
-    NSParameterAssert(view == self.triggerView);
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewDeleteBackward:)])
-    {
-        [secondary customKeyboardResponderViewDeleteBackward:view];
-    }
-}
-
-#pragma mark First Responder Support
-
-- (BOOL) customKeyboardResponderViewShouldBecomeFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    BOOL result = YES; // We might want to make this depend on something
-
-    NSParameterAssert(view == self.triggerView);
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewCanBecomeFirstResponder:)])
-    {
-        result = [secondary customKeyboardResponderViewCanBecomeFirstResponder:view];
-    }
-
-    return result;
-}
-
-- (void)   customKeyboardResponderViewWillBecomeFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    NSParameterAssert(view == self.triggerView);
-
-    [self responderWillActivate:view];
-
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewWillBecomeFirstResponder:)])
-    {
-        [secondary customKeyboardResponderViewWillBecomeFirstResponder:view];
-    }
-}
-
-- (void)    customKeyboardResponderViewDidBecomeFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    NSParameterAssert(view == self.triggerView);
-
-    self.originallySelectedRow = [self rowForItem:self.bindingSource.value];
-
-    [self responderDidActivate:view];
-
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewDidBecomeFirstResponder:)])
-    {
-        [secondary customKeyboardResponderViewDidBecomeFirstResponder:view];
-    }
-
-/*    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deviceOrientationChanged:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
- */
-}
-
-- (void)deviceOrientationChanged:(NSNotification*)notification
-{
-    // Not working:
-    //[self.pickerView.superview setNeedsLayout];
-    //[self.pickerView.superview layoutIfNeeded];
-}
-
-- (BOOL) customKeyboardResponderViewShouldResignFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    BOOL result = YES;
-
-    NSParameterAssert(view == self.triggerView);
-
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewShouldResignFirstResponder:)])
-    {
-        result = [secondary customKeyboardResponderViewShouldResignFirstResponder:view];
-    }
-
-    return result;
-}
-
-- (void)   customKeyboardResponderViewWillResignFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    NSParameterAssert(view == self.triggerView);
-
-    [self responderWillDeactivate:view];
-
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewWillResignFirstResponder:)])
-    {
-        [secondary customKeyboardResponderViewWillResignFirstResponder:view];
-    }
-}
-
-- (void)    customKeyboardResponderViewDidResignFirstResponder:(AKACustomKeyboardResponderView*)view
-{
-    NSParameterAssert(view == self.triggerView);
-
-    /*[[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIDeviceOrientationDidChangeNotification
-                                                  object:nil];*/
-
-    if (!self.liveModelUpdates)
-    {
-        NSInteger row = [self.pickerView selectedRowInComponent:0];
-        if (row != self.originallySelectedRow)
-        {
-            id value = [self itemForRow:row];
-            id oldValue = [self itemForRow:self.previouslySelectedRow];
-            [self animateTriggerForSelectedRow:self.originallySelectedRow changeTo:row animations:
-             ^{
-                 [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
-             }];
-        }
-    }
-
-    [self responderDidDeactivate:view];
-
-    id<AKACustomKeyboardResponderDelegate> secondary = self.savedTriggerViewDelegate;
-    if ([secondary respondsToSelector:@selector(customKeyboardResponderViewDidResignFirstResponder:)])
-    {
-        [secondary customKeyboardResponderViewDidResignFirstResponder:view];
-    }
-}
-
-#pragma mark - Activation
-
-- (BOOL)                                    supportsActivation
-{
-    BOOL result = self.triggerView != nil;
-    return result;
-}
-
-- (BOOL)                                    shouldAutoActivate
-{
-    BOOL result = self.supportsActivation && self.autoActivate;
-    return result;
-}
-
-#pragma mark - Keyboard Activation Sequence
-
-- (BOOL)         shouldParticipateInKeyboardActivationSequence
-{
-    BOOL result = self.supportsActivation && [super shouldParticipateInKeyboardActivationSequence];
-    return result;
-}
-
-- (UIView *)responderInputAccessoryView
-{
-    return self.triggerView.inputAccessoryView;
-}
-
-- (void)setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
-{
-    // self.triggerView.inputAccessory view will access self.inputAccessoryView via delegation
-    self.inputAccessoryView = responderInputAccessoryView;
-}
-
-- (BOOL)activateResponder
-{
-    // redef bec. responderWill/DidActivate are called by custom keyboard responder delegate methods
-    return [self.responderForKeyboardActivationSequence becomeFirstResponder];
-}
-
-- (BOOL)deactivateResponder
-{
-    // redef bec. responderWill/DidDeactivate are called by custom keyboard responder delegate methods
-    return [self.responderForKeyboardActivationSequence resignFirstResponder];
-}
-
-#pragma mark - Obsolete (probably) Delegate Support Methods
-
-- (BOOL)                                        shouldActivate
-{
-    return YES;
-}
-
-- (BOOL)                                      shouldDeactivate
-{
-    return YES;
 }
 
 @end

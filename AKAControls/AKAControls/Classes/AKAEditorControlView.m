@@ -8,20 +8,20 @@
 
 #import "AKAEditorControlView.h"
 #import "AKAThemableContainerView_Protected.h"
-
-#import "AKAObsoleteViewBindingConfiguration.h"
-#import "AKATextLabel.h"
+#import "AKAControlViewProtocol.h"
+#import "UITextView+AKAIBBindingProperties.h"
+#import "UILabel+AKAIBBindingProperties.h"
 
 #import "AKAControlsErrors.h"
 #import "AKAProperty.h"
-
-#import "UIView+AKABinding.h"
 
 @import AKACommons.AKALog;
 
 @interface AKAEditorControlView()
 
 @property(nonatomic, assign) BOOL setupActive;
+
+@property(nonatomic, assign) BOOL readOnly;
 
 @end
 
@@ -34,62 +34,20 @@ static NSString* const kMessageRole = @"message";
 #pragma mark - Initialization
 #pragma mark -
 
-#pragma mark - Binding Configuration
-/// @name Binding configuration
-
-- (AKAEditorBindingConfiguration*)bindingConfiguration
-{
-    return (AKAEditorBindingConfiguration*)super.bindingConfiguration;
-}
-
-- (AKAEditorBindingConfiguration*)createBindingConfiguration
-{
-    return AKAEditorBindingConfiguration.new;
-}
-
 #pragma mark - Interface Builder Properties
 /// @name Interface Builder Properties
 
+@synthesize readOnly = _readOnly;
 - (void)setReadOnly:(BOOL)readOnly
 {
-    super.readOnly = readOnly;
-    if ([self.editor conformsToProtocol:@protocol(AKAControlConfigurationProtocol)])
-    {
-        UIView <AKAControlConfigurationProtocol> *controlView = (id) self.editor;
-        controlView.readOnly = readOnly;
-    }
-    else if (self.editor != nil)
+    _readOnly = readOnly;
+    if (self.editor != nil)
     {
         self.editor.userInteractionEnabled = !readOnly;
     }
 }
 
-- (NSString *)labelText
-{
-    return self.bindingConfiguration.labelText;
-}
-- (void)setLabelText:(NSString *)labelText
-{
-    self.bindingConfiguration.labelText = labelText;
-}
 
-- (NSString *)labelKeyPath
-{
-    return self.bindingConfiguration.labelKeyPath;
-}
-- (void)setLabelKeyPath:(NSString *)labelKeyPath
-{
-    self.bindingConfiguration.labelKeyPath = labelKeyPath;
-}
-
-- (NSString *)editorKeyPath
-{
-    return self.bindingConfiguration.editorKeyPath;
-}
-- (void)setEditorKeyPath:(NSString*)editorKeyPath
-{
-    self.bindingConfiguration.editorKeyPath = editorKeyPath;
-}
 
 #pragma mark - Outlets
 
@@ -99,7 +57,8 @@ static NSString* const kMessageRole = @"message";
 
     if ([editor conformsToProtocol:@protocol(AKAControlViewProtocol)])
     {
-        ((UIView<AKAControlViewProtocol>*)editor).bindingConfiguration.role = @"editor";
+        [((UIView<AKAControlViewProtocol>*)editor) aka_setControlConfigurationValue:kEditorRole
+                                                                             forKey:kAKAControlRoleKey];
     }
     // TODO: consider doing this, if configurations are applied before outlets are set:
     
@@ -116,10 +75,6 @@ static NSString* const kMessageRole = @"message";
 {
     static dispatch_once_t token;
     static AKASubviewsSpecification* instance = nil;
-// Selectors used below are instance selectors and for this reason probably
-// not defined in a class method. Ignore the warning
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wselector"
     dispatch_once(&token, ^{
         instance = [[AKASubviewsSpecification alloc] initWithDictionary:
                     @{ @"self":
@@ -146,7 +101,6 @@ static NSString* const kMessageRole = @"message";
                               },
                        }];
     });
-#pragma clang diagnostic pop
     return instance;
 }
 
@@ -210,8 +164,8 @@ static NSString* const kMessageRole = @"message";
                             // First baseline alignment if editor has baseline
                             @{ @"viewRequirements": @{ kLabelRole: @YES,
                                                        kEditorRole: @{ @"type": @[ [UITextField class],
-                                                                                 [UILabel class],
-                                                                                 [UIButton class] ] } },
+                                                                                   [UILabel class],
+                                                                                   [UIButton class] ] } },
                                @"constraints":
                                    @[ @{ @"format": @"H:|-(pl)-[label(labelWidth)]-(hs)-[editor]-(pr)-|" },
                                       @{  @"firstItem": kEditorRole,
@@ -221,11 +175,11 @@ static NSString* const kMessageRole = @"message";
                                       ]
                                },
 
-                            // Center alignment if editor may not have baseline
+                            // Use center alignment if editor may not have meaningful baseline
                             @{ @"viewRequirements": @{ kLabelRole: @YES,
                                                        kEditorRole: @{ @"notType": @[ [UITextField class],
-                                                                                    [UILabel class],
-                                                                                    [UIButton class] ] } },
+                                                                                      [UILabel class],
+                                                                                      [UIButton class] ] } },
                                @"constraints":
                                    @[ @{ @"format": @"H:|-(pl)-[label(labelWidth)]-(hs)-[editor]-(>=pr)-|" },
                                       @{ @"format": @"H:[editor]-(pr@249)-|" }, // avoid inequality ambiguities
@@ -390,11 +344,7 @@ static NSString* const kMessageRole = @"message";
                     if ([newView isKindOfClass:[UILabel class]])
                     {
                         UILabel* label = (UILabel*)newView;
-                        label.text = self.labelText;
-                    }
-                    if ([newView conformsToProtocol:@protocol(AKAControlViewProtocol)])
-                    {
-                        ((UIView<AKAControlViewProtocol>*)newView).bindingConfiguration.valueKeyPath = self.labelKeyPath;
+                        label.textBinding_aka = self.labelBinding;
                     }
                 }
             }
@@ -404,10 +354,16 @@ static NSString* const kMessageRole = @"message";
                 if ([newView conformsToProtocol:@protocol(AKAControlViewProtocol)])
                 {
                     UIView<AKAControlViewProtocol>* editor =
-                    ((UIView<AKAControlViewProtocol>*)newView);
-                    editor.bindingConfiguration.valueKeyPath = self.editorKeyPath;
-                    editor.bindingConfiguration.validatorKeyPath = self.validatorKeyPath;
-                    editor.bindingConfiguration.converterKeyPath = self.converterKeyPath;
+                        ((UIView<AKAControlViewProtocol>*)newView);
+                    NSString* controlViewBindingKey = editor.aka_controlConfiguration[kAKAControlViewBinding];
+                    if (controlViewBindingKey.length > 0)
+                    {
+                        SEL selector = NSSelectorFromString(controlViewBindingKey);
+                        if ([editor respondsToSelector:selector])
+                        {
+                            [editor setValue:self.editorBinding forKey:controlViewBindingKey];
+                        }
+                    }
                 }
             }
             else if ([kMessageRole isEqualToString:specification.name])
@@ -430,8 +386,9 @@ static NSString* const kMessageRole = @"message";
         {
             if ([newView conformsToProtocol:@protocol(AKAControlViewProtocol)])
             {
-                ((UIView<AKAControlViewProtocol>*)newView).bindingConfiguration.role =
-                    specification.name;
+                UIView<AKAControlViewProtocol>* controlView = (UIView<AKAControlViewProtocol>*)newView;
+                [controlView aka_setControlConfigurationValue:specification.name
+                                                       forKey:kAKAControlRoleKey];
             }
         }
         (newView).translatesAutoresizingMaskIntoConstraints = NO;
@@ -452,7 +409,7 @@ static NSString* const kMessageRole = @"message";
 - (BOOL)autocreateLabel:(out UIView*__autoreleasing *)createdView
 {
     BOOL result;
-    AKATextLabel* label = [[AKATextLabel alloc] initWithFrame:CGRectZero];
+    UILabel* label = [[UILabel alloc] initWithFrame:CGRectZero];
     result = label != nil;
     if (result)
     {
@@ -470,7 +427,7 @@ static NSString* const kMessageRole = @"message";
 - (BOOL)autocreateMessage:(out UIView*__autoreleasing *)createdView
 {
     BOOL result;
-    AKATextLabel* errorMessageLabel = [[AKATextLabel alloc] initWithFrame:CGRectZero];
+    UILabel* errorMessageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     result = errorMessageLabel != nil;
     if (result)
     {
@@ -482,65 +439,3 @@ static NSString* const kMessageRole = @"message";
 
 @end
 
-@implementation AKAEditorBindingConfiguration
-
-- (Class)preferredBindingType
-{
-    return [AKAEditorBinding class];
-}
-
-- (Class)preferredViewType
-{
-    return [AKAEditorControlView class];
-}
-
-- (id)initWithCoder:(NSCoder *)decoder
-{
-    if (self = [super initWithCoder:decoder])
-    {
-        self.editorKeyPath = [decoder decodeObjectForKey:@"editorKeyPath"];
-        self.labelText = [decoder decodeObjectForKey:@"labelText"];
-        self.labelKeyPath = [decoder decodeObjectForKey:@"labelKeyPath"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:self.editorKeyPath forKey:@"editorKeyPath"];
-    [coder encodeObject:self.labelText forKey:@"labelText"];
-    [coder encodeObject:self.labelKeyPath forKey:@"labelKeyPath"];
-}
-
-@end
-
-@interface AKAEditorBinding()
-
-@property(nonatomic, readonly)AKAEditorControlView* editorControlView;
-
-@end
-
-@implementation AKAEditorBinding
-
-- (AKAEditorControlView *)editorControlView
-{
-    return (AKAEditorControlView*)self.view;
-}
-
-- (BOOL)managesValidationStateForContext:(id)validationContext view:(UIView *)view
-{
-    return (self.editorControlView.editor == view);
-}
-
-- (void)setValidationState:(NSError *)error
-                   forView:(UIView *)view
-         validationContext:(id)validationContext
-{
-    UILabel* messageLabel = self.editorControlView.messageLabel;
-    if (messageLabel != nil)
-    {
-        messageLabel.text = error == nil ? @"" : error.localizedDescription;
-    }
-}
-
-@end

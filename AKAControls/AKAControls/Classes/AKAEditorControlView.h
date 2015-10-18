@@ -10,29 +10,6 @@
 
 #import "AKAThemableCompositeControlView.h"
 
-#import "AKACompositeViewBindingConfiguration.h"
-#import "AKAObsoleteViewBinding.h"
-
-@interface AKAEditorBindingConfiguration : AKACompositeViewBindingConfiguration
-
-/**
- * The key path refering to the view's editor's value
- */
-@property(nonatomic) NSString* editorKeyPath;
-
-/**
- * The text of the editor view's label. Please note that if a labelKeyPath is defined, it
- * will override the label text.
- */
-@property(nonatomic) NSString* labelText;
-
-/**
- * The key path refering to the view's label's text relative to the controls data context.
- */
-@property(nonatomic) NSString* labelKeyPath;
-
-@end
-
 
 IB_DESIGNABLE
 /**
@@ -75,36 +52,24 @@ IB_DESIGNABLE
  */
 @interface AKAEditorControlView : AKAThemableCompositeControlView
 
-#pragma mark - Configuration
-#pragma mark -
-
-@property(nonatomic, readonly) AKAEditorBindingConfiguration* bindingConfiguration;
-
-#pragma mark - Interface Builder and Binding Configuration Properties
+#pragma mark - Interface Builder Properties
 
 /**
- * The key path refering to the view's editor's value
+ * The binding expression to be forwarded to the editor view. This is only used if the editor
+ * view is automatically created or if its control view binding is undefined.
  */
-@property(nonatomic) IBInspectable NSString* editorKeyPath;
+@property(nonatomic) IBInspectable NSString* editorBinding;
 
 /**
- * The text of the editor view's label. Please note that if a labelKeyPath is defined, it
- * will override the label text.
+ * The text binding expression for the label. This is only used if the label is automatically
+ * created.
  */
-@property(nonatomic) IBInspectable NSString* labelText;
-
-/**
- * The key path refering to the view's label's text relative to the controls data context.
- */
-@property(nonatomic) IBInspectable NSString* labelKeyPath;
+@property(nonatomic) IBInspectable NSString* labelBinding;
 
 #pragma mark - Outlets
 
 @property(nonatomic, weak) IBOutlet UILabel* label;
-@property(nonatomic, weak) IBOutlet UIView* editor;
+@property(nonatomic, weak) IBOutlet UIView*  editor;
 @property(nonatomic, weak) IBOutlet UILabel* messageLabel;
 
-@end
-
-@interface AKAEditorBinding: AKAObsoleteViewBinding
 @end

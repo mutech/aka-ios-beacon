@@ -9,14 +9,11 @@
 @import Foundation;
 @import AKACommons.AKAProperty;
 
+#import "AKAControlConfiguration.h"
 #import "AKAControlDelegate.h"
 #import "AKABindingContextProtocol.h"
-#import "AKAKeyboardActivationSequence.h"
+#import "AKAControlViewBinding.h"
 
-// Obsolete: TODO: remove when new binding infrastruct is finished:
-#import "AKAControlConverterProtocol.h"
-#import "AKAControlValidatorProtocol.h"
-#import "AKAObsoleteViewBinding.h"
 
 @class AKACompositeControl;
 @protocol AKAControlConfigurationProtocol;
@@ -24,42 +21,48 @@
 typedef AKAControl* _Nullable opt_AKAControl;
 typedef AKAControl* _Nonnull  req_AKAControl;
 
+typedef NS_ENUM(NSInteger, AKAControlValidationState)
+{
+
+    AKAControlValidationStateNotValidated = 0,
+
+    AKAControlValidationStateModelValueValid =      1 << 0,
+    AKAControlValidationStateViewValueValid =       1 << 1,
+    AKAControlValidationStateValid =                (AKAControlValidationStateModelValueValid |
+                                                     AKAControlValidationStateViewValueValid),
+
+    AKAControlValidationStateModelValueInvalid =    1 << 2,
+    AKAControlValidationStateViewValueInvalid =     1 << 3,
+
+    AKAControlValidationStateModelValueDirty =      1 << 4,
+    AKAControlValidationStateViewValueDirty =       1 << 5
+};
+
 
 @interface AKAControl: NSObject
 
 #pragma mark - Configuration
 
-@property(nonatomic, weak, nullable) id<AKAControlDelegate>                 delegate;
-@property(readonly, nonnull) NSSet*                                         tags;
-
-#pragma mark - Control Hierarchy
-
 @property(nonatomic, readonly, weak, nullable)AKACompositeControl*          owner;
+
+@property(nonatomic, readonly, weak, nullable)UIView*                       view;
+
+@property(nonatomic, readonly, nullable) NSString*                          name;
+
+@property(nonatomic, readonly, nullable) NSSet<NSString*>*                  tags;
+
+@property(nonatomic, readonly, nullable) NSString*                          role;
 
 #pragma mark - Validation
 
+- (void)setValidationState:(AKAControlValidationState)validationState
+                 withError:(opt_NSError)error;
+
+@property(nonatomic, readonly) AKAControlValidationState                    validationState;
+
+@property(nonatomic, readonly, nullable) NSError*                           validationError;
+
 @property(nonatomic, readonly) BOOL                                         isValid;
-
-#pragma mark - Activation
-
-@property(nonatomic, readonly) BOOL                                         isActive;
-
-// TODO: Make private:
-
-#pragma mark - Bindings Storage
-
-@property(nonatomic, nonnull) NSMutableArray*                               bindings;
-
-#pragma mark - Value Access
-
-@property(nonatomic, nullable) id                                           modelValue;
-
-// TODO: Remove:
-
-#pragma mark - View Binding
-
-@property(nonatomic, readonly, nullable) AKAObsoleteViewBinding *           viewBinding;
-@property(nonatomic, readonly, nullable) UIView*                            view;
 
 @end
 
@@ -69,123 +72,20 @@ typedef AKAControl* _Nonnull  req_AKAControl;
 
 
 #import "AKABinding.h"
-@interface AKAControl(BindingsOwner)<AKABindingDelegate>
+@interface AKAControl(BindingsOwner)
 
 - (NSUInteger)                     addBindingsForView:(req_UIView)view;
 
 - (BOOL)                            addBindingForView:(req_UIView)view
-                              bindingPropertyWithName:(req_NSString)propertyName;
+                                             property:(req_SEL)property
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (BOOL)                                   addBinding:(req_AKABinding)binding;
 
 - (BOOL)                                removeBinding:(req_AKABinding)binding;
 
 @end
 
-
-@interface AKAControl(KeyboardActivationSequence)<AKAKeyboardActivationSequenceItemProtocol>
-@end
-
-
-@interface AKAControl(Convenience)
-
-@end
-
-
-@interface AKAControl(Activation)
-
-/**
- * Indicates whether the control supports the notion of an active state. If the result
- * is NO, isActive will always be false, shouldActivate and shouldDeactivate will always
- * return NO, activate and deactivate will have no effect and return NO and willActivate,
- * didActivate, willDeactivate and didDeactivate will never be called (internally).
- *
- * The control uses the specific binding to determine the result.
- *
- * @see [AKAControlViewBinding controlViewCanActivate]
- */
-@property(nonatomic, readonly) BOOL canActivate;
-
-/**
- * Determines whether the control should be activated. The default implementation calls
- * the shouldControlActivate: method of the delegate an then (if the result is positive) that of
- * the controls owner.
- *
- * @note There is no guarantee, that shouldActivate is called  before a control is activated.
- * Code calling shouldActivate is however expected to honor the result.
- *
- * @see [AKAControlDelegate shouldControlActivate:]
- */
-@property(nonatomic, readonly) BOOL shouldActivate;
-
-/**
- * Determines whether the control should be deactivated. The default implementation calls
- * the shouldControlDeactivate: method of the delegate an then (if the result is positive) that of
- * the controls owner.
- *
- * @note There is no guarantee, that shouldDeactivate is called  before a control is deactivated.
- * Code calling shouldDeactivate is however expected to honor the result.
- *
- * @see [AKAControlDelegate shouldControlDeactivate:]
- */
-@property(nonatomic, readonly) BOOL shouldDeactivate;
-
-/**
- * Activates the control. The default implementation calls the binding to activate its
- * control view which, if successful, will send the control willActivate and didActivate
- * messages.
- *
- * @note activate does not call shouldActivate, it's the responsibility of the caller
- * to do that.
- *
- * @return YES if the control has been activated or was already active
- */
-- (BOOL)activate;
-
-/**
- * Deactivates the control. The default implementation calls the binding to deactivate
- * its control view which, if successful, will send the control willDeactivate and
- * didDeactivate messages.
- *
- * @return YES if the control has been deactivated or was already inactive.
- */
-- (BOOL)deactivate;
-
-/**
- * Called by the binding when the associated view will be activated.
- * The default implementation calls the controlWillActivate: method of the delegate
- * and the owner control.
- *
- * @note There is no guarantee that willActivate is called
- */
-- (void)willActivate;
-
-/**
- * Called by the binding when the associated view has been activated.
- * The default implementation calls the controlDidActivate method of the delegate
- * and the owner control.
- */
-- (void)didActivate;
-
-/**
- * Called by the binding when the associated view will be deactivated.
- * The default implementation calls the controlWillDeactivate: method of the delegate
- * and the owner control.
- *
- * @note There is no guarantee that willDeactivate is called
- */
-- (void)willDeactivate;
-
-/**
- * Called by the binding when the associated view has been deactivated.
- * The default implementation calls the controlDidDeactivate method of the delegate
- * and the owner control.
- */
-- (void)didDeactivate;
-
-@end
-
-
-@interface AKAControl(ObsoleteViewBindingDelegate)
-@end
 
 @interface AKAControl(ObsoleteThemeSupport)
 
@@ -221,8 +121,6 @@ typedef AKAControl* _Nonnull  req_AKAControl;
 @property(nonatomic, readonly) BOOL shouldAutoActivate;
 
 @property(nonatomic, readonly) BOOL participatesInKeyboardActivationSequence;
-
-@property(nonatomic, readonly, nullable) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 #pragma mark - Diagnostics
 

@@ -8,7 +8,7 @@
 
 #import "AKAFormViewController.h"
 
-#import "AKAControl_Protected.h" // TODO: should not be necessary to import this!
+#import "AKAControl.h"
 #import "AKAEditorControlView.h"
 
 @interface AKAFormViewController()
@@ -53,8 +53,7 @@
 - (void)                             initializeFormControl
 {
     _formControl = [[AKAFormControl alloc] initWithDataContext:self
-                                                 configuration:nil];
-    self.formControl.delegate = self;
+                                                      delegate:self];
 
     [self initializeFormControlTheme];
     [self initializeFormControlMembers];
@@ -66,7 +65,7 @@
     [self.formControl setThemeName:@"default" forClass:[AKAEditorControlView class]];
 }
 
-- (void)                       initializeFormControlMembers
+- (void)                      initializeFormControlMembers
 {
     [self.formControl addControlsForControlViewsInViewHierarchy:self.view];
 }
@@ -83,16 +82,23 @@
 
 #pragma mark - Form Control Delegate
 
-- (void)                                           control:(AKAControl*)control
-                                                   binding:(AKABinding*)binding
-                                     responderWillActivate:(UIResponder*)responder
+- (void)                                           control:(req_AKAControl)control
+                                                   binding:(req_AKAKeyboardControlViewBinding)binding
+                                     responderWillActivate:(req_UIResponder)responder
 {
     self.activeResponder = responder;
 }
 
-- (void)                                           control:(AKAControl*)control
-                                                   binding:(AKABinding*)binding
-                                    responderDidDeactivate:(UIResponder*)responder
+- (void)                                           control:(req_AKAControl)control
+                                                   binding:(req_AKAKeyboardControlViewBinding)binding
+                                      responderDidActivate:(req_UIResponder)responder
+{
+    [self scrollViewToVisible:responder animated:YES];
+}
+
+- (void)                                           control:(req_AKAControl)control
+                                                   binding:(req_AKAKeyboardControlViewBinding)binding
+                                    responderDidDeactivate:(req_UIResponder)responder
 {
     self.activeResponder = nil;
 }
@@ -206,14 +212,19 @@
 
     self.aka_keyboardAdjustment = newHeight;
 
-    if ([self.activeResponder isKindOfClass:[UIView class]])
+    [self scrollViewToVisible:self.activeResponder animated:NO];
+}
+
+- (void)scrollViewToVisible:(UIResponder*)activeResponder animated:(BOOL)animated
+{
+    if ([activeResponder isKindOfClass:[UIView class]])
     {
-        UIView* firstResponder = (UIView*)self.activeResponder;
+        UIView* firstResponder = (UIView*)activeResponder;
 
         CGRect frame = firstResponder.frame;
         CGRect friendlyFrame = CGRectMake(frame.origin.x, frame.origin.y - 10.0,
                                           frame.size.width, frame.size.height + 20.0);
-        [self.scrollView scrollRectToVisible:friendlyFrame animated:NO];
+        [self.scrollView scrollRectToVisible:friendlyFrame animated:animated];
     }
 }
 

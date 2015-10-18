@@ -9,6 +9,7 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
+@class AKAKeyboardActivationSequence;
 
 #pragma mark - AKAKeyboardActivationSequenceItemProtocol
 #pragma mark -
@@ -17,13 +18,17 @@
 
 #pragma mark - Configuration
 
-- (BOOL) shouldParticipateInKeyboardActivationSequence;
+@property(nonatomic, readonly)       BOOL                           shouldParticipateInKeyboardActivationSequence;
 
-@property(nonatomic, readonly, weak) opt_UIResponder   responderForKeyboardActivationSequence;
+@property(nonatomic, readonly)       BOOL                           participatesInKeyboardActivationSequence;
+
+@property(nonatomic, weak, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+
+@property(nonatomic, readonly, weak) opt_UIResponder                responderForKeyboardActivationSequence;
 
 #pragma mark - Activation (First Responder)
 
-@property(nonatomic, readonly)       BOOL              isResponderActive;
+@property(nonatomic, readonly)       BOOL                           isResponderActive;
 
 - (BOOL)                             activateResponder;
 

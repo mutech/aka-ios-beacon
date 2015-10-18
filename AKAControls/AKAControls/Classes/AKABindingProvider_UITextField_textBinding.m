@@ -51,7 +51,8 @@
                          },
                   @"KBActivationSequence":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
                          }
                   }
            };

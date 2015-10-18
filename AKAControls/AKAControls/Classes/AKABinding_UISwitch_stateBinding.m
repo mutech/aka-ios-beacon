@@ -16,7 +16,7 @@
 
 #pragma mark - Convenience
 
-@property(nonatomic, readonly) UISwitch*               uiSwitch;
+@property(nonatomic, readonly) UISwitch*          uiSwitch;
 
 @end
 
@@ -64,7 +64,7 @@
             ^id (id target)
             {
                 AKABinding_UISwitch_stateBinding* binding = target;
-                return @(binding.uiSwitch.on);
+                return [binding canonicalBool:binding.uiSwitch.on];
             }
                                       setter:
             ^(id target, id value)
@@ -115,22 +115,23 @@
 
 #pragma mark - Change Observation
 
-- (NSNumber*)                             canonicalBoolean:(NSNumber*)value
+- (NSNumber*)                                canonicalBool:(BOOL)value
 {
     NSNumber* kYes = (__bridge NSNumber*)kCFBooleanTrue;
-    NSNumber* kNo  = (__bridge NSNumber*)kCFBooleanTrue;
+    NSNumber* kNo  = (__bridge NSNumber*)kCFBooleanFalse;
 
+    return value ? kYes : kNo;
+}
+
+- (NSNumber*)                             canonicalBoolean:(NSNumber*)value
+{
     if (value == nil || value == (id)[NSNull null])
     {
         return nil;
     }
-    else if (value.boolValue)
-    {
-        return kYes;
-    }
     else
     {
-        return kNo;
+        return [self canonicalBool:value.boolValue];
     }
 }
 
@@ -138,15 +139,19 @@
 {
     (void)sender; // Not used
 
-    BOOL newValue = self.uiSwitch.on;
-    BOOL oldValue = !newValue;
+    NSNumber* newValue = [self canonicalBool:self.uiSwitch.on];
+    NSNumber* oldValue = [self canonicalBool:!newValue];
 
-    [self targetValueDidChangeFromOldValue:@(oldValue) toNewValue:@(newValue)];
-    newValue = self.uiSwitch.on; // the delegate may change the value
+    // Process change
+    [self targetValueDidChangeFromOldValue:oldValue
+                                toNewValue:newValue];
 
-    if (newValue != oldValue)
+    // Trigger change notifications for bindingTarget property (for the case that someone
+    // created a depedendant property based on the binding target).
+    newValue = [self canonicalBool:self.uiSwitch.on]; // the delegate may change the value
+    if (newValue.boolValue != oldValue.boolValue)
     {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:@(oldValue) to:@(newValue)];
+        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
     }
 }
 

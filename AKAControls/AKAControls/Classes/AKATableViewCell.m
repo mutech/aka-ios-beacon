@@ -8,6 +8,13 @@
 
 #import "AKATableViewCell.h"
 #import "AKATableViewCellCompositeControl.h"
+#import "AKAControlConfiguration.h"
+
+@interface AKATableViewCell()
+
+@property(nonatomic, readonly) AKAMutableControlConfiguration* controlConfiguration;
+
+@end
 
 @implementation AKATableViewCell
 
@@ -15,7 +22,7 @@
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+        _controlConfiguration = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
     }
     return self;
 }
@@ -23,7 +30,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+    [aCoder encodeObject:self.controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
 }
 
 
@@ -41,109 +48,33 @@
 
 #pragma mark - Binding Configuration
 
-@synthesize bindingConfiguration = _bindingConfiguration;
+@synthesize controlConfiguration = _controlConfiguration;
 
-- (AKATableViewCellBindingConfiguration *)newBindingConfiguration
+- (AKAMutableControlConfiguration *)controlConfiguration
 {
-    return AKATableViewCellBindingConfiguration.new;
-}
-
-- (AKAObsoleteViewBindingConfiguration *)bindingConfiguration
-{
-    if (_bindingConfiguration == nil)
+    if (_controlConfiguration == nil)
     {
-        _bindingConfiguration = [self newBindingConfiguration];
+        _controlConfiguration = [AKAMutableControlConfiguration new];
+        _controlConfiguration[kAKAControlTypeKey] = [AKATableViewCellCompositeControl class];
     }
-    return _bindingConfiguration;
+    return _controlConfiguration;
 }
 
-#pragma mark - Interface Builder Properties
-/// @name Interface Builder Properties
-
-- (NSString *)controlName
+- (AKAControlConfiguration *)aka_controlConfiguration
 {
-    return self.bindingConfiguration.controlName;
-}
-- (void)setControlName:(NSString *)controlName
-{
-    self.bindingConfiguration.controlName = controlName;
+    return self.controlConfiguration;
 }
 
-- (NSString *)controlTags
+- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString *)key
 {
-    return self.bindingConfiguration.controlTags;
-}
--(void)setControlTags:(NSString *)controlTags
-{
-    self.bindingConfiguration.controlTags = controlTags;
-}
-
-- (NSString *)role
-{
-    return self.bindingConfiguration.role;
-}
-- (void)setRole:(NSString *)role
-{
-    self.bindingConfiguration.role = role;
+    if (value == nil)
+    {
+        [self.controlConfiguration removeObjectForKey:key];
+    }
+    else
+    {
+        self.controlConfiguration[key] = value;
+    }
 }
 
-- (NSString *)valueKeyPath
-{
-    return self.bindingConfiguration.valueKeyPath;
-}
-- (void)setValueKeyPath:(NSString *)valueKeyPath
-{
-    self.bindingConfiguration.valueKeyPath = valueKeyPath;
-}
-
-- (NSString *)converterKeyPath
-{
-    return self.bindingConfiguration.converterKeyPath;
-}
-- (void)setConverterKeyPath:(NSString *)converterKeyPath
-{
-    self.bindingConfiguration.converterKeyPath = converterKeyPath;
-}
-
-- (NSString *)validatorKeyPath
-{
-    return self.bindingConfiguration.validatorKeyPath;
-}
-- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
-{
-    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
-}
-
-- (BOOL)readOnly
-{
-    return self.bindingConfiguration.readOnly;
-}
-- (void)setReadOnly:(BOOL)readOnly
-{
-    self.bindingConfiguration.readOnly = readOnly;
-    self.userInteractionEnabled = !readOnly;
-}
-
-@end
-
-@implementation AKATableViewCellBindingConfiguration
-
-- (Class)preferredViewType
-{
-    return [AKATableViewCell class];
-}
-
-- (Class)preferredBindingType
-{
-    return [AKATableViewCellBinding class];
-}
-
-- (Class)preferredControlType
-{
-    return [AKATableViewCellCompositeControl class];
-}
-
-@end
-
-@implementation AKATableViewCellBinding
 @end

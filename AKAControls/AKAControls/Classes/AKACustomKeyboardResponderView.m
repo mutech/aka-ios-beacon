@@ -7,13 +7,17 @@
 //
 
 @import UIKit;
+@import AKACommons.AKAErrors;
 
 #import "AKACustomKeyboardResponderView.h"
+#import "AKAControlConfiguration.h"
+#import "AKAKeyboardControl.h"
 
 @interface AKACustomKeyboardResponderView ()
 
 @property(nonatomic, strong) IBOutlet UITapGestureRecognizer* currentTapToOpenGestureRecognizer;
 @property(nonatomic) BOOL highlight;
+@property(nonatomic, readonly) AKAMutableControlConfiguration* controlConfiguration;
 
 @end
 
@@ -92,6 +96,35 @@
 
     _tapToOpenGestureRecognizer = tapToOpenGestureRecognizer;
     self.tapToOpen = activate;
+}
+
+#pragma mark - Control Binding Configuration
+
+@synthesize controlConfiguration = _controlConfiguration;
+- (AKAMutableControlConfiguration*)controlConfiguration
+{
+    if (_controlConfiguration == nil)
+    {
+        _controlConfiguration = [AKAMutableControlConfiguration new];
+        _controlConfiguration[kAKAControlTypeKey] = [AKAKeyboardControl class];
+        [self setupControlConfiguration:_controlConfiguration];
+    }
+    return _controlConfiguration;
+}
+
+- (void)setupControlConfiguration:(AKAMutableControlConfiguration *)controlConfiguration
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (AKAControlConfiguration *)aka_controlConfiguration
+{
+    return self.controlConfiguration;
+}
+
+- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString *)key
+{
+    self.controlConfiguration[key] = value;
 }
 
 #pragma mark - UIResponder redefinitions
@@ -287,25 +320,25 @@
     {
         CALayer* layer = self.layer;
         [layer setMasksToBounds:YES];
-        [layer setCornerRadius:5.0];
+        //[layer setCornerRadius:5.0];
 
         [UIView animateWithDuration:.075
                               delay:0
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:
          ^{
-             [layer setBorderWidth:2.0];
-             [layer setBorderColor:[self.tintColor CGColor]];
+             //[layer setBorderWidth:2.0];
+             //[layer setBorderColor:[self.tintColor CGColor]];
              [layer setBackgroundColor:[[self.tintColor
                                          colorWithAlphaComponent:.25] CGColor]];
-             CGFloat vf = 1.0 + (6.0 / self.frame.size.height);
-             CGFloat hf = 1.0 + (6.0 / self.frame.size.width);
-             CGAffineTransform transform = CGAffineTransformMakeScale(1.0 / hf,
-                                                                      1.0 / vf);
-             for (UIView* view in self.subviews)
-             {
-                 view.transform = transform;
-             }
+             //CGFloat vf = 1.0 + (6.0 / self.frame.size.height);
+             //CGFloat hf = 1.0 + (6.0 / self.frame.size.width);
+             //CGAffineTransform transform = CGAffineTransformMakeScale(1.0 / hf,
+             //                                                         1.0 / vf);
+             //for (UIView* view in self.subviews)
+             //{
+             //    view.transform = transform;
+             //}
          }
                          completion:
          ^(BOOL finished)
@@ -315,7 +348,7 @@
                                  options:UIViewAnimationOptionCurveEaseOut
                               animations:
               ^{
-                  [layer setBorderWidth:1.5];
+                  //[layer setBorderWidth:1.5];
                   [layer setBackgroundColor:[[self.tintColor
                                               colorWithAlphaComponent:.16] CGColor]];              }
                               completion:
@@ -334,15 +367,15 @@
                             options:UIViewAnimationOptionCurveEaseIn
                          animations:
          ^{
-             [layer setCornerRadius:0.0];
-             [layer setBorderWidth:0.0];
-             [layer setBorderColor:[[UIColor clearColor] CGColor]];
+             //[layer setCornerRadius:0.0];
+             //[layer setBorderWidth:0.0];
+             //[layer setBorderColor:[[UIColor clearColor] CGColor]];
              [layer setBackgroundColor:[[UIColor clearColor] CGColor]];
 
-             for (UIView* view in self.subviews)
-             {
-                 view.transform = CGAffineTransformIdentity;
-             }
+             //for (UIView* view in self.subviews)
+             //{
+             //    view.transform = CGAffineTransformIdentity;
+             //}
          } completion:^(BOOL finished) { }];
     }
 }

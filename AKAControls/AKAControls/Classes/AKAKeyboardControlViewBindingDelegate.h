@@ -14,11 +14,15 @@
 
 @protocol AKAKeyboardControlViewBindingDelegate<AKAControlViewBindingDelegate>
 
-#pragma mark - AKAKeyboardActivationSequence Control
+#pragma mark - Keyboard Navigation Requests
 
 @optional
 - (BOOL)                                            binding:(req_AKAKeyboardControlViewBinding)binding
                              responderRequestedActivateNext:(req_UIResponder)responder;
+
+@optional
+- (BOOL)                                            binding:(req_AKAKeyboardControlViewBinding)binding
+                                 responderRequestedGoOrDone:(req_UIResponder)responder;
 
 #pragma mark - UIResponder Events
 

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <AKAControls/AKATheme.h>
-#import <AKAControls/AKATextLabel.h>
+@import AKAControls;
+//#import <AKAControls/AKATheme.h>
+//#import <AKAControls/AKATextLabel.h>
 
 @interface AKAThemeTests : XCTestCase
 
@@ -43,7 +44,7 @@
 
     NSDictionary* spec = @{ @"view": @"label",
                             @"requirements": @{ @"type": @[[UILabel class], [UITextField class]],
-                                                @"notType": [AKATextLabel class] },
+                                                @"notType": [UISwitch class] },
                             @"properties": @{ @"text": @"Hello there" },
                             };
     AKAViewCustomization* customization = [[AKAViewCustomization alloc] initWithDictionary:spec];
@@ -72,12 +73,5 @@
 
 }
 
-- (void)testPerformanceExample
-{
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
 
 @end

@@ -6,18 +6,20 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 @import AKACommons.AKALog;
 @import AKACommons.AKAReference;
+
 #import "AKAKeyboardActivationSequence.h"
 #import "AKAKeyboardActivationSequenceAccessoryView.h"
+#import "AKAKeyboardActivationSequenceItemProtocol_Internal.h"
 
 #pragma mark - AKAKeyboardActivationSequence - Private Interface
 #pragma mark -
 
 @interface AKAKeyboardActivationSequence ()
 
-@property(nonatomic, readonly)  NSMutableArray<AKAWeakReference*>* items;
+@property(nonatomic, readonly)  NSMutableArray<AKAWeakReference<AKAKeyboardActivationSequenceItem>*>* items;
 @property(nonatomic)            NSUInteger activeItemIndex;
 @property(nonatomic, nullable)  UIResponder*  activeResponder;
 
@@ -112,30 +114,71 @@
     return result;
 }
 
-#pragma mark Updating items
+#pragma mark Updating (adding and removing) items
 
 - (void)                                  setNeedsUpdate
 {
     _items = nil;
 }
 
+- (void)addItem:(AKAKeyboardActivationSequenceItem)item
+{
+    [self registerItem:item];
+    [_items addObject:[AKAWeakReference weakReferenceTo:item]];
+}
+
+- (void)removeAllItems
+{
+    [_items enumerateObjectsUsingBlock:^(AKAWeakReference<AKAKeyboardActivationSequenceItem>*_Nonnull reference,
+                                         NSUInteger idx,
+                                         BOOL * _Nonnull stop)
+     {
+         [self unregisterItem:reference.value];
+     }];
+    [_items removeAllObjects];
+
+}
+
+- (void)registerItem:(AKAKeyboardActivationSequenceItem)item
+{
+    if ([item conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol_Internal)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol_Internal> itemInternal = (id)item;
+        [itemInternal setKeyboardActivationSequence:self];
+    }
+}
+
+- (void)unregisterItem:(AKAKeyboardActivationSequenceItem)item
+{
+    if ([item conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol_Internal)])
+    {
+        id<AKAKeyboardActivationSequenceItemProtocol_Internal> itemInternal = (id)item;
+        [itemInternal setKeyboardActivationSequence:nil];
+    }
+}
+
 - (void)                                          update
 {
-    _items = [NSMutableArray new];
+    if (_items == nil)
+    {
+        _items = [NSMutableArray new];
+    }
+    else
+    {
+        [self removeAllItems];
+    }
 
-    [self.delegate
-     enumerateItemsInKeyboardActivationSequenceUsingBlock:
-     ^(req_AKAKeyboardActivationSequenceItem item,
-       NSUInteger idx,
-       outreq_BOOL stop)
+    [self.delegate enumerateItemsInKeyboardActivationSequenceUsingBlock:
+     ^(req_AKAKeyboardActivationSequenceItem    item,
+       NSUInteger                               idx,
+       outreq_BOOL                              stop)
      {
          (void)stop; // not needed
          UIResponder* responder = [item responderForKeyboardActivationSequence];
 
          if (responder != nil)
          {
-             [self.items
-              addObject:[AKAWeakReference weakReferenceTo:item]];
+             [self addItem:item];
              UIResponder* activeResponder = self.activeResponder;
 
              if (activeResponder != nil || self.activeItemIndex != NSNotFound)

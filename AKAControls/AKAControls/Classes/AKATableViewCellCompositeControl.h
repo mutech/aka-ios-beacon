@@ -8,10 +8,11 @@
 
 #import "AKACompositeControl.h"
 
+
 @interface AKATableViewCellCompositeControl : AKACompositeControl
 
-@property(nonatomic, weak) UITableView* tableView;
-@property(nonatomic, weak) id<UITableViewDataSource> dataSource;
-@property(nonatomic) NSIndexPath* indexPath;
+@property(nonatomic, weak) UITableView*                 tableView;
+@property(nonatomic, weak) id<UITableViewDataSource>    dataSource;
+@property(nonatomic) NSIndexPath*                       indexPath;
 
 @end

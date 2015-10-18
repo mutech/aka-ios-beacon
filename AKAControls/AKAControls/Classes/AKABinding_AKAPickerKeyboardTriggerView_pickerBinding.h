@@ -6,13 +6,13 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAKeyboardControlViewBinding.h"
+#import "AKAKeyboardBinding_AKACustomKeyboardResponderView.h"
 
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Interface
 #pragma mark -
 
-@interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding: AKAKeyboardControlViewBinding
+@interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding: AKAKeyboardBinding_AKACustomKeyboardResponderView
 
 @property(nonatomic, readonly) AKABindingExpression*                choicesBindingExpression;
 @property(nonatomic, readonly) AKABindingExpression*                titleBindingExpression;

@@ -8,6 +8,7 @@
 
 #import "AKATableViewCell.h"
 
+
 IB_DESIGNABLE
 /**
  * Acts as a placeholder for table view cells originating from an additional
@@ -25,33 +26,7 @@ IB_DESIGNABLE
  */
 @interface AKADynamicPlaceholderTableViewCell : AKATableViewCell
 
-/**
- * Key path refering to a table view data source providing the dynamic cells.
- */
-@property(nonatomic) IBInspectable NSString* dataSourceKeyPath;
-
-/**
- * Key path refering to a table view delegate to use for dynamic cells.
- */
-@property(nonatomic) IBInspectable NSString* delegateKeyPath;
-
-/**
- * The index of the source section from which to include rows. If not
- * specified, the first section will be used.
- */
-@property(nonatomic) IBInspectable NSUInteger sectionIndex;
-
-/**
- * The index of the first row to include. If not specified, the section's
- * first row will be used.
- */
-@property(nonatomic) IBInspectable NSUInteger rowIndex;
-
-/**
- * The number of rows to include, if 0, all rows from the specified rowIndex
- * until the last row in the specified section will be included.
- */
-@property(nonatomic) IBInspectable NSUInteger numberOfRows;
+@property(nonatomic) IBInspectable NSString* placeholderBinding;
 
 #pragma mark - Content Rendering
 
@@ -60,38 +35,18 @@ IB_DESIGNABLE
 @end
 
 
-@interface AKADynamicPlaceholderTableViewCellBinding: AKATableViewCellBinding
-@end
+#import "AKABinding.h"
 
+@interface AKABinding_AKADynamicPlaceholderTableViewCell_dataSourceBinding: AKABinding
 
-@interface AKADynamicPlaceholderTableViewCellBindingConfiguraton: AKATableViewCellBindingConfiguration
+@property(nonatomic) id<UITableViewDataSource>  placeholderDataSource;
 
-/**
- * Key path refering to a table view data source providing the dynamic cells.
- */
-@property(nonatomic) NSString* dataSourceKeyPath;
+@property(nonatomic) id<UITableViewDelegate>    placeholderDelegate;
 
-/**
- * Key path refering to a table view delegate to use for dynamic cells.
- */
-@property(nonatomic) NSString* delegateKeyPath;
+@property(nonatomic) NSNumber*                  dataSourceSectionIndex;
 
-/**
- * The index of the source section from which to include rows. Defaults to the
- * first section (index 0).
- */
-@property(nonatomic) NSUInteger sectionIndex;
+@property(nonatomic) NSNumber*                  dataSourceRowIndex;
 
-/**
- * The index of the first row to include. Defaults to the first row (index 0).
- */
-@property(nonatomic) NSUInteger rowIndex;
-
-/**
- * The number of rows to include, if 0, all rows from the specified rowIndex
- * until the last row in the specified section will be included. Defaults to
- * all rows (count 0)
- */
-@property(nonatomic) NSUInteger numberOfRows;
+@property(nonatomic) NSNumber*                  dataSourceNumberOfRows;
 
 @end

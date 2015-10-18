@@ -28,9 +28,14 @@
 @interface UIView(AKABindingSupport)
 
 /**
- * The names of all properties of this view which define a binding expression.
+ * Calls the specified block for each binding property of this view, which has a defined binding
+ * expression.
+ *
+ * @param block the block to call.
  */
-@property(nonatomic, readonly, nullable) NSArray<NSString*>* aka_definedBindingPropertyNames;
+- (void)aka_enumerateBindingExpressionsWithBlock:(void(^_Nonnull)(req_SEL                  property,
+                                                                  req_AKABindingExpression expression,
+                                                                  outreq_BOOL              stop))block;
 
 /**
  * The binding expression associated with the specified property or @c nil if the property
@@ -42,12 +47,14 @@
  */
 - (opt_AKABindingExpression)aka_bindingExpressionForProperty:(req_SEL)selector;
 
-- (opt_AKABindingExpression)aka_bindingExpressionForPropertyNamed:(req_NSString)key;
-
-- (void)aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                     forProperty:(req_SEL)selector;
-
-- (void)aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                forPropertyNamed:(req_NSString)key;
+/**
+ * Associates the specified binding expression with the specified property. If the binding expression
+ * is @c nil, a previously associated binding expression is removed.
+ *
+ * @param bindingExpression the binding expression or @c nil
+ * @param selector the selector identifying the properties getter.
+ */
+- (void)                            aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
+                                                 forProperty:(req_SEL)selector;
 
 @end

@@ -12,6 +12,7 @@
 #pragma mark - AKABindingProvider_UISwitch_stateBinding
 #pragma mark -
 
+
 @implementation AKABindingProvider_UISwitch_stateBinding
 
 #pragma mark - Initialization

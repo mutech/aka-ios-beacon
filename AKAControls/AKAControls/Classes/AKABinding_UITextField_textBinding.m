@@ -186,7 +186,7 @@
         switch (textField.returnKeyType)
         {
             case UIReturnKeyNext:
-                if ([self shouldDeactivate])
+                if ([self shouldDeactivate] && [self.delegate respondsToSelector:@selector(binding:responderRequestedActivateNext:)])
                 {
                     if (![self.delegate binding:self responderRequestedActivateNext:self.textField])
                     {
@@ -197,7 +197,15 @@
 
             case UIReturnKeyGo:
             case UIReturnKeyDone:
-                // TODO: check if committing the form is appropriate for these return key styles.
+                if ([self shouldDeactivate] && [self.delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])
+                {
+                    if (![self.delegate binding:self responderRequestedGoOrDone:self.textField])
+                    {
+                        [self deactivateResponder];
+                    }
+                }
+                break;
+
             default:
                 // This will call the corresponding should/did end editing handlers
                 [self deactivateResponder];

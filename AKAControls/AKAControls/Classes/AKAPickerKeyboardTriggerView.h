@@ -8,11 +8,13 @@
 
 @import UIKit;
 
+#import "AKAControlViewProtocol.h"
 #import "AKACustomKeyboardResponderView.h"
 
-IB_DESIGNABLE
-@interface AKAPickerKeyboardTriggerView : AKACustomKeyboardResponderView
 
-@property(nonatomic) IBInspectable NSString* pickerBinding;
+IB_DESIGNABLE
+@interface AKAPickerKeyboardTriggerView: AKACustomKeyboardResponderView
+
+@property(nonatomic) IBInspectable NSString* pickerBinding_aka;
 
 @end

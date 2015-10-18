@@ -7,18 +7,26 @@
 //
 
 #import "AKACompositeControlView.h"
-#import "AKACompositeViewBindingConfiguration.h"
+
+#import "AKAControlConfiguration.h"
+#import "AKACompositeControl.h"
+
+@interface AKACompositeControlView()
+
+@property(nonatomic, readonly) AKAMutableControlConfiguration* controlConfiguration;
+
+@end
+
 
 @implementation AKACompositeControlView
 
 #pragma mark - Initialization
-#pragma mark -
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder])
     {
-        _bindingConfiguration = [aDecoder decodeObjectForKey:@"bindingConfiguration"];
+        _controlConfiguration = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
         [self setupDefaultValues];
     }
     return self;
@@ -27,7 +35,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.bindingConfiguration forKey:@"bindingConfiguration"];
+    [aCoder encodeObject:_controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
 }
 
 - (void)setupDefaultValues
@@ -35,89 +43,63 @@
 }
 
 #pragma mark - Configuration
-#pragma mark -
 
-#pragma mark - Binding Configuration
-
-@synthesize bindingConfiguration = _bindingConfiguration;
-- (AKACompositeViewBindingConfiguration*)bindingConfiguration
+- (AKAControlConfiguration*)aka_controlConfiguration
 {
-    if (_bindingConfiguration == nil)
-    {
-        _bindingConfiguration = [self createBindingConfiguration];
-    }
-    return _bindingConfiguration;
+    return self.controlConfiguration;
 }
 
-- (AKACompositeViewBindingConfiguration*)createBindingConfiguration
+@synthesize controlConfiguration = _controlConfiguration;
+- (AKAMutableControlConfiguration*)controlConfiguration
 {
-    return AKACompositeViewBindingConfiguration.new;
+    if (_controlConfiguration == nil)
+    {
+        _controlConfiguration = [AKAMutableControlConfiguration new];
+        _controlConfiguration[kAKAControlTypeKey] = [AKACompositeControl class];
+    }
+    return _controlConfiguration;
+}
+
+- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString *)key
+{
+    AKAMutableControlConfiguration* mutableConfiguration = (AKAMutableControlConfiguration*)self.aka_controlConfiguration;
+    if (value == nil)
+    {
+        [mutableConfiguration removeObjectForKey:key];
+    }
+    else
+    {
+        mutableConfiguration[key] = value;
+    }
 }
 
 #pragma mark - Interface Builder Properties
-#pragma mark -
 
 - (NSString *)controlName
 {
-    return self.bindingConfiguration.controlName;
+    return self.controlConfiguration[kAKAControlNameKey];
 }
 - (void)setControlName:(NSString *)controlName
 {
-    self.bindingConfiguration.controlName = controlName;
+    [self aka_setControlConfigurationValue:controlName forKey:kAKAControlNameKey];
 }
 
 - (NSString *)controlTags
 {
-    return self.bindingConfiguration.controlTags;
+    return self.controlConfiguration[kAKAControlTagsKey];
 }
 - (void)setControlTags:(NSString *)controlTags
 {
-    self.bindingConfiguration.controlTags = controlTags;
+    [self aka_setControlConfigurationValue:controlTags forKey:kAKAControlTagsKey];
 }
 
-- (NSString *)role
+- (NSString *)controlRole
 {
-    return self.bindingConfiguration.role;
+    return self.controlConfiguration[kAKAControlRoleKey];
 }
-- (void)setRole:(NSString *)role
+- (void)setControlRole:(NSString *)role
 {
-    self.bindingConfiguration.role = role;
-}
-
-- (NSString *)valueKeyPath
-{
-    return self.bindingConfiguration.valueKeyPath;
-}
-- (void)setValueKeyPath:(NSString *)valueKeyPath
-{
-    self.bindingConfiguration.valueKeyPath = valueKeyPath;
-}
-
-- (NSString *)converterKeyPath
-{
-    return self.bindingConfiguration.converterKeyPath;
-}
-- (void)setConverterKeyPath:(NSString *)converterKeyPath
-{
-    self.bindingConfiguration.converterKeyPath = converterKeyPath;
-}
-
-- (NSString *)validatorKeyPath
-{
-    return self.bindingConfiguration.validatorKeyPath;
-}
-- (void)setValidatorKeyPath:(NSString *)validatorKeyPath
-{
-    self.bindingConfiguration.validatorKeyPath = validatorKeyPath;
-}
-
-- (BOOL)readOnly
-{
-    return self.bindingConfiguration.readOnly;
-}
-- (void)setReadOnly:(BOOL)readOnly
-{
-    self.bindingConfiguration.readOnly = readOnly;
+    [self aka_setControlConfigurationValue:role forKey:kAKAControlRoleKey];
 }
 
 @end

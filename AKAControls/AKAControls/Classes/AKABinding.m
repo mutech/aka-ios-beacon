@@ -31,12 +31,21 @@
 
 #pragma mark - Initialization
 
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _isUpdatingTargetValueForSourceValueChange = NO;
+    }
+    return self;
+}
+
 - (instancetype _Nullable)         initWithTarget:(id)target
                                        expression:(req_AKABindingExpression)bindingExpression
                                           context:(req_AKABindingContext)bindingContext
                                          delegate:(opt_AKABindingDelegate)delegate
 {
-    if (self = [super init])
+    if (self = [self init])
     {
         _bindingTarget = target;
         _delegate = delegate;
@@ -79,14 +88,40 @@
 - (BOOL)                                validateSourceValue:(inout_id)sourceValueStore
                                                       error:(out_NSError)error
 {
+    NSParameterAssert(sourceValueStore != nil);
+
     BOOL result = YES;
+
+    id validatedValue = sourceValueStore == nil ? nil : *sourceValueStore;
+
+    if (result && self.bindingSource != nil)
+    {
+        result = [self.bindingSource validateValue:&validatedValue error:error];
+        if (validatedValue != *sourceValueStore)
+        {
+            *sourceValueStore = validatedValue;
+        }
+    }
     return result;
 }
 
 - (BOOL)                                validateTargetValue:(inout_id)targetValueStore
                                                       error:(out_NSError)error
 {
+    NSParameterAssert(targetValueStore != nil);
+
     BOOL result = YES;
+
+    id validatedValue = targetValueStore == nil ? nil : *targetValueStore;
+
+    if (result && self.bindingTarget != nil)
+    {
+        result = [self.bindingTarget validateValue:&validatedValue error:error];
+        if (validatedValue != *targetValueStore)
+        {
+            *targetValueStore = validatedValue;
+        }
+    }
     return result;
 }
 

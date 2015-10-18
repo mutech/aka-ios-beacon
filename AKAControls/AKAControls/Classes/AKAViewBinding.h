@@ -41,4 +41,13 @@
  */
 - (req_AKAProperty)      createBindingTargetPropertyForView:(req_UIView)target;
 
+/**
+ * Called by initWithView:expression:context:delegate, this method can be used to validate
+ * the targetView and should throw an exception or fail with an assertion if the targetView
+ * is invalid.
+ *
+ * @param targetView the view to validate.
+ */
+- (void)validateTargetView:(req_UIView)targetView;
+
 @end

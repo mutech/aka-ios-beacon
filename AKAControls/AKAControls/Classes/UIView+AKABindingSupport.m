@@ -13,39 +13,37 @@
 
 #import "UIView+AKABindingSupport.h"
 
+typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
+
+
 @implementation UIView(AKABindingSupport)
 
-- (NSArray<NSString *> *)            aka_definedBindingPropertyNames
+- (void)             aka_enumerateBindingExpressionsWithBlock:(void (^)(req_SEL,
+                                                                        req_AKABindingExpression,
+                                                                        outreq_BOOL))block
 {
-    return [self aka_bindingExpressionsBySelectorName].allKeys;
+    [[self aka_bindingExpressionsBySelectorNameCreateIfMissing:NO] enumerateKeysAndObjectsUsingBlock:
+     ^(req_NSString             propertyName,
+       req_AKABindingExpression bindingExpression,
+       BOOL * _Nonnull          stop)
+     {
+         block(NSSelectorFromString(propertyName), bindingExpression, stop);
+     }];
 }
 
-
-- (opt_AKABindingExpression)   aka_bindingExpressionForPropertyNamed:(req_NSString)key
-{
-    return [self aka_bindingExpressionsBySelectorName][key];
-}
-
-- (opt_AKABindingExpression)        aka_bindingExpressionForProperty:(req_SEL)selector
+- (opt_AKABindingExpression) aka_bindingExpressionForProperty:(req_SEL)selector
 {
     NSString* key = NSStringFromSelector(selector);
-    return [self aka_bindingExpressionForPropertyNamed:key];
+    return [self aka_bindingExpressionsBySelectorNameCreateIfMissing:NO][key];
 }
 
-- (void)                                    aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                                                         forProperty:(req_SEL)selector
+- (void)                             aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
+                                                  forProperty:(req_SEL)selector
 {
     NSString* key = NSStringFromSelector(selector);
-    [self aka_setBindingExpression:bindingExpression
-                  forPropertyNamed:key];
-}
-
-- (void)                                    aka_setBindingExpression:(opt_AKABindingExpression)bindingExpression
-                                                    forPropertyNamed:(req_NSString)key
-{
     if (bindingExpression == nil || bindingExpression == (id)[NSNull null])
     {
-        [[self aka_bindingExpressionsBySelectorName] removeObjectForKey:key];
+        [[self aka_bindingExpressionsBySelectorNameCreateIfMissing:NO] removeObjectForKey:key];
     }
     else
     {
@@ -55,18 +53,12 @@
 
 #pragma mark - Implementation
 
-- (opt_NSMutableDictionary)     aka_bindingExpressionsBySelectorName
-{
-    return [self aka_bindingExpressionsBySelectorNameCreateIfMissing:NO];
-}
-
-- (opt_NSMutableDictionary)
-                 aka_bindingExpressionsBySelectorNameCreateIfMissing:(BOOL)createMissing
+- (Storage)aka_bindingExpressionsBySelectorNameCreateIfMissing:(BOOL)createMissing
 {
     NSAssert([NSThread isMainThread], @"Invalid attempt to access associated value aka_bindingExpressionsBySelectorName outside of main thread");
 
     NSMutableDictionary* result = nil;
-    id raw = objc_getAssociatedObject(self, @selector(aka_bindingExpressionsBySelectorName));
+    id raw = objc_getAssociatedObject(self, @selector(aka_bindingExpressionsBySelectorNameCreateIfMissing:));
 
     if ([raw isKindOfClass:[NSMutableDictionary class]])
     {
@@ -76,7 +68,7 @@
     {
         result = [NSMutableDictionary new];
         objc_setAssociatedObject(self,
-                                 @selector(aka_bindingExpressionsBySelectorName),
+                                 @selector(aka_bindingExpressionsBySelectorNameCreateIfMissing:),
                                  result,
                                  OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }

@@ -6,9 +6,13 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKAKeyboardControlViewBinding.h"
+#import "AKAKeyboardBinding_AKACustomKeyboardResponderView.h"
 
 
-@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding: AKAKeyboardControlViewBinding
+#pragma mark - AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding - Interface
+#pragma mark -
+
+@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding:
+    AKAKeyboardBinding_AKACustomKeyboardResponderView
 
 @end

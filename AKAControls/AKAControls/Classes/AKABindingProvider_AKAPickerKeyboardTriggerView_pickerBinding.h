@@ -11,6 +11,7 @@
 #pragma mark - AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding - Interface
 #pragma mark -
 
-@interface AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding : AKABindingProvider
+
+@interface AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding: AKABindingProvider
 
 @end

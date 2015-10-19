@@ -149,6 +149,7 @@
 {
     AKATypePattern* targetTypePattern = self.specification.bindingTargetSpecification.typePattern;
     NSAssert(targetTypePattern == nil || [targetTypePattern matchesObject:bindingTarget], @"bindingTarget %@ does not match the type constraint %@ defined by the binding provider's specification.", bindingTarget, targetTypePattern);
+    (void)targetTypePattern; // prevent unused warning in release build
 
     Class bindingType = self.specification.bindingType;
     NSAssert([bindingType isSubclassOfClass:[AKABinding class]], @"Binding type %@ defined by the binding provider's specification is not a subclass of AKABindingType", NSStringFromClass(bindingType));

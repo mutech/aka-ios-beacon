@@ -68,6 +68,7 @@
         {
             Class controlType = configuration[kAKAControlTypeKey];
             NSParameterAssert(controlType == nil || [[self class] isSubclassOfClass:controlType]);
+            (void)controlType; // prevent unused warning in release build
 
             _name = configuration[kAKAControlNameKey];
 
@@ -131,6 +132,8 @@
 {
     UIView* selfView = _view;
     NSParameterAssert(view == selfView || view == nil || selfView == nil);
+    (void)selfView; // prevent warning in release build
+    
     _view = view;
 }
 

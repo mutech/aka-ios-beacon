@@ -154,7 +154,7 @@
                                        changeObserver:valueDidChange];
 }
 
-+ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
++ (AKAProperty*)propertyOfWeakKeyValueTarget:(opt_NSObject)target
                                      keyPath:(NSString*)keyPath
                               changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {

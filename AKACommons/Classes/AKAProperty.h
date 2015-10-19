@@ -84,7 +84,7 @@ typedef AKAPropertyComputation _Nonnull                 req_AKAPropertyComputati
 
 #pragma mark - Initialization
 
-+ (req_AKAProperty)       propertyOfWeakKeyValueTarget:(req_NSObject)target
++ (req_AKAProperty)       propertyOfWeakKeyValueTarget:(opt_NSObject)target
                                                keyPath:(opt_NSString)keyPath
                                         changeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
@@ -103,7 +103,7 @@ typedef AKAPropertyComputation _Nonnull                 req_AKAPropertyComputati
  *
  * @return a new property.
  */
-+ (req_AKAProperty)               propertyOfWeakTarget:(req_id)target
++ (req_AKAProperty)               propertyOfWeakTarget:(opt_id)target
                                                 getter:(opt_AKAPropertyGetter)getter
                                                 setter:(opt_AKAPropertySetter)setter
                                     observationStarter:(opt_AKAPropertyObservationStarter)observationStarter

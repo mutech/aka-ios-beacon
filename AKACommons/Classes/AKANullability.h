@@ -57,6 +57,9 @@ typedef NSNumber* _Nullable                             opt_NSNumber;
 typedef NSNumber* _Nonnull                              req_NSNumber;
 typedef NSNumber* _Nullable __autoreleasing*_Nullable   out_NSNumber;
 
+typedef NSDate* _Nullable                               opt_NSDate;
+typedef NSDate* _Nonnull                                req_NSDate;
+
 typedef NSArray* _Nullable                              opt_NSArray;
 typedef NSArray* _Nonnull                               req_NSArray;
 

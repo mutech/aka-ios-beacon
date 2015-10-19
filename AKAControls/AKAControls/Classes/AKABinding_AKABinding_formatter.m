@@ -42,6 +42,8 @@
          enumerateKeysAndObjectsUsingBlock:
          ^(NSString* _Nonnull key, AKABindingExpression* _Nonnull obj, BOOL* _Nonnull stop)
          {
+             (void)stop;
+
              // TODO: make this more robust and add error handling/reporting
              id value = [obj bindingSourceValueInContext:bindingContext];
 
@@ -51,7 +53,7 @@
              {
                  value = converter(value);
              }
-             [_formatter setValue:value
+             [self->_formatter setValue:value
                                forKey:key];
          }];
 
@@ -70,6 +72,10 @@
                                                 changeTo:(opt_id)newTargetValue
                                              validatedTo:(opt_id)targetValue
 {
+    (void)oldTargetValue;
+    (void)newTargetValue;
+    (void)targetValue;
+
     // We never want to override a possibly shared number formatter with whatever we have
     return NO;
 }
@@ -78,6 +84,9 @@
                                                 changeTo:(opt_id)newSourceValue
                                              validatedTo:(opt_id)sourceValue
 {
+    (void)oldSourceValue;
+    (void)newSourceValue;
+    (void)sourceValue;
     // TODO: allow updating the target number formatter, later though
     return NO;
 }

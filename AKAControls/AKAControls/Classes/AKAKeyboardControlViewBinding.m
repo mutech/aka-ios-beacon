@@ -70,9 +70,10 @@
 - (BOOL)                              shouldResponderActivate:(req_UIResponder)responder
 {
     BOOL result = responder != nil;
-    if (result && [self.delegate respondsToSelector:@selector(shouldBinding:responderActivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if (result && [delegate respondsToSelector:@selector(shouldBinding:responderActivate:)])
     {
-        result = [self.delegate shouldBinding:self responderActivate:responder];
+        result = [delegate shouldBinding:self responderActivate:responder];
     }
     return result;
 }
@@ -81,9 +82,10 @@
 {
     [self.keyboardActivationSequence prepareToActivateItem:self];
 
-    if ([self.delegate respondsToSelector:@selector(binding:responderWillActivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:responderWillActivate:)])
     {
-        [self.delegate binding:self responderWillActivate:responder];
+        [delegate binding:self responderWillActivate:responder];
     }
 }
 
@@ -91,40 +93,44 @@
 {
     [self.keyboardActivationSequence activateItem:self];
 
-    if ([self.delegate respondsToSelector:@selector(binding:responderDidActivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:responderDidActivate:)])
     {
-        [self.delegate binding:self responderDidActivate:responder];
+        [delegate binding:self responderDidActivate:responder];
     }
 }
 
 - (BOOL)                            shouldResponderDeactivate:(req_UIResponder)responder
 {
     BOOL result = responder != nil;
-    if (result && [self.delegate respondsToSelector:@selector(shouldBinding:responderDeactivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if (result && [delegate respondsToSelector:@selector(shouldBinding:responderDeactivate:)])
     {
-        result = [self.delegate shouldBinding:self responderDeactivate:responder];
+        result = [delegate shouldBinding:self responderDeactivate:responder];
     }
     return result;
 }
 
 - (void)                              responderWillDeactivate:(req_UIResponder)responder
 {
-    if ([self.delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
     {
-        [self.delegate binding:self responderWillDeactivate:responder];
+        [delegate binding:self responderWillDeactivate:responder];
     }
 }
 
 - (void)                               responderDidDeactivate:(req_UIResponder)responder
 {
-    if (self.keyboardActivationSequence.activeItem == self)
+    AKAKeyboardActivationSequence* sequence = self.keyboardActivationSequence;
+    if (sequence.activeItem == self)
     {
-        [self.keyboardActivationSequence deactivate];
+        [sequence deactivate];
     }
-
-    if ([self.delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
+    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
     {
-        [self.delegate binding:self responderDidDeactivate:responder];
+        [delegate binding:self responderDidDeactivate:responder];
     }
 }
 
@@ -203,7 +209,7 @@
     if (responder != nil)
     {
         [self responderWillDeactivate:responder];
-        BOOL result = [responder resignFirstResponder];
+        result = [responder resignFirstResponder];
         if (result)
         {
             [self responderDidDeactivate:responder];
@@ -215,7 +221,7 @@
 
 - (BOOL)                            installInputAccessoryView:(req_UIView)inputAccessoryView
 {
-    if (inputAccessoryView != self.responderInputAccessoryView)
+    if ((UIView*)inputAccessoryView != self.responderInputAccessoryView)
     {
         NSAssert(_savedInputAccessoryView == nil,
                  @"previously installed input accessory view was not restored");

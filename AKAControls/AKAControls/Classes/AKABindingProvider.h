@@ -86,7 +86,7 @@ typedef AKABindingProvider* _Nonnull  req_AKABindingProvider;
  * @param selector the selector of a binding properties getter. The selector name will be used for KVC access to the property value.
  * @param view the view providing the binding property.
  */
-- (void)                setBindingExpressionText:(req_NSString)bindingExpressionText
+- (void)                setBindingExpressionText:(opt_NSString)bindingExpressionText
                                      forSelector:(req_SEL)selector
                                           inView:(req_UIView)view;
 

@@ -95,14 +95,16 @@
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
-                if (binding.textField.delegate != binding)
+                UITextField* textField = binding.textField;
+                id<UITextFieldDelegate> textFieldDelegate = textField.delegate;
+                if (textFieldDelegate != binding)
                 {
-                    binding.originalText = binding.textField.text;
-                    binding.savedTextViewDelegate = binding.textField.delegate;
-                    binding.textField.delegate = binding;
-                    [binding.textField addTarget:binding
-                                          action:@selector(textFieldDidChange:)
-                                forControlEvents:UIControlEventEditingChanged];
+                    binding.originalText = textField.text;
+                    binding.savedTextViewDelegate = textFieldDelegate;
+                    textField.delegate = binding;
+                    [textField addTarget:binding
+                                  action:@selector(textFieldDidChange:)
+                        forControlEvents:UIControlEventEditingChanged];
                 }
                 else
                 {
@@ -114,10 +116,11 @@
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
-                [binding.textField removeTarget:target
-                                         action:@selector(textFieldDidChange:)
-                               forControlEvents:UIControlEventEditingChanged];
-                binding.textField.delegate = binding.savedTextViewDelegate;
+                UITextField* textField = binding.textField;
+                [textField removeTarget:target
+                                 action:@selector(textFieldDidChange:)
+                       forControlEvents:UIControlEventEditingChanged];
+                textField.delegate = binding.savedTextViewDelegate;
                 binding.originalText = nil;
                 return YES;
             }];
@@ -186,25 +189,31 @@
         switch (textField.returnKeyType)
         {
             case UIReturnKeyNext:
-                if ([self shouldDeactivate] && [self.delegate respondsToSelector:@selector(binding:responderRequestedActivateNext:)])
+            {
+                id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+                if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedActivateNext:)])
                 {
-                    if (![self.delegate binding:self responderRequestedActivateNext:self.textField])
+                    if (![delegate binding:self responderRequestedActivateNext:self.textField])
                     {
                         [self deactivateResponder];
                     }
                 }
                 break;
+            }
 
             case UIReturnKeyGo:
             case UIReturnKeyDone:
-                if ([self shouldDeactivate] && [self.delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])
+            {
+                id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+                if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])
                 {
-                    if (![self.delegate binding:self responderRequestedGoOrDone:self.textField])
+                    if (![delegate binding:self responderRequestedGoOrDone:self.textField])
                     {
                         [self deactivateResponder];
                     }
                 }
                 break;
+            }
 
             default:
                 // This will call the corresponding should/did end editing handlers
@@ -266,6 +275,8 @@
 
 - (void)                                textFieldDidChange:(UITextField*)textField
 {
+    NSParameterAssert(textField == self.textField);
+
     if (self.liveModelUpdates)
     {
         [self viewValueDidChange];
@@ -307,13 +318,7 @@
 
 - (void)                   updateOriginalTextBeforeEditing
 {
-    NSString* previousValue = self.originalText;
-
     self.originalText = self.textField.text;
-    if (previousValue != nil && ![previousValue isEqualToString:self.originalText])
-    {
-        // Value has been changed without us noticing; TODO: check if we have to do something
-    }
 }
 
 - (void)                                viewValueDidChange

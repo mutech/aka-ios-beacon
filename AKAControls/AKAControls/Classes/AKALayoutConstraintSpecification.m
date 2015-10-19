@@ -87,7 +87,7 @@
     if (specification[@"format"] != nil)
     {
         id optionSpec = specification[@"options"];
-        NSLayoutFormatOptions options = optionSpec == nil ? 0 : ((NSNumber*)optionSpec).intValue;
+        NSLayoutFormatOptions options = optionSpec == nil ? 0 : ((NSNumber*)optionSpec).unsignedIntegerValue;
         NSString* format = specification[@"format"];
         result = [self constraintSpecificationWithTarget:target
                                             visualFormat:format
@@ -314,9 +314,10 @@
                            shouldInstallConstraints:constraints
                                            inTarget:target];
     }
-    if (result && [self.delegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
+    NSObject<AKALayoutConstraintSpecificationDelegate>* selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
     {
-        result &= [self.delegate constraintSpecification:self
+        result &= [selfDelegate constraintSpecification:self
                                 shouldInstallConstraints:constraints
                                                 inTarget:target];
     }
@@ -341,9 +342,10 @@
                    willInstallConstraints:constraints
                                  inTarget:target];
     }
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
+    NSObject<AKALayoutConstraintSpecificationDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:self
+        [selfDelegate constraintSpecification:self
                         willInstallConstraints:constraints
                                       inTarget:target];
     }
@@ -367,9 +369,10 @@
                     didInstallConstraints:constraints
                                  inTarget:target];
     }
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
+    NSObject<AKALayoutConstraintSpecificationDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:self
+        [selfDelegate constraintSpecification:self
                          didInstallConstraints:constraints
                                       inTarget:target];
     }
@@ -404,7 +407,7 @@
     }
     else if ([relation isKindOfClass:[NSNumber class]])
     {
-        result = ((NSNumber*)relation).unsignedIntegerValue;
+        result = ((NSNumber*)relation).integerValue;
     }
     else if (relation != nil)
     {
@@ -503,6 +506,7 @@
 - (NSArray *)constraintsForViews:(NSDictionary *)views
                          metrics:(NSDictionary *)metrics
 {
+    (void)metrics; // not needed for explicit constraints
     NSMutableArray* result = NSMutableArray.new;
     for (id firstItem in self.firstItems)
     {
@@ -577,6 +581,10 @@
 
 - (NSArray *)constraintsForViews:(NSDictionary *)views metrics:(NSDictionary *)metrics
 {
+    // not needed for explicit constraints:
+    (void)views;
+    (void)metrics;
+
     return self.constraints;
 }
 

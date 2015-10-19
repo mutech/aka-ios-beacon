@@ -39,9 +39,10 @@
             if ([@"viewRequirements" isEqualToString:key])
             {
                 NSDictionary* viewRequirements = obj;
-                [viewRequirements enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                    AKAThemeViewApplicability* applicability = [[AKAThemeViewApplicability alloc] initWithSpecification:obj];
-                    [self requireView:key withApplicability:applicability];
+                [viewRequirements enumerateKeysAndObjectsUsingBlock:^(id innerKey, id innerObj, BOOL *innerStop) {
+                    (void)innerStop;
+                    AKAThemeViewApplicability* applicability = [[AKAThemeViewApplicability alloc] initWithSpecification:innerObj];
+                    [self requireView:innerKey withApplicability:applicability];
                 }];
             }
             else if ([@"constraints" isEqualToString:key])
@@ -267,9 +268,10 @@
     {
         [delegate layout:self didCheckApplicabilityToViews:views withResult:result];
     }
-    if ([self.delegate respondsToSelector:@selector(layout:didCheckApplicabilityToViews:withResult:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:didCheckApplicabilityToViews:withResult:)])
     {
-        [self.delegate layout:self didCheckApplicabilityToViews:views withResult:result];
+        [selfDelegate layout:self didCheckApplicabilityToViews:views withResult:result];
     }
 }
 
@@ -282,9 +284,10 @@
     {
         [delegate layout:self willBeAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
     }
-    if ([self.delegate respondsToSelector:@selector(layout:willBeAppliedToViews:metrics:defaultTarget:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:willBeAppliedToViews:metrics:defaultTarget:)])
     {
-        [self.delegate layout:self willBeAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
+        [selfDelegate layout:self willBeAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
     }
 }
 
@@ -297,9 +300,10 @@
     {
         [delegate layout:self hasBeenAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
     }
-    if ([self.delegate respondsToSelector:@selector(layout:hasBeenAppliedToViews:metrics:defaultTarget:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:hasBeenAppliedToViews:metrics:defaultTarget:)])
     {
-        [self.delegate layout:self hasBeenAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
+        [selfDelegate layout:self hasBeenAppliedToViews:views metrics:metrics defaultTarget:defaultTarget];
     }
 }
 
@@ -310,9 +314,10 @@
                        inTarget:(UIView *)target
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
     {
-        result &= [self.delegate constraintSpecification:constraintSpecification
+        result &= [selfDelegate constraintSpecification:constraintSpecification
                                 shouldInstallConstraints:nsLayoutConstraints
                                                 inTarget:target];
     }
@@ -323,9 +328,10 @@
          willInstallConstraints:(NSArray *)nsLayoutConstraints
                        inTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:constraintSpecification
+        [selfDelegate constraintSpecification:constraintSpecification
                         willInstallConstraints:nsLayoutConstraints
                                       inTarget:target];
     }
@@ -335,9 +341,10 @@
           didInstallConstraints:(NSArray *)nsLayoutConstraints
                        inTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:constraintSpecification
+        [selfDelegate constraintSpecification:constraintSpecification
                          didInstallConstraints:nsLayoutConstraints
                                       inTarget:target];
     }
@@ -348,9 +355,10 @@
 - (void)viewCustomizations:(AKAViewCustomization *)customization
        willBeAppliedToView:(id)view
 {
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
     {
-        [self.delegate viewCustomizations:customization
+        [selfDelegate viewCustomizations:customization
                       willBeAppliedToView:view];
     }
 }
@@ -361,9 +369,10 @@
                         to:(id)newValue
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
     {
-        result = [self.delegate viewCustomizations:customization
+        result = [selfDelegate viewCustomizations:customization
                                  shouldSetProperty:name
                                              value:oldValue
                                                 to:newValue];
@@ -376,9 +385,10 @@
                      value:(id)oldValue
                         to:(id)newValue
 {
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
     {
-        [self.delegate viewCustomizations:customization
+        [selfDelegate viewCustomizations:customization
                            didSetProperty:name
                                     value:oldValue
                                        to:newValue];
@@ -388,9 +398,10 @@
 - (void)viewCustomizations:(AKAViewCustomization *)customizations
      haveBeenAppliedToView:(id)view
 {
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
+    NSObject<AKAThemeLayoutDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
     {
-        [self.delegate viewCustomizations:customizations
+        [selfDelegate viewCustomizations:customizations
                     haveBeenAppliedToView:view];
     }
 }

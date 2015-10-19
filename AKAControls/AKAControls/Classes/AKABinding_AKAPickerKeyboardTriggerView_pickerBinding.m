@@ -74,7 +74,7 @@
             {
                 id result;
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
-                NSUInteger row = [binding.pickerView selectedRowInComponent:0];
+                NSInteger row = [binding.pickerView selectedRowInComponent:0];
                 result = [binding itemForRow:row];
                 return result;
             }
@@ -140,14 +140,15 @@
 {
     if (_pickerView == nil)
     {
-        UIView* inputView = [super inputViewForCustomKeyboardResponderView:self.triggerView];
+        AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
+        UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
         if ([inputView isKindOfClass:[UIPickerView class]])
         {
             _pickerView = (UIPickerView*)inputView;
         }
         else
         {
-            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, self.triggerView, inputView);
+            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, triggerView, inputView);
 
             _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
             _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -160,6 +161,8 @@
 
 - (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
 {
+    NSParameterAssert(view == self.triggerView);
+
     // The view returned by the super class implementation, if defined and valid, is used by
     // self.pickerView if possible.
     return self.pickerView;
@@ -214,7 +217,7 @@
 {
     if (block)
     {
-        CGFloat duration = .3;
+        double duration = .3;
         UIViewAnimationOptions options;
         if (oldSelectedRow < newSelectedRow)
         {
@@ -274,7 +277,7 @@
 - (void)                                      choicesDidChange
 {
     [self aka_performBlockInMainThreadOrQueue:^{
-        _choices = nil;
+        self->_choices = nil;
         [self setNeedsReloadChoices];
     }
                             waitForCompletion:NO];
@@ -308,6 +311,8 @@
                                                    titleForRow:(NSInteger)row
                                                   forComponent:(NSInteger)component
 {
+    NSParameterAssert(pickerView == self.pickerView);
+
     NSAssert(component == 0, @"AKAPickerViewBinding currently only supports single component picker views");
     NSString* result = nil;
 
@@ -324,7 +329,7 @@
         NSInteger index = [self indexForRow:row];
         if (index >= 0 && index < self.choices.count)
         {
-            id choice = self.choices[index];
+            id choice = self.choices[(NSUInteger)index];
 
             if (self.titleProperty != nil)
             {
@@ -348,17 +353,19 @@
                                                   didSelectRow:(NSInteger)row
                                                    inComponent:(NSInteger)component
 {
+    NSParameterAssert(pickerView == self.pickerView);
+    NSParameterAssert(component == 0);
+
     id value = [self itemForRow:row];
     id oldValue = [self itemForRow:self.previouslySelectedRow];
     if (self.liveModelUpdates)
     {
-        __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
         [self animateTriggerForSelectedRow:self.previouslySelectedRow
                                   changeTo:row
                                 animations:
          ^{
-             [weakSelf targetValueDidChangeFromOldValue:oldValue toNewValue:value];
-             weakSelf.previouslySelectedRow = row;
+             [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
+             self.previouslySelectedRow = row;
          }];
     }
     if ([self shouldResignFirstResponderOnSelectedRowChanged])
@@ -371,15 +378,18 @@
 
 - (NSInteger)                   numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
+    NSParameterAssert(pickerView == self.pickerView);
+
     return 1;
 }
 
 - (NSInteger)                                       pickerView:(UIPickerView *)pickerView
                                        numberOfRowsInComponent:(NSInteger)component
 {
-    NSAssert(component == 0, @"AKAPickerViewBinding currently only supports single component picker views");
+    NSParameterAssert(pickerView == self.pickerView);
+    NSParameterAssert(component == 0);
 
-    NSInteger result = self.choices.count;
+    NSInteger result = (NSInteger)self.choices.count;
     if (self.supportsUndefinedValue)
     {
         ++result;
@@ -410,7 +420,7 @@
 
 - (NSInteger)                                 rowForOtherValue
 {
-    NSInteger result =  self.supportsOtherValue ? self.choices.count : NSNotFound;
+    NSInteger result =  self.supportsOtherValue ? (NSInteger)self.choices.count : NSNotFound;
     if (result != NSNotFound && self.supportsUndefinedValue)
     {
         ++result;
@@ -530,7 +540,7 @@
         NSInteger index = [self indexForRow:row];
         if (index >= 0 && index < self.choices.count)
         {
-            result = self.choices[index];
+            result = self.choices[(NSUInteger)index];
         }
     }
     return result;
@@ -539,7 +549,7 @@
 - (NSInteger)                                       rowForItem:(id)item
 {
     NSInteger result = NSNotFound;
-    NSInteger index = [self.choices indexOfObject:(item == nil ? [NSNull null] : item)];
+    NSInteger index = (NSInteger)[self.choices indexOfObject:(item == nil ? [NSNull null] : item)];
 
     if (index == NSNotFound)
     {

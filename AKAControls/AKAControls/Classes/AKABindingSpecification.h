@@ -92,8 +92,8 @@ typedef NS_ENUM(NSInteger, AKABindingExpressionType)
 
 @property(nonatomic, readonly, nonnull) AKABindingProvider*                 bindingProvider;
 
-@property(nonatomic, readonly, nonnull) AKABindingTargetSpecification*      bindingTargetSpecification;
-@property(nonatomic, readonly, nonnull) AKABindingExpressionSpecification*  bindingSourceSpecification;
+@property(nonatomic, readonly, nullable) AKABindingTargetSpecification*      bindingTargetSpecification;
+@property(nonatomic, readonly, nullable) AKABindingExpressionSpecification*  bindingSourceSpecification;
 
 - (opt_AKABindingProvider)bindingProviderForAttributeWithName:(req_NSString)attributeName;
 - (opt_AKABindingProvider)bindingProviderForArrayItem;

@@ -17,18 +17,20 @@
                                toTargetValueWithError:(opt_NSError)error
 {
     [self.owner
-     control:control
-     binding:binding
+                                    control:control
+                                    binding:binding
      targetUpdateFailedToConvertSourceValue:sourceValue
-     toTargetValueWithError:error];
+                     toTargetValueWithError:error];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                                        control:control
+                                        binding:binding
          targetUpdateFailedToConvertSourceValue:sourceValue
-         toTargetValueWithError:error];
+                         toTargetValueWithError:error];
     }
 }
 
@@ -39,20 +41,21 @@
                                             withError:(opt_NSError)error
 {
     [self.owner
-     control:control
-     binding:binding
+                                     control:control
+                                     binding:binding
      targetUpdateFailedToValidateTargetValue:targetValue
-     convertedFromSourceValue:sourceValue
-     withError:error];
+                    convertedFromSourceValue:sourceValue
+                                   withError:error];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                                         control:control
+                                         binding:binding
          targetUpdateFailedToValidateTargetValue:targetValue
-         convertedFromSourceValue:sourceValue
-         withError:error];
+                        convertedFromSourceValue:sourceValue
+                                       withError:error];
     }
 }
 
@@ -65,26 +68,30 @@
 {
     BOOL result = YES;
 
-    if ([self.delegate respondsToSelector:@selector(control:shouldBinding:updateTargetValue:to:forSourceValue:changeTo:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:shouldBinding:updateTargetValue:to:forSourceValue:changeTo:)])
     {
-        result = [self.delegate
-                  control:control
-                  shouldBinding:binding
+        result = [delegate
+                            control:control
+                      shouldBinding:binding
                   updateTargetValue:oldTargetValue
-                  to:newTargetValue
-                  forSourceValue:oldSourceValue
-                  changeTo:newSourceValue];
+                                 to:newTargetValue
+                     forSourceValue:oldSourceValue
+                           changeTo:newSourceValue];
     }
 
-    if (result && self.owner)
+    AKACompositeControl* owner = self.owner;
+
+    if (result && owner)
     {
-        result = [self.owner
-                  control:control
-                  shouldBinding:binding
+        result = [owner
+                            control:control
+                      shouldBinding:binding
                   updateTargetValue:oldTargetValue
-                  to:newTargetValue
-                  forSourceValue:oldSourceValue
-                  changeTo:newSourceValue];
+                                 to:newTargetValue
+                     forSourceValue:oldSourceValue
+                           changeTo:newSourceValue];
     }
 
     return result;
@@ -96,18 +103,19 @@
                                                    to:(opt_id)newTargetValue
 {
     [self.owner
-     control:control
-     binding:binding
+                   control:control
+                   binding:binding
      willUpdateTargetValue:oldTargetValue
-     to:newTargetValue];
+                        to:newTargetValue];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:willUpdateTargetValue:to:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:willUpdateTargetValue:to:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                       control:control
+                       binding:binding
          willUpdateTargetValue:oldTargetValue
-         to:newTargetValue];
+                            to:newTargetValue];
     }
 }
 
@@ -117,18 +125,19 @@
                                                    to:(opt_id)newTargetValue
 {
     [self.owner
-     control:control
-     binding:binding
+                  control:control
+                  binding:binding
      didUpdateTargetValue:oldTargetValue
-     to:newTargetValue];
+                       to:newTargetValue];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:didUpdateTargetValue:to:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:didUpdateTargetValue:to:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                      control:control
+                      binding:binding
          didUpdateTargetValue:oldTargetValue
-         to:newTargetValue];
+                           to:newTargetValue];
     }
 }
 
@@ -143,18 +152,19 @@
                                toSourceValueWithError:(opt_NSError)error
 {
     [self.owner
-     control:control
-     binding:binding
+                                    control:control
+                                    binding:binding
      sourceUpdateFailedToConvertTargetValue:targetValue
-     toSourceValueWithError:error];
+                     toSourceValueWithError:error];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                                        control:control
+                                        binding:binding
          sourceUpdateFailedToConvertTargetValue:targetValue
-         toSourceValueWithError:error];
+                         toSourceValueWithError:error];
     }
 }
 
@@ -165,20 +175,21 @@
                                             withError:(opt_NSError)error
 {
     [self.owner
-     control:control
-     binding:binding
+                                     control:control
+                                     binding:binding
      sourceUpdateFailedToValidateSourceValue:sourceValue
-     convertedFromTargetValue:targetValue
-     withError:error];
+                    convertedFromTargetValue:targetValue
+                                   withError:error];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:sourceUpdateFailedToValidateSourceValue:convertedFromTargetValue:withError:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceUpdateFailedToValidateSourceValue:convertedFromTargetValue:withError:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                                         control:control
+                                         binding:binding
          sourceUpdateFailedToValidateSourceValue:sourceValue
-         convertedFromTargetValue:targetValue
-         withError:error];
+                        convertedFromTargetValue:targetValue
+                                       withError:error];
     }
 }
 
@@ -191,26 +202,28 @@
 {
     BOOL result = YES;
 
-    if ([self.delegate respondsToSelector:@selector(control:shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
     {
-        result = [self.delegate
-                  control:control
-                  shouldBinding:binding
+        result = [delegate
+                            control:control
+                      shouldBinding:binding
                   updateSourceValue:oldSourceValue
-                  to:newSourceValue
-                  forTargetValue:oldTargetValue
-                  changeTo:newTargetValue];
+                                 to:newSourceValue
+                     forTargetValue:oldTargetValue
+                           changeTo:newTargetValue];
     }
 
-    if (result && self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (result && owner)
     {
-        result = [self.owner
-                  control:control
-                  shouldBinding:binding
+        result = [owner
+                            control:control
+                      shouldBinding:binding
                   updateSourceValue:oldSourceValue
-                  to:newSourceValue
-                  forTargetValue:oldTargetValue
-                  changeTo:newTargetValue];
+                                 to:newSourceValue
+                     forTargetValue:oldTargetValue
+                           changeTo:newTargetValue];
     }
 
     return result;
@@ -222,18 +235,19 @@
                                                    to:(opt_id)newSourceValue
 {
     [self.owner
-     control:control
-     binding:binding
+                   control:control
+                   binding:binding
      willUpdateSourceValue:oldSourceValue
-     to:newSourceValue];
+                        to:newSourceValue];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:willUpdateSourceValue:to:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:willUpdateSourceValue:to:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                       control:control
+                       binding:binding
          willUpdateSourceValue:oldSourceValue
-         to:newSourceValue];
+                            to:newSourceValue];
     }
 }
 
@@ -243,18 +257,19 @@
                                                    to:(opt_id)newSourceValue
 {
     [self.owner
-     control:control
-     binding:binding
+                  control:control
+                  binding:binding
      didUpdateSourceValue:oldSourceValue
-     to:newSourceValue];
+                       to:newSourceValue];
 
-    if ([self.delegate respondsToSelector:@selector(control:binding:didUpdateSourceValue:to:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:didUpdateSourceValue:to:)])
     {
-        [self.delegate
-         control:control
-         binding:binding
+        [delegate
+                      control:control
+                      binding:binding
          didUpdateSourceValue:oldSourceValue
-         to:newSourceValue];
+                           to:newSourceValue];
     }
 }
 
@@ -269,14 +284,16 @@
 {
     BOOL result = YES;
 
-    if ([self.delegate respondsToSelector:@selector(control:shouldBinding:responderActivate:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:shouldBinding:responderActivate:)])
     {
-        result = [self.delegate control:control shouldBinding:binding responderActivate:responder];
+        result = [delegate control:control shouldBinding:binding responderActivate:responder];
     }
 
-    if (result && self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (result && owner)
     {
-        result = [self.owner control:control shouldBinding:binding responderActivate:responder];
+        result = [owner control:control shouldBinding:binding responderActivate:responder];
     }
 
     return result;
@@ -287,9 +304,11 @@
                                 responderWillActivate:(req_UIResponder)responder
 {
     [self.owner control:control binding:binding responderWillActivate:responder];
-    if ([self.delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
     {
-        [self.delegate control:control binding:binding responderWillActivate:responder];
+        [delegate control:control binding:binding responderWillActivate:responder];
     }
 }
 
@@ -298,9 +317,11 @@
                                  responderDidActivate:(req_UIResponder)responder
 {
     [self.owner control:control binding:binding responderDidActivate:responder];
-    if ([self.delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
+
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
     {
-        [self.delegate control:control binding:binding responderDidActivate:responder];
+        [delegate control:control binding:binding responderDidActivate:responder];
     }
 }
 
@@ -310,14 +331,16 @@
 {
     BOOL result = YES;
 
-    if ([self.delegate respondsToSelector:@selector(control:shouldBinding:responderDeactivate:)])
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:shouldBinding:responderDeactivate:)])
     {
-        result = [self.delegate control:control shouldBinding:binding responderDeactivate:responder];
+        result = [delegate control:control shouldBinding:binding responderDeactivate:responder];
     }
 
-    if (result && self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (result && owner)
     {
-        result = [self.owner control:control shouldBinding:binding responderDeactivate:responder];
+        result = [owner control:control shouldBinding:binding responderDeactivate:responder];
     }
 
     return result;
@@ -328,9 +351,11 @@
                               responderWillDeactivate:(req_UIResponder)responder
 {
     [self.owner control:control binding:binding responderWillDeactivate:responder];
-    if ([self.delegate respondsToSelector:@selector(control:binding:responderWillDeactivate:)])
+
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderWillDeactivate:)])
     {
-        [self.delegate control:control binding:binding responderWillDeactivate:responder];
+        [delegate control:control binding:binding responderWillDeactivate:responder];
     }
 }
 
@@ -339,9 +364,11 @@
                                responderDidDeactivate:(req_UIResponder)responder
 {
     [self.owner control:control binding:binding responderDidDeactivate:responder];
-    if ([self.delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
+
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
     {
-        [self.delegate control:control binding:binding responderDidDeactivate:responder];
+        [delegate control:control binding:binding responderDidDeactivate:responder];
     }
 }
 
@@ -349,6 +376,10 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                        responderRequestedActivateNext:(req_UIResponder)responder
 {
+    // Don't see a need to propagate event since activation events will fire
+    (void)control;
+    (void)binding;
+    (void)responder;
     return [self.keyboardActivationSequence activateNext];
 }
 
@@ -356,6 +387,10 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                            responderRequestedGoOrDone:(req_UIResponder)responder
 {
+    // Don't see a need to propagate event since activation events will fire
+    (void)control;
+    (void)binding;
+    (void)responder;
     // TODO: consider implementing commit form
     return [self.keyboardActivationSequence deactivate];
 }

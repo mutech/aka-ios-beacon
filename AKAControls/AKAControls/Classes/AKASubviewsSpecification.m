@@ -158,32 +158,33 @@
         __block BOOL explicitOutlet = NO;
 
         _name = name;
-        [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+         {
             (void)stop; // not needed
             if ([@"outlet" isEqualToString:key])
             {
                 explicitOutlet = YES;
 
-                NSString* key = nil;
+                NSString* propertyKey = nil;
                 if ([obj isKindOfClass:[NSNumber class]])
                 {
                     if (((NSNumber*)obj).boolValue)
                     {
-                        key = name;
+                        propertyKey = name;
                     }
                 }
                 else if ([obj isKindOfClass:[NSString class]])
                 {
-                    key = (NSString*)obj;
+                    propertyKey = (NSString*)obj;
                 }
                 else
                 {
                     // TODO: error handling
                 }
 
-                if (key.length > 0)
+                if (propertyKey.length > 0)
                 {
-                    self->_outlet = [AKAUnboundProperty unboundPropertyWithKeyPath:key];
+                    self->_outlet = [AKAUnboundProperty unboundPropertyWithKeyPath:propertyKey];
                 }
             }
             else if ([@"viewTag" isEqualToString:key])

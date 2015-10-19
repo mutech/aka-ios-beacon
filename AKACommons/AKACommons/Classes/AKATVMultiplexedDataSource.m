@@ -1386,13 +1386,10 @@ typedef enum {
 {
     NSValue* selectorValue = [NSValue valueWithPointer:aSelector];
     BOOL result = self.tableViewDelegateSelectorMapping[selectorValue] != nil;
-    BOOL fallback = NO;
     if (!result)
     {
-        fallback = YES;
         result = [super respondsToSelector:aSelector];
     }
-    /*AKALogDebug(@"%@: respondsToSelector:%@ %@ (fallback: %@)", self.description, NSStringFromSelector(aSelector), result?@"YES":@"NO", fallback?@"YES":@"NO");*/
     return result;
 }
 

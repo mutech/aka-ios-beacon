@@ -15,8 +15,8 @@
 
 @property(nonatomic, weak) UIResponder* activeResponder;
 
-@property(nonatomic) CGFloat                aka_keyboardAdjustment;
-@property(nonatomic) CGFloat                aka_rotationAnimationDuration;
+@property(nonatomic) double                 aka_keyboardAdjustment;
+@property(nonatomic) double                 aka_rotationAnimationDuration;
 @property(nonatomic) UIViewAnimationCurve   aka_rotationAnimationCurve;
 
 @end
@@ -86,6 +86,9 @@
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                      responderWillActivate:(req_UIResponder)responder
 {
+    (void)control;
+    (void)binding;
+
     self.activeResponder = responder;
 }
 
@@ -93,6 +96,9 @@
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                       responderDidActivate:(req_UIResponder)responder
 {
+    (void)control;
+    (void)binding;
+
     [self scrollViewToVisible:responder animated:YES];
 }
 
@@ -100,6 +106,10 @@
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                     responderDidDeactivate:(req_UIResponder)responder
 {
+    (void)control;
+    (void)binding;
+    (void)responder;
+
     self.activeResponder = nil;
 }
 
@@ -135,6 +145,8 @@
         self.aka_rotationAnimationCurve = [context completionCurve];
         self.aka_rotationAnimationDuration = [context transitionDuration];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        (void)context;
+        
         self.aka_rotationAnimationCurve = 0;
         self.aka_rotationAnimationDuration = 0.0;
     }];
@@ -202,12 +214,12 @@
 {
     UIEdgeInsets svi = self.scrollView.contentInset;
     self.scrollView.contentInset = UIEdgeInsetsMake(svi.top, svi.left,
-                                                    svi.bottom + newHeight - self.aka_keyboardAdjustment,
+                                                    svi.bottom + newHeight - (CGFloat)self.aka_keyboardAdjustment,
                                                     svi.right);
 
     UIEdgeInsets svsii = self.scrollView.scrollIndicatorInsets;
     self.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(svsii.top, svsii.left,
-                                                             svsii.bottom + newHeight - self.aka_keyboardAdjustment,
+                                                             svsii.bottom + newHeight - (CGFloat)self.aka_keyboardAdjustment,
                                                              svsii.right);
 
     self.aka_keyboardAdjustment = newHeight;
@@ -222,8 +234,8 @@
         UIView* firstResponder = (UIView*)activeResponder;
 
         CGRect frame = firstResponder.frame;
-        CGRect friendlyFrame = CGRectMake(frame.origin.x, frame.origin.y - 10.0,
-                                          frame.size.width, frame.size.height + 20.0);
+        CGRect friendlyFrame = CGRectMake(frame.origin.x, frame.origin.y - 10.0f,
+                                          frame.size.width, frame.size.height + 20.0f);
         [self.scrollView scrollRectToVisible:friendlyFrame animated:animated];
     }
 }

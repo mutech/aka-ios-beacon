@@ -176,11 +176,13 @@
                           observationStarter:
             ^BOOL (id target)
             {
-                return YES;
+                (void)target;
+                return YES; // nothing to observe (readonly)
             }
                           observationStopper:
             ^BOOL (id target)
             {
+                (void)target; // nothing to observer (readonly).
                 return YES;
             }];
 }
@@ -197,15 +199,15 @@
     {
         if (self.numberFormatter)
         {
-            *targetValueStore = [self.numberFormatter stringFromNumber:sourceValue];
+            *targetValueStore = [self.numberFormatter stringFromNumber:(req_NSNumber)sourceValue];
         }
         else if (self.textForYes && self.textForNo) // only if both are defined
         {
-            *targetValueStore = ((NSNumber*)sourceValue).boolValue ? self.textForYes : self.textForNo;
+            *targetValueStore = ((req_NSNumber)sourceValue).boolValue ? self.textForYes : self.textForNo;
         }
         else
         {
-            *targetValueStore = ((NSNumber*)sourceValue).stringValue;
+            *targetValueStore = ((req_NSNumber)sourceValue).stringValue;
         }
         result = YES;
     }
@@ -213,11 +215,11 @@
     {
         if (self.dateFormatter)
         {
-            *targetValueStore = [self.dateFormatter stringFromDate:sourceValue];
+            *targetValueStore = [self.dateFormatter stringFromDate:(req_NSDate)sourceValue];
         }
         else
         {
-            *targetValueStore = ((NSDate*)sourceValue).description;
+            *targetValueStore = ((req_NSDate)sourceValue).description;
         }
         result = YES;
     }

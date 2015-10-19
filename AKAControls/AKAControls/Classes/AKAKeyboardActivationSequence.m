@@ -133,6 +133,9 @@
                                          NSUInteger idx,
                                          BOOL * _Nonnull stop)
      {
+         (void)idx;
+         (void)stop;
+         
          [self unregisterItem:reference.value];
      }];
     [_items removeAllObjects];
@@ -229,11 +232,11 @@
     {
         _inputAccessoryView = [self createInputAccessoryView];
 
-        if (_inputAccessoryView != nil && [self.delegate respondsToSelector:@selector(customizeInputAccessoryView:forKeyboardActivationSequence:)])
+        id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
+        if (_inputAccessoryView != nil && [delegate respondsToSelector:@selector(customizeInputAccessoryView:forKeyboardActivationSequence:)])
         {
-            [self.delegate
-               customizeInputAccessoryView:_inputAccessoryView
-             forKeyboardActivationSequence:self];
+            [delegate customizeInputAccessoryView:_inputAccessoryView
+                    forKeyboardActivationSequence:self];
         }
     }
 
@@ -244,10 +247,11 @@
 {
     UIView* result = nil;
 
-    if ([self.delegate respondsToSelector:@selector(createInputAccessoryViewForKeyboardActivationSequence:activatePreviousAction:activateNextAction:closeKeyboardAction:)])
+    id<AKAKeyboardActivationSequenceDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(createInputAccessoryViewForKeyboardActivationSequence:activatePreviousAction:activateNextAction:closeKeyboardAction:)])
     {
         result =
-            [self.delegate
+            [delegate
              createInputAccessoryViewForKeyboardActivationSequence:self
                                             activatePreviousAction:@selector(activatePrevious:)
                                                 activateNextAction:@selector(activateNext:)

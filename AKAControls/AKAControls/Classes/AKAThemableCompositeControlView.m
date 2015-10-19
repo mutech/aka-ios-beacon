@@ -58,6 +58,19 @@
     return _controlConfiguration;
 }
 
+- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString *)key
+{
+    AKAMutableControlConfiguration* mutableConfiguration = (AKAMutableControlConfiguration*)self.aka_controlConfiguration;
+    if (value == nil)
+    {
+        [mutableConfiguration removeObjectForKey:key];
+    }
+    else
+    {
+        mutableConfiguration[key] = value;
+    }
+}
+
 #pragma mark - Interface Builder Properties
 
 - (NSString *)controlName

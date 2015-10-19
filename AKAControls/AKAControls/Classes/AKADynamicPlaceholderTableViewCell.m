@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKAErrors;
+
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 
@@ -18,6 +20,9 @@
 
 - (void)renderItem:(id)item
 {
+    // TODO: remove this method or better refactor the whole thing
+    (void)item;
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 @end

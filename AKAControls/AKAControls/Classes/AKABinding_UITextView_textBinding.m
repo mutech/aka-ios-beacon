@@ -85,11 +85,13 @@
             ^BOOL (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
-                if (binding.textView.delegate != binding)
+                UITextView* textView = binding.textView;
+                id<UITextViewDelegate> textViewDelegate = textView.delegate;
+                if (textViewDelegate != binding)
                 {
-                    binding.originalText = binding.textView.text;
-                    binding.savedTextViewDelegate = binding.textView.delegate;
-                    binding.textView.delegate = binding;
+                    binding.originalText = textView.text;
+                    binding.savedTextViewDelegate = textViewDelegate;
+                    textView.delegate = binding;
                 }
                 else
                 {
@@ -127,13 +129,7 @@
 
 - (void)                   updateOriginalTextBeforeEditing
 {
-    NSString* previousValue = self.originalText;
-
     self.originalText = self.textView.text;
-    if (previousValue != nil && ![previousValue isEqualToString:self.originalText])
-    {
-        // Value has been changed without us noticing; TODO: check if we have to do something
-    }
 }
 
 - (void)                                viewValueDidChange
@@ -302,6 +298,7 @@
         [secondary textViewDidChange:textView];
     }
 
+    // TODO: consider to centralize scrolling/resizing in base view bindings or in form control view (-delegate?)
     [self autoScrollToVisibleIfNeeded];
 
     if (self.liveModelUpdates)
@@ -356,58 +353,60 @@
     // We only attempt to do the scrolling if the text view has it disabled
     if (!textView.isScrollEnabled)
     {
-        UITableView* tableView = [textView aka_superviewOfType:[UITableView class]];
-        if (tableView)
+        UITextPosition*_Nullable selectedTextRangeEnd = textView.selectedTextRange.end;
+        if (selectedTextRangeEnd)
         {
-            // Resize text view if needed
-            if (tableView.rowHeight == UITableViewAutomaticDimension)
-            {
-                // If textView grew vertically, ensure that the enclosing
-                // table view cell is resized by calling begin/end updates
-                CGSize size = textView.frame.size;
-                CGSize newSize = [textView sizeThatFits:CGSizeMake(size.width, FLT_MAX)];
-                if (size.height != newSize.height)
-                {
-                    // Disable animations to prevent table view from jumping up and down
-                    // (Bug in iOS8/9)
-                    BOOL wasAnimating = [UIView areAnimationsEnabled];
-                    [UIView setAnimationsEnabled:NO];
-                    [tableView beginUpdates];
-                    [tableView endUpdates];
-                    [UIView setAnimationsEnabled:wasAnimating];
-                }
-            }
+            CGRect cursorR = [textView caretRectForPosition:(UITextPosition*_Nonnull)selectedTextRangeEnd];
 
-            // Get text field position relative to scroll view
-            CGRect absoluteR = [textView convertRect:textView.frame
-                                              toView:tableView];
-            CGPoint position = absoluteR.origin;
-            // Get cursor position
-            CGRect cursorR = [textView caretRectForPosition:textView.selectedTextRange.end];
-            // Compose rectangle we want to see (here we might want to add some space above or below, see about that later).
-            CGRect scrollR = CGRectMake(cursorR.origin.x + position.x,
-                                        cursorR.origin.y + position.y,
-                                        cursorR.size.width, cursorR.size.height);
-            [tableView scrollRectToVisible:scrollR animated:NO];
-        }
-        else
-        {
-            // Not tested:
-            UIScrollView* enclosingScrollView = [textView aka_superviewOfType:[UIScrollView class]];
-            if (enclosingScrollView)
+            UITableView* tableView = [textView aka_superviewOfType:[UITableView class]];
+            if (tableView)
             {
+                // Resize text view if needed
+                if (tableView.rowHeight == UITableViewAutomaticDimension)
+                {
+                    // If textView grew vertically, ensure that the enclosing
+                    // table view cell is resized by calling begin/end updates
+                    CGSize size = textView.frame.size;
+                    CGSize newSize = [textView sizeThatFits:CGSizeMake(size.width, FLT_MAX)];
+                    if (size.height != newSize.height)
+                    {
+                        // Disable animations to prevent table view from jumping up and down
+                        // (Bug in iOS8/9)
+                        BOOL wasAnimating = [UIView areAnimationsEnabled];
+                        [UIView setAnimationsEnabled:NO];
+                        [tableView beginUpdates];
+                        [tableView endUpdates];
+                        [UIView setAnimationsEnabled:wasAnimating];
+                    }
+                }
 
                 // Get text field position relative to scroll view
                 CGRect absoluteR = [textView convertRect:textView.frame
-                                                  toView:enclosingScrollView];
+                                                  toView:tableView];
                 CGPoint position = absoluteR.origin;
-                // Get cursor position
-                CGRect cursorR = [textView caretRectForPosition:textView.selectedTextRange.end];
                 // Compose rectangle we want to see (here we might want to add some space above or below, see about that later).
                 CGRect scrollR = CGRectMake(cursorR.origin.x + position.x,
                                             cursorR.origin.y + position.y,
                                             cursorR.size.width, cursorR.size.height);
-                [enclosingScrollView scrollRectToVisible:scrollR animated:YES];
+                [tableView scrollRectToVisible:scrollR animated:NO];
+            }
+            else
+            {
+                // Not tested:
+                UIScrollView* enclosingScrollView = [textView aka_superviewOfType:[UIScrollView class]];
+                if (enclosingScrollView)
+                {
+
+                    // Get text field position relative to scroll view
+                    CGRect absoluteR = [textView convertRect:textView.frame
+                                                      toView:enclosingScrollView];
+                    CGPoint position = absoluteR.origin;
+                    // Compose rectangle we want to see (here we might want to add some space above or below, see about that later).
+                    CGRect scrollR = CGRectMake(cursorR.origin.x + position.x,
+                                                cursorR.origin.y + position.y,
+                                                cursorR.size.width, cursorR.size.height);
+                    [enclosingScrollView scrollRectToVisible:scrollR animated:YES];
+                }
             }
         }
     }

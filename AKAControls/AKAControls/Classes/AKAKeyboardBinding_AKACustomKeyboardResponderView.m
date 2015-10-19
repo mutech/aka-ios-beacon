@@ -121,6 +121,8 @@
 
 - (UIView*)   inputAccessoryViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
 {
+    NSParameterAssert(view == self.triggerView);
+
     return self.inputAccessoryView;
 }
 
@@ -243,7 +245,8 @@
 {
     NSParameterAssert(view == self.triggerView);
 
-    /*[[NSNotificationCenter defaultCenter] removeObserver:self
+    /* TODO: remove once the keyboard device-rotation bug is fixed:
+     [[NSNotificationCenter defaultCenter] removeObserver:self
      name:UIDeviceOrientationDidChangeNotification
      object:nil];*/
 
@@ -256,11 +259,13 @@
     }
 }
 
+/* TODO: remove once the keyboard device-rotation bug is fixed:
 - (void)deviceOrientationChanged:(NSNotification*)notification
 {
     // Not working:
     //[self.pickerView.superview setNeedsLayout];
     //[self.pickerView.superview layoutIfNeeded];
 }
+*/
 
 @end

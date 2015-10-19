@@ -293,6 +293,8 @@
         [attributes enumerateKeysAndObjectsUsingBlock:
          ^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop)
          {
+             (void)stop;
+
              NSAssert([key isKindOfClass:[NSString class]],
                       @"Binding expression attribute specification key is required to be a string, the name of the attribute or '*' representing all unspecified attributes: %@", key);
              NSString* attributeName = key;
@@ -332,6 +334,8 @@
     [self.attributes enumerateKeysAndObjectsUsingBlock:
      ^(NSString * _Nonnull key, AKABindingAttributeSpecification * _Nonnull obj, BOOL * _Nonnull stop)
      {
+         (void)stop;
+         
          NSMutableDictionary* value = [NSMutableDictionary new];
          [obj addToDictionary:value];
          attributes[key] = value;

@@ -27,6 +27,8 @@
 
 - (IBAction)becomeFirstResponderForSender:(id)sender
 {
+    (void)sender;
+
     if ([self shouldBecomeFirstResponder])
     {
         (void)[self becomeFirstResponder];
@@ -114,6 +116,8 @@
 
 - (void)setupControlConfiguration:(AKAMutableControlConfiguration *)controlConfiguration
 {
+    (void)controlConfiguration;
+
     AKAErrorAbstractMethodImplementationMissing();
 }
 
@@ -343,6 +347,7 @@
                          completion:
          ^(BOOL finished)
          {
+             (void)finished;
              [UIView animateWithDuration:.3
                                    delay:0
                                  options:UIViewAnimationOptionCurveEaseOut
@@ -350,9 +355,10 @@
               ^{
                   //[layer setBorderWidth:1.5];
                   [layer setBackgroundColor:[[self.tintColor
-                                              colorWithAlphaComponent:.16] CGColor]];              }
+                                              colorWithAlphaComponent:.16f] CGColor]];              }
                               completion:
-              ^(BOOL finished) {
+              ^(BOOL innerFinished) {
+                  (void)innerFinished;
               }
               ];
          }
@@ -376,7 +382,7 @@
              //{
              //    view.transform = CGAffineTransformIdentity;
              //}
-         } completion:^(BOOL finished) { }];
+         } completion:^(BOOL finished) { (void)finished; }];
     }
 }
 

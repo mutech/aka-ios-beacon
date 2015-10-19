@@ -45,9 +45,10 @@
 {
     BOOL result = YES;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner
+        result = [owner
                             control:control
                       shouldBinding:binding
                   updateTargetValue:oldTargetValue
@@ -123,9 +124,10 @@
 {
     BOOL result = YES;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner
+        result = [owner
                    control:control
              shouldBinding:binding
          updateSourceValue:oldSourceValue
@@ -171,9 +173,10 @@
                                     responderActivate:(req_UIResponder)responder
 {
     BOOL result = YES;
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:control shouldBinding:binding responderActivate:responder];
+        result = [owner control:control shouldBinding:binding responderActivate:responder];
     }
     return result;
 }
@@ -197,9 +200,10 @@
                                   responderDeactivate:(req_UIResponder)responder
 {
     BOOL result = YES;
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:control shouldBinding:binding responderDeactivate:responder];
+        result = [owner control:control shouldBinding:binding responderDeactivate:responder];
     }
     return result;
 }

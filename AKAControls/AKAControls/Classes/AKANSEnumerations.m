@@ -13,7 +13,7 @@
 + (opt_NSNumber)                              enumeratedValueForName:(opt_NSString)name
                                                         inDictionary:(req_NSDictionary)dictionary
 {
-    NSNumber* result = dictionary[name];
+    NSNumber* result = name.length > 0 ? dictionary[(req_NSString)name] : nil;
 
     NSAssert(result != nil, @"%@ is not a valid enumeration value code", name);
 
@@ -25,10 +25,15 @@
 {
     __block NSString* result = nil;
 
-    [dictionary enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL* _Nonnull stop) {
-         if ([((NSNumber*)obj) isEqualToNumber:value])
+    [dictionary enumerateKeysAndObjectsUsingBlock:^(req_id key, req_id obj, outreq_BOOL stop)
+     {
+         (void)stop;
+         if (value != nil && [obj isKindOfClass:[NSNumber class]])
          {
-             result = key;
+             if ([((req_NSNumber)obj) isEqualToNumber:(req_NSNumber)value])
+             {
+                 result = key;
+             }
          }
      }];
 

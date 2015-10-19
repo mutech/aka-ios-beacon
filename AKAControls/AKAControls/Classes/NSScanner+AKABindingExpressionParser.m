@@ -83,17 +83,15 @@ static NSString* const keywordControl = @"control";
                       withProvider:(opt_AKABindingProvider)provider
                              error:(out_NSError)error
 {
-    [self skipWhitespaceAndNewlineCharacters];
-    BOOL result = !self.isAtEnd;
-
     id primaryExpression = nil;
     NSDictionary* attributes = nil;
     Class bindingExpressionType = nil;
 
-    result = [self parseConstantOrScope:&primaryExpression
-                           withProvider:provider
-                                   type:&bindingExpressionType
-                                  error:error];
+    [self skipWhitespaceAndNewlineCharacters];
+    BOOL result = [self parseConstantOrScope:&primaryExpression
+                                withProvider:provider
+                                        type:&bindingExpressionType
+                                       error:error];
 
     if (result)
     {
@@ -162,9 +160,12 @@ static NSString* const keywordControl = @"control";
     }
     else if ([self skipCharacter:'('])
     {
-        result = [self parseNumberConstant:&constant
-                                      type:&type
-                                          error:error];
+        if ([self isAtValidFirstNumberCharacter])
+        {
+            result = [self parseNumberConstant:&constant
+                                          type:&type
+                                         error:error];
+        }
         if (result)
         {
             result = [self skipCharacter:')'];
@@ -174,7 +175,6 @@ static NSString* const keywordControl = @"control";
                                 withCode:AKAParseErrorUnterminatedParenthizedExpression
                               atPosition:self.scanLocation
                                   reason:@"Unterminated parenthisized expression"];
-                // error, missing )
             }
         }
     }
@@ -498,7 +498,7 @@ static NSString* const keywordControl = @"control";
     BOOL result = [self isAtValidFirstIdentifierCharacter];
     if (result)
     {
-        NSInteger start = self.scanLocation++;
+        NSUInteger start = self.scanLocation++;
         while ([self isAtValidIdentifierCharacter])
         {
             ++self.scanLocation;
@@ -665,7 +665,6 @@ static NSString* const keywordControl = @"control";
     if (!result || [self isAtValidDoubleCharacter])
     {
         self.scanLocation = savedLocation;
-        result = YES;
 
         type = [AKADoubleConstantBindingExpression class];
 
@@ -674,6 +673,13 @@ static NSString* const keywordControl = @"control";
         if (result && constantStore != nil)
         {
             *constantStore = [NSNumber numberWithDouble:doubleValue];
+        }
+        if (!result)
+        {
+            [self registerParseError:error
+                            withCode:AKAParseErrorInvalidNumberConstant
+                          atPosition:self.scanLocation
+                              reason:@"Invalid number constant"];
         }
     }
 
@@ -756,12 +762,13 @@ static NSString* const keywordControl = @"control";
     return result;
 }
 
-- (void)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
+- (BOOL)        registerParseError:(out_NSError)error
                           withCode:(AKABindingExpressionParseErrorCode)errorCode
                         atPosition:(NSUInteger)position
                             reason:(NSString*)reason
 {
-    if (error != nil)
+    BOOL result = (error != nil);
+    if (result)
     {
         NSString* context = @"";
         BOOL isOff = self.scanLocation > self.string.length;
@@ -775,6 +782,7 @@ static NSString* const keywordControl = @"control";
                                  userInfo:@{ NSLocalizedDescriptionKey: description,
                                              NSLocalizedFailureReasonErrorKey: reason }];
     }
+    return result;
 }
 
 #pragma mark - Scanner Tools (Convenience)

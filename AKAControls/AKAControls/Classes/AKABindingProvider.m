@@ -70,7 +70,7 @@
         }
         else
         {
-            NSAssert(@NO, @"Unexpected provider specification %@, expected an instance or sub class of AKABindingProvider", result);
+            NSAssert(NO, @"Unexpected provider specification %@, expected an instance or sub class of AKABindingProvider", result);
         }
     }
     return result;
@@ -89,7 +89,7 @@
     return expression.text;
 }
 
-- (void)                     setBindingExpressionText:(req_NSString)bindingExpressionText
+- (void)                     setBindingExpressionText:(opt_NSString)bindingExpressionText
                                           forSelector:(req_SEL)selector
                                                inView:(req_UIView)view
 {
@@ -103,7 +103,7 @@
         NSError* error = nil;
         AKABindingExpression* bindingExpression;
 
-        bindingExpression = [AKABindingExpression bindingExpressionWithString:bindingExpressionText
+        bindingExpression = [AKABindingExpression bindingExpressionWithString:(req_NSString)text
                                                               bindingProvider:self
                                                                         error:&error];
         if (bindingExpression == nil)
@@ -169,6 +169,8 @@
        req_AKABindingExpression attribute,
        outreq_BOOL              stop)
      {
+         (void)stop;
+         
          AKABindingAttributeSpecification* attributeSpec =
          self.specification.bindingSourceSpecification.attributes[attributeName];
 

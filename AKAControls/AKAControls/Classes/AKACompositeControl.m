@@ -119,7 +119,7 @@
     NSUInteger result = 0;
 
     NSAssert(self.countOfControls <= NSIntegerMax, @"index overflow");
-    for (NSInteger i = self.countOfControls - 1; i >= 0; --i)
+    for (NSInteger i = (NSInteger)self.countOfControls - 1; i >= 0; --i)
     {
         if ([self removeControlAtIndex:(NSUInteger)i])
         {
@@ -247,13 +247,14 @@
 
     if (control != nil && control != self)
     {
-        if (control.owner == self)
+        AKACompositeControl* owner = control.owner;
+        if (owner == self)
         {
             result = control;
         }
         else
         {
-            result = [self directMemberControl:control.owner];
+            result = [self directMemberControl:owner];
         }
     }
 
@@ -351,9 +352,9 @@
         if (!localStop && [control isKindOfClass:[AKACompositeControl class]])
         {
             AKACompositeControl* composite = (AKACompositeControl*)control;
-            [composite enumerateControlsRecursivelyUsingBlock:^(AKAControl* control, AKACompositeControl* owner, NSUInteger idx, BOOL* stop) {
-                block(control, owner, idx, &localStop);
-                *stop = localStop;
+            [composite enumerateControlsRecursivelyUsingBlock:^(AKAControl* innerControl, AKACompositeControl* owner, NSUInteger innerIdx, BOOL* innerStop) {
+                block(innerControl, owner, innerIdx, &localStop);
+                *innerStop = localStop;
             }];
         }
         *stop = localStop;
@@ -377,25 +378,33 @@
                                                 startIndex:(NSUInteger)startIndex
                                            continueInOwner:(BOOL)continueInOwner
 {
-    [self enumerateControlsUsingBlock:^(AKAControl* control, NSUInteger idx, BOOL* stop) {
-        __block BOOL localStop = NO;
+    [self enumerateControlsUsingBlock:^(AKAControl* control,
+                                        NSUInteger idx,
+                                        BOOL* stop)
+     {
+         __block BOOL localStop = NO;
 
-        if ([control isKindOfClass:[AKACompositeControl class]])
-        {
-            AKACompositeControl* composite = (AKACompositeControl*)control;
-            [composite enumerateLeafControlsUsingBlock:^(AKAControl* control, AKACompositeControl* owner, NSUInteger idx, BOOL* stop) {
-                block(control, owner, idx, &localStop);
-                *stop = localStop;
-            }
-                                            startIndex:0
-                                       continueInOwner:NO]; // NO: this instance handles siblings
-        }
-        else
-        {
-            block(control, self, idx, &localStop);
-        }
-        *stop = localStop;
-    }
+         if ([control isKindOfClass:[AKACompositeControl class]])
+         {
+             AKACompositeControl* composite = (AKACompositeControl*)control;
+
+             [composite enumerateLeafControlsUsingBlock:^(AKAControl* innerControl,
+                                                          AKACompositeControl* innerOwner,
+                                                          NSUInteger innerIdx,
+                                                          BOOL* innerStop)
+              {
+                  block(innerControl, innerOwner, innerIdx, &localStop);
+                  *innerStop = localStop;
+              }
+                                             startIndex:0
+                                        continueInOwner:NO]; // NO: this instance handles siblings
+         }
+         else
+         {
+             block(control, self, idx, &localStop);
+         }
+         *stop = localStop;
+     }
                            startIndex:startIndex
                       continueInOwner:continueInOwner];
 }
@@ -554,7 +563,7 @@
                                                    atIndex:(NSUInteger)index
 {
     NSUInteger count = 0;
-    NSUInteger numberOfSections = [dataSource numberOfSectionsInTableView:tableView];
+    NSUInteger numberOfSections = (NSUInteger)[dataSource numberOfSectionsInTableView:tableView];
 
     for (NSInteger sectionIndex = 0; sectionIndex < numberOfSections; ++sectionIndex)
     {
@@ -634,14 +643,14 @@
          willAddControl:(AKAControl*)memberControl
                 atIndex:(NSUInteger)index
 {
-    [self.owner control:self willAddControl:memberControl atIndex:index];
+    [self.owner control:compositeControl willAddControl:memberControl atIndex:index];
 }
 
 - (void)        control:(AKACompositeControl*)compositeControl
           didAddControl:(AKAControl*)memberControl
                 atIndex:(NSUInteger)index
 {
-    [self.owner control:self didAddControl:memberControl atIndex:index];
+    [self.owner control:compositeControl didAddControl:memberControl atIndex:index];
 }
 
 - (BOOL)  shouldControl:(AKACompositeControl*)compositeControl
@@ -663,14 +672,14 @@
       willRemoveControl:(AKAControl*)memberControl
               fromIndex:(NSUInteger)index
 {
-    [self.owner control:self willRemoveControl:memberControl fromIndex:index];
+    [self.owner control:compositeControl willRemoveControl:memberControl fromIndex:index];
 }
 
 - (void)        control:(AKACompositeControl*)compositeControl
        didRemoveControl:(AKAControl*)memberControl
               fromIndex:(NSUInteger)index
 {
-    [self.owner control:self didRemoveControl:memberControl fromIndex:index];
+    [self.owner control:compositeControl didRemoveControl:memberControl fromIndex:index];
 }
 
 @end

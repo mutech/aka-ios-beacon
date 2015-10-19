@@ -85,18 +85,24 @@
 
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
 {
-    // Most binding expressions do not support unbound properties (key path expressions only, for now)
+    (void)bindingContext;
+    // Implemented by subclasses if supported
     return nil;
 }
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
+    (void)bindingContext;
+    (void)changeObserver;
+    // Implemented by subclasses if supported
     return nil;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
+    (void)bindingContext;
+    // Has to be implemented by subclasses
     AKAErrorAbstractMethodImplementationMissing();
 }
 
@@ -119,6 +125,9 @@
 - (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
                                                indent:(NSString*)indent
 {
+    (void)level;
+    (void)indent;
+    // Implemented by subclasses if supported
     return nil;
 }
 
@@ -171,6 +180,8 @@
         [self.attributes enumerateKeysAndObjectsUsingBlock:
          ^(NSString * _Nonnull key, AKABindingExpression * _Nonnull obj, BOOL * _Nonnull stop)
          {
+             (void)stop;
+
              NSString* attributeValueText = [obj textWithNestingLevel:level+1
                                                                indent:indent];
 
@@ -234,14 +245,22 @@
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
-    AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
-    return [AKAProperty propertyOfWeakKeyValueTarget:self.array
-                                             keyPath:nil
-                                      changeObserver:changeObserver];
+    (void)bindingContext;
+    opt_AKAProperty result = nil;
+    opt_id target = self.array;
+    if (target)
+    {
+        AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
+        result = [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
+                                                   keyPath:nil
+                                            changeObserver:changeObserver];
+    }
+    return result;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
+    (void)bindingContext;
     AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
     return self.array;
 }
@@ -274,17 +293,18 @@
         [self.array enumerateObjectsUsingBlock:
          ^(AKABindingExpression * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
          {
-            NSString* itemText = [obj textWithNestingLevel:level+1
-                                                    indent:indent];
+             (void)stop;
+             NSString* itemText = [obj textWithNestingLevel:level+1
+                                                     indent:indent];
 
-            [result appendString:itemPrefix];
-            [result aka_appendString:indent repeat:level + 1];
+             [result appendString:itemPrefix];
+             [result aka_appendString:indent repeat:level + 1];
 
-            [result appendString:itemText];
-            if (idx < count - 1)
-            {
-                [result appendString:kArrayItemSeparator];
-            }
+             [result appendString:itemText];
+             if (idx < count - 1)
+             {
+                 [result appendString:kArrayItemSeparator];
+             }
          }];
     }
 
@@ -296,6 +316,7 @@
 }
 
 @end
+
 
 #pragma mark - AKAConstantBindingExpression
 #pragma mark -
@@ -330,13 +351,24 @@
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
-    return [AKAProperty propertyOfWeakKeyValueTarget:self.constant
-                                               keyPath:nil
-                                        changeObserver:changeObserver];
+    (void)bindingContext;
+
+    opt_id target = self.constant;
+    opt_AKAProperty result = nil;
+
+    if (target)
+    {
+        return [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
+                                                 keyPath:nil
+                                          changeObserver:changeObserver];
+    }
+    return result;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
+    (void)bindingContext;
+
     return self.constant;
 }
 
@@ -453,9 +485,10 @@
 - (NSString *)textForConstant
 {
     NSString* result = nil;
-    if (self.constant != nil)
+    opt_Class type = self.constant;
+    if (type != nil)
     {
-        result = [NSString stringWithFormat:@"<%@>", NSStringFromClass(self.constant)];
+        result = [NSString stringWithFormat:@"<%@>", NSStringFromClass((req_Class)type)];
     }
     return result;
 }
@@ -596,7 +629,14 @@
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext; // Not used yet, this will most likely be needed for computations requiring the context in addition to a property target
-    return [AKAProperty unboundPropertyWithKeyPath:self.keyPath];
+    
+    opt_AKAUnboundProperty result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result =  [AKAProperty unboundPropertyWithKeyPath:(req_NSString)keyPath];
+    }
+    return result;
 }
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
@@ -612,7 +652,13 @@
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
-    return [bindingContext dataContextValueForKeyPath:self.keyPath];
+    opt_id result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result = [bindingContext dataContextValueForKeyPath:(req_NSString)keyPath];
+    }
+    return result;
 }
 
 #pragma mark - Serialization
@@ -654,7 +700,13 @@
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
-    return [bindingContext dataContextValueForKeyPath:self.keyPath];
+    opt_id result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result = [bindingContext dataContextValueForKeyPath:(req_NSString)keyPath];
+    }
+    return result;
 }
 
 
@@ -684,7 +736,13 @@
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
-    return [bindingContext rootDataContextValueForKeyPath:self.keyPath];
+    opt_id result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result = [bindingContext rootDataContextValueForKeyPath:(req_NSString)keyPath];
+    }
+    return result;
 }
 
 #pragma mark - Serialization
@@ -707,13 +765,25 @@
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
                                     changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
-    return [bindingContext controlPropertyForKeyPath:self.keyPath
-                                  withChangeObserver:changeObserver];
+    opt_AKAProperty result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result = [bindingContext controlPropertyForKeyPath:(req_NSString)keyPath
+                                        withChangeObserver:changeObserver];
+    }
+    return result;
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
-    return [bindingContext controlValueForKeyPath:self.keyPath];
+    opt_id result = nil;
+    opt_NSString keyPath = self.keyPath;
+    if (keyPath.length > 0)
+    {
+        result = [bindingContext controlValueForKeyPath:(req_NSString)keyPath];
+    }
+    return result;
 }
 
 #pragma mark - Serialization

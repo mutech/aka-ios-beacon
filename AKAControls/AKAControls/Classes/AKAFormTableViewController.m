@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+// TODO: rewrite dynamic placeholder stuff from scratch
+
 @import AKACommons.AKATVMultiplexedDataSource;
 @import AKACommons.AKALog;
 @import AKACommons.NSObject_AKAAssociatedValues;
@@ -16,6 +18,8 @@
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKAControlDelegate.h"
+
+#import "AKAControl_Internal.h"
 
 @interface AKAArrayTableViewDataSourceAndDelegate: NSObject<UITableViewDelegate, UITableViewDataSource>
 
@@ -45,8 +49,9 @@
 
 - (AKADynamicPlaceholderTableViewCell *)placeholderCell
 {
-    NSAssert([self.placeholderControl.view isKindOfClass:[AKADynamicPlaceholderTableViewCell class]], @"Expected placeholder cell view type");
-    return (AKADynamicPlaceholderTableViewCell*)self.placeholderControl.view;
+    UIView* result = self.placeholderControl.view;
+    NSAssert([result isKindOfClass:[AKADynamicPlaceholderTableViewCell class]], @"Expected placeholder cell view type");
+    return (AKADynamicPlaceholderTableViewCell*)result;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -59,7 +64,9 @@
             numberOfRowsInSection:(NSInteger)section
 {
     (void)tableView;
-    return [self.placeholderControl countOfControls];
+    NSParameterAssert(section == 0);
+
+    return (NSInteger)[self.placeholderControl countOfControls];
 }
 
 - (UITableViewCell *)   tableView:(UITableView *)tableView
@@ -67,13 +74,19 @@
 {
     (void)tableView;
 
-    AKACompositeControl* memberControl = [self.placeholderControl objectInControlsAtIndex:indexPath.row];
+    NSAssert(indexPath.row >= 0, nil);
+    AKACompositeControl* memberControl = [self.placeholderControl objectInControlsAtIndex:(NSUInteger)indexPath.row];
 
     UITableViewCell* result = [memberControl aka_associatedValueForKey:@"strongCellReference"];
 
     if (result == nil)
     {
-        result = [tableView dequeueReusableCellWithIdentifier:self.placeholderCell.reuseIdentifier];
+        opt_NSString reuseIdentifier = self.placeholderCell.reuseIdentifier;
+        if (reuseIdentifier.length > 0)
+        {
+            result = [tableView dequeueReusableCellWithIdentifier:(req_NSString)reuseIdentifier];
+        }
+
         if (result == nil)
         {
             // TODO: this is probably not a good idea, however I didn't find a better way yet to use the
@@ -98,42 +111,66 @@
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Override static table view controller implementation for dynamic row height
+    (void)tableView;
+    (void)indexPath;
+
     return 44.0;
 }
 
 - (CGFloat)             tableView:tableView
           heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Override static table view controller implementation for dynamic row height
+    (void)tableView;
+    (void)indexPath;
+
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)             tableView:(UITableView *)tableView
          heightForHeaderInSection:(NSInteger)section
 {
+    // Override static table view controller implementation for dynamic row height
+    (void)tableView;
+    (void)section;
+
     return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)             tableView:(UITableView *)tableView
          heightForFooterInSection:(NSInteger)section
 {
+    // Override static table view controller implementation for dynamic row height
+    (void)tableView;
+    (void)section;
+
     return UITableViewAutomaticDimension;
 }
 
 - (NSInteger)           tableView:(UITableView *)tableView
     indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    (void)tableView;
+    (void)indexPath;
+
     return 0;
 }
 
 - (NSIndexPath *)       tableView:(UITableView *)tableView
          willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    (void)tableView;
+
     return indexPath;
 }
 
 - (void)                tableView:(UITableView *)tableView
           didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // Nothing to do, subclasses may want to override this
+    (void)tableView;
+    (void)indexPath;
 }
 
 @end
@@ -237,6 +274,9 @@ static NSString* const defaultDataSourceKey = @"default";
                                               didAddControl:(AKAControl *)memberControl
                                                     atIndex:(NSUInteger)index
 {
+    (void)compositeControl;
+    (void)index;
+
     if ([memberControl isKindOfClass:[AKADynamicPlaceholderTableViewCellCompositeControl class]])
     {
         // Please note that instances for placeholder controls which are added to the
@@ -265,6 +305,9 @@ static NSString* const defaultDataSourceKey = @"default";
                                            willRemoveControl:(AKAControl *)memberControl
                                                    fromIndex:(NSUInteger)index
 {
+    (void)compositeControl;
+    (void)index;
+
     // TODO: we need to inspect the sub tree of a removed control to
     // be sure that we detect all removals of placeholder cell controls.
     if ([memberControl isKindOfClass:[AKATableViewCellCompositeControl class]])
@@ -283,10 +326,11 @@ static NSString* const defaultDataSourceKey = @"default";
     NSString* key = [placeholder aka_associatedValueForKey:@"dataSourceKey"];
     if (key == nil)
     {
-        if ([placeholder.view isKindOfClass:[UITableViewCell class]] &&
-            ((UITableViewCell*)placeholder.view).reuseIdentifier.length > 0)
+        UIView* view = placeholder.view;
+        if ([view isKindOfClass:[UITableViewCell class]] &&
+            ((UITableViewCell*)view).reuseIdentifier.length > 0)
         {
-            key = ((UITableViewCell*)placeholder.view).reuseIdentifier;
+            key = ((UITableViewCell*)view).reuseIdentifier;
         }
         else
         {
@@ -307,11 +351,6 @@ static NSString* const defaultDataSourceKey = @"default";
 
 - (AKATVDataSourceSpecification*)dataSourceForDynamicPlaceholder:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
-    // TODO: reimplement
-    return nil;
-    /*
-    AKADynamicPlaceholderTableViewCell* cell = (id)placeholder.view;
-
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
     // Entry point for sub classes to provide an alternative data source by redefining
@@ -319,31 +358,25 @@ static NSString* const defaultDataSourceKey = @"default";
     AKATVDataSourceSpecification* dataSource = [self dataSourceForKey:key
                                                         inMultiplexer:self.multiplexedDataSource];
 
-    if (dataSource == nil && config.valueKeyPath.length > 0)
+    if (dataSource == nil)
     {
-        id<UITableViewDataSource> uitvDataSource = nil;
-        id<UITableViewDelegate> uitvDelegate = nil;
+        AKATableViewCellCollectionBinding* collectionBinding = placeholder.collectionBinding;
 
-        if (config.dataSourceKeyPath.length > 0)
-        {
-            // Use the configured data source
-            uitvDataSource = [placeholder dataContextValueForKeyPath:config.dataSourceKeyPath];
-        }
-        else if (config.valueKeyPath.length > 0)
+        id<UITableViewDataSource> uitvDataSource = collectionBinding.tableViewDataSource;
+        id<UITableViewDelegate> uitvDelegate = collectionBinding.tableViewDelegate;
+        NSArray* data = collectionBinding.data;
+
+        if (uitvDataSource == nil && data != nil)
         {
             // Create a data source for configured value (-> expecting a collection value)
             uitvDataSource = [[AKAArrayTableViewDataSourceAndDelegate alloc] initWithControl:placeholder];
-            // Use the delegate implementation provided by the data source by default, might
-            // be overwritten below
-            uitvDelegate = (id)uitvDataSource;
             // Keep a strong reference of the data source:
             [placeholder aka_setAssociatedValue:uitvDataSource forKey:@"arrayDataSource"];
         }
 
-        if (config.delegateKeyPath.length > 0)
+        if (uitvDelegate == nil && [uitvDataSource conformsToProtocol:@protocol(UITableViewDelegate)])
         {
-            // Use the configured delegate
-            uitvDelegate = [placeholder dataContextValueForKeyPath:config.delegateKeyPath];
+            uitvDelegate = (id<UITableViewDelegate>)uitvDataSource;
         }
 
         if (uitvDataSource != nil)
@@ -353,7 +386,7 @@ static NSString* const defaultDataSourceKey = @"default";
                                                             forKey:key];
         }
     }
-    return dataSource;*/
+    return dataSource;
 }
 
 #pragma mark - Hiding and Unhiding Table View Row Controls
@@ -361,7 +394,10 @@ static NSString* const defaultDataSourceKey = @"default";
 - (NSArray*)                            rowControlsTaggedWith:(NSString*)tag
 {
     NSMutableArray* result = [NSMutableArray new];
-    [self.formControl enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop) {
+    [self.formControl enumerateControlsUsingBlock:^(AKAControl *control, NSUInteger index, BOOL *stop)
+     {
+         (void)index;
+         (void)stop;
         if ([control isKindOfClass:[AKATableViewCellCompositeControl class]])
         {
             if ([control.tags containsObject:tag])
@@ -380,14 +416,15 @@ static NSString* const defaultDataSourceKey = @"default";
     if (order != NSOrderedSame)
     {
         AKATVDataSourceSpecification* dsSpec = [self.multiplexedDataSource dataSourceForKey:@"default"];
-        result = [rowControls sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            AKATableViewCellCompositeControl* cell1 = obj1;
-            AKATableViewCellCompositeControl* cell2 = obj2;
-            NSIndexPath* i1 = [dsSpec tableViewMappedIndexPath:cell1.indexPath];
-            NSIndexPath* i2 = [dsSpec tableViewMappedIndexPath:cell2.indexPath];
-            NSComparisonResult result = order == NSOrderedAscending ? [i1 compare:i2] : [i2 compare:i1];
-            return result;
-        }];
+        result = [rowControls sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2)
+                  {
+                      AKATableViewCellCompositeControl* cell1 = obj1;
+                      AKATableViewCellCompositeControl* cell2 = obj2;
+                      NSIndexPath* i1 = [dsSpec tableViewMappedIndexPath:cell1.indexPath];
+                      NSIndexPath* i2 = [dsSpec tableViewMappedIndexPath:cell2.indexPath];
+
+                      return order == NSOrderedAscending ? [i1 compare:i2] : [i2 compare:i1];
+                  }];
     }
     return result;
 }
@@ -462,31 +499,16 @@ static NSString* const defaultDataSourceKey = @"default";
 
 - (BOOL)               updateDynamicRowsForPlaceholderControl:(AKADynamicPlaceholderTableViewCellCompositeControl*)placeholder
 {
-    return NO;
-    /*
     NSString* key = [self dataSourceKeyForDynamicPlaceholder:placeholder];
 
     AKATVDataSourceSpecification* defaultDS = [self.multiplexedDataSource dataSourceForKey:defaultDataSourceKey];
-    AKADynamicPlaceholderTableViewCellBindingConfiguraton* config = (id)placeholder.viewBinding.configuration;
+    AKATableViewCellCollectionBinding* collectionBinding = placeholder.collectionBinding;
 
     NSIndexPath* targetIndexPath = [defaultDS tableViewMappedIndexPath:placeholder.indexPath];
     BOOL result = (targetIndexPath != nil);
 
-    id modelValue = placeholder.modelValue;
-    NSArray* items = nil;
-    if ([modelValue isKindOfClass:[NSSet class]])
-    {
-        items = [((NSSet*)modelValue) allObjects];
-    }
-    else if ([modelValue isKindOfClass:[NSMutableArray class]])
-    {
-        items = [NSArray arrayWithArray:modelValue];
-    }
-    else if ([modelValue isKindOfClass:[NSArray class]])
-    {
-        items = modelValue;
-    }
-    else
+    NSArray* items = collectionBinding.data;
+    if (items == nil)
     {
         items = @[];
     }
@@ -503,12 +525,12 @@ static NSString* const defaultDataSourceKey = @"default";
     if (placeholder.actualItems.count > 0)
     {
         oldItems = [NSMutableArray arrayWithArray:placeholder.actualItems];
-        for (NSInteger i=oldItems.count-1; i >= 0; --i)
+        for (NSInteger i = (NSInteger)oldItems.count - 1; i >= 0; --i)
         {
-            id oldItem = oldItems[i];
+            id oldItem = oldItems[(NSUInteger)i];
             if ([items indexOfObject:oldItem] == NSNotFound)
             {
-                [oldItems removeObjectAtIndex:i];
+                [oldItems removeObjectAtIndex:(NSUInteger)i];
                 NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                       inSection:targetIndexPath.section];
                 if (result)
@@ -530,15 +552,15 @@ static NSString* const defaultDataSourceKey = @"default";
 
     for (NSInteger i=0; i < ((NSArray*)items).count; ++i)
     {
-        id item = ((NSArray*)items)[i];
-        NSInteger oldIndex = [oldItems indexOfObject:item];
+        id item = ((NSArray*)items)[(NSUInteger)i];
+        NSUInteger oldIndex = [oldItems indexOfObject:item];
 
         if (oldIndex == NSNotFound)
         {
             NSIndexPath* tip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                   inSection:targetIndexPath.section];
-            NSIndexPath* sourceIndexPath = [NSIndexPath indexPathForRow:config.rowIndex+i
-                                                              inSection:config.sectionIndex];
+            NSIndexPath* sourceIndexPath = [NSIndexPath indexPathForRow:collectionBinding.rowIndex+i
+                                                              inSection:collectionBinding.sectionIndex];
             if (result)
             {
                 [self.multiplexedDataSource insertRowsFromDataSource:key
@@ -557,7 +579,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
             if (result)
             {
-                NSIndexPath* fromTip = [NSIndexPath indexPathForRow:targetIndexPath.row+oldIndex + insertedItemCount
+                NSIndexPath* fromTip = [NSIndexPath indexPathForRow:targetIndexPath.row + (NSInteger)(oldIndex + insertedItemCount)
                                                           inSection:targetIndexPath.section];
                 NSIndexPath* toTip = [NSIndexPath indexPathForRow:targetIndexPath.row+i
                                                         inSection:targetIndexPath.section];
@@ -578,13 +600,11 @@ static NSString* const defaultDataSourceKey = @"default";
     }
 
     // (Re-)create controls for dynamic rows
-    NSInteger i=0;
+    //NSInteger i=0;
     for (id item in items)
     {
-        AKACompositeViewBindingConfiguration* configuration = AKACompositeViewBindingConfiguration.new;
-        configuration.valueKeyPath = [NSString stringWithFormat:@"#%ld", (long)i++];
-        AKACompositeControl* composite = [AKACompositeControl controlWithOwner:placeholder
-                                                                 configuration:configuration];
+        //configuration.valueKeyPath = [NSString stringWithFormat:@"#%ld", (long)i++];
+        AKACompositeControl* composite = [[AKACompositeControl alloc] initWithDataContext:item configuration:nil];
         // keep a strong reference to the item
         [composite aka_setAssociatedValue:item forKey:@"data_item"];
         [placeholder addControl:composite];
@@ -603,7 +623,7 @@ static NSString* const defaultDataSourceKey = @"default";
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
 
-    return result;*/
+    return result;
 }
 
 #pragma mark - Managing Activation
@@ -616,7 +636,8 @@ static NSString* const defaultDataSourceKey = @"default";
         for(NSInteger ri = 0; ri < [self tableView:self.tableView numberOfRowsInSection:si]; ++ri)
         {
             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:ri inSection:si];
-            id c = [self.tableView.dataSource tableView:self.tableView cellForRowAtIndexPath:indexPath];
+            UITableView* tableView = self.tableView;
+            id c = [tableView.dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
             if (c == cell)
             {
                 result = indexPath;
@@ -633,6 +654,7 @@ static NSString* const defaultDataSourceKey = @"default";
                                              atScrollPosition:(UITableViewScrollPosition)scrollPosition
                                                      animated:(BOOL)animated
 {
+    (void)tableView;
     BOOL result = NO;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if (indexPath == nil)
@@ -643,7 +665,7 @@ static NSString* const defaultDataSourceKey = @"default";
     {
         result = YES;
         [self.tableView scrollToRowAtIndexPath:indexPath
-                              atScrollPosition:UITableViewScrollPositionNone
+                              atScrollPosition:scrollPosition
                                       animated:animated];
     }
     return result;
@@ -653,6 +675,9 @@ static NSString* const defaultDataSourceKey = @"default";
                                                       binding:(req_AKABinding)binding
                                         responderWillActivate:(req_UIResponder)responder
 {
+    (void)control;
+    (void)binding;
+
     if ([responder isKindOfClass:[UIView class]])
     {
         UIView* view = (UIView*)responder;
@@ -678,6 +703,9 @@ static NSString* const defaultDataSourceKey = @"default";
                                                     changedTo:(NSError *)newError
                                updateValidationMessageDisplay:(void (^)())block
 {
+    (void)oldError;
+    (void)newError;
+
     __block BOOL result = NO;
     // Make sure the table view cell's layout is updated to accomodate for a possible error message
     [UIView animateWithDuration:.2
@@ -700,9 +728,7 @@ static NSString* const defaultDataSourceKey = @"default";
 
          result = YES;
      }
-                     completion:^(BOOL finished) {
-
-                     }];
+                     completion:nil];
     return result;
 }
 

@@ -12,13 +12,14 @@
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKABinding.h"
+#import "AKABindingDelegate.h"
 #import "AKABindingExpression.h"
 
 
 #pragma mark - AKABinding Private Interface
 #pragma mark -
 
-@interface AKABinding() {
+@interface AKABinding () {
     BOOL _isUpdatingTargetValueForSourceValueChange;
 }
 
@@ -37,6 +38,7 @@
     {
         _isUpdatingTargetValueForSourceValueChange = NO;
     }
+
     return self;
 }
 
@@ -51,14 +53,25 @@
         _delegate = delegate;
 
         __weak AKABinding* weakSelf = self;
-        _bindingSource = [bindingExpression bindingSourcePropertyInContext:bindingContext
+        opt_AKAProperty bs = [bindingExpression bindingSourcePropertyInContext:bindingContext
                                                              changeObserer:
                           ^(opt_id oldValue, opt_id newValue)
                           {
                               [weakSelf sourceValueDidChangeFromOldValue:oldValue
                                                               toNewValue:newValue];
                           }];
+        if (bs != nil)
+        {
+            _bindingSource = (req_AKAProperty)bs;
+        }
+        else
+        {
+            AKALogError(@"Failed to create binding source from expression %@ in context %@",
+                        bindingExpression.description, bindingContext);
+            self = nil;
+        }
     }
+
     return self;
 }
 
@@ -75,11 +88,15 @@
                                               toTargetValue:(out_id)targetValueStore
                                                       error:(out_NSError)error
 {
+    (void)error; // passthrough, never fails
+
     BOOL result = YES;
+
     if (targetValueStore)
     {
         *targetValueStore = sourceValue;
     }
+
     return result;
 }
 
@@ -97,11 +114,13 @@
     if (result && self.bindingSource != nil)
     {
         result = [self.bindingSource validateValue:&validatedValue error:error];
+
         if (validatedValue != *sourceValueStore)
         {
             *sourceValueStore = validatedValue;
         }
     }
+
     return result;
 }
 
@@ -117,11 +136,13 @@
     if (result && self.bindingTarget != nil)
     {
         result = [self.bindingTarget validateValue:&validatedValue error:error];
+
         if (validatedValue != *targetValueStore)
         {
             *targetValueStore = validatedValue;
         }
     }
+
     return result;
 }
 
@@ -130,11 +151,13 @@
 - (void)             targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
                                      toTargetValueWithError:(opt_NSError)error
 {
-    if ([self.delegate respondsToSelector:@selector(binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)])
+    id<AKABindingDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)])
     {
-        [self.delegate                      binding:self
-             targetUpdateFailedToConvertSourceValue:sourceValue
-                             toTargetValueWithError:error];
+        [delegate                       binding:self
+         targetUpdateFailedToConvertSourceValue:sourceValue
+                         toTargetValueWithError:error];
     }
 }
 
@@ -142,12 +165,14 @@
                                    convertedFromSourceValue:(opt_id)sourceValue
                                                   withError:(opt_NSError)error
 {
-    if ([self.delegate respondsToSelector:@selector(binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)])
+    id<AKABindingDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)])
     {
-        [self.delegate                      binding:self
-            targetUpdateFailedToValidateTargetValue:targetValue
-                           convertedFromSourceValue:sourceValue
-                                          withError:error];
+        [delegate                        binding:self
+         targetUpdateFailedToValidateTargetValue:targetValue
+                        convertedFromSourceValue:sourceValue
+                                       withError:error];
     }
 }
 
@@ -155,12 +180,29 @@
                                              toInvalidValue:(opt_id)newSourceValue
                                                   withError:(opt_NSError)error
 {
+    id<AKABindingDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:toInvalidValue:withError:)])
+    {
+        [delegate
+                                  binding:self
+         sourceValueDidChangeFromOldValue:oldSourceValue
+                           toInvalidValue:newSourceValue
+                                withError:error];
+    }
 }
 
+// This is not a delegate method, it serves as a shortcut to prevent updates in subclasses before
+// the source value is converted to the target value.
 - (BOOL)              shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
                                                    changeTo:(opt_id)newSourceValue
                                                 validatedTo:(opt_id)sourceValue
 {
+    // Implemented by subclasses to prevent update cycles:
+    (void)oldSourceValue;
+    (void)newSourceValue;
+    (void)sourceValue;
+    
     return YES;
 }
 
@@ -170,14 +212,19 @@
                                                    changeTo:(opt_id)newSourceValue
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(shouldUpdateTargetValue:to:forSourceValue:changeTo:)])
+
+    id<AKABindingDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(shouldUpdateTargetValue:to:forSourceValue:changeTo:)])
     {
-        result = [self.delegate shouldBinding:self
-                            updateTargetValue:oldTargetValue
-                                           to:newTargetValue
-                               forSourceValue:oldSourceValue
-                                     changeTo:newSourceValue];
+        result = [delegate
+                      shouldBinding:self
+                  updateTargetValue:oldTargetValue
+                                 to:newTargetValue
+                     forSourceValue:oldSourceValue
+                           changeTo:newSourceValue];
     }
+
     return result;
 }
 
@@ -185,22 +232,24 @@
                                                          to:(opt_id)newTargetValue
 {
     _isUpdatingTargetValueForSourceValueChange = YES;
-    if ([self.delegate respondsToSelector:@selector(binding:willUpdateTargetValue:to:)])
+
+    id<AKABindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:willUpdateTargetValue:to:)])
     {
-        [self.delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
+        [delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
     }
 }
 
 - (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
                                                          to:(opt_id)newTargetValue
 {
-    if ([self.delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
+    id<AKABindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
     {
-        [self.delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
+        [delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
     }
     _isUpdatingTargetValueForSourceValueChange = NO;
 }
-
 
 #pragma mark - Target Value Updates
 
@@ -211,13 +260,16 @@
      ^{
          id targetValue = nil;
          NSError* error;
+
          if ([self convertSourceValue:newSourceValue
                         toTargetValue:&targetValue
                                 error:&error])
          {
-             if ([self validateTargetValue:&targetValue error:&error])
+             if ([self validateTargetValue:&targetValue
+                                     error:&error])
              {
                  id oldTargetValue = self.bindingTarget.value;
+
                  if ([self shouldUpdateTargetValue:oldTargetValue
                                                 to:targetValue
                                     forSourceValue:oldSourceValue
@@ -248,23 +300,26 @@
                             waitForCompletion:NO];
 }
 
-
 #pragma mark - Change Tracking
 
 - (BOOL)                              startObservingChanges
 {
     BOOL result = YES;
+
     result &= [self.bindingSource startObservingChanges];
     result &= [self.bindingTarget startObservingChanges];
     [self updateTargetValueForSourceValue:[NSNull null] changeTo:self.bindingSource.value];
+
     return result;
 }
 
 - (BOOL)                               stopObservingChanges
 {
     BOOL result = YES;
+
     result &= [self.bindingTarget stopObservingChanges];
     result &= [self.bindingSource stopObservingChanges];
+
     return result;
 }
 
@@ -273,6 +328,7 @@
 {
     NSError* error;
     id sourceValue = newSourceValue;
+
     if ([self validateSourceValue:&sourceValue error:&error])
     {
         if ([self shouldUpdateTargetValueForSourceValue:oldSourceValue
@@ -292,4 +348,3 @@
 }
 
 @end
-

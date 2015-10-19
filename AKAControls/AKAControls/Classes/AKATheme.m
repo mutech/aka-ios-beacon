@@ -225,9 +225,10 @@
     {
         result &= [delegate theme:self shouldApplyViewCustomizations:customizations toViews:views];
     }
-    if (result && [self.delegate respondsToSelector:@selector(theme:shouldApplyViewCustomizations:toViews:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(theme:shouldApplyViewCustomizations:toViews:)])
     {
-        result &= [self.delegate theme:self shouldApplyViewCustomizations:customizations toViews:views];
+        result &= [selfDelegate theme:self shouldApplyViewCustomizations:customizations toViews:views];
     }
     return result;
 }
@@ -238,9 +239,10 @@
     {
         [delegate themeWillRemoveConstraints:self];
     }
-    if ([self.delegate respondsToSelector:@selector(themeWillRemoveConstraints:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(themeWillRemoveConstraints:)])
     {
-        [self.delegate themeWillRemoveConstraints:self];
+        [selfDelegate themeWillRemoveConstraints:self];
     }
 }
 
@@ -261,9 +263,10 @@
                           inViews:views
                        fromTarget:target];
     }
-    if (result && [self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToView:withKey:inViews:fromTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToView:withKey:inViews:fromTarget:)])
     {
-        result &= [self.delegate theme:self
+        result &= [selfDelegate theme:self
                shouldRemoveConstraints:constraints
                          relatedToView:view
                                withKey:key
@@ -290,9 +293,10 @@
                           withKey:key
                           inViews:views];
     }
-    if (result && [self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToTarget:fromView:withKey:inViews:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(theme:shouldRemoveConstraints:relatedToTarget:fromView:withKey:inViews:)])
     {
-        result &= [self.delegate theme:self
+        result &= [selfDelegate theme:self
                shouldRemoveConstraints:constraints
                        relatedToTarget:target
                               fromView:view
@@ -317,9 +321,10 @@
                                           withKey:key
                                           inViews:views];
     }
-    if (result && [self.delegate respondsToSelector:@selector(theme:shouldRemoveConstraintsOnlyRelatedToSelf:fromView:withKey:inViews:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(theme:shouldRemoveConstraintsOnlyRelatedToSelf:fromView:withKey:inViews:)])
     {
-        result &= [self.delegate                 theme:self
+        result &= [selfDelegate                 theme:self
          shouldRemoveConstraintsOnlyRelatedToSelf:constraints
                                          fromView:view
                                           withKey:key
@@ -338,9 +343,10 @@
    didRemoveConstraints:constraints
                fromView:view];
     }
-    if ([self.delegate respondsToSelector:@selector(theme:didRemoveConstraints:fromView:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(theme:didRemoveConstraints:fromView:)])
     {
-        [self.delegate theme:self
+        [selfDelegate theme:self
    didRemoveConstraints:constraints
                fromView:view];
     }
@@ -352,9 +358,10 @@
     {
         [delegate themeDidRemoveConstraints:self];
     }
-    if ([self.delegate respondsToSelector:@selector(themeDidRemoveConstraints:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(themeDidRemoveConstraints:)])
     {
-        [self.delegate themeDidRemoveConstraints:self];
+        [selfDelegate themeDidRemoveConstraints:self];
     }
 }
 
@@ -367,9 +374,10 @@
       didCheckApplicabilityToViews:(NSDictionary *)views
                         withResult:(BOOL)result
 {
-    if ([self.delegate respondsToSelector:@selector(layout:didCheckApplicabilityToViews:withResult:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:didCheckApplicabilityToViews:withResult:)])
     {
-        [self.delegate layout:layout
+        [selfDelegate layout:layout
  didCheckApplicabilityToViews:views
                    withResult:result];
     }
@@ -380,9 +388,10 @@ willBeAppliedToViews:(NSDictionary *)views
              metrics:(NSDictionary *)metrics
        defaultTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(layout:willBeAppliedToViews:metrics:defaultTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:willBeAppliedToViews:metrics:defaultTarget:)])
     {
-        [self.delegate layout:layout
+        [selfDelegate layout:layout
          willBeAppliedToViews:views
                       metrics:metrics
                 defaultTarget:target];
@@ -394,9 +403,10 @@ hasBeenAppliedToViews:(NSDictionary *)views
               metrics:(NSDictionary *)metrics
         defaultTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(layout:hasBeenAppliedToViews:metrics:defaultTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(layout:hasBeenAppliedToViews:metrics:defaultTarget:)])
     {
-        [self.delegate layout:layout
+        [selfDelegate layout:layout
         hasBeenAppliedToViews:views
                       metrics:metrics
                 defaultTarget:target];
@@ -410,9 +420,10 @@ hasBeenAppliedToViews:(NSDictionary *)views
                        inTarget:(UIView *)target
 {
     BOOL result = YES;
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:shouldInstallConstraints:inTarget:)])
     {
-        result &= [self.delegate constraintSpecification:constraintSpecification
+        result &= [selfDelegate constraintSpecification:constraintSpecification
                                 shouldInstallConstraints:nsLayoutConstraints
                                                 inTarget:target];
     }
@@ -423,9 +434,10 @@ hasBeenAppliedToViews:(NSDictionary *)views
          willInstallConstraints:(NSArray *)nsLayoutConstraints
                        inTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:willInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:constraintSpecification
+        [selfDelegate constraintSpecification:constraintSpecification
                         willInstallConstraints:nsLayoutConstraints
                                       inTarget:target];
     }
@@ -435,9 +447,10 @@ hasBeenAppliedToViews:(NSDictionary *)views
           didInstallConstraints:(NSArray *)nsLayoutConstraints
                        inTarget:(UIView *)target
 {
-    if ([self.delegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
+    id<AKAThemeDelegate> selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(constraintSpecification:didInstallConstraints:inTarget:)])
     {
-        [self.delegate constraintSpecification:constraintSpecification
+        [selfDelegate constraintSpecification:constraintSpecification
                          didInstallConstraints:nsLayoutConstraints
                                       inTarget:target];
     }

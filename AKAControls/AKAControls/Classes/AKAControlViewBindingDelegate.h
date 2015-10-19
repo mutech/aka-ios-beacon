@@ -47,6 +47,20 @@ typedef AKAControlViewBinding*_Nonnull req_AKAControlViewBinding;
                                    convertedFromTargetValue:(opt_id)targetValue
                                                   withError:(opt_NSError)error;
 
+// TODO: support delegate method in AKAControlDelegate propagation:
+/**
+ * Informs the delegate, that the target (f.e. view-) value changed to the specified
+ * invalid value. The source value will not be updated by the binding and the target
+ * value remains "dirty". This is a common situation occuring when the user enters
+ * invalid data. The delegate or the controls framework should present a validation
+ * message (depending on the configuration and setup of the framework and the app).
+ */
+@optional
+- (void)                                            binding:(req_AKAControlViewBinding)binding
+                           targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                             toInvalidValue:(opt_id)newTargetValue
+                                                  withError:(opt_NSError)error;
+
 @optional
 /**
  * Determines whether the binding should update the source value from the specified

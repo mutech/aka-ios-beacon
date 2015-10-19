@@ -21,13 +21,14 @@
 - (BOOL)                                shouldBinding:(req_AKAKeyboardControlViewBinding)binding
                                     responderActivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding); // cast to id for nullability warning
     NSParameterAssert(responder != nil);
 
+    AKACompositeControl* owner = self.owner;
     BOOL result = YES;
-    if (self.owner)
+    if (owner)
     {
-        result = [self.owner control:self shouldBinding:binding responderActivate:responder];
+        result = [owner control:self shouldBinding:binding responderActivate:responder];
     }
     return result;
 }
@@ -35,7 +36,7 @@
 - (void)                                      binding:(req_AKAKeyboardControlViewBinding)binding
                                 responderWillActivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding);
     NSParameterAssert(responder != nil);
 
     [self.owner control:self binding:binding responderWillActivate:responder];
@@ -44,7 +45,7 @@
 - (void)                                      binding:(req_AKAKeyboardControlViewBinding)binding
                                  responderDidActivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding);
     NSParameterAssert(responder != nil);
 
     [self.owner control:self binding:binding responderDidActivate:responder];
@@ -53,13 +54,15 @@
 - (BOOL)                                shouldBinding:(req_AKAKeyboardControlViewBinding)binding
                                   responderDeactivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding);
     NSParameterAssert(responder != nil);
 
     BOOL result = YES;
-    if (self.owner)
+
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:self shouldBinding:binding responderDeactivate:responder];
+        result = [owner control:self shouldBinding:binding responderDeactivate:responder];
     }
     return result;
 }
@@ -67,7 +70,7 @@
 - (void)                                      binding:(req_AKAKeyboardControlViewBinding)binding
                               responderWillDeactivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding);
     NSParameterAssert(responder != nil);
 
     [self.owner control:self binding:binding responderWillDeactivate:responder];
@@ -76,7 +79,7 @@
 - (void)                                      binding:(req_AKAKeyboardControlViewBinding)binding
                                responderDidDeactivate:(req_UIResponder)responder
 {
-    NSParameterAssert(binding != nil && binding == self.controlViewBinding);
+    NSParameterAssert(binding != nil && (id)binding == self.controlViewBinding);
     NSParameterAssert(responder != nil);
 
     [self.owner control:self binding:binding responderDidDeactivate:responder];
@@ -101,9 +104,10 @@
 {
     BOOL result = NO;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:self binding:binding responderRequestedActivateNext:responder];
+        result = [owner control:self binding:binding responderRequestedActivateNext:responder];
     }
     return result;
 }
@@ -125,9 +129,10 @@
 {
     BOOL result = NO;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:self binding:binding responderRequestedGoOrDone:responder];
+        result = [owner control:self binding:binding responderRequestedGoOrDone:responder];
     }
     return result;
 }

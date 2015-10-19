@@ -3,6 +3,8 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
+// TODO: Consider refactoring to inherit from AKACompositeControlView and add themability features on top of it
+
 @import UIKit;
 
 #import "AKAControlViewProtocol.h"

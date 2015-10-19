@@ -44,6 +44,8 @@
                                               toSourceValue:(out_id)sourceValueStore
                                                       error:(out_NSError)error
 {
+    (void)error; // passthrough, never fails
+
     BOOL result = YES;
     if (sourceValueStore)
     {
@@ -58,9 +60,10 @@
                                    convertedFromTargetValue:(opt_id)targetValue
                                                   withError:(opt_NSError)error
 {
-    if ([self.delegate respondsToSelector:@selector(binding:sourceUpdateFailedToValidateSourceValue:convertedFromTargetValue:withError:)])
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceUpdateFailedToValidateSourceValue:convertedFromTargetValue:withError:)])
     {
-        [self.delegate                      binding:self
+        [delegate                      binding:self
             sourceUpdateFailedToValidateSourceValue:sourceValue
                            convertedFromTargetValue:targetValue
                                           withError:error];
@@ -70,9 +73,10 @@
 - (void)             sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue
                                      toSourceValueWithError:(opt_NSError)error
 {
-    if ([self.delegate respondsToSelector:@selector(binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceUpdateFailedToConvertTargetValue:toSourceValueWithError:)])
     {
-        [self.delegate                      binding:self
+        [delegate                      binding:self
              sourceUpdateFailedToConvertTargetValue:targetValue
                              toSourceValueWithError:error];
     }
@@ -82,6 +86,10 @@
                                                    changeTo:(opt_id)newSourceValue
                                                 validatedTo:(opt_id)sourceValue
 {
+    (void)oldSourceValue;
+    (void)newSourceValue;
+    (void)sourceValue;
+
     // Break update cycles
     return !self.isUpdatingSourceValueForTargetValueChange;
 }
@@ -90,6 +98,10 @@
                                                    changeTo:(opt_id)newTargetValue
                                                 validatedTo:(opt_id)targetValue
 {
+    (void)oldTargetValue;
+    (void)newTargetValue;
+    (void)targetValue;
+
     // Break update cycles
     return !self.isUpdatingTargetValueForSourceValueChange;
 }
@@ -98,7 +110,14 @@
                                              toInvalidValue:(opt_id)newTargetValue
                                                   withError:(opt_NSError)error
 {
-
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:targetValueDidChangeFromOldValue:toInvalidValue:withError:)])
+    {
+        [delegate                       binding:self
+               targetValueDidChangeFromOldValue:oldTargetValue
+                                 toInvalidValue:newTargetValue
+                                      withError:error];
+    }
 }
 
 
@@ -106,18 +125,20 @@
                                                          to:(opt_id)newSourceValue
 {
     _isUpdatingSourceValueForTargetValueChange = YES;
-    if ([self.delegate respondsToSelector:@selector(binding:willUpdateSourceValue:to:)])
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:willUpdateSourceValue:to:)])
     {
-        [self.delegate binding:self willUpdateSourceValue:oldSourceValue to:newSourceValue];
+        [delegate binding:self willUpdateSourceValue:oldSourceValue to:newSourceValue];
     }
 }
 
 - (void)                               didUpdateSourceValue:(opt_id)oldSourceValue
                                                          to:(opt_id)newSourceValue
 {
-    if ([self.delegate respondsToSelector:@selector(binding:didUpdateSourceValue:to:)])
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:didUpdateSourceValue:to:)])
     {
-        [self.delegate binding:self didUpdateSourceValue:oldSourceValue to:newSourceValue];
+        [delegate binding:self didUpdateSourceValue:oldSourceValue to:newSourceValue];
     }
     _isUpdatingSourceValueForTargetValueChange = NO;
 }
@@ -127,6 +148,8 @@
 - (void)                    updateSourceValueForTargetValue:(opt_id)oldTargetValue
                                                    changeTo:(opt_id)newTargetValue
 {
+    (void)oldTargetValue;
+    
     [self aka_performBlockInMainThreadOrQueue:
      ^{
          NSError* error;

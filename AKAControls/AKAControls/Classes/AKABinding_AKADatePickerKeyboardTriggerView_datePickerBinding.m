@@ -118,6 +118,8 @@
 
 - (void)datePickerDidChangeValue:(id)sender
 {
+    (void)sender;
+
     NSDate* value = self.pickerView.date;
 
     id oldValue = self.previousDate;
@@ -172,6 +174,8 @@
 
 - (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
 {
+    NSParameterAssert(view == self.triggerView);
+    
     // The view returned by the super class implementation, if defined and valid, is used by
     // self.pickerView if possible.
     return self.pickerView;
@@ -185,7 +189,7 @@
 {
     if (block)
     {
-        CGFloat duration = .3;
+        double duration = .3;
         UIViewAnimationOptions options;
         if ([oldDate compare:newDate] == NSOrderedAscending)
         {

@@ -64,7 +64,7 @@ typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
     {
         result = raw;
     }
-    else if (raw == nil)
+    else if (raw == nil && createMissing)
     {
         result = [NSMutableDictionary new];
         objc_setAssociatedObject(self,

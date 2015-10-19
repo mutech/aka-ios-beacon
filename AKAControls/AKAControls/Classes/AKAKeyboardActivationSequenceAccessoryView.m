@@ -35,9 +35,10 @@
 
 - (void)updateBarItemStates
 {
-    self.activateNextBarButtonItem.enabled = self.keyboardActivationSequence.nextItem != nil;
+    AKAKeyboardActivationSequence* sequence = self.keyboardActivationSequence;
+    self.activateNextBarButtonItem.enabled = sequence.nextItem != nil;
     self.closeKeyboardBarButtonItem.enabled = YES;
-    self.activatePreviousBarButtonItem.enabled = self.keyboardActivationSequence.previousItem != nil;
+    self.activatePreviousBarButtonItem.enabled = sequence.previousItem != nil;
 }
 
 - (void)createBarItems
@@ -52,10 +53,12 @@
     [self setBarStyle:UIBarStyleDefault];
     [self sizeToFit];
 
+    AKAKeyboardActivationSequence* sequence = self.keyboardActivationSequence;
+
     self.activatePreviousBarButtonItem =
         [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                          style:UIBarButtonItemStylePlain
-                                        target:self.keyboardActivationSequence
+                                        target:sequence
                                         action:@selector(activatePrevious:)];
     self.activatePreviousBarButtonItem.image =
         [AKAControlsStyleKit imageOfBackBarButtonItemIcon];
@@ -67,7 +70,7 @@
     self.closeKeyboardBarButtonItem =
         [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                          style:UIBarButtonItemStylePlain
-                                        target:self.keyboardActivationSequence
+                                        target:sequence
                                         action:@selector(closeKeyboard:)];
     self.closeKeyboardBarButtonItem.image =
         [AKAControlsStyleKit imageOfCloseKeyboardBarButtonItemIcon];
@@ -79,7 +82,7 @@
     self.activateNextBarButtonItem =
         [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                          style:UIBarButtonItemStylePlain
-                                        target:self.keyboardActivationSequence
+                                        target:sequence
                                         action:@selector(activateNext:)];
     self.activateNextBarButtonItem.image = [AKAControlsStyleKit imageOfForthBarButtonItemIcon];
 

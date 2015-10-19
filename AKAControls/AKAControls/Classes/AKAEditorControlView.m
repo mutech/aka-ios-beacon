@@ -420,6 +420,7 @@ static NSString* const kMessageRole = @"message";
 
 - (BOOL)autocreateEditor:(out UIView*__autoreleasing *)createdView
 {
+    (void)createdView;
     AKALogError(@"Attempt to automatically create an editor view. %@ requires an editor view to be present. You can add an editor view on the storyboard and connect it to the editor outlet. Alternatively, you can use a subclass of AKAEditorControlView which can create its editor view automatically.", self);
     return NO;
 }

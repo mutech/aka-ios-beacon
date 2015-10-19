@@ -36,6 +36,9 @@ typedef enum AKABindingExpressionParseErrorCode
     AKAParseErrorUnsupportedCharacterEscapeSequence,
     AKAParseErrorInvalidCharacterEscapeSequence,
 
+    // Number parsing errors
+    AKAParseErrorInvalidNumberConstant,
+    
     // Identifier errors
     AKAParseErrorInvalidIdentifierCharacter,
 
@@ -102,7 +105,7 @@ typedef NSScanner AKABindingExpressionParser;
 
 #pragma mark - Scanner Tools (Error Reporting)
 
-- (void)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
+- (BOOL)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
                           withCode:(AKABindingExpressionParseErrorCode)errorCode
                         atPosition:(NSUInteger)position
                             reason:(req_NSString)reason;

@@ -51,6 +51,22 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
                                    convertedFromSourceValue:(opt_id)sourceValue
                                                   withError:(opt_NSError)error;
 
+// TODO: support delegate method in AKAControlDelegate propagation:
+/**
+ * Informs the delegate, that the source value changed to the specified invalid value.
+ * The target value will not be updated. The delegate should react by indicating to the
+ * user that the target value is outdated and cannot be updated.
+ *
+ * @note this is a kind of error that should not occur assuming that model values are
+ *      required to be valid. This indicates a programming error (inconsistent
+ *      and/or incomplete validation - the invalid data should not have made it to
+ *      the data model/source).
+ */
+@optional
+- (void)                                            binding:(req_AKABinding)binding
+                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                             toInvalidValue:(opt_id)newSourceValue
+                                                  withError:(opt_NSError)error;
 @optional
 /**
  * Determines whether the binding should update the target value from the specified

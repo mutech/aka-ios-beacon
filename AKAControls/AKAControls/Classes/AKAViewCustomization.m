@@ -50,8 +50,9 @@
             else if ([@"properties" isEqualToString:key])
             {
                 NSDictionary* properties = obj;
-                [properties enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                    [self addCustomizationSetValue:obj forPropertyName:key];
+                [properties enumerateKeysAndObjectsUsingBlock:^(id innerKey, id innerObj, BOOL *innerStop) {
+                    (void)innerStop;
+                    [self addCustomizationSetValue:innerObj forPropertyName:innerKey];
                 }];
             }
             else
@@ -88,6 +89,8 @@
         [self willApplyToView:view delegate:delegate];
         [self.propertyValuesByName enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
          {
+             (void)stop;
+             
              id oldValue = [view valueForKey:key];
              id newValue = [self resolvePropertyValue:obj withContext:context];
 
@@ -126,9 +129,10 @@
     {
         [delegate viewCustomizations:self willBeAppliedToView:view];
     }
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
+    NSObject<AKAViewCustomizationDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:willBeAppliedToView:)])
     {
-        [self.delegate viewCustomizations:self willBeAppliedToView:view];
+        [selfDelegate viewCustomizations:self willBeAppliedToView:view];
     }
 }
 
@@ -145,9 +149,10 @@
                                          value:oldValue
                                             to:newValue];
     }
-    if (result && [self.delegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
+    NSObject<AKAViewCustomizationDelegate>* selfDelegate = self.delegate;
+    if (result && [selfDelegate respondsToSelector:@selector(viewCustomizations:shouldSetProperty:value:to:)])
     {
-        result &= [self.delegate viewCustomizations:self
+        result &= [selfDelegate viewCustomizations:self
                              shouldSetProperty:name
                                          value:oldValue
                                             to:newValue];
@@ -164,9 +169,10 @@
     {
         [delegate viewCustomizations:self didSetProperty:name value:oldValue to:newValue];
     }
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
+    NSObject<AKAViewCustomizationDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:didSetProperty:value:to:)])
     {
-        [self.delegate viewCustomizations:self didSetProperty:name value:oldValue to:newValue];
+        [selfDelegate viewCustomizations:self didSetProperty:name value:oldValue to:newValue];
     }
 }
 
@@ -177,9 +183,10 @@
     {
         [delegate viewCustomizations:self haveBeenAppliedToView:view];
     }
-    if ([self.delegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
+    NSObject<AKAViewCustomizationDelegate>* selfDelegate = self.delegate;
+    if ([selfDelegate respondsToSelector:@selector(viewCustomizations:haveBeenAppliedToView:)])
     {
-        [self.delegate viewCustomizations:self haveBeenAppliedToView:view];
+        [selfDelegate viewCustomizations:self haveBeenAppliedToView:view];
     }
 }
 

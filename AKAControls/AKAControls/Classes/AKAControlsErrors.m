@@ -133,10 +133,11 @@ static BOOL _attemptRecoveryActions = YES;
 
 + (NSError *)errorForInvalidEmailAddress:(NSString *)text withRegularExpression:(NSString *)failedRegEx
 {
+    (void)text;
     NSError* result = [NSError errorWithDomain:[self akaControlsErrorDomain]
                                           code:AKAValidationErrorInvalidEmailNotMatchingRegEx
                                       userInfo:
-                       @{ NSLocalizedDescriptionKey: @"Invalid email address (RFC 2822)",
+                       @{ NSLocalizedDescriptionKey: @"Invalid (RFC 2822) email address",
                           @"REGEX": failedRegEx
                           }];
     return result;

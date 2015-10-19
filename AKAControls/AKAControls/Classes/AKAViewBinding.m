@@ -50,6 +50,7 @@
 
 - (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)target
 {
+    (void)target;
     AKAErrorAbstractMethodImplementationMissing();
 }
 

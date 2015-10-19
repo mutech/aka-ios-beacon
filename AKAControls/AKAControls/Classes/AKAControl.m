@@ -129,7 +129,8 @@
 
 - (void)                                      setView:(UIView *)view
 {
-    NSParameterAssert(view == _view || view == nil || _view == nil);
+    UIView* selfView = _view;
+    NSParameterAssert(view == selfView || view == nil || selfView == nil);
     _view = view;
 }
 
@@ -195,8 +196,13 @@
 - (opt_AKAProperty)     dataContextPropertyForKeyPath:(opt_NSString)keyPath
                                    withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
 {
-    return [self.dataContextProperty propertyAtKeyPath:keyPath
-                                    withChangeObserver:valueDidChange];
+    opt_AKAProperty result = nil;
+    if (keyPath.length > 0)
+    {
+        result = [self.dataContextProperty propertyAtKeyPath:(req_NSString)keyPath
+                                          withChangeObserver:valueDidChange];
+    }
+    return result;
 }
 
 - (id)                     dataContextValueForKeyPath:(NSString *)keyPath
@@ -243,6 +249,8 @@
                                                      req_AKABindingExpression expression,
                                                      outreq_BOOL stop)
      {
+         (void)stop;
+
          if ([self addBindingForView:view
                             property:property
                withBindingExpression:expression])
@@ -258,6 +266,9 @@
                                              property:(req_SEL)property
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
+    // TODO: consider perserving the property for diagnostics & error reporting:
+    (void)property;
+
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
     BOOL result = NO;

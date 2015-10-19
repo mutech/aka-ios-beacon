@@ -68,7 +68,7 @@
 
 - (void)enumerateItemsInKeyboardActivationSequenceUsingBlock:(void (^)(req_AKAKeyboardActivationSequenceItem, NSUInteger, outreq_BOOL))block
 {
-    __block int count = 0;
+    __block NSUInteger count = 0;
 
     [self enumerateControlsRecursivelyUsingBlock:^(AKAControl *control,
                                                    AKACompositeControl *owner,
@@ -80,9 +80,11 @@
          if ([control isKindOfClass:[AKAKeyboardControl class]])
          {
              AKAKeyboardControl* keyboardControl = (id)control;
-             if ([keyboardControl.controlViewBinding shouldParticipateInKeyboardActivationSequence])
+             AKAKeyboardControlViewBinding* binding = keyboardControl.controlViewBinding;
+             if (binding != nil && [binding shouldParticipateInKeyboardActivationSequence])
              {
-                 block(keyboardControl.controlViewBinding, count++, stop);
+                 NSAssert(binding != nil, nil);
+                 block((req_AKAKeyboardControlViewBinding)binding, count++, stop);
              }
          }
      }
@@ -132,9 +134,9 @@
 
     if ([delegate respondsToSelector:@selector(control:willAddControl:atIndex:)])
     {
-        [delegate control:self willAddControl:memberControl atIndex:index];
+        [delegate control:compositeControl willAddControl:memberControl atIndex:index];
     }
-    [super control:self willAddControl:memberControl atIndex:index];
+    [super control:compositeControl willAddControl:memberControl atIndex:index];
 }
 
 - (void)        control:(AKACompositeControl *)compositeControl
@@ -145,9 +147,9 @@
 
     if ([delegate respondsToSelector:@selector(control:didAddControl:atIndex:)])
     {
-        [delegate control:self didAddControl:memberControl atIndex:index];
+        [delegate control:compositeControl didAddControl:memberControl atIndex:index];
     }
-    [super control:self didAddControl:memberControl atIndex:index];
+    [super control:compositeControl didAddControl:memberControl atIndex:index];
 
     if ([memberControl isKindOfClass:[AKAKeyboardControl class]])
     {
@@ -186,9 +188,9 @@
 
     if ([delegate respondsToSelector:@selector(control:willRemoveControl:fromIndex:)])
     {
-        [delegate control:self willRemoveControl:memberControl fromIndex:index];
+        [delegate control:compositeControl willRemoveControl:memberControl fromIndex:index];
     }
-    [super control:self willRemoveControl:memberControl fromIndex:index];
+    [super control:compositeControl willRemoveControl:memberControl fromIndex:index];
 
     if ([memberControl isKindOfClass:[AKAKeyboardControl class]])
     {
@@ -204,9 +206,9 @@
 
     if ([delegate respondsToSelector:@selector(control:didRemoveControl:fromIndex:)])
     {
-        [delegate control:self didRemoveControl:memberControl fromIndex:index];
+        [delegate control:compositeControl didRemoveControl:memberControl fromIndex:index];
     }
-    [super control:self didRemoveControl:memberControl fromIndex:index];
+    [super control:compositeControl didRemoveControl:memberControl fromIndex:index];
 }
 
 @end

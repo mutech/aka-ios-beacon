@@ -9,10 +9,10 @@ LICENSE
     spec.homepage      = 'https://www-akalabs.rhcloud.com/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
     spec.summary       = 'Reusable components.'
-    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :branch => 'master', :tag => 'v0.0.9-b001 ' }
+    spec.source        = { :git => 'https://sources.aka-labs.com/scm/git/ios.aka.commons', :tag => 'v#{spec.version}-b002' }
 
     spec.source_files  = 'AKACommons/AKACommons/Classes/*.{h,m}'
-    spec.private_header_files = '**/*_Internal.h' 'AKACommons/AKACommons/AKACommons.h'
+    spec.private_header_files = 'AKACommons/AKACommons/Classes/*_Internal.h', 'AKACommons/AKACommons/AKACommons.h'
 
     spec.platform      = :ios, "8.0"
     spec.ios.deployment_target = "8.0"

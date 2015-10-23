@@ -36,8 +36,9 @@ typedef enum {
 
 @property(nonatomic, readonly) NSMutableDictionary* dataSourcesByKey;
 @property(nonatomic, readonly) NSMutableDictionary* tableViewDelegateSelectorMapping;
+@property(nonatomic, readonly) NSMutableDictionary<NSString*, id<UITableViewDelegate>>* tableViewDelegateOverrides;
 
-@property(nonatomic) NSMutableArray* sectionSegments;
+@property(nonatomic) NSMutableArray<AKATVSection*>* sectionSegments;
 @property(nonatomic, readonly) NSUInteger numberOfSections;
 @property(nonatomic, readonly) AKATVUpdateBatch* updateBatch;
 
@@ -162,11 +163,13 @@ typedef enum {
 
 - (void)beginUpdates
 {
+    AKALogTrace(@"[self.updateBatch beginUpdatesForTableView:%p", self.tableView);
     [self.updateBatch beginUpdatesForTableView:self.tableView];
 }
 
 - (void)endUpdates
 {
+    AKALogTrace(@"[self.updateBatch endUpdatesForTableView:%p", self.tableView);
     [self.updateBatch endUpdatesForTableView:self.tableView];
 }
 
@@ -270,8 +273,10 @@ typedef enum {
     UITableView* tableView = self.tableView;
     if (tableView)
     {
-
-        [tableView reloadRowsAtIndexPaths:[self.updateBatch correctedIndexPaths:indexPaths]
+        NSArray* correctedIndexPaths = [self.updateBatch correctedIndexPaths:indexPaths];
+        AKALogTrace(@"[tableView:%p reloadRowsAtIndexPaths:@[%@]] withRowAnimation:%ld",
+                    tableView, [correctedIndexPaths componentsJoinedByString:@", "], (long)rowAnimation);
+        [tableView reloadRowsAtIndexPaths:correctedIndexPaths
                          withRowAnimation:rowAnimation];
     }
 
@@ -302,6 +307,7 @@ typedef enum {
                                   targetRowIndex:&tgtIndexPath
                        forBatchUpdateInTableView:tableView
                                 recordAsMovedRow:YES];
+        AKALogTrace(@"[tableView:%p moveRowAtIndexPath:%@ toIndexPath:%@]", tableView, srcIndexPath, tgtIndexPath);
         [tableView moveRowAtIndexPath:srcIndexPath
                           toIndexPath:tgtIndexPath];
     }
@@ -356,6 +362,7 @@ typedef enum {
                                   targetRowIndex:&tgtIndexPath
                        forBatchUpdateInTableView:tableView
                                 recordAsMovedRow:YES];
+        AKALogTrace(@"[tableView:%p moveRowAtIndexPath:%@ toIndexPath:%@]", tableView, srcIndexPath, tgtIndexPath);
         [tableView moveRowAtIndexPath:srcIndexPath
                           toIndexPath:tgtIndexPath];
     }
@@ -397,8 +404,9 @@ typedef enum {
                                                                            recordAsInsertedIndex:YES];
                     [indexPaths addObject:correctedIndexPath];
                 }
-                // Enable to debug insertion/deletion correction problems
-                //AKALogDebug(@"Inserted %lu rows starting from %@, announcing translated insertions to table view: %@", (unsigned long)numberOfRows, indexPath, indexPaths);
+
+                AKALogTrace(@"[tableView:%p insertRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
+                            tableView, [indexPaths componentsJoinedByString:@", "], (long)rowAnimation);
                 [tableView insertRowsAtIndexPaths:indexPaths
                                  withRowAnimation:rowAnimation];
             }
@@ -459,6 +467,8 @@ typedef enum {
                                                                               inSection:indexPath.section
                                                               forBatchUpdateInTableView:tableView
                                                                    recordAsDeletedIndex:YES];
+            AKALogTrace(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
+                        tableView, correctedIndexPath, (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -494,6 +504,9 @@ typedef enum {
             NSIndexPath* correctedIndexPath = [self.updateBatch insertionIndexPathForRow:indexPath.row
                                                                                inSection:indexPath.section
                                                                forBatchUpdateInTableView:tableView recordAsInsertedIndex:YES];
+
+            AKALogTrace(@"[tableView:%p insertRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
+                        tableView, correctedIndexPath, (long)rowAnimation);
             [tableView insertRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -521,6 +534,8 @@ typedef enum {
                                                                               inSection:indexPath.section
                                                               forBatchUpdateInTableView:tableView
                                                                    recordAsDeletedIndex:YES];
+            AKALogTrace(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
+                        tableView, correctedIndexPath, (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -554,14 +569,52 @@ typedef enum {
                                                                        recordAsDeletedIndex:YES];
                 [indexPaths addObject:correctedIndexPath];
             }
-            // Enable to debug insertion/deletion correction problems
-            //AKALogDebug(@"Removed %lu rows starting from %@, announcing translated removals to table view: %@", (unsigned long)rowsRemoved, indexPath, indexPaths);
+
+            AKALogTrace(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
+                        tableView, [indexPaths componentsJoinedByString:@", "], (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:indexPaths
                              withRowAnimation:rowAnimation];
         }
     }
 
     return rowsRemoved;
+}
+
+#pragma mark - Source Coordinate Changes
+
+- (void)          dataSourceWithKey:(req_NSString)key
+             insertedRowAtIndexPath:(req_NSIndexPath)indexPath
+{
+    [self.sectionSegments enumerateObjectsUsingBlock:
+     ^(AKATVSection * _Nonnull  sectionSegment,
+       NSUInteger               sectionIndex,
+       BOOL * _Nonnull          stopSectionEnumeration)
+     {
+         [sectionSegment dataSourceWithKey:key insertedRowAtIndexPath:indexPath];
+     }];
+}
+
+- (void)          dataSourceWithKey:(req_NSString)key
+              removedRowAtIndexPath:(req_NSIndexPath)indexPath
+{
+    [self.sectionSegments enumerateObjectsUsingBlock:
+     ^(AKATVSection * _Nonnull  sectionSegment,
+       NSUInteger               sectionIndex,
+       BOOL * _Nonnull          stopSectionEnumation) {
+        [sectionSegment dataSourceWithKey:key removedRowAtIndexPath:indexPath];
+    }];
+}
+
+- (void)          dataSourceWithKey:(req_NSString)key
+              movedRowFromIndexPath:(req_NSIndexPath)fromIndexPath
+                        toIndexPath:(req_NSIndexPath)toIndexPath
+{
+    [self.sectionSegments enumerateObjectsUsingBlock:
+     ^(AKATVSection * _Nonnull  sectionSegment,
+       NSUInteger               sectionIndex,
+       BOOL * _Nonnull          stopSectionEnumation) {
+         [sectionSegment dataSourceWithKey:key movedRowFromIndexPath:fromIndexPath toIndexPath:toIndexPath];
+     }];
 }
 
 #pragma mark - Resolution
@@ -636,6 +689,7 @@ typedef enum {
                           forSourceIndexPath:sourceIndexPath
                                 inDataSource:dataSource];
 }
+
 
 - (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
       forSourceSection:(NSInteger)sourceSection
@@ -759,7 +813,9 @@ typedef enum {
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     (void)tableView;
-    return (NSInteger)self.numberOfSections;
+    NSInteger result = (NSInteger)self.numberOfSections;
+    AKALogTrace(@"[self numberOfSectionsInTableView:%p] (%ld)", tableView, (long)result);
+    return result;
 }
 
 - (UITableViewCell*)            tableView:(UITableView *)tableView
@@ -773,6 +829,7 @@ typedef enum {
         result = [dataSource tableView:tableView
                  cellForRowAtIndexPath:resolvedIndexPath];
     }
+    AKALogTrace(@"[tableView:%p cellForRowAtIndexPath:%@] (%@, dataSource = %@)", tableView, indexPath, result, dataSource);
     return result;
 }
 
@@ -787,6 +844,7 @@ typedef enum {
     {
         result = (NSInteger)sectionSpecification.numberOfRows;
     }
+    AKALogTrace(@"[tableView:%p numberOfRowsInSection:%ld] (%ld)", tableView, (long)section, (long)result);
     return result;
 }
 
@@ -1280,77 +1338,116 @@ typedef enum {
 
 + (NSDictionary*)sharedTableViewDelegateSelectorMapping
 {
-    static NSDictionary* sharedInstance = nil;
+    static NSDictionary<NSString*, NSNumber*>* sharedInstance = nil;
     static dispatch_once_t token;
     dispatch_once(&token, ^{
 
         sharedInstance =
-            @{ [NSValue valueWithPointer:@selector(tableView:heightForHeaderInSection:)]: @(resolveSectionAt1),
-               [NSValue valueWithPointer:@selector(tableView:heightForFooterInSection:)]: @(resolveSectionAt1),
-               [NSValue valueWithPointer:@selector(tableView:viewForHeaderInSection:)]: @(resolveSectionAt1),
-               [NSValue valueWithPointer:@selector(tableView:viewForFooterInSection:)]: @(resolveSectionAt1),
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForHeaderInSection:)]: @(resolveSectionAt1),
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForFooterInSection:)]: @(resolveSectionAt1),
+            @{ NSStringFromSelector(@selector(tableView:heightForHeaderInSection:)): @(resolveSectionAt1),
+               NSStringFromSelector(@selector(tableView:heightForFooterInSection:)): @(resolveSectionAt1),
+               NSStringFromSelector(@selector(tableView:viewForHeaderInSection:)): @(resolveSectionAt1),
+               NSStringFromSelector(@selector(tableView:viewForFooterInSection:)): @(resolveSectionAt1),
+               NSStringFromSelector(@selector(tableView:estimatedHeightForHeaderInSection:)): @(resolveSectionAt1),
+               NSStringFromSelector(@selector(tableView:estimatedHeightForFooterInSection:)): @(resolveSectionAt1),
 
-               [NSValue valueWithPointer:@selector(tableView:willDisplayHeaderView:forSection:)]: @(resolveSectionAt2),
-               [NSValue valueWithPointer:@selector(tableView:willDisplayFooterView:forSection:)]: @(resolveSectionAt2),
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingHeaderView:forSection:)]: @(resolveSectionAt2),
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingFooterView:forSection:)]: @(resolveSectionAt2),
+               NSStringFromSelector(@selector(tableView:willDisplayHeaderView:forSection:)): @(resolveSectionAt2),
+               NSStringFromSelector(@selector(tableView:willDisplayFooterView:forSection:)): @(resolveSectionAt2),
+               NSStringFromSelector(@selector(tableView:didEndDisplayingHeaderView:forSection:)): @(resolveSectionAt2),
+               NSStringFromSelector(@selector(tableView:didEndDisplayingFooterView:forSection:)): @(resolveSectionAt2),
 
-               [NSValue valueWithPointer:@selector(tableView:heightForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:estimatedHeightForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:accessoryTypeForRowWithIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:shouldHighlightRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:didHighlightRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:didUnhighlightRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:didSelectRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:didDeselectRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:editingStyleForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:editActionsForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:willBeginEditingRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:didEndEditingRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:indentationLevelForRowAtIndexPath:)]: @(resolveIndexPathAt1),
-               [NSValue valueWithPointer:@selector(tableView:shouldShowMenuForRowAtIndexPath:)]: @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:heightForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:estimatedHeightForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:accessoryTypeForRowWithIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:shouldHighlightRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:didHighlightRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:didUnhighlightRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:didSelectRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:didDeselectRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:editingStyleForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:editActionsForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:shouldIndentWhileEditingRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:willBeginEditingRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:didEndEditingRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:indentationLevelForRowAtIndexPath:)): @(resolveIndexPathAt1),
+               NSStringFromSelector(@selector(tableView:shouldShowMenuForRowAtIndexPath:)): @(resolveIndexPathAt1),
 
-               [NSValue valueWithPointer:@selector(tableView:willSelectRowAtIndexPath:)]: @(resolveIndexPathAt1AndResultIndexPath),
-               [NSValue valueWithPointer:@selector(tableView:willDeselectRowAtIndexPath:)]: @(resolveIndexPathAt1AndResultIndexPath),
+               NSStringFromSelector(@selector(tableView:willSelectRowAtIndexPath:)): @(resolveIndexPathAt1AndResultIndexPath),
+               NSStringFromSelector(@selector(tableView:willDeselectRowAtIndexPath:)): @(resolveIndexPathAt1AndResultIndexPath),
 
-               [NSValue valueWithPointer:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]: @(resolveIndexPathAt2),
-               [NSValue valueWithPointer:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]: @(resolveIndexPathAt2),
-               [NSValue valueWithPointer:@selector(tableView:canPerformAction:forRowAtIndexPath:withSender:)]: @(resolveIndexPathAt2),
-               [NSValue valueWithPointer:@selector(tableView:performAction:forRowAtIndexPath:withSender:)]: @(resolveIndexPathAt2),
+               NSStringFromSelector(@selector(tableView:willDisplayCell:forRowAtIndexPath:)): @(resolveIndexPathAt2),
+               NSStringFromSelector(@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)): @(resolveIndexPathAt2),
+               NSStringFromSelector(@selector(tableView:canPerformAction:forRowAtIndexPath:withSender:)): @(resolveIndexPathAt2),
+               NSStringFromSelector(@selector(tableView:performAction:forRowAtIndexPath:withSender:)): @(resolveIndexPathAt2),
                
-               [NSValue valueWithPointer:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]: @(resolveIndexPathAt1And2),
+               NSStringFromSelector(@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)): @(resolveIndexPathAt1And2),
 
-               [NSValue valueWithPointer:@selector(scrollViewDidScroll:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewWillBeginDragging:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewDidEndDragging:willDecelerate:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewShouldScrollToTop:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewDidScrollToTop:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewWillBeginDecelerating:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewDidEndDecelerating:)]:@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidScroll:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewWillBeginDragging:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewWillEndDragging:withVelocity:targetContentOffset:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidEndDragging:willDecelerate:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewShouldScrollToTop:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidScrollToTop:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewWillBeginDecelerating:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidEndDecelerating:)):@(resolveScrollViewDelegate),
 
-               [NSValue valueWithPointer:@selector(viewForZoomingInScrollView:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewWillBeginZooming:withView:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewDidEndZooming:withView:atScale:)]:@(resolveScrollViewDelegate),
-               [NSValue valueWithPointer:@selector(scrollViewDidZoom:)]:@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(viewForZoomingInScrollView:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewWillBeginZooming:withView:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidEndZooming:withView:atScale:)):@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidZoom:)):@(resolveScrollViewDelegate),
 
-               [NSValue valueWithPointer:@selector(scrollViewDidEndScrollingAnimation:)]:@(resolveScrollViewDelegate),
+               NSStringFromSelector(@selector(scrollViewDidEndScrollingAnimation:)):@(resolveScrollViewDelegate),
             };
     });
     return sharedInstance;
 }
 
+/**
+ * Inspects the specified delegate instance and identifies all methods conforming to the
+ * UITableViewDelegate that have been overridden by the delegates class relative to the specified
+ * type. Does nothing if the delegates class is not a subclass of the specified type or if
+ * it's class is the specified type.
+ *
+ * For all registered methods, the multiplexer will not dispatch table view delegate messages to
+ * the specified delegate without performing section or indexPath resolution and it will pass the
+ * original table view instead of proxy. Consequently, method implementations have to be aware of
+ * the multiplexer and it's implications.
+ *
+ * @param type a base class of the specified delegates class
+ * @param delegate the delegate to inspect.
+ */
+- (void)registerTableViewDelegateOverridesTo:(Class)type
+                                fromDelegate:(id<UITableViewDelegate>)delegate
+{
+    Class delegateType = delegate.class;
+    if (delegateType != type && [delegateType isSubclassOfClass:type])
+    {
+        NSDictionary* sharedMappings = [AKATVMultiplexedDataSource sharedTableViewDelegateSelectorMapping];
+        for (NSString* selectorValue in sharedMappings.keyEnumerator)
+        {
+            SEL selector = NSSelectorFromString(selectorValue);
+            if ([delegate respondsToSelector:selector])
+            {
+                if ([delegateType instanceMethodForSelector:selector] != [type instanceMethodForSelector:selector])
+                {
+                    if (self.tableViewDelegateOverrides == nil)
+                    {
+                        _tableViewDelegateOverrides = [NSMutableDictionary new];
+                    }
+                    self.tableViewDelegateOverrides[selectorValue] = delegate;
+                }
+            }
+        }
+    }
+}
+
 - (void)addTableViewDelegateSelectorsRespondedBy:(id<UITableViewDelegate>)delegate
 {
     NSDictionary* sharedMappings = [AKATVMultiplexedDataSource sharedTableViewDelegateSelectorMapping];
-    for (NSValue* selectorValue in sharedMappings.keyEnumerator)
+    for (NSString* selectorValue in sharedMappings.keyEnumerator)
     {
-        SEL selector = selectorValue.pointerValue;
+        SEL selector = NSSelectorFromString(selectorValue);
         if ([delegate respondsToSelector:selector])
         {
             self.tableViewDelegateSelectorMapping[selectorValue] = sharedMappings[selectorValue];
@@ -1360,7 +1457,7 @@ typedef enum {
 
 - (void)addTableViewDelegateSelector:(SEL)selector
 {
-    NSValue* selectorValue = [NSValue valueWithPointer:selector];
+    NSString* selectorValue = NSStringFromSelector(selector);
     NSDictionary* sharedMappings = [AKATVMultiplexedDataSource sharedTableViewDelegateSelectorMapping];
     id mapping = sharedMappings[selectorValue];
     if (mapping != nil)
@@ -1378,13 +1475,13 @@ typedef enum {
 
 - (void)removeTableViewDelegateSelector:(SEL)selector
 {
-    NSValue* selectorValue = [NSValue valueWithPointer:selector];
+    NSString* selectorValue = NSStringFromSelector(selector);
     [self.tableViewDelegateSelectorMapping removeObjectForKey:selectorValue];
 }
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-    NSValue* selectorValue = [NSValue valueWithPointer:aSelector];
+    NSString* selectorValue = NSStringFromSelector(aSelector);
     BOOL result = self.tableViewDelegateSelectorMapping[selectorValue] != nil;
     if (!result)
     {
@@ -1414,7 +1511,14 @@ typedef enum {
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-    NSValue* selectorValue = [NSValue valueWithPointer:invocation.selector];
+    NSString* selectorValue = NSStringFromSelector(invocation.selector);
+    NSObject<UITableViewDelegate>* delegate = self.tableViewDelegateOverrides[selectorValue];
+    if (delegate != nil)
+    {
+        [invocation invokeWithTarget:delegate];
+        return;
+    }
+
     NSNumber* mapping = self.tableViewDelegateSelectorMapping[selectorValue];
     if (mapping != nil)
     {

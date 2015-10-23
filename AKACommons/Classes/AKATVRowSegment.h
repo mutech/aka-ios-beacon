@@ -45,7 +45,7 @@
 /**
  * The index path of the first row of this segment.
  */
-@property(nonatomic, readonly, nonnull) NSIndexPath* indexPath;
+@property(nonatomic, nonnull) NSIndexPath* indexPath;
 
 /**
  * The numer of rows in this segment.

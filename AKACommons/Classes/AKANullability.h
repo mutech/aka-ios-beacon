@@ -72,6 +72,9 @@ typedef NSDictionary* _Nullable __autoreleasing* _Nullable out_NSDictionary;
 typedef NSMutableDictionary* _Nullable                  opt_NSMutableDictionary;
 typedef NSMutableDictionary* _Nonnull                   req_NSMutableDictionary;
 
+typedef NSIndexPath* _Nullable                          opt_NSIndexPath;
+typedef NSIndexPath* _Nonnull                           req_NSIndexPath;
+
 typedef SEL _Nullable                                   opt_SEL;
 typedef SEL _Nonnull                                    req_SEL;
 

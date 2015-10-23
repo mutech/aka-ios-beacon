@@ -20,11 +20,88 @@
 @property(nonatomic, readonly)AKAProperty* dataContextProperty;
 @end
 
+
+@class AssertionHandler;
 @interface AKAControlTests : XCTestCase
+
+@property(nonatomic) AssertionHandler* assertionHandler;
+@property(nonatomic) NSUInteger        failedAssertionCount;
+
+@end
+
+
+@interface AssertionHandler: NSAssertionHandler
+
+@property(nonatomic, readonly)  AKAControlTests* testCase;
+@property(nonatomic, readonly)  NSAssertionHandler* originalHandler;
+
+@end
+
+@implementation AssertionHandler
+
+- (instancetype)initWithTestCase:(AKAControlTests*)testCase
+{
+    if (self = [self init])
+    {
+        _testCase = testCase;
+    }
+    return self;
+}
+
+- (BOOL)install
+{
+    BOOL result = self.originalHandler == nil;
+    if (result)
+    {
+        _originalHandler = [[[NSThread currentThread] threadDictionary] valueForKey:NSAssertionHandlerKey];
+        [[[NSThread currentThread] threadDictionary] setValue:self
+                                                       forKey:NSAssertionHandlerKey];
+    }
+    return result;
+}
+
+- (BOOL)uninstall
+{
+    BOOL result = YES;
+    if (result)
+    {
+        [[[NSThread currentThread] threadDictionary] setValue:self.originalHandler
+                                                       forKey:NSAssertionHandlerKey];
+    }
+    return result;
+}
+
+- (void)handleFailureInMethod:(SEL)selector
+                       object:(id)object
+                         file:(NSString *)fileName
+                   lineNumber:(NSInteger)line
+                  description:(NSString *)format, ...
+{
+    va_list args;
+    va_start(args, format);
+    NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    NSLog(@"NSAssert Failure: %@ (line %ld): [%@ %@]: %@",
+          fileName, line,
+          object, NSStringFromSelector(selector),
+          message);
+    ++self.testCase.failedAssertionCount;
+}
 
 @end
 
 @implementation AKAControlTests
+
+- (void)setUp
+{
+    [super setUp];
+    self.assertionHandler = [[AssertionHandler alloc] initWithTestCase:self];
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+}
 
 /**
  * Verifies that initializing a control with a conforming controlType configuration succeeds.
@@ -167,16 +244,18 @@
         [control setView:view1];
         XCTAssertEqualObjects(view1, control.view);
 
-        XCTAssertThrows([control setView:view2], @"Expected exception for invalid attempt to change view of a control which is already attached to a view");
-
-        [control setView:view1];
-        XCTAssertEqualObjects(view1, control.view);
+        // Prevet assert to throw exception
+        NSUInteger failedAssertionCount = self.failedAssertionCount;
+        [self.assertionHandler install];
+        [control setView:view2];
+        [self.assertionHandler uninstall];
+        XCTAssert(self.failedAssertionCount > failedAssertionCount, @"Expected assertion failure for invalid attempt to change view of a control which is already attached to a view");
+        //[control setView:view1];
+        //XCTAssertEqualObjects(view1, control.view);
 
         view1 = nil; // control holds weak ref to view1, view1 -> nil
     }
-
-    [control setView:view2];
-    XCTAssertEqualObjects(view2, control.view);
+    XCTAssert(control.view == nil, @"Retain cycle between control and view1");
 }
 
 @end

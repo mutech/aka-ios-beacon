@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
+#import "AKANullability.h"
 
 @class AKATVDataSourceSpecification;
 @class AKATVRowSegment;
@@ -108,4 +110,13 @@
 - (BOOL)moveRowFromIndex:(NSUInteger)rowIndex
                  toIndex:(NSUInteger)targetRowIndex;
 
+#pragma mark - Source Coordiante Changes
+
+- (void)          dataSourceWithKey:(req_NSString)key
+             insertedRowAtIndexPath:(req_NSIndexPath)indexPath;
+- (void)          dataSourceWithKey:(req_NSString)key
+              removedRowAtIndexPath:(req_NSIndexPath)indexPath;
+- (void)          dataSourceWithKey:(req_NSString)key
+              movedRowFromIndexPath:(req_NSIndexPath)fromIndexPath
+                        toIndexPath:(req_NSIndexPath)toIndexPath;
 @end

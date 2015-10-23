@@ -16,10 +16,10 @@
 
 @implementation UISwitch (AKAIBBindingProperties)
 
-- (NSString *)              stateBinding_aka
+- (NSString*)              stateBinding_aka
 {
     AKABindingProvider_UISwitch_stateBinding* provider =
-    [AKABindingProvider_UISwitch_stateBinding sharedInstance];
+        [AKABindingProvider_UISwitch_stateBinding sharedInstance];
 
     return [provider bindingExpressionTextForSelector:@selector(stateBinding_aka)
                                                inView:self];
@@ -28,7 +28,7 @@
 - (void)                 setStateBinding_aka:(opt_NSString)stateBinding
 {
     AKABindingProvider_UISwitch_stateBinding* provider =
-    [AKABindingProvider_UISwitch_stateBinding sharedInstance];
+        [AKABindingProvider_UISwitch_stateBinding sharedInstance];
 
     [provider setBindingExpressionText:stateBinding
                            forSelector:@selector(stateBinding_aka)
@@ -37,9 +37,9 @@
 
 - (AKAMutableControlConfiguration*)aka_controlConfiguration
 {
-
     NSString* key = NSStringFromSelector(@selector(aka_controlConfiguration));
     AKAMutableControlConfiguration* result = [self aka_associatedValueForKey:key];
+
     if (result == nil)
     {
         result = [AKAMutableControlConfiguration new];
@@ -47,12 +47,14 @@
         result[kAKAControlViewBinding] = NSStringFromSelector(@selector(stateBinding_aka));
         [self aka_setAssociatedValue:result forKey:key];
     }
+
     return result;
 }
 
-- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString *)key
+- (void)aka_setControlConfigurationValue:(id)value forKey:(NSString*)key
 {
     AKAMutableControlConfiguration* mutableConfiguration = (AKAMutableControlConfiguration*)self.aka_controlConfiguration;
+
     if (value == nil)
     {
         [mutableConfiguration removeObjectForKey:key];

@@ -18,7 +18,7 @@ typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
 
 @implementation UIView(AKABindingSupport)
 
-- (void)             aka_enumerateBindingExpressionsWithBlock:(void (^)(req_SEL,
+- (void)             aka_enumerateBindingExpressionsWithBlock:(void (^)(SEL _Nonnull,
                                                                         req_AKABindingExpression,
                                                                         outreq_BOOL))block
 {
@@ -27,7 +27,8 @@ typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
        req_AKABindingExpression bindingExpression,
        BOOL * _Nonnull          stop)
      {
-         block(NSSelectorFromString(propertyName), bindingExpression, stop);
+         SEL property = NSSelectorFromString(propertyName);
+         block(property, bindingExpression, stop);
      }];
 }
 
@@ -64,13 +65,16 @@ typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
     {
         result = raw;
     }
-    else if (raw == nil && createMissing)
+    else if (raw == nil)
     {
-        result = [NSMutableDictionary new];
-        objc_setAssociatedObject(self,
-                                 @selector(aka_bindingExpressionsBySelectorNameCreateIfMissing:),
-                                 result,
-                                 OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        if (createMissing)
+        {
+            result = [NSMutableDictionary new];
+            objc_setAssociatedObject(self,
+                                     @selector(aka_bindingExpressionsBySelectorNameCreateIfMissing:),
+                                     result,
+                                     OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
     }
     else
     {

@@ -101,7 +101,10 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
 #import <AKAControls/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
 
-// Bindings/ViewBindings/ControlViewBindings/CompositeControlViewBindings
+// Bindings/ViewBindings/ControlViewBindings/ComplexControlViewBindings
+#import <AKAControls/AKAComplexControlViewBinding.h>
+
+// Bindings/ViewBindings/ControlViewBindings/ComplexControlViewBindings/CompositeControlViewBindings
 #import <AKAControls/AKACompositeControlView.h>
 #import <AKAControls/AKAThemableCompositeControlView.h>
 #import <AKAControls/AKAEditorControlView.h>
@@ -109,6 +112,10 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKATextEditorControlView.h>
 #import <AKAControls/AKASwitchEditorControlView.h>
 #import <AKAControls/AKATableViewCell.h>
+
+// Bindings/ViewBindings/ControlViewBindings/ComplexControlViewBindings/CollectionControlViewBindings
+#import <AKAControls/AKACollectionControlViewBinding.h>
+#import <AKAControls/AKACollectionControlViewBindingDelegate.h>
 #import <AKAControls/AKADynamicPlaceholderTableViewCell.h>
 
 // Bindings/PropertyBindings

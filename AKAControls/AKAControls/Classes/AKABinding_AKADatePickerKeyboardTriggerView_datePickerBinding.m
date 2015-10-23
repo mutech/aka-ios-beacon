@@ -52,6 +52,7 @@
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
+    (void)targetView;
     NSParameterAssert([targetView isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
 }
 
@@ -174,6 +175,7 @@
 
 - (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
 {
+    (void)view;
     NSParameterAssert(view == self.triggerView);
     
     // The view returned by the super class implementation, if defined and valid, is used by

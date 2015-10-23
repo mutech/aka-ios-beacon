@@ -30,7 +30,11 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
+    id controlConfiguration = self.controlConfiguration;
+    if (controlConfiguration)
+    {
+        //[aCoder encodeObject:self.controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
+    }
 }
 
 

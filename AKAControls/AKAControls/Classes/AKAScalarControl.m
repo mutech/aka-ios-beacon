@@ -52,26 +52,4 @@
                                                  error:error];
 }
 
-#pragma mark - Bindings Owner
-
-- (BOOL)addBinding:(req_AKABinding)binding
-{
-    BOOL result = [super addBinding:binding];
-    if (result && [binding isKindOfClass:[AKAControlViewBinding class]])
-    {
-        _controlViewBinding = (AKAControlViewBinding*)binding;
-    }
-    return result;
-}
-
-- (BOOL)removeBinding:(req_AKABinding)binding
-{
-    BOOL result = [super removeBinding:binding];
-    if (result && _controlViewBinding == binding)
-    {
-        _controlViewBinding = nil;
-    }
-    return result;
-}
-
 @end

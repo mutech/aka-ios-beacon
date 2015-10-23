@@ -46,6 +46,7 @@
     BOOL result = YES;
 
     AKACompositeControl* owner = self.owner;
+
     if (owner)
     {
         result = [owner
@@ -125,15 +126,16 @@
     BOOL result = YES;
 
     AKACompositeControl* owner = self.owner;
+
     if (owner)
     {
         result = [owner
-                   control:control
-             shouldBinding:binding
-         updateSourceValue:oldSourceValue
-                        to:newSourceValue
-            forTargetValue:oldTargetValue
-                  changeTo:newTargetValue];
+                            control:control
+                      shouldBinding:binding
+                  updateSourceValue:oldSourceValue
+                                 to:newSourceValue
+                     forTargetValue:oldTargetValue
+                           changeTo:newTargetValue];
     }
 
     return result;
@@ -166,7 +168,7 @@
 @end
 
 
-@implementation AKACompositeControl(KeyboardControlViewBindingDelegatePropagation)
+@implementation AKACompositeControl (KeyboardControlViewBindingDelegatePropagation)
 
 - (BOOL)                                      control:(req_AKAControl)control
                                         shouldBinding:(req_AKAKeyboardControlViewBinding)binding
@@ -174,10 +176,12 @@
 {
     BOOL result = YES;
     AKACompositeControl* owner = self.owner;
+
     if (owner)
     {
         result = [owner control:control shouldBinding:binding responderActivate:responder];
     }
+
     return result;
 }
 
@@ -201,10 +205,12 @@
 {
     BOOL result = YES;
     AKACompositeControl* owner = self.owner;
+
     if (owner)
     {
         result = [owner control:control shouldBinding:binding responderDeactivate:responder];
     }
+
     return result;
 }
 
@@ -234,6 +240,66 @@
                            responderRequestedGoOrDone:(req_UIResponder)responder
 {
     return [self.owner control:control binding:binding responderRequestedGoOrDone:responder];
+}
+
+@end
+
+
+// TODO: replace AKADynamicPlaceholderTableViewCellCompositeControl with AKACollectionControl
+
+#import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
+
+@implementation AKACompositeControl (CollectionControlViewBindingDelegatePropagation)
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                    sourceControllerWillChangeContent:(req_id)sourceDataController
+{
+    [self.owner control:control binding:binding sourceControllerWillChangeContent:sourceDataController];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                         insertedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    [self.owner control:control binding:binding sourceController:sourceDataController insertedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          updatedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    [self.owner control:control binding:binding sourceController:sourceDataController updatedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          deletedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    [self.owner control:control binding:binding sourceController:sourceDataController deletedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                            movedItem:(opt_id)sourceCollectionItem
+                                        fromIndexPath:(req_NSIndexPath)fromIndexPath
+                                          toIndexPath:(req_NSIndexPath)toIndexPath
+{
+    [self.owner control:control binding:binding sourceController:sourceDataController movedItem:sourceCollectionItem fromIndexPath:fromIndexPath toIndexPath:toIndexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                     sourceControllerDidChangeContent:(req_id)sourceDataController
+{
+    [self.owner control:control binding:binding sourceControllerDidChangeContent:sourceDataController];
 }
 
 @end

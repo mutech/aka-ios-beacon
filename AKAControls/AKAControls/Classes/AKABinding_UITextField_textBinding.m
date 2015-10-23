@@ -275,6 +275,7 @@
 
 - (void)                                textFieldDidChange:(UITextField*)textField
 {
+    (void)textField;
     NSParameterAssert(textField == self.textField);
 
     if (self.liveModelUpdates)

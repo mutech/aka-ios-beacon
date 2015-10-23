@@ -10,8 +10,6 @@
 
 @interface AKAScalarControl : AKAControl
 
-@property(nonatomic, readonly, strong, nullable) AKAControlViewBinding* controlViewBinding;
-
 #pragma mark - Value Access
 
 @property(nonatomic, nullable) id                               viewValue;

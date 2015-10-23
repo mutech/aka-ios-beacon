@@ -18,6 +18,7 @@
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
+    (void)targetView;
     NSParameterAssert([targetView isKindOfClass:[AKACustomKeyboardResponderView class]]);
 }
 
@@ -121,6 +122,7 @@
 
 - (UIView*)   inputAccessoryViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
 {
+    (void)view;
     NSParameterAssert(view == self.triggerView);
 
     return self.inputAccessoryView;

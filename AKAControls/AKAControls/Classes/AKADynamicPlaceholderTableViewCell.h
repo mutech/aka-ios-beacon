@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKATableViewCell.h"
+@import AKACommons.AKATVMultiplexedDataSource;
 
+#import "AKATableViewCell.h"
+#import "AKACollectionControlViewBinding.h"
 
 IB_DESIGNABLE
 /**
@@ -26,7 +28,9 @@ IB_DESIGNABLE
  */
 @interface AKADynamicPlaceholderTableViewCell : AKATableViewCell
 
-@property(nonatomic) IBInspectable NSString* placeholderBinding;
+#pragma mark - Interface Builder Properties
+
+@property(nonatomic) IBInspectable NSString* collectionBinding;
 
 #pragma mark - Content Rendering
 
@@ -37,7 +41,13 @@ IB_DESIGNABLE
 
 #import "AKABinding.h"
 
-@interface AKABinding_AKADynamicPlaceholderTableViewCell_dataSourceBinding: AKABinding
+@interface AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding: AKACollectionControlViewBinding
+
+#pragma mark - Convenience
+
+@property(nonatomic, readonly) AKADynamicPlaceholderTableViewCell* placeholderCell;
+
+#pragma mark - Configuration
 
 @property(nonatomic) id<UITableViewDataSource>  placeholderDataSource;
 
@@ -48,5 +58,37 @@ IB_DESIGNABLE
 @property(nonatomic) NSNumber*                  dataSourceRowIndex;
 
 @property(nonatomic) NSNumber*                  dataSourceNumberOfRows;
+
+#pragma mark - Configuration provided by controls
+
+#pragma mark - Configuration
+
+/**
+ * The multipled data source managing insertion and deletion of dynamic rows
+ */
+@property(nonatomic, weak) AKATVMultiplexedDataSource*   multiplexer;
+
+/**
+ * The key of the data source specification providing dynamic rows for the placeholder. The key
+ * is assigned at the time when the placehoder control is added to its container. It identifies
+ * the data source specification in the scope of the multiplexer.
+ */
+@property(nonatomic)       NSString*                     multiplexedDataSourceKey;
+
+/**
+ * The data source specification providing dynamic rows for the placeholder.
+ */
+@property(nonatomic, weak) AKATVDataSourceSpecification* multiplexedDataSourceSpecification;
+
+/**
+ * The data source specification of the data source which provided the placeholder cell. This is
+ * required to identify the target location where dynamic rows should be inserted.
+ */
+@property(nonatomic, weak) AKATVDataSourceSpecification* placeholderOriginDataSourceSpecification;
+
+/**
+ * The index path of the placeholder cell in the placeholderOriginDataSourceSpecification
+ */
+@property(nonatomic)       NSIndexPath*                  placeholderIndexPath;
 
 @end

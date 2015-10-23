@@ -44,13 +44,19 @@ typedef NS_ENUM(NSInteger, AKAControlValidationState)
 
 @property(nonatomic, readonly, weak, nullable)AKACompositeControl*          owner;
 
+@property(nonatomic, readonly, weak, nullable)AKAControlViewBinding*        controlViewBinding;
+
 @property(nonatomic, readonly, weak, nullable)UIView*                       view;
+
++ (opt_AKAControl)                                 registeredControlForView:(req_UIView)view;
 
 @property(nonatomic, readonly, nullable) NSString*                          name;
 
 @property(nonatomic, readonly, nullable) NSSet<NSString*>*                  tags;
 
 @property(nonatomic, readonly, nullable) NSString*                          role;
+
+@property(nonatomic, readonly, nullable) id                                 dataContext;
 
 #pragma mark - Validation
 
@@ -82,6 +88,17 @@ typedef NS_ENUM(NSInteger, AKAControlValidationState)
 - (BOOL)                                   addBinding:(req_AKABinding)binding;
 
 - (BOOL)                                removeBinding:(req_AKABinding)binding;
+
+@end
+
+
+@interface UIView(AKARegisteredControl)
+
+/**
+ * Returns the control participating in a control view binding with this view or nil if the view
+ * is not bound to a control.
+ */
+@property(nonatomic, readonly, weak) opt_AKAControl aka_boundControl;
 
 @end
 

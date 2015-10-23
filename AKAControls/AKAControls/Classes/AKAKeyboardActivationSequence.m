@@ -384,6 +384,8 @@
                                                  forItem:(id)item
                                                  atIndex:(NSUInteger)index
 {
+    (void)item;
+
     BOOL result = responder == self.activeResponder;
 
     if (result)

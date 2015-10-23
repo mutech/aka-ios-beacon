@@ -18,6 +18,9 @@ typedef AKAControlViewBinding*_Nonnull      req_AKAControlViewBinding;
 @class AKAKeyboardControlViewBinding;
 typedef AKAKeyboardControlViewBinding*_Nonnull req_AKAKeyboardControlViewBinding;
 
+@class AKACollectionControlViewBinding;
+typedef AKACollectionControlViewBinding*_Nonnull req_AKACollectionControlViewBinding;
+
 @class AKAControl;
 typedef AKAControl*_Nonnull                 req_AKAControl;
 typedef AKAControl*_Nullable                opt_AKAControl;
@@ -184,16 +187,58 @@ typedef AKACompositeControl*_Nullable       opt_AKACompositeControl;
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                            responderRequestedGoOrDone:(req_UIResponder)responder;
 
-
 @end
 
 
+@protocol AKAControl_CollectionControlViewBindingDelegate <NSObject>
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                    sourceControllerWillChangeContent:(req_id)sourceDataController;
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                         insertedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          updatedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          deletedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                            movedItem:(opt_id)sourceCollectionItem
+                                        fromIndexPath:(req_NSIndexPath)fromIndexPath
+                                          toIndexPath:(req_NSIndexPath)toIndexPath;
+
+@optional
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                     sourceControllerDidChangeContent:(req_id)sourceDataController;
+
+@end
 
 @protocol AKAControlDelegate <
     AKAControlMembershipDelegate,
     AKAControl_BindingDelegate,
     AKAControl_ControlViewBindingDelegate,
-    AKAControl_KeyboardControlViewBindingDelegate
+    AKAControl_KeyboardControlViewBindingDelegate,
+    AKAControl_CollectionControlViewBindingDelegate
 >
 
 @optional

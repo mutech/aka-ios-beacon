@@ -23,30 +23,16 @@
 #pragma mark - Initialization
 
 - (void)initializeTableViewMultiplexedDataSourceAndDelegate;
+
 - (void)                              initializeFormControl;
+
 - (void)                         initializeFormControlTheme;
+
 - (void)                       initializeFormControlMembers;
+
 - (void)                        activateFormControlBindings;
+
 - (void)                      deactivateFormControlBindings;
-
-
-#pragma mark - Configuration
-
-/**
- * Returns the data source specification for the specified key. The
- * default implementation delegates the message to the multiplexed
- * data source. This can be overridden to provide data sources on
- * demand. The implementation has to ensure that the data source
- * specification returned is defined in the multiplexed
- * data source for the same key.
- *
- * @param key the data source key
- * @param multiplexedDataSource the multiplexer containing the data source
- *
- * @return A data source specification
- */
-- (AKATVDataSourceSpecification*)dataSourceForKey:(NSString*)key
-                                    inMultiplexer:(AKATVMultiplexedDataSource*)multiplexedDataSource;
 
 #pragma mark - Accessing tagged controls
 
@@ -79,18 +65,5 @@
  */
 - (void)unhideRowControls:(NSArray*)rowControls
          withRowAnimation:(UITableViewRowAnimation)rowAnimation;
-
-/**
- * Updates data sources and table views for changes in the
- * dynamic table view cell placeholder control's data source.
- * This will delete all rows previously shown for the dynamic
- * placeholder cell and insert rows for its current content.
- *
- * @param placeholder the place holder control
- *
- * @return YES if the dynamic placeholder control was mapped
- *      in the multiplexed data source (e.g. not hidden).
- */
-- (BOOL)updateDynamicRowsForPlaceholderControl:(AKATableViewCellCompositeControl*)placeholder;
 
 @end

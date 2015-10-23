@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
+#import "AKANullability.h"
 #import "AKATVCoordinateMappingProtocol.h"
 #import "AKATVDataSourceSpecification.h"
 
@@ -271,6 +272,16 @@
 - (void)moveRowAtIndexPath:(NSIndexPath*__nonnull)indexPath
                toIndexPath:(NSIndexPath*__nonnull)targetIndexPath;
 
+#pragma mark - Source Coordiante Changes
+
+- (void)          dataSourceWithKey:(req_NSString)key
+             insertedRowAtIndexPath:(req_NSIndexPath)indexPath;
+- (void)          dataSourceWithKey:(req_NSString)key
+              removedRowAtIndexPath:(req_NSIndexPath)indexPath;
+- (void)          dataSourceWithKey:(req_NSString)key
+              movedRowFromIndexPath:(req_NSIndexPath)fromIndexPath
+                        toIndexPath:(req_NSIndexPath)toIndexPath;
+
 /**
  * This announces to the tableview that the row moved as specified but does not make
  * any changes to the index path mapping of the multiplexer. Update batches are however
@@ -303,6 +314,23 @@
 #pragma mark - UITableViewDelegate Support
 
 /**
+ * Inspects the specified delegate instance and identifies all methods conforming to the
+ * UITableViewDelegate that have been overridden by the delegates class relative to the specified
+ * type. Does nothing if the delegates class is not a subclass of the specified type or if
+ * it's class is the specified type.
+ *
+ * For all registered methods, the multiplexer will not dispatch table view delegate messages to
+ * the specified delegate without performing section or indexPath resolution and it will pass the
+ * original table view instead of proxy. Consequently, method implementations have to be aware of
+ * the multiplexer and it's implications.
+ *
+ * @param type a base class of the specified delegates class
+ * @param delegate the delegate to inspect.
+ */
+- (void)registerTableViewDelegateOverridesTo:(req_Class)type
+                                fromDelegate:(id<UITableViewDelegate>_Nonnull)delegate;
+
+/**
  * Makes this data source respond to all selectors to which the specified delegate
  * responds. The delegate implementation will resolve the delegate actually implementing
  * the message (using the delegate associated with a data source that provides
@@ -324,7 +352,7 @@
 - (void)addTableViewDelegateSelector:(SEL __nonnull)selector;
 
 /**
- * Makes this data source stop responding to the specified selector as part of the automatic
+ * Keeps this data source from responding to the specified selector as part of the automatic
  * delegate proxy implementation.
  *
  * @note that if the class implements the corresponding method this will have not effect.

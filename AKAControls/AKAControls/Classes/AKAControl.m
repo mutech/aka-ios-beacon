@@ -8,6 +8,7 @@
 
 @import AKACommons.AKALog;
 @import AKACommons.NSObject_AKAConcurrencyTools;
+@import AKACommons.NSObject_AKAAssociatedValues;
 
 #import <objc/runtime.h>
 
@@ -132,12 +133,59 @@
 {
     UIView* selfView = _view;
     NSParameterAssert(view == selfView || view == nil || selfView == nil);
-    (void)selfView; // prevent warning in release build
-    
-    _view = view;
+
+    if (selfView == nil)
+    {
+        if ([self registerControlInControlView:view])
+        {
+            _view = view;
+        }
+    }
+    else if (view == nil)
+    {
+        [self unregisterControlFromControlView:selfView];
+        _view = view;
+    }
+}
+
+static NSString* const kRegisteredControlKey = @"aka_control";
+
+- (BOOL)registerControlInControlView:(UIView*)view
+{
+    AKAControl* registeredControl = [AKAControl registeredControlForView:view];
+    BOOL result = registeredControl == nil;
+    if (result)
+    {
+        [view aka_setAssociatedValue:[AKAWeakReference weakReferenceTo:self]
+                              forKey:kRegisteredControlKey];
+    }
+    return result;
+}
+
+- (void)unregisterControlFromControlView:(UIView*)view
+{
+    [view aka_removeValueAssociatedWithKey:kRegisteredControlKey];
+}
+
++ (opt_AKAControl)registeredControlForView:(req_UIView)view
+{
+    id result = [view aka_associatedValueForKey:kRegisteredControlKey];
+    if ([result isKindOfClass:[AKAWeakReference class]])
+    {
+        result = ((AKAWeakReference*)result).value;
+    }
+    NSAssert(result == nil || [result isKindOfClass:[AKAControl class]], @"Item %@ registered as control in view %@ is not an instance of AKAControl", result, view);
+    return (AKAControl*)result;
 }
 
 #pragma mark - Value Access
+
+#pragma mark - Value access
+
+- (opt_id)dataContext
+{
+    return self.dataContextProperty.value;
+}
 
 - (AKAProperty *)                 dataContextProperty
 {
@@ -269,8 +317,7 @@
                                              property:(req_SEL)property
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
-    // TODO: consider perserving the property for diagnostics & error reporting:
-    (void)property;
+    // TODO: cadd the property (adding it to binding constructor):
 
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
@@ -300,8 +347,27 @@
     // since we are and probably have to wait for completion. So better make sure this
     // is called from main than to rely on this:
     [self aka_performBlockInMainThreadOrQueue:^{
-        [self.bindings addObject:binding];
-        result = YES;
+        if ([binding isKindOfClass:[AKAControlViewBinding class]])
+        {
+            AKAControlViewBinding* oldCVB = self.controlViewBinding;
+            NSAssert(oldCVB == nil, @"Invalid attempt to add control view binding %@ to control %@: control already has a defined control view binding %@", binding, self, oldCVB);
+            if (oldCVB == nil)
+            {
+                self.view = ((AKAControlViewBinding*)binding).view;
+                result = YES;
+                self->_controlViewBinding = (id)binding;
+            }
+        }
+        else
+        {
+            // TODO: consider testing if a binding to the same property&view is already present
+            result = YES;
+        }
+
+        if (result)
+        {
+            [self.bindings addObject:binding];
+        }
     } waitForCompletion:YES];
 
     return result;
@@ -323,6 +389,21 @@
         {
             [binding stopObservingChanges];
             [self.bindings removeObjectAtIndex:index];
+
+            if ([binding isKindOfClass:[AKAControlViewBinding class]])
+            {
+                if (binding == self.controlViewBinding)
+                {
+                    // TODO: what about other bindings? They don't need self.view, but it might
+                    // have been set directly. Probably not really a problem
+                    self.view = nil;
+                    self->_controlViewBinding = nil;
+                }
+                else
+                {
+                    NSAssert(NO, @"Internal inconsistency: control view binding %@ removed from control %@ which references another control view binding %@", binding, self, self.controlViewBinding);
+                }
+            }
         }
     } waitForCompletion:YES];
     return result;
@@ -331,6 +412,14 @@
 @end
 
 
+@implementation UIView(AKARegisteredControl)
+
+- (opt_AKAControl)aka_boundControl
+{
+    return [AKAControl registeredControlForView:self];
+}
+
+@end
 
 
 ////

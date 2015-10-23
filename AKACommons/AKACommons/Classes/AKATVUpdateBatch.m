@@ -7,6 +7,7 @@
 //
 
 #import "AKATVUpdateBatch.h"
+#import "AKALog.h"
 
 @implementation AKATVUpdateBatch
 
@@ -36,6 +37,7 @@
         _deletedRows = [NSMutableDictionary new];
         _insertedRows = [NSMutableDictionary new];
     }
+    AKALogTrace(@"[tableView:%p beginUpdates] (depth: %ld)", tableView, (long)self.depth);
     ++_depth;
     [tableView beginUpdates];
 }
@@ -52,6 +54,7 @@
         _insertedRows = nil;
     }
     --_depth;
+    AKALogTrace(@"[tableView:%p endUpdates] (depth: %ld)", tableView, (long)self.depth);
     [tableView endUpdates];
 }
 
@@ -297,7 +300,7 @@
     // and that's what we have to undo.
     NSIndexSet* deletedRows = [self deletedRowsInSection:indexPath.section
                                          createIfMissing:NO];
-    NSUInteger deletedPrecedingRows = [deletedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)indexPath.row)];
+    NSUInteger deletedPrecedingRows = [deletedRows countOfIndexesInRange:NSMakeRange(0, (NSUInteger)indexPath.row + 1)];
 
     NSIndexSet* insertedRows = [self insertedRowsInSection:indexPath.section
                                            createIfMissing:NO];

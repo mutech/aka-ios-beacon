@@ -17,7 +17,7 @@
 #import "AKAControlsErrors_Internal.h"
 
 #import "AKABindingProvider.h"
-
+#import "AKAControl_Internal.h"
 
 @interface AKACompositeControl ()
 
@@ -128,6 +128,14 @@
     }
 
     return result;
+}
+
+- (void)                            moveControlFromIndex:(NSUInteger)fromIndex
+                                                 toIndex:(NSUInteger)toIndex
+{
+    AKAControl* control = self.controlsStorage[fromIndex];
+    [self.controlsStorage removeObjectAtIndex:fromIndex];
+    [self.controlsStorage insertObject:control atIndex:toIndex > fromIndex ? toIndex - 1 : toIndex];
 }
 
 #pragma mark Delegat'ish Methods for Notifications and Customization

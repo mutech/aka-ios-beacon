@@ -8,6 +8,10 @@
 
 #import "AKATVSection.h"
 #import "AKATVRowSegment.h"
+#import "AKATVDataSourceSpecification.h"
+
+#import "AKANullability.h"
+#import "AKAErrors.h"
 
 @interface AKATVSection()
 
@@ -414,6 +418,66 @@
                              atRowIndex:effectiveTarget];
     }
     return result;
+}
+
+#pragma mark - Source Coordinate Changes
+
+- (void)          dataSourceWithKey:(req_NSString)key
+             insertedRowAtIndexPath:(req_NSIndexPath)indexPath
+{
+    for (NSUInteger segmentIndex = 0; segmentIndex < self.rowSegments.count; ++segmentIndex)
+    {
+        AKATVRowSegment* rowSegment = self.rowSegments[segmentIndex];
+        if ([rowSegment.dataSource.key isEqualToString:key] &&
+            rowSegment.indexPath.section == indexPath.section &&
+            rowSegment.indexPath.row + rowSegment.numberOfRows - 1 >= indexPath.row)
+        {
+            NSUInteger offset = indexPath.row - rowSegment.indexPath.row;
+            // First check if we need to split the segment
+            if (offset > 0)
+            {
+                rowSegment = [rowSegment splitAtOffset:offset];
+                ++segmentIndex;
+                [self.rowSegments insertObject:rowSegment atIndex:segmentIndex];
+            }
+
+            rowSegment.indexPath = [NSIndexPath indexPathForRow:rowSegment.indexPath.row + 1
+                                                      inSection:rowSegment.indexPath.section];
+        }
+    }
+}
+
+- (void)          dataSourceWithKey:(req_NSString)key
+              removedRowAtIndexPath:(req_NSIndexPath)indexPath
+{
+    for (NSUInteger segmentIndex = 0; segmentIndex < self.rowSegments.count; ++segmentIndex)
+    {
+        AKATVRowSegment* rowSegment = self.rowSegments[segmentIndex];
+        if ([rowSegment.dataSource.key isEqualToString:key] &&
+            rowSegment.indexPath.section == indexPath.section &&
+            rowSegment.indexPath.row + rowSegment.numberOfRows - 1 > indexPath.row)
+        {
+            NSInteger offset = indexPath.row - (rowSegment.indexPath.row + 1);
+            // First check if we need to split the segment
+            if (offset > 0)
+            {
+                rowSegment = [rowSegment splitAtOffset:offset];
+                ++segmentIndex;
+                [self.rowSegments insertObject:rowSegment atIndex:segmentIndex];
+            }
+
+            rowSegment.indexPath = [NSIndexPath indexPathForRow:rowSegment.indexPath.row - 1
+                                                      inSection:rowSegment.indexPath.section];
+        }
+    }
+}
+
+- (void)          dataSourceWithKey:(req_NSString)key
+              movedRowFromIndexPath:(req_NSIndexPath)fromIndexPath
+                        toIndexPath:(req_NSIndexPath)toIndexPath
+{
+    // TODO: implement
+    AKAErrorMethodNotImplemented();
 }
 
 @end

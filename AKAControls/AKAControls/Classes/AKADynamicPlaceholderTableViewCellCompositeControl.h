@@ -11,31 +11,21 @@
 
 #import "AKATableViewCellCompositeControl.h"
 
-
-// TODO: create binding hierarchy for collection view bindings
-@interface AKATableViewCellCollectionBinding: AKAViewBinding
-
-@property(nonatomic) id<UITableViewDataSource>          tableViewDataSource;
-@property(nonatomic) id<UITableViewDelegate>            tableViewDelegate;
-@property(nonatomic) NSArray*                           data;
-@property(nonatomic) NSInteger                          rowIndex;
-@property(nonatomic) NSInteger                          sectionIndex;
-
-@end
-
+#import "AKADynamicPlaceholderTableViewCell.h"
 
 @interface AKADynamicPlaceholderTableViewCellCompositeControl : AKATableViewCellCompositeControl
 
-@property(nonatomic, strong) NSArray*                   actualItems;
-@property(nonatomic) NSUInteger                         actualNumberOfRows;
-
-@property(nonatomic) AKATableViewCellCollectionBinding* collectionBinding;
+@property(nonatomic, readonly, weak) AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding* collectionBinding;
 
 @end
 
 
-@interface AKADynamicPlaceholderTableViewCellCompositeControl(Internal)
-
+// HACK: Letting the control implement the table view data source is quite dirty but very convenient
+// because it can then create both the views (dynamic cells) and the member controls and bindings.
+// This would be difficult to do otherwise. Until I find a cleaner solution, this will hopefully
+// work.
+@interface AKADynamicPlaceholderTableViewCellCompositeControl(UITableViewDataSourceAndDelegate) <
+    UITableViewDataSource,
+    UITableViewDelegate
+>
 @end
-
-

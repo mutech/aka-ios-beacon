@@ -60,6 +60,7 @@
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
+    (void)targetView;
     NSParameterAssert([targetView isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
 }
 
@@ -161,6 +162,7 @@
 
 - (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
 {
+    (void)view;
     NSParameterAssert(view == self.triggerView);
 
     // The view returned by the super class implementation, if defined and valid, is used by
@@ -311,9 +313,11 @@
                                                    titleForRow:(NSInteger)row
                                                   forComponent:(NSInteger)component
 {
+    (void)pickerView;
+    (void)component;
     NSParameterAssert(pickerView == self.pickerView);
-
     NSAssert(component == 0, @"AKAPickerViewBinding currently only supports single component picker views");
+
     NSString* result = nil;
 
     if (row == self.rowForUndefinedValue)
@@ -353,6 +357,8 @@
                                                   didSelectRow:(NSInteger)row
                                                    inComponent:(NSInteger)component
 {
+    (void)pickerView;
+    (void)component;
     NSParameterAssert(pickerView == self.pickerView);
     NSParameterAssert(component == 0);
 
@@ -378,6 +384,7 @@
 
 - (NSInteger)                   numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
+    (void)pickerView;
     NSParameterAssert(pickerView == self.pickerView);
 
     return 1;
@@ -386,6 +393,8 @@
 - (NSInteger)                                       pickerView:(UIPickerView *)pickerView
                                        numberOfRowsInComponent:(NSInteger)component
 {
+    (void)pickerView;
+    (void)component;
     NSParameterAssert(pickerView == self.pickerView);
     NSParameterAssert(component == 0);
 

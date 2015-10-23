@@ -12,7 +12,6 @@
 #import "AKABinding.h"
 #import "AKAControlViewBinding.h"
 
-
 @interface AKACompositeControl (BindingDelegatePropagation)
 
 - (void)                                      control:(req_AKAControl)control
@@ -114,3 +113,43 @@
                            responderRequestedGoOrDone:(req_UIResponder)responder;
 
 @end
+
+#import "AKACollectionControlViewBinding.h"
+
+@interface AKACompositeControl (CollectionControlViewBindingDelegatePropagation)
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                    sourceControllerWillChangeContent:(req_id)sourceDataController;
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                         insertedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          updatedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          deletedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath;
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                            movedItem:(opt_id)sourceCollectionItem
+                                        fromIndexPath:(req_NSIndexPath)fromIndexPath
+                                          toIndexPath:(req_NSIndexPath)toIndexPath;
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                     sourceControllerDidChangeContent:(req_id)sourceDataController;
+
+@end
+

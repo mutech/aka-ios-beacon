@@ -290,10 +290,9 @@
         result = [delegate control:control shouldBinding:binding responderActivate:responder];
     }
 
-    AKACompositeControl* owner = self.owner;
-    if (result && owner)
+    if (result)
     {
-        result = [owner control:control shouldBinding:binding responderActivate:responder];
+        result = [super control:control shouldBinding:binding responderActivate:responder];
     }
 
     return result;
@@ -303,7 +302,7 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                                 responderWillActivate:(req_UIResponder)responder
 {
-    [self.owner control:control binding:binding responderWillActivate:responder];
+    [super control:control binding:binding responderWillActivate:responder];
 
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
@@ -316,7 +315,7 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                                  responderDidActivate:(req_UIResponder)responder
 {
-    [self.owner control:control binding:binding responderDidActivate:responder];
+    [super control:control binding:binding responderDidActivate:responder];
 
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
@@ -337,10 +336,9 @@
         result = [delegate control:control shouldBinding:binding responderDeactivate:responder];
     }
 
-    AKACompositeControl* owner = self.owner;
-    if (result && owner)
+    if (result)
     {
-        result = [owner control:control shouldBinding:binding responderDeactivate:responder];
+        result = [super control:control shouldBinding:binding responderDeactivate:responder];
     }
 
     return result;
@@ -350,7 +348,7 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                               responderWillDeactivate:(req_UIResponder)responder
 {
-    [self.owner control:control binding:binding responderWillDeactivate:responder];
+    [super control:control binding:binding responderWillDeactivate:responder];
 
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderWillDeactivate:)])
@@ -363,7 +361,7 @@
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                                responderDidDeactivate:(req_UIResponder)responder
 {
-    [self.owner control:control binding:binding responderDidDeactivate:responder];
+    [super control:control binding:binding responderDidDeactivate:responder];
 
     id<AKAControlDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
@@ -393,6 +391,98 @@
     (void)responder;
     // TODO: consider implementing commit form
     return [self.keyboardActivationSequence deactivate];
+}
+
+@end
+
+
+@implementation AKAFormControl (CollectionControlViewBindingDelegatePropagation)
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                    sourceControllerWillChangeContent:(req_id)sourceDataController
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceControllerWillChangeContent:)])
+    {
+        [delegate control:control binding:binding sourceControllerWillChangeContent:sourceDataController];
+    }
+
+    [super control:control binding:binding sourceControllerWillChangeContent:sourceDataController];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                         insertedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceController:insertedItem:atIndexPath:)])
+    {
+        [delegate control:control binding:binding sourceController:sourceDataController insertedItem:sourceCollectionItem atIndexPath:indexPath];
+    }
+
+   [super control:control binding:binding sourceController:sourceDataController insertedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          updatedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceController:updatedItem:atIndexPath:)])
+    {
+        [delegate control:control binding:binding sourceController:sourceDataController updatedItem:sourceCollectionItem atIndexPath:indexPath];
+    }
+
+    [super control:control binding:binding sourceController:sourceDataController updatedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                          deletedItem:(opt_id)sourceCollectionItem
+                                          atIndexPath:(req_NSIndexPath)indexPath
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceController:deletedItem:atIndexPath:)])
+    {
+        [delegate control:control binding:binding sourceController:sourceDataController deletedItem:sourceCollectionItem atIndexPath:indexPath];
+    }
+
+    [super control:control binding:binding sourceController:sourceDataController deletedItem:sourceCollectionItem atIndexPath:indexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                                     sourceController:(req_id)sourceDataController
+                                            movedItem:(opt_id)sourceCollectionItem
+                                        fromIndexPath:(req_NSIndexPath)fromIndexPath
+                                          toIndexPath:(req_NSIndexPath)toIndexPath
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceController:movedItem:fromIndexPath:toIndexPath:)])
+    {
+        [delegate control:control binding:binding sourceController:sourceDataController movedItem:sourceCollectionItem fromIndexPath:fromIndexPath toIndexPath:toIndexPath];
+    }
+
+    [super control:control binding:binding sourceController:sourceDataController movedItem:sourceCollectionItem fromIndexPath:fromIndexPath toIndexPath:toIndexPath];
+}
+
+- (void)                                      control:(req_AKACompositeControl)control
+                                              binding:(req_AKACollectionControlViewBinding)binding
+                     sourceControllerDidChangeContent:(req_id)sourceDataController
+{
+    id<AKAControlDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:sourceControllerDidChangeContent:)])
+    {
+        [delegate control:control binding:binding sourceControllerDidChangeContent:sourceDataController];
+    }
+
+   [super control:control binding:binding sourceControllerDidChangeContent:sourceDataController];
 }
 
 @end

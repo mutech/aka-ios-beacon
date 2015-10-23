@@ -45,6 +45,7 @@
 
 - (void)validateTargetView:(req_UIView)targetView
 {
+    (void)targetView;
     NSParameterAssert([targetView isKindOfClass:[UIView class]]);
 }
 

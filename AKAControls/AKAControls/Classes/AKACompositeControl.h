@@ -28,7 +28,8 @@
 
 - (NSUInteger)                           removeAllControls;
 
-
+- (void)                            moveControlFromIndex:(NSUInteger)fromIndex
+                                                 toIndex:(NSUInteger)toIndex;
 
 @end
 

@@ -28,31 +28,13 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                  initWithTarget:(id)target
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
+- (void)validateTargetView:(req_UIView)targetView
 {
-    NSParameterAssert([target isKindOfClass:[UISwitch class]]);
-    return [self initWithView:(UISwitch*)target
-                   expression:bindingExpression
-                      context:bindingContext
-                     delegate:delegate];
+    (void)targetView;
+    NSParameterAssert([targetView isKindOfClass:[UISwitch class]]);
 }
 
-- (instancetype)                              initWithView:(req_UISwitch)uiSwitch
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-{
-    if (self = [super initWithView:uiSwitch
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate])
-    {
-    }
-    return self;
-}
+#pragma mark - Binding Target
 
 - (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
 {

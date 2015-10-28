@@ -68,7 +68,8 @@
         {
             AKALogError(@"Failed to create binding source from expression %@ in context %@",
                         bindingExpression.description, bindingContext);
-            self = nil;
+            // TODO: allow empty primary expression
+            //self = nil;
         }
     }
 

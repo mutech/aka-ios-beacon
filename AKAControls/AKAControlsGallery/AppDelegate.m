@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 
+@import AKACommons;
+
 @interface AppDelegate ()
 
 @end
@@ -15,7 +17,14 @@
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    AKA_LOG_LEVEL_DEF = DDLogLevelAll;
+    [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelWarning]; // TTY = Xcode console
+    [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelWarning]; // ASL = Apple System Logs
+
+    [DDLog setLevel:DDLogLevelAll forClass:[AKATVMultiplexedDataSource class]];
+
     // Override point for customization after application launch.
     return YES;
 }

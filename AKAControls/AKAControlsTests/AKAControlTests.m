@@ -82,7 +82,7 @@
     NSString *message = [[NSString alloc] initWithFormat:format arguments:args];
     va_end(args);
     NSLog(@"NSAssert Failure: %@ (line %ld): [%@ %@]: %@",
-          fileName, line,
+          fileName, (long)line,
           object, NSStringFromSelector(selector),
           message);
     ++self.testCase.failedAssertionCount;

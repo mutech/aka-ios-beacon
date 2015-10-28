@@ -9,6 +9,53 @@
 @import AKACommons.AKAErrors;
 
 #import "AKABinding_AKABinding_formatter.h"
+#include <objc/runtime.h>
+
+#pragma mark - AKABindingProvider_AKABinding_formatter - Private Interface
+#pragma mark -
+
+@implementation AKABindingProvider_AKABinding_formatter
+
+#pragma mark - Initialization
+
++ (instancetype)                            sharedInstance
+{
+    static AKABindingProvider_AKABinding_formatter* instance = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        instance = [AKABindingProvider_AKABinding_formatter new];
+    });
+
+    return instance;
+}
+
+#pragma mark - Binding Expression Validation
+
+- (AKABindingSpecification*)                 specification
+{
+    Class bindingType = [AKABinding_AKABinding_formatter class];
+    Class providerType = self.class;
+
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":                  bindingType,
+           @"bindingProviderType":          providerType,
+           @"targetType":                   [AKAProperty class],
+           @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass),
+           @"allowUnspecifiedAttributes":   @YES };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+    });
+
+    return result;
+}
+
+@end
+
+
 
 #pragma mark - Initialization
 
@@ -26,36 +73,62 @@
 
     if (self)
     {
-        _formatter = self.bindingSource.value;
-
-        if (_formatter != nil && bindingExpression.attributes.count > 0)
+        id sourceValue = self.bindingSource.value;
+        if ([sourceValue isKindOfClass:[NSFormatter class]])
         {
-            _formatter = [_formatter copy];
+            _formatter = sourceValue;
+
+            if (_formatter != nil && bindingExpression.attributes.count > 0)
+            {
+                _formatter = [_formatter copy];
+            }
         }
-
-        if (_formatter == nil && bindingExpression.attributes.count > 0)
+        else if (sourceValue != nil)
         {
+            NSAssert(class_isMetaClass(object_getClass(sourceValue)),
+                     @"Expected primary expression of formatter to be a key path refering to an instance of NSFormatter or a subclass of NSFormatter, got %@", sourceValue);
+            if (class_isMetaClass(object_getClass(sourceValue)))
+            {
+                Class type = sourceValue;
+                if ([type isSubclassOfClass:[NSFormatter class]])
+                {
+                    _formatter = [[type alloc] init];
+                }
+                else
+                {
+                    NSAssert(class_isMetaClass(sourceValue),
+                             @"Class %@ provided for formatter attribute is not a subclass of NSFormatter", sourceValue);
+                }
+            }
+        }
+        else if (bindingExpression.attributes.count > 0)
+        {
+            // Fallback for concrete formatter bindings, this will fail for
+            // generic formatters:
             _formatter = [self createMutableFormatter];
         }
 
-        [bindingExpression.attributes
-         enumerateKeysAndObjectsUsingBlock:
-         ^(NSString* _Nonnull key, AKABindingExpression* _Nonnull obj, BOOL* _Nonnull stop)
-         {
-             (void)stop;
-
-             // TODO: make this more robust and add error handling/reporting
-             id value = [obj bindingSourceValueInContext:bindingContext];
-
-             id (^converter)(id) = self.configurationValueConvertersByPropertyName[key];
-
-             if (converter)
+        if (_formatter != nil)
+        {
+            [bindingExpression.attributes
+             enumerateKeysAndObjectsUsingBlock:
+             ^(NSString* _Nonnull key, AKABindingExpression* _Nonnull obj, BOOL* _Nonnull stop)
              {
-                 value = converter(value);
-             }
-             [self->_formatter setValue:value
-                               forKey:key];
-         }];
+                 (void)stop;
+
+                 // TODO: make this more robust and add error handling/reporting
+                 id value = [obj bindingSourceValueInContext:bindingContext];
+
+                 id (^converter)(id) = self.configurationValueConvertersByPropertyName[key];
+
+                 if (converter)
+                 {
+                     value = converter(value);
+                 }
+                 [self->_formatter setValue:value
+                                     forKey:key];
+             }];
+        }
 
         // This implementation initializes the formatter once and does not observe changes in
         // neither direction.

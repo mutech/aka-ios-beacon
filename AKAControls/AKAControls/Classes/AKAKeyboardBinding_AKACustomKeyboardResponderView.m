@@ -6,11 +6,13 @@
 #import "AKAKeyboardBinding_AKACustomKeyboardResponderView.h"
 #import "AKACustomKeyboardResponderView.h"
 
+
 @interface AKAKeyboardBinding_AKACustomKeyboardResponderView()
 
 @property(nonatomic, nullable, weak) id<AKACustomKeyboardResponderDelegate> savedTriggerViewDelegate;
 
 @end
+
 
 @implementation AKAKeyboardBinding_AKACustomKeyboardResponderView
 
@@ -24,7 +26,7 @@
 
 #pragma mark - Custom Keyboard Responder View Delegate Attachment
 
-- (void)attachToCustomKeyboardResponderView
+- (void)                   attachToCustomKeyboardResponderView
 {
     NSParameterAssert(self.triggerView.delegate == self || self.savedTriggerViewDelegate == nil);
 
@@ -34,14 +36,14 @@
     return;
 }
 
-- (void)detachFromCustomKeyboardResponderView
+- (void)                 detachFromCustomKeyboardResponderView
 {
     self.triggerView.delegate = self.savedTriggerViewDelegate;
 }
 
 #pragma mark - Properties
 
-- (AKACustomKeyboardResponderView*)               triggerView
+- (AKACustomKeyboardResponderView*)                triggerView
 {
     UIView* result = self.view;
     NSParameterAssert(result == nil || [result isKindOfClass:[AKACustomKeyboardResponderView class]]);
@@ -78,7 +80,7 @@
     return [self.responderForKeyboardActivationSequence becomeFirstResponder];
 }
 
-- (BOOL)                                    deactivateResponder
+- (BOOL)                                   deactivateResponder
 {
     // redefined to prevent base implementation from calling will/did deactivate methods. These
     // are called from custom keyboard responder view delegate methods instead.

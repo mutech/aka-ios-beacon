@@ -57,18 +57,18 @@
 
     XCTAssert(label.text == originalLabelText);
     [customization applyToView:label withContext:nil delegate:nil];
-    XCTAssert([@"Hello there" isEqualToString:label.text]);
+    XCTAssert(label.text && [@"Hello there" isEqualToString:(req_NSString)label.text]);
     label.text = originalLabelText;
 
     XCTAssert(textField.text == originalTextFieldText);
     [customization applyToView:textField withContext:nil delegate:nil];
-    XCTAssert([@"Hello there" isEqualToString:textField.text]);
+    XCTAssert(textField.text && [@"Hello there" isEqualToString:(req_NSString)textField.text]);
     textField.text = originalTextFieldText;
 
     XCTAssert(label.text == originalLabelText);
     XCTAssert(textField.text == originalTextFieldText);
     [customization applyToViews:views withContext:nil delegate:nil];
-    XCTAssert([@"Hello there" isEqualToString:label.text]);
+    XCTAssert(label.text && [@"Hello there" isEqualToString:(req_NSString)label.text]);
     XCTAssert(textField.text == originalTextFieldText);
 
 }

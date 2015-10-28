@@ -44,3 +44,33 @@
 }
 
 @end
+
+#import "UILabel+AKAIBBindingProperties.h"
+
+@implementation AKATextLabelEditorControlView
+
+#pragma mark - AKATextFieldControlViewBindingConfigurationProtocol
+
+- (void)setupDefaultValues
+{
+    [super setupDefaultValues];
+}
+
+#pragma mark - AKAEditorControlView overrides
+
+- (BOOL)autocreateEditor:(out UIView *__autoreleasing *)createdView
+{
+    UILabel* editor = [[UILabel alloc] initWithFrame:CGRectZero];
+    BOOL result = editor != nil;
+
+    if (result)
+    {
+        editor.textBinding_aka = self.editorValueBinding;
+
+        *createdView = editor;
+    }
+
+    return result;
+}
+
+@end

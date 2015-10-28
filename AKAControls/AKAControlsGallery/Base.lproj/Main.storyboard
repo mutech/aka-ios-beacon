@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -181,14 +181,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzf-1v-dGL">
-                                <rect key="frame" x="16" y="199" width="343" height="14"/>
+                                <rect key="frame" x="16" y="245" width="343" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETl-So-aum">
-                                <rect key="frame" x="16" y="221" width="343" height="20"/>
+                                <rect key="frame" x="16" y="267" width="343" height="20"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -198,17 +198,34 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
-                                <rect key="frame" x="310" y="259" width="51" height="31"/>
+                                <rect key="frame" x="310" y="305" width="51" height="31"/>
                                 <animations/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="$root.textField1.hidden"/>
                                 </userDefinedRuntimeAttributes>
                             </switch>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wC-Mm-bMn" customClass="AKATextEditorControlView">
+                                <rect key="frame" x="16" y="191" width="343" height="46"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="editorValueBinding">
+                                        <string key="value">stringValue {
+	liveModelUpdates: $true,
+	autoActivate: $true, 	KBActivationSequence: $true
+}</string>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="labelTextBinding" value="&quot;Composite Editor&quot;"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="tableview"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="trailing" secondItem="S5K-zJ-ZY5" secondAttribute="trailingMargin" id="1G1-ge-FSP"/>
+                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="trailing" secondItem="xNV-EM-WEF" secondAttribute="trailing" id="1gi-lO-MYr"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="top" secondItem="fdx-pW-zdc" secondAttribute="bottom" constant="8" id="1j1-2Z-fnC"/>
                             <constraint firstAttribute="trailing" secondItem="ETl-So-aum" secondAttribute="trailing" constant="16" id="3sY-a9-tCa"/>
                             <constraint firstItem="Sow-m2-G9d" firstAttribute="top" secondItem="ETl-So-aum" secondAttribute="bottom" constant="18" id="BHx-8q-4dq"/>
@@ -218,16 +235,18 @@
                             <constraint firstAttribute="trailing" secondItem="tzf-1v-dGL" secondAttribute="trailing" constant="16" id="JWo-uQ-r1S"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="top" secondItem="X2I-Oi-me6" secondAttribute="bottom" constant="8" id="JyB-9u-gVw"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="Q4C-DI-s6C"/>
+                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="leading" secondItem="xNV-EM-WEF" secondAttribute="leading" id="Sa1-L6-3Fz"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="U0d-wc-Cu0"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leadingMargin" id="cMw-aH-USt"/>
-                            <constraint firstItem="tzf-1v-dGL" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="16" id="cvP-fX-BaI"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="eb4-7T-dFi"/>
                             <constraint firstItem="ETl-So-aum" firstAttribute="top" secondItem="tzf-1v-dGL" secondAttribute="bottom" constant="8" id="fey-St-gKf"/>
+                            <constraint firstItem="tzf-1v-dGL" firstAttribute="top" secondItem="1wC-Mm-bMn" secondAttribute="bottom" constant="8" id="lCZ-Ux-wA2"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="ZmZ-QW-fDF" secondAttribute="trailing" id="nOS-8x-GmY"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="ofI-he-XEe"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="ZmZ-QW-fDF" secondAttribute="leading" id="rIh-Fd-xUy"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ruQ-jP-d5I"/>
                             <constraint firstItem="tzf-1v-dGL" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" constant="16" id="uXy-E9-zzf"/>
+                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="8" id="vDJ-fm-6jr"/>
                             <constraint firstAttribute="trailing" secondItem="Sow-m2-G9d" secondAttribute="trailing" constant="16" id="xiB-aO-Q45"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="top" secondItem="ZmZ-QW-fDF" secondAttribute="bottom" constant="8" id="zye-fX-H4f"/>
                         </constraints>
@@ -474,7 +493,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Section-1" id="75n-U9-xf7">
                                 <cells>
@@ -490,7 +509,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -510,14 +529,14 @@
                                                     <animations/>
                                                     <string key="text">With a subtitle, this one is a bit longer, just to see if in any weird case this would make any difference. I'm going to repeat it: This one is a bit longer, just to see if in any weird case this would make any difference. This one is a bit longer, just to see if in any weird case this would make any difference.</string>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3f-qd-hi0">
                                                     <rect key="frame" x="16" y="8" width="343" height="20"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -556,7 +575,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -568,14 +587,14 @@
                                         <rect key="frame" x="0.0" y="367" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hen-ij-eGt" id="4Ss-cs-Iyw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="twentyone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sj6-k8-981">
                                                     <rect key="frame" x="16" y="8" width="80" height="28"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="title"/>
@@ -585,7 +604,7 @@
                                                     <rect key="frame" x="341" y="8" width="18" height="28"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="value"/>

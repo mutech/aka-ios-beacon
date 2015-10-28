@@ -39,7 +39,8 @@
     AKABindingExpression* expression = [AKABindingExpression bindingExpressionWithString:text
                                                                          bindingProvider:provider error:&error];
     // TODO: fix test (once attribute validation via specs is finished)
-    //XCTAssertNil(expression);
+    XCTAssertNil(expression);
+    XCTAssertNotNil(error);
 }
 
 #pragma mark - Key Path Parser Tests

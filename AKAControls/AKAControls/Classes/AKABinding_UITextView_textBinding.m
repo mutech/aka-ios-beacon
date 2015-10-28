@@ -350,17 +350,18 @@
 
     UITextView* textView = self.textView;
 
-    // We only attempt to do the scrolling if the text view has it disabled
+    // We only attempt to do the scrolling if the text view's own scrolling is disabled
+    // TODO: we probably should ascend the view hierarchy and adjust scroll positions everywhere to ensure maximum visibility of edited content.
     if (!textView.isScrollEnabled)
     {
         UITextPosition*_Nullable selectedTextRangeEnd = textView.selectedTextRange.end;
         if (selectedTextRangeEnd)
         {
             CGRect cursorR = [textView caretRectForPosition:(UITextPosition*_Nonnull)selectedTextRangeEnd];
-
             UITableView* tableView = [textView aka_superviewOfType:[UITableView class]];
             if (tableView)
             {
+                BOOL animateScrolling = NO;
                 // Resize text view if needed
                 if (tableView.rowHeight == UITableViewAutomaticDimension)
                 {
@@ -370,6 +371,10 @@
                     CGSize newSize = [textView sizeThatFits:CGSizeMake(size.width, FLT_MAX)];
                     if (size.height != newSize.height)
                     {
+                        // Do not animate if text view shrinked, because that looks ugly if the
+                        // text view is the last cell (TODO: test all the million edge cases here)
+                        animateScrolling &= newSize.height > size.height;
+
                         // Disable animations to prevent table view from jumping up and down
                         // (Bug in iOS8/9)
                         BOOL wasAnimating = [UIView areAnimationsEnabled];
@@ -377,6 +382,10 @@
                         [tableView beginUpdates];
                         [tableView endUpdates];
                         [UIView setAnimationsEnabled:wasAnimating];
+
+                        // If we needed to resize the textview, we have to query the caret position again
+                        // after resizing, because it will otherwise now have the position x=INF,y=INF
+                        cursorR = [textView caretRectForPosition:(UITextPosition*_Nonnull)selectedTextRangeEnd];
                     }
                 }
 
@@ -384,11 +393,12 @@
                 CGRect absoluteR = [textView convertRect:textView.frame
                                                   toView:tableView];
                 CGPoint position = absoluteR.origin;
-                // Compose rectangle we want to see (here we might want to add some space above or below, see about that later).
+                // Compose rectangle we want to see (includes an additional line of text for some
+                // trailing context if there is any).
                 CGRect scrollR = CGRectMake(cursorR.origin.x + position.x,
                                             cursorR.origin.y + position.y,
-                                            cursorR.size.width, cursorR.size.height);
-                [tableView scrollRectToVisible:scrollR animated:NO];
+                                            cursorR.size.width, cursorR.size.height + textView.font.pointSize * 1.1f);
+                [tableView scrollRectToVisible:scrollR animated:animateScrolling];
             }
             else
             {

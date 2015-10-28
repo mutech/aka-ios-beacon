@@ -52,6 +52,33 @@
 
 #pragma mark - Binding Configuration
 
+- (NSString *)controlName
+{
+    return self.aka_controlConfiguration[kAKAControlNameKey];
+}
+- (void)setControlName:(NSString *)controlName
+{
+    [self aka_setControlConfigurationValue:controlName forKey:kAKAControlNameKey];
+}
+
+- (NSString *)controlRole
+{
+    return self.aka_controlConfiguration[kAKAControlRoleKey];
+}
+- (void)setControlRole:(NSString *)controlRole
+{
+    [self aka_setControlConfigurationValue:controlRole forKey:kAKAControlRoleKey];
+}
+
+- (NSString *)controlTags
+{
+    return self.aka_controlConfiguration[kAKAControlTagsKey];
+}
+- (void)setControlTags:(NSString *)controlTags
+{
+    [self aka_setControlConfigurationValue:controlTags forKey:kAKAControlTagsKey];
+}
+
 @synthesize controlConfiguration = _controlConfiguration;
 
 - (AKAMutableControlConfiguration *)controlConfiguration

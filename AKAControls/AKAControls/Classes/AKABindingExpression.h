@@ -47,6 +47,10 @@ typedef AKABindingProvider* _Nonnull                                req_AKABindi
 
 #pragma mark - Properties
 
+@property(nonatomic, readonly) BOOL isConstant;
+
+@property(nonatomic, readonly) opt_NSString constantStringValueOrDescription;
+
 /**
  * The serialized form of the binding expression. Please note that there is no guarantee
  * that this equals the string that was (possibly) used to define the binding expression.

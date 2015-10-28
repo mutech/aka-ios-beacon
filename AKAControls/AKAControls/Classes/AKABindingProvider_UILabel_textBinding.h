@@ -24,5 +24,6 @@
 
 @property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
 @property(nonatomic, nullable) NSDateFormatter* dateFormatter;
+@property(nonatomic, nullable) NSFormatter* formatter;
 
 @end

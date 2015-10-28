@@ -63,6 +63,16 @@
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"dateFormatter"
                          },
+                  @"formatter":
+                      @{ @"bindingType":     [AKABinding_AKABinding_formatter class],
+                         @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
+                         @"targetType":      [AKABinding class],
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
+                             AKABindingExpressionTypeClass),
+                         @"allowUnspecifiedAttributes": @YES,
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"formatter"
+                         },
                   @"textForUndefinedValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeString),
                          @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
@@ -159,6 +169,13 @@
                 }
                 else if (value != nil && value != [NSNull null])
                 {
+                    if ([value respondsToSelector:@selector(description)])
+                    {
+                        value = [value description];
+                    }
+                    // Here, we should have been relatively safe to get a string, but of course,
+                    // no. So be extra careful and use stringWithFormat hoping that that will
+                    // cover most remaining oddities
                     text = [NSString stringWithFormat:@"%@", value];
                 }
                 else if (binding.textForUndefinedValue.length > 0)
@@ -205,6 +222,10 @@
         {
             *targetValueStore = ((req_NSNumber)sourceValue).boolValue ? self.textForYes : self.textForNo;
         }
+        else if (self.formatter)
+        {
+            *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
+        }
         else
         {
             *targetValueStore = ((req_NSNumber)sourceValue).stringValue;
@@ -217,10 +238,19 @@
         {
             *targetValueStore = [self.dateFormatter stringFromDate:(req_NSDate)sourceValue];
         }
+        else if (self.formatter)
+        {
+            *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
+        }
         else
         {
             *targetValueStore = ((req_NSDate)sourceValue).description;
         }
+        result = YES;
+    }
+    else if (self.formatter)
+    {
+        *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
         result = YES;
     }
     else

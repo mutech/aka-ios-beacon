@@ -13,6 +13,9 @@
 @protocol AKACustomKeyboardResponderDelegate;
 
 
+#pragma mark - AKACustomKeyboardResponderView
+#pragma mark -
+
 /**
  * Plain UIView subclass implementing UIResponder methods such that the view can
  * become first responder and use a custom input view as keyboard. The behavior is
@@ -22,15 +25,15 @@
  *
  * @sa AKACustomKeyboardResponderDelegate
  */
-@interface AKACustomKeyboardResponderView : UIView<AKAControlViewProtocol>
-
-#pragma mark - IB Binding Properties
-
-@property(nonatomic) IBInspectable BOOL tapToOpen;
+@interface AKACustomKeyboardResponderView: UIView<AKAControlViewProtocol>
 
 #pragma mark - Control Configuration
 
-- (void)setupControlConfiguration:(AKAMutableControlConfiguration*)controlConfiguration;
+- (void)                             setupControlConfiguration:(AKAMutableControlConfiguration*)controlConfiguration;
+
+#pragma mark - IB Binding Properties
+
+@property(nonatomic) IBInspectable BOOL                        tapToOpen;
 
 #pragma mark - Outlets
 
@@ -47,7 +50,7 @@
  * @note A manually specified tap gesture recognizer should be
  *      connected to the action becomeFirstResponderForSender. This view will only connect the recognizer if it created it.
  */
-@property(nonatomic, strong) IBOutlet UITapGestureRecognizer* tapToOpenGestureRecognizer;
+@property(nonatomic, strong) IBOutlet UITapGestureRecognizer*  tapToOpenGestureRecognizer;
 
 #pragma mark - Actions
 
@@ -57,7 +60,7 @@
  *
  * @param sender the sender
  */
-- (IBAction)becomeFirstResponderForSender:(id)sender;
+- (IBAction)                     becomeFirstResponderForSender:(id)sender;
 
 #pragma mark - UIResponder redefinitions
 
@@ -68,10 +71,13 @@
  *
  * @return YES if the view should become first responder.
  */
-- (BOOL)shouldBecomeFirstResponder;
+- (BOOL)                            shouldBecomeFirstResponder;
 
 @end
 
+
+#pragma mark - AKACustomKeyboardResponderDelegate
+#pragma mark -
 
 /**
  * A delegate which defines the keyboard related behavior of a @c AKACustomKeyboardResponderView and optionally controls and monitors its first responder state.
@@ -80,6 +86,7 @@
 @protocol AKACustomKeyboardResponderDelegate <NSObject>
 
 @optional
+
 /**
  * Determines the result of the specified views canBecomeFirstResponder method.
  *
@@ -90,6 +97,7 @@
 - (BOOL)    customKeyboardResponderViewCanBecomeFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * The view that the specified view should return as as result of its inputView method.
  *
@@ -100,6 +108,7 @@
 - (UIView*)            inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * The view that the specified view should return as as result of its inputAccessoryView method. If the delegate does not implement this method, the view will return the result of its super class implementation of inputAccessoryView.
  *
@@ -112,6 +121,7 @@
 #pragma mark - Key Input Protocol
 
 @optional
+
 /**
  * Determines the result of the specified view's hasText method. If not implemented, the view returns
  * YES.
@@ -123,6 +133,7 @@
 - (BOOL)                    customKeyboardResponderViewHasText:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Called by the specified view when its insertText method is called.
  *
@@ -130,9 +141,10 @@
  * @param text the text send to the views insertText method.
  */
 - (void)                           customKeyboardResponderView:(AKACustomKeyboardResponderView*)view
-                                                    insertText:(NSString *)text;
+                                                    insertText:(NSString*)text;
 
 @optional
+
 /**
  * Called by the specified view when its deleteBackward method is called.
  *
@@ -143,6 +155,7 @@
 #pragma mark - Controlling and observing first responder status
 
 @optional
+
 /**
  * Determines if the specified view should become first responder. If the delegate method is not
  * defined, the result of the views canBecomeFirstResponder method is assumed.
@@ -154,6 +167,7 @@
 - (BOOL) customKeyboardResponderViewShouldBecomeFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Called by the specified view before it becomes first responder.
  *
@@ -162,6 +176,7 @@
 - (void)   customKeyboardResponderViewWillBecomeFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Called by the specified view right after becoming first responder (and only if the views
  * super classes implementation of becomeFirstResponder returned YES).
@@ -171,6 +186,7 @@
 - (void)    customKeyboardResponderViewDidBecomeFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Determines if the specified view should resign first responder. If the delegate method
  * is not defined, YES is assumed.
@@ -182,6 +198,7 @@
 - (BOOL) customKeyboardResponderViewShouldResignFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Called by the specified view before it resigns first responder.
  *
@@ -190,6 +207,7 @@
 - (void)   customKeyboardResponderViewWillResignFirstResponder:(AKACustomKeyboardResponderView*)view;
 
 @optional
+
 /**
  * Called by the specified view right after resigning first responder (and only if the views
  * super classes implementation of resignFirstResponder returned YES).

@@ -224,7 +224,10 @@
     BOOL result = (targetIndexPath != nil);
 
     NSArray* items = self.bindingSource.value;
-
+    if ([items isKindOfClass:[NSSet class]])
+    {
+        items = [((NSSet*)items) allObjects];
+    }
     if (items == nil)
     {
         items = @[];
@@ -377,7 +380,7 @@
                               sourceIndexPath:indexPath
                                         count:1
                                   atIndexPath:targetIndexPath
-                             withRowAnimation:UITableViewRowAnimationTop];
+                             withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -406,7 +409,7 @@
 
         [multiplexer removeUpTo:1
                    rowsFromIndexPath:targetIndexPath
-                    withRowAnimation:UITableViewRowAnimationTop];
+                    withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     // Order is relevant, row has to be removed before data source index paths get updated:
     NSString*    key = self.multiplexedDataSourceKey;

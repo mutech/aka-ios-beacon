@@ -16,3 +16,8 @@ IB_DESIGNABLE
 @property(nonatomic) IBInspectable BOOL KBActivationSequence;
 
 @end
+
+IB_DESIGNABLE
+@interface AKATextLabelEditorControlView : AKAEditorControlView
+
+@end

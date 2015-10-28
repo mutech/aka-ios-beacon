@@ -205,7 +205,7 @@
         }
         else
         {
-            AKALogTrace(@"%@: Skipped source value update for target value '%@' change to '%@'",
+            AKALogVerbose(@"%@: Skipped source value update for target value '%@' change to '%@'",
                         self, oldTargetValue, newTargetValue);
         }
     }

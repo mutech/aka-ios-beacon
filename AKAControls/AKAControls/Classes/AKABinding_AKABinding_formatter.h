@@ -8,6 +8,10 @@
 
 #import "AKAPropertyBinding.h"
 
+
+@interface AKABindingProvider_AKABinding_formatter: AKABindingProvider
+@end
+
 @interface AKABinding_AKABinding_formatter : AKAPropertyBinding
 
 #pragma mark - Initialization

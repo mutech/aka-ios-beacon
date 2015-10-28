@@ -55,21 +55,29 @@ IB_DESIGNABLE
 #pragma mark - Interface Builder Properties
 
 /**
- * The binding expression to be forwarded to the editor view. This is only used if the editor
- * view is automatically created or if its control view binding is undefined.
+ The binding expression to be forwarded to the editor view. This is only used if the editor view is automatically created or if its control view binding is undefined.
  */
 @property(nonatomic) IBInspectable NSString* editorValueBinding;
 
 /**
- * The text binding expression for the label. This is only used if the label is automatically
- * created.
+ The text binding expression for the label. This is only used if the label is automatically created.
  */
 @property(nonatomic) IBInspectable NSString* labelTextBinding;
 
 #pragma mark - Outlets
 
 @property(nonatomic, weak) IBOutlet UILabel* label;
+
 @property(nonatomic, weak) IBOutlet UIView*  editor;
+
 @property(nonatomic, weak) IBOutlet UILabel* messageLabel;
+
+#pragma mark - Abstract methods for implementing sub classes
+
+- (void)setupEditor;
+
+- (void)setupLabel;
+
+- (void)setupMessageLabel;
 
 @end

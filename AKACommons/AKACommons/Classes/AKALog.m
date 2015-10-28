@@ -10,4 +10,20 @@
 
 @implementation AKALog
 
+#if AKA_SUPPORT_DYNAMIC_LOG_LEVELS
+
++ (AKALog *)sharedInstance
+{
+    static AKALog* result;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [AKALog new];
+    });
+
+    return result;
+}
+
+#endif
+
 @end

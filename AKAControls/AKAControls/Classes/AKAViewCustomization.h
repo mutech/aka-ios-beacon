@@ -3,39 +3,41 @@
 // Copyright (c) 2015 AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @class AKAViewCustomization;
+
 
 @protocol AKAViewCustomizationDelegate <NSObject>
 
 @optional
-- (void)viewCustomizations:(AKAViewCustomization *)customization
-      willBeAppliedToView:(id)view;
+- (void)                                   viewCustomizations:(AKAViewCustomization *)customization
+                                          willBeAppliedToView:(id)view;
 
 @optional
-- (BOOL)viewCustomizations:(AKAViewCustomization *)customization
-         shouldSetProperty:(NSString*)name
-                     value:(id)oldValue
-                        to:(id)newValue;
+- (BOOL)                                   viewCustomizations:(AKAViewCustomization *)customization
+                                            shouldSetProperty:(NSString*)name
+                                                        value:(id)oldValue
+                                                           to:(id)newValue;
 
 @optional
-- (void)viewCustomizations:(AKAViewCustomization *)customization
-            didSetProperty:(NSString *)name
-                     value:(id)oldValue
-                        to:(id)newValue;
+- (void)                                   viewCustomizations:(AKAViewCustomization *)customization
+                                               didSetProperty:(NSString *)name
+                                                        value:(id)oldValue
+                                                           to:(id)newValue;
 
 @optional
-- (void)viewCustomizations:(AKAViewCustomization *)customizations
-     haveBeenAppliedToView:(id)view;
+- (void)                                   viewCustomizations:(AKAViewCustomization *)customizations
+                                        haveBeenAppliedToView:(id)view;
 
 @end
+
 
 @interface AKAViewCustomization: NSObject
 
 #pragma mark Initialization
 
-- (instancetype)initWithDictionary:(NSDictionary*)dictionary;
+- (instancetype)                            initWithDictionary:(NSDictionary*)dictionary;
 
 #pragma mark - Configuration
 
@@ -43,7 +45,7 @@
 
 #pragma mark Properties
 
-@property(nonatomic) NSString* viewKey;
+@property(nonatomic) NSString*                                 viewKey;
 
 #pragma mark Configuration
 
@@ -56,13 +58,14 @@
  * @param value the value to be set on application
  * @param name the name of the property to change.
  */
-- (void)addCustomizationSetValue:(id)value forPropertyName:(NSString*)name;
+- (void)                              addCustomizationSetValue:(id)value
+                                               forPropertyName:(NSString*)name;
 
-- (void)removeCustomizationSetValueForPropertyName:(NSString*)name;
+- (void)            removeCustomizationSetValueForPropertyName:(NSString*)name;
 
 #pragma mark Application
 
-- (BOOL)isApplicableToView:(id)view;
+- (BOOL)                                    isApplicableToView:(id)view;
 
 /**
  * Applies the customizations configured in this instance to the entry in the views
@@ -76,9 +79,9 @@
  *
  * @return YES if the customization is applicable
  */
-- (BOOL)applyToViews:(NSDictionary *)views
-         withContext:(id)context
-            delegate:(id<AKAViewCustomizationDelegate>)delegate;
+- (BOOL)                                          applyToViews:(NSDictionary *)views
+                                                   withContext:(id)context
+                                                      delegate:(id<AKAViewCustomizationDelegate>)delegate;
 
 /**
  * Applies the customizations configured in this instance to the specified view.
@@ -89,29 +92,32 @@
  *
  * @return YES if the customization is applicable
  */
-- (BOOL)applyToView:(id)view
-        withContext:(id)context
-           delegate:(id<AKAViewCustomizationDelegate>)delegate;
+- (BOOL)                                           applyToView:(id)view
+                                                   withContext:(id)context
+                                                      delegate:(id<AKAViewCustomizationDelegate>)delegate;
 
 @end
+
 
 @interface AKAViewCustomizationContainer: NSObject
 
 @property(nonatomic, readonly) NSObject<AKAViewCustomizationDelegate>* viewCustomizationDelegate;
-@property(nonatomic, readonly) NSArray* viewCustomizations;
+
+@property(nonatomic, readonly) NSArray*                        viewCustomizations;
 
 #pragma mark - Adding View Customizations
 
-- (NSUInteger)addViewCustomizationsWithArrayOfDictionaries:(NSArray*)specifications;
-- (AKAViewCustomization *)addViewCustomizationWithDictionary:(NSDictionary*)specification
-;
-- (void)addViewCustomization:(AKAViewCustomization *)viewCustomization;
+- (NSUInteger)    addViewCustomizationsWithArrayOfDictionaries:(NSArray*)specifications;
+
+- (AKAViewCustomization *)  addViewCustomizationWithDictionary:(NSDictionary*)specification;
+
+- (void)                                  addViewCustomization:(AKAViewCustomization *)viewCustomization;
 
 
 #pragma mark - Application
 
-- (void)applyViewCustomizationsToTarget:(UIView*)target
-                              withViews:(NSDictionary*)views
-                               delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate;
+- (void)                       applyViewCustomizationsToTarget:(UIView*)target
+                                                     withViews:(NSDictionary*)views
+                                                      delegate:(NSObject<AKAViewCustomizationDelegate>*)delegate;
 
 @end

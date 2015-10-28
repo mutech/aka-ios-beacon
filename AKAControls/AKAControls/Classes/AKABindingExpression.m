@@ -108,6 +108,16 @@
 
 #pragma mark - Diagnostics
 
+- (BOOL)isConstant
+{
+    return NO;
+}
+
+- (NSString*)constantStringValueOrDescription
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
 - (NSString *)description
 {
     return [self textWithNestingLevel:0
@@ -265,6 +275,13 @@
     return self.array;
 }
 
+#pragma mark - Diagnostics
+
+- (NSString*)constantStringValueOrDescription
+{
+    return @"(array expression)";
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
@@ -358,9 +375,9 @@
 
     if (target)
     {
-        return [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
-                                                 keyPath:nil
-                                          changeObserver:changeObserver];
+        result =  [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
+                                                    keyPath:nil
+                                             changeObserver:changeObserver];
     }
     return result;
 }
@@ -370,6 +387,18 @@
     (void)bindingContext;
 
     return self.constant;
+}
+
+#pragma mark - Diagnostics
+
+- (BOOL)isConstant
+{
+    return YES;
+}
+
+- (NSString*)constantStringValueOrDescription
+{
+    return [self.constant description];
 }
 
 #pragma mark - Serialization
@@ -661,6 +690,13 @@
     return result;
 }
 
+#pragma mark - Diagnostics
+
+- (NSString*)constantStringValueOrDescription
+{
+    return [NSString stringWithFormat:@"(key path: %@)", self.keyPath];
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForPrimaryExpression
@@ -710,6 +746,13 @@
 }
 
 
+#pragma mark - Diagnostics
+
+- (NSString*)constantStringValueOrDescription
+{
+    return [NSString stringWithFormat:@"(key path: %@.%@)", self.textForScope, self.keyPath];
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForScope
@@ -743,6 +786,13 @@
         result = [bindingContext rootDataContextValueForKeyPath:(req_NSString)keyPath];
     }
     return result;
+}
+
+#pragma mark - Diagnostics
+
+- (NSString*)constantStringValueOrDescription
+{
+    return [NSString stringWithFormat:@"(key path: %@.%@)", self.textForScope, self.keyPath];
 }
 
 #pragma mark - Serialization
@@ -784,6 +834,13 @@
         result = [bindingContext controlValueForKeyPath:(req_NSString)keyPath];
     }
     return result;
+}
+
+#pragma mark - Diagnostics
+
+- (NSString*)constantStringValueOrDescription
+{
+    return [NSString stringWithFormat:@"(key path: %@.%@)", self.textForScope, self.keyPath];
 }
 
 #pragma mark - Serialization

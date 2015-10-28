@@ -248,11 +248,11 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                                    withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange
 {
     opt_AKAProperty result = nil;
-    if (keyPath.length > 0)
-    {
-        result = [self.dataContextProperty propertyAtKeyPath:(req_NSString)keyPath
-                                          withChangeObserver:valueDidChange];
-    }
+    // TODO: check if there are cases where callers expect an undefined result for an undefined keyPath
+    // Binding expression "$data" results in an empty key path and should evaluate to the data context
+    // itself.
+    result = [self.dataContextProperty propertyAtKeyPath:(req_NSString)keyPath
+                                      withChangeObserver:valueDidChange];
     return result;
 }
 
@@ -392,7 +392,8 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 
             if ([binding isKindOfClass:[AKAControlViewBinding class]])
             {
-                if (binding == self.controlViewBinding)
+                AKAControlViewBinding* controlViewBinding = self.controlViewBinding;
+                if (binding == controlViewBinding)
                 {
                     // TODO: what about other bindings? They don't need self.view, but it might
                     // have been set directly. Probably not really a problem
@@ -401,7 +402,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                 }
                 else
                 {
-                    NSAssert(NO, @"Internal inconsistency: control view binding %@ removed from control %@ which references another control view binding %@", binding, self, self.controlViewBinding);
+                    NSAssert(NO, @"Internal inconsistency: control view binding %@ removed from control %@ which references another control view binding %@", binding, self, controlViewBinding);
                 }
             }
         }

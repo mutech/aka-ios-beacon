@@ -91,5 +91,13 @@ typedef UITextView* _Nullable                           opt_UITextView;
 typedef UITextView* _Nonnull                            req_UITextView;
 typedef UISwitch* _Nullable                             opt_UISwitch;
 typedef UISwitch* _Nonnull                              req_UISwitch;
+typedef UITableView* _Nullable                          opt_UITableView;
+typedef UITableView* _Nonnull                           req_UITableView;
+typedef UITableViewCell* _Nullable                      opt_UITableViewCell;
+typedef UITableViewCell* _Nonnull                       req_UITableViewCell;
+typedef id<UITableViewDataSource>_Nullable              opt_UITableViewDataSource;
+typedef id<UITableViewDataSource>_Nonnull               req_UITableViewDataSource;
+typedef id<UITableViewDelegate>_Nullable                opt_UITableViewDelegate;
+typedef id<UITableViewDelegate>_Nonnull                 req_UITableViewDelegate;
 
 #endif /* AKANullability_h */

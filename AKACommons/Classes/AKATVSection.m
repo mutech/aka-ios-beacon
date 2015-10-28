@@ -430,13 +430,13 @@
         AKATVRowSegment* rowSegment = self.rowSegments[segmentIndex];
         if ([rowSegment.dataSource.key isEqualToString:key] &&
             rowSegment.indexPath.section == indexPath.section &&
-            rowSegment.indexPath.row + rowSegment.numberOfRows - 1 >= indexPath.row)
+            rowSegment.indexPath.row + (NSInteger)rowSegment.numberOfRows - 1 >= indexPath.row)
         {
-            NSUInteger offset = indexPath.row - rowSegment.indexPath.row;
+            NSInteger offset = indexPath.row - rowSegment.indexPath.row;
             // First check if we need to split the segment
             if (offset > 0)
             {
-                rowSegment = [rowSegment splitAtOffset:offset];
+                rowSegment = [rowSegment splitAtOffset:(NSUInteger)offset];
                 ++segmentIndex;
                 [self.rowSegments insertObject:rowSegment atIndex:segmentIndex];
             }
@@ -455,13 +455,13 @@
         AKATVRowSegment* rowSegment = self.rowSegments[segmentIndex];
         if ([rowSegment.dataSource.key isEqualToString:key] &&
             rowSegment.indexPath.section == indexPath.section &&
-            rowSegment.indexPath.row + rowSegment.numberOfRows - 1 > indexPath.row)
+            rowSegment.indexPath.row + (NSInteger)rowSegment.numberOfRows - 1 > indexPath.row)
         {
             NSInteger offset = indexPath.row - (rowSegment.indexPath.row + 1);
             // First check if we need to split the segment
             if (offset > 0)
             {
-                rowSegment = [rowSegment splitAtOffset:offset];
+                rowSegment = [rowSegment splitAtOffset:(NSUInteger)offset];
                 ++segmentIndex;
                 [self.rowSegments insertObject:rowSegment atIndex:segmentIndex];
             }
@@ -476,6 +476,10 @@
               movedRowFromIndexPath:(req_NSIndexPath)fromIndexPath
                         toIndexPath:(req_NSIndexPath)toIndexPath
 {
+    (void)key;
+    (void)fromIndexPath;
+    (void)toIndexPath;
+    
     // TODO: implement
     AKAErrorMethodNotImplemented();
 }

@@ -211,8 +211,7 @@ static NSString*const kMessageRole = @"message";
                      @[ @{ @"view": kLabelRole,
                            @"requirements": @{ @"type": [UILabel class] },
                            @"properties":
-                           @{ @"font": [UIFont systemFontOfSize:16.0
-                                                         weight:UIFontWeightLight],
+                           @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
                               @"textColor": [UIColor grayColor],
                               @"numberOfLines": @(1),
                               @"lineBreakMode": @(NSLineBreakByTruncatingTail),
@@ -223,15 +222,14 @@ static NSString*const kMessageRole = @"message";
                         @{ @"view": kEditorRole,
                            @"requirements": @{ @"type": [UITextField class] },
                            @"properties":
-                           @{ @"font": [UIFont systemFontOfSize:16.0],
+                           @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
                               @"backgroundColor": [UIColor whiteColor],
                               @"borderStyle": @(UITextBorderStyleRoundedRect) }
                         },
                         @{ @"view": kMessageRole,
                            @"requirements": @{ @"type": [UILabel class] },
                            @"properties":
-                           @{ @"font": [UIFont systemFontOfSize:12.0
-                                                         weight:UIFontWeightLight],
+                           @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2],
                               @"textColor": [UIColor redColor],
                               @"numberOfLines": @(0),
                               @"lineBreakMode": @(NSLineBreakByWordWrapping) }
@@ -307,24 +305,30 @@ static NSString*const kMessageRole = @"message";
                 @[ @{ @"view": kLabelRole,
                       @"requirements": @{ @"type": [UILabel class] },
                       @"properties":
-                      @{ @"font": [UIFont systemFontOfSize:12.0],
+                      @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
                          @"textColor": [UIColor grayColor],
                          @"numberOfLines": @(1),
                          @"lineBreakMode": @(NSLineBreakByTruncatingTail) }
-                   },
+                      },
                    @{ @"view": kEditorRole,
                       @"requirements": @{ @"type": [UITextField class] },
                       @"properties":
-                      @{ @"font": [UIFont systemFontOfSize:18.0],
-                         @"backgroundColor": [UIColor colorWithWhite:1
-                                                               alpha:0],
-                         @"borderStyle": @(UITextBorderStyleNone) }
-                   },
+                          @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+                             @"backgroundColor": [UIColor colorWithWhite:1
+                                                                   alpha:0],
+                             @"borderStyle": @(UITextBorderStyleNone) }
+                      },
+                   @{ @"view": kEditorRole,
+                      @"requirements": @{ @"type": [UILabel class] },
+                      @"properties":
+                          @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+                             @"numberOfLines": @(1),
+                             @"lineBreakMode": @(NSLineBreakByTruncatingTail) }
+                      },
                    @{ @"view": kMessageRole,
                       @"requirements": @{ @"type": [UILabel class] },
                       @"properties":
-                      @{ @"font": [UIFont systemFontOfSize:10.0
-                                                    weight:UIFontWeightLight],
+                      @{ @"font": [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2],
                          @"textColor": [UIColor redColor],
                          @"numberOfLines": @(0),
                          @"lineBreakMode": @(NSLineBreakByWordWrapping) }

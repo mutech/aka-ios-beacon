@@ -624,6 +624,444 @@
 @end
 
 
+#pragma mark - AKAColorConstantBindingExpression
+#pragma mark -
+
+@implementation AKAColorConstantBindingExpression
+
+#pragma mark - Initialization
+
++ (NSNumber*) colorComponentWithKeys:(NSArray<NSString*>*)keys
+                      fromAttributes:(opt_AKABindingExpressionAttributes)attributes
+                            required:(BOOL)required
+{
+    NSNumber* result = nil;
+    AKABindingExpression* expression = nil;
+    NSString* providedKey = nil;
+    for (NSString* key in keys)
+    {
+        expression = attributes[key];
+        if (expression)
+        {
+            providedKey = key;
+            break;
+        }
+    }
+    if ([expression isKindOfClass:[AKADoubleConstantBindingExpression class]])
+    {
+        AKANumberConstantBindingExpression* numberExpression = (id)expression;
+        double doubleValue = numberExpression.constant.doubleValue;
+        if (doubleValue < 0 || doubleValue > 1.0)
+        {
+            NSString* message = [NSString stringWithFormat:@"Invalid value %lf for color component %@ (valid aliases: %@), floating point values have to be in range [0 .. 1.0]", doubleValue, keys.firstObject, [keys componentsJoinedByString:@", "]];
+            @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        }
+        else
+        {
+            // normalize double values to range [0 .. 255.0], this will be undone when both integer and
+            // double values get normalized to range 0 .. 1.0.
+            result = @(doubleValue * 255);
+        }
+    }
+    else if ([expression isKindOfClass:[AKAIntegerConstantBindingExpression class]])
+    {
+        AKANumberConstantBindingExpression* numberExpression = (id)expression;
+        NSInteger integerValue = numberExpression.constant.integerValue;
+        if (integerValue < 0 ||  integerValue > 255)
+        {
+            NSString* message = [NSString stringWithFormat:@"Invalid value %ld for color component %@ (valid aliases: %@), integer values have to be in range [0 .. 255]", (long)integerValue, keys.firstObject, [keys componentsJoinedByString:@", "]];
+            @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        }
+        else
+        {
+            result = numberExpression.constant;
+        }
+    }
+    else if (expression)
+    {
+        NSString* message = [NSString stringWithFormat:@"Invalid type %@ for color component %@, expected a numeric constant in range [0 .. 1.0]", NSStringFromClass(expression.class), providedKey];
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+    }
+
+    if (result == nil && required)
+    {
+        NSString* message = [NSString stringWithFormat:@"No value for color component %@ (valid aliases: %@), expected a numeric constant in range [0 .. 1.0] (floating point) or [0 .. 255] (integer)", keys.firstObject, [keys componentsJoinedByString:@", "]];
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+    }
+    return result;
+}
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    UIColor* color = nil;
+    if ([constant isKindOfClass:[UIColor class]])
+    {
+        color = constant;
+    }
+
+    if ((color && attributes.count > 0) || (!color && attributes.count == 0))
+    {
+        // TODO: add error parameter instead of throwing exception
+        @throw [NSException exceptionWithName:@"Invalid specification of attributes for color definition. Attributes are required when no color is defined as primary expression and forbidden otherwise" reason:@"Attributes are required when no color is defined as primary expression and forbidden otherwise" userInfo:nil];
+        self = nil;
+    }
+    else if (!color)
+    {
+        // colorComponentWithKeys... normalizes values to double or long long values to the range 0 .. 255(.0)
+        // using the type information available from numeric constant binding expressions:
+
+        CGFloat red = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"r", @"red" ]
+                                                                     fromAttributes:attributes
+                                                                           required:YES].floatValue / 255.0;
+        CGFloat green = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"g", @"green" ]
+                                                                       fromAttributes:attributes
+                                                                             required:YES].floatValue / 255.0;
+        CGFloat blue = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"b", @"blue" ]
+                                                                      fromAttributes:attributes
+                                                                            required:YES].floatValue / 255.0;
+        NSNumber* nalpha = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"a", @"alpha" ]
+                                                                       fromAttributes:attributes
+                                                                             required:NO];
+        CGFloat alpha = nalpha ? nalpha.floatValue : 1.0;
+
+        color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+
+        // TODO: we could/should validate attributes to warn/fail on unknown keys
+        if (attributes.count != (nalpha ? 4 : 3))
+        {
+            NSString* message = [NSString stringWithFormat:@"Unsupported color attribute (one of: %@); supported attributes are 'r' or 'red', 'g' or 'green', 'b' or 'blue' and 'a' or 'alpha'; (HSB/CMY not yet supported)", [attributes.allKeys componentsJoinedByString:@", "]];
+            @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        }
+
+    }
+    self = [super initWithConstant:color attributes:nil provider:provider];
+
+    return self;
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+    if (self.constant)
+    {
+        UIColor* color = self.constant;
+        CGFloat red;
+        CGFloat green;
+        CGFloat blue;
+        CGFloat alpha;
+        [color getRed:&red green:&green blue:&blue alpha:&alpha];
+        result = [NSString stringWithFormat:@"$%@ { r:%f, g:%f, b:%f, a:%f }", [self keyword], red, green, blue, alpha];
+    }
+    return result;
+}
+
+@end
+
+
+#pragma mark - AKAUIColorConstantBindingExpression
+#pragma mark -
+
+@implementation AKAUIColorConstantBindingExpression
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordUIColor];
+}
+
+@end
+
+
+#pragma mark - AKACGColorConstantBindingExpression
+#pragma mark -
+
+@implementation AKACGColorConstantBindingExpression
+
+- (id)constant
+{
+    id result = super.constant;
+    if ([result isKindOfClass:[UIColor class]])
+    {
+        // TODO: does it have to be retained here? Don't think so, check later
+        result = (__bridge id)[(UIColor*)result CGColor];
+    }
+    return result;
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordCGColor];
+}
+
+@end
+
+
+#pragma mark - AKAUIFontConstantBindingExpression
+#pragma mark -
+
+@implementation AKAUIFontConstantBindingExpression
+
+#pragma mark - Initialization
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    AKAErrorMethodNotImplemented();
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordUIFont];
+}
+
+- (NSString*)textForConstant
+{
+    AKAErrorMethodNotImplemented();
+}
+
+@end
+
+
+#pragma mark - AKACGPointConstantBindingExpression
+#pragma mark -
+
+@implementation AKACGPointConstantBindingExpression
+
+#pragma mark - Initialization
+
++ (NSNumber*) coordinateWithKeys:(NSArray<NSString*>*)keys
+                  fromAttributes:(opt_AKABindingExpressionAttributes)attributes
+                        required:(BOOL)required
+{
+    NSNumber* result = nil;
+    AKABindingExpression* expression = nil;
+    NSString* providedKey = nil;
+    for (NSString* key in keys)
+    {
+        expression = attributes[key];
+        if (expression)
+        {
+            providedKey = key;
+            break;
+        }
+    }
+    if ([expression isKindOfClass:[AKANumberConstantBindingExpression class]])
+    {
+        AKANumberConstantBindingExpression* numberExpression = (id)expression;
+        result = numberExpression.constant;
+    }
+    else
+    {
+        NSString* message = [NSString stringWithFormat:@"Invalid type %@ for coordinate %@, expected a numeric constant", NSStringFromClass(expression.class), providedKey];
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+    }
+
+    if (result == nil && required)
+    {
+        NSString* message = [NSString stringWithFormat:@"No value for coordinate %@ (valid aliases: %@), expected a numeric constant", keys.firstObject, [keys componentsJoinedByString:@", "]];
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+    }
+    return result;
+}
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    NSValue* value = nil;
+    if ([constant isKindOfClass:[NSValue class]])
+    {
+        NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGPoint)) == 0);
+        value = constant;
+    }
+
+    if ((value && attributes.count > 0) || (!value && attributes.count == 0))
+    {
+        // TODO: add error parameter instead of throwing exception
+        NSString* message = @"Invalid specification of attributes for CGPoint. Attributes are required when no point is defined as primary expression and forbidden otherwise";
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        self = nil;
+    }
+    else if (!value)
+    {
+        CGFloat x = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"x" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        CGFloat y = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"y" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        value = [NSValue valueWithCGPoint:CGPointMake(x, y)];
+    }
+    self = [super initWithConstant:value attributes:nil provider:provider];
+
+    return self;
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordCGPoint];
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+    if (self.constant)
+    {
+        CGPoint value = ((NSValue*)self.constant).CGPointValue;
+        result = [NSString stringWithFormat:@"$%@ { x:%f, y:%f }", [self keyword], value.x, value.y];
+    }
+    return result;
+}
+
+@end
+
+
+#pragma mark - AKACGSizeConstantBindingExpression
+#pragma mark -
+
+@implementation AKACGSizeConstantBindingExpression
+
+#pragma mark - Initialization
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    NSValue* value = nil;
+    if ([constant isKindOfClass:[NSValue class]])
+    {
+        NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGRect)) == 0);
+        value = constant;
+    }
+
+    if ((value && attributes.count > 0) || (!value && attributes.count == 0))
+    {
+        // TODO: add error parameter instead of throwing exception
+        NSString* message = @"Invalid specification of attributes for CGRect. Attributes are required when no rectangle is defined as primary expression and forbidden otherwise";
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        self = nil;
+    }
+    else if (!value)
+    {
+        CGFloat w = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"w", @"width" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        CGFloat h = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"h", @"height" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        value = [NSValue valueWithCGSize:CGSizeMake(w, h)];
+    }
+    self = [super initWithConstant:value attributes:nil provider:provider];
+
+    return self;
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordCGRect];
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+    if (self.constant)
+    {
+        CGRect value = ((NSValue*)self.constant).CGRectValue;
+        result = [NSString stringWithFormat:@"$%@ { x:%f, y:%f, w:%f, h:%f }", [self keyword], value.origin.x, value.origin.y, value.size.width, value.size.height];
+    }
+    return result;
+}
+
+@end
+
+
+#pragma mark - AKACGRectConstantBindingExpression
+#pragma mark -
+
+@implementation AKACGRectConstantBindingExpression
+
+#pragma mark - Initialization
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    NSValue* value = nil;
+    if ([constant isKindOfClass:[NSValue class]])
+    {
+        NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGRect)) == 0);
+        value = constant;
+    }
+
+    if ((value && attributes.count > 0) || (!value && attributes.count == 0))
+    {
+        // TODO: add error parameter instead of throwing exception
+        NSString* message = @"Invalid specification of attributes for CGRect. Attributes are required when no rectangle is defined as primary expression and forbidden otherwise";
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        self = nil;
+    }
+    else if (!value)
+    {
+        CGFloat x = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"x" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        CGFloat y = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"y" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        CGFloat w = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"w", @"width" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        CGFloat h = [AKACGPointConstantBindingExpression coordinateWithKeys:@[ @"h", @"height" ]
+                                                             fromAttributes:attributes
+                                                                   required:YES].floatValue;
+        value = [NSValue valueWithCGRect:CGRectMake(x, y, w, h)];
+    }
+    self = [super initWithConstant:value attributes:nil provider:provider];
+
+    return self;
+}
+
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordCGSize];
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+    if (self.constant)
+    {
+        CGSize value = ((NSValue*)self.constant).CGSizeValue;
+        result = [NSString stringWithFormat:@"$%@ { w:%f, h:%f }", [self keyword], value.width, value.height];
+    }
+    return result;
+}
+
+@end
+
+
 #pragma mark - AKAKeyPathBindingExpression
 #pragma mark -
 

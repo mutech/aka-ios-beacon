@@ -23,7 +23,8 @@ typedef enum AKABindingExpressionParseErrorCode
     AKAParseErrorKeyPathOperatorRequiresSubsequentKey,
     AKAParseErrorKeyPathOperatorNameExpectedAfterAtSign,
     AKAParseErrorUnterminatedKeyPathAfterDot,
-
+    AKAParseErrorKeyPathNotSupportedForExpressionType,
+    
     AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd,
 
     // Expression and attribute list errors
@@ -54,11 +55,22 @@ typedef NSScanner AKABindingExpressionParser;
 
 @interface NSScanner(BindingExpressionParser)
 
-+ (NSString* _Nonnull) keywordTrue;
-+ (NSString* _Nonnull) keywordFalse;
-+ (NSString* _Nonnull) keywordData;
-+ (NSString* _Nonnull) keywordRoot;
-+ (NSString* _Nonnull) keywordControl;
++ (req_NSString) keywordTrue;
++ (req_NSString) keywordFalse;
++ (req_NSString) keywordData;
++ (req_NSString) keywordRoot;
++ (req_NSString) keywordControl;
++ (req_NSString) keywordColor;
++ (req_NSString) keywordUIColor;
++ (req_NSString) keywordCGColor;
++ (req_NSString) keywordFont;
++ (req_NSString) keywordUIFont;
++ (req_NSString) keywordPoint;
++ (req_NSString) keywordCGPoint;
++ (req_NSString) keywordSize;
++ (req_NSString) keywordCGSize;
++ (req_NSString) keywordRect;
++ (req_NSString) keywordCGRect;
 
 #pragma mark - Binding Expression Parser
 

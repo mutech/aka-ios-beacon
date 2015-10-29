@@ -17,39 +17,102 @@
 
 #pragma mark - Configuration
 
-static NSString* const keywordTrue = @"true";
-static NSString* const keywordFalse = @"false";
-static NSString* const keywordData = @"data";
-static NSString* const keywordRoot = @"root";
-static NSString* const keywordControl = @"control";
+static NSString* const keywordTrue =        @"true";
+static NSString* const keywordFalse =       @"false";
+static NSString* const keywordData =        @"data";
+static NSString* const keywordRoot =        @"root";
+static NSString* const keywordControl =     @"control";
++ (NSString*) keywordTrue       { return    keywordTrue; }
++ (NSString*) keywordFalse      { return    keywordFalse; }
++ (NSString*) keywordData       { return    keywordData; }
++ (NSString*) keywordRoot       { return    keywordRoot; }
++ (NSString*) keywordControl    { return    keywordControl; }
 
-+ (NSString*) keywordTrue { return keywordTrue; }
-+ (NSString*) keywordFalse { return keywordFalse; }
-+ (NSString*) keywordData { return keywordData; }
-+ (NSString*) keywordRoot { return keywordRoot; }
-+ (NSString*) keywordControl { return keywordControl; }
+static NSString* const keywordColor =       @"color";
+static NSString* const keywordUIColor =     @"UIColor";
+static NSString* const keywordCGColor =     @"CGColor";
++ (NSString*) keywordColor      { return    keywordColor; }
++ (NSString*) keywordUIColor    { return    keywordUIColor; }
++ (NSString*) keywordCGColor    { return    keywordCGColor; }
+
+static NSString* const keywordFont =        @"font";
+static NSString* const keywordUIFont =      @"UIFont";
++ (NSString*) keywordFont       { return    keywordFont; }
++ (NSString*) keywordUIFont     { return    keywordUIFont; }
+
+static NSString* const keywordPoint =       @"point";
+static NSString* const keywordCGPoint =     @"CGPoint";
+static NSString* const keywordSize =        @"size";
+static NSString* const keywordCGSize =      @"CGSize";
+static NSString* const keywordRect =        @"rect";
+static NSString* const keywordCGRect =      @"CGRect";
++ (NSString*) keywordPoint      { return    keywordPoint; }
++ (NSString*) keywordCGPoint    { return    keywordCGPoint; }
++ (NSString*) keywordSize       { return    keywordSize; }
++ (NSString*) keywordCGSize     { return    keywordCGSize; }
++ (NSString*) keywordRect       { return    keywordRect; }
++ (NSString*) keywordCGRect     { return    keywordCGRect; }
 
 + (NSDictionary<NSString*, NSDictionary<NSString*, Class>*>*)namedScopesAndConstants
 {
     static NSDictionary* namedScopes;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        namedScopes = @{ keywordTrue:    @{ @"value": @(YES),
-                                            @"type":  [AKABooleanConstantBindingExpression class]
-                                           },
-                         keywordFalse:   @{ @"value": @(NO),
-                                            @"type":  [AKABooleanConstantBindingExpression class]
-                                           },
-                         keywordData:    @{ @"value": [NSNull null],
-                                            @"type":  [AKADataContextKeyPathBindingExpression class]
-                                           },
-                         keywordRoot:    @{ @"value": [NSNull null],
-                                            @"type":  [AKARootDataContextKeyPathBindingExpression class]
-                                           },
-                         keywordControl: @{ @"value": [NSNull null],
-                                            @"type":  [AKAControlKeyPathBindingExpression class]
-                                           }
-                         };
+        namedScopes =
+        @{ keywordTrue:    @{ @"value": @(YES),
+                              @"type":  [AKABooleanConstantBindingExpression class]
+                              },
+           keywordFalse:   @{ @"value": @(NO),
+                              @"type":  [AKABooleanConstantBindingExpression class]
+                              },
+           keywordData:    @{ @"value": [NSNull null],
+                              @"type":  [AKADataContextKeyPathBindingExpression class]
+                              },
+           keywordRoot:    @{ @"value": [NSNull null],
+                              @"type":  [AKARootDataContextKeyPathBindingExpression class]
+                              },
+           keywordControl: @{ @"value": [NSNull null],
+                              @"type":  [AKAControlKeyPathBindingExpression class]
+                              },
+
+           keywordColor:   @{ @"value": [NSNull null],
+                              @"type":  [AKAUIColorConstantBindingExpression class]
+                              },
+           keywordUIColor: @{ @"value": [NSNull null],
+                              @"type":  [AKAUIColorConstantBindingExpression class]
+                              },
+           keywordCGColor: @{ @"value": [NSNull null],
+                              @"type":  [AKACGColorConstantBindingExpression class]
+                              },
+
+           keywordFont:    @{ @"value": [NSNull null],
+                              @"type":  [AKAUIFontConstantBindingExpression class]
+                              },
+           keywordUIFont:  @{ @"value": [NSNull null],
+                              @"type":  [AKAUIFontConstantBindingExpression class]
+                              },
+
+           keywordPoint:   @{ @"value": [NSNull null],
+                              @"type":  [AKACGPointConstantBindingExpression class]
+                              },
+           keywordCGPoint: @{ @"value": [NSNull null],
+                              @"type":  [AKACGPointConstantBindingExpression class]
+                              },
+
+           keywordSize:   @{ @"value": [NSNull null],
+                              @"type":  [AKACGSizeConstantBindingExpression class]
+                              },
+           keywordCGSize: @{ @"value": [NSNull null],
+                              @"type":  [AKACGSizeConstantBindingExpression class]
+                              },
+
+           keywordRect:    @{ @"value": [NSNull null],
+                              @"type":  [AKACGRectConstantBindingExpression class]
+                              },
+           keywordCGRect:  @{ @"value": [NSNull null],
+                              @"type":  [AKACGRectConstantBindingExpression class]
+                              },
+           };
     });
     return namedScopes;
 }
@@ -93,6 +156,7 @@ static NSString* const keywordControl = @"control";
                                         type:&bindingExpressionType
                                        error:error];
 
+    // Parse a key path following a scope.
     if (result)
     {
         // Order is relevant:
@@ -109,14 +173,26 @@ static NSString* const keywordControl = @"control";
         }
         else if (possiblyKeyPath)
         {
-            result = [self parseKeyPath:&primaryExpression error:error];
-            if (result && bindingExpressionType == nil)
+            if (bindingExpressionType != nil && ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]])
             {
-                bindingExpressionType = [AKAKeyPathBindingExpression class];
+
+                [self registerParseError:error
+                                withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
+                              atPosition:self.scanLocation
+                                  reason:[NSString stringWithFormat:@"Key path following expression type '%@' is not supported", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
+            }
+            else
+            {
+                result = [self parseKeyPath:&primaryExpression error:error];
+                if (result && bindingExpressionType == nil)
+                {
+                    bindingExpressionType = [AKAKeyPathBindingExpression class];
+                }
             }
         }
     }
 
+    // Parse attributes
     if (result)
     {
         [self skipWhitespaceAndNewlineCharacters];
@@ -124,6 +200,8 @@ static NSString* const keywordControl = @"control";
         {
             result = [self parseAttributes:&attributes withProvider:provider error:error];
         }
+
+        // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
         if (result && attributes.count > 0 && bindingExpressionType == nil)
         {
             bindingExpressionType = [AKABindingExpression class];
@@ -132,6 +210,7 @@ static NSString* const keywordControl = @"control";
 
     if (result && store != nil)
     {
+        // TODO: add error parameter to binding expression constructor
         AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
         bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
                                                               attributes:attributes

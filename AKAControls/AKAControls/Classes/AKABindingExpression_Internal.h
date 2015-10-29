@@ -47,6 +47,7 @@
 
 @end
 
+
 @interface AKAConstantBindingExpression: AKABindingExpression
 
 - (instancetype _Nonnull)initWithConstant:(opt_id)constant
@@ -90,16 +91,35 @@
 @end
 
 @interface AKABooleanConstantBindingExpression: AKANumberConstantBindingExpression
-
 @end
 
 @interface AKAIntegerConstantBindingExpression: AKANumberConstantBindingExpression
-
 @end
 
 @interface AKADoubleConstantBindingExpression: AKANumberConstantBindingExpression
-
 @end
+
+@interface AKAColorConstantBindingExpression: AKAConstantBindingExpression
+@end
+
+@interface AKAUIColorConstantBindingExpression: AKAColorConstantBindingExpression
+@end
+
+@interface AKACGColorConstantBindingExpression: AKAColorConstantBindingExpression
+@end
+
+@interface AKAUIFontConstantBindingExpression: AKAConstantBindingExpression
+@end
+
+@interface AKACGPointConstantBindingExpression: AKAConstantBindingExpression
+@end
+
+@interface AKACGSizeConstantBindingExpression: AKAConstantBindingExpression
+@end
+
+@interface AKACGRectConstantBindingExpression: AKAConstantBindingExpression
+@end
+
 
 @interface AKAKeyPathBindingExpression: AKABindingExpression
 

@@ -224,7 +224,7 @@
         }
         else if (self.formatter)
         {
-            *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
+            *targetValueStore = [self.formatter stringForObjectValue:(req_id)sourceValue]; // sourceValue is defined
         }
         else
         {
@@ -240,7 +240,7 @@
         }
         else if (self.formatter)
         {
-            *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
+            *targetValueStore = [self.formatter stringForObjectValue:(req_id)sourceValue]; // sourceValue is defined
         }
         else
         {
@@ -248,9 +248,9 @@
         }
         result = YES;
     }
-    else if (self.formatter)
+    else if (self.formatter && sourceValue != nil)
     {
-        *targetValueStore = [self.formatter stringForObjectValue:sourceValue];
+        *targetValueStore = [self.formatter stringForObjectValue:(req_id)sourceValue];
         result = YES;
     }
     else

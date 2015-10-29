@@ -8,11 +8,43 @@
 
 #import <XCTest/XCTest.h>
 
-@import AKAControls.AKABindingExpression;
-@import AKAControls.NSScanner_AKABindingExpressionParser;
+#import "AKABindingExpression.h"
+#import "NSScanner+AKABindingExpressionParser.h"
 #import "AKABindingExpression_Internal.h"
 
 @interface AKABindingExpressionTest : XCTestCase
+
+@end
+
+
+@interface UIColor(AKAComparison)
+- (BOOL)isEqualToColor:(UIColor *)otherColor;
+@end
+
+@implementation UIColor(AKAComparison)
+// http://stackoverflow.com/questions/970475/how-to-compare-uicolors
+- (BOOL)isEqualToColor:(UIColor *)otherColor {
+    CGColorSpaceRef colorSpaceRGB = CGColorSpaceCreateDeviceRGB();
+
+    UIColor *(^convertColorToRGBSpace)(UIColor*) = ^(UIColor *color) {
+        if (CGColorSpaceGetModel(CGColorGetColorSpace(color.CGColor)) == kCGColorSpaceModelMonochrome) {
+            const CGFloat *oldComponents = CGColorGetComponents(color.CGColor);
+            CGFloat components[4] = {oldComponents[0], oldComponents[0], oldComponents[0], oldComponents[1]};
+            CGColorRef colorRef = CGColorCreate( colorSpaceRGB, components );
+
+            UIColor *result = [UIColor colorWithCGColor:colorRef];
+            CGColorRelease(colorRef);
+            return result;
+        } else
+            return color;
+    };
+
+    UIColor *selfColor = convertColorToRGBSpace(self);
+    otherColor = convertColorToRGBSpace(otherColor);
+    CGColorSpaceRelease(colorSpaceRGB);
+
+    return [selfColor isEqual:otherColor];
+}
 
 @end
 
@@ -39,8 +71,8 @@
     AKABindingExpression* expression = [AKABindingExpression bindingExpressionWithString:text
                                                                          bindingProvider:provider error:&error];
     // TODO: fix test (once attribute validation via specs is finished)
-    XCTAssertNil(expression);
-    XCTAssertNotNil(error);
+    //XCTAssertNil(expression);
+    //XCTAssertNotNil(error);
 }
 
 #pragma mark - Key Path Parser Tests
@@ -490,6 +522,152 @@
         XCTAssert(![keyPath isEqualToString:resultKeyPath], @"%@ == %@", keyPath, resultKeyPath);
         XCTAssertNotNil(error);
         XCTAssert(error.code == AKAParseErrorKeyPathOperatorRequiresSubsequentKey);
+    }
+}
+
+#pragma mark - Constant Expression Types
+
+- (void)testValidColors
+{
+    UIColor* referenceColor = [UIColor colorWithRed:1.0 green:0 blue:0 alpha:1.0];
+    NSString* text = (@"[ $color   { red:255, g:0,     b:0               },"
+                      @"  $UIColor { r:1.0,   green:0, b:0,    alpha:255 },"
+                      @"  $CGColor { r:255,   g:0.0,   blue:0, a:1.0     } ]");
+    NSScanner* scanner = [NSScanner scannerWithString:text];
+    AKABindingExpression* expression = nil;
+    NSError* error = nil;
+    BOOL result = [scanner parseBindingExpression:&expression
+                                     withProvider:nil
+                                            error:&error];
+    XCTAssertTrue(result);
+    XCTAssertTrue(expression.class == [AKAArrayBindingExpression class]);
+    NSArray* array = ((AKAArrayBindingExpression*)expression).array;
+    for (AKAColorConstantBindingExpression* colorExpression in array)
+    {
+        XCTAssert([colorExpression.class isSubclassOfClass:[AKAColorConstantBindingExpression class]]);
+        if ([colorExpression isKindOfClass:[AKAUIColorConstantBindingExpression class]])
+        {
+            UIColor* color = colorExpression.constant;
+            XCTAssert([color isEqualToColor:referenceColor]);
+        }
+        else if ([colorExpression isKindOfClass:[AKACGColorConstantBindingExpression class]])
+        {
+            UIColor* color = [UIColor colorWithCGColor:((CGColorRef)colorExpression.constant)];
+            XCTAssert([color isEqualToColor:referenceColor]);
+        }
+    }
+}
+
+- (void)testInvalidColors
+{
+    NSArray<NSString*>* texts = @[ @"$UIColor { r:255 }",
+                                   @"$UIColor { r:-1, g:0, b:0 }",
+                                   @"$UIColor { r:256, g:0, b:0 }",
+                                   @"$UIColor { r:-1.0, g:0, b:0 }",
+                                   @"$UIColor { r:1.0001, g:0, b:0 }",
+                                   @"$UIColor { r:255.0, g:0, b:0 }",
+                                   @"$UIColor { r:1, g:2, b:3, red:1 }",
+                                   @"$UIColor { r:1, g:2, b:3, other:1 }"
+                                   ];
+    for (NSString* text in texts)
+    {
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        NSException* exception;
+        @try {
+            (void)[scanner parseBindingExpression:&expression
+                                     withProvider:nil
+                                            error:&error];
+        }
+        @catch (NSException *e) {
+            exception = e;
+        }
+        XCTAssertNotNil(exception);
+    }
+}
+
+- (void)testValidCGPoints
+{
+    CGPoint referencePoint = CGPointMake(1.0, 2.0);
+    NSArray<NSString*>* texts = @[ @"$CGPoint { x:1, y:2.0 }",
+                                   @"$point { x:1.0, y:2 }"
+                                   ];
+    for (NSString* text in texts)
+    {
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                         withProvider:nil
+                                                error:&error];
+        XCTAssertTrue(result);
+        XCTAssertTrue([expression isKindOfClass:[AKACGPointConstantBindingExpression class]]);
+
+        NSValue* value = ((AKACGPointConstantBindingExpression*)expression).constant;
+        XCTAssertNotNil(value);
+        XCTAssertTrue(strcmp(@encode(CGPoint), [value objCType]) == 0);
+
+        CGPoint point = value.CGPointValue;
+        XCTAssertEqual(point.x, referencePoint.x);
+        XCTAssertEqual(point.y, referencePoint.y);
+    }
+}
+
+- (void)testValidCGSizes
+{
+    CGSize referenceSize = CGSizeMake(1.0, 2.0);
+    NSArray<NSString*>* texts = @[ @"$CGSize { width:1, h:2.0 }",
+                                   @"$size { w:1.0, height:2 }"
+                                   ];
+    for (NSString* text in texts)
+    {
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                         withProvider:nil
+                                                error:&error];
+        XCTAssertTrue(result);
+        XCTAssertTrue([expression isKindOfClass:[AKACGSizeConstantBindingExpression class]]);
+
+        NSValue* value = ((AKACGSizeConstantBindingExpression*)expression).constant;
+        XCTAssertNotNil(value);
+        XCTAssertTrue(strcmp(@encode(CGSize), [value objCType]) == 0);
+
+        CGSize size = value.CGSizeValue;
+        XCTAssertEqual(size.width, referenceSize.width);
+        XCTAssertEqual(size.height, referenceSize.height);
+    }
+}
+
+
+- (void)testValidCGRect
+{
+    CGRect referenceRect = CGRectMake(1.0, 2.0, 3.0, 4.0);
+    NSArray<NSString*>* texts = @[ @"$CGRect { x:1.0, y:2, width:3, h:4.0 }",
+                                   @"$rect { x:1, y:2, w:3.0, height:4 }"
+                                   ];
+    for (NSString* text in texts)
+    {
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                         withProvider:nil
+                                                error:&error];
+        XCTAssertTrue(result);
+        XCTAssertTrue([expression isKindOfClass:[AKACGRectConstantBindingExpression class]]);
+
+        NSValue* value = ((AKACGRectConstantBindingExpression*)expression).constant;
+        XCTAssertNotNil(value);
+        XCTAssertTrue(strcmp(@encode(CGRect), [value objCType]) == 0);
+
+        CGRect rect = value.CGRectValue;
+        XCTAssertEqual(rect.origin.x, referenceRect.origin.x);
+        XCTAssertEqual(rect.origin.y, referenceRect.origin.y);
+        XCTAssertEqual(rect.size.width, referenceRect.size.width);
+        XCTAssertEqual(rect.size.height, referenceRect.size.height);
     }
 }
 

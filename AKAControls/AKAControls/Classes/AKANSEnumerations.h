@@ -19,13 +19,13 @@
 
 #pragma mark - Locales
 
-+ (NSLocale*)localeForObject:(id)localeOrName;
++ (NSLocale*)                                        localeForObject:(id)localeOrName;
 
 #pragma mark - NSNumberFormatter Enumerations
 
-+ (NSNumber*)numberFormatterStyleForObject:(id)nameOrEnumeratedValue;
-+ (NSNumber*)numberFormatterPadForObject:(id)nameOrEnumeratedValue;
-+ (NSNumber*)numberFormatterRoundingModeForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                          numberFormatterStyleForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                            numberFormatterPadForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                   numberFormatterRoundingModeForObject:(id)nameOrEnumeratedValue;
 
 
 + (NSDictionary<NSString*, NSNumber*>*)           numberStylesByName;
@@ -34,8 +34,10 @@
 
 #pragma mark - NSFormatter Enumerations
 
-+ (NSNumber*)formattingContextForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                             formattingContextForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                           formattingUnitStyleForObject:(id)nameOrEnumeratedValue;
 
++ (NSDictionary<NSString*, NSNumber*>*)   formattingUnitStylesByName;
 + (NSDictionary<NSString*, NSNumber*>*)     formattingContextsByName;
 
 #pragma mark - NSDateFormatter Enumerations

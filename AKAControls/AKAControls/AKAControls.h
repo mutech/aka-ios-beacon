@@ -73,6 +73,11 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKABinding_UISwitch_stateBinding.h>
 #import <AKAControls/AKABindingProvider_UISwitch_stateBinding.h>
 
+// Bindings/ViewBindings/ControlViewBindings/UISlider
+#import <AKAControls/UISlider+AKAIBBindingProperties.h>
+#import <AKAControls/AKABinding_UISlider_valueBinding.h>
+#import <AKAControls/AKABindingProvider_UISlider_valueBinding.h>
+
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
 #import <AKAControls/AKAKeyboardControlViewBinding.h>
 #import <AKAControls/AKAKeyboardControlViewBindingDelegate.h>

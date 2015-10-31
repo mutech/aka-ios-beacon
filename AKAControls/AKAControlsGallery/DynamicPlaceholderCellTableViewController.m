@@ -134,7 +134,7 @@
         self.itemsForDynamicCells = newItems;
     }
 
-    AKALogVerbose(@"row %ld in section %ld selected: %@", indexPath.row, indexPath.section, cell);
+    AKALogVerbose(@"row %ld in section %ld selected: %@", (long)indexPath.row, (long)indexPath.section, cell);
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

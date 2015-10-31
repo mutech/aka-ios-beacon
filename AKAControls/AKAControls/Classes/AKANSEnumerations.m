@@ -58,6 +58,75 @@
     return result;
 }
 
+#pragma mark - NSFormatter Enumerations
+
++ (NSDictionary<NSString*, NSNumber*>*)   formattingUnitStylesByName
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"Short":              @(NSFormattingUnitStyleShort),
+           @"Medium":             @(NSFormattingUnitStyleMedium),
+           @"Long":               @(NSFormattingUnitStyleLong) };
+    });
+
+    return result;
+}
+
++ (NSNumber*)formattingUnitStyleForObject:(id)nameOrEnumeratedValue
+{
+    NSNumber* result = nil;
+
+    if ([nameOrEnumeratedValue isKindOfClass:[NSString class]])
+    {
+        result = [AKANSEnumerations enumeratedValueForName:nameOrEnumeratedValue
+                                              inDictionary:[self formattingUnitStylesByName]];
+    }
+    else if ([nameOrEnumeratedValue isKindOfClass:[NSNumber class]])
+    {
+        result = nameOrEnumeratedValue;
+    }
+
+    return result;
+}
+
++ (NSDictionary<NSString*, NSNumber*>*)     formattingContextsByName
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"Unknown":            @(NSFormattingContextUnknown),
+           @"Dynamic":            @(NSFormattingContextDynamic),
+           @"Standalone":         @(NSFormattingContextStandalone),
+           @"ListItem":           @(NSFormattingContextListItem),
+           @"BeginningOfSentence":@(NSFormattingContextBeginningOfSentence),
+           @"MiddleOfSentence":   @(NSFormattingContextMiddleOfSentence), };
+    });
+
+    return result;
+}
+
++ (NSNumber*)formattingContextForObject:(id)nameOrEnumeratedValue
+{
+    NSNumber* result = nil;
+
+    if ([nameOrEnumeratedValue isKindOfClass:[NSString class]])
+    {
+        result = [AKANSEnumerations enumeratedValueForName:nameOrEnumeratedValue
+                                              inDictionary:[self formattingContextsByName]];
+    }
+    else if ([nameOrEnumeratedValue isKindOfClass:[NSNumber class]])
+    {
+        result = nameOrEnumeratedValue;
+    }
+
+    return result;
+}
+
 #pragma mark - NSNumberFormatter Enumerations
 
 + (NSNumber*)numberFormatterStyleForObject:(id)nameOrEnumeratedValue
@@ -84,11 +153,11 @@
 
     dispatch_once(&onceToken, ^{
         result =
-            @{ @"Currency":            @(NSNumberFormatterCurrencyStyle),
-               @"Decimal":             @(NSNumberFormatterDecimalStyle),
-               @"Percent":             @(NSNumberFormatterPercentStyle),
-               @"Scientific":          @(NSNumberFormatterScientificStyle),
-               @"SpellOut":            @(NSNumberFormatterSpellOutStyle) };
+            @{ @"CurrencyStyle":            @(NSNumberFormatterCurrencyStyle),
+               @"DecimalStyle":             @(NSNumberFormatterDecimalStyle),
+               @"PercentStyle":             @(NSNumberFormatterPercentStyle),
+               @"ScientificStyle":          @(NSNumberFormatterScientificStyle),
+               @"SpellOutStyle":            @(NSNumberFormatterSpellOutStyle) };
     });
 
     return result;
@@ -151,50 +220,13 @@
 
     dispatch_once(&onceToken, ^{
         result =
-            @{ @"Ceiling":             @(NSNumberFormatterRoundCeiling),
-               @"Floor":               @(NSNumberFormatterRoundFloor),
-               @"Down":                @(NSNumberFormatterRoundDown),
-               @"Up":                  @(NSNumberFormatterRoundUp),
-               @"HalfEven":            @(NSNumberFormatterRoundHalfEven),
-               @"HalfDown":            @(NSNumberFormatterRoundHalfDown),
-               @"HalfUp":              @(NSNumberFormatterRoundHalfUp), };
-    });
-
-    return result;
-}
-
-#pragma mark - NSFormatter Enumerations
-
-+ (NSNumber*)formattingContextForObject:(id)nameOrEnumeratedValue
-{
-    NSNumber* result = nil;
-
-    if ([nameOrEnumeratedValue isKindOfClass:[NSString class]])
-    {
-        result = [AKANSEnumerations enumeratedValueForName:nameOrEnumeratedValue
-                                              inDictionary:[self formattingContextsByName]];
-    }
-    else if ([nameOrEnumeratedValue isKindOfClass:[NSNumber class]])
-    {
-        result = nameOrEnumeratedValue;
-    }
-
-    return result;
-}
-
-+ (NSDictionary<NSString*, NSNumber*>*)     formattingContextsByName
-{
-    static NSDictionary<NSString*, NSNumber*>* result = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        result =
-            @{ @"Unknown":            @(NSFormattingContextUnknown),
-               @"Dynamic":            @(NSFormattingContextDynamic),
-               @"Standalone":         @(NSFormattingContextStandalone),
-               @"ListItem":           @(NSFormattingContextListItem),
-               @"BeginningOfSentence": @(NSFormattingContextBeginningOfSentence),
-               @"MiddleOfSentence":   @(NSFormattingContextMiddleOfSentence), };
+            @{ @"RoundCeiling":             @(NSNumberFormatterRoundCeiling),
+               @"RoundFloor":               @(NSNumberFormatterRoundFloor),
+               @"RoundDown":                @(NSNumberFormatterRoundDown),
+               @"RoundUp":                  @(NSNumberFormatterRoundUp),
+               @"RoundHalfEven":            @(NSNumberFormatterRoundHalfEven),
+               @"RoundHalfDown":            @(NSNumberFormatterRoundHalfDown),
+               @"RoundHalfUp":              @(NSNumberFormatterRoundHalfUp), };
     });
 
     return result;

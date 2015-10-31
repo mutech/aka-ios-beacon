@@ -7,6 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
+#include <stdio.h>
+@import AKACommons.AKALog;
 
 #import "AKABindingExpression.h"
 #import "NSScanner+AKABindingExpressionParser.h"
@@ -529,10 +531,10 @@
 
 - (void)testValidColors
 {
-    UIColor* referenceColor = [UIColor colorWithRed:1.0 green:0 blue:0 alpha:1.0];
-    NSString* text = (@"[ $color   { red:255, g:0,     b:0               },"
-                      @"  $UIColor { r:1.0,   green:0, b:0,    alpha:255 },"
-                      @"  $CGColor { r:255,   g:0.0,   blue:0, a:1.0     } ]");
+    UIColor* referenceColor = [UIColor colorWithRed:127.0/255 green:0 blue:0 alpha:1.0];
+    NSString* text = (@"[ $color   { red:127,        g:0,     b:0               },"
+                      @"  $UIColor { r:.498039216,   green:0, b:0,    alpha:255 },"
+                      @"  $CGColor { r:127,          g:0.0,   blue:0, a:1.0     } ]");
     NSScanner* scanner = [NSScanner scannerWithString:text];
     AKABindingExpression* expression = nil;
     NSError* error = nil;
@@ -544,17 +546,20 @@
     NSArray* array = ((AKAArrayBindingExpression*)expression).array;
     for (AKAColorConstantBindingExpression* colorExpression in array)
     {
+        UIColor* color = nil;
         XCTAssert([colorExpression.class isSubclassOfClass:[AKAColorConstantBindingExpression class]]);
         if ([colorExpression isKindOfClass:[AKAUIColorConstantBindingExpression class]])
         {
-            UIColor* color = colorExpression.constant;
-            XCTAssert([color isEqualToColor:referenceColor]);
+            color = colorExpression.constant;
+            XCTAssertEqualObjects(@"$UIColor { r:127, g:0, b:0, a:255 }", colorExpression.description);
         }
+
         else if ([colorExpression isKindOfClass:[AKACGColorConstantBindingExpression class]])
         {
-            UIColor* color = [UIColor colorWithCGColor:((CGColorRef)colorExpression.constant)];
-            XCTAssert([color isEqualToColor:referenceColor]);
+            color = [UIColor colorWithCGColor:((CGColorRef)colorExpression.constant)];
+            XCTAssertEqualObjects(@"$CGColor { r:127, g:0, b:0, a:255 }", colorExpression.description);
         }
+        XCTAssert([color isEqualToColor:referenceColor], @"%@ != %@", color, referenceColor);
     }
 }
 
@@ -638,6 +643,7 @@
         CGSize size = value.CGSizeValue;
         XCTAssertEqual(size.width, referenceSize.width);
         XCTAssertEqual(size.height, referenceSize.height);
+        XCTAssertEqualObjects(@"$CGSize { w:1, h:2 }", expression.description);
     }
 }
 
@@ -668,6 +674,7 @@
         XCTAssertEqual(rect.origin.y, referenceRect.origin.y);
         XCTAssertEqual(rect.size.width, referenceRect.size.width);
         XCTAssertEqual(rect.size.height, referenceRect.size.height);
+        XCTAssertEqualObjects(@"$CGRect { x:1, y:2, w:3, h:4 }", expression.description);
     }
 }
 

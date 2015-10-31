@@ -28,6 +28,8 @@
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol>          bindingContext;
 
 @property(nonatomic, readonly)       NSArray*                               choices;
+@property(nonatomic, readonly)       AKAProperty*                           choicesProperty;
+
 @property(nonatomic, readonly)       AKAUnboundProperty*                    titleProperty;
 
 @property(nonatomic)                 NSInteger                              originallySelectedRow;
@@ -126,6 +128,30 @@
             }];
 }
 
+#pragma mark - Change Tracking
+
+- (BOOL)startObservingChanges
+{
+    BOOL result = [super startObservingChanges];
+    AKAProperty* choices = _choicesProperty;
+    if (choices && !choices.isObservingChanges)
+    {
+        [choices startObservingChanges];
+    }
+    return result;
+}
+
+- (BOOL)stopObservingChanges
+{
+    BOOL result = [super stopObservingChanges];
+    AKAProperty* choices = _choicesProperty;
+    if (choices.isObservingChanges)
+    {
+        [choices stopObservingChanges];
+    }
+    return result;
+}
+
 #pragma mark - Properties
 
 - (AKAPickerKeyboardTriggerView *)                 triggerView
@@ -172,14 +198,14 @@
 
 #pragma mark -
 
-- (void)responderWillActivate:(req_UIResponder)responder
+- (void)                                 responderWillActivate:(req_UIResponder)responder
 {
     [super responderWillActivate:responder];
 
     self.originallySelectedRow = [self rowForItem:self.bindingSource.value];
 }
 
-- (void)responderDidDeactivate:(req_UIResponder)responder
+- (void)                                responderDidDeactivate:(req_UIResponder)responder
 {
     if (!self.liveModelUpdates)
     {
@@ -253,12 +279,30 @@
 
 #pragma mark - Choices
 
+@synthesize choicesProperty = _choicesProperty;
+- (AKAProperty*)choicesProperty
+{
+    if (_choicesProperty == nil)
+    {
+        _choicesProperty = [self.choicesBindingExpression bindingSourcePropertyInContext:self.bindingContext
+                                                                           changeObserer:
+                            ^(opt_id oldValue, opt_id newValue)
+                            {
+                                (void)oldValue;
+                                (void)newValue;
+                                [self choicesDidChange];
+                            }];
+        [_choicesProperty startObservingChanges];
+    }
+    return _choicesProperty;
+}
+
 @synthesize choices = _choices;
 - (NSArray*)                                           choices
 {
     if (_choices == nil)
     {
-        id value = [self.choicesBindingExpression bindingSourceValueInContext:self.bindingContext];
+        id value = self.choicesProperty.value;
         if ([value isKindOfClass:[NSArray class]])
         {
             _choices = value;

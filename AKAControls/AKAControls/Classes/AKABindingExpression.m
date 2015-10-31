@@ -741,6 +741,13 @@
     return self;
 }
 
+#pragma mark - Access
+
+- (UIColor*)UIColor
+{
+    return self.constant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -748,18 +755,40 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
+- (NSString*)textForColorComponent:(CGFloat)component
+{
+    NSString *result = nil;
+    CGFloat channel = component * 255.0;
+    double integral;
+    double fractional = modf(channel, &integral);
+    if (fractional < .00000001)
+    {
+        result = [NSString stringWithFormat:@"%d", (int)integral];
+    }
+    else
+    {
+        result = [NSString stringWithFormat:@"%lg", (double)component];
+    }
+    return result;
+}
+
 - (NSString*)textForConstant
 {
     NSString* result = nil;
     if (self.constant)
     {
-        UIColor* color = self.constant;
+        UIColor* color = [self UIColor];
         CGFloat red;
         CGFloat green;
         CGFloat blue;
         CGFloat alpha;
         [color getRed:&red green:&green blue:&blue alpha:&alpha];
-        result = [NSString stringWithFormat:@"$%@ { r:%f, g:%f, b:%f, a:%f }", [self keyword], red, green, blue, alpha];
+        result = [NSString stringWithFormat:@"$%@ { r:%@, g:%@, b:%@, a:%@ }",
+                  [self keyword],
+                  [self textForColorComponent:red],
+                  [self textForColorComponent:green],
+                  [self textForColorComponent:blue],
+                  [self textForColorComponent:alpha]];
     }
     return result;
 }
@@ -796,6 +825,11 @@
         result = (__bridge id)[(UIColor*)result CGColor];
     }
     return result;
+}
+
+- (UIColor*)UIColor
+{
+    return super.constant;
 }
 
 #pragma mark - Serialization
@@ -925,7 +959,7 @@
     if (self.constant)
     {
         CGPoint value = ((NSValue*)self.constant).CGPointValue;
-        result = [NSString stringWithFormat:@"$%@ { x:%f, y:%f }", [self keyword], value.x, value.y];
+        result = [NSString stringWithFormat:@"$%@ { x:%g, y:%g }", [self keyword], value.x, value.y];
     }
     return result;
 }
@@ -977,7 +1011,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGRect];
+    return [NSScanner keywordCGSize];
 }
 
 - (NSString*)textForConstant
@@ -985,8 +1019,8 @@
     NSString* result = nil;
     if (self.constant)
     {
-        CGRect value = ((NSValue*)self.constant).CGRectValue;
-        result = [NSString stringWithFormat:@"$%@ { x:%f, y:%f, w:%f, h:%f }", [self keyword], value.origin.x, value.origin.y, value.size.width, value.size.height];
+        CGSize value = ((NSValue*)self.constant).CGSizeValue;
+        result = [NSString stringWithFormat:@"$%@ { w:%g, h:%g }", [self keyword], value.width, value.height];
     }
     return result;
 }
@@ -1045,16 +1079,17 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGSize];
+    return [NSScanner keywordCGRect];
 }
+
 
 - (NSString*)textForConstant
 {
     NSString* result = nil;
     if (self.constant)
     {
-        CGSize value = ((NSValue*)self.constant).CGSizeValue;
-        result = [NSString stringWithFormat:@"$%@ { w:%f, h:%f }", [self keyword], value.width, value.height];
+        CGRect value = ((NSValue*)self.constant).CGRectValue;
+        result = [NSString stringWithFormat:@"$%@ { x:%g, y:%g, w:%g, h:%g }", [self keyword], value.origin.x, value.origin.y, value.size.width, value.size.height];
     }
     return result;
 }

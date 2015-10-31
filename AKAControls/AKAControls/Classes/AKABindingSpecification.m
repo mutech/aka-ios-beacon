@@ -552,4 +552,49 @@
     return result;
 }
 
+- (NSString*)                                      description
+{
+    NSMutableString* result = [NSMutableString new];
+    [result appendFormat:@"<%@:", NSStringFromClass(self.class)];
+    [result appendString:@"accepts"];
+    if (self.acceptedTypes.count > 0)
+    {
+        [result appendFormat:@" objects of type {%@}", [self.acceptedTypes.allObjects componentsJoinedByString:@", "]];
+        if (self.acceptedValueTypes.count > 0)
+        {
+            [result appendString:@" and"];
+        }
+    }
+    if (self.acceptedValueTypes.count > 0)
+    {
+        [result appendFormat:@" values of type {%@}", [self.acceptedTypes.allObjects componentsJoinedByString:@", "]];
+    }
+
+    if (self.acceptedValueTypes.count == 0 && self.acceptedTypes.count == 0)
+    {
+        [result appendString:@" nothing"];
+    }
+
+    if (self.rejectedTypes.count > 0 || self.rejectedValueTypes.count > 0)
+    {
+        [result appendString:@" except: "];
+        if (self.rejectedTypes.count > 0)
+        {
+            [result appendFormat:@" objects of type {%@}", [self.rejectedTypes.allObjects componentsJoinedByString:@", "]];
+            if (self.rejectedValueTypes.count > 0)
+            {
+                [result appendString:@" and"];
+            }
+        }
+        if (self.rejectedValueTypes.count > 0)
+        {
+            [result appendFormat:@" values of type {%@}", [self.rejectedValueTypes.allObjects componentsJoinedByString:@", "]];
+        }
+    }
+
+    [result appendString:@">"];
+
+    return [NSString stringWithString:result];
+}
+
 @end

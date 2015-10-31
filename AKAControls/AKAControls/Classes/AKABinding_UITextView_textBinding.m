@@ -11,7 +11,7 @@
 
 #import "AKABinding_UITextView_textBinding.h"
 
-@interface AKABinding_UITextView_textBinding() <UITextViewDelegate>
+@interface AKABinding_UITextView_textBinding () <UITextViewDelegate>
 
 #pragma mark - Saved UITextView State
 
@@ -33,26 +33,32 @@
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                     error:(out_NSError)error
 {
     NSParameterAssert([target isKindOfClass:[UITextView class]]);
+
     return [self      initWithView:(UITextView*)target
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate];
+                          delegate:delegate
+                             error:error];
 }
 
 - (instancetype)                              initWithView:(req_UITextView)textView
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                     error:(out_NSError)error
 {
     if (self = [super initWithView:textView
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate])
+                          delegate:delegate
+                             error:error])
     {
         self.liveModelUpdates = NO;
     }
+
     return self;
 }
 
@@ -66,12 +72,14 @@
             ^id (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
+
                 return binding.textView.text;
             }
                                       setter:
             ^(id target, id value)
             {
                 AKABinding_UITextView_textBinding* binding = target;
+
                 if (value == nil || [value isKindOfClass:[NSString class]])
                 {
                     binding.textView.text = value;
@@ -81,12 +89,13 @@
                     binding.textView.text = [NSString stringWithFormat:@"%@", value];
                 }
             }
-                          observationStarter:
+            observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
                 UITextView* textView = binding.textView;
                 id<UITextViewDelegate> textViewDelegate = textView.delegate;
+
                 if (textViewDelegate != binding)
                 {
                     binding.originalText = textView.text;
@@ -97,24 +106,28 @@
                 {
                     //AKALogDebug(@"Binding %@ is already observing %@", binding, binding.textField);
                 }
+
                 return YES;
             }
-                          observationStopper:
+            observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
                 binding.textView.delegate = binding.savedTextViewDelegate;
                 binding.originalText = nil;
+
                 return YES;
             }];
 }
 
 #pragma mark - Properties
 
-- (UITextView *)textView
+- (UITextView*)textView
 {
     UIView* result = self.view;
+
     NSParameterAssert(result == nil || [result isKindOfClass:[UITextView class]]);
+
     return (UITextView*)result;
 }
 
@@ -156,18 +169,20 @@
 - (BOOL)                                supportsActivation
 {
     BOOL result = self.textView != nil;
+
     return result;
 }
 
 - (BOOL)                                shouldAutoActivate
 {
     BOOL result = self.supportsActivation && self.autoActivate;
+
     return result;
 }
 
 #pragma mark - Keyboard Activation Sequence
 
-- (void)                    setResponderInputAccessoryView:(UIView *)responderInputAccessoryView
+- (void)                    setResponderInputAccessoryView:(UIView*)responderInputAccessoryView
 {
     self.textView.inputAccessoryView = responderInputAccessoryView;
 }
@@ -186,15 +201,17 @@
 
 #pragma mark - UITextViewDelegate Implementation
 
-- (BOOL)                        textViewShouldBeginEditing:(UITextView *)textView
+- (BOOL)                        textViewShouldBeginEditing:(UITextView*)textView
 {
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
 
     BOOL result = YES;
+
     if ([secondary respondsToSelector:@selector(textViewShouldBeginEditing:)])
     {
         result = [secondary textViewShouldBeginEditing:textView];
     }
+
     if (result)
     {
         result = [self shouldActivate];
@@ -204,23 +221,25 @@
     {
         [self responderWillActivate:self.textView];
     }
+
     return result;
 }
 
-- (void)                           textViewDidBeginEditing:(UITextView *)textView
+- (void)                           textViewDidBeginEditing:(UITextView*)textView
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
 
     [self updateOriginalTextBeforeEditing];
     [self responderDidActivate:self.textView];
+
     if ([secondary respondsToSelector:@selector(textViewDidBeginEditing:)])
     {
         [secondary textViewDidBeginEditing:textView];
     }
 }
 
-- (void)                        textViewDidChangeSelection:(UITextView *)textView
+- (void)                        textViewDidChangeSelection:(UITextView*)textView
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
@@ -230,10 +249,10 @@
         [secondary textViewDidChangeSelection:textView];
     }
 }
- 
-- (BOOL)                                          textView:(UITextView *)textView
+
+- (BOOL)                                          textView:(UITextView*)textView
                                    shouldChangeTextInRange:(NSRange)range
-                                           replacementText:(NSString *)text
+                                           replacementText:(NSString*)text
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
@@ -242,16 +261,16 @@
 
     if ([secondary respondsToSelector:@selector(textView:shouldChangeTextInRange:replacementText:)])
     {
-        result = [secondary textView:textView
-             shouldChangeTextInRange:range
-                     replacementText:text];
+        result = [secondary      textView:textView
+                  shouldChangeTextInRange:range
+                          replacementText:text];
     }
 
     return result;
 }
 
-- (BOOL)                                          textView:(UITextView *)textView
-                                     shouldInteractWithURL:(NSURL *)URL
+- (BOOL)                                          textView:(UITextView*)textView
+                                     shouldInteractWithURL:(NSURL*)URL
                                                    inRange:(NSRange)characterRange
 {
     NSParameterAssert(textView == self.textView);
@@ -261,16 +280,16 @@
 
     if ([secondary respondsToSelector:@selector(textView:shouldInteractWithURL:inRange:)])
     {
-        result = [secondary textView:textView
-               shouldInteractWithURL:URL
-                             inRange:characterRange];
+        result = [secondary    textView:textView
+                  shouldInteractWithURL:URL
+                                inRange:characterRange];
     }
 
     return result;
 }
 
-- (BOOL)                                          textView:(UITextView *)textView
-                          shouldInteractWithTextAttachment:(NSTextAttachment *)textAttachment
+- (BOOL)                                          textView:(UITextView*)textView
+                          shouldInteractWithTextAttachment:(NSTextAttachment*)textAttachment
                                                    inRange:(NSRange)characterRange
 {
     NSParameterAssert(textView == self.textView);
@@ -280,15 +299,15 @@
 
     if ([secondary respondsToSelector:@selector(textView:shouldInteractWithTextAttachment:inRange:)])
     {
-        result =            [secondary textView:textView
-               shouldInteractWithTextAttachment:textAttachment
-                                        inRange:characterRange];
+        result = [secondary               textView:textView
+                  shouldInteractWithTextAttachment:textAttachment
+                                           inRange:characterRange];
     }
 
     return result;
 }
 
-- (void)                                 textViewDidChange:(UITextView *)textView
+- (void)                                 textViewDidChange:(UITextView*)textView
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
@@ -307,7 +326,7 @@
     }
 }
 
-- (BOOL)                          textViewShouldEndEditing:(UITextView *)textView
+- (BOOL)                          textViewShouldEndEditing:(UITextView*)textView
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
@@ -324,7 +343,7 @@
     return result;
 }
 
-- (void)                             textViewDidEndEditing:(UITextView *)textView
+- (void)                             textViewDidEndEditing:(UITextView*)textView
 {
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
@@ -354,14 +373,17 @@
     // TODO: we probably should ascend the view hierarchy and adjust scroll positions everywhere to ensure maximum visibility of edited content.
     if (!textView.isScrollEnabled)
     {
-        UITextPosition*_Nullable selectedTextRangeEnd = textView.selectedTextRange.end;
+        UITextPosition* _Nullable selectedTextRangeEnd = textView.selectedTextRange.end;
+
         if (selectedTextRangeEnd)
         {
-            CGRect cursorR = [textView caretRectForPosition:(UITextPosition*_Nonnull)selectedTextRangeEnd];
+            CGRect cursorR = [textView caretRectForPosition:(UITextPosition * _Nonnull)selectedTextRangeEnd];
             UITableView* tableView = [textView aka_superviewOfType:[UITableView class]];
+
             if (tableView)
             {
                 BOOL animateScrolling = NO;
+
                 // Resize text view if needed
                 if (tableView.rowHeight == UITableViewAutomaticDimension)
                 {
@@ -369,6 +391,7 @@
                     // table view cell is resized by calling begin/end updates
                     CGSize size = textView.frame.size;
                     CGSize newSize = [textView sizeThatFits:CGSizeMake(size.width, FLT_MAX)];
+
                     if (size.height != newSize.height)
                     {
                         // Do not animate if text view shrinked, because that looks ugly if the
@@ -385,7 +408,7 @@
 
                         // If we needed to resize the textview, we have to query the caret position again
                         // after resizing, because it will otherwise now have the position x=INF,y=INF
-                        cursorR = [textView caretRectForPosition:(UITextPosition*_Nonnull)selectedTextRangeEnd];
+                        cursorR = [textView caretRectForPosition:(UITextPosition * _Nonnull)selectedTextRangeEnd];
                     }
                 }
 
@@ -404,9 +427,9 @@
             {
                 // Not tested:
                 UIScrollView* enclosingScrollView = [textView aka_superviewOfType:[UIScrollView class]];
+
                 if (enclosingScrollView)
                 {
-
                     // Get text field position relative to scroll view
                     CGRect absoluteR = [textView convertRect:textView.frame
                                                       toView:enclosingScrollView];

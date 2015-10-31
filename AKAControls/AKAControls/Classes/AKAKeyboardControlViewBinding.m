@@ -14,7 +14,7 @@
 
 #import "AKACompositeControl+BindingDelegatePropagation.h"
 
-@interface AKAKeyboardControlViewBinding()
+@interface AKAKeyboardControlViewBinding ()
 {
     AKAKeyboardActivationSequence* _keyboardActivationSequence;
     UIView*                        _savedInputAccessoryView;
@@ -32,16 +32,19 @@
                                                    expression:(req_AKABindingExpression)bindingExpression
                                                       context:(req_AKABindingContext)bindingContext
                                                      delegate:(opt_AKABindingDelegate)delegate
+                                                        error:(out_NSError)error
 {
     if (self = [super initWithView:targetView
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate])
+                          delegate:delegate
+                             error:error])
     {
         self.shouldParticipateInKeyboardActivationSequence = YES;
         self.autoActivate = NO;
         self.liveModelUpdates = YES;
     }
+
     return self;
 }
 
@@ -55,6 +58,7 @@
 - (void)                       setResponderInputAccessoryView:(opt_UIView)inputAccessoryView
 {
     UIResponder* responder = self.responderForKeyboardActivationSequence;
+
     if ([responder respondsToSelector:@selector(setInputAccessoryView:)])
     {
         [responder performSelector:@selector(setInputAccessoryView:) withObject:inputAccessoryView];
@@ -70,11 +74,14 @@
 - (BOOL)                              shouldResponderActivate:(req_UIResponder)responder
 {
     BOOL result = responder != nil;
+
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if (result && [delegate respondsToSelector:@selector(shouldBinding:responderActivate:)])
     {
         result = [delegate shouldBinding:self responderActivate:responder];
     }
+
     return result;
 }
 
@@ -83,6 +90,7 @@
     [self.keyboardActivationSequence prepareToActivateItem:self];
 
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:responderWillActivate:)])
     {
         [delegate binding:self responderWillActivate:responder];
@@ -94,6 +102,7 @@
     [self.keyboardActivationSequence activateItem:self];
 
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:responderDidActivate:)])
     {
         [delegate binding:self responderDidActivate:responder];
@@ -103,17 +112,21 @@
 - (BOOL)                            shouldResponderDeactivate:(req_UIResponder)responder
 {
     BOOL result = responder != nil;
+
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if (result && [delegate respondsToSelector:@selector(shouldBinding:responderDeactivate:)])
     {
         result = [delegate shouldBinding:self responderDeactivate:responder];
     }
+
     return result;
 }
 
 - (void)                              responderWillDeactivate:(req_UIResponder)responder
 {
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
     {
         [delegate binding:self responderWillDeactivate:responder];
@@ -123,11 +136,13 @@
 - (void)                               responderDidDeactivate:(req_UIResponder)responder
 {
     AKAKeyboardActivationSequence* sequence = self.keyboardActivationSequence;
+
     if (sequence.activeItem == self)
     {
         [sequence deactivate];
     }
     id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
     {
         [delegate binding:self responderDidDeactivate:responder];
@@ -137,15 +152,15 @@
 @end
 
 
-@interface AKAKeyboardControlViewBinding(KeyboardActivationSequence_Internal) <
+@interface AKAKeyboardControlViewBinding (KeyboardActivationSequence_Internal) <
     AKAKeyboardActivationSequenceItemProtocol_Internal
->
-- (void)                        setKeyboardActivationSequence:(AKAKeyboardActivationSequence *)keyboardActivationSequence;
+    >
+- (void)                        setKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence;
 @end
 
-@implementation AKAKeyboardControlViewBinding(KeyboardActivationSequence_Internal)
+@implementation AKAKeyboardControlViewBinding (KeyboardActivationSequence_Internal)
 
-- (void)                        setKeyboardActivationSequence:(AKAKeyboardActivationSequence *)keyboardActivationSequence
+- (void)                        setKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence
 {
     if (keyboardActivationSequence != _keyboardActivationSequence)
     {
@@ -158,7 +173,7 @@
 
 @end
 
-@implementation AKAKeyboardControlViewBinding(KeyboardActivationSequence)
+@implementation AKAKeyboardControlViewBinding (KeyboardActivationSequence)
 
 
 - (BOOL)             participatesInKeyboardActivationSequence
@@ -166,7 +181,7 @@
     return self.keyboardActivationSequence != nil;
 }
 
-- (AKAKeyboardActivationSequence *)keyboardActivationSequence
+- (AKAKeyboardActivationSequence*)keyboardActivationSequence
 {
     return _keyboardActivationSequence;
 }
@@ -192,6 +207,7 @@
     {
         [self responderWillActivate:responder];
         result = [responder becomeFirstResponder];
+
         if (result)
         {
             [self responderDidActivate:responder];
@@ -210,6 +226,7 @@
     {
         [self responderWillDeactivate:responder];
         result = [responder resignFirstResponder];
+
         if (result)
         {
             [self responderDidDeactivate:responder];
@@ -228,6 +245,7 @@
         _savedInputAccessoryView = self.responderInputAccessoryView;
         self.responderInputAccessoryView = inputAccessoryView;
     }
+
     return self.responderInputAccessoryView == inputAccessoryView;
 }
 
@@ -236,6 +254,7 @@
     self.responderInputAccessoryView = _savedInputAccessoryView;
     BOOL result = self.responderInputAccessoryView == _savedInputAccessoryView;
     _savedInputAccessoryView = nil;
+
     return result;
 }
 

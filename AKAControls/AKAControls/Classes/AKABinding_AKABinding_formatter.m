@@ -42,11 +42,11 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":                  bindingType,
-           @"bindingProviderType":          providerType,
-           @"targetType":                   [AKAProperty class],
-           @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass),
-           @"allowUnspecifiedAttributes":   @YES };
+            @{ @"bindingType":                  bindingType,
+               @"bindingProviderType":          providerType,
+               @"targetType":                   [AKAProperty class],
+               @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass),
+               @"allowUnspecifiedAttributes":   @YES };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });
 
@@ -54,7 +54,6 @@
 }
 
 @end
-
 
 
 #pragma mark - Initialization
@@ -65,15 +64,18 @@
                                               expression:(req_AKABindingExpression)bindingExpression
                                                  context:(req_AKABindingContext)bindingContext
                                                 delegate:(opt_AKABindingDelegate)delegate
+                                                   error:(out_NSError)error
 {
     self = [super initWithProperty:bindingTarget
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate];
+                          delegate:delegate
+                             error:error];
 
     if (self)
     {
         id sourceValue = self.bindingSource.value;
+
         if ([sourceValue isKindOfClass:[NSFormatter class]])
         {
             _formatter = sourceValue;
@@ -87,9 +89,11 @@
         {
             NSAssert(class_isMetaClass(object_getClass(sourceValue)),
                      @"Expected primary expression of formatter to be a key path refering to an instance of NSFormatter or a subclass of NSFormatter, got %@", sourceValue);
+
             if (class_isMetaClass(object_getClass(sourceValue)))
             {
                 Class type = sourceValue;
+
                 if ([type isSubclassOfClass:[NSFormatter class]])
                 {
                     _formatter = [[type alloc] init];
@@ -125,8 +129,9 @@
                  {
                      value = converter(value);
                  }
-                 [self->_formatter setValue:value
-                                     forKey:key];
+                 [self->_formatter
+                  setValue:value
+                    forKey:key];
              }];
         }
 
@@ -134,10 +139,9 @@
         // neither direction.
         self.bindingTarget.value = self.formatter;
     }
-    
+
     return self;
 }
-
 
 #pragma mark - Change Propagation
 
@@ -160,6 +164,7 @@
     (void)oldSourceValue;
     (void)newSourceValue;
     (void)sourceValue;
+
     // TODO: allow updating the target number formatter, later though
     return NO;
 }
@@ -171,7 +176,7 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (NSDictionary<NSString *,id (^)(id)> *)configurationValueConvertersByPropertyName
+- (NSDictionary<NSString*, id (^)(id)>*)configurationValueConvertersByPropertyName
 {
     AKAErrorAbstractMethodImplementationMissing();
 }

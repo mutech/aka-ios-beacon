@@ -126,23 +126,27 @@
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                     error:(out_NSError)error
 {
     NSParameterAssert([target isKindOfClass:[UILabel class]]);
     return [self     initWithLabel:(UILabel*)target
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate];
+                          delegate:delegate
+                             error:error];
 }
 
 - (instancetype)                             initWithLabel:(req_UILabel)label
                                                 expression:(req_AKABindingExpression)bindingExpression
                                                    context:(req_AKABindingContext)bindingContext
                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                     error:(out_NSError)error
 {
     if (self = [super initWithTarget:[self createTargetProperty]
                           expression:bindingExpression
                              context:bindingContext
-                            delegate:delegate])
+                            delegate:delegate
+                               error:error])
     {
         _label = label;
     }

@@ -95,7 +95,11 @@
 {
     (void)bindingContext;
     (void)changeObserver;
-    // Implemented by subclasses if supported
+
+    // The default implementation returns nil which is the result when a binding expression does not
+    // define a primary expression. Please note that this is the only case where this method delivers
+    // an undefined value.
+
     return nil;
 }
 
@@ -258,9 +262,12 @@
     (void)bindingContext;
     opt_AKAProperty result = nil;
     opt_id target = self.array;
+
+    NSAssert(target != nil, @"Array binding expression delivered an undefined (nil) array, the binding's source will, probably unexpectedly, be undefined.");
+
     if (target)
     {
-        AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
+        AKALogWarn(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
         result = [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
                                                    keyPath:nil
                                             changeObserver:changeObserver];

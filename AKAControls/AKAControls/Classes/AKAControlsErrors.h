@@ -11,6 +11,9 @@
 
 typedef NS_ENUM(NSInteger, AKAControlsErrorCodes)
 {
+    AKAControlsErrorCodesMin = 1,
+
+    // TODO: review error codes and errors, much of this became obsolete:
     AKATextEditorControlViewRequiresUITextFieldEditor,
 
     // Conversion Error Codes
@@ -21,6 +24,10 @@ typedef NS_ENUM(NSInteger, AKAControlsErrorCodes)
     // Validation Error Codes
     AKAValidationErrorInvalidEmailValueType,
     AKAValidationErrorInvalidEmailNotMatchingRegEx,
+
+    // Reserved error codes for binding errors
+    AKABindingErrorCodesMin = 1000,
+    AKABindingErrorCodesMax = 1999,
 };
 
 @class AKAControl;

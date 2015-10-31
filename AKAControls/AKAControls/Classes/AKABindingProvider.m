@@ -157,7 +157,8 @@
     AKABinding* binding = [[bindingType alloc] initWithTarget:bindingTarget
                                                    expression:bindingExpression
                                                       context:bindingContext
-                                                     delegate:delegate];
+                                                     delegate:delegate
+                                                        error:nil];
     return binding;
 }
 

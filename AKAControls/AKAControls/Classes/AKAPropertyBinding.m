@@ -17,23 +17,29 @@
                                                           expression:(req_AKABindingExpression)bindingExpression
                                                              context:(req_AKABindingContext)bindingContext
                                                             delegate:(opt_AKABindingDelegate)delegate
+                                                               error:(out_NSError)error
 {
     NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
+
     return [self initWithProperty:target
                        expression:bindingExpression
                           context:bindingContext
-                         delegate:delegate];
+                         delegate:delegate
+                            error:error];
 }
 
 - (instancetype)                                    initWithProperty:(req_AKAProperty)bindingTarget
                                                           expression:(req_AKABindingExpression)bindingExpression
                                                              context:(req_AKABindingContext)bindingContext
                                                             delegate:(opt_AKABindingDelegate)delegate
+                                                               error:(out_NSError)error
 {
     self = [super initWithTarget:bindingTarget
                       expression:bindingExpression
                          context:bindingContext
-                        delegate:delegate];
+                        delegate:delegate
+                           error:error];
+
     return self;
 }
 

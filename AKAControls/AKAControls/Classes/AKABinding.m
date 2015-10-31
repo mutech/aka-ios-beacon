@@ -14,7 +14,7 @@
 #import "AKABinding.h"
 #import "AKABindingDelegate.h"
 #import "AKABindingExpression.h"
-
+#import "AKABindingErrors.h"
 
 #pragma mark - AKABinding Private Interface
 #pragma mark -
@@ -46,34 +46,78 @@
                                        expression:(req_AKABindingExpression)bindingExpression
                                           context:(req_AKABindingContext)bindingContext
                                          delegate:(opt_AKABindingDelegate)delegate
+                                            error:(out_NSError)error
 {
     if (self = [self init])
     {
         _bindingTarget = target;
         _delegate = delegate;
 
+
+        NSError* localError = nil;
+
         __weak AKABinding* weakSelf = self;
-        opt_AKAProperty bs = [bindingExpression bindingSourcePropertyInContext:bindingContext
-                                                             changeObserer:
-                          ^(opt_id oldValue, opt_id newValue)
-                          {
-                              [weakSelf sourceValueDidChangeFromOldValue:oldValue
-                                                              toNewValue:newValue];
-                          }];
-        if (bs != nil)
+        req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
+            [weakSelf sourceValueDidChangeFromOldValue:oldValue
+                                            toNewValue:newValue];
+        };
+
+        opt_AKAProperty bindingSource =
+            [self setupBindingSourceWithExpression:bindingExpression
+                                           context:bindingContext
+                                    changeObserver:changeObserver
+                                             error:&localError];
+
+        if (bindingSource)
         {
-            _bindingSource = (req_AKAProperty)bs;
+            _bindingSource = (req_AKAProperty)bindingSource;
+        }
+        else if (localError == nil)
+        {
+            // binding expression does not define a primary expression and this is intentional
+            // indicated by the undefined error returned by setupBindingSourceWithExpression:...
+            _bindingSource = [AKAProperty propertyOfWeakKeyValueTarget:nil
+                                                               keyPath:nil
+                                                        changeObserver:changeObserver];
         }
         else
         {
-            AKALogError(@"Failed to create binding source from expression %@ in context %@",
-                        bindingExpression.description, bindingContext);
-            // TODO: allow empty primary expression
-            //self = nil;
+            self = nil;
+            if (error)
+            {
+                // If the caller does not provide an error storage, we assume that it's not taking
+                // care of error handling and consider the missing binding error a fatal condition.
+                @throw [NSException exceptionWithName:(*error).localizedDescription
+                                               reason:nil
+                                             userInfo:nil];
+            }
         }
     }
 
     return self;
+}
+
+- (opt_AKAProperty)        setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error
+{
+    (void)error;
+
+    opt_AKAProperty result = [bindingExpression bindingSourcePropertyInContext:bindingContext
+                                                                 changeObserer:changeObserver];
+
+    if (result)
+    {
+        _bindingSource = (req_AKAProperty)result;
+    }
+    else if (error)
+    {
+        *error = [AKABindingErrors bindingErrorUndefinedBindingSourceForExpression:bindingExpression
+                                                                           context:bindingContext];
+    }
+
+    return result;
 }
 
 #pragma mark - Properties
@@ -203,7 +247,7 @@
     (void)oldSourceValue;
     (void)newSourceValue;
     (void)sourceValue;
-    
+
     return YES;
 }
 
@@ -235,6 +279,7 @@
     _isUpdatingTargetValueForSourceValueChange = YES;
 
     id<AKABindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:willUpdateTargetValue:to:)])
     {
         [delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
@@ -245,6 +290,7 @@
                                                          to:(opt_id)newTargetValue
 {
     id<AKABindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
     {
         [delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];

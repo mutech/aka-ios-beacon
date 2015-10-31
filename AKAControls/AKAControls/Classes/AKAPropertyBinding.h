@@ -9,13 +9,14 @@
 #import "AKABinding.h"
 #import "AKABindingProvider.h"
 
-@interface AKAPropertyBinding : AKABinding
+@interface AKAPropertyBinding: AKABinding
 
 #pragma mark - Initialization
 
-- (instancetype)                                    initWithProperty:(req_AKAProperty)bindingTarget
-                                                          expression:(req_AKABindingExpression)bindingExpression
-                                                             context:(req_AKABindingContext)bindingContext
-                                                            delegate:(opt_AKABindingDelegate)delegate;
+- (instancetype) initWithProperty:(req_AKAProperty)bindingTarget
+                       expression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error;
 
 @end

@@ -73,7 +73,6 @@
 		8E7232DF1AFA2DCA00D647A9 /* AKACommons.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8E7232DE1AFA2DCA00D647A9 /* AKACommons.podspec */; };
 		8E90F94D1AF8E69A00CBBB52 /* AKACommons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E90F9411AF8E69A00CBBB52 /* AKACommons.framework */; };
 		8E90F9541AF8E69A00CBBB52 /* AKACommonsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */; };
-		8EC783A21BDCBC6F00E4D029 /* FormattingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC783A11BDCBC6F00E4D029 /* FormattingTests.m */; };
 		8ED5EFC01BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8ED5EFC11BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */; };
 		8EDBBB8D1B63F0D200875D5F /* AKAArrayComparer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -166,7 +165,6 @@
 		8E90F94C1AF8E69A00CBBB52 /* AKACommonsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKACommonsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E90F9521AF8E69A00CBBB52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKACommonsTests.m; sourceTree = "<group>"; };
-		8EC783A11BDCBC6F00E4D029 /* FormattingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormattingTests.m; sourceTree = "<group>"; };
 		8ECF293D1BCBDA9600D8CEE2 /* modules.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = modules.modulemap; sourceTree = "<group>"; };
 		8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+AKAKeyPathUtilities.h"; sourceTree = "<group>"; };
 		8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+AKAKeyPathUtilities.m"; sourceTree = "<group>"; };
@@ -349,7 +347,6 @@
 				8E7231F51AF8E87300D647A9 /* SwiftTest.swift */,
 				8E90F9531AF8E69A00CBBB52 /* AKACommonsTests.m */,
 				8E90F9511AF8E69A00CBBB52 /* Supporting Files */,
-				8EC783A11BDCBC6F00E4D029 /* FormattingTests.m */,
 			);
 			path = AKACommonsTests;
 			sourceTree = "<group>";
@@ -642,7 +639,6 @@
 			files = (
 				8E7231F61AF8E87300D647A9 /* AKAIPNetmaskTests.m in Sources */,
 				8E7231F91AF8E87300D647A9 /* NSIndexPath_AKARowAndSectionAsIntegerTests.m in Sources */,
-				8EC783A21BDCBC6F00E4D029 /* FormattingTests.m in Sources */,
 				8E7231F81AF8E87300D647A9 /* KVCValidationTest.m in Sources */,
 				8E7231FA1AF8E87300D647A9 /* SwiftTest.swift in Sources */,
 				8EE131171BBB1DFE00E765A2 /* AKAReferenceTests.m in Sources */,

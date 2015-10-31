@@ -13,9 +13,9 @@
 #pragma mark - AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding - Private Interface
 #pragma mark -
 
-@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding() <
+@interface AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding () <
     AKACustomKeyboardResponderDelegate
->
+    >
 
 @property(nonatomic, readonly)       AKADatePickerKeyboardTriggerView*      triggerView;
 @property(nonatomic, readonly)       UIDatePicker*                          pickerView;
@@ -39,14 +39,17 @@
                                                     expression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
                                                       delegate:(opt_AKABindingDelegate)delegate
+                                                         error:(out_NSError)error
 {
     if (self = [super initWithView:triggerView
                         expression:bindingExpression
                            context:bindingContext
-                          delegate:delegate])
+                          delegate:delegate
+                             error:error])
     {
         _bindingContext = bindingContext;
     }
+
     return self;
 }
 
@@ -68,6 +71,7 @@
                 id result;
                 AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding* binding = target;
                 result = binding.pickerView.date;
+
                 return result;
             }
                                       setter:
@@ -76,13 +80,16 @@
                 NSAssert(value == nil || [value isKindOfClass:[NSDate class]], @"Invalid attempt to use a date picker with an object '%@' which is not an instance of NSDate", value);
 
                 AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding* binding = target;
+
                 if (value != nil)
                 {
                     id currentValue = binding.pickerView.date;
+
                     if (currentValue == nil && currentValue != value)
                     {
                         currentValue = [NSNull null];
                     }
+
                     if (currentValue != value)
                     {
                         // Only update picker, if the value associated with
@@ -95,24 +102,28 @@
                     }
                 }
             }
-                          observationStarter:
+            observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding* binding = target;
                 [binding attachToCustomKeyboardResponderView];
-                [binding.pickerView addTarget:binding
-                                       action:@selector(datePickerDidChangeValue:)
-                             forControlEvents:UIControlEventValueChanged];
+                [binding.pickerView
+                        addTarget:binding
+                           action:@selector(datePickerDidChangeValue:)
+                 forControlEvents:UIControlEventValueChanged];
+
                 return YES;
             }
-                          observationStopper:
+            observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding* binding = target;
-                [binding.pickerView removeTarget:binding
-                                          action:@selector(datePickerDidChangeValue:)
-                                forControlEvents:UIControlEventValueChanged];
+                [binding.pickerView
+                     removeTarget:binding
+                           action:@selector(datePickerDidChangeValue:)
+                 forControlEvents:UIControlEventValueChanged];
                 [binding detachFromCustomKeyboardResponderView];
+
                 return YES;
             }];
 }
@@ -124,15 +135,19 @@
     NSDate* value = self.pickerView.date;
 
     id oldValue = self.previousDate;
+
     if (self.liveModelUpdates)
     {
-
-        [self animateTriggerForDate:oldValue changeTo:value animations:
+        [self animateTriggerForDate:oldValue
+                           changeTo:value
+                         animations:
          ^{
-             [self targetValueDidChangeFromOldValue:oldValue toNewValue:value];
+             [self targetValueDidChangeFromOldValue:oldValue
+                                         toNewValue:value];
              self.previousDate = value;
          }];
     }
+
     if ([self shouldResignFirstResponderOnSelectedRowChanged])
     {
         [self.triggerView resignFirstResponder];
@@ -141,20 +156,22 @@
 
 #pragma mark - Properties
 
-- (AKADatePickerKeyboardTriggerView *)triggerView
+- (AKADatePickerKeyboardTriggerView*)triggerView
 {
     UIView* result = self.view;
+
     NSParameterAssert(result == nil || [result isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
 
     return (AKADatePickerKeyboardTriggerView*)result;
 }
 
 @synthesize pickerView = _pickerView;
-- (UIDatePicker *)                                  pickerView
+- (UIDatePicker*)                                  pickerView
 {
     if (_pickerView == nil)
     {
         UIView* inputView = [super inputViewForCustomKeyboardResponderView:self.triggerView];
+
         if ([inputView isKindOfClass:[UIDatePicker class]])
         {
             _pickerView = (UIDatePicker*)inputView;
@@ -167,18 +184,19 @@
             _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         }
     }
+
     return _pickerView;
 }
 
-
 #pragma mark - AKACustomKeyboardResponderDelegate Implementation
 
-- (UIView *)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView *)view
+- (UIView*)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
 {
     (void)view;
     NSParameterAssert(view == self.triggerView);
-    
+
     // The view returned by the super class implementation, if defined and valid, is used by
+
     // self.pickerView if possible.
     return self.pickerView;
 }
@@ -187,12 +205,13 @@
 
 - (void)animateTriggerForDate:(NSDate*)oldDate
                      changeTo:(NSDate*)newDate
-                   animations:(void(^)())block
+                   animations:(void (^)())block
 {
     if (block)
     {
         double duration = .3;
         UIViewAnimationOptions options;
+
         if ([oldDate compare:newDate] == NSOrderedAscending)
         {
             options = UIViewAnimationOptionTransitionFlipFromTop;
@@ -229,11 +248,15 @@
     if (!self.liveModelUpdates)
     {
         NSDate* date = self.pickerView.date;
+
         if (date != self.originalDate && ![date isEqualToDate:self.originalDate])
         {
-            [self animateTriggerForDate:self.originalDate changeTo:date animations:
+            [self animateTriggerForDate:self.originalDate
+                               changeTo:date
+                             animations:
              ^{
-                 [self targetValueDidChangeFromOldValue:self.originalDate toNewValue:date];
+                 [self targetValueDidChangeFromOldValue:self.originalDate
+                                             toNewValue:date];
              }];
         }
     }

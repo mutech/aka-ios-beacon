@@ -50,6 +50,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 
 
 // Bindings
+#import <AKAControls/AKABindingErrors.h>
 #import <AKAControls/AKABindingDelegate.h>
 #import <AKAControls/AKABinding.h>
 #import <AKAControls/AKABindingProviderRegistry.h>

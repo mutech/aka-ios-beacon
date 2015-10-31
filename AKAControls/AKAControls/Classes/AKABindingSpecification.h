@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, AKABindingAttributeUse)
     AKABindingAttributeUseBindToBindingProperty
 };
 
-typedef NS_ENUM(NSInteger, AKABindingExpressionType)
+typedef NS_OPTIONS(NSInteger, AKABindingExpressionType)
 {
     AKABindingExpressionTypeNone =                          0,
 
@@ -33,27 +33,27 @@ typedef NS_ENUM(NSInteger, AKABindingExpressionType)
     AKABindingExpressionTypeRootDataContextKeyPath =        (1 <<  2),
     AKABindingExpressionTypeControlKeyPath =                (1 <<  3),
 
-    AKABindingExpressionTypeClassConstant =                 (1 <<  5),
-    AKABindingExpressionTypeStringConstant =                (1 <<  6),
+    AKABindingExpressionTypeArray =                         (1 <<  5),
 
-    AKABindingExpressionTypeNumberConstant =                (1 << 10),
-    AKABindingExpressionTypeBooleanConstant =               (1 << 11),
-    AKABindingExpressionTypeIntegerConstant =               (1 << 12),
-    AKABindingExpressionTypeDoubleConstant =                (1 << 13),
+    AKABindingExpressionTypeClassConstant =                 (1 << 10),
 
-    AKABindingExpressionTypeArray =                         (1 << 20),
+    AKABindingExpressionTypeStringConstant =                (1 << 11),
 
+    AKABindingExpressionTypeNumberConstant =                (1 << 12),
+    AKABindingExpressionTypeBooleanConstant =               (1 << 13),
+    AKABindingExpressionTypeIntegerConstant =               (1 << 14),
+    AKABindingExpressionTypeDoubleConstant =                (1 << 15),
+
+    AKABindingExpressionTypeUIColorConstant =               (1 << 16),
+    AKABindingExpressionTypeCGColorConstant =               (1 << 17),
+    AKABindingExpressionTypeCGPointConstant =               (1 << 18),
+    AKABindingExpressionTypeCGSizeConstant =                (1 << 19),
+    AKABindingExpressionTypeCGRectConstant =                (1 << 20),
+    AKABindingExpressionTypeUIFontConstant =                (1 << 21),
 
     AKABindingExpressionTypeAnyKeyPath        = (AKABindingExpressionTypeDataContextKeyPath     |
                                                  AKABindingExpressionTypeRootDataContextKeyPath |
                                                  AKABindingExpressionTypeControlKeyPath),
-    AKABindingExpressionTypeAnyNumberConstant = (AKABindingExpressionTypeNumberConstant         |
-                                                 AKABindingExpressionTypeBooleanConstant        |
-                                                 AKABindingExpressionTypeIntegerConstant        |
-                                                 AKABindingExpressionTypeDoubleConstant),
-    AKABindingExpressionTypeAnyConstant       = (AKABindingExpressionTypeClassConstant          |
-                                                 AKABindingExpressionTypeStringConstant         |
-                                                 AKABindingExpressionTypeAnyNumberConstant),
 
     AKABindingExpressionTypeClass             = (AKABindingExpressionTypeAnyKeyPath             |
                                                  AKABindingExpressionTypeClassConstant),
@@ -67,9 +67,29 @@ typedef NS_ENUM(NSInteger, AKABindingExpressionType)
                                                  AKABindingExpressionTypeDoubleConstant),
     AKABindingExpressionTypeNumber            = (AKABindingExpressionTypeAnyKeyPath             |
                                                  AKABindingExpressionTypeNumberConstant),
+
+    AKABindingExpressionTypeAnyColorConstant =  (AKABindingExpressionTypeUIColorConstant        |
+                                                 AKABindingExpressionTypeCGColorConstant),
+
+    AKABindingExpressionTypeAnyNumberConstant = (AKABindingExpressionTypeNumberConstant         |
+                                                 AKABindingExpressionTypeBooleanConstant        |
+                                                 AKABindingExpressionTypeIntegerConstant        |
+                                                 AKABindingExpressionTypeDoubleConstant),
+
+    AKABindingExpressionTypeAnyConstant       = (AKABindingExpressionTypeClassConstant          |
+                                                 AKABindingExpressionTypeStringConstant         |
+                                                 AKABindingExpressionTypeAnyNumberConstant      |
+                                                 AKABindingExpressionTypeAnyColorConstant       |
+                                                 AKABindingExpressionTypeCGPointConstant        |
+                                                 AKABindingExpressionTypeCGSizeConstant         |
+                                                 AKABindingExpressionTypeCGRectConstant         |
+                                                 AKABindingExpressionTypeUIFontConstant),
+
+
     AKABindingExpressionTypeAny               = (AKABindingExpressionTypeAnyKeyPath             |
                                                  AKABindingExpressionTypeAnyConstant            |
                                                  AKABindingExpressionTypeArray)
+
 };
 
 

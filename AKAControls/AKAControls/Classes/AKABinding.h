@@ -30,10 +30,44 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                   initWithTarget:(req_id)target
+/**
+ Initializes a binding with the specified binding target, expression, context and delegate.
+ 
+ If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
+
+ @param target            the binding target (eg. a view or property)
+ @param bindingExpression the binding expression
+ @param bindingContext    the context in which the expression is evaluated
+ @param delegate          the binding delegate
+ @param error             error storage, if undefined, the initializer will throw an exception if an error is encountered.
+ @throws NSException if an error occurred and the @c error parameter is nil.
+
+ @return a new binding
+ */
+- (nullable instancetype)                    initWithTarget:(req_id)target
                                                  expression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate;
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error;
+
+/**
+ Sets up the binding source for the specified binding expression and binding context with the specified change observer.
+ 
+ The default implementation evaluates the binding expression's primary expression and returns a property set up with the specified change observer or returns nil and sets the specified error to an error message explaining that the binding expression invalidly did not provide a binding source.
+
+ This can be overridden by implementing sub classes to provide a default value when the binding expression does not define a primary expression or, less commonly, to replace the binding source or to allow a binding with undefined source (by not setting the error).
+
+ @param bindingExpression the binding expression
+ @param bindingContext    the binding context
+ @param changeObserver    the change observer provided by the binding which has to be used by the resulting property to notify the binding of changes.
+ @param error             only set if an undefined result is returned. Describes the error or if nil, indicates that the result is validly undefined.
+
+ @return A property referring to the binding source of nil if an error occurred or if there is no binding source.
+ */
+- (opt_AKAProperty)        setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error;
 
 #pragma mark - Configuration
 

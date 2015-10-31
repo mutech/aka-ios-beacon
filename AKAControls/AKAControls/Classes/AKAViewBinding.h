@@ -20,7 +20,8 @@
 - (instancetype _Nullable)                     initWithView:(req_UIView)targetView
                                                  expression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate;
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error;
 
 #pragma mark - Configuration
 

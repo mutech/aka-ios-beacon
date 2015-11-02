@@ -120,10 +120,10 @@ typedef NSScanner AKABindingExpressionParser;
 
 #pragma mark - Scanner Tools (Error Reporting)
 
-- (BOOL)        registerParseError:(NSError* __autoreleasing __nonnull* __nullable)error
+- (BOOL)        registerParseError:(NSError* __autoreleasing _Nonnull* _Nullable)error
                           withCode:(AKABindingExpressionParseErrorCode)errorCode
                         atPosition:(NSUInteger)position
-                            reason:(req_NSString)reason;
+                            reason:(req_NSString)failureReason;
 
 - (req_NSString)contextMessageWithMaxLeading:(NSUInteger)maxLeading
                                  maxTrailing:(NSUInteger)maxTrailing;

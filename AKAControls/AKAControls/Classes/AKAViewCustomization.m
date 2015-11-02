@@ -87,7 +87,7 @@ static NSString* const kSpecificationTagProperties = @"properties";
 
 - (BOOL)                                    isApplicableToView:(id)view
 {
-    return self.applicability ? [self.applicability isApplicableToView:view] : YES;
+    return self.applicability == nil || [self.applicability isApplicableToView:view];
 }
 
 - (BOOL)                                          applyToViews:(NSDictionary*)views

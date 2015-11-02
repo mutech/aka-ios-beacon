@@ -107,7 +107,7 @@
 
     if (index != NSNotFound)
     {
-        AKAWeakReference* reference = [self.items objectAtIndex:index];
+        AKAWeakReference* reference = self.items[index];
         result = reference.value;
     }
 

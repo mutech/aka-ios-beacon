@@ -91,7 +91,7 @@
 
     if (result)
     {
-        AKAControl* control = [self.controlsStorage objectAtIndex:index];
+        AKAControl* control = self.controlsStorage[index];
         [control stopObservingChanges];
         result = [self removeControl:control atIndex:index];
     }
@@ -182,7 +182,7 @@
 {
     BOOL result = (index <= self.controlsStorage.count &&
                    control.owner == self &&
-                   control == [self.controlsStorage objectAtIndex:index]);
+                   control == self.controlsStorage[index]);
 
     if (result)
     {
@@ -292,7 +292,7 @@
 
 - (id)                             objectInControlsAtIndex:(NSUInteger)index
 {
-    return [self.controlsStorage objectAtIndex:index];
+    return self.controlsStorage[index];
 }
 
 - (NSUInteger)                              indexOfControl:(AKAControl*)control

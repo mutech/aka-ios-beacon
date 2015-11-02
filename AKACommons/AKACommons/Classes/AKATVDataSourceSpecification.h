@@ -19,13 +19,13 @@
 
 @protocol AKATVDataSourceSpecificationDelegate <NSObject>
 
-- (BOOL)resolveIndexPath:(out NSIndexPath*__strong __nullable* __nullable)indexPathStorage
-      forSourceIndexPath:(NSIndexPath* __nonnull)sourceIndexPath
-            inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource;
+- (BOOL)resolveIndexPath:(out NSIndexPath*__strong _Nullable* _Nullable)indexPathStorage
+      forSourceIndexPath:(NSIndexPath* _Nonnull)sourceIndexPath
+            inDataSource:(AKATVDataSourceSpecification* _Nonnull)dataSource;
 
-- (BOOL)resolveSection:(out NSInteger* __nullable)sectionStorage
+- (BOOL)resolveSection:(out NSInteger* _Nullable)sectionStorage
       forSourceSection:(NSInteger)sourceSection
-          inDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource;
+          inDataSource:(AKATVDataSourceSpecification* _Nonnull)dataSource;
 
 - (BOOL)resolveAKADataSource:(out AKATVDataSourceSpecification*__autoreleasing __nullable* __nullable)dataSourceStorage
              sourceIndexPath:(out NSIndexPath*__autoreleasing __nullable* __nullable)indexPathStorage

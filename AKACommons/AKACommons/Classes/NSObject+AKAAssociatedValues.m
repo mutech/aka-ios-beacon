@@ -54,7 +54,7 @@ static char associationKey;
     id associatedValues = [self aka_associatedValues];
     if ([associatedValues isKindOfClass:[NSDictionary class]])
     {
-        result = [((NSDictionary*)associatedValues) objectForKey:key];
+        result = ((NSDictionary *) associatedValues)[key];
     }
     return result;
 }
@@ -70,7 +70,7 @@ static char associationKey;
         id associatedValues = [self aka_associatedValuesCreateIfMissing:YES];
         if ([associatedValues isKindOfClass:[NSMutableDictionary class]])
         {
-            [((NSMutableDictionary*)associatedValues) setObject:value forKey:key];
+            ((NSMutableDictionary *) associatedValues)[key] = value;
         }
     }
 }

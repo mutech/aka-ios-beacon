@@ -262,7 +262,7 @@
     if (result)
     {
         BOOL viewTagSpecified = (self.viewTag != nil);
-        BOOL viewTagCorrect = viewTagSpecified ? self.viewTag.integerValue == view.tag : NO;
+        BOOL viewTagCorrect = viewTagSpecified && self.viewTag.integerValue == view.tag;
         if (viewTagSpecified && !viewTagCorrect)
         {
             BOOL viewTagCorrectedByDelegate = NO;

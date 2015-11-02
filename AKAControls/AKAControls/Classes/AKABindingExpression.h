@@ -16,7 +16,7 @@
 
 typedef AKABindingExpression* _Nullable                             opt_AKABindingExpression;
 typedef AKABindingExpression* __nonnull                             req_AKABindingExpression;
-typedef AKABindingExpression*__autoreleasing __nullable*__nullable  out_AKABindingExpression;
+typedef AKABindingExpression*__autoreleasing _Nullable*_Nullable  out_AKABindingExpression;
 typedef NSDictionary<NSString*,AKABindingExpression*>*_Nullable     opt_AKABindingExpressionAttributes;
 typedef enum AKABindingExpressionScope*_Nullable                    out_AKABindingExpressionScope;
 typedef AKABindingProvider* _Nonnull                                req_AKABindingProvider;

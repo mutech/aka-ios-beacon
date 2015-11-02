@@ -612,7 +612,7 @@
 
         else if ([colorExpression isKindOfClass:[AKACGColorConstantBindingExpression class]])
         {
-            color = [UIColor colorWithCGColor:((CGColorRef)colorExpression.constant)];
+            color = [UIColor colorWithCGColor:((__bridge CGColorRef)colorExpression.constant)];
             XCTAssertEqualObjects(@"$CGColor { r:127, g:0, b:0, a:255 }", colorExpression.description);
         }
         XCTAssert([color isEqualToColor:referenceColor], @"%@ != %@", color, referenceColor);

@@ -33,26 +33,8 @@
 
 #pragma mark - Composite Control Member Activation
 
-+ (void)invalidAttemptToActivate:(AKAControl*)control
-                     inComposite:(AKACompositeControl*)composite
- whileAnotherMemberIsStillActive:(AKAControl*)oldActive
-                        recovery:(BOOL(^)())recover;
-
-+ (void)invalidAttemptToActivateNonMemberControl:(AKAControl*)control
-                                     inComposite:(AKACompositeControl*)composite;
-
 #pragma mark - ControlView Errors
 
-
-+ (NSError *)errorForTextEditorControlView:(AKAEditorControlView *)editorControlView
-                               invalidView:(id)view
-                                   forRole:(NSString*)role
-                              expectedType:(Class)type;
-
-#pragma mark - Binding Errors
-
-+ (void)invalidAttemptToBindView:(id)view
-                       toBinding:(AKAObsoleteViewBinding *)binding;
 
 #pragma mark - Validation Errors
 

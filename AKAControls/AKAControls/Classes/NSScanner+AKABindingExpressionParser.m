@@ -775,7 +775,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         result = [self scanLongLong:&longValue];
         if (result && constantStore != nil)
         {
-            *constantStore = [NSNumber numberWithLongLong:longValue];
+            *constantStore = @(longValue);
         }
         // TODO: decide whether to support smaller integer types and if so, down cast if possible
     }
@@ -789,7 +789,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         result = [self scanDouble:&doubleValue];
         if (result && constantStore != nil)
         {
-            *constantStore = [NSNumber numberWithDouble:doubleValue];
+            *constantStore = @(doubleValue);
         }
         if (!result)
         {

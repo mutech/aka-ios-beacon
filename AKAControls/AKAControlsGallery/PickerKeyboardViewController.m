@@ -59,7 +59,7 @@
                                @{ @"title": @"nine",  @"value": @( 9) },
                                @{ @"title": @"ten",   @"value": @(10) },
                                ];
-    self.objectValue = [self.objectArrayValue objectAtIndex:4];
+    self.objectValue = self.objectArrayValue[4];
 
     self.dateValue = [NSDate new];
 

@@ -134,9 +134,9 @@ typedef NSMutableDictionary<Class, _BindingBySelectorMap>* _BindingBySelectorMap
     if (selectorMap == nil)
     {
         selectorMap = [NSMutableDictionary new];
-        [self.selectorMapsByType setObject:selectorMap forKey:(id)type];
+        self.selectorMapsByType[(id) type] = selectorMap;
     }
-    [selectorMap setObject:provider forKeyedSubscript:key];
+    selectorMap[key] = provider;
     [matchingTypes addObject:type];
 }
 

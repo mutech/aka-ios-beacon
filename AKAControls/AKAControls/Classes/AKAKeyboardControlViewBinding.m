@@ -16,8 +16,8 @@
 
 @interface AKAKeyboardControlViewBinding ()
 {
-    AKAKeyboardActivationSequence* _keyboardActivationSequence;
-    UIView*                        _savedInputAccessoryView;
+    __weak AKAKeyboardActivationSequence* _keyboardActivationSequence;
+    UIView*                               _savedInputAccessoryView;
 }
 @end
 

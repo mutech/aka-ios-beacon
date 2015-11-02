@@ -33,7 +33,6 @@ typedef NS_ENUM(NSInteger, AKAControlsErrorCodes)
 @class AKAControl;
 @class AKACompositeControl;
 @class AKAEditorControlView;
-@class AKAObsoleteViewBinding;
 @class UIView;
 
 /**

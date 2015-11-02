@@ -57,7 +57,7 @@
         NSMutableDictionary* themes = [self aka_getThemesForClass:class createIfMissing:create];
         if (themes && theme)
         {
-            [themes setObject:theme forKey:name];
+            themes[name] = theme;
         }
     }
     return;

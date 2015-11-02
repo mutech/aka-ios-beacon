@@ -153,49 +153,6 @@ static BOOL _attemptRecoveryActions = YES;
     [self handleErrorWithMessage:message recovery:nil];
 }
 
-#pragma mark - Composite Control Member Activation
-
-+ (void)invalidAttemptToActivateNonMemberControl:(AKAControl *)control
-                                      inComposite:(AKACompositeControl *)composite
-{
-    NSString* message = [NSString stringWithFormat:@"Attempt to activate control %@ which is not a direct member of %@", control, composite];
-    [self handleErrorWithMessage:message recovery:nil];
-}
-
-+ (void)    invalidAttemptToActivate:(AKAControl *)control
-                         inComposite:(AKACompositeControl *)composite
-     whileAnotherMemberIsStillActive:(AKAControl *)oldActive
-                            recovery:(BOOL (^)())recover
-{
-    NSString* message = [NSString stringWithFormat:@"Attempt to activate control %@ while another member control %@ is active in composite control %@", control, oldActive, composite];
-    [self handleErrorWithMessage:message recovery:recover];
-}
-
-#pragma mark - Control View Errors
-
-+ (NSError *)errorForTextEditorControlView:(AKAEditorControlView *)editorControlView
-                               invalidView:(id)view
-                                   forRole:(NSString*)role
-                              expectedType:(Class)type
-{
-    NSString* description = [NSString stringWithFormat:@"%@: Invalid view %@ for role %@", editorControlView, view, role];
-    NSString* reason = [NSString stringWithFormat:@"Wrong type %@, subview is expected to be a kind of %@", [view class], type];
-    return [NSError errorWithDomain:[self akaControlsErrorDomain]
-                               code:AKATextEditorControlViewRequiresUITextFieldEditor
-                           userInfo:@{ NSLocalizedDescriptionKey: description,
-                                       NSLocalizedFailureReasonErrorKey: reason }];
-}
-
-#pragma mark - Binding Errors
-
-+ (void)invalidAttemptToBindView:(id)view
-                       toBinding:(AKAObsoleteViewBinding *)binding
-{
-    NSString* message = [NSString stringWithFormat:@"Invalid attempt to bind view %@ to binding %@", view, binding];
-    [self handleErrorWithMessage:message recovery:nil];
-}
-
-
 #pragma mark - Themes
 
 + (void)invalidLayoutRelationSpecification:(id)relationSpecification

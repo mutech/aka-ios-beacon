@@ -37,7 +37,7 @@
 - (BOOL)aka_booleanForKey:(req_NSString)key withDefault:(BOOL)defaultValue
 {
     BOOL result = defaultValue;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if ([value isKindOfClass:[NSNumber class]])
     {
         NSNumber* number = value;
@@ -64,7 +64,7 @@
 - (NSDictionary*)aka_dictionaryForKey:(req_NSString)key required:(BOOL)required
 {
     NSDictionary* result = nil;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if ([value isKindOfClass:[NSDictionary class]])
     {
         result = value;
@@ -83,7 +83,7 @@
 - (Class)aka_classTypeForKey:(req_NSString)key required:(BOOL)required
 {
     Class result = nil;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if (object_isClass(value))
     {
         result = (Class)value;
@@ -102,7 +102,7 @@
 - (NSInteger)aka_enumValueForKey:(req_NSString)key required:(BOOL)required
 {
     NSInteger result = NSNotFound;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if ([value isKindOfClass:[NSNumber class]])
     {
         NSNumber* number = value;
@@ -122,7 +122,7 @@
 - (NSInteger)aka_enumValueForKey:(req_NSString)key defaultValue:(int)defaultValue
 {
     NSInteger result = NSNotFound;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if ([value isKindOfClass:[NSNumber class]])
     {
         NSNumber* number = value;
@@ -142,7 +142,7 @@
 - (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required
 {
     AKATypePattern* result = nil;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if (value != nil)
     {
         if ([value isKindOfClass:[AKATypePattern class]])
@@ -176,7 +176,7 @@
 - (AKABindingProvider *)aka_bindingProviderForKey:(req_NSString)key required:(BOOL)required
 {
     AKABindingProvider* result = nil;
-    id value = [self objectForKey:key];
+    id value = self[key];
     if ([value isKindOfClass:[AKABindingProvider class]])
     {
         result = value;
@@ -373,12 +373,12 @@
             case AKABindingAttributeUseAssignValueToBindingProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
             {
-                _bindingPropertyName = [specDictionary objectForKey:@"bindingProperty"];
+                _bindingPropertyName = specDictionary[@"bindingProperty"];
                 break;
             }
             case AKABindingAttributeUseBindToBindingProperty:
             {
-                _bindingPropertyName = [specDictionary objectForKey:@"bindingProperty"];
+                _bindingPropertyName = specDictionary[@"bindingProperty"];
                 break;
             }
             default:
@@ -478,10 +478,12 @@
 {
     if (self = [self init])
     {
-        _acceptedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:[dictionary objectForKey:@"acceptedTypes"]];
-        _rejectedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:[dictionary objectForKey:@"rejectedTypes"]];
-        _acceptedValueTypes = [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:[dictionary objectForKey:@"acceptedValueTypes"]];
-        _rejectedValueTypes = [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:[dictionary objectForKey:@"acceptedValueTypes"]];
+        _acceptedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"acceptedTypes"]];
+        _rejectedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"rejectedTypes"]];
+        _acceptedValueTypes =
+                [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]];
+        _rejectedValueTypes =
+                [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]];
     }
     return self;
 }

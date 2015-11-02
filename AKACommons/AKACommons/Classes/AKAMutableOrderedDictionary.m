@@ -74,11 +74,11 @@
 
 - (void)setObject:(id)anObject forKey:(id)aKey
 {
-	if (![self.storage objectForKey:aKey])
+	if (!self.storage[aKey])
 	{
 		[self.sequence addObject:aKey];
 	}
-	[self.storage setObject:anObject forKey:aKey];
+	self.storage[aKey] = anObject;
 }
 
 - (void)removeObjectForKey:(id)aKey
@@ -94,7 +94,7 @@
 
 - (id)objectForKey:(id)aKey
 {
-	return [self.storage objectForKey:aKey];
+	return self.storage[aKey];
 }
 
 - (NSEnumerator *)keyEnumerator
@@ -109,17 +109,17 @@
 
 - (void)insertObject:(id)anObject forKey:(id)aKey atIndex:(NSUInteger)anIndex
 {
-	if ([self.storage objectForKey:aKey])
+	if (self.storage[aKey])
 	{
 		[self removeObjectForKey:aKey];
 	}
 	[self.sequence insertObject:aKey atIndex:anIndex];
-	[self.storage setObject:anObject forKey:aKey];
+	self.storage[aKey] = anObject;
 }
 
 - (id)keyAtIndex:(NSUInteger)anIndex
 {
-	return [self.sequence objectAtIndex:anIndex];
+	return self.sequence[anIndex];
 }
 
 @end

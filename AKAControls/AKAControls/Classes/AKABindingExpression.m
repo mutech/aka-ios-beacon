@@ -8,10 +8,14 @@
 
 #import "AKABindingExpression_Internal.h"
 #import "NSScanner+AKABindingExpressionParser.h"
+#import "AKABindingErrors.h"
+#import "AKANSEnumerations.h"
 
+@import AKACommons.AKANullability;
 @import AKACommons.NSMutableString_AKATools;
 @import AKACommons.AKALog;
 @import AKACommons.AKAErrors;
+@import AKACommons.NSObject_AKAConcurrencyTools;
 
 @class AKAProperty;
 @class AKAControl;
@@ -38,8 +42,8 @@
     AKABindingExpression* result = nil;
 
     if ([parser parseBindingExpression:&result
-                                    withProvider:bindingProvider
-                                        error:error])
+                          withProvider:bindingProvider
+                                 error:error])
     {
         if (!parser.isAtEnd)
         {
@@ -63,6 +67,7 @@
         _attributes = attributes;
         _bindingProvider = provider;
     }
+
     return self;
 }
 
@@ -76,8 +81,9 @@
     }
     else
     {
-        @throw [NSException exceptionWithName:@"Attempt to use AKABindingExpression with a primary binding expression. This is invalid. Use a binding type that can handle the specific type of primary expression." reason:nil userInfo:@{}];
+        @throw [NSException exceptionWithName:@"Attempt to use AKABindingExpression with a primary binding expression. This is invalid. Use a binding type that can handle the specific type of primary expression." reason:nil userInfo:@{ }];
     }
+
     return self;
 }
 
@@ -86,6 +92,7 @@
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext;
+
     // Implemented by subclasses if supported
     return nil;
 }
@@ -122,7 +129,7 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (NSString *)description
+- (NSString*)description
 {
     return [self textWithNestingLevel:0
                                indent:@"\t"];
@@ -141,6 +148,7 @@
 {
     (void)level;
     (void)indent;
+
     // Implemented by subclasses if supported
     return nil;
 }
@@ -153,17 +161,17 @@
 - (NSString*)textWithNestingLevel:(NSUInteger)level
                            indent:(NSString*)indent
 {
-    static NSString* const kPrimaryAttributesSeparator = @" ";
+    static NSString*const kPrimaryAttributesSeparator = @" ";
 
-    static NSString* const kAttributesOpen = @"{";
-    static NSString* const kAttributesClose = @"}";
-    static NSString* const kAttributeNameValueSeparator = @": ";
-    static NSString* const kAttributeSeparator = @",";
-
+    static NSString*const kAttributesOpen = @"{";
+    static NSString*const kAttributesClose = @"}";
+    static NSString*const kAttributeNameValueSeparator = @": ";
+    static NSString*const kAttributeSeparator = @",";
 
     NSMutableString* result = [NSMutableString new];
 
     NSString* textForPrimaryExpression = self.textForPrimaryExpression;
+
     if (textForPrimaryExpression.length > 0)
     {
         [result appendString:textForPrimaryExpression];
@@ -177,6 +185,7 @@
         }
 
         NSString* attributePrefix;
+
         if (indent.length > 0)
         {
             attributePrefix = @"\n";
@@ -188,25 +197,28 @@
 
         [result appendString:kAttributesOpen];
 
-        __block NSUInteger i=0;
+        __block NSUInteger i = 0;
         NSUInteger count = self.attributes.count;
 
-        [self.attributes enumerateKeysAndObjectsUsingBlock:
-         ^(NSString * _Nonnull key, AKABindingExpression * _Nonnull obj, BOOL * _Nonnull stop)
+        [self.attributes
+         enumerateKeysAndObjectsUsingBlock:
+         ^(NSString* _Nonnull key, AKABindingExpression* _Nonnull obj, BOOL* _Nonnull stop)
          {
              (void)stop;
 
-             NSString* attributeValueText = [obj textWithNestingLevel:level+1
+             NSString* attributeValueText = [obj textWithNestingLevel:level + 1
                                                                indent:indent];
 
              [result appendString:attributePrefix];
-             [result aka_appendString:indent repeat:level + 1];
+             [result aka_appendString:indent
+                               repeat:level + 1];
 
              [result appendString:key];
 
              [result appendString:kAttributeNameValueSeparator];
 
              [result appendString:attributeValueText];
+
              if (i < count - 1)
              {
                  [result appendString:kAttributeSeparator];
@@ -218,6 +230,7 @@
         [result aka_appendString:indent repeat:level];
         [result appendString:kAttributesClose];
     }
+
     return result;
 }
 
@@ -230,7 +243,7 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithArray:(NSArray<AKABindingExpression *> *)array
+- (instancetype)initWithArray:(NSArray<AKABindingExpression*>*)array
                    attributes:(opt_AKABindingExpressionAttributes)attributes
                      provider:(opt_AKABindingProvider)provider
 {
@@ -239,6 +252,7 @@
     {
         _array = array;
     }
+
     return self;
 }
 
@@ -252,7 +266,6 @@
                     attributes:attributes
                       provider:provider];
 }
-
 
 #pragma mark - Binding Support
 
@@ -272,6 +285,7 @@
                                                    keyPath:nil
                                             changeObserver:changeObserver];
     }
+
     return result;
 }
 
@@ -279,6 +293,7 @@
 {
     (void)bindingContext;
     AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
+
     return self.array;
 }
 
@@ -294,14 +309,15 @@
 - (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
                                                indent:(NSString*)indent
 {
-    static NSString* const kArrayOpen = @"[";
-    static NSString* const kArrayClose = @"]";
-    static NSString* const kArrayItemSeparator = @",";
+    static NSString*const kArrayOpen = @"[";
+    static NSString*const kArrayClose = @"]";
+    static NSString*const kArrayItemSeparator = @",";
 
     NSMutableString* result = [NSMutableString new];
 
     [result appendString:kArrayOpen];
     NSString* itemPrefix;
+
     if (indent.length > 0)
     {
         itemPrefix = @"\n";
@@ -314,17 +330,20 @@
     if (self.array.count > 0)
     {
         NSUInteger count = self.array.count;
-        [self.array enumerateObjectsUsingBlock:
-         ^(AKABindingExpression * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+        [self.array
+         enumerateObjectsUsingBlock:
+         ^(AKABindingExpression* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop)
          {
              (void)stop;
-             NSString* itemText = [obj textWithNestingLevel:level+1
+             NSString* itemText = [obj textWithNestingLevel:level + 1
                                                      indent:indent];
 
              [result appendString:itemPrefix];
-             [result aka_appendString:indent repeat:level + 1];
+             [result aka_appendString:indent
+                               repeat:level + 1];
 
              [result appendString:itemText];
+
              if (idx < count - 1)
              {
                  [result appendString:kArrayItemSeparator];
@@ -350,7 +369,7 @@
 #pragma mark - Initialization
 
 - (instancetype)initWithConstant:(id)constant
-                      attributes:(NSDictionary<NSString*, AKABindingExpression*>*__nullable)attributes
+                      attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
                         provider:(opt_AKABindingProvider)provider
 {
     if (self = [super initWithAttributes:attributes
@@ -358,6 +377,7 @@
     {
         _constant = constant;
     }
+
     return self;
 }
 
@@ -382,10 +402,11 @@
 
     if (target)
     {
-        result =  [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
-                                                    keyPath:nil
-                                             changeObserver:changeObserver];
+        result = [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
+                                                   keyPath:nil
+                                            changeObserver:changeObserver];
     }
+
     return result;
 }
 
@@ -439,20 +460,22 @@
     self = [super initWithConstant:constant
                         attributes:attributes
                           provider:provider];
+
     return self;
 }
 
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSMutableString* result = nil;
 
     NSString* string = self.constant;
+
     if (string != nil)
     {
         result = [NSMutableString stringWithString:@"\""];
-        for (NSUInteger i=0; i < string.length; ++i)
+        for (NSUInteger i = 0; i < string.length; ++i)
         {
             unichar c = [string characterAtIndex:i];
             [AKAStringConstantBindingExpression appendEscapeSequenceForCharacter:c
@@ -460,6 +483,7 @@
         }
         [result appendString:@"\""];
     }
+
     return result;
 }
 
@@ -468,6 +492,7 @@
 {
     static NSDictionary<NSNumber*, NSString*>* map;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         map = @{ @((unichar)'\a'): @"\\a",
                  @((unichar)'\b'): @"\\b",
@@ -479,11 +504,11 @@
                  @((unichar)'\\'): @"\\\\",
                  @((unichar)'\''): @"\\'",
                  @((unichar)'"'):  @"\\\"",
-                 @((unichar)'\?'): @"\\?",
-                 };
+                 @((unichar)'\?'): @"\\?", };
     });
 
     NSString* replacement = map[@(character)];
+
     if (replacement != nil)
     {
         [storage appendString:replacement];
@@ -513,19 +538,22 @@
     self = [super initWithConstant:constant
                         attributes:attributes
                           provider:provider];
+
     return self;
 }
 
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSString* result = nil;
     opt_Class type = self.constant;
+
     if (type != nil)
     {
         result = [NSString stringWithFormat:@"<%@>", NSStringFromClass((req_Class)type)];
     }
+
     return result;
 }
 
@@ -540,8 +568,8 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConstant:(NSNumber*)constant
-                      attributes:(NSDictionary<NSString*, AKABindingExpression*>*__nullable)attributes
+- (instancetype)  initWithNumber:(NSNumber*)constant
+                      attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
                         provider:(opt_AKABindingProvider)provider
 {
     return [super initWithConstant:constant
@@ -551,13 +579,15 @@
 
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         result = self.constant.stringValue;
     }
+
     return result;
 }
 
@@ -569,11 +599,65 @@
 
 @implementation AKABooleanConstantBindingExpression
 
++ (AKABooleanConstantBindingExpression*)constantTrue
+{
+    static AKABooleanConstantBindingExpression* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [[AKABooleanConstantBindingExpression alloc] initWithConstant:YES];
+    });
+
+    return result;
+}
+
++ (AKABooleanConstantBindingExpression*)constantFalse
+{
+    static AKABooleanConstantBindingExpression* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [[AKABooleanConstantBindingExpression alloc] initWithConstant:NO];
+    });
+
+    return result;
+}
+
+- (instancetype)initWithConstant:(BOOL)value
+{
+    self = [super initWithConstant:@(value)
+                        attributes:nil
+                          provider:nil];
+
+    return self;
+}
+
+- (instancetype)initWithConstant:(opt_NSNumber)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    if (constant == nil || attributes.count > 0)
+    {
+        self = [super initWithConstant:constant attributes:attributes provider:provider];
+    }
+    else if (constant.boolValue)
+    {
+        self = [AKABooleanConstantBindingExpression constantTrue];
+    }
+    else
+    {
+        self = [AKABooleanConstantBindingExpression constantFalse];
+    }
+
+    return self;
+}
+
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         if (self.constant.boolValue)
@@ -585,6 +669,7 @@
             result = [NSString stringWithFormat:@"$%@", [NSScanner keywordFalse]];
         }
     }
+
     return result;
 }
 
@@ -598,13 +683,401 @@
 
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         result = [NSString stringWithFormat:@"%lld", self.constant.longLongValue];
     }
+
+    return result;
+}
+
+@end
+
+
+#pragma mark - AKAOptionsConstantBindingExpression
+#pragma mark -
+
+@implementation AKAOptionsConstantBindingExpression
+
++ (nonnull NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>*) registry
+{
+    static NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [NSMutableDictionary new];
+    });
+
+    return result;
+}
+
++ (NSNumber*)resolveOptionsValue:(opt_AKABindingExpressionAttributes)attributes
+                         forType:(opt_NSString)optionsType
+                           error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    if (optionsType.length > 0)
+    {
+        NSDictionary<NSString*, NSNumber*>* valuesByName =
+            [AKAOptionsConstantBindingExpression registry][(req_NSString)optionsType];
+
+        if (valuesByName != nil)
+        {
+            __block long long unsigned resultValue = 0;
+            [attributes enumerateKeysAndObjectsUsingBlock:
+             ^(req_NSString symbolicValue, req_AKABindingExpression notUsed, outreq_BOOL stop)
+             {
+                 (void)notUsed;
+                 NSNumber* value = valuesByName[symbolicValue];
+
+                 if (value != nil)
+                 {
+                     resultValue |= value.unsignedLongLongValue;
+                 }
+                 else
+                 {
+                     if (error)
+                     {
+                         *stop = YES;
+                         *error = [AKABindingErrors unknownSymbolicEnumerationValue:symbolicValue
+                                                                 forEnumerationType:(req_NSString)optionsType
+                                                                   withValuesByName:valuesByName];
+                     }
+                 }
+             }];
+        }
+    }
+
+    return result;
+}
+
++ (BOOL)registerOptionsType:(req_NSString)enumerationType
+           withValuesByName:(NSDictionary<NSString*, NSNumber*>* _Nonnull)valuesByName
+{
+    __block BOOL result = NO;
+
+    NSAssert([NSThread isMainThread], @"Invalid attempt to register an enumeration type outside of main thread!");
+
+    [enumerationType aka_performBlockInMainThreadOrQueue:^{
+         NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* registry =
+             [AKAOptionsConstantBindingExpression registry];
+
+         if (!registry[enumerationType])
+         {
+             registry[enumerationType] = valuesByName;
+             result = YES;
+         }
+     }
+                                       waitForCompletion:YES];
+
+    return result;
+}
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    NSString* optionsType;
+    NSString* symbolicValue;
+    NSNumber* value;
+    NSDictionary* effectiveAttributes = attributes;
+
+    if ([constant isKindOfClass:[NSString class]])
+    {
+        NSArray* components = [((NSString*)constant) componentsSeparatedByString:@"."];
+
+        if (components.count == 1)
+        {
+            // If only one component is given, it is interpreted either as type or value
+            if (attributes.count > 0)
+            {
+                // If there are attributes, the only reasonable interpretation is that the
+                // constant is meant to be the enumeration type.
+                optionsType = components.firstObject;
+            }
+            else
+            {
+                // If there are no attributes, the constant is interpreted as symbolic value
+                symbolicValue = components.firstObject;
+            }
+        }
+        else if (components.count == 2)
+        {
+            optionsType = components[0];
+            symbolicValue = components[1];
+        }
+        else
+        {
+            NSString* reason = @"Too many dot-separated components, use $options {VALUE, ...}, $options.TYPE {VALUE, ...}, $options.VALUE or $options.TYPE.VALUE";
+            NSString* name = [NSString stringWithFormat:@"Invalid options primary expression: %@: %@", constant, reason];
+
+            [NSException exceptionWithName:name reason:reason userInfo:nil];
+        }
+    }
+    else if ([constant isKindOfClass:[NSNumber class]])
+    {
+        value = constant;
+    }
+    else if (constant != nil)
+    {
+        NSString* reason = @"Invalid primary expression type, expected nil or an instance of NSString or NSNumber";
+        NSString* name = [NSString stringWithFormat:@"Invalid options primary expression: %@: %@", constant, reason];
+
+        [NSException exceptionWithName:name reason:reason userInfo:nil];
+    }
+
+    if (value != nil)
+    {
+        if (symbolicValue.length > 0)
+        {
+            if (effectiveAttributes.count == 0)
+            {
+                effectiveAttributes = @{ symbolicValue: [AKABooleanConstantBindingExpression constantTrue] };
+            }
+            else
+            {
+                NSMutableDictionary* tmp = [NSMutableDictionary dictionaryWithDictionary:effectiveAttributes];
+                tmp[symbolicValue] = [AKABooleanConstantBindingExpression constantTrue];
+            }
+        }
+
+        NSError* error;
+        value = [AKAOptionsConstantBindingExpression resolveOptionsValue:effectiveAttributes
+                                                                 forType:optionsType
+                                                                   error:&error];
+
+        if (!value && error) // if error is not set, value is validly undefined (f.e. no enumeration type yet)
+        {
+            @throw [NSException exceptionWithName:error.localizedDescription
+                                           reason:error.localizedFailureReason
+                                         userInfo:nil];
+        }
+    }
+
+    if (self = [super initWithConstant:value attributes:attributes provider:provider])
+    {
+        self.optionsType = optionsType;
+    }
+    
+    return self;
+}
+
+#pragma mark - Serialization
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordOptions];
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+
+    if (self.constant)
+    {
+        if (self.attributes.count > 0)
+        {
+            NSString* optionsType = self.optionsType;
+            if (optionsType == nil)
+            {
+                optionsType = @"";
+            }
+            result = [NSString stringWithFormat:@"$%@%@%@",
+                      [self keyword],
+                      (optionsType.length > 0 ? @"." : @""),
+                      optionsType];
+        }
+    }
+
+    return result;
+}
+
+@end
+
+
+#pragma mark - AKAEnumConstantBindingExpression
+#pragma mark -
+
+@implementation AKAEnumConstantBindingExpression
+
++ (nonnull NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>*) registry
+{
+    static NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [NSMutableDictionary new];
+    });
+
+    return result;
+}
+
++ (id)resolveEnumeratedValue:(opt_NSString)symbolicValue
+                     forType:(opt_NSString)enumerationType
+                       error:(out_NSError)error
+{
+    id result = nil;
+
+    if (enumerationType.length > 0)
+    {
+        NSDictionary<NSString*, NSNumber*>* valuesByName =
+            [AKAEnumConstantBindingExpression registry][(req_NSString)enumerationType];
+
+        if (valuesByName != nil)
+        {
+            if (symbolicValue.length > 0)
+            {
+                result = valuesByName[(req_NSString)symbolicValue];
+
+                if (result == nil && error != nil)
+                {
+                    *error = [AKABindingErrors unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
+                                                            forEnumerationType:(req_NSString)enumerationType
+                                                              withValuesByName:valuesByName];
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
++ (BOOL)registerEnumerationType:(req_NSString)enumerationType
+               withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName
+{
+    __block BOOL result = NO;
+
+    NSAssert([NSThread isMainThread], @"Invalid attempt to register an enumeration type outside of main thread!");
+
+    [enumerationType aka_performBlockInMainThreadOrQueue:^{
+         NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>* registry =
+             [AKAEnumConstantBindingExpression registry];
+
+         if (!registry[enumerationType])
+         {
+             registry[enumerationType] = valuesByName;
+             result = YES;
+         }
+     }
+                                       waitForCompletion:YES];
+
+    return result;
+}
+
+- (instancetype)initWithConstant:(opt_id)constant
+                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                        provider:(opt_AKABindingProvider)provider
+{
+    NSString* enumerationType;
+    NSString* symbolicValue;
+    id value;
+
+    if (attributes)
+    {
+        value = attributes[@"value"];
+    }
+
+    if ([constant isKindOfClass:[NSString class]])
+    {
+        NSArray* components = [((NSString*)constant) componentsSeparatedByString:@"."];
+
+        if (components.count == 1)
+        {
+            // If only one component is given, it is interpreted either as type or value
+            if (attributes[@"value"] != nil)
+            {
+                // If there are attributes, the only reasonable interpretation is that the
+                // constant is meant to be the enumeration type.
+                enumerationType = components.firstObject;
+            }
+            else
+            {
+                // If there are no attributes, the constant is interpreted as symbolic value
+                symbolicValue = components.firstObject;
+            }
+        }
+        else if (components.count == 2)
+        {
+            enumerationType = components[0];
+            symbolicValue = components[1];
+        }
+        else
+        {
+            NSString* reason = @"Too many dot-separated components, use $enum, $enum.TYPE, $enum.VALUE, $enum.TYPE.VALUE or use $enum or $enum.TYPE { value: <constant expression> } to specify a non-symbolic value; note that an unspecified value is interpreted as nil or zero in numeric contexts";
+            NSString* name = [NSString stringWithFormat:@"Invalid enumeration primary expression: %@: %@", constant, reason];
+
+            [NSException exceptionWithName:name reason:reason userInfo:nil];
+        }
+    }
+    else if (constant != nil)
+    {
+        NSString* reason = @"Invalid primary expression type, expected nil or an instance of NSString or NSNumber";
+        NSString* name = [NSString stringWithFormat:@"Invalid enumeration primary expression: %@: %@", constant, reason];
+
+        [NSException exceptionWithName:name reason:reason userInfo:nil];
+    }
+
+    if (value == nil && symbolicValue.length > 0 && enumerationType.length > 0)
+    {
+        NSError* error;
+        value = [AKAEnumConstantBindingExpression resolveEnumeratedValue:symbolicValue
+                                                                 forType:enumerationType
+                                                                   error:&error];
+
+        if (!value && error) // if error is not set, value is validly undefined (f.e. no enumeration type yet)
+        {
+            @throw [NSException exceptionWithName:error.localizedDescription
+                                           reason:error.localizedFailureReason
+                                         userInfo:nil];
+        }
+    }
+
+    if (self = [super initWithConstant:value attributes:attributes provider:provider])
+    {
+        self.enumerationType = enumerationType;
+        self.symbolicValue = symbolicValue;
+    }
+
+    return self;
+}
+
+- (NSString*)keyword
+{
+    return [NSScanner keywordEnum];
+}
+
+- (NSString*)textForConstant
+{
+    NSString* result = nil;
+
+    if (self.constant)
+    {
+        if (self.attributes.count > 0)
+        {
+            NSString* enumerationType = self.enumerationType;
+            if (enumerationType == nil)
+            {
+                enumerationType = @"";
+            }
+            NSString* symbolicValue = self.symbolicValue;
+            if (symbolicValue == nil)
+            {
+                symbolicValue = @"";
+            }
+            result = [NSString stringWithFormat:@"$%@%@%@%@%@",
+                      [self keyword],
+                      (enumerationType.length > 0 ? @"." : @""),
+                      enumerationType,
+                      (symbolicValue.length > 0 ? @"." : @""),
+                      symbolicValue];
+        }
+    }
+
     return result;
 }
 
@@ -618,13 +1091,15 @@
 
 #pragma mark - Serialization
 
-- (NSString *)textForConstant
+- (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         result = [NSString stringWithFormat:@"%g", self.constant.doubleValue];
     }
+
     return result;
 }
 
@@ -645,19 +1120,23 @@
     NSNumber* result = nil;
     AKABindingExpression* expression = nil;
     NSString* providedKey = nil;
+
     for (NSString* key in keys)
     {
         expression = attributes[key];
+
         if (expression)
         {
             providedKey = key;
             break;
         }
     }
+
     if ([expression isKindOfClass:[AKADoubleConstantBindingExpression class]])
     {
         AKANumberConstantBindingExpression* numberExpression = (id)expression;
         double doubleValue = numberExpression.constant.doubleValue;
+
         if (doubleValue < 0 || doubleValue > 1.0)
         {
             NSString* message = [NSString stringWithFormat:@"Invalid value %lf for color component %@ (valid aliases: %@), floating point values have to be in range [0 .. 1.0]", doubleValue, keys.firstObject, [keys componentsJoinedByString:@", "]];
@@ -674,7 +1153,8 @@
     {
         AKANumberConstantBindingExpression* numberExpression = (id)expression;
         NSInteger integerValue = numberExpression.constant.integerValue;
-        if (integerValue < 0 ||  integerValue > 255)
+
+        if (integerValue < 0 || integerValue > 255)
         {
             NSString* message = [NSString stringWithFormat:@"Invalid value %ld for color component %@ (valid aliases: %@), integer values have to be in range [0 .. 255]", (long)integerValue, keys.firstObject, [keys componentsJoinedByString:@", "]];
             @throw [NSException exceptionWithName:message reason:message userInfo:nil];
@@ -695,6 +1175,7 @@
         NSString* message = [NSString stringWithFormat:@"No value for color component %@ (valid aliases: %@), expected a numeric constant in range [0 .. 1.0] (floating point) or [0 .. 255] (integer)", keys.firstObject, [keys componentsJoinedByString:@", "]];
         @throw [NSException exceptionWithName:message reason:message userInfo:nil];
     }
+
     return result;
 }
 
@@ -703,6 +1184,7 @@
                         provider:(opt_AKABindingProvider)provider
 {
     UIColor* color = nil;
+
     if ([constant isKindOfClass:[UIColor class]])
     {
         color = constant;
@@ -720,17 +1202,17 @@
         // using the type information available from numeric constant binding expressions:
 
         CGFloat red = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"r", @"red" ]
+                                                                   fromAttributes:attributes
+                                                                         required:YES].floatValue / 255.0;
+        CGFloat green = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"g", @"green" ]
                                                                      fromAttributes:attributes
                                                                            required:YES].floatValue / 255.0;
-        CGFloat green = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"g", @"green" ]
-                                                                       fromAttributes:attributes
-                                                                             required:YES].floatValue / 255.0;
         CGFloat blue = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"b", @"blue" ]
-                                                                      fromAttributes:attributes
-                                                                            required:YES].floatValue / 255.0;
+                                                                    fromAttributes:attributes
+                                                                          required:YES].floatValue / 255.0;
         NSNumber* nalpha = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"a", @"alpha" ]
-                                                                       fromAttributes:attributes
-                                                                             required:NO];
+                                                                        fromAttributes:attributes
+                                                                              required:NO];
         CGFloat alpha = nalpha ? nalpha.floatValue : 1.0;
 
         color = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
@@ -741,7 +1223,6 @@
             NSString* message = [NSString stringWithFormat:@"Unsupported color attribute (one of: %@); supported attributes are 'r' or 'red', 'g' or 'green', 'b' or 'blue' and 'a' or 'alpha'; (HSB/CMY not yet supported)", [attributes.allKeys componentsJoinedByString:@", "]];
             @throw [NSException exceptionWithName:message reason:message userInfo:nil];
         }
-
     }
     self = [super initWithConstant:color attributes:nil provider:provider];
 
@@ -764,10 +1245,11 @@
 
 - (NSString*)textForColorComponent:(CGFloat)component
 {
-    NSString *result = nil;
+    NSString* result = nil;
     CGFloat channel = component * 255.0;
     double integral;
     double fractional = modf(channel, &integral);
+
     if (fractional < .00000001)
     {
         result = [NSString stringWithFormat:@"%d", (int)integral];
@@ -776,12 +1258,14 @@
     {
         result = [NSString stringWithFormat:@"%lg", (double)component];
     }
+
     return result;
 }
 
 - (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         UIColor* color = [self UIColor];
@@ -797,6 +1281,7 @@
                   [self textForColorComponent:blue],
                   [self textForColorComponent:alpha]];
     }
+
     return result;
 }
 
@@ -826,11 +1311,13 @@
 - (id)constant
 {
     id result = super.constant;
+
     if ([result isKindOfClass:[UIColor class]])
     {
         // TODO: does it have to be retained here? Don't think so, check later
         result = (__bridge id)[(UIColor*)result CGColor];
     }
+
     return result;
 }
 
@@ -856,11 +1343,583 @@
 
 #pragma mark - Initialization
 
++ (UIFont*)fontForDescriptor:(UIFontDescriptor*)descriptor
+{
+    UIFont* result = nil;
+    NSString* fontName = nil;
+    CGFloat fontSize = 0;
+    NSString* textStyle = nil;
+
+    fontName = descriptor.fontAttributes[UIFontDescriptorNameAttribute];
+    fontSize = ((NSNumber*)descriptor.fontAttributes[UIFontDescriptorSizeAttribute]).doubleValue;
+
+    if (textStyle != nil)
+    {
+        result = [UIFont preferredFontForTextStyle:textStyle];
+    }
+    else if (fontName && fontSize > 0)
+    {
+        result = [UIFont fontWithName:fontName size:fontSize];
+    }
+    else
+    {
+        // TODO: error handling or "best match" selection
+        NSAssert(NO, @"Insufficient font specification in descriptor %@", descriptor);
+    }
+
+    return result;
+}
+
++ (NSString*)stringForAttribute:(NSString*)attributeName
+              bindingExpression:(AKABindingExpression*)bindingExpression
+                          error:(out_NSError)error
+{
+    NSString* result = nil;
+
+    if ([bindingExpression isKindOfClass:[AKAStringConstantBindingExpression class]])
+    {
+        result = ((AKAStringConstantBindingExpression*)bindingExpression).constant;
+    }
+    else if (error)
+    {
+        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                          forAttributeNamed:attributeName
+                                        invalidTypeExpected:@[ [AKAStringConstantBindingExpression class] ]];
+    }
+
+    return result;
+}
+
++ (NSNumber*)numberForAttribute:(NSString*)attributeName
+              bindingExpression:(AKABindingExpression*)bindingExpression
+                          error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    if ([bindingExpression isKindOfClass:[AKANumberConstantBindingExpression class]])
+    {
+        result = ((AKANumberConstantBindingExpression*)bindingExpression).constant;
+    }
+    else if (error)
+    {
+        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                          forAttributeNamed:attributeName
+                                        invalidTypeExpected:@[ [AKANumberConstantBindingExpression class] ]];
+    }
+
+    return result;
+}
+
++ (NSNumber*)doubleNumberInRangeMin:(double)min
+                                max:(double)max
+                       forAttribute:(NSString*)attributeName
+              bindingExpression:(AKABindingExpression*)bindingExpression
+                          error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    if ([bindingExpression isKindOfClass:[AKANumberConstantBindingExpression class]])
+    {
+        result = ((AKANumberConstantBindingExpression*)bindingExpression).constant;
+        if (result)
+        {
+            double value = result.doubleValue;
+            if (value < min || value > max)
+            {
+                // TODO: out of range error
+            }
+        }
+    }
+    else if (error)
+    {
+        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                          forAttributeNamed:attributeName
+                                        invalidTypeExpected:@[ [AKANumberConstantBindingExpression class] ]];
+    }
+
+    return result;
+}
+
+
++ (id)enumeratedValueOfType:(req_NSString)enumerationType
+               forAttribute:(NSString*)attributeName
+          bindingExpression:(AKABindingExpression*)bindingExpression
+                      error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    NSError* localError = nil;
+
+    if ([bindingExpression isKindOfClass:[AKAEnumConstantBindingExpression class]])
+    {
+        AKAEnumConstantBindingExpression* enumExpression = (id)bindingExpression;
+
+        if (enumExpression.enumerationType.length == 0 ||
+            [enumerationType isEqualToString:(req_NSString)enumExpression.enumerationType])
+        {
+            result = enumExpression.constant;
+
+            if (result == nil && enumExpression.symbolicValue.length > 0)
+            {
+                result = [AKAEnumConstantBindingExpression resolveEnumeratedValue:enumExpression.symbolicValue
+                                                                          forType:enumerationType
+                                                                            error:&localError];
+            }
+        }
+    }
+    else if ([bindingExpression isKindOfClass:[AKAConstantBindingExpression class]])
+    {
+        result = ((AKAConstantBindingExpression*)bindingExpression).constant;
+    }
+    else
+    {
+        localError =
+            [AKABindingErrors invalidBindingExpression:bindingExpression
+                                     forAttributeNamed:attributeName
+                                   invalidTypeExpected:@[ [AKAEnumConstantBindingExpression class],
+                                                          [AKAConstantBindingExpression class] ]];
+    }
+
+    if (!result && localError != nil)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:localError.localizedDescription
+                                           reason:localError.localizedFailureReason
+                                         userInfo:nil];
+        }
+    }
+
+    return result;
+}
+
++ (NSNumber*)optionsValueOfType:(req_NSString)optionsType
+                   forAttribute:(NSString*)attributeName
+              bindingExpression:(AKABindingExpression*)bindingExpression
+                          error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    NSError* localError = nil;
+
+    if ([bindingExpression isKindOfClass:[AKAOptionsConstantBindingExpression class]])
+    {
+        AKAOptionsConstantBindingExpression* enumExpression = (id)bindingExpression;
+
+        if (enumExpression.optionsType.length == 0 ||
+            [optionsType isEqualToString:(req_NSString)enumExpression.optionsType])
+        {
+            result = enumExpression.constant;
+
+            if (result == nil && enumExpression.attributes.count > 0)
+            {
+                result = [AKAOptionsConstantBindingExpression resolveOptionsValue:enumExpression.attributes
+                                                                          forType:optionsType
+                                                                            error:&localError];
+            }
+        }
+    }
+    else if ([bindingExpression isKindOfClass:[AKANumberConstantBindingExpression class]])
+    {
+        result = ((AKANumberConstantBindingExpression*)bindingExpression).constant;
+    }
+    else if (bindingExpression.class == [AKABindingExpression class])
+    {
+        result = [AKAOptionsConstantBindingExpression resolveOptionsValue:bindingExpression.attributes
+                                                                  forType:optionsType
+                                                                    error:&localError];
+    }
+    else
+    {
+        localError =
+            [AKABindingErrors invalidBindingExpression:bindingExpression
+                                     forAttributeNamed:attributeName
+                                   invalidTypeExpected:@[ [AKAOptionsConstantBindingExpression class],
+                                                          [AKANumberConstantBindingExpression class],
+                                                          [AKABindingExpression class] ]];
+    }
+
+    if (!result && localError != nil)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:localError.localizedDescription
+                                           reason:localError.localizedFailureReason
+                                         userInfo:nil];
+        }
+    }
+
+    return result;
+}
+
++ (NSNumber*)uifontSymbolicTraitForAttribute:(NSString*)attributeName
+                           bindingExpression:(AKABindingExpression*)bindingExpression
+                                       error:(out_NSError)error
+{
+    NSString* optionsType = @"UIFontDescriptorSymbolicTraits";
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        [AKAOptionsConstantBindingExpression registerOptionsType:optionsType
+                                                withValuesByName:[AKANSEnumerations uifontDescriptorTraitsByName]];
+    });
+
+    return [self optionsValueOfType:optionsType
+                       forAttribute:attributeName
+                  bindingExpression:bindingExpression
+                              error:error];
+}
+
++ (NSNumber*)uifontWeightTraitForAttribute:(NSString*)attributeName
+                         bindingExpression:(AKABindingExpression*)bindingExpression
+                                     error:(out_NSError)error
+{
+
+    NSString* enumerationType = @"AKAUIFontDescriptorWeightTraits";
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        [AKAEnumConstantBindingExpression registerEnumerationType:enumerationType
+                                                 withValuesByName:[AKANSEnumerations uifontWeightsByName]];
+    });
+
+    return [self enumeratedValueOfType:enumerationType
+                          forAttribute:attributeName
+                     bindingExpression:bindingExpression
+                                 error:error];
+}
+
++ (NSNumber*)uifontWidthTraitForAttribute:(NSString*)attributeName
+                        bindingExpression:(AKABindingExpression*)bindingExpression
+                                    error:(out_NSError)error
+{
+    return [self doubleNumberInRangeMin:-1.0
+                                    max:1.0
+                           forAttribute:attributeName
+                      bindingExpression:bindingExpression
+                                  error:error];
+}
+
++ (NSNumber*)uifontSlantTraitForAttribute:(NSString*)attributeName
+                        bindingExpression:(AKABindingExpression*)bindingExpression
+                                    error:(out_NSError)error
+{
+    return [self doubleNumberInRangeMin:-1.0
+                                    max:1.0
+                           forAttribute:attributeName
+                      bindingExpression:bindingExpression
+                                  error:error];
+}
+
++ (NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>*)fontAttributesParsersByAttributeName
+{
+    static NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+            @{ @"family":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSString* string = fa[UIFontDescriptorFamilyAttribute] =
+                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"family"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return string != nil;
+               },
+
+               @"name":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSString* string = fa[UIFontDescriptorNameAttribute] =
+                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"name"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return string != nil;
+               },
+
+               @"face":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSString* string = fa[UIFontDescriptorFaceAttribute] =
+                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"face"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return string != nil;
+               },
+
+               @"size":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSNumber* number = fa[UIFontDescriptorSizeAttribute] =
+                                          [AKAUIFontConstantBindingExpression numberForAttribute:@"size"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return number != nil;
+               },
+
+               @"visibleName":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSString* string = fa[UIFontDescriptorVisibleNameAttribute] =
+                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"visibleName"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return string != nil;
+               },
+
+               @"traits":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   NSError* localError = nil;
+                   NSDictionary* dictionary = fa[UIFontDescriptorTraitsAttribute] =
+                                                  [AKAUIFontConstantBindingExpression uifontTraitsForBindingExpression:bindingExpression
+                                                                                                                 error:&localError];
+
+                   if (!dictionary && localError != nil && error != nil)
+                   {
+                       *error = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                                         forAttributeNamed:@"traits"
+                                                         uifontTraitsError:localError];
+                   }
+
+                   return dictionary != nil;
+               },
+
+               @"fixedAdvance":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   NSNumber* number = fa[UIFontDescriptorFixedAdvanceAttribute] =
+                                          [AKAUIFontConstantBindingExpression numberForAttribute:@"fixedAdvance"
+                                                                               bindingExpression:bindingExpression
+                                                                                           error:error];
+
+                   return number != nil;
+               },
+
+               @"textStyle":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   NSString* textStyle =
+                       [AKAUIFontConstantBindingExpression stringForAttribute:@"textStyle"
+                                                            bindingExpression:bindingExpression
+                                                                        error:error];
+                   fa[UIFontDescriptorTextStyleAttribute] =
+                       [AKANSEnumerations textStyleForName:textStyle];
+
+                   return textStyle != nil;
+               },
+
+               /*
+               // TODO: decide whether we have to implement these:
+               @"matrix":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   AKAErrorMethodNotImplemented();
+               },
+               @"characterSet":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   AKAErrorMethodNotImplemented();
+               },
+               @"cascadeList":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   AKAErrorMethodNotImplemented();
+               },
+               @"featureSettings":
+               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                   AKAErrorMethodNotImplemented();
+               },
+                */
+
+               };
+    });
+
+    return result;
+}
+
++ (NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>*)fontTraitsParsersByAttributeName
+{
+    static NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+            @{ @"symbolic":
+               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSNumber* number = traits[UIFontSymbolicTrait] =
+                                          [AKAUIFontConstantBindingExpression uifontSymbolicTraitForAttribute:@"symbolic"
+                                                                                            bindingExpression:bindingExpression
+                                                                                                        error:error];
+
+                   return number != nil;
+               },
+
+               @"weight":
+               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSNumber* number = traits[UIFontWeightTrait] =
+                                          [AKAUIFontConstantBindingExpression uifontWeightTraitForAttribute:@"weight"
+                                                                                          bindingExpression:bindingExpression
+                                                                                                      error:error];
+
+                   return number != nil;
+               },
+
+               @"width":
+               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSNumber* number = traits[UIFontWidthTrait] =
+                                          [AKAUIFontConstantBindingExpression uifontWidthTraitForAttribute:@"width"
+                                                                                         bindingExpression:bindingExpression
+                                                                                                     error:error];
+
+                   return number != nil;
+               },
+
+               @"slant":
+               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               {
+                   NSNumber* number = traits[UIFontSlantTrait] =
+                                          [AKAUIFontConstantBindingExpression uifontSlantTraitForAttribute:@"slant"
+                                                                                         bindingExpression:bindingExpression
+                                                                                                     error:error];
+
+                   return number != nil;
+               }
+        };
+    });
+
+    return result;
+}
+
++ (NSDictionary*)uifontTraitsForBindingExpression:(AKABindingExpression*)bindingExpression
+                                            error:(out_NSError)error
+{
+    __block NSMutableDictionary* result = [NSMutableDictionary new];
+
+    if (bindingExpression.class != [AKABindingExpression class])
+    {
+        // TODO: add error parameter instead of throwing exception
+        NSString* message = @"Invalid specification of traits for UIFont, traits cannot be specified using a binding expression's primary expression.";
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+    }
+    else if (bindingExpression.attributes.count > 0)
+    {
+        NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>* spec =
+            [AKAUIFontConstantBindingExpression fontAttributesParsersByAttributeName];
+
+        NSMutableDictionary* traits = [NSMutableDictionary new];
+
+        [bindingExpression.attributes
+         enumerateKeysAndObjectsUsingBlock:
+         ^(req_NSString traitAttributeName,
+           req_AKABindingExpression traitBindingExpression,
+           outreq_BOOL stop)
+         {
+             BOOL (^processAttribute)(NSMutableDictionary*, AKABindingExpression*, out_NSError error) =
+                 spec[traitAttributeName];
+
+             if (processAttribute)
+             {
+                 if (!processAttribute(traits, traitBindingExpression, error))
+                 {
+                     *stop = YES;
+                     result = nil;
+                 }
+             }
+             else
+             {
+                 *stop = YES;
+                 result = nil;
+
+                 if (error)
+                 {
+                     *error = [AKABindingErrors invalidBindingExpression:traitBindingExpression
+                                                        unknownAttribute:traitAttributeName];
+                 }
+             }
+         }];
+    }
+
+    return result;
+}
+
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
                         provider:(opt_AKABindingProvider)provider
 {
-    AKAErrorMethodNotImplemented();
+    UIFont* font = nil;
+
+    if ([constant isKindOfClass:[UIFont class]])
+    {
+        font = constant;
+    }
+    else if ([constant isKindOfClass:[UIFontDescriptor class]])
+    {
+        font = [AKAUIFontConstantBindingExpression fontForDescriptor:constant];
+    }
+
+    if ((font && attributes.count > 0) || (!font && attributes.count == 0))
+    {
+        // TODO: add error parameter instead of throwing exception
+        NSString* message = @"Invalid specification of attributes for UIFont. Attributes are required when no font or font descriptor is defined as primary expression and forbidden otherwise";
+        @throw [NSException exceptionWithName:message reason:message userInfo:nil];
+        self = nil;
+    }
+    else if (!font)
+    {
+        NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>* spec =
+            [AKAUIFontConstantBindingExpression fontAttributesParsersByAttributeName];
+
+        NSMutableDictionary* fontAttributes = [NSMutableDictionary new];
+
+        [attributes enumerateKeysAndObjectsUsingBlock:
+         ^(req_NSString attributeName,
+           req_AKABindingExpression bindingExpression,
+           outreq_BOOL stop)
+         {
+             BOOL (^processAttribute)(NSMutableDictionary*, AKABindingExpression*, out_NSError error) =
+                 spec[attributeName];
+
+             if (processAttribute)
+             {
+                 NSError* error;
+
+                 if (!processAttribute(fontAttributes, bindingExpression, &error))
+                 {
+                     *stop = YES;
+                     // TODO: add error parameter instead of throwing exception
+                     @throw [NSException exceptionWithName:error.localizedDescription
+                                                    reason:error.localizedFailureReason
+                                                  userInfo:nil];
+                 }
+             }
+             else
+             {
+                 // TODO: add error parameter instead of throwing exception
+                 @throw [NSException exceptionWithName:@"Invalid (unknown) font descriptor specification attribute"
+                                                reason:nil
+                                              userInfo:nil];
+             }
+         }];
+
+        UIFontDescriptor* descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:fontAttributes];
+        font = [AKAUIFontConstantBindingExpression fontForDescriptor:descriptor];
+    }
+
+    self = [super initWithConstant:font attributes:nil provider:provider];
+
+    return self;
 }
 
 #pragma mark - Serialization
@@ -872,7 +1931,15 @@
 
 - (NSString*)textForConstant
 {
-    AKAErrorMethodNotImplemented();
+    NSString* result = nil;
+
+    if (self.constant)
+    {
+        UIFont* font = ((UIFont*)self.constant);
+        result = [NSString stringWithFormat:@"$%@ { name: \"%@\", size: %lg", [self keyword], font.fontName, font.pointSize];
+    }
+
+    return result;
 }
 
 @end
@@ -892,15 +1959,18 @@
     NSNumber* result = nil;
     AKABindingExpression* expression = nil;
     NSString* providedKey = nil;
+
     for (NSString* key in keys)
     {
         expression = attributes[key];
+
         if (expression)
         {
             providedKey = key;
             break;
         }
     }
+
     if ([expression isKindOfClass:[AKANumberConstantBindingExpression class]])
     {
         AKANumberConstantBindingExpression* numberExpression = (id)expression;
@@ -917,6 +1987,7 @@
         NSString* message = [NSString stringWithFormat:@"No value for coordinate %@ (valid aliases: %@), expected a numeric constant", keys.firstObject, [keys componentsJoinedByString:@", "]];
         @throw [NSException exceptionWithName:message reason:message userInfo:nil];
     }
+
     return result;
 }
 
@@ -925,6 +1996,7 @@
                         provider:(opt_AKABindingProvider)provider
 {
     NSValue* value = nil;
+
     if ([constant isKindOfClass:[NSValue class]])
     {
         NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGPoint)) == 0);
@@ -963,11 +2035,13 @@
 - (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         CGPoint value = ((NSValue*)self.constant).CGPointValue;
         result = [NSString stringWithFormat:@"$%@ { x:%g, y:%g }", [self keyword], value.x, value.y];
     }
+
     return result;
 }
 
@@ -986,6 +2060,7 @@
                         provider:(opt_AKABindingProvider)provider
 {
     NSValue* value = nil;
+
     if ([constant isKindOfClass:[NSValue class]])
     {
         NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGRect)) == 0);
@@ -1024,11 +2099,13 @@
 - (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         CGSize value = ((NSValue*)self.constant).CGSizeValue;
         result = [NSString stringWithFormat:@"$%@ { w:%g, h:%g }", [self keyword], value.width, value.height];
     }
+
     return result;
 }
 
@@ -1047,6 +2124,7 @@
                         provider:(opt_AKABindingProvider)provider
 {
     NSValue* value = nil;
+
     if ([constant isKindOfClass:[NSValue class]])
     {
         NSParameterAssert(strcmp([((NSValue*)constant) objCType], @encode(CGRect)) == 0);
@@ -1081,7 +2159,6 @@
     return self;
 }
 
-
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -1089,15 +2166,16 @@
     return [NSScanner keywordCGRect];
 }
 
-
 - (NSString*)textForConstant
 {
     NSString* result = nil;
+
     if (self.constant)
     {
         CGRect value = ((NSValue*)self.constant).CGRectValue;
         result = [NSString stringWithFormat:@"$%@ { x:%g, y:%g, w:%g, h:%g }", [self keyword], value.origin.x, value.origin.y, value.size.width, value.size.height];
     }
+
     return result;
 }
 
@@ -1112,7 +2190,7 @@
 #pragma mark - Initialization
 
 - (instancetype)initWithKeyPath:(NSString*)keyPath
-                     attributes:(NSDictionary<NSString*, AKABindingExpression*>*__nullable)attributes
+                     attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
                        provider:(opt_AKABindingProvider)provider
 {
     if (self = [super initWithAttributes:attributes
@@ -1120,6 +2198,7 @@
     {
         _keyPath = keyPath;
     }
+
     return self;
 }
 
@@ -1132,19 +2211,20 @@
                         provider:provider];
 }
 
-
 #pragma mark - Binding Support
 
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext; // Not used yet, this will most likely be needed for computations requiring the context in addition to a property target
-    
+
     opt_AKAUnboundProperty result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
-        result =  [AKAProperty unboundPropertyWithKeyPath:(req_NSString)keyPath];
+        result = [AKAProperty unboundPropertyWithKeyPath:(req_NSString)keyPath];
     }
+
     return result;
 }
 
@@ -1156,6 +2236,7 @@
     // Use data context property if no scope is defined
     result = [bindingContext dataContextPropertyForKeyPath:self.keyPath
                                         withChangeObserver:changeObserver];
+
     return result;
 }
 
@@ -1163,10 +2244,12 @@
 {
     opt_id result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
         result = [bindingContext dataContextValueForKeyPath:(req_NSString)keyPath];
     }
+
     return result;
 }
 
@@ -1181,14 +2264,16 @@
 
 - (NSString*)textForPrimaryExpression
 {
-    static NSString* const kScopeKeyPathSeparator = @".";
+    static NSString*const kScopeKeyPathSeparator = @".";
 
     NSString* result = self.keyPath;
     NSString* textForScope = self.textForScope;
+
     if (textForScope.length > 0)
     {
         result = result.length > 0 ? [NSString stringWithFormat:@"%@%@%@", textForScope, kScopeKeyPathSeparator, result] : textForScope;
     }
+
     return result;
 }
 
@@ -1218,13 +2303,14 @@
 {
     opt_id result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
         result = [bindingContext dataContextValueForKeyPath:(req_NSString)keyPath];
     }
+
     return result;
 }
-
 
 #pragma mark - Diagnostics
 
@@ -1261,10 +2347,12 @@
 {
     opt_id result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
         result = [bindingContext rootDataContextValueForKeyPath:(req_NSString)keyPath];
     }
+
     return result;
 }
 
@@ -1279,7 +2367,7 @@
 
 - (NSString*)textForScope
 {
-    return [NSString stringWithFormat:@"$%@", [NSScanner keywordRoot]];;
+    return [NSString stringWithFormat:@"$%@", [NSScanner keywordRoot]];
 }
 
 @end
@@ -1297,11 +2385,13 @@
 {
     opt_AKAProperty result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
         result = [bindingContext controlPropertyForKeyPath:(req_NSString)keyPath
                                         withChangeObserver:changeObserver];
     }
+
     return result;
 }
 
@@ -1309,10 +2399,12 @@
 {
     opt_id result = nil;
     opt_NSString keyPath = self.keyPath;
+
     if (keyPath.length > 0)
     {
         result = [bindingContext controlValueForKeyPath:(req_NSString)keyPath];
     }
+
     return result;
 }
 

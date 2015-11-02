@@ -43,11 +43,22 @@
 #pragma mark - NSDateFormatter Enumerations
 
 
-+ (NSNumber*)dateFormatterStyleForObject:(id)nameOrEnumeratedValue;
++ (NSNumber*)                            dateFormatterStyleForObject:(id)nameOrEnumeratedValue;
 
 + (NSDictionary<NSString*, NSNumber*>*)    dateFormatterStylesByName;
 
-+ (NSCalendar*)calendarForObject:(id)calendarOrIdentifier;
-+ (NSTimeZone*)timeZoneForObject:(id)timeZoneOrNameOrAbbrev;
++ (NSCalendar*)                                    calendarForObject:(id)calendarOrIdentifier;
++ (NSTimeZone*)                                    timeZoneForObject:(id)timeZoneOrNameOrAbbrev;
+
+#pragma mark - UIFont Descriptor Enumerations
+
++ (NSDictionary<NSString*, NSString*>*)       uifontTextStylesByName;
++ (NSString*)                                       textStyleForName:(NSString*)name;
+
++ (NSDictionary<NSString*, NSNumber*>*) uifontDescriptorTraitsByName;
++ (NSNumber*)                         uifontDescriptorTraitForObject:(id)nameOrTrait;
+
++ (NSDictionary<NSString*, NSNumber*>*)          uifontWeightsByName;
++ (NSNumber*)                                  uifontWeightForObject:(id)nameOrFontWeight;
 
 @end

@@ -529,6 +529,62 @@
 
 #pragma mark - Constant Expression Types
 
+- (void)testEnums
+{
+    // TODO: elaborate
+
+    [AKAEnumConstantBindingExpression registerEnumerationType:@"TestType"
+                                             withValuesByName:@{ @"One": @(1),
+                                                                 @"Two": @"Zwei",
+                                                                 @"Three": self }];
+    NSArray* texts = @[ @"$enum.TestType.One",
+                        @"$enum.Two",
+                        @"$enum.TestType.Three",
+                        @"$enum { value: \"xyz\" }",
+                        @"$enum" ];
+    NSArray* values = @[ @(1), [NSNull null], self, @"xyz", [NSNull null] ];
+    NSArray* valuesWithType = @[ @(1), @"Zwei", self, @"xyz", [NSNull null] ];
+
+    [texts enumerateObjectsUsingBlock:^(NSString* text, NSUInteger idx, BOOL * _Nonnull stop) {
+        (void)stop;
+
+        id expectedValue = values[idx];
+        if (expectedValue == [NSNull null])
+        {
+            expectedValue = nil;
+        }
+
+        id expectedValueWithType = valuesWithType[idx];
+        if (expectedValueWithType == [NSNull null])
+        {
+            expectedValueWithType = nil;
+        }
+
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                         withProvider:nil
+                                                error:&error];
+        XCTAssertTrue(result, @"%@", error.localizedDescription);
+
+        XCTAssertEqualObjects(expression.class, [AKAEnumConstantBindingExpression class]);
+        AKAEnumConstantBindingExpression* enumExpression = (id)expression;
+
+        NSNumber* value = enumExpression.constant;
+        //XCTAssertEqualObjects(value, expectedValue);
+
+        if (value == nil)
+        {
+            value = [AKAEnumConstantBindingExpression resolveEnumeratedValue:enumExpression.symbolicValue
+                                                                     forType:@"TestType"
+                                                                       error:&error];
+            XCTAssertNil(error, @"%@", error.localizedDescription);
+            XCTAssertEqualObjects(expectedValueWithType, value);
+        }
+    }];
+}
+
 - (void)testValidColors
 {
     UIColor* referenceColor = [UIColor colorWithRed:127.0/255 green:0 blue:0 alpha:1.0];
@@ -646,7 +702,6 @@
         XCTAssertEqualObjects(@"$CGSize { w:1, h:2 }", expression.description);
     }
 }
-
 
 - (void)testValidCGRect
 {

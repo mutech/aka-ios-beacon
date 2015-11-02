@@ -30,6 +30,7 @@ typedef enum AKABindingExpressionParseErrorCode
     // Expression and attribute list errors
     AKAParseErrorUnterminatedBindingExpressionList,
     AKAParseErrorInvalidAttributeName,
+    AKAParseErrorUnexpectedColonForEnumerationValue,
     
     // String literal parsing errors
     AKAParseErrorInvalidStringDelimiter,
@@ -57,6 +58,8 @@ typedef NSScanner AKABindingExpressionParser;
 
 + (req_NSString) keywordTrue;
 + (req_NSString) keywordFalse;
++ (req_NSString) keywordEnum;
++ (req_NSString) keywordOptions;
 + (req_NSString) keywordData;
 + (req_NSString) keywordRoot;
 + (req_NSString) keywordControl;

@@ -83,12 +83,12 @@
         else
         {
             self = nil;
-            if (error)
+            if (!error)
             {
                 // If the caller does not provide an error storage, we assume that it's not taking
                 // care of error handling and consider the missing binding error a fatal condition.
-                @throw [NSException exceptionWithName:(*error).localizedDescription
-                                               reason:nil
+                @throw [NSException exceptionWithName:@"Failed to create a binding source"
+                                               reason:localError.localizedDescription
                                              userInfo:nil];
             }
         }
@@ -107,8 +107,10 @@
     opt_AKAProperty result = [bindingExpression bindingSourcePropertyInContext:bindingContext
                                                                  changeObserer:changeObserver];
 
-    if (result)
+    if (result || bindingExpression.class == [AKABindingExpression class])
     {
+        // If bindingExpression is AKABindingExpression (not a subclass), then delivering no bindingSource
+        // is expected and not an error.
         _bindingSource = (req_AKAProperty)result;
     }
     else if (error)

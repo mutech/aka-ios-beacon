@@ -82,7 +82,7 @@
 
 @interface AKANumberConstantBindingExpression: AKAConstantBindingExpression
 
-- (instancetype _Nonnull)initWithConstant:(opt_NSNumber)constant
+- (instancetype _Nonnull)  initWithNumber:(opt_NSNumber)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
                                  provider:(opt_AKABindingProvider)provider;
 
@@ -91,12 +91,37 @@
 @end
 
 @interface AKABooleanConstantBindingExpression: AKANumberConstantBindingExpression
+
++ (AKABooleanConstantBindingExpression*_Nonnull)constantTrue;
++ (AKABooleanConstantBindingExpression*_Nonnull)constantFalse;
+
 @end
 
 @interface AKAIntegerConstantBindingExpression: AKANumberConstantBindingExpression
 @end
 
 @interface AKADoubleConstantBindingExpression: AKANumberConstantBindingExpression
+@end
+
+@interface AKAEnumConstantBindingExpression: AKAConstantBindingExpression
+
+@property(nonatomic, nullable) NSString* enumerationType;
+@property(nonatomic, nullable) NSString* symbolicValue;
+
++ (BOOL)registerEnumerationType:(req_NSString)enumerationType
+               withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName;
++ (opt_id)resolveEnumeratedValue:(opt_NSString)symbolicValue
+                         forType:(opt_NSString)enumerationType
+                           error:(out_NSError)error;
+@end
+
+@interface AKAOptionsConstantBindingExpression: AKAIntegerConstantBindingExpression
+
+@property(nonatomic, nullable) NSString* optionsType;
+
++ (BOOL)registerOptionsType:(req_NSString)enumerationType
+           withValuesByName:(NSDictionary<NSString*, NSNumber*>* _Nonnull)valuesByName;
+
 @end
 
 @interface AKAColorConstantBindingExpression: AKAConstantBindingExpression

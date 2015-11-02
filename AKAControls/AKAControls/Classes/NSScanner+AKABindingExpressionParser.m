@@ -19,11 +19,15 @@
 
 static NSString* const keywordTrue =        @"true";
 static NSString* const keywordFalse =       @"false";
+static NSString* const keywordEnum =        @"enum";
+static NSString* const keywordOptions =     @"options";
 static NSString* const keywordData =        @"data";
 static NSString* const keywordRoot =        @"root";
 static NSString* const keywordControl =     @"control";
 + (NSString*) keywordTrue       { return    keywordTrue; }
 + (NSString*) keywordFalse      { return    keywordFalse; }
++ (NSString*) keywordEnum       { return    keywordEnum; }
++ (NSString*) keywordOptions    { return    keywordOptions; }
 + (NSString*) keywordData       { return    keywordData; }
 + (NSString*) keywordRoot       { return    keywordRoot; }
 + (NSString*) keywordControl    { return    keywordControl; }
@@ -65,6 +69,14 @@ static NSString* const keywordCGRect =      @"CGRect";
            keywordFalse:   @{ @"value": @(NO),
                               @"type":  [AKABooleanConstantBindingExpression class]
                               },
+
+           keywordEnum:    @{ @"value": [NSNull null],
+                              @"type":  [AKAEnumConstantBindingExpression class]
+                              },
+           keywordOptions: @{ @"value": [NSNull null],
+                              @"type":  [AKAOptionsConstantBindingExpression class]
+                              },
+
            keywordData:    @{ @"value": [NSNull null],
                               @"type":  [AKADataContextKeyPathBindingExpression class]
                               },
@@ -173,7 +185,9 @@ static NSString* const keywordCGRect =      @"CGRect";
         }
         else if (possiblyKeyPath)
         {
-            if (bindingExpressionType != nil && ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]])
+            if (bindingExpressionType != nil &&
+                ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]] &&
+                ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
             {
 
                 [self registerParseError:error
@@ -198,7 +212,12 @@ static NSString* const keywordCGRect =      @"CGRect";
         [self skipWhitespaceAndNewlineCharacters];
         if ([self isAtCharacter:'{'])
         {
-            result = [self parseAttributes:&attributes withProvider:provider error:error];
+            BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
+
+            result = [self parseAttributes:&attributes
+                              withProvider:provider
+                             asOptions:isOptions
+                                     error:error];
         }
 
         // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
@@ -472,6 +491,17 @@ static NSString* const keywordCGRect =      @"CGRect";
                       withProvider:(AKABindingProvider*)provider
                              error:(out_NSError)error
 {
+    return [self parseAttributes:store
+                    withProvider:provider
+                       asOptions:NO
+                           error:error];
+}
+
+- (BOOL)           parseAttributes:(out_NSDictionary)store
+                      withProvider:(AKABindingProvider*)provider
+                         asOptions:(BOOL)isEnum
+                             error:(out_NSError)error
+{
     NSMutableDictionary* attributes = [AKAMutableOrderedDictionary new];
     BOOL result = [self skipCharacter:'{'];
     BOOL done = NO;
@@ -507,17 +537,25 @@ static NSString* const keywordCGRect =      @"CGRect";
             [self skipWhitespaceAndNewlineCharacters];
             if ([self skipCharacter:':'])
             {
-                [self skipWhitespaceAndNewlineCharacters];
-                result = [self parseBindingExpression:&attributeExpression
-                                         withProvider:[provider providerForAttributeNamed:identifier]
-                                                error:error];
+                if (isEnum)
+                {
+                    [self registerParseError:error
+                                    withCode:AKAParseErrorUnexpectedColonForEnumerationValue
+                                  atPosition:self.scanLocation
+                                      reason:@"Invalid attempt to specify an attribute value for an enumeration constant"];
+                }
+                else
+                {
+                    [self skipWhitespaceAndNewlineCharacters];
+                    result = [self parseBindingExpression:&attributeExpression
+                                             withProvider:[provider providerForAttributeNamed:identifier]
+                                                    error:error];
+                }
             }
             else
             {
                 // "attributeName" is equivalent to "attributeName: $true"
-                attributeExpression = [[AKABooleanConstantBindingExpression alloc] initWithConstant:@(YES)
-                                                                                         attributes:attributes
-                                                                                           provider:[provider providerForAttributeNamed:identifier]];
+                attributeExpression = [AKABooleanConstantBindingExpression constantTrue];
             }
         }
 

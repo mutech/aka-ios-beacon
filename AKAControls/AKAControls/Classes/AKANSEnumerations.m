@@ -8,6 +8,8 @@
 
 #import "AKANSEnumerations.h"
 
+// TODO: implement error handling for invalid types of key objects in enumeration queries
+
 @implementation AKANSEnumerations
 
 + (opt_NSNumber)                              enumeratedValueForName:(opt_NSString)name
@@ -301,6 +303,142 @@
     {
         result = timeZoneOrNameOrAbbrev;
     }
+
+    return result;
+}
+
+#pragma mark - UIFont Enumerations
+
++ (NSDictionary<NSString*, NSString*>*)       uifontTextStylesByName
+{
+    static NSDictionary<NSString*, NSString*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"Headline":         UIFontTextStyleHeadline,
+           @"Subheadline":      UIFontTextStyleSubheadline,
+           @"Body":             UIFontTextStyleBody,
+           @"Footnote":         UIFontTextStyleFootnote,
+           @"Caption1":         UIFontTextStyleCaption1,
+           @"Caption1":         UIFontTextStyleCaption2 };
+    });
+
+    return result;
+}
+
++ (NSString*)                                       textStyleForName:(opt_NSString)name
+{
+    NSString* result = name ? [self uifontTextStylesByName][(req_NSString)name] : nil;
+    if (result == nil)
+    {
+        result = name;
+    }
+    return result;
+}
+
++ (NSDictionary<NSString*, NSNumber*>*) uifontDescriptorTraitsByName
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"TraitItalic":              @(UIFontDescriptorTraitItalic),
+           @"TraitBold":                @(UIFontDescriptorTraitBold),
+           @"TraitExpanded":            @(UIFontDescriptorTraitExpanded),
+           @"TraitCondensed":           @(UIFontDescriptorTraitCondensed),
+           @"TraitMonoSpace":           @(UIFontDescriptorTraitMonoSpace),
+           @"TraitVertical":            @(UIFontDescriptorTraitVertical),
+           @"TraitUIOptimized":         @(UIFontDescriptorTraitUIOptimized),
+           @"TraitTightLeading":        @(UIFontDescriptorTraitTightLeading),
+           @"TraitLooseLeading":        @(UIFontDescriptorTraitLooseLeading),
+
+           @"ClassUnknown":             @(UIFontDescriptorClassUnknown),
+           @"ClassOldStyleSerifs":      @(UIFontDescriptorClassOldStyleSerifs),
+           @"ClassTransitionalSerifs":  @(UIFontDescriptorClassTransitionalSerifs),
+           @"ClassModernSerifs":        @(UIFontDescriptorClassModernSerifs),
+           @"ClassClarendonSerifs":     @(UIFontDescriptorClassClarendonSerifs),
+           @"ClassSlabSerifs":          @(UIFontDescriptorClassSlabSerifs),
+           @"ClassFreeformSerifs":      @(UIFontDescriptorClassFreeformSerifs),
+           @"ClassSansSerif":           @(UIFontDescriptorClassSansSerif),
+           @"ClassOrnamentals":         @(UIFontDescriptorClassOrnamentals),
+           @"ClassScripts":             @(UIFontDescriptorClassScripts),
+           @"ClassSymbolic":            @(UIFontDescriptorClassSymbolic) };
+    });
+
+    return result;
+}
+
++ (NSNumber*)                         uifontDescriptorTraitForObject:(id)nameOrTrait
+{
+    NSNumber* result = nil;
+    if ([nameOrTrait isKindOfClass:[NSString class]])
+    {
+        result = [self uifontDescriptorTraitsByName][nameOrTrait];
+    }
+    else if ([nameOrTrait isKindOfClass:[NSNumber class]])
+    {
+        result = nameOrTrait;
+    }
+    return result;
+}
+
++ (NSDictionary<NSString*, NSNumber*>*)          uifontWeightsByName
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"UltraLight":           @(UIFontWeightUltraLight),
+           @"Thin":                 @(UIFontWeightThin),
+           @"Light":                @(UIFontWeightLight),
+           @"Regular":              @(UIFontWeightRegular),
+           @"Medium":               @(UIFontWeightMedium),
+           @"Semibold":             @(UIFontWeightSemibold),
+           @"Bold":                 @(UIFontWeightBold),
+           @"Heavy":                @(UIFontWeightHeavy),
+           @"Black":                @(UIFontWeightBlack) };
+    });
+
+    return result;
+}
+
++ (NSNumber*)                                  uifontWeightForObject:(id)nameOrFontWeight
+{
+    NSNumber* result = nil;
+    if ([nameOrFontWeight isKindOfClass:[NSString class]])
+    {
+        result = [self uifontWeightsByName][nameOrFontWeight];
+    }
+    else if ([nameOrFontWeight isKindOfClass:[NSNumber class]])
+    {
+        result = nameOrFontWeight;
+    }
+    return result;
+}
+
++ (NSDictionary<NSString*, NSString*>*)       uifontAttributesByName
+{
+    static NSDictionary<NSString*, NSString*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"family":           UIFontDescriptorFamilyAttribute,
+           @"name":             UIFontDescriptorNameAttribute,
+           @"face":             UIFontDescriptorFaceAttribute,
+           @"size":             UIFontDescriptorSizeAttribute,
+           @"visibleName":      UIFontDescriptorVisibleNameAttribute,
+           @"matrix":           UIFontDescriptorMatrixAttribute,
+           @"characterSet":     UIFontDescriptorCharacterSetAttribute,
+           @"cascadeList":      UIFontDescriptorCascadeListAttribute,
+           @"traits":           UIFontDescriptorTraitsAttribute,
+           @"fixedAdvance":     UIFontDescriptorFixedAdvanceAttribute,
+           @"featureSettings":  UIFontDescriptorFeatureSettingsAttribute,
+           @"textStyle":        UIFontDescriptorTextStyleAttribute };
+    });
 
     return result;
 }

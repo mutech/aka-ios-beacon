@@ -19,11 +19,11 @@
 #  define AKA_LOG_LEVEL_DEF DDLogLevelWarning
 #endif
 
-#define AKALogError(frmt, ...)   LOG_MAYBE(NO,                AKA_LOG_LEVEL_DEF, DDLogFlagError,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define AKALogWarn(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define AKALogInfo(frmt, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define AKALogDebug(frmt, ...)   LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
-#define AKALogVerbose(frmt, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, frmt, ##__VA_ARGS__)
+#define AKALogError(format, ...)   LOG_MAYBE(NO,                AKA_LOG_LEVEL_DEF, DDLogFlagError,   0, nil, __PRETTY_FUNCTION__, format, ##__VA_ARGS__)
+#define AKALogWarn(format, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagWarning, 0, nil, __PRETTY_FUNCTION__, format, ##__VA_ARGS__)
+#define AKALogInfo(format, ...)    LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagInfo,    0, nil, __PRETTY_FUNCTION__, format, ##__VA_ARGS__)
+#define AKALogDebug(format, ...)   LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagDebug,   0, nil, __PRETTY_FUNCTION__, format, ##__VA_ARGS__)
+#define AKALogVerbose(format, ...) LOG_MAYBE(LOG_ASYNC_ENABLED, AKA_LOG_LEVEL_DEF, DDLogFlagVerbose, 0, nil, __PRETTY_FUNCTION__, format, ##__VA_ARGS__)
 
 @interface AKALog : NSObject
 

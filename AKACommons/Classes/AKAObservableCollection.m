@@ -62,7 +62,7 @@
 
 - (id)objectInItemsAtIndex:(NSUInteger)index
 {
-    return [self.itemsStorage objectAtIndex:index];
+    return self.itemsStorage[index];
 }
 
 - (NSUInteger)countOfItems

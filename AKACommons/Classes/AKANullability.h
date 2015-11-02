@@ -25,9 +25,11 @@
 // case is "out_" which is primarily used for NSError, where both the error itself and its
 // storage location are nullable.
 
+
+
 typedef id _Nullable                                    opt_id;
 typedef id _Nonnull                                     req_id;
-typedef id __autoreleasing _Nullable * _Nullable         out_id;
+typedef id __autoreleasing _Nullable * _Nullable        out_id;
 typedef out_id                                          inout_id;
 
 typedef id<NSCopying> _Nullable                         opt_id_NSCopying;

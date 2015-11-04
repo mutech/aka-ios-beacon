@@ -1,6 +1,6 @@
 //
 //  AKABindingExpression.m
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 18.09.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
@@ -1203,13 +1203,13 @@
 
         CGFloat red = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"r", @"red" ]
                                                                    fromAttributes:attributes
-                                                                         required:YES].floatValue / 255.0;
+                                                                         required:YES].floatValue / 255.0f;
         CGFloat green = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"g", @"green" ]
                                                                      fromAttributes:attributes
-                                                                           required:YES].floatValue / 255.0;
+                                                                           required:YES].floatValue / 255.0f;
         CGFloat blue = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"b", @"blue" ]
                                                                     fromAttributes:attributes
-                                                                          required:YES].floatValue / 255.0;
+                                                                          required:YES].floatValue / 255.0f;
         NSNumber* nalpha = [AKAUIColorConstantBindingExpression colorComponentWithKeys:@[ @"a", @"alpha" ]
                                                                         fromAttributes:attributes
                                                                               required:NO];
@@ -1246,7 +1246,7 @@
 - (NSString*)textForColorComponent:(CGFloat)component
 {
     NSString* result = nil;
-    CGFloat channel = component * 255.0;
+    CGFloat channel = component * 255.0f;
     double integral;
     double fractional = modf(channel, &integral);
 
@@ -1351,7 +1351,7 @@
     NSString* textStyle = nil;
 
     fontName = descriptor.fontAttributes[UIFontDescriptorNameAttribute];
-    fontSize = ((NSNumber*)descriptor.fontAttributes[UIFontDescriptorSizeAttribute]).doubleValue;
+    fontSize = ((NSNumber*)descriptor.fontAttributes[UIFontDescriptorSizeAttribute]).floatValue;
 
     if (textStyle != nil)
     {

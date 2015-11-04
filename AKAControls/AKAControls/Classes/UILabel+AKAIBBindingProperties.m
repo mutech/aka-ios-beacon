@@ -1,6 +1,6 @@
 //
 //  UILabel+AKAIBBindingProperties.m
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 29.09.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.

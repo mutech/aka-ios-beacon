@@ -1,9 +1,9 @@
 //
 //  AKAControls.h
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 17.03.15.
-//  Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -35,6 +35,7 @@ FOUNDATION_EXPORT const unsigned char AKAControlsVersionString[];
 #import <AKAControls/AKAScalarControl_Protected.h>
 #import <AKAControls/AKAScalarControl+ControlViewBindingDelegate.h>
 #import <AKAControls/AKAKeyboardControl.h>
+#import <AKAControls/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h>
 
 // ComplexControls
 #import <AKAControls/AKACompositeControl.h>

@@ -1,9 +1,9 @@
 //
 //  AKAThemeTests.m
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 25.03.15.
-//  Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

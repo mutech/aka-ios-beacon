@@ -6,8 +6,9 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+@import AKAControls;
 
-@interface TextFieldBindingViewController : UIViewController
+@interface TextFieldBindingViewController : AKAFormViewController
 
 @end

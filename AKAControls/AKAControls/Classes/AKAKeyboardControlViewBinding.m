@@ -1,6 +1,6 @@
 //
 //  AKAKeyboardControlViewBinding.m
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 13.10.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
@@ -162,10 +162,11 @@
 
 - (void)                        setKeyboardActivationSequence:(AKAKeyboardActivationSequence*)keyboardActivationSequence
 {
-    if (keyboardActivationSequence != _keyboardActivationSequence)
+    AKAKeyboardActivationSequence* current = _keyboardActivationSequence;
+    if (keyboardActivationSequence != current)
     {
-        NSAssert(keyboardActivationSequence == nil || _keyboardActivationSequence == nil,
-                 @"Invalid attempt to join keyboard activation sequence %@, %@ is already member of sequence %@", keyboardActivationSequence, self, _keyboardActivationSequence);
+        NSAssert(keyboardActivationSequence == nil || current == nil,
+                 @"Invalid attempt to join keyboard activation sequence %@, %@ is already member of sequence %@", keyboardActivationSequence, self, current);
 
         _keyboardActivationSequence = keyboardActivationSequence;
     }

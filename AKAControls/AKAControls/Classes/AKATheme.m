@@ -1,9 +1,9 @@
 //
 //  AKATheme.m
-//  AKAControls
+//  AKABeacon
 //
 //  Created by Michael Utech on 24.03.15.
-//  Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 @import AKACommons.UIView_AKAConstraintTools;

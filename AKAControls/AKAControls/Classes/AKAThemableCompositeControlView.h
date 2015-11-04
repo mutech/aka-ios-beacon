@@ -1,6 +1,6 @@
 //
 // Created by Michael Utech on 08.09.15.
-// Copyright (c) 2015 AKA Sarl. All rights reserved.
+// Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 // TODO: Consider refactoring to inherit from AKACompositeControlView and add themability features on top of it

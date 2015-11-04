@@ -2,7 +2,7 @@
 //  UIView+AKAReusableViewsSupport.m
 //
 //  Created by Michael Utech on 11.03.15.
-//  Copyright (c) 2015 AKA Sarl. All rights reserved.
+//  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 #import "UIView+AKAReusableViewsSupport.h"

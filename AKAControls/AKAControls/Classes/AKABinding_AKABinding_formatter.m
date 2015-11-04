@@ -178,7 +178,7 @@
 
 - (NSDictionary<NSString*, id (^)(id)>*)configurationValueConvertersByPropertyName
 {
-    AKAErrorAbstractMethodImplementationMissing();
+    return nil;
 }
 
 @end

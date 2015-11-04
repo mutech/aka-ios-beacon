@@ -17,6 +17,7 @@
 		8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */; };
 		8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */; };
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; };
+		8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */; };
 		E6DDACC8B75AFC11B9778AFF /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 713C2BEBD1DCA64ADFBC9EA9 /* Pods_AKAControlsGallery.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,8 @@
 		8E91E7591BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
+		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
+		8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelDemoTableViewController.m; sourceTree = "<group>"; };
 		8EFBE8521BBC4331004E264F /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = AKAControls.framework; path = "/Users/mu/Library/Developer/Xcode/DerivedData/AKAControls-aadmbzgjzjwucihjrebfyucxwbsh/Build/Products/Debug-iphoneos/AKAControls.framework"; sourceTree = "<absolute>"; };
 		E947A973723769FC4B1371D1 /* Pods-AKAControlsGallery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,6 +176,8 @@
 				8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */,
 				8E4F0A691BE39D29006D8876 /* SliderViewController.h */,
 				8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */,
+				8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */,
+				8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */,
 				8E91E73F1BB228A900F7618F /* main.m in Sources */,
 				8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */,
+				8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

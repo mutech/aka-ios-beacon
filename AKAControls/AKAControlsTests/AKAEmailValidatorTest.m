@@ -10,7 +10,7 @@
 @import AKACommons.AKALog;
 
 #import <XCTest/XCTest.h>
-#import <AKAControls/AKAEmailValidator.h>
+#import <AKABeacon/AKAEmailValidator.h>
 
 @interface AKAEmailValidatorTest : XCTestCase
 

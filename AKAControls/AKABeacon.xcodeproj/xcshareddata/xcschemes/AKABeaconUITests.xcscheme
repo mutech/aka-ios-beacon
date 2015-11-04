@@ -5,8 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <BuildActionEntries>
-      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -21,7 +19,7 @@
                BlueprintIdentifier = "8E91E6F71BB16ED400F7618F"
                BuildableName = "AKAControlsUITests.xctest"
                BlueprintName = "AKAControlsUITests"
-               ReferencedContainer = "container:AKAControls.xcodeproj">
+               ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

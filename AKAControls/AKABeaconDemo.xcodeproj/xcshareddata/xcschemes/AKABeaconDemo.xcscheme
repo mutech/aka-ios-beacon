@@ -15,34 +15,45 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8E91E7391BB228A900F7618F"
-               BuildableName = "AKAControlsGallery.app"
-               BlueprintName = "AKAControlsGallery"
-               ReferencedContainer = "container:AKAControlsGallery.xcodeproj">
+               BuildableName = "AKABeaconDemo.app"
+               BlueprintName = "AKABeaconDemo"
+               ReferencedContainer = "container:AKABeaconDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8E91E7521BB228A900F7618F"
+               BuildableName = "AKABeaconDemo.xctest"
+               BlueprintName = "AKABeaconDemoUITests"
+               ReferencedContainer = "container:AKABeaconDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E91E7391BB228A900F7618F"
-            BuildableName = "AKAControlsGallery.app"
-            BlueprintName = "AKAControlsGallery"
-            ReferencedContainer = "container:AKAControlsGallery.xcodeproj">
+            BuildableName = "AKABeaconDemo.app"
+            BlueprintName = "AKABeaconDemo"
+            ReferencedContainer = "container:AKABeaconDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -56,9 +67,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E91E7391BB228A900F7618F"
-            BuildableName = "AKAControlsGallery.app"
-            BlueprintName = "AKAControlsGallery"
-            ReferencedContainer = "container:AKAControlsGallery.xcodeproj">
+            BuildableName = "AKABeaconDemo.app"
+            BlueprintName = "AKABeaconDemo"
+            ReferencedContainer = "container:AKABeaconDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,14 +86,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E91E7391BB228A900F7618F"
-            BuildableName = "AKAControlsGallery.app"
-            BlueprintName = "AKAControlsGallery"
-            ReferencedContainer = "container:AKAControlsGallery.xcodeproj">
+            BuildableName = "AKABeaconDemo.app"
+            BlueprintName = "AKABeaconDemo"
+            ReferencedContainer = "container:AKABeaconDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Release">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"

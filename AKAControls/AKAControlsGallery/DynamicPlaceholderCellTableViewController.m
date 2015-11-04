@@ -1,6 +1,6 @@
 //
 //  DynamicPlaceholderCellTableViewController.m
-//  AKAControlsGallery
+//  AKABeaconDemo
 //
 //  Created by Michael Utech on 20.10.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
@@ -10,7 +10,7 @@
 @import UIKit;
 
 @import AKACommons.AKALog;
-@import AKAControls.AKAControl;
+@import AKABeacon.AKAControl;
 
 #import "DynamicPlaceholderCellTableViewController.h"
 

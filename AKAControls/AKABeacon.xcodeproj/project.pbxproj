@@ -262,7 +262,7 @@
 		8E5A16591BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAPickerKeyboardTriggerView.m; sourceTree = "<group>"; };
 		8E5A165C1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACustomKeyboardResponderView.h; sourceTree = "<group>"; };
 		8E5A165D1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACustomKeyboardResponderView.m; sourceTree = "<group>"; };
-		8E7232F01B00224400D647A9 /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKAControls.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E7232F01B00224400D647A9 /* AKABeacon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKABeacon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E7232F41B00224400D647A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E72330D1B0022A200D647A9 /* AKACompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACompositeControl.h; sourceTree = "<group>"; };
 		8E72330E1B0022A200D647A9 /* AKACompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACompositeControl.m; sourceTree = "<group>"; };
@@ -331,7 +331,7 @@
 		8E85EB891BE5825500C9CF29 /* AKABindingErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingErrors.m; sourceTree = "<group>"; };
 		8E8922FB1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKeyboardBinding_AKACustomKeyboardResponderView.h; sourceTree = "<group>"; };
 		8E8922FC1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKeyboardBinding_AKACustomKeyboardResponderView.m; sourceTree = "<group>"; };
-		8E91E6E91BB16E8800F7618F /* AKAControlsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E91E6E91BB16E8800F7618F /* AKABeacon.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKABeacon.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E91E6ED1BB16E8800F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABooleanTextConverter.h; sourceTree = "<group>"; };
 		8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanTextConverter.m; sourceTree = "<group>"; };
@@ -594,8 +594,8 @@
 			isa = PBXGroup;
 			children = (
 				8EEFCAE81B9FC882004ACBD2 /* AKAControls.podspec */,
-				8E7232F21B00224400D647A9 /* AKAControls */,
-				8E91E6EA1BB16E8800F7618F /* AKAControlsTests */,
+				8E7232F21B00224400D647A9 /* AKABeacon */,
+				8E91E6EA1BB16E8800F7618F /* AKABeaconTests */,
 				8E7232F11B00224400D647A9 /* Products */,
 				C4A56BB0CF86C5633D5CF62E /* Pods */,
 				755DFF95D974A1FF08C6840A /* Frameworks */,
@@ -605,19 +605,20 @@
 		8E7232F11B00224400D647A9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8E7232F01B00224400D647A9 /* AKAControls.framework */,
-				8E91E6E91BB16E8800F7618F /* AKAControlsTests.xctest */,
+				8E7232F01B00224400D647A9 /* AKABeacon.framework */,
+				8E91E6E91BB16E8800F7618F /* AKABeacon.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8E7232F21B00224400D647A9 /* AKAControls */ = {
+		8E7232F21B00224400D647A9 /* AKABeacon */ = {
 			isa = PBXGroup;
 			children = (
 				8E1BBDEC1BCBD5A200B1ECF1 /* AKAControls.h */,
 				8E72330C1B0022A200D647A9 /* Classes */,
 				8E7232F31B00224400D647A9 /* Supporting Files */,
 			);
+			name = AKABeacon;
 			path = AKAControls;
 			sourceTree = "<group>";
 		};
@@ -711,7 +712,7 @@
 			name = AKADatePickerKeyboard;
 			sourceTree = "<group>";
 		};
-		8E91E6EA1BB16E8800F7618F /* AKAControlsTests */ = {
+		8E91E6EA1BB16E8800F7618F /* AKABeaconTests */ = {
 			isa = PBXGroup;
 			children = (
 				8EBC854A1BD1B2960048950B /* Controls */,
@@ -722,6 +723,7 @@
 				8EC64DD91BB0CDDB00508CB3 /* AKABindingProviderTest.m */,
 				8E91E6ED1BB16E8800F7618F /* Info.plist */,
 			);
+			name = AKABeaconTests;
 			path = AKAControlsTests;
 			sourceTree = "<group>";
 		};
@@ -1003,9 +1005,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8E7232EF1B00224400D647A9 /* AKAControls */ = {
+		8E7232EF1B00224400D647A9 /* AKABeacon */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E7233061B00224400D647A9 /* Build configuration list for PBXNativeTarget "AKAControls" */;
+			buildConfigurationList = 8E7233061B00224400D647A9 /* Build configuration list for PBXNativeTarget "AKABeacon" */;
 			buildPhases = (
 				5F85FF7DEDA084FAEB09308B /* Check Pods Manifest.lock */,
 				8E7232EB1B00224400D647A9 /* Sources */,
@@ -1018,14 +1020,14 @@
 			);
 			dependencies = (
 			);
-			name = AKAControls;
+			name = AKABeacon;
 			productName = AKAControls;
-			productReference = 8E7232F01B00224400D647A9 /* AKAControls.framework */;
+			productReference = 8E7232F01B00224400D647A9 /* AKABeacon.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8E91E6E81BB16E8800F7618F /* AKAControlsTests */ = {
+		8E91E6E81BB16E8800F7618F /* AKABeaconTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E91E6F11BB16E8800F7618F /* Build configuration list for PBXNativeTarget "AKAControlsTests" */;
+			buildConfigurationList = 8E91E6F11BB16E8800F7618F /* Build configuration list for PBXNativeTarget "AKABeaconTests" */;
 			buildPhases = (
 				8E91E6E51BB16E8800F7618F /* Sources */,
 				8E91E6E61BB16E8800F7618F /* Frameworks */,
@@ -1036,9 +1038,9 @@
 			dependencies = (
 				8E91E6F01BB16E8800F7618F /* PBXTargetDependency */,
 			);
-			name = AKAControlsTests;
+			name = AKABeaconTests;
 			productName = AKAControlsTests;
-			productReference = 8E91E6E91BB16E8800F7618F /* AKAControlsTests.xctest */;
+			productReference = 8E91E6E91BB16E8800F7618F /* AKABeacon.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -1060,7 +1062,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8E7232EA1B00224400D647A9 /* Build configuration list for PBXProject "AKAControls" */;
+			buildConfigurationList = 8E7232EA1B00224400D647A9 /* Build configuration list for PBXProject "AKABeacon" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1072,8 +1074,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8E7232EF1B00224400D647A9 /* AKAControls */,
-				8E91E6E81BB16E8800F7618F /* AKAControlsTests */,
+				8E7232EF1B00224400D647A9 /* AKABeacon */,
+				8E91E6E81BB16E8800F7618F /* AKABeaconTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1230,7 +1232,7 @@
 /* Begin PBXTargetDependency section */
 		8E91E6F01BB16E8800F7618F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8E7232EF1B00224400D647A9 /* AKAControls */;
+			target = 8E7232EF1B00224400D647A9 /* AKABeacon */;
 			targetProxy = 8E91E6EF1BB16E8800F7618F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1291,7 +1293,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1349,7 +1351,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1374,7 +1376,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeacon;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -1394,7 +1396,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeacon;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -1408,7 +1410,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeacon;
 			};
 			name = Debug;
 		};
@@ -1420,14 +1422,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeacon;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8E7232EA1B00224400D647A9 /* Build configuration list for PBXProject "AKAControls" */ = {
+		8E7232EA1B00224400D647A9 /* Build configuration list for PBXProject "AKABeacon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E7233041B00224400D647A9 /* Debug */,
@@ -1436,7 +1438,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8E7233061B00224400D647A9 /* Build configuration list for PBXNativeTarget "AKAControls" */ = {
+		8E7233061B00224400D647A9 /* Build configuration list for PBXNativeTarget "AKABeacon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E7233071B00224400D647A9 /* Debug */,
@@ -1445,7 +1447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8E91E6F11BB16E8800F7618F /* Build configuration list for PBXNativeTarget "AKAControlsTests" */ = {
+		8E91E6F11BB16E8800F7618F /* Build configuration list for PBXNativeTarget "AKABeaconTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E91E6F21BB16E8800F7618F /* Debug */,

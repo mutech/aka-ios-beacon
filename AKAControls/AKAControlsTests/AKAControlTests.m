@@ -7,7 +7,7 @@
 //
 
 @import XCTest;
-@import AKAControls;
+@import AKABeacon;
 
 @interface AKAControl(Testable)
 - (instancetype _Nonnull)             initWithConfiguration:(opt_AKAControlConfiguration)configuration;

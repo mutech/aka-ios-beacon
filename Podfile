@@ -1,27 +1,27 @@
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-workspace 'AKAControls.xcworkspace'
-xcodeproj 'AKAControls/AKAControls.xcodeproj'
-xcodeproj 'AKAControls/AKAControlsGallery.xcodeproj'
+workspace 'AKABeacon.xcworkspace'
+xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
+xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
 
 use_frameworks!
 
 platform :ios, '8.0'
 
-target :AKAControls, :exclusive => true do
-    target :AKAControlsTests, :exclusive => true do
-        xcodeproj 'AKAControls/AKAControls.xcodeproj'
+target :AKABeacon, :exclusive => true do
+    target :AKABeaconTests, :exclusive => true do
+        xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
     end
-    xcodeproj 'AKAControls/AKAControls.xcodeproj'
+    xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
     pod 'AKACommons', '~> 0.1.0-pre.1'
 end
 
-target :AKAControlsGallery, :exclusive => true do
-    target :AKAControlsGalleryUITests do
-        xcodeproj 'AKAControls/AKAControlsGallery.xcodeproj'
+target :AKABeaconDemo, :exclusive => true do
+    target :AKABeaconDemoUITests do
+        xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
     end
-    xcodeproj 'AKAControls/AKAControlsGallery.xcodeproj'
-    pod 'AKAControls', :path => '.'
+    xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
+    pod 'AKABeacon', :path => '.'
     pod 'AKACommons', '~> 0.1.0-pre.1'
 end

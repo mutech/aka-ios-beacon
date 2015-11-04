@@ -1,6 +1,6 @@
 //
 //  LabelDemoTableViewController.m
-//  AKAControlsGallery
+//  AKABeaconDemo
 //
 //  Created by Michael Utech on 03.11.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.

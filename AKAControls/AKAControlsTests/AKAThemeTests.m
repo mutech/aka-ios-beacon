@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@import AKAControls;
-//#import <AKAControls/AKATheme.h>
-//#import <AKAControls/AKATextLabel.h>
+@import AKABeacon;
+//#import <AKABeacon/AKATheme.h>
+//#import <AKABeacon/AKATextLabel.h>
 
 @interface AKAThemeTests : XCTestCase
 

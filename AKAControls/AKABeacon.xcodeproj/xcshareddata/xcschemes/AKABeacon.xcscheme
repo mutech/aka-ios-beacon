@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8E7232EF1B00224400D647A9"
-               BuildableName = "AKAControls.framework"
-               BlueprintName = "AKAControls"
-               ReferencedContainer = "container:AKAControls.xcodeproj">
+               BuildableName = "AKABeacon.framework"
+               BlueprintName = "AKABeacon"
+               ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
-               BuildableName = "AKAControlsTests.xctest"
-               BlueprintName = "AKAControlsTests"
-               ReferencedContainer = "container:AKAControls.xcodeproj">
+               BuildableName = "AKABeacon.xctest"
+               BlueprintName = "AKABeaconTests"
+               ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
-               BuildableName = "AKAControlsTests.xctest"
-               BlueprintName = "AKAControlsTests"
-               ReferencedContainer = "container:AKAControls.xcodeproj">
+               BuildableName = "AKABeacon.xctest"
+               BlueprintName = "AKABeaconTests"
+               ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E7232EF1B00224400D647A9"
-            BuildableName = "AKAControls.framework"
-            BlueprintName = "AKAControls"
-            ReferencedContainer = "container:AKAControls.xcodeproj">
+            BuildableName = "AKABeacon.framework"
+            BlueprintName = "AKABeacon"
+            ReferencedContainer = "container:AKABeacon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -79,9 +79,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E7232EF1B00224400D647A9"
-            BuildableName = "AKAControls.framework"
-            BlueprintName = "AKAControls"
-            ReferencedContainer = "container:AKAControls.xcodeproj">
+            BuildableName = "AKABeacon.framework"
+            BlueprintName = "AKABeacon"
+            ReferencedContainer = "container:AKABeacon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -97,9 +97,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8E7232EF1B00224400D647A9"
-            BuildableName = "AKAControls.framework"
-            BlueprintName = "AKAControls"
-            ReferencedContainer = "container:AKAControls.xcodeproj">
+            BuildableName = "AKABeacon.framework"
+            BlueprintName = "AKABeacon"
+            ReferencedContainer = "container:AKABeacon.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

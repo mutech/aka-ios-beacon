@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 
 @import AKACommons.AKANullability;
-@import AKAControls.AKABindingProvider;
-@import AKAControls.AKABindingExpression;
+@import AKABeacon.AKABindingProvider;
+@import AKABeacon.AKABindingExpression;
 
 @interface AKABindingProviderTest : XCTestCase
 

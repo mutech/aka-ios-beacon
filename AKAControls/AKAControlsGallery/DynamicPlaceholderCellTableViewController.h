@@ -1,12 +1,12 @@
 //
 //  DynamicPlaceholderCellTableViewController.h
-//  AKAControlsGallery
+//  AKABeaconDemo
 //
 //  Created by Michael Utech on 20.10.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKAControls.AKAFormTableViewController;
+@import AKABeacon.AKAFormTableViewController;
 
 @interface DynamicPlaceholderCellTableViewController : AKAFormTableViewController
 

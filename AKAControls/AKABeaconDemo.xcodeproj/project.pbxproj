@@ -54,7 +54,7 @@
 		8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerKeyboardViewController.m; sourceTree = "<group>"; };
 		8E7BAD211BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicPlaceholderCellTableViewController.h; sourceTree = "<group>"; };
 		8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicPlaceholderCellTableViewController.m; sourceTree = "<group>"; };
-		8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKAControlsGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKABeaconDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E91E73E1BB228A900F7618F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8E91E7401BB228A900F7618F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8E91E7411BB228A900F7618F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		8E91E7491BB228A900F7618F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E91E74C1BB228A900F7618F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E91E74E1BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKAControlsGalleryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E91E7531BB228A900F7618F /* AKABeaconDemo.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKABeaconDemo.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKAControlsGalleryUITests.m; sourceTree = "<group>"; };
 		8E91E7591BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 			isa = PBXGroup;
 			children = (
 				8EFBE8521BBC4331004E264F /* AKAControls.framework */,
-				8E91E73C1BB228A900F7618F /* AKAControlsGallery */,
-				8E91E7561BB228A900F7618F /* AKAControlsGalleryUITests */,
+				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
+				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,
 				8E91E73B1BB228A900F7618F /* Products */,
 				496D7E3F4BC1D8C3B8EB2345 /* Frameworks */,
 				531B2011507C2BC71A1184CB /* Pods */,
@@ -127,13 +127,13 @@
 		8E91E73B1BB228A900F7618F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */,
-				8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */,
+				8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */,
+				8E91E7531BB228A900F7618F /* AKABeaconDemo.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8E91E73C1BB228A900F7618F /* AKAControlsGallery */ = {
+		8E91E73C1BB228A900F7618F /* AKABeaconDemo */ = {
 			isa = PBXGroup;
 			children = (
 				8E91E7401BB228A900F7618F /* AppDelegate.h */,
@@ -145,6 +145,7 @@
 				8E91E74E1BB228A900F7618F /* Info.plist */,
 				8E91E73D1BB228A900F7618F /* Supporting Files */,
 			);
+			name = AKABeaconDemo;
 			path = AKAControlsGallery;
 			sourceTree = "<group>";
 		};
@@ -156,12 +157,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8E91E7561BB228A900F7618F /* AKAControlsGalleryUITests */ = {
+		8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */ = {
 			isa = PBXGroup;
 			children = (
 				8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */,
 				8E91E7591BB228A900F7618F /* Info.plist */,
 			);
+			name = AKABeaconDemoUITests;
 			path = AKAControlsGalleryUITests;
 			sourceTree = "<group>";
 		};
@@ -185,9 +187,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8E91E7391BB228A900F7618F /* AKAControlsGallery */ = {
+		8E91E7391BB228A900F7618F /* AKABeaconDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGallery" */;
+			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemo" */;
 			buildPhases = (
 				7576C339B12145395CAAFC0B /* Check Pods Manifest.lock */,
 				8E91E7361BB228A900F7618F /* Sources */,
@@ -201,14 +203,14 @@
 			);
 			dependencies = (
 			);
-			name = AKAControlsGallery;
+			name = AKABeaconDemo;
 			productName = AKAControlsGallery;
-			productReference = 8E91E73A1BB228A900F7618F /* AKAControlsGallery.app */;
+			productReference = 8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8E91E7521BB228A900F7618F /* AKAControlsGalleryUITests */ = {
+		8E91E7521BB228A900F7618F /* AKABeaconDemoUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGalleryUITests" */;
+			buildConfigurationList = 8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemoUITests" */;
 			buildPhases = (
 				8E91E74F1BB228A900F7618F /* Sources */,
 				8E91E7501BB228A900F7618F /* Frameworks */,
@@ -219,9 +221,9 @@
 			dependencies = (
 				8E91E7551BB228A900F7618F /* PBXTargetDependency */,
 			);
-			name = AKAControlsGalleryUITests;
+			name = AKABeaconDemoUITests;
 			productName = AKAControlsGalleryUITests;
-			productReference = 8E91E7531BB228A900F7618F /* AKAControlsGalleryUITests.xctest */;
+			productReference = 8E91E7531BB228A900F7618F /* AKABeaconDemo.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -243,7 +245,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKAControlsGallery" */;
+			buildConfigurationList = 8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKABeaconDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -256,8 +258,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8E91E7391BB228A900F7618F /* AKAControlsGallery */,
-				8E91E7521BB228A900F7618F /* AKAControlsGalleryUITests */,
+				8E91E7391BB228A900F7618F /* AKABeaconDemo */,
+				8E91E7521BB228A900F7618F /* AKABeaconDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -358,7 +360,7 @@
 /* Begin PBXTargetDependency section */
 		8E91E7551BB228A900F7618F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8E91E7391BB228A900F7618F /* AKAControlsGallery */;
+			target = 8E91E7391BB228A900F7618F /* AKABeaconDemo */;
 			targetProxy = 8E91E7541BB228A900F7618F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -480,7 +482,7 @@
 				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeaconDemo;
 			};
 			name = Debug;
 		};
@@ -493,7 +495,7 @@
 				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeaconDemo;
 			};
 			name = Release;
 		};
@@ -503,7 +505,7 @@
 				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeaconDemo;
 				TEST_TARGET_NAME = AKAControlsGallery;
 				USES_XCTRUNNER = YES;
 			};
@@ -515,7 +517,7 @@
 				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AKABeaconDemo;
 				TEST_TARGET_NAME = AKAControlsGallery;
 				USES_XCTRUNNER = YES;
 			};
@@ -524,7 +526,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKAControlsGallery" */ = {
+		8E91E7351BB228A900F7618F /* Build configuration list for PBXProject "AKABeaconDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E91E75A1BB228A900F7618F /* Debug */,
@@ -533,7 +535,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGallery" */ = {
+		8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E91E75D1BB228A900F7618F /* Debug */,
@@ -542,7 +544,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKAControlsGalleryUITests" */ = {
+		8E91E75F1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemoUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8E91E7601BB228A900F7618F /* Debug */,

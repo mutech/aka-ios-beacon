@@ -1,6 +1,6 @@
 //
 //  PickerKeyboardViewController.h
-//  AKAControlsGallery
+//  AKABeaconDemo
 //
 //  Created by Michael Utech on 03.10.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@import AKAControls.AKAPickerKeyboardTriggerView;
-@import AKAControls.AKAFormViewController;
+@import AKABeacon.AKAPickerKeyboardTriggerView;
+@import AKABeacon.AKAFormViewController;
 
 @interface PickerKeyboardViewController : AKAFormViewController
 

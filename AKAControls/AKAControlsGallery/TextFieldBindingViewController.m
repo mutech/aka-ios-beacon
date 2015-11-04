@@ -1,12 +1,12 @@
 //
 //  TextFieldBindingViewController.m
-//  AKAControlsGallery
+//  AKABeaconDemo
 //
 //  Created by Michael Utech on 23.09.15.
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKAControls;
+@import AKABeacon;
 
 #import "TextFieldBindingViewController.h"
 

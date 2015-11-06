@@ -28,8 +28,8 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
-               BuildableName = "AKABeacon.xctest"
+               BlueprintIdentifier = "8ED4F8DA1BEB69E30093BFDF"
+               BuildableName = "AKABeaconTests.xctest"
                BlueprintName = "AKABeaconTests"
                ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
@@ -46,8 +46,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8E91E6E81BB16E8800F7618F"
-               BuildableName = "AKABeacon.xctest"
+               BlueprintIdentifier = "8ED4F8DA1BEB69E30093BFDF"
+               BuildableName = "AKABeaconTests.xctest"
                BlueprintName = "AKABeaconTests"
                ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>

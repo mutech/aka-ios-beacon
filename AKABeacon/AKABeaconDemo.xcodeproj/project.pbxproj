@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FEDD273119801CF3DD83C93 /* Pods_AKAControlsGallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B66FEE99670852E08732BD /* Pods_AKAControlsGallery.framework */; };
 		8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */; };
 		8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */; };
 		8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */; };
@@ -19,6 +18,7 @@
 		8E91E7581BB228A900F7618F /* AKAControlsGalleryUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */; };
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; };
 		8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */; };
+		A4FA6D5A73ED43DC987E44AC /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +27,7 @@
 			containerPortal = 8E91E7321BB228A900F7618F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 8E91E7391BB228A900F7618F;
-			remoteInfo = AKAControlsGallery;
+			remoteInfo = AKABeaconDemo;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -45,8 +45,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeaconDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EE7DFAB46B4CDC640EF258D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		668680C5282ED1861A88B588 /* Pods-AKAControlsGallery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.debug.xcconfig"; sourceTree = "<group>"; };
 		8E4F0A691BE39D29006D8876 /* SliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderViewController.h; sourceTree = "<group>"; };
 		8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewController.m; sourceTree = "<group>"; };
 		8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKACommons.framework; path = "Pods/../build/Debug-iphoneos/AKACommons.framework"; sourceTree = "<group>"; };
@@ -70,8 +70,8 @@
 		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
 		8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelDemoTableViewController.m; sourceTree = "<group>"; };
 		8EFBE8521BBC4331004E264F /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = AKAControls.framework; path = "/Users/mu/Library/Developer/Xcode/DerivedData/AKAControls-aadmbzgjzjwucihjrebfyucxwbsh/Build/Products/Debug-iphoneos/AKAControls.framework"; sourceTree = "<absolute>"; };
-		D9B66FEE99670852E08732BD /* Pods_AKAControlsGallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKAControlsGallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F8A7D898560AC09BEF65BF82 /* Pods-AKAControlsGallery.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKAControlsGallery.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery.release.xcconfig"; sourceTree = "<group>"; };
+		DCB10D08CBA0079DC99E159E /* Pods-AKABeaconDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		F29C32DFBCE4485563ED6E57 /* Pods-AKABeaconDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FEDD273119801CF3DD83C93 /* Pods_AKAControlsGallery.framework in Frameworks */,
+				A4FA6D5A73ED43DC987E44AC /* Pods_AKABeaconDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,18 +98,9 @@
 			children = (
 				8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */,
 				5EE7DFAB46B4CDC640EF258D /* Pods.framework */,
-				D9B66FEE99670852E08732BD /* Pods_AKAControlsGallery.framework */,
+				54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		531B2011507C2BC71A1184CB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				668680C5282ED1861A88B588 /* Pods-AKAControlsGallery.debug.xcconfig */,
-				F8A7D898560AC09BEF65BF82 /* Pods-AKAControlsGallery.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		8E91E7311BB228A900F7618F = {
@@ -120,7 +111,7 @@
 				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,
 				8E91E73B1BB228A900F7618F /* Products */,
 				496D7E3F4BC1D8C3B8EB2345 /* Frameworks */,
-				531B2011507C2BC71A1184CB /* Pods */,
+				DEF5C36609E56E6391EC70F7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,8 +136,7 @@
 				8E91E74E1BB228A900F7618F /* Info.plist */,
 				8E91E73D1BB228A900F7618F /* Supporting Files */,
 			);
-			name = AKABeaconDemo;
-			path = AKAControlsGallery;
+			path = AKABeaconDemo;
 			sourceTree = "<group>";
 		};
 		8E91E73D1BB228A900F7618F /* Supporting Files */ = {
@@ -163,8 +153,7 @@
 				8E91E7571BB228A900F7618F /* AKAControlsGalleryUITests.m */,
 				8E91E7591BB228A900F7618F /* Info.plist */,
 			);
-			name = AKABeaconDemoUITests;
-			path = AKAControlsGalleryUITests;
+			path = AKABeaconDemoUITests;
 			sourceTree = "<group>";
 		};
 		8E91E7671BB22DAF00F7618F /* ViewControllers */ = {
@@ -184,6 +173,15 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
+		DEF5C36609E56E6391EC70F7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DCB10D08CBA0079DC99E159E /* Pods-AKABeaconDemo.debug.xcconfig */,
+				F29C32DFBCE4485563ED6E57 /* Pods-AKABeaconDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -191,20 +189,20 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemo" */;
 			buildPhases = (
-				7576C339B12145395CAAFC0B /* Check Pods Manifest.lock */,
+				F18D087FA5F3FC06E73FFEF4 /* Check Pods Manifest.lock */,
 				8E91E7361BB228A900F7618F /* Sources */,
 				8E91E7371BB228A900F7618F /* Frameworks */,
 				8E91E7381BB228A900F7618F /* Resources */,
 				8EFBE8591BBC4370004E264F /* Embed Frameworks */,
-				3BD0D4111EBD29B3D3378767 /* Embed Pods Frameworks */,
-				41C644FD6973180FF8CB341D /* Copy Pods Resources */,
+				69E1F8B5689D6D8C3BC36BD7 /* Embed Pods Frameworks */,
+				04A3BAAC4E7A723CC73FD1F7 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = AKABeaconDemo;
-			productName = AKAControlsGallery;
+			productName = AKABeaconDemo;
 			productReference = 8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -222,7 +220,7 @@
 				8E91E7551BB228A900F7618F /* PBXTargetDependency */,
 			);
 			name = AKABeaconDemoUITests;
-			productName = AKAControlsGalleryUITests;
+			productName = AKABeaconDemoUITests;
 			productReference = 8E91E7531BB228A900F7618F /* AKABeaconDemo.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -285,22 +283,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3BD0D4111EBD29B3D3378767 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		41C644FD6973180FF8CB341D /* Copy Pods Resources */ = {
+		04A3BAAC4E7A723CC73FD1F7 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -312,10 +295,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKAControlsGallery/Pods-AKAControlsGallery-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7576C339B12145395CAAFC0B /* Check Pods Manifest.lock */ = {
+		69E1F8B5689D6D8C3BC36BD7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F18D087FA5F3FC06E73FFEF4 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -475,11 +473,11 @@
 		};
 		8E91E75D1BB228A900F7618F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 668680C5282ED1861A88B588 /* Pods-AKAControlsGallery.debug.xcconfig */;
+			baseConfigurationReference = DCB10D08CBA0079DC99E159E /* Pods-AKABeaconDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
+				INFOPLIST_FILE = AKABeaconDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
 				PRODUCT_NAME = AKABeaconDemo;
@@ -488,11 +486,11 @@
 		};
 		8E91E75E1BB228A900F7618F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8A7D898560AC09BEF65BF82 /* Pods-AKAControlsGallery.release.xcconfig */;
+			baseConfigurationReference = F29C32DFBCE4485563ED6E57 /* Pods-AKABeaconDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = AKAControlsGallery/Info.plist;
+				INFOPLIST_FILE = AKABeaconDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGallery";
 				PRODUCT_NAME = AKABeaconDemo;
@@ -502,11 +500,11 @@
 		8E91E7601BB228A900F7618F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
+				INFOPLIST_FILE = AKABeaconDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
 				PRODUCT_NAME = AKABeaconDemo;
-				TEST_TARGET_NAME = AKAControlsGallery;
+				TEST_TARGET_NAME = AKABeaconDemo;
 				USES_XCTRUNNER = YES;
 			};
 			name = Debug;
@@ -514,11 +512,11 @@
 		8E91E7611BB228A900F7618F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = AKAControlsGalleryUITests/Info.plist;
+				INFOPLIST_FILE = AKABeaconDemoUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.aka-labs.AKAControlsGalleryUITests";
 				PRODUCT_NAME = AKABeaconDemo;
-				TEST_TARGET_NAME = AKAControlsGallery;
+				TEST_TARGET_NAME = AKABeaconDemo;
 				USES_XCTRUNNER = YES;
 			};
 			name = Release;

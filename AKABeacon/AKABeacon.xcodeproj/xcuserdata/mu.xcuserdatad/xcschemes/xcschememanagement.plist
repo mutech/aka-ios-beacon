@@ -2,27 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SchemeUserState</key>
-	<dict>
-		<key>AKABeacon.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>AKABeaconUITests.xcscheme_^#shared#^_</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>8E7232EF1B00224400D647A9</key>
+		<key>8E46D3FC1BEB7394002E497B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8E7232FA1B00224400D647A9</key>
+		<key>8E7232EF1B00224400D647A9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -32,12 +19,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8E91E6F71BB16ED400F7618F</key>
+		<key>8ED4F8AF1BEB65F20093BFDF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8EEFCADB1B9FC490004ACBD2</key>
+		<key>8ED4F8C41BEB67700093BFDF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8ED4F8DA1BEB69E30093BFDF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -3,7 +3,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'AKABeacon.xcworkspace'
 xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
-xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
+#xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
 
 use_frameworks!
 

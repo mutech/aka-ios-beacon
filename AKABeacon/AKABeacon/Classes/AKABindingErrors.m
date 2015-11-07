@@ -11,6 +11,27 @@
 
 @implementation AKABindingErrors
 
+#pragma mark - Binding Expression Validation
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+        invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
+                            expected:(AKABindingExpressionType)expressionTypePattern
+{
+    // TODO: make this human readable:
+    id expressionTypeDescription = @(expressionType);
+    id expressionTypePatternDescription = @(expressionTypePattern);
+
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary type %@ does not match required expression type pattern %@", bindingExpression, expressionTypeDescription, expressionTypePatternDescription];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidPrimaryBindingExpressionType
+                                      userInfo:userInfo];
+    return result;
+}
+
 + (NSError*)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
 {
@@ -45,6 +66,19 @@
     NSString* description = [NSString stringWithFormat:@"Invalid binding expression %@: %@", bindingExpression, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorInvalidBindingExpressionUnknownAttribute
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason }];
+    return result;
+}
+
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
+            missingRequiredAttribute:(NSString*)attributeName
+{
+    NSString* reason = [NSString stringWithFormat:@"Missing required attribute %@", attributeName];
+    NSString* description = [NSString stringWithFormat:@"Invalid binding expression %@: %@", bindingExpression, reason];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidBindingExpressionMissingRequiredAttribute
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
                                                   NSLocalizedFailureReasonErrorKey: reason }];
     return result;

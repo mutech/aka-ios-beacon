@@ -14,7 +14,10 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 {
     AKABindingErrorUndefinedBindingSource = AKABindingErrorCodesMin,
 
+    AKABindingErrorInvalidPrimaryBindingExpressionType,
+
     AKABindingErrorInvalidAttriuteBindingExpressionType,
+    AKABindingErrorInvalidBindingExpressionMissingRequiredAttribute,
     AKABindingErrorInvalidBindingExpressionUnknownAttribute,
     AKABindingErrorInvalidBindingExpressionUnknownEnumerationValue,
     AKABindingErrorInvalidBindingExpressionInvalidUIFontTraitSpecification,
@@ -25,6 +28,12 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 + (NSError*)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext;
 
+#pragma mark - Binding Expression Validation
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+        invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
+                            expected:(AKABindingExpressionType)expressionTypePattern;
+
 #pragma mark - Binding Expression Attribute Validation
 
 + (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
@@ -33,6 +42,9 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 
 + (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
                     unknownAttribute:(NSString*)attributeName;
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
+            missingRequiredAttribute:(NSString*)attributeName;
 
 + (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
                    forAttributeNamed:(NSString *)attributeName

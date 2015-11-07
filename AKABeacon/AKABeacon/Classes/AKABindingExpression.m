@@ -10,6 +10,7 @@
 #import "NSScanner+AKABindingExpressionParser.h"
 #import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
+#import "AKABindingSpecification.h"
 
 @import AKACommons.AKANullability;
 @import AKACommons.NSMutableString_AKATools;
@@ -53,7 +54,28 @@
                             atPosition:parser.scanLocation
                                 reason:@"Invalid character, expected attributes (starting with '{') or end of binding expression"];
         }
-        // TODO: perform semantic validation (using bindingProvider.specification)
+
+        if (result)
+        {
+            NSError* localError = nil;
+            opt_AKABindingExpressionSpecification sourceSpec =
+            bindingProvider.specification.bindingSourceSpecification;
+
+            if (![result validateWithSpecification:sourceSpec error:&localError])
+            {
+                if (error)
+                {
+                    *error = localError;
+                }
+                else
+                {
+                    @throw [NSException exceptionWithName:@"BindingExpressionValidationFailed"
+                                                   reason:localError.localizedDescription
+                                                 userInfo:@{ @"error": localError }];
+                }
+                result = nil;
+            }
+        }
     }
 
     return result;
@@ -85,6 +107,137 @@
     }
 
     return self;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeNone;
+}
+
+#pragma mark - Validation
+
+- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                            error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    if (result)
+    {
+        if (specification)
+        {
+            result = [self validatePrimaryExpressionType:specification.expressionType
+                                                   error:error];
+        }
+        else
+        {
+            result = [self validatePrimaryExpressionType:AKABindingExpressionTypeNone
+                                                   error:error];
+        }
+    }
+
+    if (result)
+    {
+        result = [self validateAttributesWithSpecification:specification
+                                                     error:error];
+    }
+
+    return result;
+}
+
+- (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
+                                error:(out_NSError)error
+{
+    BOOL result = (self.expressionType & expressionType) != 0;
+
+    if (!result && error)
+    {
+        *error = [AKABindingErrors invalidBindingExpression:self
+                               invalidPrimaryExpressionType:self.expressionType
+                                                   expected:expressionType];
+    }
+
+    return result;
+}
+
+- (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                      error:(out_NSError)error
+{
+    __block BOOL result = YES;
+    __block NSError* localError = nil;
+
+    BOOL allowUnspecified = specification.allowUnspecifiedAttributes;
+
+    [self.attributes
+     enumerateKeysAndObjectsUsingBlock:
+     ^(req_NSString attributeName,
+       req_AKABindingExpression bindingExpression,
+       outreq_BOOL stop)
+     {
+         // Check for invalidly unknown attributes, note that if specification is nil, validation will fail:
+         AKABindingAttributeSpecification* attributeSpecification =
+             specification.attributes[attributeName];
+
+         if (result && !allowUnspecified && attributeSpecification == nil)
+         {
+             localError = [AKABindingErrors invalidBindingExpression:self
+                                                    unknownAttribute:attributeName];
+             result = NO;
+         }
+
+         // perform attribute validation
+         if (result)
+         {
+             AKABindingExpressionSpecification* attributeExpressionSpecification =
+                 attributeSpecification.bindingSourceSpecification;
+
+             if (attributeExpressionSpecification)
+             {
+                 result = [bindingExpression validateWithSpecification:attributeExpressionSpecification
+                                                                 error:&localError];
+             }
+         }
+         *stop = !result;
+     }];
+
+    if (result)
+    {
+        // Check that all required attributes are present
+        [specification.attributes
+         enumerateKeysAndObjectsUsingBlock:
+         ^(req_NSString attributeName,
+           req_AKABindingAttributeSpecification bindingSpecification,
+           outreq_BOOL stop)
+         {
+             if (bindingSpecification.required)
+             {
+                 if (self.attributes[attributeName] == nil)
+                 {
+                     localError = [AKABindingErrors invalidBindingExpression:self
+                                                    missingRequiredAttribute:attributeName];
+                     result = NO;
+                 }
+             }
+             *stop = !result;
+         }];
+    }
+
+    if (!result)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:@"BindingExpressionAttributeValidationFailed"
+                                           reason:localError.localizedDescription
+                                         userInfo:@{ @"error": localError }];
+        }
+    }
+
+    return result;
 }
 
 #pragma mark - Binding Support
@@ -267,6 +420,13 @@
                       provider:provider];
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeArray;
+}
+
 #pragma mark - Binding Support
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
@@ -390,6 +550,13 @@
                          provider:provider];
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeAbstract;
+}
+
 #pragma mark - Binding Support
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
@@ -462,6 +629,13 @@
                           provider:provider];
 
     return self;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeStringConstant;
 }
 
 #pragma mark - Serialization
@@ -542,6 +716,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeClassConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForConstant
@@ -575,6 +756,13 @@
     return [super initWithConstant:constant
                         attributes:attributes
                           provider:provider];
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeAbstract;
 }
 
 #pragma mark - Serialization
@@ -652,6 +840,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeBooleanConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)textForConstant
@@ -680,6 +875,14 @@
 #pragma mark -
 
 @implementation AKAIntegerConstantBindingExpression
+
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeIntegerConstant;
+}
 
 #pragma mark - Serialization
 
@@ -863,8 +1066,15 @@
     {
         self.optionsType = optionsType;
     }
-    
+
     return self;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeOptionsConstant;
 }
 
 #pragma mark - Serialization
@@ -883,6 +1093,7 @@
         if (self.attributes.count > 0)
         {
             NSString* optionsType = self.optionsType;
+
             if (optionsType == nil)
             {
                 optionsType = @"";
@@ -1046,6 +1257,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeEnumConstant;
+}
+
 - (NSString*)keyword
 {
     return [NSScanner keywordEnum];
@@ -1060,11 +1278,13 @@
         if (self.attributes.count > 0)
         {
             NSString* enumerationType = self.enumerationType;
+
             if (enumerationType == nil)
             {
                 enumerationType = @"";
             }
             NSString* symbolicValue = self.symbolicValue;
+
             if (symbolicValue == nil)
             {
                 symbolicValue = @"";
@@ -1088,6 +1308,13 @@
 #pragma mark -
 
 @implementation AKADoubleConstantBindingExpression
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeDouble;
+}
 
 #pragma mark - Serialization
 
@@ -1246,16 +1473,23 @@
 - (NSString*)textForColorComponent:(CGFloat)component
 {
     NSString* result = nil;
+
+    // Convert component to byte value and determine if distance from  next integer is small enough
+    // to allow representation as int:
     CGFloat channel = component * 255.0f;
     double integral;
     double fractional = modf(channel, &integral);
 
-    if (fractional < .00000001)
+    // Greatest double/char conversion error in range [0..255] is for 128 with 0.000007569
+    if (fractional < .00001)
     {
+        // We represent numbers with a smaller error (leaving some margin for differences on
+        // iOS hardware) as integer...
         result = [NSString stringWithFormat:@"%d", (int)integral];
     }
     else
     {
+        // ... and everything else as double
         result = [NSString stringWithFormat:@"%lg", (double)component];
     }
 
@@ -1413,17 +1647,19 @@
 + (NSNumber*)doubleNumberInRangeMin:(double)min
                                 max:(double)max
                        forAttribute:(NSString*)attributeName
-              bindingExpression:(AKABindingExpression*)bindingExpression
-                          error:(out_NSError)error
+                  bindingExpression:(AKABindingExpression*)bindingExpression
+                              error:(out_NSError)error
 {
     NSNumber* result = nil;
 
     if ([bindingExpression isKindOfClass:[AKANumberConstantBindingExpression class]])
     {
         result = ((AKANumberConstantBindingExpression*)bindingExpression).constant;
+
         if (result)
         {
             double value = result.doubleValue;
+
             if (value < min || value > max)
             {
                 // TODO: out of range error
@@ -1439,7 +1675,6 @@
 
     return result;
 }
-
 
 + (id)enumeratedValueOfType:(req_NSString)enumerationType
                forAttribute:(NSString*)attributeName
@@ -1582,7 +1817,6 @@
                          bindingExpression:(AKABindingExpression*)bindingExpression
                                      error:(out_NSError)error
 {
-
     NSString* enumerationType = @"AKAUIFontDescriptorWeightTraits";
     static dispatch_once_t onceToken;
 
@@ -1721,26 +1955,25 @@
                },
 
                /*
-               // TODO: decide whether we have to implement these:
-               @"matrix":
-               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                  // TODO: decide whether we have to implement these:
+                  @"matrix":
+                  ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
                    AKAErrorMethodNotImplemented();
-               },
-               @"characterSet":
-               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                  },
+                  @"characterSet":
+                  ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
                    AKAErrorMethodNotImplemented();
-               },
-               @"cascadeList":
-               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                  },
+                  @"cascadeList":
+                  ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
                    AKAErrorMethodNotImplemented();
-               },
-               @"featureSettings":
-               ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
+                  },
+                  @"featureSettings":
+                  ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
                    AKAErrorMethodNotImplemented();
-               },
+                  },
                 */
-
-               };
+        };
     });
 
     return result;

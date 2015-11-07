@@ -110,6 +110,11 @@ typedef AKABindingProvider* _Nonnull                             req_AKABindingP
 /// @name Properties
 
 /**
+ Determines the type of the binding expression's primary expression.
+ */
+@property(nonatomic, readonly) AKABindingExpressionType expressionType;
+
+/**
  Determines whether the binding expression is constant. Constant binding expressions can be evaluated without (or with an undefined) binding context.
  */
 @property(nonatomic, readonly) BOOL isConstant;
@@ -137,6 +142,17 @@ typedef AKABindingProvider* _Nonnull                             req_AKABindingP
  The semantics of binding attributes are defined by binding providers.
  */
 @property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABindingExpression*>* attributes;
+
+#pragma mark - Validation
+
+- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                            error:(out_NSError)error;
+
+- (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
+                                error:(out_NSError)error;
+
+- (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                      error:(out_NSError)error;
 
 #pragma mark - Binding Support
 /// @name Binding Support

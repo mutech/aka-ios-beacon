@@ -75,8 +75,11 @@
 {
     AKABindingExpression* expression = [view aka_bindingExpressionForProperty:selector];
 
-    NSAssert(expression.bindingProvider == self,
-             @"Binding expression %@.%@ was created by a different provider %@", view, NSStringFromSelector(selector), expression.bindingProvider);
+    AKABindingProvider* bindingProvider = expression.bindingProvider;
+    NSAssert(bindingProvider == self,
+             @"Binding expression %@.%@ was created by a different provider %@",
+             view, NSStringFromSelector(selector), bindingProvider);
+    (void)bindingProvider;
 
     return expression.text;
 }

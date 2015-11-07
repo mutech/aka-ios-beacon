@@ -13,9 +13,16 @@
 typedef AKABindingProvider* _Nullable opt_AKABindingProvider;
 
 @class AKATypePattern;
+
 @class AKABindingTargetSpecification;
+
 @class AKABindingExpressionSpecification;
+typedef AKABindingExpressionSpecification* _Nonnull req_AKABindingExpressionSpecification;
+typedef AKABindingExpressionSpecification* _Nullable opt_AKABindingExpressionSpecification;
+
 @class AKABindingAttributeSpecification;
+typedef AKABindingAttributeSpecification* _Nonnull req_AKABindingAttributeSpecification;
+typedef AKABindingAttributeSpecification* _Nullable opt_AKABindingAttributeSpecification;
 
 /**
    Specifies how binding attributes are processed by a binding provider when it sets up a binding.
@@ -51,35 +58,40 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     /**
        Specifies a binding expression with no primary expression.
      */
-    AKABindingExpressionTypeNone = 0,
+    AKABindingExpressionTypeNone = (1 << 0),
+
+    /**
+     Specifies an abstract binding expression type. Abstract types cannot be validly instanciated and it is not valid to include the abstract type in a set of valid expression types in binding specifications.
+     */
+    AKABindingExpressionTypeAbstract = (1 << 0),
 
     /**
        Specifies an unqualified key path, e.g. a key path with no leading scope (such as $data, $root, $control)
      */
-    AKABindingExpressionTypeUnqualifiedKeyPath = (1 << 0),
+    AKABindingExpressionTypeUnqualifiedKeyPath = (1 << 2),
 
     /**
        Specifies a key path relative to the data context ($data).
      */
 
-    AKABindingExpressionTypeDataContextKeyPath = (1 << 1),
+    AKABindingExpressionTypeDataContextKeyPath = (1 << 3),
 
     /**
        Specifies a key path relative to the top level data context ($root).
      */
-    AKABindingExpressionTypeRootDataContextKeyPath = (1 << 2),
+    AKABindingExpressionTypeRootDataContextKeyPath = (1 << 4),
 
     /**
        Specifies a key path relative to the owner of the binding ($control).
 
        @note This expression type and scope might be removed or renamed in a future version if bindings will be decoupled from controls for applications which want to use bindings manually.
      */
-    AKABindingExpressionTypeControlKeyPath = (1 << 3),
+    AKABindingExpressionTypeControlKeyPath = (1 << 5),
 
     /**
        Specifies an array primary expression (e.g. ["x" "y"]).
      */
-    AKABindingExpressionTypeArray = (1 << 5),
+    AKABindingExpressionTypeArray = (1 << 6),
 
     /**
        Specifies a class primary expression (e.g. <ClassName>)
@@ -115,49 +127,75 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 
        Double constants are distinguished from integer constants by the presence of a decimal point. So '0' is an integer and '.0' or '0.' is a double.
      */
-    AKABindingExpressionTypeDoubleConstant = (1 << 15),
+    AKABindingExpressionTypeDoubleConstant = (1 << 17),
+
+    /**
+       Specifies an options constant (e.g. $options.OptionType { Value1, Value2 })
+
+       Option values are specified as valueless (or boolean) attributes.
+
+       Options can optionally specify an options type as pseudo key path.
+
+       Options which specify a known options type can be statically evaluated to an integer constant. Options with options type can only be evaluated if the binding provides the options type. (which it often does for expected options values such as specified attributes).
+     
+       If an options constant does not specify a value, the value 0 is assumed.
+     */
+    AKABindingExpressionTypeOptionsConstant = (1 << 18),
+
+    /**
+     Specifies an enumeration constant (e.g. $enum.EnumType.Value or $enum.Value)
+
+     Enumeration constants can optionally specify an enumeration type and value as pseudo key path.
+     
+     Enumerations which specify a known type can be statically evaluated to a constant value (which
+     is not restricted to integer numbers). If no type is specified, enumeration values can only
+     be evaluated if the binding provides the enumeration type (which it often does for expected enumeration values such as specified attributes).
+     
+     If an enumeration constant does not specify a value, the value nil is assumed.
+     */
+    AKABindingExpressionTypeEnumConstant = (1 << 19),
 
     /**
        Specifies a UIColor constant (e.g. $UIColor{r:123, g:123, b:123, a:255})
 
        Color constant components are specified by mandatory attributes "red", "green" and "blue" and an optional alpha channel or "r", "g", "b" and "a". Components can be specified as integer values in the range [0 .. 255] or as double values in the range [0.0 .. 1.0].
      */
-    AKABindingExpressionTypeUIColorConstant = (1 << 16),
+    AKABindingExpressionTypeUIColorConstant = (1 << 18),
 
     /**
        Specifies a CGColor constant (e.g. $CGColor{r:123, g:123, b:123, a:255}).
 
        Color constant components are given as mandatory attributes "red", "green" and "blue" and an optional alpha channel or "r", "g", "b" and "a". Components can be specified as integer values in the range [0 .. 255] or as double values in the range [0.0 .. 1.0].
      */
-    AKABindingExpressionTypeCGColorConstant = (1 << 17),
+    AKABindingExpressionTypeCGColorConstant = (1 << 19),
 
     /**
        Specifies a CGPoint constant (e.g. $CGPoint{x:0.0, y:0.0}).
 
        Point coordinates are specified as mandatory attributes "x" and "y" with double values.
      */
-    AKABindingExpressionTypeCGPointConstant = (1 << 18),
+    AKABindingExpressionTypeCGPointConstant = (1 << 20),
 
     /**
        Specifies a CGSize constant (e.g. $CGSize{w:1.0, h:1.0}).
 
        Size dimensions are specified as mandatory attributes "width" and "height" or "w" and "h" with double values.
      */
-    AKABindingExpressionTypeCGSizeConstant = (1 << 19),
+    AKABindingExpressionTypeCGSizeConstant = (1 << 21),
 
     /**
        Specifies a CGRect constant (e.g. $CGRect{x:1.0, y:1.0, w:1.0, h:1.0}).
 
        Rectangle coordinates and dimensions are specified as mandatory attributes "x", "y", "width", "height" or "w", "h" with double values.
      */
-    AKABindingExpressionTypeCGRectConstant = (1 << 20),
+    AKABindingExpressionTypeCGRectConstant = (1 << 22),
 
     /**
        Specifies a UIFont constant (e.g. $UIFont{name:"Helvetica Neue", size:15.0}).
 
        TODO: document attributes.
      */
-    AKABindingExpressionTypeUIFontConstant = (1 << 21),
+    AKABindingExpressionTypeUIFontConstant = (1 << 23),
 
     /**
        Specifies all key path types (unqualified, data context, root data context, control).
@@ -224,13 +262,13 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 #pragma mark - Initialization
 
 /**
- Initializes the binding specification from its serialized from.
+   Initializes the binding specification from its serialized from.
 
- @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
+   @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
 
- @param dictionary a dictionary containing the serialized binding specification
+   @param dictionary a dictionary containing the serialized binding specification
 
- @return the new binding specification
+   @return the new binding specification
  */
 - (instancetype _Nullable)                 initWithDictionary:(req_NSDictionary)dictionary;
 
@@ -240,7 +278,7 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 
 #pragma mark - Properties
 
-@property(nonatomic, readonly, nullable) Class                              bindingType;
+@property(nonatomic, readonly, nullable) Class bindingType;
 
 @property(nonatomic, readonly, nonnull) AKABindingProvider*                 bindingProvider;
 
@@ -257,34 +295,34 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 /// @name Constants
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingType. The entry is optional and specifies a sub class of AKABinding.
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingType. The entry is optional and specifies a sub class of AKABinding.
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationBindingTypeKey;
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingProvider. The entry is optional and specifies a sub class of AKABindingProvider. The corresponding property returns the shared instance of the provider.
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingProvider. The entry is optional and specifies a sub class of AKABindingProvider. The corresponding property returns the shared instance of the provider.
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationBindingProviderTypeKey;
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingTargetSpecification. The entry is optional and specifies an AKATypePattern or a serialized type pattern, see [AKATypePattern initWithDictionary:], [AKATypePattern initWithArrayOfClasses:] and [AKATypePattern initWithClass:] for possible values.
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property bindingTargetSpecification. The entry is optional and specifies an AKATypePattern or a serialized type pattern, see [AKATypePattern initWithDictionary:], [AKATypePattern initWithArrayOfClasses:] and [AKATypePattern initWithClass:] for possible values.
 
- @see AKABindingTargetSpecification AKATypePattern
+   @see AKABindingTargetSpecification AKATypePattern
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationBindingTargetSpecificationKey;
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property expressionType. The entry is optional and specifies an options set (AKABindingExpressionType) which specifies the set of valid primary expression types. If not defined, all expression types--including no expression--are valid.
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property expressionType. The entry is optional and specifies an options set (AKABindingExpressionType) which specifies the set of valid primary expression types. If not defined, all expression types--including no expression--are valid.
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationBindingExpressionType;
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property arrayItemBindingProvider. The entry is optional and only valid if the primary expression is (or can be) an array (AKABindingExpressionTypeArray).
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property arrayItemBindingProvider. The entry is optional and only valid if the primary expression is (or can be) an array (AKABindingExpressionTypeArray).
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationArrayItemBindingProviderTypeKey;
 
 /**
- Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property attributes. The entry is optional. If specified, a dictionary with keys of type string containing valid identifiers has to be provided. Attribute values can be instances of AKABindingAttributeSpecification or dictionaries containing serialized attribute binding specifications.
+   Key in the serialized AKABindingSpecification and AKABindingAttributeSpecification dictionaries corresponding to the property attributes. The entry is optional. If specified, a dictionary with keys of type string containing valid identifiers has to be provided. Attribute values can be instances of AKABindingAttributeSpecification or dictionaries containing serialized attribute binding specifications.
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey;
 
@@ -328,8 +366,9 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 /**
  * Specifies the binding provider to be used for items in primary expressions of array type.
  */
-@property(nonatomic, readonly, nullable) AKABindingProvider*                arrayItemBindingProvider;
+@property(nonatomic, readonly, nullable) AKABindingProvider*     arrayItemBindingProvider;
 
+@property(nonatomic, readonly) BOOL allowUnspecifiedAttributes;
 @end
 
 @interface AKABindingAttributeSpecification: AKABindingSpecification
@@ -338,25 +377,25 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 /// @name Constants
 
 /**
-Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property required. The entry is optional defaulting to NO and specifies whether the attribute is required in applicable binding expressions.
-*/
-FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationRequiredKey;
+   Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property required. The entry is optional defaulting to NO and specifies whether the attribute is required in applicable binding expressions.
+ */
+                                             FOUNDATION_EXPORT NSString * _Nonnull const kAKABindingAttributesSpecificationRequiredKey;
 
 /**
- Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property use. The entry is mandatory defaulting to AKABindingAttributeUseIgnore and specifies how the attribute is processed by the binding provider when setting up a binding.
+   Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property use. The entry is mandatory defaulting to AKABindingAttributeUseIgnore and specifies how the attribute is processed by the binding provider when setting up a binding.
 
- @see AKABindingAttributeUse
- @see kAKABindingAttributesSpecificationBindingPropertyKey
+   @see AKABindingAttributeUse
+   @see kAKABindingAttributesSpecificationBindingPropertyKey
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationUseKey;
 
 /**
- Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property bindingProperty. The entry is optional defaulting to attribute's name and specifies the target property in the owner binding, that will be setup using this attribute.
+   Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property bindingProperty. The entry is optional defaulting to attribute's name and specifies the target property in the owner binding, that will be setup using this attribute.
 
- It is invalid to specify a bindingProperty for AKABindingAttributeUseIgnore.
+   It is invalid to specify a bindingProperty for AKABindingAttributeUseIgnore.
 
- @see kAKABindingAttributesSpecificationUseKey
- @see AKABindingAttributeUse
+   @see kAKABindingAttributesSpecificationUseKey
+   @see AKABindingAttributeUse
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationBindingPropertyKey;
 
@@ -364,15 +403,15 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationBin
 /// @name Initialization
 
 /**
- Initializes the binding attribute specification from its serialized from.
+   Initializes the binding attribute specification from its serialized from.
 
- @param dictionary a dictionary containing the serialized binding specification
+   @param dictionary a dictionary containing the serialized binding specification
 
- @return the new binding attribute specification
+   @return the new binding attribute specification
 
- @see AKABindingSpecification
- @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
- @see kAKABindingAttributesSpecificationRequiredKey kAKABindingAttributesSpecificationUseKey kAKABindingAttributesSpecificationBindingPropertyKey
+   @see AKABindingSpecification
+   @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
+   @see kAKABindingAttributesSpecificationRequiredKey kAKABindingAttributesSpecificationUseKey kAKABindingAttributesSpecificationBindingPropertyKey
  */
 - (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
 - (void)addToDictionary:(req_NSMutableDictionary)specDictionary;

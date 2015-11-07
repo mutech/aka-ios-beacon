@@ -52,7 +52,6 @@
 		8E46D4091BEB73D6002E497B /* AKAEmailValidatorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7233B91B00240200D647A9 /* AKAEmailValidatorTest.m */; };
 		8E46D40A1BEB73D6002E497B /* AKAThemeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7233BA1B00240200D647A9 /* AKAThemeTests.m */; };
 		8E46D40B1BEB73D6002E497B /* AKABindingExpressionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E225FDE1BADBED000BC070F /* AKABindingExpressionTest.m */; };
-		8E46D40D1BEB73D6002E497B /* AKABindingProviderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EC64DD91BB0CDDB00508CB3 /* AKABindingProviderTest.m */; };
 		8E482C771BC2D96400FF7484 /* AKAPropertyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E482C751BC2D96400FF7484 /* AKAPropertyBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E482C781BC2D96400FF7484 /* AKAPropertyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E482C761BC2D96400FF7484 /* AKAPropertyBinding.m */; };
 		8E4F0A6F1BE3D8BA006D8876 /* UISlider+AKAIBBindingProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E4F0A6D1BE3D8BA006D8876 /* UISlider+AKAIBBindingProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -350,7 +349,6 @@
 		8EC264C21BC32AC500DE89B5 /* AKANSEnumerations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKANSEnumerations.m; sourceTree = "<group>"; };
 		8EC264C51BC34DD200DE89B5 /* AKABinding_AKABinding_formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABinding_AKABinding_formatter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8EC264C61BC34DD200DE89B5 /* AKABinding_AKABinding_formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_AKABinding_formatter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		8EC64DD91BB0CDDB00508CB3 /* AKABindingProviderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABindingProviderTest.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACompositeControlView.h; sourceTree = "<group>"; };
 		8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACompositeControlView.m; sourceTree = "<group>"; };
 		8ED585491BB9876E00378565 /* AKABindingProvider_UITextField_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingProvider_UITextField_textBinding.h; sourceTree = "<group>"; };
@@ -495,7 +493,6 @@
 				8E7233BA1B00240200D647A9 /* AKAThemeTests.m */,
 				8E225FDE1BADBED000BC070F /* AKABindingExpressionTest.m */,
 				8EB1BCA11BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m */,
-				8EC64DD91BB0CDDB00508CB3 /* AKABindingProviderTest.m */,
 				8E46D4011BEB7394002E497B /* Info.plist */,
 			);
 			path = AKABeaconTests;
@@ -1130,7 +1127,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E46D4091BEB73D6002E497B /* AKAEmailValidatorTest.m in Sources */,
-				8E46D40D1BEB73D6002E497B /* AKABindingProviderTest.m in Sources */,
 				8E46D40A1BEB73D6002E497B /* AKAThemeTests.m in Sources */,
 				8E46D4001BEB7394002E497B /* AKABeaconTests.m in Sources */,
 				8E46D4081BEB73B7002E497B /* AKAControlTests.m in Sources */,
@@ -1428,6 +1424,7 @@
 				8E46D4071BEB7394002E497B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8E7232EA1B00224400D647A9 /* Build configuration list for PBXProject "AKABeacon" */ = {
 			isa = XCConfigurationList;

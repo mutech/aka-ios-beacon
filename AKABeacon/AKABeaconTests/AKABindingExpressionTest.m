@@ -13,6 +13,27 @@
 #import "AKABindingExpression.h"
 #import "NSScanner+AKABindingExpressionParser.h"
 #import "AKABindingExpression_Internal.h"
+#import "AKABindingProvider.h"
+
+@interface TestBindingProvider: AKABindingProvider {
+    AKABindingSpecification* _specification;
+}
+- (instancetype)initWithSpecification:(NSDictionary*)specification;
+@end
+@implementation TestBindingProvider
+- (instancetype)initWithSpecification:(NSDictionary *)specification
+{
+    if (self = [super init])
+    {
+        _specification = [[AKABindingSpecification alloc] initWithDictionary:specification];
+    }
+    return self;
+}
+- (AKABindingSpecification *)specification
+{
+    return _specification;
+}
+@end
 
 @interface AKABindingExpressionTest : XCTestCase
 
@@ -45,7 +66,8 @@
     otherColor = convertColorToRGBSpace(otherColor);
     CGColorSpaceRelease(colorSpaceRGB);
 
-    return [selfColor isEqual:otherColor];
+    BOOL result = [selfColor isEqual:otherColor];
+    return result;
 }
 
 @end
@@ -66,6 +88,8 @@
 
 - (void)testBindingProviderValidation
 {
+    // TODO: maybe that's too restrictive, consider to allow everything for unspecified binding expressions
+    // Advantage however is that restrictive policy enforces creation of specs, which might be good...
     NSString* text = @"\"test\" { unknownAttribute: $true { nestedAttribute: $true } }";
 
     AKABindingProvider* provider = [AKABindingProvider new];
@@ -198,6 +222,9 @@
 
 - (void)testParseArrayValidItems
 {
+    AKABindingProvider* provider = [[TestBindingProvider alloc] initWithSpecification:
+                                    @{ @"expressionType": @(AKABindingExpressionTypeArray)
+                                       }];
     NSArray* validArrayExpressions =
     @[ @"[ [ ], $true ]",
        @"[ 0.1, 1, \"zwei\", <NSNumber>, [ \"another array\" ], [ ], $true, $data.model.name ]"
@@ -206,7 +233,6 @@
     for (NSString* text in validArrayExpressions)
     {
         AKABindingExpression* bindingExpression = nil;
-        AKABindingProvider* provider = nil;
         NSError* error;
 
         bindingExpression = [AKABindingExpression bindingExpressionWithString:text
@@ -588,9 +614,11 @@
 
 - (void)testValidColors
 {
-    UIColor* referenceColor = [UIColor colorWithRed:127.0/255 green:0 blue:0 alpha:1.0];
+    CGFloat component = 127/255.0f; // Test fails for 127/255.0 (no f) because of different precision and exact floating point comparison in [UIColor isEqual]
+
+    UIColor* referenceColor = [UIColor colorWithRed:component green:0 blue:0 alpha:1.0];
     NSString* text = (@"[ $color   { red:127,        g:0,     b:0               },"
-                      @"  $UIColor { r:.498039216,   green:0, b:0,    alpha:255 },"
+                      @"  $UIColor { r:0.498039216,   green:0, b:0,    alpha:255 },"
                       @"  $CGColor { r:127,          g:0.0,   blue:0, a:1.0     } ]");
     NSScanner* scanner = [NSScanner scannerWithString:text];
     AKABindingExpression* expression = nil;
@@ -616,6 +644,27 @@
             XCTAssertEqualObjects(@"$CGColor { r:127, g:0, b:0, a:255 }", colorExpression.description);
         }
         XCTAssert([color isEqualToColor:referenceColor], @"%@ != %@", color, referenceColor);
+    }
+}
+
+- (void)testColorComponentRendering
+{
+    for (int component = 0; component <= 255; ++component)
+    {
+        NSString* text = [NSString stringWithFormat:@"$UIColor { r:%d, g:0, b:0, a:255 }", component];
+
+        NSScanner* scanner = [NSScanner scannerWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression withProvider:nil error:&error];
+
+        XCTAssertTrue(result);
+        XCTAssertNil(error);
+
+        XCTAssert([AKAUIColorConstantBindingExpression class] == expression.class);
+        AKAColorConstantBindingExpression* colorExpression = (id)expression;
+
+        XCTAssertEqualObjects(text, colorExpression.description);
     }
 }
 

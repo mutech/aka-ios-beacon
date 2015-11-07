@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
     spec.homepage      = 'https://github.com/mutech/aka-ios-beacon/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
     spec.summary       = 'The missing binding framework for iOS'
-    spec.source        = { :git => 'github.com/mutech/aka-ios-beacon.git', :tag => spec.version.to_s }
+    spec.source        = { :git => 'https://github.com/mutech/aka-ios-beacon.git', :tag => spec.version.to_s }
 
     spec.source_files  = 'AKABeacon/AKABeacon/Classes/*.{h,m}'
     spec.private_header_files = 'AKABeacon/AKABeacon/Classes/*_Internal.h' #, 'AKABeacon/AKABeacon/AKABeacon.h'

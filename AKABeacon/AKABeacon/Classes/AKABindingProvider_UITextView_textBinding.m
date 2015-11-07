@@ -35,7 +35,7 @@
         @{ @"bindingType":          [AKABinding_UITextView_textBinding class],
            @"bindingProviderType":  [AKABindingProvider_UITextView_textBinding class],
            @"targetType":           [UITextView class],
-           @"expressionType":       @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
            @"attributes":
                @{ @"liveModelUpdates":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),

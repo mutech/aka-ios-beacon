@@ -7,7 +7,7 @@ xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
 
 use_frameworks!
 
-platform :ios, '8.0'
+platform :ios, '8.2'
 
 target :AKABeacon, :exclusive => true do
     target :AKABeaconTests, :exclusive => true do

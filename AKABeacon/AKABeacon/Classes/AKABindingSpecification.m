@@ -319,6 +319,117 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 @implementation AKABindingExpressionSpecification
 
++ (NSDictionary<NSNumber*, NSString*>*) expressionTypeNamesByCode
+{
+    static NSDictionary<NSNumber*, NSString*>* result = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result =
+        @{
+          @(AKABindingExpressionTypeNone):                     @"None",
+          @(AKABindingExpressionTypeUnqualifiedKeyPath):       @"UnqualifiedKeyPath",
+          @(AKABindingExpressionTypeDataContextKeyPath):       @"DataContextKeyPath",
+          @(AKABindingExpressionTypeRootDataContextKeyPath):   @"RootDataContextKeyPath",
+          @(AKABindingExpressionTypeControlKeyPath):           @"ControlKeyPath",
+          @(AKABindingExpressionTypeArray):                    @"Array",
+          @(AKABindingExpressionTypeClassConstant):            @"ClassConstant",
+          @(AKABindingExpressionTypeStringConstant):           @"StringConstant",
+          @(AKABindingExpressionTypeBooleanConstant):          @"BooleanConstant",
+          @(AKABindingExpressionTypeIntegerConstant):          @"IntegerConstant",
+          @(AKABindingExpressionTypeDoubleConstant):           @"DoubleConstant",
+          @(AKABindingExpressionTypeOptionsConstant):          @"OptionsConstant",
+          @(AKABindingExpressionTypeEnumConstant):             @"EnumConstant",
+          @(AKABindingExpressionTypeUIColorConstant):          @"UIColorConstant",
+          @(AKABindingExpressionTypeCGColorConstant):          @"CGColorConstant",
+          @(AKABindingExpressionTypeCGPointConstant):          @"CGPointConstant",
+          @(AKABindingExpressionTypeCGSizeConstant):           @"CGSizeConstant",
+          @(AKABindingExpressionTypeCGRectConstant):           @"CGRectConstant",
+          @(AKABindingExpressionTypeUIFontConstant):           @"UIFontConstant"
+          };
+    });
+
+    return result;
+}
+
++ (NSDictionary<NSNumber*, NSString*>*) expressionTypeSetNamesByCode
+{
+    static NSDictionary<NSNumber*, NSString*>* result = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @(AKABindingExpressionTypeAnyKeyPath):               @"AnyKeyPath",
+           @(AKABindingExpressionTypeClass):                    @"Class",
+           @(AKABindingExpressionTypeString):                   @"String",
+           @(AKABindingExpressionTypeBoolean):                  @"Boolean",
+           @(AKABindingExpressionTypeInteger):                  @"Integer",
+           @(AKABindingExpressionTypeDouble):                   @"Double",
+           @(AKABindingExpressionTypeAnyColorConstant):         @"AnyColorConstant",
+           @(AKABindingExpressionTypeAnyNumberConstant):        @"AnyNumberConstant",
+           @(AKABindingExpressionTypeAnyNumberConstant):        @"Number",
+           @(AKABindingExpressionTypeAnyConstant):              @"AnyConstant",
+           @(AKABindingExpressionTypeAny):                      @"Any"
+          };
+    });
+    
+    return result;
+}
+
++ (NSString*)expressionTypeDescription:(AKABindingExpressionType)expressionType
+{
+    NSString* result = [self expressionTypeNamesByCode][@(expressionType)];
+
+    if (result == nil)
+    {
+        result = [self expressionTypeSetDescription:expressionType];
+    }
+
+    return result;
+}
+
++ (NSString*)expressionTypeSetDescription:(AKABindingExpressionType)expressionType
+{
+    NSString* result = nil;
+    if (expressionType > 0)
+    {
+        result = [self expressionTypeSetNamesByCode][@(expressionType)];
+
+        NSMutableArray* options = [NSMutableArray new];
+        
+        for (AKABindingExpressionType i=AKABindingExpressionTypeNone;
+             i <= expressionType;
+             i = i << 1)
+        {
+            if (expressionType & i)
+            {
+                NSString* name = [self expressionTypeNamesByCode][@(i)];
+                if (name)
+                {
+                    [options addObject:name];
+                }
+                else
+                {
+                    AKALogError(@"expressionTypeSetDescription: Invalid expression type %@", @(i));
+                }
+            }
+        }
+        if (options.count > 0)
+        {
+            if (result.length)
+            {
+                result = [NSString stringWithFormat:@"%@ {%@}", result, [options componentsJoinedByString:@", "]];
+            }
+            else
+            {
+                result = [NSString stringWithFormat:@"{%@}", [options componentsJoinedByString:@", "]];
+            }
+        }
+        return [NSString stringWithString:result];
+    }
+    return result;
+}
+
 - (instancetype)                            initWithDictionary:(req_NSDictionary)specDictionary
 {
     if (self = [super init])
@@ -359,6 +470,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
          }];
         _attributes = [NSDictionary dictionaryWithDictionary:attributeSpecifications];
 
+        _allowUnspecifiedAttributes = [specDictionary aka_booleanForKey:@"allowUnspecifiedAttributes" withDefault:NO];
+        
         NSAssert(_arrayItemBindingProvider == nil || ((AKABindingExpressionTypeArray & _expressionType) != 0), @"Array item binding provider specified even though the binding expressions type constraints exclude the array binding type. This is by itself not a problem but constitutes an inconsisten binding specification. Please review the specification %@", self);
     }
 

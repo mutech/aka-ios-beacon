@@ -391,7 +391,13 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="floatValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                                            <string key="value">floatValue {
+	numberFormatter: {
+		numberStyle: "CurrencyStyle"
+	}
+}</string>
+                                                        </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
@@ -432,7 +438,12 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="boolValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                                            <string key="value">boolValue {
+	textForYes: "Yes",
+	textForNo: "No"
+}</string>
+                                                        </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>
@@ -561,7 +572,14 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                     <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue"/>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                                            <string key="value">dateValue {
+	dateFormatter: {
+		dateStyle: "LongStyle",
+		timeStyle: "LongStyle"
+	}
+}</string>
+                                                        </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                             </subviews>

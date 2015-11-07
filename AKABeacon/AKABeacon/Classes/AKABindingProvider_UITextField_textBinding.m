@@ -39,7 +39,7 @@
         @{ @"bindingType":          [AKABinding_UITextField_textBinding class],
            @"bindingProviderType":  [AKABindingProvider_UITextField_textBinding class],
            @"targetType":           [UITextField class],
-           @"expressionType":       @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
            @"attributes":
                @{ @"liveModelUpdates":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),

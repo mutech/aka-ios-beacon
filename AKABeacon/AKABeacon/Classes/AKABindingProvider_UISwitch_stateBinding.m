@@ -38,7 +38,7 @@
         @{ @"bindingType":              [AKABinding_UISwitch_stateBinding class],
            @"bindingProviderType":      [AKABindingProvider_UISwitch_stateBinding class],
            @"targetType":               [UISwitch class],
-           @"expressionType":           @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray)
+           @"expressionType":           @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray)
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec];
     });

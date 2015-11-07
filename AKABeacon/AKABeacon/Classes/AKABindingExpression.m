@@ -1456,6 +1456,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeAbstract;
+}
+
 #pragma mark - Access
 
 - (UIColor*)UIColor
@@ -1527,6 +1534,14 @@
 
 @implementation AKAUIColorConstantBindingExpression
 
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeUIColorConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -1558,6 +1573,14 @@
 - (UIColor*)UIColor
 {
     return super.constant;
+}
+
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeCGColorConstant;
 }
 
 #pragma mark - Serialization
@@ -2155,6 +2178,14 @@
     return self;
 }
 
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeUIFontConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -2258,6 +2289,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeCGPointConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -2320,6 +2358,13 @@
     self = [super initWithConstant:value attributes:nil provider:provider];
 
     return self;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeCGSizeConstant;
 }
 
 #pragma mark - Serialization
@@ -2392,6 +2437,13 @@
     return self;
 }
 
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeCGRectConstant;
+}
+
 #pragma mark - Serialization
 
 - (NSString*)keyword
@@ -2442,6 +2494,13 @@
     return [self initWithKeyPath:primaryExpression
                       attributes:attributes
                         provider:provider];
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeUnqualifiedKeyPath;
 }
 
 #pragma mark - Binding Support
@@ -2545,6 +2604,14 @@
     return result;
 }
 
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeDataContextKeyPath;
+}
+
 #pragma mark - Diagnostics
 
 - (NSString*)constantStringValueOrDescription
@@ -2587,6 +2654,13 @@
     }
 
     return result;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeRootDataContextKeyPath;
 }
 
 #pragma mark - Diagnostics
@@ -2639,6 +2713,13 @@
     }
 
     return result;
+}
+
+#pragma mark - Properties
+
+- (AKABindingExpressionType)expressionType
+{
+    return AKABindingExpressionTypeControlKeyPath;
 }
 
 #pragma mark - Diagnostics

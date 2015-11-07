@@ -48,7 +48,7 @@
         @{ @"bindingType":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
            @"bindingProviderType":      [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding class],
            @"targetType":               [AKAPickerKeyboardTriggerView class],
-           @"expressionType":           @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"expressionType":           @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
            @"attributes":
                @{ @"choices":
                       @{ @"required":        @YES,

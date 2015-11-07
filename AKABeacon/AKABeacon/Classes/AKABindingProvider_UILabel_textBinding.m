@@ -41,7 +41,7 @@
         @{ @"bindingType":          [AKABinding_UILabel_textBinding class],
            @"bindingProviderType":  [AKABindingProvider_UILabel_textBinding class],
            @"targetType":           [UILabel class],
-           @"expressionType":       @(AKABindingExpressionTypeAny ^ AKABindingExpressionTypeArray),
+           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
            @"attributes":
                @{ @"numberFormatter":
                       @{ @"bindingType":     [AKABinding_AKABinding_numberFormatter class],

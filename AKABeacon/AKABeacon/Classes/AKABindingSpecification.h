@@ -56,14 +56,16 @@ typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
 typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 {
     /**
-       Specifies a binding expression with no primary expression.
-     */
-    AKABindingExpressionTypeNone = (1 << 0),
-
-    /**
      Specifies an abstract binding expression type. Abstract types cannot be validly instanciated and it is not valid to include the abstract type in a set of valid expression types in binding specifications.
      */
     AKABindingExpressionTypeAbstract = (1 << 0),
+
+    // None has to be the first valid type:
+
+    /**
+     Specifies a binding expression with no primary expression.
+     */
+    AKABindingExpressionTypeNone = (1 << 1),
 
     /**
        Specifies an unqualified key path, e.g. a key path with no leading scope (such as $data, $root, $control)
@@ -89,7 +91,7 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeControlKeyPath = (1 << 5),
 
     /**
-       Specifies an array primary expression (e.g. ["x" "y"]).
+       Specifies an array primary expression (e.g. ["x", "y"]).
      */
     AKABindingExpressionTypeArray = (1 << 6),
 
@@ -104,30 +106,25 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeStringConstant = (1 << 11),
 
     /**
-       @warning do not use, this will most likely be removed or become a private constant. Use AKABindingExpressionTypeAnyNumberConstant to specify any valid number constant.
-     */
-    AKABindingExpressionTypeNumberConstant = (1 << 12),
-
-    /**
        Specifies a boolean constant expression.
 
        Boolean values are specified as $true or $false. Boolean values can be omitted in attribute specifications ({a, b, c} instead of {a:$true, b:$true, c:$true}), then the presence of an attribute means the value $true, and its absence $false.
      */
-    AKABindingExpressionTypeBooleanConstant = (1 << 13),
+    AKABindingExpressionTypeBooleanConstant = (1 << 12),
 
     /**
        Specifies an integer constant (e.g. 123).
 
        All integer constants are internally represented as NSNumber initialized with a long long value.
      */
-    AKABindingExpressionTypeIntegerConstant = (1 << 14),
+    AKABindingExpressionTypeIntegerConstant = (1 << 13),
 
     /**
        Specifies a double constant (e.g. 0.5).
 
        Double constants are distinguished from integer constants by the presence of a decimal point. So '0' is an integer and '.0' or '0.' is a double.
      */
-    AKABindingExpressionTypeDoubleConstant = (1 << 17),
+    AKABindingExpressionTypeDoubleConstant = (1 << 14),
 
     /**
        Specifies an options constant (e.g. $options.OptionType { Value1, Value2 })
@@ -140,7 +137,7 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
      
        If an options constant does not specify a value, the value 0 is assumed.
      */
-    AKABindingExpressionTypeOptionsConstant = (1 << 18),
+    AKABindingExpressionTypeOptionsConstant = (1 << 15),
 
     /**
      Specifies an enumeration constant (e.g. $enum.EnumType.Value or $enum.Value)
@@ -153,54 +150,57 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
      
      If an enumeration constant does not specify a value, the value nil is assumed.
      */
-    AKABindingExpressionTypeEnumConstant = (1 << 19),
+    AKABindingExpressionTypeEnumConstant = (1 << 16),
 
     /**
        Specifies a UIColor constant (e.g. $UIColor{r:123, g:123, b:123, a:255})
 
        Color constant components are specified by mandatory attributes "red", "green" and "blue" and an optional alpha channel or "r", "g", "b" and "a". Components can be specified as integer values in the range [0 .. 255] or as double values in the range [0.0 .. 1.0].
      */
-    AKABindingExpressionTypeUIColorConstant = (1 << 18),
+    AKABindingExpressionTypeUIColorConstant = (1 << 17),
 
     /**
        Specifies a CGColor constant (e.g. $CGColor{r:123, g:123, b:123, a:255}).
 
        Color constant components are given as mandatory attributes "red", "green" and "blue" and an optional alpha channel or "r", "g", "b" and "a". Components can be specified as integer values in the range [0 .. 255] or as double values in the range [0.0 .. 1.0].
      */
-    AKABindingExpressionTypeCGColorConstant = (1 << 19),
+    AKABindingExpressionTypeCGColorConstant = (1 << 18),
 
     /**
        Specifies a CGPoint constant (e.g. $CGPoint{x:0.0, y:0.0}).
 
        Point coordinates are specified as mandatory attributes "x" and "y" with double values.
      */
-    AKABindingExpressionTypeCGPointConstant = (1 << 20),
+    AKABindingExpressionTypeCGPointConstant = (1 << 19),
 
     /**
        Specifies a CGSize constant (e.g. $CGSize{w:1.0, h:1.0}).
 
        Size dimensions are specified as mandatory attributes "width" and "height" or "w" and "h" with double values.
      */
-    AKABindingExpressionTypeCGSizeConstant = (1 << 21),
+    AKABindingExpressionTypeCGSizeConstant = (1 << 20),
 
     /**
        Specifies a CGRect constant (e.g. $CGRect{x:1.0, y:1.0, w:1.0, h:1.0}).
 
        Rectangle coordinates and dimensions are specified as mandatory attributes "x", "y", "width", "height" or "w", "h" with double values.
      */
-    AKABindingExpressionTypeCGRectConstant = (1 << 22),
+    AKABindingExpressionTypeCGRectConstant = (1 << 21),
 
     /**
        Specifies a UIFont constant (e.g. $UIFont{name:"Helvetica Neue", size:15.0}).
 
        TODO: document attributes.
      */
-    AKABindingExpressionTypeUIFontConstant = (1 << 23),
+    AKABindingExpressionTypeUIFontConstant = (1 << 22),
 
     /**
        Specifies all key path types (unqualified, data context, root data context, control).
      */
-    AKABindingExpressionTypeAnyKeyPath = (AKABindingExpressionTypeDataContextKeyPath | AKABindingExpressionTypeRootDataContextKeyPath | AKABindingExpressionTypeControlKeyPath),
+    AKABindingExpressionTypeAnyKeyPath = (AKABindingExpressionTypeUnqualifiedKeyPath |
+                                          AKABindingExpressionTypeDataContextKeyPath |
+                                          AKABindingExpressionTypeRootDataContextKeyPath |
+                                          AKABindingExpressionTypeControlKeyPath),
 
     /**
        Specifies a class constant or key path expression.
@@ -214,23 +214,24 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 
     /**
        Specifies a boolean or key path expression.
+
+     @note key path expressions might not evaluate to a boolean.
      */
     AKABindingExpressionTypeBoolean = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeBooleanConstant),
 
     /**
        Specifies an integer or key path expression.
+
+     @note key path expressions might not evaluate to an integer.
      */
     AKABindingExpressionTypeInteger = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeIntegerConstant),
 
     /**
        Specifies a double or key path expression.
+
+       @note key path expressions might not evaluate to a double.
      */
     AKABindingExpressionTypeDouble = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeDoubleConstant),
-
-    /**
-       Specifies a number constant or key path expression.
-     */
-    AKABindingExpressionTypeNumber = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNumberConstant),
 
     /**
        Specifies a UIColor or CGColor constant expression.
@@ -238,14 +239,35 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeAnyColorConstant = (AKABindingExpressionTypeUIColorConstant | AKABindingExpressionTypeCGColorConstant),
 
     /**
-       Specifies a number constant expression (integer, double or boolean)
+     Specifies a number constant expression (integer (long logn) or double)
      */
-    AKABindingExpressionTypeAnyNumberConstant = (AKABindingExpressionTypeNumberConstant | AKABindingExpressionTypeBooleanConstant | AKABindingExpressionTypeIntegerConstant | AKABindingExpressionTypeDoubleConstant),
+    AKABindingExpressionTypeAnyNumberConstant = (AKABindingExpressionTypeIntegerConstant |
+                                                 AKABindingExpressionTypeDoubleConstant),
+
+
+    /**
+     Specifies a number constant, key path or enum expression.
+     
+     @note key path and enum expressions might not evaluate to a number.
+     */
+    AKABindingExpressionTypeNumber= (AKABindingExpressionTypeAnyKeyPath |
+                                     AKABindingExpressionTypeAnyNumberConstant |
+                                     AKABindingExpressionTypeEnumConstant |
+                                     AKABindingExpressionTypeOptionsConstant |
+                                     AKABindingExpressionTypeBooleanConstant),
 
     /**
        Specifies a constant expression (string, number constant, color constant, point, size, rectangle or font constant).
      */
-    AKABindingExpressionTypeAnyConstant = (AKABindingExpressionTypeClassConstant | AKABindingExpressionTypeStringConstant | AKABindingExpressionTypeAnyNumberConstant | AKABindingExpressionTypeAnyColorConstant | AKABindingExpressionTypeCGPointConstant | AKABindingExpressionTypeCGSizeConstant | AKABindingExpressionTypeCGRectConstant | AKABindingExpressionTypeUIFontConstant),
+    AKABindingExpressionTypeAnyConstant = (AKABindingExpressionTypeClassConstant     |
+                                           AKABindingExpressionTypeStringConstant    |
+                                           AKABindingExpressionTypeBooleanConstant   |
+                                           AKABindingExpressionTypeAnyNumberConstant |
+                                           AKABindingExpressionTypeAnyColorConstant  |
+                                           AKABindingExpressionTypeCGPointConstant   |
+                                           AKABindingExpressionTypeCGSizeConstant    |
+                                           AKABindingExpressionTypeCGRectConstant    |
+                                           AKABindingExpressionTypeUIFontConstant),
 
     /**
        Specifies any expression (all supported expression types).
@@ -339,6 +361,38 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 @end
 
 @interface AKABindingExpressionSpecification: NSObject
+
+/**
+ Maps expression types (not expression sets, such as AKABindingExpressionTypeAny) to their names.
+
+ @return a dictionary with expression type code to name mappings.
+ */
++ (NSDictionary<NSNumber*, NSString*>*_Nonnull) expressionTypeNamesByCode;
+
+/**
+ Maps expression types sets (not expression, such as AKABindingExpressionBoolean) to their names.
+
+ @return a dictionary with expression type set code to name mappings.
+ */
++ (NSDictionary<NSNumber*, NSString*>*_Nonnull) expressionTypeSetNamesByCode;
+
+/**
+ Returns a description for the specified expression type. If the specified type is a set, the result of expressionTypeSetDescription: is returned instead.
+
+ @param expressionType an expression type or an expression type set.
+
+ @return a string of the form "ExprType" or "ExprTypeSet {ExprType1,...}" or "{ExprType1,...}"
+ */
++ (opt_NSString)expressionTypeDescription:(AKABindingExpressionType)expressionType;
+
+/**
+ Returns a description for the specified expression type set, consisting of the sets name (if it is a named set) and the member types comma separated in curly braces.
+
+ @param expressionType an expression type set.
+
+ @return a string of the form "ExprTypeSet {ExprType1,...}" or "{ExprType1,...}"
+ */
++ (opt_NSString)expressionTypeSetDescription:(AKABindingExpressionType)expressionType;
 
 - (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
 

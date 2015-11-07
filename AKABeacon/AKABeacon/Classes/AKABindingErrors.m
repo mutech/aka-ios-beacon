@@ -17,11 +17,15 @@
         invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
                             expected:(AKABindingExpressionType)expressionTypePattern
 {
-    // TODO: make this human readable:
-    id expressionTypeDescription = @(expressionType);
-    id expressionTypePatternDescription = @(expressionTypePattern);
+    id expressionTypeDescription =
+        [AKABindingExpressionSpecification expressionTypeDescription:expressionType];
+    id expressionTypePatternDescription =
+        [AKABindingExpressionSpecification expressionTypeSetDescription:expressionTypePattern];
 
-    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary type %@ does not match required expression type pattern %@", bindingExpression, expressionTypeDescription, expressionTypePatternDescription];
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary type %@ does not match required expression type pattern %@",
+                        bindingExpression,
+                        expressionTypeDescription,
+                        expressionTypePatternDescription];
     NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
     NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
                                 NSLocalizedFailureReasonErrorKey: reason };

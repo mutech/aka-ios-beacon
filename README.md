@@ -46,10 +46,10 @@ There is a whole lot more to Beacon than just binding values. Go and check it ou
 
 ## Installation & Integration
 
-Beacon will be available as Cocoapod. Until it's published, just clone the repository and add it as developer pod to your app/demo.
+Beacon is available on Cocoapods, at the time of writing 0.1.0-pre.2. This version is not fit for production. Please wait until the "pre" goes away.
 
 ```
-pod "AKABeacon", :path => "<path-to-beacon>"
+pod 'AKABeacon', '~> 0.1.0-pre.2'
 ```
 
 ## Demo
@@ -66,6 +66,6 @@ On the other hand, we desperately seek for feedback, both to make sure that the 
 
 ## License
 
-Beacon will be dual-licensed. The open-source license will be GPL-v3. A license which will allow you to use Beacon in commercial and closed source Apps will be available for free, if you are an Indie Developer or a small company (up to 3 people total) and you are developing your own Apps.
+Beacon will be dual-licensed. The open source license is GPL-v3.
 
-If you want to develop a non-GPL'ed product based on Beacon or if you are service provider developing Apps for somebody else or if your company is not "small" (as defined above), please contact us.
+The details for commercials licensing are not yet set in stone. We plan to offer free licenses for individual developers on a per app and per beacon version basis. Please contact us if you want to use Beacon in a closed source application.

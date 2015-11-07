@@ -185,6 +185,7 @@
 		8EE26D761BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE26D741BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE26D771BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE26D751BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.m */; };
 		8EE26D7F1BCF1E62003ACCEC /* AKAKeyboardActivationSequenceItemProtocol_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE26D7E1BCF1E62003ACCEC /* AKAKeyboardActivationSequenceItemProtocol_Internal.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		8EF05E7A1BED7A1E009C22EB /* AKABeacon.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EF05E791BED7A1E009C22EB /* AKABeacon.podspec */; };
 		B187A281CC495C2D75727887 /* Pods_AKABeacon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C344E80C50DC187C443F60B9 /* Pods_AKABeacon.framework */; };
 		DA81F8D6B57EE3E664AF783A /* AKAThemableCompositeControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA8D2B0F757EACBDA395B8D9 /* AKAThemableCompositeControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */; };
@@ -385,7 +386,7 @@
 		8EE26D751BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKAScalarControl+ControlViewBindingDelegate.m"; sourceTree = "<group>"; };
 		8EE26D7E1BCF1E62003ACCEC /* AKAKeyboardActivationSequenceItemProtocol_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKeyboardActivationSequenceItemProtocol_Internal.h; sourceTree = "<group>"; };
 		8EE26D951BD06EF2003ACCEC /* AKAControlConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKAControlConfiguration.h; sourceTree = "<group>"; };
-		8EEFCAE81B9FC882004ACBD2 /* AKABeacon.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKABeacon.podspec; path = /Users/mu/git/aka.commons/AKABeacon.podspec; sourceTree = "<absolute>"; };
+		8EF05E791BED7A1E009C22EB /* AKABeacon.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = AKABeacon.podspec; path = ../AKABeacon.podspec; sourceTree = "<group>"; };
 		C344E80C50DC187C443F60B9 /* Pods_AKABeacon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeacon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAThemableCompositeControlView.m; sourceTree = "<group>"; };
 		DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemableCompositeControlView.h; sourceTree = "<group>"; };
@@ -600,7 +601,7 @@
 		8E7232E61B00224400D647A9 = {
 			isa = PBXGroup;
 			children = (
-				8EEFCAE81B9FC882004ACBD2 /* AKABeacon.podspec */,
+				8EF05E791BED7A1E009C22EB /* AKABeacon.podspec */,
 				8E7232F21B00224400D647A9 /* AKABeacon */,
 				8E46D3FE1BEB7394002E497B /* AKABeaconTests */,
 				8E7232F11B00224400D647A9 /* Products */,
@@ -1083,6 +1084,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EF05E7A1BED7A1E009C22EB /* AKABeacon.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

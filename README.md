@@ -46,10 +46,10 @@ There is a whole lot more to Beacon than just binding values. Go and check it ou
 
 ## Installation & Integration
 
-Beacon is available on Cocoapods, at the time of writing 0.1.0-pre.2. This version is not fit for production. Please wait until the "pre" goes away.
+Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away.
 
 ```
-pod 'AKABeacon', '~> 0.1.0-pre.2'
+pod 'AKABeacon', :head
 ```
 
 ## Demo

@@ -56,7 +56,7 @@
                          }
                   }
            };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
     return result;
 }

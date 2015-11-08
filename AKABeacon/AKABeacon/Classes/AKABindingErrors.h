@@ -15,7 +15,10 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorUndefinedBindingSource = AKABindingErrorCodesMin,
 
     AKABindingErrorInvalidPrimaryBindingExpressionType,
-
+    AKABindingErrorInvalidPrimaryBindingExpressionNoEnumerationType,
+    AKABindingErrorInvalidPrimaryBindingExpressionMismatchingEnumerationType,
+    AKABindingErrorInvalidPrimaryBindingExpressionNoOptionsType,
+    AKABindingErrorInvalidPrimaryBindingExpressionMismatchingOptionsType,
     AKABindingErrorInvalidAttriuteBindingExpressionType,
     AKABindingErrorInvalidBindingExpressionMissingRequiredAttribute,
     AKABindingErrorInvalidBindingExpressionUnknownAttribute,
@@ -33,6 +36,18 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 + (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
         invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
                             expected:(AKABindingExpressionType)expressionTypePattern;
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+    noEnumerationTypeInSpecification:(AKABindingExpressionSpecification*)specification;
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+             enumerationTypeMismatch:(AKABindingExpressionSpecification*)specification;
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+        noOptionsTypeInSpecification:(AKABindingExpressionSpecification*)specification;
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                 optionsTypeMismatch:(AKABindingExpressionSpecification*)specification;
 
 #pragma mark - Binding Expression Attribute Validation
 

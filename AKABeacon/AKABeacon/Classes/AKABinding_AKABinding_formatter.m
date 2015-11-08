@@ -7,9 +7,13 @@
 //
 
 @import AKACommons.AKAErrors;
+@import AKACommons.AKALog;
+
+#include <objc/runtime.h>
 
 #import "AKABinding_AKABinding_formatter.h"
-#include <objc/runtime.h>
+#import "AKABindingSpecification.h"
+#import "AKANSEnumerations.h"
 
 #pragma mark - AKABindingProvider_AKABinding_formatter - Private Interface
 #pragma mark -
@@ -30,24 +34,58 @@
     return instance;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self registerEnumerationAndOptionTypes];
+    }
+    return self;
+}
+
 #pragma mark - Binding Expression Validation
+
+- (void)registerEnumerationAndOptionTypes
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSFormattingContext"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    formattingContextsByName]];
+    });
+}
 
 - (AKABindingSpecification*)                 specification
 {
-    Class bindingType = [AKABinding_AKABinding_formatter class];
-    Class providerType = self.class;
-
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
+        Class bindingType = [AKABinding_AKABinding_formatter class];
+        Class providerType = self.class;
+        
         NSDictionary* spec =
             @{ @"bindingType":                  bindingType,
                @"bindingProviderType":          providerType,
                @"targetType":                   [AKAProperty class],
                @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass),
-               @"allowUnspecifiedAttributes":   @YES };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+               @"attributes":
+                   @{ @"formattingContext":
+                          @{ @"required":        @NO,
+                             @"use":             @(AKABindingAttributeUseIgnore),
+                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                             @"enumerationType": @"NSFormattingContext" },
+
+// NSFormatter does not itself provide a locale property:
+//                      @"locale":
+//                          @{ @"required":        @NO,
+//                             @"use":             @(AKABindingAttributeUseIgnore),
+//                             @"expressionType":  @(AKABindingExpressionTypeString) }
+                      },
+               @"allowUnspecifiedAttributes":   @YES
+               };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
@@ -129,9 +167,16 @@
                  {
                      value = converter(value);
                  }
-                 [self->_formatter
-                  setValue:value
-                    forKey:key];
+                 if (value != nil)
+                 {
+                     [self->_formatter
+                      setValue:value
+                      forKey:key];
+                 }
+                 else
+                 {
+                     AKALogError(@"Attempt to set undefined value for key %@ in formatter %@", key, self->_formatter);
+                 }
              }];
         }
 
@@ -165,7 +210,8 @@
     (void)newSourceValue;
     (void)sourceValue;
 
-    // TODO: allow updating the target number formatter, later though
+    // TODO: allow updating the target formatter, later though. We need to ensure that the target
+    // views layout is updated if necessary
     return NO;
 }
 

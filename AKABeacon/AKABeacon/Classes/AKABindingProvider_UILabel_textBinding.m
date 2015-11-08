@@ -44,32 +44,17 @@
            @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
            @"attributes":
                @{ @"numberFormatter":
-                      @{ @"bindingType":     [AKABinding_AKABinding_numberFormatter class],
-                         @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
-                         @"targetType":      [AKABinding class],
-                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
-                             AKABindingExpressionTypeNone),
-                         @"allowUnspecifiedAttributes": @YES,
+                      @{ @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"numberFormatter"
                          },
                   @"dateFormatter":
-                      @{ @"bindingType":     [AKABinding_AKABinding_dateFormatter class],
-                         @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
-                         @"targetType":      [AKABinding class],
-                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
-                             AKABindingExpressionTypeNone),
-                         @"allowUnspecifiedAttributes": @YES,
+                      @{ @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"dateFormatter"
                          },
                   @"formatter":
-                      @{ @"bindingType":     [AKABinding_AKABinding_formatter class],
-                         @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
-                         @"targetType":      [AKABinding class],
-                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath |
-                             AKABindingExpressionTypeClass),
-                         @"allowUnspecifiedAttributes": @YES,
+                      @{ @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"formatter"
                          },
@@ -90,7 +75,7 @@
                          },
                   },
            };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
     return result;
 }

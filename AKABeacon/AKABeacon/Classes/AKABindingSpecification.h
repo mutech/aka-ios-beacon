@@ -9,23 +9,39 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
+
+#pragma mark - Forward Declaration & Type Aliases
+#pragma mark -
+
 @class AKABindingProvider;
 typedef AKABindingProvider* _Nullable opt_AKABindingProvider;
 
 @class AKATypePattern;
+typedef AKATypePattern*_Nonnull                         req_AKATypePattern;
+typedef AKATypePattern*_Nullable                        opt_AKATypePattern;
+
+@class AKABindingSpecification;
+typedef AKABindingSpecification*_Nonnull                req_AKABindingSpecification;
+typedef AKABindingSpecification*_Nullable               opt_AKABindingSpecification;
 
 @class AKABindingTargetSpecification;
+typedef AKABindingTargetSpecification*_Nonnull          req_AKABindingTargetSpecification;
+typedef AKABindingTargetSpecification*_Nullable         opt_AKABindingTargetSpecification;
 
 @class AKABindingExpressionSpecification;
-typedef AKABindingExpressionSpecification* _Nonnull req_AKABindingExpressionSpecification;
-typedef AKABindingExpressionSpecification* _Nullable opt_AKABindingExpressionSpecification;
+typedef AKABindingExpressionSpecification* _Nonnull     req_AKABindingExpressionSpecification;
+typedef AKABindingExpressionSpecification* _Nullable    opt_AKABindingExpressionSpecification;
 
 @class AKABindingAttributeSpecification;
 typedef AKABindingAttributeSpecification* _Nonnull req_AKABindingAttributeSpecification;
 typedef AKABindingAttributeSpecification* _Nullable opt_AKABindingAttributeSpecification;
 
+
+#pragma mark - AKABindingAttributeUse (Enumeration)
+#pragma mark -
+
 /**
-   Specifies how binding attributes are processed by a binding provider when it sets up a binding.
+   Specifies how a binding attribute is processed by a binding provider when it sets up a binding.
  */
 typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
 {
@@ -49,6 +65,10 @@ typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
      */
     AKABindingAttributeUseBindToBindingProperty
 };
+
+
+#pragma mark - AKABindingExpressionType (Enumeration)
+#pragma mark -
 
 /**
    Specifies the type of a binding expression's primary expression.
@@ -282,25 +302,22 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 @interface AKABindingSpecification: NSObject
 
 #pragma mark - Initialization
+/// @name Initialization
 
-/**
-   Initializes the binding specification from its serialized from.
+//- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
 
-   @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
-
-   @param dictionary a dictionary containing the serialized binding specification
-
-   @return the new binding specification
- */
-- (instancetype _Nullable)                 initWithDictionary:(req_NSDictionary)dictionary;
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingSpecification)base;
 
 #pragma mark - Conversion
+/// @name Conversion
 
-- (void)                                      addToDictionary:(req_NSMutableDictionary)specDictionary;
+- (void)                                       addToDictionary:(req_NSMutableDictionary)specDictionary;
 
 #pragma mark - Properties
+/// @name Properties
 
-@property(nonatomic, readonly, nullable) Class bindingType;
+@property(nonatomic, readonly, nullable) Class                              bindingType;
 
 @property(nonatomic, readonly, nonnull) AKABindingProvider*                 bindingProvider;
 
@@ -351,30 +368,133 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 @end
 
 
+#pragma mark - AKABindingTargetSpecification
+#pragma mark -
+
 @interface AKABindingTargetSpecification: NSObject
 
-- (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
-- (void)addToDictionary:(req_NSMutableDictionary)specDictionary;
+#pragma mark - Initialization
 
-@property(nonatomic, readonly, nullable) AKATypePattern*        typePattern;
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingTargetSpecification)base;
+#pragma mark - Conversion
+
+- (void)addToDictionary:(req_NSMutableDictionary)              specDictionary;
+
+@property(nonatomic, readonly, nullable) AKATypePattern*       typePattern;
 
 @end
 
+
+#pragma mark - AKABindingExpressionSpecification
+#pragma mark -
+
 @interface AKABindingExpressionSpecification: NSObject
+
+#pragma mark - Initialization
+/// @name Initialization
+
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingExpressionSpecification)base;
+
+#pragma mark - Conversion
+/// @name Conversion
+
+/**
+   Adds the (serialized) binding expression specification to the specified serialized AKABindingSpecification dictionary.
+
+   @param specDictionary the AKABindingSpecification dictionary
+ */
+- (void)                                       addToDictionary:(req_NSMutableDictionary)specDictionary;
+
+#pragma mark - Properties
+/// @name Properties
+
+/**
+ * Specifies the set of valid types of the binding expressions primary expression.
+ *
+ * Please note that key path expressions will have a type of AKAProperty,
+ * numeric and boolean constants NSNumber, string constants NSString,
+ */
+@property(nonatomic, readonly) AKABindingExpressionType        expressionType;
+
+/**
+ * Specifies which attributes can be defined in a matching binding expression.
+ */
+@property(nonatomic, readonly, nonnull)
+NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
+
+/**
+ * Specifies the binding provider to be used for items in primary expressions of array type.
+ */
+@property(nonatomic, readonly, nullable) AKABindingProvider*   arrayItemBindingProvider;
+
+@property(nonatomic, readonly) BOOL                            allowUnspecifiedAttributes;
+
+@property(nonatomic, readonly, nullable) NSString*             enumerationType;
+
+@property(nonatomic, readonly, nullable) NSString*             optionsType;
+
+#pragma mark - Enumeration and Options Constant Registry
+// @name Registering enumeration and options types
+
+/**
+ Registers a name/value mapping for the enumeration with the specified enumeration type name.
+
+ Once registered, your enumeration can be used in binding expressions as "$enum.YourType.YourValue" or if the enumeration type is known in the context simply as "$enum.YourValue".
+
+ It's best practice to register enumeration types from a dispatch_once block before they are first used.
+
+ Please note that while in most cases you would use integer number values, you can store any type of values in the valuesByName dictionary. The only requirement is that the values are constant.
+
+ Enumerations are similar to options, except that options allow to specify multiple values and are restricted to integer number values.
+
+ @warning Options and Enumerations may share the same namespace!
+
+ @param enumerationTypeName Globally unique name of the enumeration. Use the type name of the enumeration for standard enumeration type mappings and be sure to use non conflicting names for custom enumerations.
+
+ @param valuesByName a dictionary mapping enumeration symbols (identifiers) to enumeration values. By beacon convention, Swift style enum values are used (e.g. CurrencyStyle instead of UINumberFormatterCurrencyStyle).
+ */
++ (void)                               registerEnumerationType:(req_NSString)enumerationTypeName
+                                              withValuesByName:(NSDictionary<NSString*, id>*_Nonnull)valuesByName;
+
+/**
+ Registers a name/value mapping for the options type with the specified options (enum) type name.
+
+ Once registered, your options type can be used in binding expressions as "$options.YourType.YourValue", "$options.YourType{Value1, Value2}" or if the options type is known in the context simply as "$options{Value1, Value2}".
+
+ It's best practice to register options types from a dispatch_once block before they are first used.
+
+ Please note that options type values are restricted to integer number values (internally represented as long long). Use them in favor to enumerations if you want to supply multiple values and if option values are defined as bit flags.
+
+ @warning Options and Enumerations may share the same namespace!
+
+ @param enumerationTypeName Globally unique name of the enumeration. Use the type name of the enumeration for standard enumeration type mappings and be sure to use non conflicting names for custom enumerations.
+ @param valuesByName a dictionary mapping enumeration symbols (identifiers) to enumeration values. By beacon convention, Swift style enum values are used (e.g. CurrencyStyle instead of UINumberFormatterCurrencyStyle).
+ */
++ (void)                                   registerOptionsType:(req_NSString)optionsTypeName
+                                              withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
+
+#pragma mark - Expression Type (Set) Names
+// @name Accessing expression type and type set names
 
 /**
  Maps expression types (not expression sets, such as AKABindingExpressionTypeAny) to their names.
 
  @return a dictionary with expression type code to name mappings.
  */
-+ (NSDictionary<NSNumber*, NSString*>*_Nonnull) expressionTypeNamesByCode;
++ (NSDictionary<NSNumber*, NSString*>*_Nonnull)                expressionTypeNamesByCode;
 
 /**
  Maps expression types sets (not expression, such as AKABindingExpressionBoolean) to their names.
 
  @return a dictionary with expression type set code to name mappings.
  */
-+ (NSDictionary<NSNumber*, NSString*>*_Nonnull) expressionTypeSetNamesByCode;
++ (NSDictionary<NSNumber*, NSString*>*_Nonnull)                expressionTypeSetNamesByCode;
 
 /**
  Returns a description for the specified expression type. If the specified type is a set, the result of expressionTypeSetDescription: is returned instead.
@@ -383,7 +503,7 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 
  @return a string of the form "ExprType" or "ExprTypeSet {ExprType1,...}" or "{ExprType1,...}"
  */
-+ (opt_NSString)expressionTypeDescription:(AKABindingExpressionType)expressionType;
++ (opt_NSString)                     expressionTypeDescription:(AKABindingExpressionType)expressionType;
 
 /**
  Returns a description for the specified expression type set, consisting of the sets name (if it is a named set) and the member types comma separated in curly braces.
@@ -392,40 +512,49 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 
  @return a string of the form "ExprTypeSet {ExprType1,...}" or "{ExprType1,...}"
  */
-+ (opt_NSString)expressionTypeSetDescription:(AKABindingExpressionType)expressionType;
++ (opt_NSString)                  expressionTypeSetDescription:(AKABindingExpressionType)expressionType;
 
-- (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
-
-/**
-   Adds the (serialized) binding expression specification to the specified serialized AKABindingSpecification dictionary.
-
-   @param specDictionary the AKABindingSpecification dictionary
- */
-- (void)addToDictionary:(req_NSMutableDictionary)specDictionary;
-
-/**
- * Specifies the set of valid types of the binding expressions primary expression.
- *
- * Please note that key path expressions will have a type of AKAProperty,
- * numeric and boolean constants NSNumber, string constants NSString,
- */
-@property(nonatomic, readonly)          AKABindingExpressionType expressionType;
-
-/**
- * Specifies which attributes can be defined in a matching binding expression.
- */
-@property(nonatomic, readonly, nonnull) NSDictionary<NSString*, AKABindingAttributeSpecification*>*
-    attributes;
-
-/**
- * Specifies the binding provider to be used for items in primary expressions of array type.
- */
-@property(nonatomic, readonly, nullable) AKABindingProvider*     arrayItemBindingProvider;
-
-@property(nonatomic, readonly) BOOL allowUnspecifiedAttributes;
 @end
 
+
+#pragma mark - AKABindingAttributeSpecification
+#pragma mark -
+
 @interface AKABindingAttributeSpecification: AKABindingSpecification
+
+#pragma mark - Initialization
+/// @name Initialization
+
+//- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+                                 basedOnAttributeSpecification:(opt_AKABindingAttributeSpecification)attributeBase
+                                       expressionSpecification:(opt_AKABindingExpressionSpecification)expressionBase;
+
+#pragma mark - Conversion
+/// @name Conversion
+
+- (void)addToDictionary:(req_NSMutableDictionary)              specDictionary;
+
+/**
+ Specifies if the attribute has to be provided in matching binding expressions.
+ */
+@property(nonatomic, readonly) BOOL                            required;
+
+/**
+ Specifies how the attribute is used to set up the binding.
+ 
+ @see AKABindingAttributeUse
+ */
+@property(nonatomic, readonly) AKABindingAttributeUse          attributeUse;
+
+/**
+ If attributeUse specifies that the attributes value is to be stored in a property of
+ the binding object, bindingPropertyName specifies the name of that property. If nil,
+ the attribute name is used as default property name.
+ */
+@property(nonatomic, readonly, nullable) NSString*             bindingPropertyName;
+
 
 #pragma mark - Constants
 /// @name Constants
@@ -433,7 +562,7 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 /**
    Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property required. The entry is optional defaulting to NO and specifies whether the attribute is required in applicable binding expressions.
  */
-                                             FOUNDATION_EXPORT NSString * _Nonnull const kAKABindingAttributesSpecificationRequiredKey;
+FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationRequiredKey;
 
 /**
    Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property use. The entry is mandatory defaulting to AKABindingAttributeUseIgnore and specifies how the attribute is processed by the binding provider when setting up a binding.
@@ -453,44 +582,47 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationUse
  */
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationBindingPropertyKey;
 
-#pragma mark - Initialization
-/// @name Initialization
-
-/**
-   Initializes the binding attribute specification from its serialized from.
-
-   @param dictionary a dictionary containing the serialized binding specification
-
-   @return the new binding attribute specification
-
-   @see AKABindingSpecification
-   @see kAKABindingSpecificationBindingTypeKey kAKABindingSpecificationBindingProviderTypeKey kAKABindingSpecificationBindingTargetSpecificationKey kAKABindingSpecificationBindingExpressionType kAKABindingSpecificationArrayItemBindingProviderTypeKey kAKABindingSpecificationAttributesKey
-   @see kAKABindingAttributesSpecificationRequiredKey kAKABindingAttributesSpecificationUseKey kAKABindingAttributesSpecificationBindingPropertyKey
- */
-- (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
-- (void)addToDictionary:(req_NSMutableDictionary)specDictionary;
-
-/**
- * Specifies if the attribute has to be provided in matching binding expressions.
- */
-@property(nonatomic, readonly)           BOOL required;
-
-@property(nonatomic, readonly)           AKABindingAttributeUse attributeUse;
-@property(nonatomic, readonly, nullable) NSString*          bindingPropertyName;
-
 @end
+
+
+#pragma mark - AKATypePattern
+#pragma mark -
 
 @interface AKATypePattern: NSObject
 
-- (instancetype _Nullable)initWithArrayOfClasses:(req_NSArray)array;
-- (instancetype _Nullable)initWithClass:(Class _Nonnull)type;
-- (instancetype _Nullable)initWithDictionary:(req_NSDictionary)dictionary;
-- (void)addToDictionary:(req_NSMutableDictionary)specDictionary;
+#pragma mark - Initialization
+/// @name Initialization
 
-@property(nonatomic, readonly, nullable) NSSet<Class>*      acceptedTypes;
-@property(nonatomic, readonly, nullable) NSSet<Class>*      rejectedTypes;
-@property(nonatomic, readonly, nullable) NSSet<NSString*>*  acceptedValueTypes;
-@property(nonatomic, readonly, nullable) NSSet<NSString*>*  rejectedValueTypes;
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+
+- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKATypePattern)base;
+
+- (instancetype _Nullable)              initWithArrayOfClasses:(req_NSArray)array;
+
+- (instancetype _Nullable)              initWithArrayOfClasses:(req_NSArray)array
+                                                       basedOn:(opt_AKATypePattern)base;
+
+- (instancetype _Nullable)                       initWithClass:(Class _Nonnull)type;
+
+- (instancetype _Nullable)                       initWithClass:(Class _Nonnull)type
+                                                       basedOn:(opt_AKATypePattern)base;
+
+#pragma mark - Conversion
+/// @name Conversion
+
+- (void)                                       addToDictionary:(req_NSMutableDictionary)specDictionary;
+
+#pragma mark - Properties
+/// @name Properties
+
+@property(nonatomic, readonly, nullable) NSSet<Class>*         acceptedTypes;
+
+@property(nonatomic, readonly, nullable) NSSet<Class>*         rejectedTypes;
+
+@property(nonatomic, readonly, nullable) NSSet<NSString*>*     acceptedValueTypes;
+
+@property(nonatomic, readonly, nullable) NSSet<NSString*>*     rejectedValueTypes;
 
 - (BOOL)matchesObject:(id _Nullable)object;
 

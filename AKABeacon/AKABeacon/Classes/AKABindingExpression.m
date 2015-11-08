@@ -557,6 +557,13 @@
     return AKABindingExpressionTypeAbstract;
 }
 
+// Private: allow enumerations and options to lazily update constant after enumeration/constantType
+// is set:
+- (void)setConstant:(id _Nullable)constant
+{
+    _constant = constant;
+}
+
 #pragma mark - Binding Support
 
 - (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
@@ -1070,7 +1077,65 @@
     return self;
 }
 
+#pragma mark - Validation
+
+- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification error:(out_NSError)error
+{
+    BOOL result = [super validateWithSpecification:specification error:error];
+    NSError* localError = nil;
+
+    if (specification)
+    {
+        NSString* optionsType = specification.optionsType;
+        if (self.optionsType == nil)
+        {
+            if (optionsType.length > 0)
+            {
+                self.optionsType = optionsType;
+            }
+            else if (self.attributes.count > 0)
+            {
+                // Only an error if a value is given, otherwise the expression will validly evaluate
+                // to zero.
+                result = NO;
+                localError = [AKABindingErrors invalidBindingExpression:self
+                                       noEnumerationTypeInSpecification:specification];
+            }
+        }
+        else if (optionsType.length > 0 && ![optionsType isEqualToString:(req_NSString)self.optionsType])
+        {
+            result = NO;
+            localError = [AKABindingErrors invalidBindingExpression:self
+                                            enumerationTypeMismatch:specification];
+        }
+    }
+
+    return result;
+}
+
 #pragma mark - Properties
+
+- (void)setOptionsType:(NSString *)optionsType
+{
+    NSParameterAssert(optionsType == _optionsType || _optionsType == nil);
+    _optionsType = optionsType;
+}
+
+- (id)constant
+{
+    if (super.constant == nil && self.optionsType.length > 0 && self.attributes.count > 0)
+    {
+        NSError* error = nil;
+        self.constant = [AKAOptionsConstantBindingExpression resolveOptionsValue:self.attributes
+                                                                         forType:self.optionsType
+                                                                           error:&error];
+        if (super.constant == nil && error != nil)
+        {
+            NSAssert(NO, @"%@", error.localizedDescription);
+        }
+    }
+    return super.constant;
+}
 
 - (AKABindingExpressionType)expressionType
 {
@@ -1257,7 +1322,66 @@
     return self;
 }
 
+
+#pragma mark - Validation
+
+- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification error:(out_NSError)error
+{
+    BOOL result = [super validateWithSpecification:specification error:error];
+    NSError* localError = nil;
+
+    if (specification)
+    {
+        NSString* enumerationType = specification.enumerationType;
+        if (self.enumerationType == nil)
+        {
+            if (enumerationType.length > 0)
+            {
+                self.enumerationType = enumerationType;
+            }
+            else if (self.symbolicValue.length > 0)
+            {
+                // Only an error if a value is given, otherwise the expression will validly evaluate
+                // to nil.
+                result = NO;
+                localError = [AKABindingErrors invalidBindingExpression:self
+                                       noEnumerationTypeInSpecification:specification];
+            }
+        }
+        else if (enumerationType.length > 0 && ![enumerationType isEqualToString:(req_NSString)self.enumerationType])
+        {
+            result = NO;
+            localError = [AKABindingErrors invalidBindingExpression:self
+                                            enumerationTypeMismatch:specification];
+        }
+    }
+
+    return result;
+}
+
 #pragma mark - Properties
+
+- (void)setEnumerationType:(NSString *)enumerationType
+{
+    NSParameterAssert(enumerationType == _enumerationType || _enumerationType == nil);
+    _enumerationType = enumerationType;
+}
+
+- (id)constant
+{
+    if (super.constant == nil && self.enumerationType.length > 0 && self.symbolicValue.length > 0)
+    {
+        NSError* error = nil;
+        self.constant = [AKAEnumConstantBindingExpression resolveEnumeratedValue:self.symbolicValue
+                                                                         forType:self.enumerationType
+                                                                           error:&error];
+        if (super.constant == nil && error != nil)
+        {
+            NSAssert(NO, @"%@", error.localizedDescription);
+        }
+    }
+    return super.constant;
+}
 
 - (AKABindingExpressionType)expressionType
 {

@@ -6,6 +6,30 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+// TODO: move/copy this to troubleshooting docs:
+//
+// Please note that since Cocoapods generate their own umbrella header, this file
+// is not used when Beacon is integrated using Cocoapods. This should be transparent for you
+// if you use @import AKABeacon. To avoid conflicts, this header is marked private in the podspec.
+// If you want or have to use non-modular imports, use
+// AKABeacon/AKABeacon-umbrella.h (the generated header) if integrating from Cocoapods and
+// AKABeacon/AKABeacon.h otherwise. Sorry for that.
+//
+// The current podspec includes this header in source and declares it as private header.
+// This seems to be the least troubling setup.
+//
+// If you get warnings about 'AKABeacon.h' referenced from modules map, check if you have the
+// latest version of beacon.
+//
+// If @import AKABeacon statements fail with errors without reasonable explanation, try to:
+//  - Just build or rebuild the project, they might go away immediately
+//  - Clean your project (all projects in workspace), rebuild
+//  - Delete derived data for XCode (I'm using a plugin for this), rebuild
+//  - Refresh views for Storyboards (while in storyboard, Menu>Editor>Refresh all views)
+//  - Close storyboard editors (all of them)
+//  - Close Xcode and start it again
+//  - Different combinations of the above
+
 #import <UIKit/UIKit.h>
 
 //! Project version number for AKAControls.

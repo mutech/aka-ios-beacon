@@ -10,7 +10,7 @@
 #import "AKABinding_AKABinding_formatter.h"
 
 
-@interface AKABindingProvider_AKABinding_numberFormatter: AKABindingProvider
+@interface AKABindingProvider_AKABinding_numberFormatter: AKABindingProvider_AKABinding_formatter
 @end
 
 

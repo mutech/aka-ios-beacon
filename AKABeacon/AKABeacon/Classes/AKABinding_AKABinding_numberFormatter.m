@@ -43,15 +43,68 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-            @{ @"bindingType":                  bindingType,
-               @"bindingProviderType":          providerType,
-               @"targetType":                   [AKAProperty class],
-               @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
+            @{ @"bindingType":         bindingType,
+               @"bindingProviderType": providerType,
+               @"targetType":          [AKAProperty class],
+               @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
+               @"attributes":
+               @{ @"numberStyle":
+                  @{ @"required":        @NO,
+                     @"use":             @(AKABindingAttributeUseIgnore),
+                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                     @"enumerationType": @"NSNumberFormatterStyle" },
+
+                  @"roundingMode":
+                  @{ @"required":        @NO,
+                     @"use":             @(AKABindingAttributeUseIgnore),
+                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                     @"enumerationType": @"NSNumberFormatterRoundingMode" },
+
+                  @"paddingPosition":
+                  @{ @"required":        @NO,
+                     @"use":             @(AKABindingAttributeUseIgnore),
+                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                     @"enumerationType": @"NSNumberFormatterPadPosition" },
+
+                  // TODO: should be inherited/merged from base class:
+                  @"formattingContext":
+                  @{ @"required":        @NO,
+                     @"use":             @(AKABindingAttributeUseIgnore),
+                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                     @"enumerationType": @"NSFormattingContext" },
+
+                  @"locale":
+                  @{ @"required":        @NO,
+                     @"use":             @(AKABindingAttributeUseIgnore),
+                     @"expressionType":  @(AKABindingExpressionTypeString) }, },
+
                @"allowUnspecifiedAttributes":   @YES };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
+}
+
+#pragma mark - Abstract Method Implementation
+
+- (void)registerEnumerationAndOptionTypes
+{
+    [super registerEnumerationAndOptionTypes];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSNumberFormatterStyle"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    numberStylesByName]];
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSNumberFormatterRoundingMode"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    roundingModesByName]];
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSNumberFormatterPadPosition"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    padPositionsByName]];
+    });
 }
 
 @end
@@ -62,7 +115,6 @@
 
 @implementation AKABinding_AKABinding_numberFormatter
 
-#pragma mark - Abstract Method Implementation
 
 - (NSFormatter*)createMutableFormatter
 {
@@ -75,22 +127,21 @@
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        result =
-            @{ @"numberStyle":      ^id (id value) {
-                   return [AKANSEnumerations numberFormatterStyleForObject:value];
-               },
-               @"locale":           ^id (id value) {
-                   return [AKANSEnumerations localeForObject:value];
-               },
-               @"roundingMode":     ^id (id value) {
-                   return [AKANSEnumerations numberFormatterRoundingModeForObject:value];
-               },
-               @"formattingContext":^id (id value) {
-                   return [AKANSEnumerations formattingContextForObject:value];
-               },
-               @"paddingPosition":  ^id (id value) {
-                   return [AKANSEnumerations numberFormatterPadForObject:value];
-               }, };
+        result = @{ @"formattingContext":^id (id value) {
+                        return [AKANSEnumerations formattingContextForObject:value];
+                    },
+                    @"locale":           ^id (id value) {
+                        return [AKANSEnumerations localeForObject:value];
+                    },
+                    @"numberStyle":      ^id (id value) {
+                        return [AKANSEnumerations numberFormatterStyleForObject:value];
+                    },
+                    @"roundingMode":     ^id (id value) {
+                        return [AKANSEnumerations numberFormatterRoundingModeForObject:value];
+                    },
+                    @"paddingPosition":  ^id (id value) {
+                        return [AKANSEnumerations numberFormatterPadForObject:value];
+                    }, };
     });
 
     return result;

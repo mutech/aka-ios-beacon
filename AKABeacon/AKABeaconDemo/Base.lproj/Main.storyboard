@@ -394,7 +394,7 @@
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                             <string key="value">floatValue {
 	numberFormatter: {
-		numberStyle: "CurrencyStyle"
+		numberStyle: $enum.CurrencyStyle
 	}
 }</string>
                                                         </userDefinedRuntimeAttribute>
@@ -575,8 +575,8 @@
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                             <string key="value">dateValue {
 	dateFormatter: {
-		dateStyle: "LongStyle",
-		timeStyle: "LongStyle"
+		dateStyle: $enum.NSDateFormatterStyle.LongStyle,
+		timeStyle: $enum.LongStyle
 	}
 }</string>
                                                         </userDefinedRuntimeAttribute>
@@ -740,7 +740,7 @@
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue { dateFormatter: { dateStyle: &quot;LongStyle&quot; } } "/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue { dateFormatter: { dateStyle: $enum.LongStyle, timeStyle: $enum.MediumStyle } } "/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                 </subviews>
@@ -1096,9 +1096,9 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                         <string key="value">numberValue {
 	numberFormatter: {
-		numberStyle: "PercentStyle",
+		numberStyle: $enum.PercentStyle,
 		maximumFractionDigits: 0,
-		roundingMode: "RoundHalfUp"
+		roundingMode: $enum.RoundHalfUp
 	}
 }</string>
                                                     </userDefinedRuntimeAttribute>

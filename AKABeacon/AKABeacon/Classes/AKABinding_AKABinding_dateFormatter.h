@@ -9,7 +9,7 @@
 #import "AKABinding_AKABinding_formatter.h"
 #import "AKABindingProvider.h"
 
-@interface AKABindingProvider_AKABinding_dateFormatter : AKABindingProvider
+@interface AKABindingProvider_AKABinding_dateFormatter : AKABindingProvider_AKABinding_formatter
 @end
 
 @interface AKABinding_AKABinding_dateFormatter : AKABinding_AKABinding_formatter

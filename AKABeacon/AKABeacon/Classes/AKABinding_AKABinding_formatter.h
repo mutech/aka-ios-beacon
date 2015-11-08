@@ -10,6 +10,11 @@
 
 
 @interface AKABindingProvider_AKABinding_formatter: AKABindingProvider
+
+#pragma mark - Enumeration and Option Type Registry
+
+- (void)registerEnumerationAndOptionTypes;
+
 @end
 
 @interface AKABinding_AKABinding_formatter : AKAPropertyBinding

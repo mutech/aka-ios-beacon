@@ -11,6 +11,7 @@
 
 #import "AKABindingSpecification.h"
 #import "AKABindingProvider.h"
+#import "AKABindingExpression_Internal.h"
 
 NSString*const kAKABindingSpecificationBindingTypeKey = @"bindingType";
 NSString*const kAKABindingSpecificationBindingProviderTypeKey = @"bindingProviderType";
@@ -40,6 +41,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                        defaultValue:(req_NSNumber)defaultValue;
 
 - (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required;
+
+- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key basedOn:(AKATypePattern*)base required:(BOOL)required;
 
 - (AKABindingProvider*)aka_bindingProviderForKey:(req_NSString)key required:(BOOL)required;
 
@@ -160,6 +163,11 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 - (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required
 {
+    return [self aka_classTypePatternForKey:key basedOn:nil required:required];
+}
+
+- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key basedOn:(AKATypePattern*)base required:(BOOL)required
+{
     AKATypePattern* result = nil;
     id value = self[key];
 
@@ -171,20 +179,24 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         }
         else if ([value isKindOfClass:[NSDictionary class]])
         {
-            result = [[AKATypePattern alloc] initWithDictionary:value];
+            result = [[AKATypePattern alloc] initWithDictionary:value basedOn:base];
         }
         else if ([value isKindOfClass:[NSArray class]])
         {
-            result = [[AKATypePattern alloc] initWithArrayOfClasses:value];
+            result = [[AKATypePattern alloc] initWithArrayOfClasses:value basedOn:base];
         }
         else if (object_isClass(value))
         {
-            result = [[AKATypePattern alloc] initWithClass:value];
+            result = [[AKATypePattern alloc] initWithClass:value basedOn:base];
         }
         else
         {
             NSAssert(NO, @"Invalid type for specification %@, expected Class, NSArray<Class>, NSDictionary or an instance of AKATypePattern, got: %@", key, value);
         }
+    }
+    else if (base != nil)
+    {
+        result = base;
     }
     else if (required)
     {
@@ -231,29 +243,77 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 - (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {
+    return [self initWithDictionary:dictionary basedOn:nil];
+}
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingSpecification)base
+{
+    return [self initWithDictionary:dictionary
+               basedOnSpecification:base
+                expressionSpecification:nil];
+}
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                          basedOnSpecification:(opt_AKABindingSpecification)base
+                                       expressionSpecification:(opt_AKABindingExpressionSpecification)expressionBase
+{
+
     if (self = [super init])
     {
         _bindingType =
             [dictionary aka_classTypeForKey:kAKABindingSpecificationBindingTypeKey
                                    required:NO];
 
+        if (!_bindingType)
+        {
+            _bindingType = base.bindingType;
+        }
+
         _bindingProvider =
             [dictionary aka_bindingProviderForKey:kAKABindingSpecificationBindingProviderTypeKey
                                          required:NO];
 
-        _bindingTargetSpecification =
-            [[AKABindingTargetSpecification alloc] initWithDictionary:dictionary];
+        if (!_bindingProvider)
+        {
+            _bindingProvider = base.bindingProvider;
+        }
 
+        _bindingTargetSpecification =
+            [[AKABindingTargetSpecification alloc] initWithDictionary:dictionary
+                                                              basedOn:base.bindingTargetSpecification];
+
+        AKABindingExpressionSpecification* mergedExpressionBase = base.bindingSourceSpecification;
+        if (mergedExpressionBase && expressionBase)
+        {
+            // Quick, dirty & inefficient way to merge expression specs, isn't called often, should be fine.
+            NSMutableDictionary* exSpec = [NSMutableDictionary new];
+            [expressionBase addToDictionary:exSpec];
+            mergedExpressionBase = [[AKABindingExpressionSpecification alloc] initWithDictionary:exSpec
+                                                                                         basedOn:mergedExpressionBase];
+        }
+        else if (expressionBase)
+        {
+            mergedExpressionBase = expressionBase;
+        }
         _bindingSourceSpecification =
-            [[AKABindingExpressionSpecification alloc] initWithDictionary:dictionary];
+            [[AKABindingExpressionSpecification alloc] initWithDictionary:dictionary
+                                                                  basedOn:mergedExpressionBase];
 
         _arrayItemBindingProvider =
             [dictionary aka_bindingProviderForKey:kAKABindingSpecificationArrayItemBindingProviderTypeKey
                                          required:NO];
+
+        if (!_arrayItemBindingProvider)
+        {
+            _arrayItemBindingProvider = base.arrayItemBindingProvider;
+        }
     }
 
     return self;
 }
+
+#pragma mark - Conversion
 
 - (void)                                       addToDictionary:(req_NSMutableDictionary)dictionary
 {
@@ -289,17 +349,28 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 @implementation AKABindingTargetSpecification
 
-- (instancetype)                            initWithDictionary:(req_NSDictionary)specDictionary
+#pragma mark - Initialization
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+{
+    return [self initWithDictionary:dictionary basedOn:nil];
+}
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingTargetSpecification)base
 {
     if (self = [super init])
     {
         _typePattern =
-            [specDictionary aka_classTypePatternForKey:kAKABindingSpecificationBindingTargetSpecificationKey
-                                              required:NO];
+            [dictionary aka_classTypePatternForKey:kAKABindingSpecificationBindingTargetSpecificationKey
+                                           basedOn:base.typePattern
+                                          required:NO];
     }
 
     return self;
 }
+
+#pragma mark - Conversion
 
 - (void)                                       addToDictionary:(req_NSMutableDictionary)specDictionary
 {
@@ -319,139 +390,40 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 @implementation AKABindingExpressionSpecification
 
-+ (NSDictionary<NSNumber*, NSString*>*) expressionTypeNamesByCode
+#pragma mark - Initialization
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {
-    static NSDictionary<NSNumber*, NSString*>* result = nil;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        result =
-        @{
-          @(AKABindingExpressionTypeNone):                     @"None",
-          @(AKABindingExpressionTypeUnqualifiedKeyPath):       @"UnqualifiedKeyPath",
-          @(AKABindingExpressionTypeDataContextKeyPath):       @"DataContextKeyPath",
-          @(AKABindingExpressionTypeRootDataContextKeyPath):   @"RootDataContextKeyPath",
-          @(AKABindingExpressionTypeControlKeyPath):           @"ControlKeyPath",
-          @(AKABindingExpressionTypeArray):                    @"Array",
-          @(AKABindingExpressionTypeClassConstant):            @"ClassConstant",
-          @(AKABindingExpressionTypeStringConstant):           @"StringConstant",
-          @(AKABindingExpressionTypeBooleanConstant):          @"BooleanConstant",
-          @(AKABindingExpressionTypeIntegerConstant):          @"IntegerConstant",
-          @(AKABindingExpressionTypeDoubleConstant):           @"DoubleConstant",
-          @(AKABindingExpressionTypeOptionsConstant):          @"OptionsConstant",
-          @(AKABindingExpressionTypeEnumConstant):             @"EnumConstant",
-          @(AKABindingExpressionTypeUIColorConstant):          @"UIColorConstant",
-          @(AKABindingExpressionTypeCGColorConstant):          @"CGColorConstant",
-          @(AKABindingExpressionTypeCGPointConstant):          @"CGPointConstant",
-          @(AKABindingExpressionTypeCGSizeConstant):           @"CGSizeConstant",
-          @(AKABindingExpressionTypeCGRectConstant):           @"CGRectConstant",
-          @(AKABindingExpressionTypeUIFontConstant):           @"UIFontConstant"
-          };
-    });
-
-    return result;
+    return [self initWithDictionary:dictionary basedOn:nil];
 }
 
-+ (NSDictionary<NSNumber*, NSString*>*) expressionTypeSetNamesByCode
-{
-    static NSDictionary<NSNumber*, NSString*>* result = nil;
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        result =
-        @{ @(AKABindingExpressionTypeAnyKeyPath):               @"AnyKeyPath",
-           @(AKABindingExpressionTypeClass):                    @"Class",
-           @(AKABindingExpressionTypeString):                   @"String",
-           @(AKABindingExpressionTypeBoolean):                  @"Boolean",
-           @(AKABindingExpressionTypeInteger):                  @"Integer",
-           @(AKABindingExpressionTypeDouble):                   @"Double",
-           @(AKABindingExpressionTypeAnyColorConstant):         @"AnyColorConstant",
-           @(AKABindingExpressionTypeAnyNumberConstant):        @"AnyNumberConstant",
-           @(AKABindingExpressionTypeAnyNumberConstant):        @"Number",
-           @(AKABindingExpressionTypeAnyConstant):              @"AnyConstant",
-           @(AKABindingExpressionTypeAny):                      @"Any"
-          };
-    });
-    
-    return result;
-}
-
-+ (NSString*)expressionTypeDescription:(AKABindingExpressionType)expressionType
-{
-    NSString* result = [self expressionTypeNamesByCode][@(expressionType)];
-
-    if (result == nil)
-    {
-        result = [self expressionTypeSetDescription:expressionType];
-    }
-
-    return result;
-}
-
-+ (NSString*)expressionTypeSetDescription:(AKABindingExpressionType)expressionType
-{
-    NSString* result = nil;
-    if (expressionType > 0)
-    {
-        result = [self expressionTypeSetNamesByCode][@(expressionType)];
-
-        NSMutableArray* options = [NSMutableArray new];
-        
-        for (AKABindingExpressionType i=AKABindingExpressionTypeNone;
-             i <= expressionType;
-             i = i << 1)
-        {
-            if (expressionType & i)
-            {
-                NSString* name = [self expressionTypeNamesByCode][@(i)];
-                if (name)
-                {
-                    [options addObject:name];
-                }
-                else
-                {
-                    AKALogError(@"expressionTypeSetDescription: Invalid expression type %@", @(i));
-                }
-            }
-        }
-        if (options.count > 0)
-        {
-            if (result.length)
-            {
-                result = [NSString stringWithFormat:@"%@ {%@}", result, [options componentsJoinedByString:@", "]];
-            }
-            else
-            {
-                result = [NSString stringWithFormat:@"{%@}", [options componentsJoinedByString:@", "]];
-            }
-        }
-        return [NSString stringWithString:result];
-    }
-    return result;
-}
-
-- (instancetype)                            initWithDictionary:(req_NSDictionary)specDictionary
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKABindingExpressionSpecification)base
 {
     if (self = [super init])
     {
         _expressionType =
-            [specDictionary aka_enumValueForKey:kAKABindingSpecificationBindingExpressionType
-                                   defaultValue:@(AKABindingExpressionTypeAny)].unsignedLongValue;
+            [dictionary aka_enumValueForKey:kAKABindingSpecificationBindingExpressionType
+                               defaultValue:base ? @(base.expressionType) : @(AKABindingExpressionTypeAny)].unsignedLongValue;
 
         _arrayItemBindingProvider =
-            [specDictionary aka_bindingProviderForKey:kAKABindingSpecificationArrayItemBindingProviderTypeKey
-                                             required:NO];
+            [dictionary aka_bindingProviderForKey:kAKABindingSpecificationArrayItemBindingProviderTypeKey
+                                         required:NO];
+        if (_arrayItemBindingProvider == nil)
+        {
+            _arrayItemBindingProvider = base.arrayItemBindingProvider;
+        }
 
         NSMutableDictionary* attributeSpecifications = [NSMutableDictionary new];
-        NSDictionary* attributes = [specDictionary aka_dictionaryForKey:kAKABindingSpecificationAttributesKey
-                                                               required:NO];
+        NSDictionary* attributes = [dictionary aka_dictionaryForKey:kAKABindingSpecificationAttributesKey
+                                                           required:NO];
         [attributes enumerateKeysAndObjectsUsingBlock:
-         ^(id _Nonnull key, id _Nonnull obj, BOOL* _Nonnull stop)
+         ^(req_id key, req_id obj, outreq_BOOL stop)
          {
              (void)stop;
 
              NSAssert([key isKindOfClass:[NSString class]],
-                      @"Binding expression attribute specification key is required to be a string, the name of the attribute or '*' representing all unspecified attributes: %@", key);
+                      @"Binding expression attribute specification key is required to be a string (the name of the attribute or '*' representing all unspecified attributes), got: %@", key);
              NSString* attributeName = key;
 
              if ([obj isKindOfClass:[AKABindingAttributeSpecification class]])
@@ -460,7 +432,32 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
              }
              else if ([obj isKindOfClass:[NSDictionary class]])
              {
-                 attributeSpecifications[attributeName] = [[AKABindingAttributeSpecification alloc] initWithDictionary:obj];
+                 NSDictionary<NSString*, id>* dictionary = obj;
+
+                 // attribute base is the corresponding attribute specification of a binding providers super class
+                 // which is implicitely inherited.
+                 AKABindingAttributeSpecification* attributeBase = base.attributes[key];
+
+                 // TODO: refactor this stuff:
+
+                 // expression base is the expression specification defined inside of an attribute specification.
+                 // Usually only one of both is defined, but it's possible that spec wants to override the
+                 // expression specification of an inherited attribute with an existing binding expression.
+                 // That should work.
+                 id expressionBase = dictionary[@"base"];
+                 if (expressionBase == nil)
+                 {
+                     expressionBase = [dictionary aka_bindingProviderForKey:kAKABindingSpecificationBindingProviderTypeKey required:NO].specification.bindingSourceSpecification;
+                 }
+
+                 NSAssert(expressionBase == nil || [expressionBase isKindOfClass:[AKABindingExpressionSpecification class]],
+                          @"Invalid type for attribute specification item 'base', expected an instance of AKABindingExpressionSpecification, got %@",
+                          expressionBase);
+
+                 attributeSpecifications[attributeName] =
+                    [[AKABindingAttributeSpecification alloc] initWithDictionary:dictionary
+                                                   basedOnAttributeSpecification:attributeBase
+                                                         expressionSpecification:expressionBase];
              }
              else
              {
@@ -468,10 +465,31 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                           @"Binding expression attribute specification is required to be an attribute specification, a dictionary or a boolean value indicating whether the attribute is supported");
              }
          }];
+
+        // Add base attributes not redefined here:
+        [base.attributes enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, AKABindingAttributeSpecification * _Nonnull obj, BOOL * _Nonnull stop) {
+            if (attributeSpecifications[key] == nil)
+            {
+                attributeSpecifications[key] = obj;
+            }
+        }];
+
         _attributes = [NSDictionary dictionaryWithDictionary:attributeSpecifications];
 
-        _allowUnspecifiedAttributes = [specDictionary aka_booleanForKey:@"allowUnspecifiedAttributes" withDefault:NO];
-        
+        _allowUnspecifiedAttributes = [dictionary aka_booleanForKey:@"allowUnspecifiedAttributes" withDefault:base.allowUnspecifiedAttributes];
+
+        // TODO: check if expression type is enum or options respectively, error handling:
+        _enumerationType = [dictionary valueForKey:@"enumerationType"];
+        if (_enumerationType == nil)
+        {
+            _enumerationType = base.enumerationType;
+        }
+        _optionsType = [dictionary valueForKey:@"optionsType"];
+        if (_optionsType == nil)
+        {
+            _optionsType = base.optionsType;
+        }
+
         NSAssert(_arrayItemBindingProvider == nil || ((AKABindingExpressionTypeArray & _expressionType) != 0), @"Array item binding provider specified even though the binding expressions type constraints exclude the array binding type. This is by itself not a problem but constitutes an inconsisten binding specification. Please review the specification %@", self);
     }
 
@@ -504,6 +522,151 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     {
         specDictionary[@"arrayItemBindingProvider"] = self.arrayItemBindingProvider;
     }
+
+    if (self.enumerationType.length > 0)
+    {
+        specDictionary[@"enumerationType"] = self.enumerationType;
+    }
+
+    if (self.optionsType.length > 0)
+    {
+        specDictionary[@"optionsType"] = self.optionsType;
+    }
+}
+
+#pragma mark - Enumeration and Options Constant Registry
+
++ (void)                               registerEnumerationType:(req_NSString)enumerationTypeName
+                                              withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName
+{
+    [AKAEnumConstantBindingExpression registerEnumerationType:enumerationTypeName
+                                             withValuesByName:valuesByName];
+}
+
++ (void)                                   registerOptionsType:(req_NSString)optionsTypeName
+                                              withValuesByName:(NSDictionary<NSString*, NSNumber*>* _Nonnull)valuesByName
+{
+    [AKAOptionsConstantBindingExpression registerOptionsType:optionsTypeName
+                                            withValuesByName:valuesByName];
+}
+
+#pragma mark - Expression Type (Set) Names
+
++ (NSDictionary<NSNumber*, NSString*>*)                        expressionTypeNamesByCode
+{
+    static NSDictionary<NSNumber*, NSString*>* result = nil;
+
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+            @{
+            @(AKABindingExpressionTypeNone):                     @"None",
+            @(AKABindingExpressionTypeUnqualifiedKeyPath):       @"UnqualifiedKeyPath",
+            @(AKABindingExpressionTypeDataContextKeyPath):       @"DataContextKeyPath",
+            @(AKABindingExpressionTypeRootDataContextKeyPath):   @"RootDataContextKeyPath",
+            @(AKABindingExpressionTypeControlKeyPath):           @"ControlKeyPath",
+            @(AKABindingExpressionTypeArray):                    @"Array",
+            @(AKABindingExpressionTypeClassConstant):            @"ClassConstant",
+            @(AKABindingExpressionTypeStringConstant):           @"StringConstant",
+            @(AKABindingExpressionTypeBooleanConstant):          @"BooleanConstant",
+            @(AKABindingExpressionTypeIntegerConstant):          @"IntegerConstant",
+            @(AKABindingExpressionTypeDoubleConstant):           @"DoubleConstant",
+            @(AKABindingExpressionTypeOptionsConstant):          @"OptionsConstant",
+            @(AKABindingExpressionTypeEnumConstant):             @"EnumConstant",
+            @(AKABindingExpressionTypeUIColorConstant):          @"UIColorConstant",
+            @(AKABindingExpressionTypeCGColorConstant):          @"CGColorConstant",
+            @(AKABindingExpressionTypeCGPointConstant):          @"CGPointConstant",
+            @(AKABindingExpressionTypeCGSizeConstant):           @"CGSizeConstant",
+            @(AKABindingExpressionTypeCGRectConstant):           @"CGRectConstant",
+            @(AKABindingExpressionTypeUIFontConstant):           @"UIFontConstant"
+        };
+    });
+
+    return result;
+}
+
++ (NSDictionary<NSNumber*, NSString*>*)                        expressionTypeSetNamesByCode
+{
+    static NSDictionary<NSNumber*, NSString*>* result = nil;
+
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+            @{ @(AKABindingExpressionTypeAnyKeyPath):               @"AnyKeyPath",
+               @(AKABindingExpressionTypeClass):                    @"Class",
+               @(AKABindingExpressionTypeString):                   @"String",
+               @(AKABindingExpressionTypeBoolean):                  @"Boolean",
+               @(AKABindingExpressionTypeInteger):                  @"Integer",
+               @(AKABindingExpressionTypeDouble):                   @"Double",
+               @(AKABindingExpressionTypeAnyColorConstant):         @"AnyColorConstant",
+               @(AKABindingExpressionTypeAnyNumberConstant):        @"AnyNumberConstant",
+               @(AKABindingExpressionTypeAnyNumberConstant):        @"Number",
+               @(AKABindingExpressionTypeAnyConstant):              @"AnyConstant",
+               @(AKABindingExpressionTypeAny):                      @"Any" };
+    });
+
+    return result;
+}
+
++ (NSString*)                        expressionTypeDescription:(AKABindingExpressionType)expressionType
+{
+    NSString* result = [self expressionTypeNamesByCode][@(expressionType)];
+
+    if (result == nil)
+    {
+        result = [self expressionTypeSetDescription:expressionType];
+    }
+
+    return result;
+}
+
++ (NSString*)                     expressionTypeSetDescription:(AKABindingExpressionType)expressionType
+{
+    NSString* result = nil;
+
+    if (expressionType > 0)
+    {
+        result = [self expressionTypeSetNamesByCode][@(expressionType)];
+
+        NSMutableArray* options = [NSMutableArray new];
+
+        for (AKABindingExpressionType i = AKABindingExpressionTypeNone;
+             i <= expressionType;
+             i = i << 1)
+        {
+            if (expressionType & i)
+            {
+                NSString* name = [self expressionTypeNamesByCode][@(i)];
+
+                if (name)
+                {
+                    [options addObject:name];
+                }
+                else
+                {
+                    AKALogError(@"expressionTypeSetDescription: Invalid expression type %@", @(i));
+                }
+            }
+        }
+
+        if (options.count > 0)
+        {
+            if (result.length)
+            {
+                result = [NSString stringWithFormat:@"%@ {%@}", result, [options componentsJoinedByString:@", "]];
+            }
+            else
+            {
+                result = [NSString stringWithFormat:@"{%@}", [options componentsJoinedByString:@", "]];
+            }
+        }
+
+        return [NSString stringWithString:result];
+    }
+
+    return result;
 }
 
 @end
@@ -514,26 +677,43 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 @implementation AKABindingAttributeSpecification
 
-- (instancetype)                            initWithDictionary:(req_NSDictionary)specDictionary
+#pragma mark - Initialization
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {
-    if (self = [super initWithDictionary:specDictionary])
+    return [self initWithDictionary:dictionary
+      basedOnAttributeSpecification:nil
+            expressionSpecification:nil];
+}
+
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                 basedOnAttributeSpecification:(opt_AKABindingAttributeSpecification)base
+                                       expressionSpecification:(opt_AKABindingExpressionSpecification)expressionBase
+{
+    if (self = [super initWithDictionary:dictionary
+                    basedOnSpecification:base
+                 expressionSpecification:expressionBase])
     {
-        _required = [specDictionary aka_booleanForKey:kAKABindingAttributesSpecificationRequiredKey
-                                          withDefault:NO];
-        _attributeUse = [specDictionary aka_enumValueForKey:kAKABindingAttributesSpecificationUseKey
-                                                   defaultValue:@(AKABindingAttributeUseIgnore)].unsignedIntegerValue;
+        _required = [dictionary aka_booleanForKey:kAKABindingAttributesSpecificationRequiredKey
+                                      withDefault:base ? base.required : NO];
+        _attributeUse = [dictionary aka_enumValueForKey:kAKABindingAttributesSpecificationUseKey
+                                           defaultValue:base ? @(base.attributeUse) : @(AKABindingAttributeUseIgnore)].unsignedIntegerValue;
         switch (self.attributeUse)
         {
             case AKABindingAttributeUseAssignValueToBindingProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
             case AKABindingAttributeUseBindToBindingProperty:
             {
-                _bindingPropertyName = specDictionary[kAKABindingAttributesSpecificationBindingPropertyKey];
+                _bindingPropertyName = dictionary[kAKABindingAttributesSpecificationBindingPropertyKey];
+                if (_bindingPropertyName == nil)
+                {
+                    _bindingPropertyName = base.bindingPropertyName;
+                }
                 break;
             }
 
             case AKABindingAttributeUseIgnore:
-                NSAssert(specDictionary[kAKABindingAttributesSpecificationBindingPropertyKey] == nil,
+                NSAssert(dictionary[kAKABindingAttributesSpecificationBindingPropertyKey] == nil,
                          @"bindingProperty specified for AKABindingAttributeUseIgnore");
                 _bindingPropertyName = nil;
                 break;
@@ -553,6 +733,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
     specDictionary[kAKABindingAttributesSpecificationRequiredKey] = @(self.required);
     specDictionary[kAKABindingAttributesSpecificationUseKey] = @(self.attributeUse);
+
     if (self.attributeUse != AKABindingAttributeUseIgnore && self.bindingPropertyName.length > 0)
     {
         specDictionary[kAKABindingAttributesSpecificationBindingPropertyKey] = self.bindingPropertyName;
@@ -567,61 +748,49 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 @implementation AKATypePattern
 
-// TODO: refactor this (create a cluster of sub types to save memory and make checking more efficient).
+#pragma mark - Initialization
 
-+ (NSSet*)               setOfClassesFromClassOrArrayOfClasses:(id)object
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {
-    NSSet* result = nil;
-
-    if ([object isKindOfClass:[NSArray class]])
-    {
-        result = [NSSet setWithArray:object];
-    }
-    else if (object_isClass(object))
-    {
-        result = [NSSet setWithObject:object];
-    }
-    else if ([object isKindOfClass:[NSSet class]])
-    {
-        result = object;
-    }
-    else if (object != nil)
-    {
-        NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
-    }
-
-    return result;
+    return [self initWithDictionary:dictionary basedOn:nil];
 }
 
-+ (NSSet*)            setOfValueTypeFromStringOrArrayOfStrings:(id)object
+- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+                                                       basedOn:(opt_AKATypePattern)base
 {
-    NSSet* result = nil;
-
-    if ([object isKindOfClass:[NSArray class]])
+    if (self = [self init])
     {
-        result = [NSSet setWithArray:object];
-    }
-    else if ([object isKindOfClass:[NSString class]])
-    {
-        result = [NSSet setWithObject:object];
-    }
-    else if ([object isKindOfClass:[NSSet class]])
-    {
-        result = object;
-    }
-    else if (object != nil)
-    {
-        NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
+        _acceptedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"acceptedTypes"]
+                                                                       basedOn:base.acceptedTypes];
+        _rejectedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"rejectedTypes"]
+                                                                       basedOn:base.rejectedTypes];
+        _acceptedValueTypes =
+            [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]
+                                                             basedOn:base.acceptedValueTypes];
+        _rejectedValueTypes =
+            [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]
+                                                             basedOn:base.rejectedValueTypes];
     }
 
-    return result;
+    return self;
 }
 
 - (instancetype)                                 initWithClass:(Class)type
 {
+    return [self initWithClass:type basedOn:nil];
+}
+
+- (instancetype)                                 initWithClass:(Class)type
+                                                       basedOn:(opt_AKATypePattern)base
+{
     if (self = [self init])
     {
-        _acceptedTypes = [NSSet setWithObject:type];
+        _acceptedTypes = (base.acceptedTypes != nil
+                          ? [base.acceptedTypes setByAddingObject:type]
+                          : [NSSet setWithObject:type]);
+        _acceptedValueTypes = base.acceptedValueTypes;
+        _rejectedTypes = base.rejectedTypes;
+        _rejectedValueTypes = base.rejectedValueTypes;
     }
 
     return self;
@@ -629,25 +798,20 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 - (instancetype)                        initWithArrayOfClasses:(req_NSArray)array
 {
-    if (self = [self init])
-    {
-        // TODO: check array items
-        _acceptedTypes = [NSSet setWithArray:array];
-    }
-
-    return self;
+    return [self initWithArrayOfClasses:array basedOn:nil];
 }
 
-- (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
+- (instancetype)                        initWithArrayOfClasses:(req_NSArray)array
+                                                       basedOn:(opt_AKATypePattern)base
 {
     if (self = [self init])
     {
-        _acceptedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"acceptedTypes"]];
-        _rejectedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"rejectedTypes"]];
-        _acceptedValueTypes =
-            [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]];
-        _rejectedValueTypes =
-            [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]];
+        _acceptedTypes = (base.acceptedTypes != nil
+                          ? [base.acceptedTypes setByAddingObjectsFromArray:array]
+                          : [NSSet setWithArray:array]);
+        _acceptedValueTypes = base.acceptedValueTypes;
+        _rejectedTypes = base.rejectedTypes;
+        _rejectedValueTypes = base.rejectedValueTypes;
     }
 
     return self;
@@ -775,6 +939,58 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     [result appendString:@">"];
 
     return [NSString stringWithString:result];
+}
+
+#pragma mark - Implementation
+
++ (NSSet*)               setOfClassesFromClassOrArrayOfClasses:(id)object
+                                                       basedOn:(NSSet*)base
+{
+    NSSet* result = nil;
+
+    if ([object isKindOfClass:[NSArray class]])
+    {
+        result = [NSSet setWithArray:object];
+    }
+    else if (object_isClass(object))
+    {
+        result = [NSSet setWithObject:object];
+    }
+    else if ([object isKindOfClass:[NSSet class]])
+    {
+        result = object;
+    }
+    else if (object != nil)
+    {
+        NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
+    }
+
+    return result;
+}
+
++ (NSSet*)            setOfValueTypeFromStringOrArrayOfStrings:(id)object
+                                                       basedOn:(NSSet*)base
+{
+    NSSet* result = nil;
+
+    if ([object isKindOfClass:[NSArray class]])
+    {
+        result = [NSSet setWithArray:object];
+    }
+    else if ([object isKindOfClass:[NSString class]])
+    {
+        result = [NSSet setWithObject:object];
+    }
+    else if ([object isKindOfClass:[NSSet class]])
+    {
+        result = object;
+    }
+    else if (object != nil)
+    {
+        NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
+    }
+
+    return result;
 }
 
 @end

@@ -48,11 +48,50 @@
                @"bindingProviderType":          providerType,
                @"targetType":                   [AKAProperty class],
                @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
+               @"attributes":
+                   @{ @"dateStyle":
+                          @{ @"required":        @NO,
+                             @"use":             @(AKABindingAttributeUseIgnore),
+                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                             @"enumerationType": @"NSDateFormatterStyle" },
+
+                      @"timeStyle":
+                          @{ @"required":        @NO,
+                             @"use":             @(AKABindingAttributeUseIgnore),
+                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                             @"enumerationType": @"NSDateFormatterStyle" },
+
+                      // TODO: should be inherited/merged from base class:
+                      @"formattingContext":
+                          @{ @"required":        @NO,
+                             @"use":             @(AKABindingAttributeUseIgnore),
+                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                             @"enumerationType": @"NSFormattingContext" },
+
+                      @"locale":
+                          @{ @"required":        @NO,
+                             @"use":             @(AKABindingAttributeUseIgnore),
+                             @"expressionType":  @(AKABindingExpressionTypeString) }, },
                @"allowUnspecifiedAttributes":   @YES };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec];
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
+}
+
+
+#pragma mark - Enumeration Name Value Mapping
+
+- (void)registerEnumerationAndOptionTypes
+{
+    [super registerEnumerationAndOptionTypes];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSDateFormatterStyle"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    dateFormatterStylesByName]];
+    });
 }
 
 @end
@@ -73,8 +112,6 @@
 #pragma mark -
 
 @implementation AKABinding_AKABinding_dateFormatter
-
-#pragma mark - Enumeration Name Value Mapping
 
 - (NSFormatter *)createMutableFormatter
 {

@@ -36,6 +36,73 @@
     return result;
 }
 
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+    noEnumerationTypeInSpecification:(AKABindingExpressionSpecification*)specification
+{
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary enumeration expression does not define an enumeration type, neither does its specification %@",
+                        bindingExpression,
+                        specification];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidPrimaryBindingExpressionNoEnumerationType
+                                      userInfo:userInfo];
+    return result;
+}
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+             enumerationTypeMismatch:(AKABindingExpressionSpecification*)specification
+{
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary enumeration expression differs from the type %@ defined in its specification %@",
+                        bindingExpression,
+                        specification.enumerationType,
+                        specification];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidPrimaryBindingExpressionMismatchingEnumerationType
+                                      userInfo:userInfo];
+    return result;
+}
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+        noOptionsTypeInSpecification:(AKABindingExpressionSpecification*)specification
+{
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary options expression does not define an options type, neither does its specification %@",
+                        bindingExpression,
+                        specification];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidPrimaryBindingExpressionNoOptionsType
+                                      userInfo:userInfo];
+    return result;
+}
+
++ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                 optionsTypeMismatch:(AKABindingExpressionSpecification*)specification
+{
+    NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary options expression differs from the type %@ defined in its specification %@",
+                        bindingExpression,
+                        specification.optionsType,
+                        specification];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidPrimaryBindingExpressionMismatchingOptionsType
+                                      userInfo:userInfo];
+    return result;
+}
+
 + (NSError*)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
 {

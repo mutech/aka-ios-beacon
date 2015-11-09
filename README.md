@@ -44,6 +44,10 @@ This currently works with UILabel, UITextField, UITextView, UISwitch, UISlider, 
 
 There is a whole lot more to Beacon than just binding values. Go and check it out, you'll be surprised ;-)
 
+## Demo
+
+[I put up a demo video here](https://www.youtube.com/watch?v=88DkI8ZfEkg). I hope you forgive me the miserable audio quality and my poor presentation skills, please ignore both and focus on the features if you can ;-)
+
 ## Installation & Integration
 
 Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away.
@@ -52,9 +56,10 @@ Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This ver
 pod 'AKABeacon', :head
 ```
 
-## Demo
+## Documentation
 
-[I put up a demo video here](https://www.youtube.com/watch?v=88DkI8ZfEkg). I hope you forgive me the miserable audio quality and my poor presentation skills, please ignore both and focus on the features if you can ;-)
+* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki), I just started adding content, but it will become more useful soon.
+* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/). The API documentation is very incomplete and needs quite a lot of work, but you might find some useful information still. Looking forward to 1.0 ;-)
 
 ## Status
 

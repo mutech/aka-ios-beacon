@@ -3,7 +3,7 @@
 //  AKACommons
 //
 //  Created by Michael Utech (AKA) on 10/01/14.
-//  Copyright (c) 2014 Gripsware GmbH. All rights reserved.
+//  Copyright (c) 2014 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

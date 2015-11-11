@@ -41,7 +41,7 @@ typedef enum
 
 @property(nonatomic, readonly) NSMutableDictionary* dataSourcesByKey;
 @property(nonatomic, readonly) NSMutableDictionary* tableViewDelegateSelectorMapping;
-@property(nonatomic, readonly) NSMutableDictionary<req_NSString, req_UITableViewDelegate>* tableViewDelegateOverrides;
+@property(nonatomic, readonly) NSMapTable<req_NSString, req_UITableViewDelegate>* tableViewDelegateOverrides;
 
 @property(nonatomic) NSMutableArray<AKATVSection*>* sectionSegments;
 @property(nonatomic, readonly) NSUInteger numberOfSections;
@@ -1594,9 +1594,9 @@ static DDLogLevel _ddLogLevel = DDLogLevelWarning;
                 {
                     if (self.tableViewDelegateOverrides == nil)
                     {
-                        _tableViewDelegateOverrides = [NSMutableDictionary new];
+                        _tableViewDelegateOverrides = [NSMapTable strongToWeakObjectsMapTable];
                     }
-                    self.tableViewDelegateOverrides[selectorValue] = delegate;
+                    [self.tableViewDelegateOverrides setObject:delegate forKey:selectorValue];
                 }
             }
         }
@@ -1683,7 +1683,7 @@ static DDLogLevel _ddLogLevel = DDLogLevelWarning;
 {
     NSString* selectorValue = NSStringFromSelector(invocation.selector);
 
-    NSObject<UITableViewDelegate>* delegate = self.tableViewDelegateOverrides[selectorValue];
+    NSObject<UITableViewDelegate>* delegate = [self.tableViewDelegateOverrides objectForKey:selectorValue];
 
     if (delegate != nil)
     {

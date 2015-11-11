@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1fa26bcb-7e48-4423-a3a7-b049b6bd183e" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcbaselines/8E46D3FC1BEB7394002E497B.xcbaseline/259B0865-5152-4742-8C56-04F7AB25DD78.plist" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcbaselines/8E46D3FC1BEB7394002E497B.xcbaseline/Info.plist" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/project.xcworkspace/xcuserdata/mu.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo.xcodeproj/project.xcworkspace/xcuserdata/mu.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo.xcodeproj/xcuserdata/mu.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGalleryUITests/Info.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/AKABeacon/Podfile" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/AKAControls.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/AppledocSettings.plist" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/AppledocSettings.plist" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingContextProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingContextProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingErrors.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingErrors.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingErrors_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingExpression.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingExpression.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingExpression_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingExpressions.md" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressions.md" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProviderRegistry.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProviderRegistry.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProviderRegistry.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProviderRegistry.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UILabel_textBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UILabel_textBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UILabel_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UILabel_textBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UISlider_valueBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISlider_valueBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UISlider_valueBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISlider_valueBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UISwitch_stateBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISwitch_stateBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UISwitch_stateBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISwitch_stateBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UITextField_textBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextField_textBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UITextField_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextField_textBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UITextView_textBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextView_textBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingProvider_UITextView_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextView_textBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingSpecification.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABindingSpecification.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_dateFormatter.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_dateFormatter.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_formatter.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_formatter.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_numberFormatter.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKABinding_numberFormatter.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UISlider_valueBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UISlider_valueBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UISwitch_stateBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UISwitch_stateBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UITextField_textBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UITextField_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UITextView_textBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABinding_UITextView_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABooleanTextConverter.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKABooleanTextConverter.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACollectionControlViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACollectionControlViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACollectionControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAComplexControlViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAComplexControlViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControl+BindingDelegatePropagation.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControl+BindingDelegatePropagation.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControlView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControlView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACompositeControl_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControl+BindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControl+BindingDelegate.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlConfiguration.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConfiguration.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlConverterProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConverterProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlValidatorProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidatorProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlViewProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControl_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlsErrors.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlsErrors.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlsErrors_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlsStyleKit.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAControlsStyleKit.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACustomKeyboardResponderView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKACustomKeyboardResponderView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADatePickerKeyboardTriggerView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADatePickerKeyboardTriggerView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADynamicPlaceholderTableViewCell.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADynamicPlaceholderTableViewCell.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAEditorControlView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAEditorControlView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAEditorControlView_Protected.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView_Protected.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAEmailValidator.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAEmailValidator.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormControl+BindingDelegatePropagation.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormControl+BindingDelegatePropagation.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormTableViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormTableViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAFormViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequence.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequence.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequenceAccessoryView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequenceAccessoryView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequenceItemProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardActivationSequenceItemProtocol_Internal.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol_Internal.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControlViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControlViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAKeyboardControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKALayoutConstraintSpecification.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKALayoutConstraintSpecification.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKANSEnumerations.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKANSEnumerations.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKANumberTextConverter.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKANumberTextConverter.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAPickerKeyboardTriggerView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAPickerKeyboardTriggerView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAPropertyBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAPropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAScalarControl+ControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAScalarControl+ControlViewBindingDelegate.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAScalarControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAScalarControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAScalarControl_Protected.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKASubviewsSpecification.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKASubviewsSpecification.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKASwitchEditorControlView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKASwitchEditorControlView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATableViewCell.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATableViewCell.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATableViewCellCompositeControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATableViewCellCompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATextEditorControlView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATextEditorControlView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemableCompositeControlView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemableCompositeControlView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemableContainerView.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemableContainerView.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemableContainerView_Protected.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView_Protected.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATheme.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKATheme.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemeLayout.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemeLayout.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemeProviderProtocol.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeProviderProtocol.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemeViewApplicability.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAThemeViewApplicability.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAViewCustomization.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/AKAViewCustomization.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/NSScanner+AKABindingExpressionParser.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/NSScanner+AKABindingExpressionParser.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/NSScanner+AKABindingExpressionParser.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/NSScanner+AKABindingExpressionParser.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UILabel+AKAIBBindingProperties.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UILabel+AKAIBBindingProperties.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UISlider+AKAIBBindingProperties.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UISlider+AKAIBBindingProperties.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UISwitch+AKAIBBindingProperties.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UISwitch+AKAIBBindingProperties.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UITextField+AKAIBBindingProperties.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UITextField+AKAIBBindingProperties.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UITextView+AKAIBBindingProperties.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UITextView+AKAIBBindingProperties.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UIView+AKABindingSupport.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UIView+AKABindingSupport.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UIView+AKAThemeProvider.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Classes/UIView+AKAThemeProvider.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/Info.plist" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Info.plist" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControls/PaintCode.pcvd" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/PaintCode.pcvd" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/AppDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/AppDelegate.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/Assets.xcassets/AppIcon.appiconset/Contents.json" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Assets.xcassets/AppIcon.appiconset/Contents.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/Base.lproj/LaunchScreen.storyboard" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/LaunchScreen.storyboard" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/Base.lproj/Main.storyboard" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/Main.storyboard" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/DynamicPlaceholderCellTableViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/DynamicPlaceholderCellTableViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/Info.plist" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Info.plist" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/LabelDemoTableViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/LabelDemoTableViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/PickerKeyboardViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/PickerKeyboardViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/SliderViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/SliderViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/TextFieldBindingViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/TextFieldBindingViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGallery/main.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/main.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsGalleryUITests/AKAControlsGalleryUITests.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemoUITests/AKAControlsGalleryUITests.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKABindingExpressionSpecificationTest.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionSpecificationTest.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKABindingExpressionTest.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionTest.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKABindingProviderTest.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKABindingProviderTest.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKAControlTests.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKAControlTests.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKAEmailValidatorTest.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKAEmailValidatorTest.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/AKAThemeTests.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconTests/AKAThemeTests.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/AKAControlsTests/Info.plist" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemoUITests/Info.plist" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/AKABeacon/Doxyfile" afterPath="$PROJECT_DIR$/Doxyfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon.podspec" afterPath="$PROJECT_DIR$/AKABeacon.podspec" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeacon.xcscheme" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeacon.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcuserdata/mu.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcuserdata/mu.xcuserdatad/xcschemes/xcschememanagement.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Podfile" afterPath="$PROJECT_DIR$/Podfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/uncrustify.cfg" afterPath="$PROJECT_DIR$/uncrustify.cfg" />
+    </list>
+    <ignored path="aka-ios-beacon.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_dd0547cd2a755a3d0e7d86a0ddf050ed7a9071e3" />
+  <component name="FavoritesManager">
+    <favorites_list name="AKAControls" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AKABindingErrors.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AKABeaconErrors.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AKABeaconErrors_Internal.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AKAControl.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AKABeaconStyleKit.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="47" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AKABeaconStyleKit.m" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.13157895">
+              <caret line="5" column="47" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlsErrors.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlsStyleKit.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" />
+  <component name="JsBuildToolPackageJson" detection-done="true" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1680" />
+    <option name="y" value="59" />
+    <option name="width" value="1920" />
+    <option name="height" value="1009" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="Cidr.FilesView" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Classes" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Cidr.FilesView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$MyProjectTreeStructure$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="aka-ios-beacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AKABeacon" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Classes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/AKABeacon.xcworkspace" />
+    <property name="js-jscs-nodeInterpreter" value="$USER_HOME$/homebrew/bin/node" />
+  </component>
+  <component name="RunManager" selected="Application.AKABeacon">
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="AKAControls" TARGET_NAME="AKAControls" CONFIG_NAME="Debug" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="OCGoogleTestRunConfigurationType" factoryName="Google Test" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="AKABeaconDemo" TARGET_NAME="AKABeaconDemo" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="AKABeacon" TARGET_NAME="AKABeaconTests" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run-script" />
+      <scripts />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="AKACommons" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="AKACommons" CONFIG_NAME="Debug" SCHEME_NAME="AKACommons" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="CocoaLumberjack" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="CocoaLumberjack" CONFIG_NAME="Debug" SCHEME_NAME="CocoaLumberjack" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-AKABeacon" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-AKABeacon" CONFIG_NAME="Debug" SCHEME_NAME="Pods-AKABeacon" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-AKABeaconDemo-AKABeaconDemoUITests" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-AKABeaconDemo-AKABeaconDemoUITests" CONFIG_NAME="Debug" SCHEME_NAME="Pods-AKABeaconDemo-AKABeaconDemoUITests" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-AKABeaconDemo" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-AKABeaconDemo" CONFIG_NAME="Debug" SCHEME_NAME="Pods-AKABeaconDemo" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <list size="8">
+      <item index="0" class="java.lang.String" itemvalue="Application.AKABeacon" />
+      <item index="1" class="java.lang.String" itemvalue="Application.AKABeaconUITests" />
+      <item index="2" class="java.lang.String" itemvalue="Application.AKABeaconDemo" />
+      <item index="3" class="java.lang.String" itemvalue="Application.AKACommons" />
+      <item index="4" class="java.lang.String" itemvalue="Application.CocoaLumberjack" />
+      <item index="5" class="java.lang.String" itemvalue="Application.Pods-AKABeacon" />
+      <item index="6" class="java.lang.String" itemvalue="Application.Pods-AKABeaconDemo-AKABeaconDemoUITests" />
+      <item index="7" class="java.lang.String" itemvalue="Application.Pods-AKABeaconDemo" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1fa26bcb-7e48-4423-a3a7-b049b6bd183e" name="Default" comment="" />
+      <created>1446678222313</created>
+      <option name="number" value="Default" />
+      <updated>1446678222313</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1680" y="59" width="1920" height="1009" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32964718" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32884398" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32922733" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressions.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-umbrella.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-umbrella.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-umbrella.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressions.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.01734104">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="47" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13157895">
+          <caret line="5" column="47" selection-start-line="5" selection-start-column="47" selection-end-line="5" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

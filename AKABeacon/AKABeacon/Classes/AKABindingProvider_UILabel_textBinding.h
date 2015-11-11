@@ -7,6 +7,7 @@
 //
 
 #import "AKABindingProvider.h"
+#import "AKAViewBinding.h"
 
 @interface AKABindingProvider_UILabel_textBinding : AKABindingProvider
 
@@ -14,7 +15,7 @@
 
 @end
 
-@interface AKABinding_UILabel_textBinding: AKABinding
+@interface AKABinding_UILabel_textBinding: AKAViewBinding
 
 #pragma mark - Binding Configuration
 

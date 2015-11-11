@@ -274,9 +274,9 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             [dictionary aka_bindingProviderForKey:kAKABindingSpecificationBindingProviderTypeKey
                                          required:NO];
 
-        if (!_bindingProvider)
+        if (!_bindingProvider && base.bindingProvider)
         {
-            _bindingProvider = base.bindingProvider;
+            _bindingProvider = (req_AKABindingProvider)base.bindingProvider;
         }
 
         _bindingTargetSpecification =
@@ -432,7 +432,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
              }
              else if ([obj isKindOfClass:[NSDictionary class]])
              {
-                 NSDictionary<NSString*, id>* dictionary = obj;
+                 NSDictionary<NSString*, id>* attributeDictionary = obj;
 
                  // attribute base is the corresponding attribute specification of a binding providers super class
                  // which is implicitely inherited.
@@ -444,10 +444,10 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                  // Usually only one of both is defined, but it's possible that spec wants to override the
                  // expression specification of an inherited attribute with an existing binding expression.
                  // That should work.
-                 id expressionBase = dictionary[@"base"];
+                 id expressionBase = attributeDictionary[@"base"];
                  if (expressionBase == nil)
                  {
-                     expressionBase = [dictionary aka_bindingProviderForKey:kAKABindingSpecificationBindingProviderTypeKey required:NO].specification.bindingSourceSpecification;
+                     expressionBase = [attributeDictionary aka_bindingProviderForKey:kAKABindingSpecificationBindingProviderTypeKey required:NO].specification.bindingSourceSpecification;
                  }
 
                  NSAssert(expressionBase == nil || [expressionBase isKindOfClass:[AKABindingExpressionSpecification class]],
@@ -455,7 +455,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                           expressionBase);
 
                  attributeSpecifications[attributeName] =
-                    [[AKABindingAttributeSpecification alloc] initWithDictionary:dictionary
+                    [[AKABindingAttributeSpecification alloc] initWithDictionary:attributeDictionary
                                                    basedOnAttributeSpecification:attributeBase
                                                          expressionSpecification:expressionBase];
              }
@@ -467,12 +467,17 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
          }];
 
         // Add base attributes not redefined here:
-        [base.attributes enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, AKABindingAttributeSpecification * _Nonnull obj, BOOL * _Nonnull stop) {
-            if (attributeSpecifications[key] == nil)
-            {
-                attributeSpecifications[key] = obj;
-            }
-        }];
+        [base.attributes enumerateKeysAndObjectsUsingBlock:
+         ^(req_NSString                         baseAttributeName,
+           req_AKABindingAttributeSpecification baseAttributeValue,
+           outreq_BOOL                          stop)
+         {
+             (void)stop;
+             if (attributeSpecifications[baseAttributeName] == nil)
+             {
+                 attributeSpecifications[baseAttributeName] = baseAttributeValue;
+             }
+         }];
 
         _attributes = [NSDictionary dictionaryWithDictionary:attributeSpecifications];
 
@@ -946,6 +951,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 + (NSSet*)               setOfClassesFromClassOrArrayOfClasses:(id)object
                                                        basedOn:(NSSet*)base
 {
+    // TODO: implement merging base
     NSSet* result = nil;
 
     if ([object isKindOfClass:[NSArray class]])
@@ -971,6 +977,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 + (NSSet*)            setOfValueTypeFromStringOrArrayOfStrings:(id)object
                                                        basedOn:(NSSet*)base
 {
+    // TODO: implement merging base
     NSSet* result = nil;
 
     if ([object isKindOfClass:[NSArray class]])

@@ -43,6 +43,7 @@
 }
 
 - (instancetype _Nullable)         initWithTarget:(id)target
+                                         property:(opt_SEL)property
                                        expression:(req_AKABindingExpression)bindingExpression
                                           context:(req_AKABindingContext)bindingContext
                                          delegate:(opt_AKABindingDelegate)delegate
@@ -51,8 +52,9 @@
     if (self = [self init])
     {
         _bindingTarget = target;
+        _bindingProperty = property;
+        _bindingContext = bindingContext;
         _delegate = delegate;
-
 
         NSError* localError = nil;
 
@@ -301,6 +303,12 @@
 }
 
 #pragma mark - Target Value Updates
+
+- (void)                                  updateTargetValue
+{
+    id sourceValue = self.bindingSource.value;
+    [self updateTargetValueForSourceValue:sourceValue changeTo:sourceValue];
+}
 
 - (void)                    updateTargetValueForSourceValue:(opt_id)oldSourceValue
                                                    changeTo:(opt_id)newSourceValue

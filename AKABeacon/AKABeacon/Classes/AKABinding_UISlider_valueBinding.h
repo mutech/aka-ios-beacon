@@ -12,7 +12,6 @@
 
 @property(nonatomic) NSNumber* minimumValue;
 @property(nonatomic) NSNumber* maximumValue;
-@property(nonatomic) double numberValue;
 
 @property(nonatomic, readonly) UISlider* uiSlider;
 

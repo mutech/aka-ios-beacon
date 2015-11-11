@@ -25,7 +25,7 @@
 {
     if (self = [super init])
     {
-        _specification = [[AKABindingSpecification alloc] initWithDictionary:specification];
+        _specification = [[AKABindingSpecification alloc] initWithDictionary:specification basedOn:nil];
     }
     return self;
 }

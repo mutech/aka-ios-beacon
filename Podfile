@@ -14,7 +14,9 @@ target :AKABeacon, :exclusive => true do
         xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
     end
     xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
-    pod 'AKACommons', '~> 0.1.0-pre.1'
+    pod 'AKACommons', '0.1.0.pre'
+    #pod 'AKACommons', :path => '../aka-ios-commons'
+    #pod 'AKACommons', :head
 end
 
 target :AKABeaconDemo, :exclusive => true do
@@ -23,5 +25,7 @@ target :AKABeaconDemo, :exclusive => true do
     end
     xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
     pod 'AKABeacon', :path => '.'
-    pod 'AKACommons', '~> 0.1.0-pre.1'
+    pod 'AKACommons', '0.1.0.pre'
+    #pod 'AKACommons', :path => '../aka-ios-commons'
+    #pod 'AKACommons', :head
 end

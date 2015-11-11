@@ -22,18 +22,16 @@
     UIPickerViewDataSource
     >
 
-@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*          triggerView;
-@property(nonatomic, readonly)       UIPickerView*                          pickerView;
+@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView* triggerView;
+@property(nonatomic, readonly)       UIPickerView*             pickerView;
 
-@property(nonatomic, readonly, weak) id<AKABindingContextProtocol>          bindingContext;
+@property(nonatomic, readonly)       NSArray*                  choices;
+@property(nonatomic, readonly)       AKAProperty*              choicesProperty;
 
-@property(nonatomic, readonly)       NSArray*                               choices;
-@property(nonatomic, readonly)       AKAProperty*                           choicesProperty;
+@property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
 
-@property(nonatomic, readonly)       AKAUnboundProperty*                    titleProperty;
-
-@property(nonatomic)                 NSInteger originallySelectedRow;
-@property(nonatomic)                 NSInteger previouslySelectedRow;
+@property(nonatomic)                 NSInteger                 originallySelectedRow;
+@property(nonatomic)                 NSInteger                 previouslySelectedRow;
 
 @end
 
@@ -42,26 +40,6 @@
 #pragma mark -
 
 @implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
-
-#pragma mark - Initialization
-
-- (instancetype)                                  initWithView:(AKAPickerKeyboardTriggerView* _Nonnull)triggerView
-                                                    expression:(req_AKABindingExpression)bindingExpression
-                                                       context:(req_AKABindingContext)bindingContext
-                                                      delegate:(opt_AKABindingDelegate)delegate
-                                                         error:(out_NSError)error
-{
-    if (self = [super initWithView:triggerView
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
-    {
-        _bindingContext = bindingContext;
-    }
-
-    return self;
-}
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
@@ -80,8 +58,8 @@
             {
                 id result;
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
-                NSInteger row = [binding.pickerView
-                                 selectedRowInComponent:0];
+
+                NSInteger row = [binding.pickerView selectedRowInComponent:0];
                 result = [binding itemForRow:row];
 
                 return result;
@@ -94,8 +72,7 @@
 
                 if (row != NSNotFound)
                 {
-                    id currentValue = [binding itemForRow:[binding.pickerView
-                                                           selectedRowInComponent:0]];
+                    id currentValue = [binding itemForRow:[binding.pickerView selectedRowInComponent:0]];
 
                     if (currentValue == nil && currentValue != value)
                     {
@@ -106,36 +83,39 @@
                     {
                         // Only update picker, if the value associated with
                         // the previously selected row is different from the
-                        // new value (selections, especially undefined and
+                        // new value (selections, especially if undefined,
                         // may have the same associated values and in these
                         // cases we don't want to change the selection).
-                        [binding.pickerView
-                           selectRow:row
-                         inComponent:0
-                            animated:YES];
+                        [binding.pickerView selectRow:row inComponent:0 animated:YES];
                         binding.originallySelectedRow = row;
                         binding.previouslySelectedRow = row;
                     }
                 }
             }
-            observationStarter:
+
+                          observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+
                 [binding attachToCustomKeyboardResponderView];
                 binding.pickerView.delegate = binding;
                 binding.pickerView.dataSource = binding;
+
                 [binding setNeedsReloadChoices];
                 [binding reloadChoicesIfNeeded];
 
                 return YES;
             }
-            observationStopper:
+
+                          observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+
                 binding.pickerView.delegate = nil;
                 binding.pickerView.dataSource = nil;
+
                 [binding detachFromCustomKeyboardResponderView];
 
                 return YES;
@@ -147,25 +127,17 @@
 - (BOOL)startObservingChanges
 {
     BOOL result = [super startObservingChanges];
-    AKAProperty* choices = _choicesProperty;
 
-    if (choices && !choices.isObservingChanges)
-    {
-        [choices startObservingChanges];
-    }
+    [self.choicesProperty startObservingChanges];
 
     return result;
 }
 
 - (BOOL)stopObservingChanges
 {
-    BOOL result = [super stopObservingChanges];
-    AKAProperty* choices = _choicesProperty;
+    [_choicesProperty stopObservingChanges];
 
-    if (choices.isObservingChanges)
-    {
-        [choices stopObservingChanges];
-    }
+    BOOL result = [super stopObservingChanges];
 
     return result;
 }
@@ -258,7 +230,12 @@
 {
     if (_titleProperty == nil && self.titleBindingExpression != nil)
     {
-        _titleProperty = [self.titleBindingExpression bindingSourceUnboundPropertyInContext:self.bindingContext];
+        id<AKABindingContextProtocol> context = self.bindingContext;
+
+        if (context != nil)
+        {
+            _titleProperty = [self.titleBindingExpression bindingSourceUnboundPropertyInContext:context];
+        }
     }
 
     return _titleProperty;
@@ -311,16 +288,22 @@
 {
     if (_choicesProperty == nil)
     {
-        _choicesProperty = [self.choicesBindingExpression
-                            bindingSourcePropertyInContext:self.bindingContext
-                                             changeObserer:
-                            ^(opt_id oldValue, opt_id newValue)
-                            {
-                                (void)oldValue;
-                                (void)newValue;
-                                [self choicesDidChange];
-                            }];
-        [_choicesProperty startObservingChanges];
+        id<AKABindingContextProtocol> context = self.bindingContext;
+
+        if (context)
+        {
+            __weak typeof(self) weakSelf = self;
+            _choicesProperty = [self.choicesBindingExpression
+                                bindingSourcePropertyInContext:context
+                                                 changeObserer:
+                                ^(opt_id oldValue, opt_id newValue)
+                                {
+                                    (void)oldValue;
+                                    (void)newValue;
+                                    [weakSelf choicesDidChange];
+                                }];
+            [_choicesProperty startObservingChanges];
+        }
     }
 
     return _choicesProperty;

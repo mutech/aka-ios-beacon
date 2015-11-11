@@ -8,7 +8,9 @@
 
 @import UIKit;
 
-@interface UISlider (AKAIBBindingProperties)
+#import "AKAControlViewProtocol.h"
+
+@interface UISlider (AKAIBBindingProperties) <AKAControlViewProtocol>
 
 @property(nonatomic) IBInspectable NSString* valueBinding_aka;
 

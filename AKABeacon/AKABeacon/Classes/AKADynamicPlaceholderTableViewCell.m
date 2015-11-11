@@ -183,6 +183,7 @@
                                    setter:
          ^(req_id target, opt_id value)
          {
+             (void)value;
              // TODO: see if setting the viewvalue can somehow be meaningfully implemented
 
              AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding* binding = target;

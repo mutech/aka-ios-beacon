@@ -78,9 +78,9 @@
                     [binding.uiSlider removeTarget:binding
                                             action:@selector(targetValueDidChangeSender:)
                                   forControlEvents:UIControlEventValueChanged];
-                    binding.uiSlider.value = self.originalValue;
-                    binding.uiSlider.minimumValue = self.originalMinimumValue;
-                    binding.uiSlider.maximumValue = self.originalMaximumValue;
+                    binding.uiSlider.value = binding.originalValue;
+                    binding.uiSlider.minimumValue = binding.originalMinimumValue;
+                    binding.uiSlider.maximumValue = binding.originalMaximumValue;
                 }
                 return result;
             }];

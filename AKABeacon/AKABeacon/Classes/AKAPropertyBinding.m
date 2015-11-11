@@ -14,6 +14,7 @@
 #pragma mark - Initialization
 
 - (instancetype)                                      initWithTarget:(id)target
+                                                            property:(opt_SEL)property
                                                           expression:(req_AKABindingExpression)bindingExpression
                                                              context:(req_AKABindingContext)bindingContext
                                                             delegate:(opt_AKABindingDelegate)delegate
@@ -21,20 +22,8 @@
 {
     NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
 
-    return [self initWithProperty:target
-                       expression:bindingExpression
-                          context:bindingContext
-                         delegate:delegate
-                            error:error];
-}
-
-- (instancetype)                                    initWithProperty:(req_AKAProperty)bindingTarget
-                                                          expression:(req_AKABindingExpression)bindingExpression
-                                                             context:(req_AKABindingContext)bindingContext
-                                                            delegate:(opt_AKABindingDelegate)delegate
-                                                               error:(out_NSError)error
-{
-    self = [super initWithTarget:bindingTarget
+    self = [super initWithTarget:target
+                        property:property
                       expression:bindingExpression
                          context:bindingContext
                         delegate:delegate

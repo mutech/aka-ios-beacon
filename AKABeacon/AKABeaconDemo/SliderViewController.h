@@ -13,5 +13,8 @@
 @interface SliderViewController : AKAFormViewController
 
 @property(nonatomic) double numberValue;
+@property(nonatomic) double minimumValue;
+@property(nonatomic) double maximumValue;
+@property(nonatomic) double stepValue;
 
 @end

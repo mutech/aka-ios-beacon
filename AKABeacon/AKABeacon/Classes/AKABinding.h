@@ -36,6 +36,7 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
  If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
 
  @param target            the binding target (eg. a view or property)
+ @param property          the binding target property defining the binding expression (if applicable)
  @param bindingExpression the binding expression
  @param bindingContext    the context in which the expression is evaluated
  @param delegate          the binding delegate
@@ -45,6 +46,7 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
  @return a new binding
  */
 - (nullable instancetype)                    initWithTarget:(req_id)target
+                                                   property:(opt_SEL)property
                                                  expression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
                                                    delegate:(opt_AKABindingDelegate)delegate
@@ -74,6 +76,7 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingSource;
 @property(nonatomic, readonly, nonnull) AKAProperty*        bindingTarget;
 @property(nonatomic, readonly, nullable) SEL                bindingProperty;
+@property(nonatomic, readonly, weak) id<AKABindingContextProtocol> bindingContext;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
 
 #pragma mark - Conversion
@@ -100,7 +103,16 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 
 - (BOOL)                               stopObservingChanges;
 
-#pragma mark - Change Propagation
+#pragma mark - Updating
+
+/**
+ Triggers an update of the target value from source.
+ 
+ This can be used by subclasses to initialize the target value or to reset it, for example if configuration parameters have been changed and the target needs to be reinitialized.
+ 
+ @note Please note that source value changes are tracked automatically and do not require this method to be called.
+ */
+- (void)                                  updateTargetValue;
 
 @end
 

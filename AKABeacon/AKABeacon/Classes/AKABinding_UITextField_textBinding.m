@@ -33,40 +33,10 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                  initWithTarget:(id)target
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
+- (void)validateTargetView:(req_UIView)targetView
 {
-    NSParameterAssert([target isKindOfClass:[UITextField class]]);
+    NSParameterAssert([targetView isKindOfClass:[UITextField class]]);
 
-    return [self      initWithView:(UITextField*)target
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error];
-}
-
-- (instancetype)                              initWithView:(req_UITextField)textField
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
-{
-    NSParameterAssert([textField isKindOfClass:[UITextField class]]);
-
-    if (self = [super initWithView:textField
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
-    {
-        NSAssert(self.textField == self.view && self.textField == textField, @"initWithView failed to initialize view property");
-        self.liveModelUpdates = YES;
-    }
-
-    return self;
 }
 
 - (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view

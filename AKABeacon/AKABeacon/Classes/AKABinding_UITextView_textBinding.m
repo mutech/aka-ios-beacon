@@ -29,37 +29,9 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                  initWithTarget:(id)target
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
+- (void)validateTargetView:(req_UIView)targetView
 {
-    NSParameterAssert([target isKindOfClass:[UITextView class]]);
-
-    return [self      initWithView:(UITextView*)target
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error];
-}
-
-- (instancetype)                              initWithView:(req_UITextView)textView
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
-{
-    if (self = [super initWithView:textView
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
-    {
-        self.liveModelUpdates = NO;
-    }
-
-    return self;
+    NSParameterAssert([targetView isKindOfClass:[UITextView class]]);
 }
 
 - (req_AKAProperty)     createBindingTargetPropertyForView:(req_UIView)view

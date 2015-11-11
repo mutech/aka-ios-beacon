@@ -34,7 +34,7 @@
     NSParameterAssert(type != nil);
     NSParameterAssert([type isSubclassOfClass:[AKABindingProvider class]]);
 
-#if! TARGET_INTEFACE_BUILDER
+#if !TARGET_INTEFACE_BUILDER
     NSAssert([type              methodForSelector:@selector(sharedInstance)] !=
              [[type superclass] methodForSelector:@selector(sharedInstance)],
              @"AKABindingProvider class %@ fails to redefine static initializer %@, the shared instance of its super class %@ will be used instead if assertions are disabled. This will likely cause trouble.",
@@ -44,12 +44,14 @@
 #endif
 
     AKABindingProvider* result = [type sharedInstance];
+
     return result;
 }
 
 + (instancetype)sharedInstanceForSpecificationItem:(id)spec
 {
     AKABindingProvider* result = nil;
+
     if (spec != nil)
     {
         if ([spec isKindOfClass:[AKABindingProvider class]])
@@ -65,17 +67,19 @@
             NSAssert(NO, @"Unexpected provider specification %@, expected an instance or sub class of AKABindingProvider", result);
         }
     }
+
     return result;
 }
 
 #pragma mark - Interface Builder Property Support
 
-- (NSString *)       bindingExpressionTextForSelector:(SEL)selector
-                                               inView:(UIView *)view
+- (NSString*)       bindingExpressionTextForSelector:(SEL)selector
+                                              inView:(UIView*)view
 {
     AKABindingExpression* expression = [view aka_bindingExpressionForProperty:selector];
 
     AKABindingProvider* bindingProvider = expression.bindingProvider;
+
     NSAssert(bindingProvider == self,
              @"Binding expression %@.%@ was created by a different provider %@",
              view, NSStringFromSelector(selector), bindingProvider);
@@ -101,6 +105,7 @@
         bindingExpression = [AKABindingExpression bindingExpressionWithString:(req_NSString)text
                                                               bindingProvider:self
                                                                         error:&error];
+
         if (bindingExpression == nil)
         {
             NSString* message = [NSString stringWithFormat:@"Attempt to set invalid binding expression for property %@ in view %@", NSStringFromSelector(selector), view];
@@ -108,7 +113,7 @@
 #if TARGET_INTEFACE_BUILDER
             AKALogError(@"%@: %@", message, error.localizedDescription);
 #else
-            @throw ([NSException exceptionWithName:message reason:error.localizedDescription userInfo:nil]);
+            @throw([NSException exceptionWithName:message reason:error.localizedDescription userInfo:nil]);
 #endif
         }
 
@@ -119,14 +124,17 @@
 #pragma mark - Creating Bindings
 
 - (req_AKABinding)  bindingWithTarget:(req_id)bindingTarget
+                             property:(opt_SEL)property
                            expression:(req_AKABindingExpression)bindingExpression
                               context:(req_AKABindingContext)bindingContext
                              delegate:(opt_AKABindingDelegate)delegate
 {
     AKABinding* binding = [self createBindingWithTarget:bindingTarget
+                                               property:property
                                              expression:bindingExpression
                                                 context:bindingContext
                                                delegate:delegate];
+
     if (binding)
     {
         [self setupBinding:binding
@@ -138,11 +146,13 @@
 }
 
 - (req_AKABinding)createBindingWithTarget:(req_id)bindingTarget
+                                 property:(opt_SEL)property
                                expression:(req_AKABindingExpression)bindingExpression
                                   context:(req_AKABindingContext)bindingContext
                                  delegate:(opt_AKABindingDelegate)delegate
 {
     AKATypePattern* targetTypePattern = self.specification.bindingTargetSpecification.typePattern;
+
     NSAssert(targetTypePattern == nil || [targetTypePattern matchesObject:bindingTarget], @"bindingTarget %@ does not match the type constraint %@ defined by the binding provider's specification.", bindingTarget, targetTypePattern);
     (void)targetTypePattern; // prevent unused warning in release build
 
@@ -150,10 +160,12 @@
     NSAssert([bindingType isSubclassOfClass:[AKABinding class]], @"Binding type %@ defined by the binding provider's specification is not a subclass of AKABindingType", NSStringFromClass(bindingType));
 
     AKABinding* binding = [[bindingType alloc] initWithTarget:bindingTarget
+                                                     property:property
                                                    expression:bindingExpression
                                                       context:bindingContext
                                                      delegate:delegate
                                                         error:nil];
+
     return binding;
 }
 
@@ -162,76 +174,86 @@
                                               context:(req_AKABindingContext)bindingContext
 {
     [attributes enumerateKeysAndObjectsUsingBlock:
-     ^(req_NSString             attributeName,
+     ^(req_NSString attributeName,
        req_AKABindingExpression attribute,
-       outreq_BOOL              stop)
+       outreq_BOOL stop)
      {
          (void)stop;
-         
+
          AKABindingAttributeSpecification* attributeSpec =
-         self.specification.bindingSourceSpecification.attributes[attributeName];
+             self.specification.bindingSourceSpecification.attributes[attributeName];
 
          if (attributeSpec)
          {
              switch (attributeSpec.attributeUse)
              {
                  case AKABindingAttributeUseAssignValueToBindingProperty:
-                 {
-                     NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
-                     if (bindingPropertyName == nil)
                      {
-                         bindingPropertyName = attributeName;
+                         NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+
+                         if (bindingPropertyName == nil)
+                         {
+                             bindingPropertyName = attributeName;
+                         }
+
+                         if (attribute)
+                         {
+                             id value = [attribute bindingSourceValueInContext:bindingContext];
+                             [binding setValue:value forKey:bindingPropertyName];
+                         }
+                         break;
                      }
-                     if (attribute)
-                     {
-                         id value = [attribute bindingSourceValueInContext:bindingContext];
-                         [binding setValue:value forKey:bindingPropertyName];
-                     }
-                     break;
-                 }
 
                  case AKABindingAttributeUseAssignExpressionToBindingProperty:
-                 {
-                     NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
-                     if (bindingPropertyName == nil)
                      {
-                         bindingPropertyName = attributeName;
+                         NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+
+                         if (bindingPropertyName == nil)
+                         {
+                             bindingPropertyName = attributeName;
+                         }
+
+                         if (attribute)
+                         {
+                             [binding setValue:attribute forKey:bindingPropertyName];
+                         }
+                         break;
                      }
-                     if (attribute)
-                     {
-                         [binding setValue:attribute forKey:bindingPropertyName];
-                     }
-                     break;
-                 }
 
                  case AKABindingAttributeUseBindToBindingProperty:
-                 {
-                     NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
-                     if (bindingPropertyName == nil)
                      {
-                         bindingPropertyName = attributeName;
-                     }
-                     if (attribute)
-                     {
-                         AKABindingProvider* provider = attributeSpec.bindingProvider;
-                         if (provider != nil)
+                         NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+
+                         if (bindingPropertyName == nil)
                          {
-                             AKAProperty* targetProperty = [AKAProperty propertyOfWeakKeyValueTarget:binding
-                                                                                             keyPath:bindingPropertyName
-                                                                                      changeObserver:nil];
-                             AKABinding* propertyBinding = [provider bindingWithTarget:targetProperty
-                                                                            expression:attribute
-                                                                               context:bindingContext
-                                                                              delegate:nil];
-                             // Keep the property binding alive
-                             // TODO: Generalize binding ownership (get rid of associative storage or at least of this local hack).
-                             // TODO: Check for retain cycles
-                             [binding aka_setAssociatedValue:propertyBinding
-                                                      forKey:[NSString stringWithFormat:@"_%@_binding", bindingPropertyName]];
+                             bindingPropertyName = attributeName;
                          }
+
+                         if (attribute)
+                         {
+                             AKABindingProvider* provider = attributeSpec.bindingProvider;
+
+                             if (provider != nil)
+                             {
+                                 AKAProperty* targetProperty =
+                                     [AKAProperty propertyOfWeakKeyValueTarget:binding
+                                                                       keyPath:bindingPropertyName
+                                                                changeObserver:nil];
+                                 AKABinding* propertyBinding =
+                                     [provider bindingWithTarget:targetProperty
+                                                        property:NSSelectorFromString(bindingPropertyName)
+                                                      expression:attribute
+                                                         context:bindingContext
+                                                        delegate:nil];
+                                 // Keep the property binding alive
+                                 // TODO: Generalize binding ownership (get rid of associative storage or at least of this local hack).
+                                 // TODO: Check for retain cycles
+                                 [binding aka_setAssociatedValue:propertyBinding
+                                                          forKey:[NSString stringWithFormat:@"_%@_binding", bindingPropertyName]];
+                             }
+                         }
+                         break;
                      }
-                     break;
-                 }
 
                  default:
                      break;

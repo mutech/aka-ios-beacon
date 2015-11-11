@@ -1110,6 +1110,20 @@
         }
     }
 
+    if (!result && localError)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:@"UnhandledError"
+                                           reason:localError.localizedDescription
+                                         userInfo:@{ @"error": localError }];
+        }
+    }
+
     return result;
 }
 
@@ -1353,6 +1367,20 @@
             result = NO;
             localError = [AKABindingErrors invalidBindingExpression:self
                                             enumerationTypeMismatch:specification];
+        }
+    }
+
+    if (!result && localError)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:@"UnhandledError"
+                                           reason:localError.localizedDescription
+                                         userInfo:@{ @"error": localError }];
         }
     }
 

@@ -64,6 +64,7 @@ typedef AKABindingProvider* _Nonnull  req_AKABindingProvider;
  The binding provider will validate that the target and binding expression are valid according to the binding providers specification.
 
  @param target              the binding target (typically a view for view bindings)
+ @param property            the target property defining the binding expression (mainly for reporting purposes)
  @param bindingExpression   the binding expression which (besides optional binding configuration) specifies the binding source.
  @param bindingContext      the binding context in which the binding expression will be evaluated. This is typically an instance of AKAControl owning the binding.
  @param delegate            the delegate responding to binding events. This is typically an instance of AKAControl owning the binding.
@@ -71,6 +72,7 @@ typedef AKABindingProvider* _Nonnull  req_AKABindingProvider;
  @return a new binding
  */
 - (req_AKABinding)  bindingWithTarget:(req_id)target
+                             property:(opt_SEL)property
                            expression:(req_AKABindingExpression)bindingExpression
                               context:(req_AKABindingContext)bindingContext
                              delegate:(opt_AKABindingDelegate)delegate;

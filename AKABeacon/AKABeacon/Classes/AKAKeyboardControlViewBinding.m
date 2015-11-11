@@ -28,23 +28,14 @@
 
 #pragma mark - Initialization
 
-- (instancetype)                                 initWithView:(req_UIView)targetView
-                                                   expression:(req_AKABindingExpression)bindingExpression
-                                                      context:(req_AKABindingContext)bindingContext
-                                                     delegate:(opt_AKABindingDelegate)delegate
-                                                        error:(out_NSError)error
+- (instancetype)init
 {
-    if (self = [super initWithView:targetView
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
+    if (self = [super init])
     {
         self.shouldParticipateInKeyboardActivationSequence = YES;
         self.autoActivate = NO;
         self.liveModelUpdates = YES;
     }
-
     return self;
 }
 

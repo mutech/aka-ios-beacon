@@ -13,5 +13,13 @@
 
 @implementation SliderViewController
 
+- (void)viewDidLoad
+{
+    self.minimumValue = 0;
+    self.maximumValue = 1.0;
+    self.stepValue = .01;
+    
+    [super viewDidLoad];
+}
 
 @end

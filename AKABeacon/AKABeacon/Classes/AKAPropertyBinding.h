@@ -11,12 +11,4 @@
 
 @interface AKAPropertyBinding: AKABinding
 
-#pragma mark - Initialization
-
-- (instancetype) initWithProperty:(req_AKAProperty)bindingTarget
-                       expression:(req_AKABindingExpression)bindingExpression
-                          context:(req_AKABindingContext)bindingContext
-                         delegate:(opt_AKABindingDelegate)delegate
-                            error:(out_NSError)error;
-
 @end

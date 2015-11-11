@@ -107,39 +107,15 @@
 
 #pragma mark - Initialization
 
-- (instancetype _Nullable)                  initWithTarget:(id)target
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
+- (void)validateTargetView:(req_UIView)targetView
 {
-    NSParameterAssert([target isKindOfClass:[UILabel class]]);
-    return [self     initWithLabel:(UILabel*)target
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error];
+    NSParameterAssert([targetView isKindOfClass:[UILabel class]]);
 }
 
-- (instancetype)                             initWithLabel:(req_UILabel)label
-                                                expression:(req_AKABindingExpression)bindingExpression
-                                                   context:(req_AKABindingContext)bindingContext
-                                                  delegate:(opt_AKABindingDelegate)delegate
-                                                     error:(out_NSError)error
+- (AKAProperty*)createBindingTargetPropertyForView:(req_UIView)view
 {
-    if (self = [super initWithTarget:[self createTargetProperty]
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate
-                               error:error])
-    {
-        _label = label;
-    }
-    return self;
-}
+    (void)view;
 
-- (AKAProperty*)createTargetProperty
-{
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -191,6 +167,15 @@
                 (void)target; // nothing to observer (readonly).
                 return YES;
             }];
+}
+
+- (UILabel *)label
+{
+    UIView* result = self.view;
+
+    NSAssert(result == nil || [result isKindOfClass:[UILabel class]], @"View for %@ is required to be an instance of UILabel", self.class);
+
+    return (UILabel*)result;
 }
 
 #pragma mark - Conversion

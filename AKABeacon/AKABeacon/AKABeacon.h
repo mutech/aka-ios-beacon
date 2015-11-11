@@ -104,6 +104,11 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABinding_UISlider_valueBinding.h>
 #import <AKABeacon/AKABindingProvider_UISlider_valueBinding.h>
 
+// Bindings/ViewBindings/ControlViewBindings/UIStepper
+#import <AKABeacon/UIStepper+AKAIBBindingProperties.h>
+#import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
+#import <AKABeacon/AKABindingProvider_UIStepper_valueBinding.h>
+
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>

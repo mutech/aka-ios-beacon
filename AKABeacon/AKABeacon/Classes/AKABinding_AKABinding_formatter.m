@@ -98,17 +98,21 @@
 
 @implementation AKABinding_AKABinding_formatter
 
-- (instancetype)                        initWithProperty:(req_AKAProperty)bindingTarget
+- (instancetype)                          initWithTarget:(req_id)target
+                                                property:(opt_SEL)property
                                               expression:(req_AKABindingExpression)bindingExpression
                                                  context:(req_AKABindingContext)bindingContext
                                                 delegate:(opt_AKABindingDelegate)delegate
                                                    error:(out_NSError)error
 {
-    self = [super initWithProperty:bindingTarget
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error];
+    NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
+
+    self = [super initWithTarget:target
+                        property:property
+                      expression:bindingExpression
+                         context:bindingContext
+                        delegate:delegate
+                           error:error];
 
     if (self)
     {
@@ -120,6 +124,7 @@
 
             if (_formatter != nil && bindingExpression.attributes.count > 0)
             {
+                // Do not modify an existing formatter, copy it instead
                 _formatter = [_formatter copy];
             }
         }
@@ -145,8 +150,8 @@
         }
         else if (bindingExpression.attributes.count > 0)
         {
-            // Fallback for concrete formatter bindings, this will fail for
-            // generic formatters:
+            // Fallback for concrete formatter bindings (number and date), this will fail for
+            // custom formatters:
             _formatter = [self createMutableFormatter];
         }
 

@@ -20,8 +20,6 @@
 @property(nonatomic, readonly)       AKADatePickerKeyboardTriggerView*      triggerView;
 @property(nonatomic, readonly)       UIDatePicker*                          pickerView;
 
-@property(nonatomic, readonly, weak) id<AKABindingContextProtocol>          bindingContext;
-
 @property(nonatomic)                 NSDate*                                originalDate;
 @property(nonatomic)                 NSDate*                                previousDate;
 
@@ -34,24 +32,6 @@
 @implementation AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding
 
 #pragma mark - Initialization
-
-- (instancetype)                                  initWithView:(AKADatePickerKeyboardTriggerView* _Nonnull)triggerView
-                                                    expression:(req_AKABindingExpression)bindingExpression
-                                                       context:(req_AKABindingContext)bindingContext
-                                                      delegate:(opt_AKABindingDelegate)delegate
-                                                         error:(out_NSError)error
-{
-    if (self = [super initWithView:triggerView
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
-    {
-        _bindingContext = bindingContext;
-    }
-
-    return self;
-}
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {

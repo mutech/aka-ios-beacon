@@ -47,6 +47,7 @@
 /* Begin PBXFileReference section */
 		54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeaconDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EE7DFAB46B4CDC640EF258D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = BindingExpressionsPlayground.playground; path = AKABeaconDemo/BindingExpressionsPlayground.playground; sourceTree = "<group>"; };
 		8E4F0A691BE39D29006D8876 /* SliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderViewController.h; sourceTree = "<group>"; };
 		8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewController.m; sourceTree = "<group>"; };
 		8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKACommons.framework; path = "Pods/../build/Debug-iphoneos/AKACommons.framework"; sourceTree = "<group>"; };
@@ -106,6 +107,7 @@
 		8E91E7311BB228A900F7618F = {
 			isa = PBXGroup;
 			children = (
+				8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */,
 				8EFBE8521BBC4331004E264F /* AKAControls.framework */,
 				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
 				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,

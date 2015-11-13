@@ -6,8 +6,8 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKABindingProvider.h"
+#import "AKAKeyboardControlViewBindingProvider.h"
 
-@interface AKABindingProvider_UITextView_textBinding : AKABindingProvider
+@interface AKABindingProvider_UITextView_textBinding : AKAKeyboardControlViewBindingProvider
 
 @end

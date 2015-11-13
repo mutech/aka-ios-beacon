@@ -765,13 +765,18 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 {
     if (self = [self init])
     {
-        _acceptedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"acceptedTypes"]
-                                                                       basedOn:base.acceptedTypes];
+        // Accepted types and value types are not merged but overridden, because type constraints can only be tightened. If empty, the set of types allowed by base will be used (again, for not to allow any type not supported by base).
+
+        NSSet<Class>* acceptedTypes = dictionary[@"acceptedTypes"];
+        NSSet<NSString*>* acceptedValueTypes = dictionary[@"acceptedValueTypes"];
+
+        _acceptedTypes = acceptedTypes.count > 0 ? acceptedTypes : base.acceptedTypes;
+
+        _acceptedValueTypes = acceptedValueTypes.count > 0 ? acceptedValueTypes : base.acceptedValueTypes;
+
+
         _rejectedTypes = [AKATypePattern setOfClassesFromClassOrArrayOfClasses:dictionary[@"rejectedTypes"]
                                                                        basedOn:base.rejectedTypes];
-        _acceptedValueTypes =
-            [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]
-                                                             basedOn:base.acceptedValueTypes];
         _rejectedValueTypes =
             [AKATypePattern setOfValueTypeFromStringOrArrayOfStrings:dictionary[@"acceptedValueTypes"]
                                                              basedOn:base.rejectedValueTypes];
@@ -951,7 +956,6 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 + (NSSet*)               setOfClassesFromClassOrArrayOfClasses:(id)object
                                                        basedOn:(NSSet*)base
 {
-    // TODO: implement merging base
     NSSet* result = nil;
 
     if ([object isKindOfClass:[NSArray class]])
@@ -971,13 +975,21 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
     }
 
+    if (!result)
+    {
+        result = base;
+    }
+    else if (base)
+    {
+        result = [base setByAddingObjectsFromSet:result];
+    }
+
     return result;
 }
 
 + (NSSet*)            setOfValueTypeFromStringOrArrayOfStrings:(id)object
                                                        basedOn:(NSSet*)base
 {
-    // TODO: implement merging base
     NSSet* result = nil;
 
     if ([object isKindOfClass:[NSArray class]])
@@ -995,6 +1007,15 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     else if (object != nil)
     {
         NSAssert(NO, @"Expected a Class or NSArray for AKATypePattern, got %@", object);
+    }
+
+    if (!result)
+    {
+        result = base;
+    }
+    else if (base)
+    {
+        result = [base setByAddingObjectsFromSet:result];
     }
 
     return result;

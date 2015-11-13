@@ -31,27 +31,13 @@
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        
+        // Inherits specification of AKAKeyboardControlViewBindingProvider:
         NSDictionary* spec =
         @{ @"bindingType":          [AKABinding_UITextView_textBinding class],
            @"bindingProviderType":  [AKABindingProvider_UITextView_textBinding class],
-           @"targetType":           [UITextView class],
-           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
-           @"attributes":
-               @{ @"liveModelUpdates":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
-                         },
-                  @"autoActivate":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
-                         },
-                  @"KBActivationSequence":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
-                         }
-                  }
-           };
+           @"targetType":           [UITextView class] };
+
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
     return result;

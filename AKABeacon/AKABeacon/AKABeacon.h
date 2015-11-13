@@ -78,7 +78,6 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABindingErrors.h>
 #import <AKABeacon/AKABindingDelegate.h>
 #import <AKABeacon/AKABinding.h>
-#import <AKABeacon/AKABindingProviderRegistry.h>
 #import <AKABeacon/AKABindingProvider.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
 #import <AKABeacon/UIView+AKABindingSupport.h>
@@ -112,6 +111,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>
+#import <AKABeacon/AKAKeyboardControlViewBindingProvider.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextField
 #import <AKABeacon/UITextField+AKAIBBindingProperties.h>

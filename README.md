@@ -1,8 +1,13 @@
 # AKA Beacon
 
-## Quick Summary
-
 AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Knockout.
+
+## Survey
+We prepared [a short survey](https://mutechaka.typeform.com/to/caKeuX). Please help us and give us some feedback.
+
+Thank you for taking the time (it's really short)
+
+## Quick Summary
 
 The typical way to use Beacon is to define binding expressions on UIViews in Interface Builder and to subclass AKAFormViewController or AKAFormTableViewController (more to come) in your view controllers.
 
@@ -40,7 +45,7 @@ date { dateFormatter: { dateFormat: "'Today is:' mm/dd/YYYY" } }
 
 Will do all the work of connecting the property values to the labels. The views are updated whenever the properties change.
 
-This currently works with UILabel, UITextField, UITextView, UISwitch, UISlider, and at the time Beacon is released (soon now) with the rest of the gang.
+This currently works with UILabel, UITextField, UITextView, UISwitch, UISlider, UIStepper and at the time Beacon is released (soon now) with the rest of the gang. Beacon also provides a couple of custom keyboards (using UIPicker and UIDatePicker), themed composite controls (combining a label and a validation message label with an editor control), extensions to static table views making them dynamic and quite a lot of good ideas for amazing features (such as a search bar that will highlight results in all data-bound views containing text).
 
 There is a whole lot more to Beacon than just binding values. Go and check it out, you'll be surprised ;-)
 

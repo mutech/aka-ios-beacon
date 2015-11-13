@@ -1,6 +1,4 @@
 PODS:
-  - AKABeacon (0.1.0-pre.2):
-    - AKACommons (= 0.1.0.pre)
   - AKACommons (0.1.0.pre):
     - CocoaLumberjack (~> 2.1.0)
   - CocoaLumberjack (2.1.0):
@@ -11,18 +9,22 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.1.0):
     - CocoaLumberjack/Default
+  - Nimble (3.0.0)
+  - Quick (0.8.0)
 
 DEPENDENCIES:
-  - AKABeacon (from `.`)
-  - AKACommons (= 0.1.0.pre)
+  - AKACommons (from `../aka-ios-commons`)
+  - Nimble (~> 3.0.0)
+  - Quick (~> 0.8.0)
 
 EXTERNAL SOURCES:
-  AKABeacon:
-    :path: "."
+  AKACommons:
+    :path: "../aka-ios-commons"
 
 SPEC CHECKSUMS:
-  AKABeacon: a47d960362c486c37685d5bb4ac477fabe2b1b60
   AKACommons: ff1ab51759412aa1c6d31588c9c8520f35945ea2
   CocoaLumberjack: d6627e7ad42e14d41a4fa2e6c7ae42489d5f3e8b
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
+  Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
 
 COCOAPODS: 0.39.0

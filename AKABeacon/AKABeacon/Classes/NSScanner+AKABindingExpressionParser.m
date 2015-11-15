@@ -221,7 +221,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         }
 
         // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
-        if (result && attributes.count > 0 && bindingExpressionType == nil)
+        if (result && bindingExpressionType == nil)
         {
             bindingExpressionType = [AKABindingExpression class];
         }
@@ -514,6 +514,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         if (attributes.count == 0 && [self isAtCharacter:'}'])
         {
             // Allow for empty { }
+            [self skipCharacter:'}'];
             done = YES;
             break;
         }
@@ -566,6 +567,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                                  orTerminator:'}'
                               terminatorFound:&done
                                         error:error];
+            [self skipWhitespaceAndNewlineCharacters];
         }
     }
 

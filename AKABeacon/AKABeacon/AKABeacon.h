@@ -89,34 +89,35 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/UILabel
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABindingProvider_UILabel_textBinding.h>
+#import <AKABeacon/AKABinding_UILabel_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings
 #import <AKABeacon/AKAControlViewBindingDelegate.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISwitch
 #import <AKABeacon/UISwitch+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABinding_UISwitch_stateBinding.h>
 #import <AKABeacon/AKABindingProvider_UISwitch_stateBinding.h>
+#import <AKABeacon/AKABinding_UISwitch_stateBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISlider
 #import <AKABeacon/UISlider+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABinding_UISlider_valueBinding.h>
 #import <AKABeacon/AKABindingProvider_UISlider_valueBinding.h>
+#import <AKABeacon/AKABinding_UISlider_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UIStepper
 #import <AKABeacon/UIStepper+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
 #import <AKABeacon/AKABindingProvider_UIStepper_valueBinding.h>
+#import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
+#import <AKABeacon/AKAKeyboardControlViewBindingProvider.h>
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>
-#import <AKABeacon/AKAKeyboardControlViewBindingProvider.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextField
 #import <AKABeacon/UITextField+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABinding_UITextField_textBinding.h>
 #import <AKABeacon/AKABindingProvider_UITextField_textBinding.h>
+#import <AKABeacon/AKABinding_UITextField_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextView
 #import <AKABeacon/UITextView+AKAIBBindingProperties.h>

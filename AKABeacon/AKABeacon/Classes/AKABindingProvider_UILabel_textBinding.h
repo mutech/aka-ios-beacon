@@ -7,24 +7,10 @@
 //
 
 #import "AKABindingProvider.h"
-#import "AKAViewBinding.h"
+
 
 @interface AKABindingProvider_UILabel_textBinding : AKABindingProvider
 
 + (instancetype _Nonnull)sharedInstance;
-
-@end
-
-@interface AKABinding_UILabel_textBinding: AKAViewBinding
-
-#pragma mark - Binding Configuration
-
-@property(nonatomic, nullable) NSString* textForUndefinedValue;
-@property(nonatomic, nullable) NSString* textForYes;
-@property(nonatomic, nullable) NSString* textForNo;
-
-@property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
-@property(nonatomic, nullable) NSDateFormatter* dateFormatter;
-@property(nonatomic, nullable) NSFormatter* formatter;
 
 @end

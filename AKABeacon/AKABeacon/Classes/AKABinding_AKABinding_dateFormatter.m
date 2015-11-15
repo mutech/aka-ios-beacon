@@ -113,6 +113,11 @@
 
 @implementation AKABinding_AKABinding_dateFormatter
 
+- (NSFormatter *)defaultFormatter
+{
+    return [NSDateFormatter new];
+}
+
 - (NSFormatter *)createMutableFormatter
 {
     return [NSDateFormatter new];

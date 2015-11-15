@@ -182,7 +182,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value editor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X2I-Oi-me6">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text editing:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X2I-Oi-me6">
                                 <rect key="frame" x="16" y="72" width="343" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
@@ -190,10 +190,54 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-N4-6Bj">
-                                <rect key="frame" x="16" y="94" width="343" height="30"/>
+                                <rect key="frame" x="16" y="93" width="343" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="LVi-Ds-g9J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="LVi-Ds-g9J"/>
+                                    </mask>
+                                </variation>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-EM-WEF">
+                                <rect key="frame" x="16" y="153" width="343" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                        <string key="value">stringValue {
+	liveModelUpdates: $false
+}</string>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Same text, no live updates:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
+                                <rect key="frame" x="16" y="131" width="343" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number editing:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ass-lQ-dzk">
+                                <rect key="frame" x="16" y="203" width="96" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EnI-Tp-gSI">
+                                <rect key="frame" x="16" y="224" width="96" height="30"/>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="n4E-rD-Ngr"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
@@ -207,96 +251,97 @@
                                 </userDefinedRuntimeAttributes>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="LVi-Ds-g9J"/>
+                                        <exclude reference="n4E-rD-Ngr"/>
                                     </mask>
                                 </variation>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-EM-WEF">
-                                <rect key="frame" x="16" y="153" width="343" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Mgh-1E-0dR">
+                                <rect key="frame" x="16" y="224" width="343" height="30"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="HS7-rX-uxp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
-                                </userDefinedRuntimeAttributes>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Another model value editor:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
-                                <rect key="frame" x="16" y="132" width="343" height="13"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model value:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tzf-1v-dGL">
-                                <rect key="frame" x="16" y="245" width="343" height="14"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETl-So-aum">
-                                <rect key="frame" x="16" y="267" width="343" height="20"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
-                                </userDefinedRuntimeAttributes>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sow-m2-G9d">
-                                <rect key="frame" x="310" y="305" width="51" height="31"/>
-                                <animations/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="$root.textField1.hidden"/>
-                                </userDefinedRuntimeAttributes>
-                            </switch>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1wC-Mm-bMn" customClass="AKATextEditorControlView">
-                                <rect key="frame" x="16" y="191" width="343" height="46"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="editorValueBinding">
-                                        <string key="value">stringValue {
-	liveModelUpdates: $true,
-	autoActivate: $true, 	KBActivationSequence: $true
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                        <string key="value">numberValue {
+	numberFormatter: {
+		numberStyle: $enum.CurrencyStyle
+	},
+	editingNumberFormatter: {
+		maximumFractionDigits: 5
+	}
 }</string>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="labelTextBinding" value="&quot;Composite Editor&quot;"/>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="themeName" value="default"/>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="IBEnablePreview" value="YES"/>
                                 </userDefinedRuntimeAttributes>
-                            </view>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="HS7-rX-uxp"/>
+                                    </mask>
+                                </variation>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-uV-nOW">
+                                <rect key="frame" x="120" y="203" width="239" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="numberValue { numberFormatter: { numberStyle: $enum.CurrencyStyle } }"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3h-nt-xza">
+                                <rect key="frame" x="16" y="287" width="343" height="117"/>
+                                <animations/>
+                                <string key="text">Please note that multiple editing controls can be bound to the same model value. The first two text fields edit the same value. The second updates the model value when finishing the edit session, the first one immediately.
+
+The number editor text field uses two different formatters, one for display and another one for editing. An additional label always shows the display text, it's bound to the same number value.
+</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="xuY-uV-nOW" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="top" id="0ac-Bo-Ux3"/>
+                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="leading" secondItem="ass-lQ-dzk" secondAttribute="leading" id="1AX-Ex-o6z"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="trailing" secondItem="S5K-zJ-ZY5" secondAttribute="trailingMargin" id="1G1-ge-FSP"/>
-                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="trailing" secondItem="xNV-EM-WEF" secondAttribute="trailing" id="1gi-lO-MYr"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="top" secondItem="fdx-pW-zdc" secondAttribute="bottom" constant="8" id="1j1-2Z-fnC"/>
-                            <constraint firstAttribute="trailing" secondItem="ETl-So-aum" secondAttribute="trailing" constant="16" id="3sY-a9-tCa"/>
-                            <constraint firstItem="Sow-m2-G9d" firstAttribute="top" secondItem="ETl-So-aum" secondAttribute="bottom" constant="18" id="BHx-8q-4dq"/>
+                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="trailing" secondItem="ass-lQ-dzk" secondAttribute="trailing" id="1pq-N1-2rX"/>
+                            <constraint firstItem="T3h-nt-xza" firstAttribute="top" secondItem="Mgh-1E-0dR" secondAttribute="bottom" constant="32" id="23F-fc-qKG"/>
+                            <constraint firstItem="Mgh-1E-0dR" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="4ZA-k3-KBw"/>
+                            <constraint firstItem="xuY-uV-nOW" firstAttribute="bottom" secondItem="ass-lQ-dzk" secondAttribute="bottom" id="5g0-vk-Y63"/>
+                            <constraint firstItem="ass-lQ-dzk" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="7IF-7P-q3Q"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="top" secondItem="zEf-N4-6Bj" secondAttribute="bottom" constant="8" id="F7l-Cx-gft"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="J90-aF-6me"/>
-                            <constraint firstAttribute="trailing" secondItem="tzf-1v-dGL" secondAttribute="trailing" constant="16" id="JWo-uQ-r1S"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="top" secondItem="X2I-Oi-me6" secondAttribute="bottom" constant="8" id="JyB-9u-gVw"/>
-                            <constraint firstItem="tzf-1v-dGL" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="MqL-On-FWh"/>
+                            <constraint firstItem="ass-lQ-dzk" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="20" id="K0Y-4B-2Ec"/>
+                            <constraint firstItem="ass-lQ-dzk" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="MQ0-YK-3mH"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="Q4C-DI-s6C"/>
-                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="leading" secondItem="xNV-EM-WEF" secondAttribute="leading" id="Sa1-L6-3Fz"/>
+                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="bottom" constant="8" id="R2w-it-BMo"/>
+                            <constraint firstItem="xuY-uV-nOW" firstAttribute="leading" secondItem="ass-lQ-dzk" secondAttribute="trailing" constant="8" id="RJX-yX-Y1M"/>
+                            <constraint firstItem="T3h-nt-xza" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="SPE-Bt-OWe"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="U0d-wc-Cu0"/>
-                            <constraint firstItem="ETl-So-aum" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="WRv-ns-0IQ"/>
+                            <constraint firstItem="Mgh-1E-0dR" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="bottom" constant="8" id="aOK-NC-QUy"/>
+                            <constraint firstItem="T3h-nt-xza" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ayJ-vm-FWJ"/>
+                            <constraint firstItem="Mgh-1E-0dR" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="bAh-G1-xTX"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leadingMargin" id="cMw-aH-USt"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="eb4-7T-dFi"/>
-                            <constraint firstItem="ETl-So-aum" firstAttribute="top" secondItem="tzf-1v-dGL" secondAttribute="bottom" constant="8" id="fey-St-gKf"/>
-                            <constraint firstItem="tzf-1v-dGL" firstAttribute="top" secondItem="1wC-Mm-bMn" secondAttribute="bottom" constant="8" id="lCZ-Ux-wA2"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="ZmZ-QW-fDF" secondAttribute="trailing" id="nOS-8x-GmY"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="ofI-he-XEe"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="ZmZ-QW-fDF" secondAttribute="leading" id="rIh-Fd-xUy"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ruQ-jP-d5I"/>
-                            <constraint firstItem="1wC-Mm-bMn" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="8" id="vDJ-fm-6jr"/>
-                            <constraint firstAttribute="trailing" secondItem="Sow-m2-G9d" secondAttribute="trailing" constant="16" id="xiB-aO-Q45"/>
+                            <constraint firstItem="xuY-uV-nOW" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="zpa-dg-ZAG"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="top" secondItem="ZmZ-QW-fDF" secondAttribute="bottom" constant="8" id="zye-fX-H4f"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="MQ0-YK-3mH"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="textField1" destination="zEf-N4-6Bj" id="bin-K0-r8W"/>
@@ -925,7 +970,7 @@
                                         <rect key="frame" x="0.0" y="367" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hen-ij-eGt" id="4Ss-cs-Iyw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="752" text="21" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sh9-Vl-WUc">
@@ -1001,7 +1046,7 @@
                                         <rect key="frame" x="0.0" y="455" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QMx-01-dEN" id="sKc-NX-MEk">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="752" text="21" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY9-op-tlf">

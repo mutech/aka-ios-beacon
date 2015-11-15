@@ -7,8 +7,8 @@
 //
 
 #import "AKABindingProvider_UITextView_textBinding.h"
-
 #import "AKABinding_UITextView_textBinding.h"
+
 
 @implementation AKABindingProvider_UITextView_textBinding
 
@@ -32,11 +32,13 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        // Inherits specification of AKAKeyboardControlViewBindingProvider:
+        // see specification defined in AKAKeyboardControlViewBindingProvider:
         NSDictionary* spec =
         @{ @"bindingType":          [AKABinding_UITextView_textBinding class],
            @"bindingProviderType":  [AKABindingProvider_UITextView_textBinding class],
-           @"targetType":           [UITextView class] };
+           @"targetType":           [UITextView class],
+           @"expressionType":       @(AKABindingExpressionTypeString)
+           };
 
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });

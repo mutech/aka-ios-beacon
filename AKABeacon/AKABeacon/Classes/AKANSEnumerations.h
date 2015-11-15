@@ -10,55 +10,55 @@
 
 @interface AKANSEnumerations : NSObject
 
-+ (opt_NSNumber)                              enumeratedValueForName:(opt_NSString)name
-                                                        inDictionary:(req_NSDictionary)dictionary;
++ (opt_NSNumber)                                   enumeratedValueForName:(opt_NSString)name
+                                                             inDictionary:(req_NSDictionary)dictionary;
 
-+ (opt_NSString)                              nameForEnumeratedValue:(opt_NSNumber)value
-                                                        inDictionary:(NSDictionary*)dictionary;
++ (opt_NSString)                                   nameForEnumeratedValue:(opt_NSNumber)value
+                                                             inDictionary:(req_NSDictionary)dictionary;
 
 
 #pragma mark - Locales
 
-+ (NSLocale*)                                        localeForObject:(id)localeOrName;
++ (opt_NSLocale)                                          localeForObject:(opt_id)localeOrName;
 
 #pragma mark - NSNumberFormatter Enumerations
 
-+ (NSNumber*)                          numberFormatterStyleForObject:(id)nameOrEnumeratedValue;
-+ (NSNumber*)                            numberFormatterPadForObject:(id)nameOrEnumeratedValue;
-+ (NSNumber*)                   numberFormatterRoundingModeForObject:(id)nameOrEnumeratedValue;
++ (opt_NSNumber)                            numberFormatterStyleForObject:(opt_id)nameOrEnumeratedValue;
++ (opt_NSNumber)                              numberFormatterPadForObject:(opt_id)nameOrEnumeratedValue;
++ (opt_NSNumber)                     numberFormatterRoundingModeForObject:(opt_id)nameOrEnumeratedValue;
 
 
-+ (NSDictionary<NSString*, NSNumber*>*)           numberStylesByName;
-+ (NSDictionary<NSString*, NSNumber*>*)           padPositionsByName;
-+ (NSDictionary<NSString*, NSNumber*>*)          roundingModesByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)        numberStylesByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)        padPositionsByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)       roundingModesByName;
 
 #pragma mark - NSFormatter Enumerations
 
-+ (NSNumber*)                             formattingContextForObject:(id)nameOrEnumeratedValue;
-+ (NSNumber*)                           formattingUnitStyleForObject:(id)nameOrEnumeratedValue;
++ (opt_NSNumber)                               formattingContextForObject:(opt_id)nameOrEnumeratedValue;
++ (opt_NSNumber)                             formattingUnitStyleForObject:(opt_id)nameOrEnumeratedValue;
 
-+ (NSDictionary<NSString*, NSNumber*>*)   formattingUnitStylesByName;
-+ (NSDictionary<NSString*, NSNumber*>*)     formattingContextsByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)formattingUnitStylesByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)  formattingContextsByName;
 
 #pragma mark - NSDateFormatter Enumerations
 
 
-+ (NSNumber*)                            dateFormatterStyleForObject:(id)nameOrEnumeratedValue;
++ (opt_NSNumber)                              dateFormatterStyleForObject:(opt_id)nameOrEnumeratedValue;
 
-+ (NSDictionary<NSString*, NSNumber*>*)    dateFormatterStylesByName;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull) dateFormatterStylesByName;
 
-+ (NSCalendar*)                                    calendarForObject:(id)calendarOrIdentifier;
-+ (NSTimeZone*)                                    timeZoneForObject:(id)timeZoneOrNameOrAbbrev;
++ (opt_NSCalendar)                                      calendarForObject:(opt_id)calendarOrIdentifier;
++ (opt_NSTimeZone)                                      timeZoneForObject:(opt_id)timeZoneOrNameOrAbbrev;
 
 #pragma mark - UIFont Descriptor Enumerations
 
-+ (NSDictionary<NSString*, NSString*>*)       uifontTextStylesByName;
-+ (NSString*)                                       textStyleForName:(NSString*)name;
++ (NSDictionary<NSString*, NSString*>*_Nonnull)    uifontTextStylesByName;
++ (opt_NSString)                                         textStyleForName:(opt_NSString)name;
 
-+ (NSDictionary<NSString*, NSNumber*>*) uifontDescriptorTraitsByName;
-+ (NSNumber*)                         uifontDescriptorTraitForObject:(id)nameOrTrait;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)uifontDescriptorTraitsByName;
++ (opt_NSNumber)                           uifontDescriptorTraitForObject:(opt_id)nameOrTrait;
 
-+ (NSDictionary<NSString*, NSNumber*>*)          uifontWeightsByName;
-+ (NSNumber*)                                  uifontWeightForObject:(id)nameOrFontWeight;
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)       uifontWeightsByName;
++ (opt_NSNumber)                                    uifontWeightForObject:(opt_id)nameOrFontWeight;
 
 @end

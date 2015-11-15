@@ -31,4 +31,6 @@
 
 - (NSFormatter*)createMutableFormatter;
 
+- (NSFormatter*)defaultFormatter;
+
 @end

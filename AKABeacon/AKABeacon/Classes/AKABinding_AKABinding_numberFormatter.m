@@ -115,6 +115,10 @@
 
 @implementation AKABinding_AKABinding_numberFormatter
 
+- (NSFormatter *)defaultFormatter
+{
+    return [NSNumberFormatter new];
+}
 
 - (NSFormatter*)createMutableFormatter
 {

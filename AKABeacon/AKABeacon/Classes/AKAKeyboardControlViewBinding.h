@@ -19,8 +19,20 @@
 
 #pragma mark - Binding Configuration
 
+/**
+ Whether (valid) changes should update the model immediately.
+ 
+ If false, the model value will be updated when the bound view resigns first responder or when an update is triggered manually. The semantics of this property might vary slightly depending on the type of keyboard and responder.
+ 
+ The default implementation initializes this property with YES.
+ 
+ @note this property corresponds to the binding attribute "liveModelUpdates" and if set, is initialized by the binding provider creating this binding.
+ */
 @property(nonatomic) BOOL liveModelUpdates;
+
+// TODO: This is not really a binding parameter but a configuration property for AKACompositeControls owning a binding. Review this
 @property(nonatomic) BOOL autoActivate;
+
 @property(nonatomic) BOOL shouldParticipateInKeyboardActivationSequence;
 
 @end
@@ -56,8 +68,7 @@
 @end
 
 
-@interface AKAKeyboardControlViewBinding(KeyboardActivationSequence)<AKAKeyboardActivationSequenceItemProtocol
->
+@interface AKAKeyboardControlViewBinding(KeyboardActivationSequence)<AKAKeyboardActivationSequenceItemProtocol>
 
 /**
  * Determines if the binding's responder should participate in the keyboard

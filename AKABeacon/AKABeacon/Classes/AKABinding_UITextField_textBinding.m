@@ -7,7 +7,7 @@
 //
 
 #import "AKABinding_UITextField_textBinding.h"
-
+#import "AKABindingErrors.h"
 
 #pragma mark - AKABinding_UITextField_textBinding - Private Interface
 #pragma mark -
@@ -18,6 +18,7 @@
 
 @property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
 @property(nonatomic, nullable) NSString*                   originalText;
+@property(nonatomic) BOOL                                  useFormatterEditingFormat;
 
 #pragma mark - Convenience
 
@@ -127,6 +128,99 @@
     _savedTextViewDelegate = savedTextViewDelegate;
 }
 
+#pragma mark - 
+
+- (BOOL)                                convertTargetValue:(opt_id)targetValue
+                                             toSourceValue:(out_id)sourceValueStore
+                                                     error:(out_NSError)error
+{
+    BOOL result = [super convertTargetValue:targetValue
+                              toSourceValue:sourceValueStore
+                                      error:error];
+
+    if (result && targetValue)
+    {
+        NSString* errorDescription = nil;
+        NSFormatter* formatter = nil;
+        if (self.useFormatterEditingFormat && self.editingFormatter)
+        {
+            formatter = self.editingFormatter;
+            result = [formatter getObjectValue:sourceValueStore
+                                     forString:(req_id)targetValue
+                              errorDescription:&errorDescription];
+        }
+        else if (self.formatter)
+        {
+            formatter = self.formatter;
+            result = [formatter getObjectValue:sourceValueStore
+                                     forString:(req_id)targetValue
+                              errorDescription:&errorDescription];
+        }
+        if (!result && error)
+        {
+            *error = [AKABindingErrors bindingErrorConversionOfBinding:self
+                                                           targetValue:targetValue
+                                                        usingFormatter:(req_NSFormatter)self.formatter
+                                                     failedWithMessage:errorDescription];
+        }
+    }
+
+    return result;
+}
+
+- (BOOL)                                convertSourceValue:(opt_id)sourceValue
+                                             toTargetValue:(out_id)targetValueStore
+                                                     error:(out_NSError)error
+{
+    BOOL result = [super convertSourceValue:sourceValue
+                              toTargetValue:targetValueStore
+                                      error:error];
+
+    if (result && sourceValue)
+    {
+        NSString* errorDescription = nil;
+        NSFormatter* formatter = nil;
+        NSString* text = nil;
+        if (self.useFormatterEditingFormat && self.editingFormatter)
+        {
+            formatter = self.editingFormatter;
+            text = [formatter stringForObjectValue:(req_id)sourceValue];
+            result = text != nil;
+        }
+        else if (self.formatter)
+        {
+            formatter = self.formatter;
+            if (self.useFormatterEditingFormat)
+            {
+                text = [formatter editingStringForObjectValue:(req_id)sourceValue];
+                result = text != nil;
+            }
+            else
+            {
+                text = [self.formatter stringForObjectValue:(req_id)sourceValue];
+                result = text != nil;
+            }
+        }
+
+        if (formatter)
+        {
+            if (result)
+            {
+                *targetValueStore = text;
+            }
+            else if (error)
+            {
+                *error = [AKABindingErrors bindingErrorConversionOfBinding:self
+                                                               sourceValue:sourceValue
+                                                            usingFormatter:(req_NSFormatter)formatter
+                                                         failedWithMessage:errorDescription];
+            }
+        }
+    }
+
+    return result;
+}
+
 #pragma mark - UITextFieldDelegate Implementation
 
 - (BOOL)                       textFieldShouldBeginEditing:(UITextField*)textField
@@ -154,12 +248,18 @@
     id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
 
     [self updateOriginalTextBeforeEditing];
+
+    self.useFormatterEditingFormat = YES;
+    [self updateTargetValue];
+
     [self responderDidActivate:self.textField];
 
     if ([secondary respondsToSelector:@selector(textFieldDidBeginEditing:)])
     {
         [secondary textFieldDidBeginEditing:textField];
     }
+
+
 }
 
 - (BOOL)                             textFieldShouldReturn:(UITextField*)textField
@@ -238,9 +338,13 @@
 
         if (result)
         {
-            // This is needed to update self.originalText, which is updated when the text
-            // field begins editing, which it did not if it's not active.
-            [self updateOriginalTextBeforeEditing];
+            // TODO: Unit test: make sure original text has the correct value after clear when text field is first responder and when it is not
+            if (self.isResponderActive)
+            {
+                // Clear does not trigger a begin editing event, so we need to make sure here,
+                // that original text is updated
+                [self updateOriginalTextBeforeEditing];
+            }
         }
     }
 
@@ -307,7 +411,7 @@
 
     NSParameterAssert(textField == self.textField);
 
-    // Call delegate first to give it a change to change the value
+    // Call delegate first to give it a chance to change the value
     if ([secondary respondsToSelector:@selector(textFieldDidEndEditing:)])
     {
         [secondary textFieldDidEndEditing:textField];
@@ -317,7 +421,11 @@
     {
         [self viewValueDidChange];
     }
+
     [self responderDidDeactivate:textField];
+
+    self.useFormatterEditingFormat = NO;
+    [self updateTargetValue];
 }
 
 #pragma mark - Change Observation

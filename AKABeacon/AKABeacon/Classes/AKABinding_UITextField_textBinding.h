@@ -11,4 +11,7 @@
 
 @interface AKABinding_UITextField_textBinding: AKAKeyboardControlViewBinding
 
+@property(nonatomic, nullable) NSFormatter* formatter;
+@property(nonatomic, nullable) NSFormatter* editingFormatter;
+
 @end

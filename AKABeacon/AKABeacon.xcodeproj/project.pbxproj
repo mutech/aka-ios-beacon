@@ -70,6 +70,8 @@
 		8E593DD01BD51BFA0040B391 /* AKACollectionControlViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E593DD11BD51BFA0040B391 /* AKACollectionControlViewBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */; };
 		8E593DD31BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E59DE5B1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E59DE591BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E59DE5C1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E59DE5A1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m */; };
 		8E5A165A1BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5A16581BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E5A165B1BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A16591BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m */; };
 		8E5A165E1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E5A165C1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -286,6 +288,8 @@
 		8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACollectionControlViewBinding.h; sourceTree = "<group>"; };
 		8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACollectionControlViewBinding.m; sourceTree = "<group>"; };
 		8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACollectionControlViewBindingDelegate.h; sourceTree = "<group>"; };
+		8E59DE591BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UILabel_textBinding.h; sourceTree = "<group>"; };
+		8E59DE5A1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UILabel_textBinding.m; sourceTree = "<group>"; };
 		8E5A16581BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAPickerKeyboardTriggerView.h; sourceTree = "<group>"; };
 		8E5A16591BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAPickerKeyboardTriggerView.m; sourceTree = "<group>"; };
 		8E5A165C1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACustomKeyboardResponderView.h; sourceTree = "<group>"; };
@@ -519,10 +523,10 @@
 			children = (
 				8E31545A1BC73291003FD085 /* UITextView+AKAIBBindingProperties.h */,
 				8E31545B1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m */,
-				8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */,
-				8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */,
 				8E3154561BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.h */,
 				8E3154571BC73205003FD085 /* AKABindingProvider_UITextView_textBinding.m */,
+				8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */,
+				8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */,
 			);
 			name = UITextView;
 			sourceTree = "<group>";
@@ -534,6 +538,8 @@
 				8E367A081BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.m */,
 				8E367A0B1BBA8BDA0094EF33 /* AKABindingProvider_UILabel_textBinding.h */,
 				8E367A0C1BBA8BDA0094EF33 /* AKABindingProvider_UILabel_textBinding.m */,
+				8E59DE591BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h */,
+				8E59DE5A1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m */,
 			);
 			name = UILabel;
 			sourceTree = "<group>";
@@ -969,6 +975,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E59DE5B1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h in Headers */,
 				8E2115C41BF336B600A89CFC /* AKAKeyboardControlViewBindingProvider.h in Headers */,
 				8E6B04D41BF0BC7800A2BCBE /* UIStepper+AKAIBBindingProperties.h in Headers */,
 				8E6B04D81BF0BCA300A2BCBE /* AKABindingProvider_UIStepper_valueBinding.h in Headers */,
@@ -1320,6 +1327,7 @@
 				8EE26D5D1BCDA931003ACCEC /* AKACompositeControl+BindingDelegatePropagation.m in Sources */,
 				8EE26D551BCD1E06003ACCEC /* AKABinding_UITextField_textBinding.m in Sources */,
 				8E72337B1B0022A200D647A9 /* AKAEmailValidator.m in Sources */,
+				8E59DE5C1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m in Sources */,
 				8E066C041BC284DD006CADDC /* AKABinding_AKABinding_dateFormatter.m in Sources */,
 				8E7233A61B0022A200D647A9 /* AKAThemableContainerView.m in Sources */,
 				8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */,

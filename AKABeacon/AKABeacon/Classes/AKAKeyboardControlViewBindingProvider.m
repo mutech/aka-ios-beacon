@@ -9,6 +9,7 @@
 #import "AKAKeyboardControlViewBindingProvider.h"
 #import "AKAKeyboardControlViewBinding.h"
 
+
 @implementation AKAKeyboardControlViewBindingProvider
 
 #pragma mark - Initialization
@@ -34,8 +35,7 @@
         @{ @"bindingType":          [AKAKeyboardControlViewBinding class],
            @"bindingProviderType":  [AKAKeyboardControlViewBindingProvider class],
            @"targetType":           [UIResponder class],
-           @"expressionType":       @( (AKABindingExpressionTypeAny
-                                        & ~AKABindingExpressionTypeArray) ),
+           @"expressionType":       @(AKABindingExpressionTypeAny),
            @"attributes":
                @{ @"liveModelUpdates":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),

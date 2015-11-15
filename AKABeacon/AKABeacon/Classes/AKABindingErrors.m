@@ -9,6 +9,8 @@
 #import "AKABindingErrors_Internal.h"
 #import "AKABeaconErrors_Internal.h"
 
+#import "AKABinding.h"
+
 @implementation AKABindingErrors
 
 #pragma mark - Binding Expression Validation
@@ -181,4 +183,75 @@
                                                   NSLocalizedFailureReasonErrorKey: reason }];
     return result;
 }
+
+
+#pragma mark - Binding Source Validation Errrors (Runtime validation)
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
+                                        expectedInstanceOfType:(req_AKATypePattern)typePattern
+{
+    NSString* reason = [NSString stringWithFormat:@"Expected binding %@ source value %@ to be an instance of a type matching %@",
+                        binding, value, typePattern.description];
+    NSString* description = [NSString stringWithFormat:@"Invalid binding source value: %@", reason];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidBindingSourceValueType
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason }];
+    return result;
+}
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
+                                            expectedSubclassOf:(req_Class)baseClass
+{
+    NSString* reason = [NSString stringWithFormat:@"Expected binding %@ source value %@ class type to be a sub class of %@",
+                        binding, value, baseClass];
+    NSString* description = [NSString stringWithFormat:@"Invalid binding source value: %@", reason];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidBindingSourceValueType
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason }];
+    return result;
+}
+
+
+#pragma mark - Binding Conversion Errors
+
++ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                targetValue:(opt_id)targetValue
+                             usingFormatter:(req_NSFormatter)formatter
+                          failedWithMessage:(opt_NSString)message
+{
+    NSString* reason = message;
+    NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ target %@ value %@ using formatter %@ failed: %@",
+                             binding, binding.bindingTarget.value, targetValue, formatter, message];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidBindingExpressionUnknownAttribute
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason,
+                                                  @"binding": binding,
+                                                  @"value": targetValue,
+                                                  @"formatter": formatter }];
+    return result;
+}
+
++ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                sourceValue:(opt_id)targetValue
+                             usingFormatter:(req_NSFormatter)formatter
+                          failedWithMessage:(opt_NSString)message
+{
+    NSString* reason = message;
+    NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source %@ value %@ using formatter %@ failed: %@",
+                             binding, binding.bindingTarget.value, targetValue, formatter, message];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidBindingExpressionUnknownAttribute
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason,
+                                                  @"binding": binding,
+                                                  @"value": targetValue,
+                                                  @"formatter": formatter }];
+    return result;
+}
+
 @end

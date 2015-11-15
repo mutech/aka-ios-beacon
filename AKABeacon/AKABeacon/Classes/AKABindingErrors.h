@@ -9,6 +9,7 @@
 #import "AKABeaconErrors.h"
 #import "AKABindingExpression.h"
 #import "AKABindingContextProtocol.h"
+#import "AKAbinding.h"
 
 typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 {
@@ -24,49 +25,76 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorInvalidBindingExpressionUnknownAttribute,
     AKABindingErrorInvalidBindingExpressionUnknownEnumerationValue,
     AKABindingErrorInvalidBindingExpressionInvalidUIFontTraitSpecification,
+
+    AKABindingErrorInvalidBindingSourceValueType,
+    AKABindingErrorConversionOfTargetToSourceUsingFormatterFailed,
+    AKABindingErrorConversionOfSourceToTargetUsingFormatterFailed,
 };
 
-@interface AKABindingErrors : AKABeaconErrors
 
-+ (NSError*)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext;
+@interface AKABindingErrors: AKABeaconErrors
+
++ (req_NSError)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                       context:(req_AKABindingContext)bindingContext;
 
 #pragma mark - Binding Expression Validation
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-        invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
-                            expected:(AKABindingExpressionType)expressionTypePattern;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                  invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
+                                                      expected:(AKABindingExpressionType)expressionTypePattern;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-    noEnumerationTypeInSpecification:(AKABindingExpressionSpecification*)specification;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                              noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-             enumerationTypeMismatch:(AKABindingExpressionSpecification*)specification;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                       enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-        noOptionsTypeInSpecification:(AKABindingExpressionSpecification*)specification;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                  noOptionsTypeInSpecification:(req_AKABindingExpressionSpecification)specification;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-                 optionsTypeMismatch:(AKABindingExpressionSpecification*)specification;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                           optionsTypeMismatch:(req_AKABindingExpressionSpecification)specification;
 
 #pragma mark - Binding Expression Attribute Validation
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-                   forAttributeNamed:(NSString*)attributeName
-                 invalidTypeExpected:(NSArray<Class>*)expectedType;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                             forAttributeNamed:(req_NSString)attributeName
+                                           invalidTypeExpected:(NSArray<Class>*_Nonnull)expectedType;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-                    unknownAttribute:(NSString*)attributeName;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                              unknownAttribute:(req_NSString)attributeName;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-            missingRequiredAttribute:(NSString*)attributeName;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                      missingRequiredAttribute:(req_NSString)attributeName;
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-                   forAttributeNamed:(NSString *)attributeName
-                   uifontTraitsError:(NSError*)error;
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                             forAttributeNamed:(req_NSString)attributeName
+                                             uifontTraitsError:(req_NSError)error;
 
-+ (NSError*)unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
-                         forEnumerationType:(req_NSString)enumerationType
-                           withValuesByName:(NSDictionary<NSString*,NSNumber*>*)valuesByName;
++ (req_NSError)                unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
+                                            forEnumerationType:(req_NSString)enumerationType
+                                              withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
+
+#pragma mark - Binding Source Validation Errrors (Runtime validation)
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
+                                        expectedInstanceOfType:(req_AKATypePattern)typePattern;
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
+                                            expectedSubclassOf:(req_Class)baseClass;
+
+#pragma mark - Binding Conversion Errors
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                   targetValue:(opt_id)targetValue
+                                                usingFormatter:(req_NSFormatter)formatter
+                                             failedWithMessage:(opt_NSString)message;
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)targetValue
+                                                usingFormatter:(req_NSFormatter)formatter
+                                             failedWithMessage:(opt_NSString)message;
 
 @end

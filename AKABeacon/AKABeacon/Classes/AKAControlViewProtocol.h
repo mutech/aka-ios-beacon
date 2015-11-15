@@ -38,7 +38,7 @@
  
  @note Do not rely on implementation details of AKAControlConfiguration or use the information outside of AKAControl implementations.
  */
-@property(nonatomic, readonly) AKAControlConfiguration* aka_controlConfiguration;
+@property(nonatomic, readonly, nonnull) AKAControlConfiguration* aka_controlConfiguration;
 
 /**
  Sets the specified value for the configuration item with the specified key.

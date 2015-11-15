@@ -13,6 +13,7 @@
 
 #import "AKABinding_AKABinding_formatter.h"
 #import "AKABindingSpecification.h"
+#import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
 
 #pragma mark - AKABindingProvider_AKABinding_formatter - Private Interface
@@ -107,6 +108,8 @@
 {
     NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
 
+    NSError* localError = nil;
+
     self = [super initWithTarget:target
                         property:property
                       expression:bindingExpression
@@ -130,9 +133,6 @@
         }
         else if (sourceValue != nil)
         {
-            NSAssert(class_isMetaClass(object_getClass(sourceValue)),
-                     @"Expected primary expression of formatter to be a key path refering to an instance of NSFormatter or a subclass of NSFormatter, got %@", sourceValue);
-
             if (class_isMetaClass(object_getClass(sourceValue)))
             {
                 Class type = sourceValue;
@@ -143,16 +143,33 @@
                 }
                 else
                 {
-                    NSAssert(class_isMetaClass(sourceValue),
-                             @"Class %@ provided for formatter attribute is not a subclass of NSFormatter", sourceValue);
+                    localError = [AKABindingErrors invalidBinding:self
+                                                      sourceValue:sourceValue
+                                               expectedSubclassOf:[NSFormatter class]];
+                    self = nil;
                 }
             }
+            else
+            {
+                AKATypePattern* typePattern =
+                    [[AKATypePattern alloc]initWithArrayOfClasses:@[ objc_getClass("Class"), [NSFormatter class]]];
+                localError = [AKABindingErrors invalidBinding:self
+                                                  sourceValue:sourceValue
+                                       expectedInstanceOfType:typePattern];
+                self = nil;
+            }
         }
-        else if (bindingExpression.attributes.count > 0)
+        else
         {
-            // Fallback for concrete formatter bindings (number and date), this will fail for
-            // custom formatters:
-            _formatter = [self createMutableFormatter];
+            // Fallback to createMutableFormatter/defaultFormatter if no formatter was provided by binding source:
+            if (bindingExpression.attributes.count > 0)
+            {
+                _formatter = [self createMutableFormatter];
+            }
+            else
+            {
+                _formatter = [self defaultFormatter];
+            }
         }
 
         if (_formatter != nil)
@@ -172,11 +189,10 @@
                  {
                      value = converter(value);
                  }
+
                  if (value != nil)
                  {
-                     [self->_formatter
-                      setValue:value
-                      forKey:key];
+                     [self->_formatter setValue:value forKey:key];
                  }
                  else
                  {
@@ -190,6 +206,19 @@
         self.bindingTarget.value = self.formatter;
     }
 
+    if (self == nil && localError)
+    {
+        if (error)
+        {
+            *error = localError;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:@"UnhandledError"
+                                           reason:localError.localizedDescription
+                                         userInfo:@{ @"error": localError }];
+        }
+    }
     return self;
 }
 
@@ -221,6 +250,11 @@
 }
 
 #pragma mark - Abstract Methods
+
+- (NSFormatter*)defaultFormatter
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
 
 - (NSFormatter*)createMutableFormatter
 {

@@ -13,7 +13,7 @@
 
 #import "UIView+AKABindingSupport.h"
 
-typedef NSMutableDictionary<req_NSString, req_AKABindingExpression>* Storage;
+typedef NSMutableDictionary<NSString*, AKABindingExpression*>* Storage;
 
 
 @implementation UIView(AKABindingSupport)

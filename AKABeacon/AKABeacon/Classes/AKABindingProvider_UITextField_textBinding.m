@@ -6,13 +6,11 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAAssociatedValues;
-
 #import "AKABindingProvider_UITextField_textBinding.h"
 #import "AKABinding_UITextField_textBinding.h"
-
-#pragma mark - AKABindingProvider_UITextField_textBinding - Implementation
-#pragma mark -
+#import "AKABinding_AKABinding_numberFormatter.h"
+#import "AKABinding_AKABinding_dateFormatter.h"
+#import "AKABinding_AKABinding_formatter.h"
 
 @implementation AKABindingProvider_UITextField_textBinding
 
@@ -22,42 +20,65 @@
 {
     static AKABindingProvider_UITextField_textBinding* instance = nil;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         instance = [AKABindingProvider_UITextField_textBinding new];
     });
+
     return instance;
 }
 
 #pragma mark - Binding Expression Validation
 
-- (AKABindingSpecification *)specification
+- (AKABindingSpecification*)specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
-        NSDictionary* spec =
-        @{ @"bindingType":          [AKABinding_UITextField_textBinding class],
-           @"bindingProviderType":  [AKABindingProvider_UITextField_textBinding class],
-           @"targetType":           [UITextField class],
-           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
-           @"attributes":
-               @{ @"liveModelUpdates":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
-                         },
-                  @"autoActivate":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
-                         },
-                  @"KBActivationSequence":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
-                         }
-                  }
-           };
+        // see specification defined in AKAKeyboardControlViewBindingProvider:
+        NSDictionary* spec = @{
+            @"bindingType":          [AKABinding_UITextField_textBinding class],
+            @"bindingProviderType":  [AKABindingProvider_UITextField_textBinding class],
+            @"targetType":           [UITextField class],
+            @"expressionType":       @(AKABindingExpressionTypeAny),
+            @"attributes":           @{
+                @"numberFormatter":      @{
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"formatter"
+                },
+                @"dateFormatter":        @{
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"formatter"
+                },
+                @"formatter":            @{
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"formatter"
+                },
+                @"editingNumberFormatter": @{
+                        @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
+                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                        @"bindingProperty": @"editingFormatter"
+                        },
+                @"editingDateFormatter": @{
+                        @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
+                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                        @"bindingProperty": @"editingFormatter"
+                        },
+                @"editingFormatter":    @{
+                        @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
+                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                        @"bindingProperty": @"editingFormatter"
+                        }
+            }
+        };
+
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
+
     return result;
 }
 

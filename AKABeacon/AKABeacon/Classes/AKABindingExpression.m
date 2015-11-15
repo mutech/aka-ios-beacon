@@ -1099,14 +1099,14 @@
                 // to zero.
                 result = NO;
                 localError = [AKABindingErrors invalidBindingExpression:self
-                                       noEnumerationTypeInSpecification:specification];
+                                       noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification];
             }
         }
         else if (optionsType.length > 0 && ![optionsType isEqualToString:(req_NSString)self.optionsType])
         {
             result = NO;
             localError = [AKABindingErrors invalidBindingExpression:self
-                                            enumerationTypeMismatch:specification];
+                                            enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification];
         }
     }
 
@@ -1359,14 +1359,14 @@
                 // to nil.
                 result = NO;
                 localError = [AKABindingErrors invalidBindingExpression:self
-                                       noEnumerationTypeInSpecification:specification];
+                                       noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification];
             }
         }
         else if (enumerationType.length > 0 && ![enumerationType isEqualToString:(req_NSString)self.enumerationType])
         {
             result = NO;
             localError = [AKABindingErrors invalidBindingExpression:self
-                                            enumerationTypeMismatch:specification];
+                                            enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification];
         }
     }
 

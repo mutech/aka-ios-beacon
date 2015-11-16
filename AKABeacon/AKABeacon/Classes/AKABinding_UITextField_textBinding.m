@@ -17,8 +17,10 @@
 #pragma mark - Saved UITextField State
 
 @property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
+@property(nonatomic, nullable) NSString*                   originalPlaceholder;
 @property(nonatomic, nullable) NSString*                   originalText;
-@property(nonatomic) BOOL                                  useFormatterEditingFormat;
+@property(nonatomic, nullable) NSString*                   previousText;
+@property(nonatomic) BOOL                                  useEditingFormat;
 
 #pragma mark - Convenience
 
@@ -62,17 +64,19 @@
                 {
                     binding.textField.text = @"";
                 }
-
-                if ([value isKindOfClass:[NSString class]])
+                else if ([value isKindOfClass:[NSString class]])
                 {
                     binding.textField.text = value;
                 }
-                else if (value != nil)
+                else
                 {
                     binding.textField.text = [NSString stringWithFormat:@"%@", value];
                 }
+
+                // A programmatic change resets edits and thus needs to be reflected in previousText
+                self.previousText = binding.textField.text;
             }
-            observationStarter:
+                          observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
@@ -81,7 +85,31 @@
 
                 if (textFieldDelegate != binding)
                 {
-                    binding.originalText = textField.text;
+                    // Save original text field text
+                    binding.originalText = binding.textField.text;
+                    binding.previousText = nil;
+
+                    // Save and setup placeholder
+                    binding.originalPlaceholder = textField.placeholder;
+                    textField.placeholder = self.textForUndefinedValue;
+
+                    // Format text for editing and save the result as previousText
+                    // representing the target value for the current source value.
+                    BOOL wasEditing = self.useEditingFormat;
+                    if (!wasEditing)
+                    {
+                        binding.useEditingFormat = YES;
+                        [binding updateTargetValue];
+                    }
+                    binding.previousText = binding.textField.text;
+
+                    // Render text for display
+                    if (!wasEditing)
+                    {
+                        binding.useEditingFormat = NO;
+                        [binding updateTargetValue];
+                    }
+
                     binding.savedTextViewDelegate = textFieldDelegate;
                     textField.delegate = binding;
                     [textField addTarget:binding
@@ -95,16 +123,28 @@
 
                 return YES;
             }
-            observationStopper:
+                          observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
                 UITextField* textField = binding.textField;
-                [textField removeTarget:target
-                                 action:@selector(textFieldDidChange:)
-                       forControlEvents:UIControlEventEditingChanged];
-                textField.delegate = binding.savedTextViewDelegate;
-                binding.originalText = nil;
+                id<UITextFieldDelegate> textFieldDelegate = textField.delegate;
+
+                if (textFieldDelegate == binding)
+                {
+                    [textField removeTarget:target
+                                     action:@selector(textFieldDidChange:)
+                           forControlEvents:UIControlEventEditingChanged];
+
+                    textField.delegate = binding.savedTextViewDelegate;
+
+                    textField.text = binding.originalText;
+                    binding.originalText = nil;
+                    binding.previousText = nil;
+
+                    textField.placeholder = self.originalPlaceholder;
+                    self.originalPlaceholder = nil;
+                }
 
                 return YES;
             }];
@@ -134,15 +174,13 @@
                                              toSourceValue:(out_id)sourceValueStore
                                                      error:(out_NSError)error
 {
-    BOOL result = [super convertTargetValue:targetValue
-                              toSourceValue:sourceValueStore
-                                      error:error];
+    BOOL result = NO;
 
-    if (result && targetValue)
+    if (targetValue)
     {
         NSString* errorDescription = nil;
         NSFormatter* formatter = nil;
-        if (self.useFormatterEditingFormat && self.editingFormatter)
+        if (self.useEditingFormat && self.editingFormatter)
         {
             formatter = self.editingFormatter;
             result = [formatter getObjectValue:sourceValueStore
@@ -156,13 +194,26 @@
                                      forString:(req_id)targetValue
                               errorDescription:&errorDescription];
         }
-        if (!result && error)
+        else
+        {
+            result = [super convertTargetValue:targetValue
+                                 toSourceValue:sourceValueStore
+                                         error:error];
+        }
+
+        if (!result && formatter && error)
         {
             *error = [AKABindingErrors bindingErrorConversionOfBinding:self
                                                            targetValue:targetValue
                                                         usingFormatter:(req_NSFormatter)self.formatter
                                                      failedWithMessage:errorDescription];
         }
+    }
+    else
+    {
+        result = [super convertTargetValue:targetValue
+                             toSourceValue:sourceValueStore
+                                     error:error];
     }
 
     return result;
@@ -172,34 +223,54 @@
                                              toTargetValue:(out_id)targetValueStore
                                                      error:(out_NSError)error
 {
-    BOOL result = [super convertSourceValue:sourceValue
-                              toTargetValue:targetValueStore
-                                      error:error];
+    BOOL result = NO;
 
-    if (result && sourceValue)
+    id effectiveSourceValue = sourceValue;
+    if (self.treatEmptyTextAsUndefined && [effectiveSourceValue isKindOfClass:[NSString class]])
+    {
+        NSString* text = (NSString*)effectiveSourceValue;
+
+        // TODO: the disabled behavior below is more robust, but maybe not expected, consider adding
+        // another configuration item or enabling this:
+        //text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+        if (text.length == 0)
+        {
+            effectiveSourceValue = nil;
+        }
+    }
+
+    if (effectiveSourceValue)
     {
         NSString* errorDescription = nil;
         NSFormatter* formatter = nil;
         NSString* text = nil;
-        if (self.useFormatterEditingFormat && self.editingFormatter)
+        
+        if (self.useEditingFormat && self.editingFormatter)
         {
             formatter = self.editingFormatter;
-            text = [formatter stringForObjectValue:(req_id)sourceValue];
+            text = [formatter stringForObjectValue:(req_id)effectiveSourceValue];
             result = text != nil;
         }
         else if (self.formatter)
         {
             formatter = self.formatter;
-            if (self.useFormatterEditingFormat)
+            if (self.useEditingFormat)
             {
-                text = [formatter editingStringForObjectValue:(req_id)sourceValue];
+                text = [formatter editingStringForObjectValue:(req_id)effectiveSourceValue];
                 result = text != nil;
             }
             else
             {
-                text = [self.formatter stringForObjectValue:(req_id)sourceValue];
+                text = [self.formatter stringForObjectValue:(req_id)effectiveSourceValue];
                 result = text != nil;
             }
+        }
+        else
+        {
+            result = [super convertSourceValue:effectiveSourceValue
+                                 toTargetValue:targetValueStore
+                                         error:error];
         }
 
         if (formatter)
@@ -211,11 +282,17 @@
             else if (error)
             {
                 *error = [AKABindingErrors bindingErrorConversionOfBinding:self
-                                                               sourceValue:sourceValue
+                                                               sourceValue:effectiveSourceValue
                                                             usingFormatter:(req_NSFormatter)formatter
                                                          failedWithMessage:errorDescription];
             }
         }
+    }
+    else
+    {
+        result = [super convertSourceValue:effectiveSourceValue
+                             toTargetValue:targetValueStore
+                                     error:error];
     }
 
     return result;
@@ -247,10 +324,13 @@
     NSParameterAssert(textField == self.textField);
     id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
 
-    [self updateOriginalTextBeforeEditing];
-
-    self.useFormatterEditingFormat = YES;
-    [self updateTargetValue];
+    self.useEditingFormat = YES;
+    if (self.liveModelUpdates || self.textField.text.length > 0 || self.textField.clearButtonMode == UITextFieldViewModeNever)
+    {
+        // update unless the current state may be the result of a clear button press, in which case
+        // the update would undo the clear action.
+        [self updateTargetValue];
+    }
 
     [self responderDidActivate:self.textField];
 
@@ -335,17 +415,6 @@
         // If the control should not activate, it should also not change its value
         // TODO: this might not always be true, consider to make this behaviour customizable.
         result = self.shouldActivate;
-
-        if (result)
-        {
-            // TODO: Unit test: make sure original text has the correct value after clear when text field is first responder and when it is not
-            if (self.isResponderActive)
-            {
-                // Clear does not trigger a begin editing event, so we need to make sure here,
-                // that original text is updated
-                [self updateOriginalTextBeforeEditing];
-            }
-        }
     }
 
     if (result)
@@ -383,10 +452,7 @@
     (void)textField;
     NSParameterAssert(textField == self.textField);
 
-    if (self.liveModelUpdates)
-    {
-        [self viewValueDidChange];
-    }
+    [self viewValueDidChange];
 }
 
 - (BOOL)                         textFieldShouldEndEditing:(UITextField*)textField
@@ -417,40 +483,38 @@
         [secondary textFieldDidEndEditing:textField];
     }
 
-    if (!self.liveModelUpdates)
-    {
-        [self viewValueDidChange];
-    }
+    // Update source
+    [self viewValueDidChange];
 
+    // Notify delegates
     [self responderDidDeactivate:textField];
 
-    self.useFormatterEditingFormat = NO;
+    // Rerender text in display format
+    self.useEditingFormat = NO;
     [self updateTargetValue];
 }
 
 #pragma mark - Change Observation
 
-- (void)                   updateOriginalTextBeforeEditing
-{
-    self.originalText = self.textField.text;
-}
-
 - (void)                                viewValueDidChange
 {
-    NSString* oldValue = self.originalText;
+    NSString* oldValue = self.previousText;
     NSString* newValue = self.textField.text;
 
-    // Send change notification
-    if (newValue != oldValue && ![newValue isEqualToString:oldValue])
+    if (self.liveModelUpdates || !self.textField.isFirstResponder)
     {
-        [self targetValueDidChangeFromOldValue:oldValue toNewValue:newValue];
-        newValue = self.textField.text; // the delegate may change the value
-    }
+        // Send change notification
+        if (newValue != oldValue && ![newValue isEqualToString:oldValue])
+        {
+            [self targetValueDidChangeFromOldValue:oldValue toNewValue:newValue];
+            newValue = self.textField.text; // the delegate may change the value
+        }
 
-    if (newValue != oldValue && ![newValue isEqualToString:oldValue])
-    {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
-        self.originalText = newValue;
+        if (newValue != oldValue && ![newValue isEqualToString:oldValue])
+        {
+            [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+            self.previousText = newValue;
+        }
     }
 }
 

@@ -13,5 +13,7 @@
 
 @property(nonatomic, nullable) NSFormatter* formatter;
 @property(nonatomic, nullable) NSFormatter* editingFormatter;
+@property(nonatomic, nullable) NSString*    textForUndefinedValue;
+@property(nonatomic) BOOL                   treatEmptyTextAsUndefined;
 
 @end

@@ -133,29 +133,6 @@
                                             <segue destination="5zU-PD-VgZ" kind="show" id="bDJ-NV-zpU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="dvq-ma-WBB" style="IBUITableViewCellStyleDefault" id="VyF-XZ-FWb">
-                                        <rect key="frame" x="0.0" y="284" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VyF-XZ-FWb" id="M5Z-TJ-Iuf">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Segmented Controls" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dvq-ma-WBB">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <animations/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <animations/>
-                                        </tableViewCellContentView>
-                                        <animations/>
-                                        <connections>
-                                            <segue destination="d0c-Mk-Yag" kind="show" id="U7r-Pf-gi4"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -183,14 +160,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text editing:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X2I-Oi-me6">
-                                <rect key="frame" x="16" y="72" width="343" height="14"/>
+                                <rect key="frame" x="16" y="72" width="310" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-N4-6Bj">
-                                <rect key="frame" x="16" y="93" width="343" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-N4-6Bj">
+                                <rect key="frame" x="16" y="93" width="310" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="LVi-Ds-g9J"/>
@@ -198,7 +175,12 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                        <string key="value">stringValue {
+	textForUndefinedValue: "(Please enter some text)",
+	treatEmptyTextAsUndefined: $true
+}</string>
+                                    </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -206,8 +188,22 @@
                                     </mask>
                                 </variation>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-EM-WEF">
-                                <rect key="frame" x="16" y="153" width="343" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="duk-R3-AN1">
+                                <rect key="frame" x="333" y="97" width="26" height="22"/>
+                                <animations/>
+                                <connections>
+                                    <action selector="showTextField1Binding:" destination="hlW-R9-3by" eventType="touchUpInside" id="Y8k-Rv-6UY"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Same text, no live updates:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
+                                <rect key="frame" x="16" y="131" width="310" height="14"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="xNV-EM-WEF">
+                                <rect key="frame" x="16" y="153" width="310" height="30"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -219,44 +215,32 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Same text, no live updates:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZmZ-QW-fDF">
-                                <rect key="frame" x="16" y="131" width="343" height="14"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oB1-O6-oL3">
+                                <rect key="frame" x="333" y="157" width="26" height="22"/>
+                                <animations/>
+                                <connections>
+                                    <action selector="showTextField2Binding:" destination="hlW-R9-3by" eventType="touchUpInside" id="3uE-FW-ygg"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Number editing:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ass-lQ-dzk">
+                                <rect key="frame" x="16" y="203" width="256" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number editing:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ass-lQ-dzk">
-                                <rect key="frame" x="16" y="203" width="96" height="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123,45 €" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-uV-nOW">
+                                <rect key="frame" x="280" y="203" width="46" height="14"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EnI-Tp-gSI">
-                                <rect key="frame" x="16" y="224" width="96" height="30"/>
-                                <animations/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="n4E-rD-Ngr"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
-                                        <string key="value">stringValue {
-	liveModelUpdates: $true,
-	autoActivate: $true, 	KBActivationSequence: $true
-}</string>
-                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="numberValue { numberFormatter: { numberStyle: $enum.CurrencyStyle } }"/>
                                 </userDefinedRuntimeAttributes>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="n4E-rD-Ngr"/>
-                                    </mask>
-                                </variation>
-                            </textField>
+                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Default text" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Mgh-1E-0dR">
-                                <rect key="frame" x="16" y="224" width="343" height="30"/>
+                                <rect key="frame" x="16" y="224" width="310" height="30"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="HS7-rX-uxp"/>
@@ -281,18 +265,15 @@
                                     </mask>
                                 </variation>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuY-uV-nOW">
-                                <rect key="frame" x="120" y="203" width="239" height="14"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GfJ-U3-pcR">
+                                <rect key="frame" x="333" y="228" width="26" height="22"/>
                                 <animations/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="numberValue { numberFormatter: { numberStyle: $enum.CurrencyStyle } }"/>
-                                </userDefinedRuntimeAttributes>
-                            </label>
+                                <connections>
+                                    <action selector="showTextField3Binding:" destination="hlW-R9-3by" eventType="touchUpInside" id="fNy-u5-sNL"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3h-nt-xza">
-                                <rect key="frame" x="16" y="287" width="343" height="117"/>
+                                <rect key="frame" x="16" y="286" width="310" height="131"/>
                                 <animations/>
                                 <string key="text">Please note that multiple editing controls can be bound to the same model value. The first two text fields edit the same value. The second updates the model value when finishing the edit session, the first one immediately.
 
@@ -307,33 +288,38 @@ The number editor text field uses two different formatters, one for display and 
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="xuY-uV-nOW" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="top" id="0ac-Bo-Ux3"/>
-                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="leading" secondItem="ass-lQ-dzk" secondAttribute="leading" id="1AX-Ex-o6z"/>
-                            <constraint firstItem="X2I-Oi-me6" firstAttribute="trailing" secondItem="S5K-zJ-ZY5" secondAttribute="trailingMargin" id="1G1-ge-FSP"/>
+                            <constraint firstItem="duk-R3-AN1" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="trailing" constant="8" id="16G-Yk-OAv"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="top" secondItem="fdx-pW-zdc" secondAttribute="bottom" constant="8" id="1j1-2Z-fnC"/>
-                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="trailing" secondItem="ass-lQ-dzk" secondAttribute="trailing" id="1pq-N1-2rX"/>
                             <constraint firstItem="T3h-nt-xza" firstAttribute="top" secondItem="Mgh-1E-0dR" secondAttribute="bottom" constant="32" id="23F-fc-qKG"/>
+                            <constraint firstItem="oB1-O6-oL3" firstAttribute="leading" secondItem="duk-R3-AN1" secondAttribute="leading" id="2N3-tU-lfZ"/>
+                            <constraint firstItem="GfJ-U3-pcR" firstAttribute="trailing" secondItem="duk-R3-AN1" secondAttribute="trailing" id="2Oj-eo-hTV"/>
                             <constraint firstItem="Mgh-1E-0dR" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="4ZA-k3-KBw"/>
                             <constraint firstItem="xuY-uV-nOW" firstAttribute="bottom" secondItem="ass-lQ-dzk" secondAttribute="bottom" id="5g0-vk-Y63"/>
                             <constraint firstItem="ass-lQ-dzk" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="7IF-7P-q3Q"/>
+                            <constraint firstItem="duk-R3-AN1" firstAttribute="centerY" secondItem="zEf-N4-6Bj" secondAttribute="centerY" id="Ahb-2T-XMG"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="top" secondItem="zEf-N4-6Bj" secondAttribute="bottom" constant="8" id="F7l-Cx-gft"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="J90-aF-6me"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="top" secondItem="X2I-Oi-me6" secondAttribute="bottom" constant="8" id="JyB-9u-gVw"/>
                             <constraint firstItem="ass-lQ-dzk" firstAttribute="top" secondItem="xNV-EM-WEF" secondAttribute="bottom" constant="20" id="K0Y-4B-2Ec"/>
                             <constraint firstItem="ass-lQ-dzk" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="MQ0-YK-3mH"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="Q4C-DI-s6C"/>
-                            <constraint firstItem="EnI-Tp-gSI" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="bottom" constant="8" id="R2w-it-BMo"/>
                             <constraint firstItem="xuY-uV-nOW" firstAttribute="leading" secondItem="ass-lQ-dzk" secondAttribute="trailing" constant="8" id="RJX-yX-Y1M"/>
+                            <constraint firstItem="oB1-O6-oL3" firstAttribute="centerY" secondItem="xNV-EM-WEF" secondAttribute="centerY" id="RdX-U5-ZXj"/>
                             <constraint firstItem="T3h-nt-xza" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="SPE-Bt-OWe"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="U0d-wc-Cu0"/>
                             <constraint firstItem="Mgh-1E-0dR" firstAttribute="top" secondItem="ass-lQ-dzk" secondAttribute="bottom" constant="8" id="aOK-NC-QUy"/>
                             <constraint firstItem="T3h-nt-xza" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ayJ-vm-FWJ"/>
                             <constraint firstItem="Mgh-1E-0dR" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="bAh-G1-xTX"/>
                             <constraint firstItem="X2I-Oi-me6" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leadingMargin" id="cMw-aH-USt"/>
+                            <constraint firstItem="GfJ-U3-pcR" firstAttribute="centerY" secondItem="Mgh-1E-0dR" secondAttribute="centerY" id="cbg-dV-HhM"/>
+                            <constraint firstItem="GfJ-U3-pcR" firstAttribute="leading" secondItem="duk-R3-AN1" secondAttribute="leading" id="e2U-sE-XTt"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="duk-R3-AN1" secondAttribute="trailing" id="eVX-Q0-orp"/>
                             <constraint firstItem="ZmZ-QW-fDF" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="eb4-7T-dFi"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="trailing" secondItem="ZmZ-QW-fDF" secondAttribute="trailing" id="nOS-8x-GmY"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="X2I-Oi-me6" secondAttribute="leading" id="ofI-he-XEe"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="leading" secondItem="ZmZ-QW-fDF" secondAttribute="leading" id="rIh-Fd-xUy"/>
                             <constraint firstItem="zEf-N4-6Bj" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="ruQ-jP-d5I"/>
+                            <constraint firstItem="oB1-O6-oL3" firstAttribute="trailing" secondItem="duk-R3-AN1" secondAttribute="trailing" id="tmx-1O-sZP"/>
                             <constraint firstItem="xuY-uV-nOW" firstAttribute="trailing" secondItem="X2I-Oi-me6" secondAttribute="trailing" id="zpa-dg-ZAG"/>
                             <constraint firstItem="xNV-EM-WEF" firstAttribute="top" secondItem="ZmZ-QW-fDF" secondAttribute="bottom" constant="8" id="zye-fX-H4f"/>
                         </constraints>
@@ -345,6 +331,8 @@ The number editor text field uses two different formatters, one for display and 
                     </view>
                     <connections>
                         <outlet property="textField1" destination="zEf-N4-6Bj" id="bin-K0-r8W"/>
+                        <outlet property="textField2" destination="xNV-EM-WEF" id="wvv-QR-RNG"/>
+                        <outlet property="textField3" destination="Mgh-1E-0dR" id="Ohr-tf-E1T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8OO-Gw-F46" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -368,37 +356,6 @@ The number editor text field uses two different formatters, one for display and 
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pLO-Fs-oit" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-658" y="389"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="j90-1A-KwO">
-            <objects>
-                <viewController id="d0c-Mk-Yag" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Pf0-Fy-EOg"/>
-                        <viewControllerLayoutGuide type="bottom" id="yge-TV-TtW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="EzC-Ee-vUc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n57-kL-4a7">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <animations/>
-                            </scrollView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="n57-kL-4a7" secondAttribute="trailing" id="HUU-o6-h2o"/>
-                            <constraint firstItem="yge-TV-TtW" firstAttribute="top" secondItem="n57-kL-4a7" secondAttribute="bottom" id="Vqn-wf-rtd"/>
-                            <constraint firstItem="n57-kL-4a7" firstAttribute="leading" secondItem="EzC-Ee-vUc" secondAttribute="leading" id="X4Z-Mq-OSm"/>
-                            <constraint firstItem="n57-kL-4a7" firstAttribute="top" secondItem="Pf0-Fy-EOg" secondAttribute="bottom" id="tDF-SZ-YEi"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qlZ-K1-Dj3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1679.5" y="1267.5"/>
         </scene>
         <!--Label Demo Table View Controller-->
         <scene sceneID="DIK-Nf-HSB">

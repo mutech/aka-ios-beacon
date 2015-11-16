@@ -42,37 +42,47 @@
             @"bindingProviderType":  [AKABindingProvider_UITextField_textBinding class],
             @"targetType":           [UITextField class],
             @"expressionType":       @(AKABindingExpressionTypeAny),
-            @"attributes":           @{
-                @"numberFormatter":      @{
+            @"attributes": @{
+                @"numberFormatter": @{
                     @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"formatter"
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
                 },
-                @"dateFormatter":        @{
+                @"dateFormatter": @{
                     @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"formatter"
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
                 },
-                @"formatter":            @{
+                @"formatter": @{
                     @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"formatter"
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
                 },
                 @"editingNumberFormatter": @{
-                        @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
-                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                        @"bindingProperty": @"editingFormatter"
-                        },
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_numberFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
                 @"editingDateFormatter": @{
-                        @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
-                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                        @"bindingProperty": @"editingFormatter"
-                        },
-                @"editingFormatter":    @{
-                        @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
-                        @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                        @"bindingProperty": @"editingFormatter"
-                        }
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_dateFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
+                @"editingFormatter": @{
+                    @"bindingProviderType": [AKABindingProvider_AKABinding_formatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
+                @"textForUndefinedValue": @{
+                    @"expressionType":      @(AKABindingExpressionTypeString),
+                    @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty":     @"textForUndefinedValue"
+                },
+                @"treatEmptyTextAsUndefined": @{
+                    @"expressionType":      @(AKABindingExpressionTypeBoolean),
+                    @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty":     @"treatEmptyTextAsUndefined"
+                }
             }
         };
 

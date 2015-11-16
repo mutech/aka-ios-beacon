@@ -17,6 +17,8 @@
 @property(nonatomic) NSDate* dateValue;
 
 @property (weak, nonatomic) IBOutlet UITextField *textField1;
+@property (weak, nonatomic) IBOutlet UITextField *textField2;
+@property (weak, nonatomic) IBOutlet UITextField *textField3;
 
 @end
 
@@ -29,19 +31,33 @@
     [super viewDidLoad];
 
     self.stringValue = @"Initial value";
-    self.numberValue = @(-12345.6789);
+    self.numberValue = @(-4999.995);
     self.dateValue = [NSDate new];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+#pragma mark - Actions
+
+- (IBAction)showTextField1Binding:(id)sender
 {
-    [super viewWillDisappear:animated];
-    [self.formControl stopObservingChanges];
+    [self showBindingExpressionText:self.textField1.textBinding_aka];
 }
 
-- (void)didReceiveMemoryWarning
+- (IBAction)showTextField2Binding:(id)sender
 {
-    [super didReceiveMemoryWarning];
+    [self showBindingExpressionText:self.textField2.textBinding_aka];
+}
+
+- (IBAction)showTextField3Binding:(id)sender
+{
+    [self showBindingExpressionText:self.textField3.textBinding_aka];
+}
+
+- (void)showBindingExpressionText:(NSString*)text {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Binding Expression"
+                                                                   message:text preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

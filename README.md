@@ -196,6 +196,16 @@ objectValue {
 }
 ```
 
+We're planning to support templating libraries such as mustache or handlebars. Once implemented a similar example would look like:
+
+```
+objectValue {
+	formatter: <MustacheFormatter> {
+		template: "Hello, {{givenName}} {{familyName}}"
+	}
+}
+```
+
 #### Date values:
 
 Similar to number values, date values can be formatter using the NSDateFormatter.

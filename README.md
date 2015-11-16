@@ -25,7 +25,7 @@ The typical usage scenario is that (blue is Beacon's, green your job):
 * Your view controller **provides** properties or a reference to your **model data**
 * You design a view in Interface Builder and **assign binding expressions** to views which should be bound to your data.
 
-![Binding Schematics](Documentation/Binding Schematics.png)
+![Binding Schematics](Documentation/BindingSchematics.png)
 
 What happens behind the scenes (Beacon's job):
 
@@ -51,7 +51,7 @@ The corresponding view controller source is:
 * [TextFieldBindingViewController.h](AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m)
 
 
-<img align="left" src="Documentation/Number Editing.gif" style="padding:0 50px 0 0" />
+<img align="left" src="Documentation/NumberEditing.gif" style="padding:0 50px 0 0" />
 
 The binding expressions used for the three text fields are:
 
@@ -90,7 +90,7 @@ Please note that in this example, each edit control consists of a label displayi
 
 You can combine the picker functionality with any view (and reasonably with any view that is able to somehow render the selected value). This also has the advantage that you can use different formatting options for the picker choices and the selection display.
 
-<img align="left" src="Documentation/Picker Keyboards.gif" style="padding:0 50px 0 0" />
+<img align="left" src="Documentation/PickerKeyboards.gif" style="padding:0 50px 0 0" />
 
 The binding expressions used here are:
 
@@ -152,7 +152,7 @@ The corresponding view controller source is:
 * [LabelDemoTableViewController.h](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h) and
 * [LabelDemoTableViewController.m](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m)
 
-<img src="Documentation/Label Formatting.png" width="300"/>
+<img src="Documentation/LabelFormatting.png" width="300"/>
 
 #### Numbers:
 The **numberFormatter** attribute supports most configuration properties of NSNumberFormatter. Enumeration values can be specified as `$enum.Value` (if the enumeration is known to Beacon) or `$enum.Type.Value` (you can provide mappings for your own enumerations).

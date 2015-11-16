@@ -2,60 +2,11 @@
 
 AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Knockout.
 
-## Survey
-We prepared [a short survey](https://mutechaka.typeform.com/to/caKeuX). Please help us and give us some feedback.
-
-Thank you for taking the time (it's really short)
-
-## Quick Summary
-
-The typical way to use Beacon is to define binding expressions on UIViews in Interface Builder and to subclass AKAFormViewController or AKAFormTableViewController (more to come) in your view controllers.
-
-For example, given this view controller:
-
-```Objective-C
-@import AKABeacon;
-@interface MyViewController: AKAFormViewController
-@property(nonatomic) double money;
-@property(nonatomic) NSDate* date;
-@end
-```
-
-```Objective-C
-@implementation MyViewController
-- (void)viewDidLoad {
-  [super viewDidLoad];
-  self.money = 1234.567;
-  self.date = [NSDate new];
-}
-@end
-```
-
-and a UILabel in the view controller's view that defines a label with the *textBinding_aka* property
-
-```
-money { numberFormatter: { numberStyle: $enum.CurrencyStyle, locale: "de_DE" } }
-```
-
-and another UILabel with
-
-```
-date { dateFormatter: { dateFormat: "'Today is:' mm/dd/YYYY" } }
-```
-
-Will do all the work of connecting the property values to the labels. The views are updated whenever the properties change.
-
-This currently works with UILabel, UITextField, UITextView, UISwitch, UISlider, UIStepper and at the time Beacon is released (soon now) with the rest of the gang. Beacon also provides a couple of custom keyboards (using UIPicker and UIDatePicker), themed composite controls (combining a label and a validation message label with an editor control), extensions to static table views making them dynamic and quite a lot of good ideas for amazing features (such as a search bar that will highlight results in all data-bound views containing text).
-
-There is a whole lot more to Beacon than just binding values. Go and check it out, you'll be surprised ;-)
-
-## Demo
-
-[I put up a demo video here](https://www.youtube.com/watch?v=88DkI8ZfEkg). I hope you forgive me the miserable audio quality and my poor presentation skills, please ignore both and focus on the features if you can ;-)
+> We prepared [a short survey](https://mutechaka.typeform.com/to/caKeuX). Please help us and give us some feedback. Thank you for taking the time (it's really short)
 
 ## Installation & Integration
 
-Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away.
+Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away and use the head revision for up-to-date versions (again better not for production yet).
 
 ```
 pod 'AKABeacon', :head
@@ -63,8 +14,204 @@ pod 'AKABeacon', :head
 
 ## Documentation
 
-* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki), I just started adding content, but it will become more useful soon.
-* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/). The API documentation is very incomplete and needs quite a lot of work, but you might find some useful information still. Looking forward to 1.0 ;-)
+* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)–work in progress.
+* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/). The API documentation is very incomplete and still needs a lot of work, but you might find some useful information. Quality documentation will be coming with v1.0.
+
+## How Beacon works
+
+The typical usage scenario is that (blue is Beacon's, green your job):
+
+* Your view controller **inherits** from a form view controller (**AKAFormViewController** or **AKAFormTableViewController**) provided by Beacon.
+* Your view controller **provides** properties or a reference to your **model data**
+* You design a view in Interface Builder and **assign binding expressions** to views which should be bound to your data.
+
+![Binding Schematics](Documentation/Binding Schematics.png)
+
+What happens behind the scenes (Beacon's job):
+
+* **viewDidLoad:** The form view controller will **inspect your view hierarchy** to find views defining binding expressions and **create bindings** for them.
+* **viewWillAppear:** The bindings will **initialize views** with content from your data model and **observe changes** on boths ends.
+* **viewWillDisappear:** Bindings will **stop observing changes** and restore the original state of bound views.
+
+Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. If you inherit from a form view controller, all you have to do is to implement one of the optional delegate methods (traditional iOS style).
+
+Please note that most modules in Beacon are designed to be independent. You can for example use bindings without controls, and you don't have to use form view controllers to manage controls and bindings.
+
+We spend a lot of effort to ensure that you can use the parts of the framework that actually help you without requiring you to put your architecture upside down just to integrate data binding functionality.
+
+We also tried hard to take over all the work to support standard use cases such that you don't have to write code, just to make sure that your text fields are visible when you're typing, that it still works when you rotate the device. This is going much further than scrolling. In later versions you will get automatic support for theming, automatic font resizing, highlighting of search terms, form transaction support (model values are updated at the end of a form editing session and only if valid) and much more.
+
+## Examples
+
+### Text Field Binding Example
+
+The corresponding view controller source is:
+
+* [TextFieldBindingViewController.h](AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h) and
+* [TextFieldBindingViewController.h](AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m)
+
+
+<img align="left" src="Documentation/Number Editing.gif" style="padding:0 50px 0 0" />
+
+The binding expressions used for the three text fields are:
+
+```
+stringValue {
+	textForUndefinedValue: "(Please enter some text)",
+	treatEmptyTextAsUndefined: $true
+}
+```
+
+```
+stringValue { liveModelUpdates: $false }
+```
+
+```
+numberValue {
+	numberFormatter: {
+		numberStyle: $enum.CurrencyStyle
+	},
+	editingNumberFormatter: {
+		maximumFractionDigits: 5
+	}
+}
+```
+
+<div style="clear: both"></div>
+
+### Picker Keyboards
+
+The corresponding view controller source is:
+
+* [PickerKeyboardViewController.h](AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h) and
+* [PickerKeyboardViewController.m](AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m)
+
+Please note that in this example, each edit control consists of a label displaying the selected value and a wrapper view, which activates the keyboard when tapped and also performs the highlight and the animation.
+
+You can combine the picker functionality with any view (and reasonably with any view that is able to somehow render the selected value). This also has the advantage that you can use different formatting options for the picker choices and the selection display.
+
+<img align="left" src="Documentation/Picker Keyboards.gif" style="padding:0 50px 0 0" />
+
+The binding expressions used here are:
+
+First picker label: (connects the label to key path `stringValue` and configures the binding to display "(tap to choose)" if the value is undefined).
+
+```
+stringValue {
+	textForUndefinedValue: "(tap to choose)"
+}
+```
+
+Picker: (the picker keyboard takes its choices from `stringArrayValue`. Since no title is specified, array items will be used as values for respective choices).
+
+```
+stringValue {
+	choices: stringArrayValue,
+	titleForUndefinedValue: "(please choose)"
+}
+```
+
+Second picker labels: (This picker contains multiple labels bound to different properties of the data context, which is an object in this case).
+
+```
+objectValue.title
+```
+
+```
+objectValue.value
+```
+
+Picker: (Here, the array items are complex objects, so the title attribute is defined as key path relative to the respective array item; picker keyboards also support the setting liveModelUpdates).
+
+```
+objectValue {
+	title: title,
+	choices: objectArrayValue,
+	liveModelUpdates: $false
+}
+```
+
+Date picker label: (See the section on label formatting).
+
+```
+dateValue { dateFormatter: { dateStyle: $enum.LongStyle, timeStyle: $enum.MediumStyle } } 
+```
+
+Picker: (The date picker only needs the key path for the selected value).
+
+```
+dateValue
+```
+
+<div style="clear: both"></div>
+
+### Label Binding Demo
+
+The corresponding view controller source is:
+
+* [LabelDemoTableViewController.h](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h) and
+* [LabelDemoTableViewController.m](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m)
+
+<img src="Documentation/Label Formatting.png" width="300"/>
+
+#### Numbers:
+The **numberFormatter** attribute supports most configuration properties of NSNumberFormatter. Enumeration values can be specified as `$enum.Value` (if the enumeration is known to Beacon) or `$enum.Type.Value` (you can provide mappings for your own enumerations).
+
+```
+floatValue {
+	numberFormatter: {
+		numberStyle: $enum.CurrencyStyle
+	}
+}
+```
+
+#### Boolean values:
+
+**textForYes** and **textForNo** allow you to map number values to title.
+
+```
+boolValue {
+	textForYes: "Yes",
+	textForNo: "No"
+}
+```
+
+#### Text values:
+
+If you don't need any formatting, just specifying the key path to the value is enough.
+
+```
+textValue
+```
+
+#### Complex values and custom formatters:
+
+You can use your own formatters by specifying the class name in angle brackets. You are however restricted by the data types that can be represented as binding expressions for the configuration of your custom formatter. As mentioned above, enumerations values can be registered:
+
+```
+objectValue {
+	formatter: <CustomFormatter> {
+		format: "Hello, %@"
+	}
+}
+```
+
+#### Date values:
+
+Similar to number values, date values can be formatter using the NSDateFormatter.
+
+```
+dateValue {
+	dateFormatter: {
+		dateStyle: $enum.NSDateFormatterStyle.LongStyle,
+		timeStyle: $enum.LongStyle
+	}
+}
+```
+
+## Demo Video
+
+[I put up a demo video here](https://www.youtube.com/watch?v=88DkI8ZfEkg). It's already a bit outdated but it shows how working with Beacon feels like.
 
 ## Status
 

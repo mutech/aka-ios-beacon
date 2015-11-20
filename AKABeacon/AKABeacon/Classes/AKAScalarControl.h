@@ -28,9 +28,3 @@
 
 @end
 
-
-@interface AKAScalarControl (Protected)
-
-#pragma mark - Initialization
-
-@end

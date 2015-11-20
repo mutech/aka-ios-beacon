@@ -11,6 +11,9 @@
 
 @class AKAKeyboardControl;
 
+/**
+ * AKAKeyboardControl is a scalar control managing keyboard control view bindings.
+ */
 @interface AKAKeyboardControl : AKAScalarControl
 
 @property(nonatomic, readonly, strong, nullable) AKAKeyboardControlViewBinding* controlViewBinding;

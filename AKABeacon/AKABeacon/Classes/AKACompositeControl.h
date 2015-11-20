@@ -18,25 +18,25 @@
 
 #pragma mark - Adding and Removing Member Controls
 
-- (BOOL)                                     insertControl:(AKAControl*)control
-                                                   atIndex:(NSUInteger)index;
+- (BOOL)                                        insertControl:(req_AKAControl)control
+                                                      atIndex:(NSUInteger)index;
 
-- (AKAControl*)                       createControlForView:(UIView*)view
-                                         withConfiguration:(AKAControlConfiguration*)configuration;
+- (req_AKAControl)                           createControlForView:(UIView*_Nonnull)view
+                                            withConfiguration:(AKAControlConfiguration*_Nullable)configuration;
 
-- (BOOL)                              removeControlAtIndex:(NSUInteger)index;
+- (BOOL)                                 removeControlAtIndex:(NSUInteger)index;
 
-- (NSUInteger)                           removeAllControls;
+- (NSUInteger)                              removeAllControls __unused;
 
-- (void)                            moveControlFromIndex:(NSUInteger)fromIndex
-                                                 toIndex:(NSUInteger)toIndex;
+- (void)                                 moveControlFromIndex:(NSUInteger)fromIndex
+                                                      toIndex:(NSUInteger)toIndex;
 
 @end
 
 
 @interface AKACompositeControl(KeyboardActivationSequence)
 
-- (AKAKeyboardActivationSequence*)keyboardActivationSequence;
+- (AKAKeyboardActivationSequence*_Nullable) keyboardActivationSequence;
 
 @end
 
@@ -47,38 +47,38 @@
 
 - (NSUInteger)                             countOfControls;
 
-- (id)                             objectInControlsAtIndex:(NSUInteger)index;
+- (req_id)                             objectInControlsAtIndex:(NSUInteger)index;
 
-- (NSUInteger)                              indexOfControl:(AKAControl*)control;
+- (NSUInteger)                              indexOfControl:(req_AKAControl)control;
 
-- (void)                      enumerateControlsUsingBlock:(void(^)(req_AKAControl          control,
+- (void)                      enumerateControlsUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    NSUInteger              index,
                                                                    outreq_BOOL             stop))block;
 
-- (void)                      enumerateControlsUsingBlock:(void(^)(req_AKAControl          control,
+- (void)                      enumerateControlsUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    NSUInteger              index,
                                                                    outreq_BOOL             stop))block
                                                startIndex:(NSUInteger)startIndex
                                           continueInOwner:(BOOL)continueInOwner;
 
-- (void)           enumerateControlsRecursivelyUsingBlock:(void(^)(req_AKAControl          control,
+- (void)           enumerateControlsRecursivelyUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    opt_AKACompositeControl owner,
                                                                    NSUInteger              index,
                                                                    outreq_BOOL             stop))block;
 
-- (void)           enumerateControlsRecursivelyUsingBlock:(void(^)(req_AKAControl          control,
+- (void)           enumerateControlsRecursivelyUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    req_AKACompositeControl owner,
                                                                    NSUInteger              index,
                                                                    outreq_BOOL             stop))block
                                                startIndex:(NSUInteger)startIndex
                                           continueInOwner:(BOOL)continueInOwner;
 
-- (void)                  enumerateLeafControlsUsingBlock:(void(^)(req_AKAControl          control,
+- (void)                  enumerateLeafControlsUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    req_AKACompositeControl owner,
                                                                    NSUInteger              index,
-                                                                   outreq_BOOL             stop))block;
+                                                                   outreq_BOOL             stop))block __unused;
 
-- (void)                  enumerateLeafControlsUsingBlock:(void(^)(req_AKAControl          control,
+- (void)                  enumerateLeafControlsUsingBlock:(void(^_Nonnull)(req_AKAControl          control,
                                                                    req_AKACompositeControl owner,
                                                                    NSUInteger              index,
                                                                    outreq_BOOL             stop))block
@@ -90,19 +90,20 @@
 
 @interface AKACompositeControl(MemberAdditionAndRemoval)
 
-- (BOOL)                                                  addControl:(AKAControl*)control;
+- (BOOL)                                                  addControl:(req_AKAControl)control __unused;
 
-- (BOOL)                                               removeControl:(AKAControl*)control;
+- (BOOL)                                               removeControl:(req_AKAControl)control;
 
-- (NSUInteger)             addControlsForControlViewsInViewHierarchy:(UIView*)rootView;
-- (NSUInteger)          insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
+- (NSUInteger)             addControlsForControlViewsInViewHierarchy:(UIView*_Nullable)rootView;
+
+- (NSUInteger)          insertControlsForControlViewsInViewHierarchy:(UIView*_Nullable)rootView
                                                              atIndex:(NSUInteger)index;
 
 /**
  * Called by createControlForView:withConfiguration: when a new composite control was
  * created. The new composite control can prevent recursive addition of controls and bindings
  * that would otherwise be added to the composite control. This is required to prevent
- * prototyp (template) views represented by composite controls to create a control hierarchy
+ * prototype (template) views represented by composite controls to create a control hierarchy
  * for their content.
  *
  * The default implementation calls @c addControlsForControlViewSubviewsInViewHierarchy:
@@ -111,25 +112,27 @@
  *
  * @return the number of controls added.
  */
-- (NSUInteger)  autoAddControlsForControlViewSubviewsInViewHierarchy:(UIView*)controlView;
+- (NSUInteger)  autoAddControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)controlView;
 
-- (NSUInteger)      addControlsForControlViewSubviewsInViewHierarchy:(UIView*)rootView;
+- (NSUInteger)      addControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)rootView;
 
-- (NSUInteger)   insertControlsForControlViewSubviewsInViewHierarchy:(UIView*)rootView
+- (NSUInteger)   insertControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)rootView
                                                              atIndex:(NSUInteger)index;
 
-- (void)                addControlsForControlViewsInOutletCollection:(NSArray*)outletCollection;
-- (void)             insertControlsForControlViewsInOutletCollection:(NSArray*)outletCollection
+- (void)                addControlsForControlViewsInOutletCollection:(NSArray*_Nullable)outletCollection;
+
+- (void)             insertControlsForControlViewsInOutletCollection:(NSArray*_Nullable)outletCollection
                                                              atIndex:(NSUInteger)index;
 
-- (void)               addControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*)arrayOfOutletCollections;
-- (void)            insertControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*)arrayOfOutletCollections
+- (void)               addControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*_Nullable)arrayOfOutletCollections;
+
+- (void)            insertControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*_Nullable)arrayOfOutletCollections
                                                              atIndex:(NSUInteger)index;
 
-- (void)                 addControlsForControlViewsInStaticTableView:(UITableView*)tableView
-                                                          dataSource:(id<UITableViewDataSource>)dataSource;
-- (void)              insertControlsForControlViewsInStaticTableView:(UITableView*)tableView
-                                                          dataSource:(id<UITableViewDataSource>)dataSource
+- (void)                 addControlsForControlViewsInStaticTableView:(UITableView*_Nullable)tableView
+                                                          dataSource:(id<UITableViewDataSource>_Nullable)dataSource;
+- (void)              insertControlsForControlViewsInStaticTableView:(UITableView*_Nullable)tableView
+                                                          dataSource:(id<UITableViewDataSource>_Nullable)dataSource
                                                              atIndex:(NSUInteger)index;
 
 @end

@@ -4,9 +4,27 @@ AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Kn
 
 > We prepared [a short survey](https://mutechaka.typeform.com/to/caKeuX). Please help us and give us some feedback. Thank you for taking the time (it's really short)
 
+
+- [Installation & Integration](#installation-&-integration)
+- [Documentation](#documentation)
+- [How Beacon works](#how-beacon-works)
+- [Examples](#examples)
+  - [Text Field Binding Example](#text-field-binding-example)
+  - [Picker Keyboards](#picker-keyboards)
+  - [Label Binding Demo](#label-binding-demo)
+     - [Numbers:](#numbers)
+     - [Boolean values:](#boolean-values)
+     - [Text values:](#text-values)
+     - [Complex values and custom formatters:](#complex-values-and-custom-formatters)
+     - [Date values:](#date-values)
+- [Demo Video](#demo-video)
+- [Status](#status)
+- [License](#license)
+- [What others do](#what-others-do)
+
 ## Installation & Integration
 
-Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away and use the head revision for up-to-date versions (again better not for production yet).
+Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away. To experiment with and get to know Beacon, use the head revision meanwhile:
 
 ```
 pod 'AKABeacon', :head
@@ -16,10 +34,11 @@ pod 'AKABeacon', :head
 
 * [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)–work in progress.
 * [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/). The API documentation is very incomplete and still needs a lot of work, but you might find some useful information. Quality documentation will be coming with v1.0.
+* May the source be with you!
 
 ## How Beacon works
 
-The typical usage scenario is that (blue is Beacon's, green your job):
+The typical usage scenario is:
 
 * Your view controller **inherits** from a form view controller (**AKAFormViewController** or **AKAFormTableViewController**) provided by Beacon.
 * Your view controller **provides** properties or a reference to your **model data**
@@ -27,7 +46,7 @@ The typical usage scenario is that (blue is Beacon's, green your job):
 
 ![Binding Schematics](Documentation/BindingSchematics.png)
 
-What happens behind the scenes (Beacon's job):
+What happens behind the scenes (Beacon's job, everything that's blue in the diagram):
 
 * **viewDidLoad:** The form view controller will **inspect your view hierarchy** to find views defining binding expressions and **create bindings** for them.
 * **viewWillAppear:** The bindings will **initialize views** with content from your data model and **observe changes** on boths ends.
@@ -236,3 +255,13 @@ On the other hand, we desperately seek for feedback, both to make sure that the 
 Beacon will be dual-licensed. The open source license is GPL-v3.
 
 The details for commercials licensing are not yet set in stone. We plan to offer free licenses for individual developers on a per app and per beacon version basis. Please contact us if you want to use Beacon in a closed source application.
+
+## What others do
+
+For iOS (order of search results - Beacon is not there):
+
+* [www.raizlabs.com](http://www.raizlabs.com/dev/2015/02/kvo-and-data-binding-in-ios-made-simple/)
+* [BIND](https://github.com/markohlebar/BIND)
+* [Elegant Data Binding in Objective-C with ReactiveCocoa](http://lillylabs.no/2014/04/22/reactivecocoa-elegant-data-binding-objective-c/)
+* [MSDN about Xamarin Data Binding](https://msdn.microsoft.com/en-us/magazine/mt147239.aspx)
+

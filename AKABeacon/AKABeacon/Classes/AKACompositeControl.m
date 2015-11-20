@@ -1,4 +1,4 @@
-//
+#import <sys/cdefs.h>//
 //  AKACompositeControl.m
 //  AKACommons
 //
@@ -14,10 +14,6 @@
 #import "AKATableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
 #import "AKAControlViewProtocol.h"
-#import "AKABeaconErrors_Internal.h"
-
-#import "AKABindingProvider.h"
-#import "AKAControl_Internal.h"
 
 @interface AKACompositeControl ()
 
@@ -54,7 +50,7 @@
     if ([controlType isSubclassOfClass:[AKAControl class]])
     {
         control = [[controlType alloc] initWithOwner:self
-                                                   configuration:configuration];
+                                       configuration:configuration];
         [control setView:view];
         [control addBindingsForView:view];
         if ([control isKindOfClass:[AKACompositeControl class]])
@@ -114,8 +110,7 @@
     return result;
 }
 
-- (NSUInteger)                           removeAllControls
-{
+- (NSUInteger)                           removeAllControls __unused {
     NSUInteger result = 0;
 
     NSAssert(self.countOfControls <= NSIntegerMax, @"index overflow");
@@ -374,8 +369,7 @@
 - (void)                  enumerateLeafControlsUsingBlock:(void (^)(req_AKAControl control,
                                                                     req_AKACompositeControl owner,
                                                                     NSUInteger index,
-                                                                    outreq_BOOL stop))block
-{
+                                                                    outreq_BOOL stop))block __unused {
     [self enumerateLeafControlsUsingBlock:block startIndex:0 continueInOwner:NO];
 }
 
@@ -424,8 +418,7 @@
 
 #pragma mark Adding and Removing Member Controls
 
-- (BOOL)                                        addControl:(AKAControl*)control
-{
+- (BOOL)                                        addControl:(AKAControl*)control __unused {
     return [self insertControl:control atIndex:self.controlsStorage.count];
 }
 

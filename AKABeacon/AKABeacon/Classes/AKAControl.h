@@ -11,6 +11,7 @@
 
 #import "AKAControlConfiguration.h"
 #import "AKAControlDelegate.h"
+#import "AKAControlValidationState.h"
 #import "AKABindingContextProtocol.h"
 #import "AKAControlViewBinding.h"
 
@@ -20,28 +21,14 @@
 typedef AKAControl* _Nullable opt_AKAControl;
 typedef AKAControl* _Nonnull  req_AKAControl;
 
-typedef NS_ENUM(NSInteger, AKAControlValidationState)
-{
-
-    AKAControlValidationStateNotValidated = 0,
-
-    AKAControlValidationStateModelValueValid =      1 << 0,
-    AKAControlValidationStateViewValueValid =       1 << 1,
-    AKAControlValidationStateValid =                (AKAControlValidationStateModelValueValid |
-                                                     AKAControlValidationStateViewValueValid),
-
-    AKAControlValidationStateModelValueInvalid =    1 << 2,
-    AKAControlValidationStateViewValueInvalid =     1 << 3,
-
-    AKAControlValidationStateModelValueDirty =      1 << 4,
-    AKAControlValidationStateViewValueDirty =       1 << 5
-};
-
 
 @interface AKAControl: NSObject
 
 #pragma mark - Configuration
 
+/**
+ The composite control owning this control.
+ */
 @property(nonatomic, readonly, weak, nullable)AKACompositeControl*          owner;
 
 @property(nonatomic, readonly, weak, nullable)AKAControlViewBinding*        controlViewBinding;

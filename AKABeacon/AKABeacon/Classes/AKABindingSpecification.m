@@ -241,6 +241,13 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
 #pragma mark - Initialization
 
+- (instancetype)                     specificationExtendedWith:(req_AKABindingSpecification)extension
+{
+    NSMutableDictionary* extensionDictionary = [NSMutableDictionary new];
+    [extension addToDictionary:extensionDictionary];
+    return [[AKABindingSpecification alloc] initWithDictionary:extensionDictionary basedOn:self];
+}
+
 - (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {
     return [self initWithDictionary:dictionary basedOn:nil];

@@ -54,12 +54,13 @@
                                        forSourceValue:(opt_id)oldSourceValue
                                              changeTo:(opt_id)newSourceValue
 {
-    return [self.owner control:self
-                 shouldBinding:binding
-             updateTargetValue:oldTargetValue
-                            to:newTargetValue
-                forSourceValue:oldSourceValue
-                      changeTo:newSourceValue];
+    AKACompositeControl* owner = self.owner;
+    return owner == nil || [owner control:self
+                            shouldBinding:binding
+                        updateTargetValue:oldTargetValue
+                                       to:newTargetValue
+                           forSourceValue:oldSourceValue
+                                 changeTo:newSourceValue];
 }
 
 

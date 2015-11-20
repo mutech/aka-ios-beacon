@@ -70,7 +70,6 @@
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
 		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
 		8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelDemoTableViewController.m; sourceTree = "<group>"; };
-		8EFBE8521BBC4331004E264F /* AKAControls.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = AKAControls.framework; path = "/Users/mu/Library/Developer/Xcode/DerivedData/AKAControls-aadmbzgjzjwucihjrebfyucxwbsh/Build/Products/Debug-iphoneos/AKAControls.framework"; sourceTree = "<absolute>"; };
 		DCB10D08CBA0079DC99E159E /* Pods-AKABeaconDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		F29C32DFBCE4485563ED6E57 /* Pods-AKABeaconDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.release.xcconfig"; path = "../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */,
-				8EFBE8521BBC4331004E264F /* AKAControls.framework */,
 				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
 				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,
 				8E91E73B1BB228A900F7618F /* Products */,
@@ -129,24 +127,16 @@
 		8E91E73C1BB228A900F7618F /* AKABeaconDemo */ = {
 			isa = PBXGroup;
 			children = (
+				8E91E73E1BB228A900F7618F /* main.m */,
+				8E91E74E1BB228A900F7618F /* Info.plist */,
 				8E91E7401BB228A900F7618F /* AppDelegate.h */,
 				8E91E7411BB228A900F7618F /* AppDelegate.m */,
 				8E91E7461BB228A900F7618F /* Main.storyboard */,
+				8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */,
 				8E91E7671BB22DAF00F7618F /* ViewControllers */,
 				8E91E7491BB228A900F7618F /* Assets.xcassets */,
-				8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */,
-				8E91E74E1BB228A900F7618F /* Info.plist */,
-				8E91E73D1BB228A900F7618F /* Supporting Files */,
 			);
 			path = AKABeaconDemo;
-			sourceTree = "<group>";
-		};
-		8E91E73D1BB228A900F7618F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8E91E73E1BB228A900F7618F /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */ = {

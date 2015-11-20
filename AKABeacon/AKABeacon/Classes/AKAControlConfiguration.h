@@ -8,6 +8,9 @@
 
 @import Foundation;
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedMacroInspection"
+
 #ifndef AKAControlConfiguration_h
 #define AKAControlConfiguration_h
 
@@ -17,12 +20,14 @@
 #define kAKAControlRoleKey @"controlRole"
 #define kAKAControlViewBinding @"controlViewBinding"
 
-typedef NSDictionary<NSString*, id>           AKAControlConfiguration;
-typedef AKAControlConfiguration*_Nullable               opt_AKAControlConfiguration;
-typedef AKAControlConfiguration*_Nonnull                req_AKAControlConfiguration;
+#define AKAControlConfiguration             NSDictionary<NSString*, id>
+#define opt_AKAControlConfiguration         AKAControlConfiguration*_Nullable
+#define req_AKAControlConfiguration         AKAControlConfiguration*_Nonnull
 
-typedef NSMutableDictionary<NSString*, id>    AKAMutableControlConfiguration;
-typedef AKAMutableControlConfiguration*_Nullable        opt_AKAMutableControlConfiguration;
-typedef AKAMutableControlConfiguration*_Nonnull         req_AKAMutableControlConfiguration;
+#define AKAMutableControlConfiguration      NSMutableDictionary<NSString*, id>
+#define opt_AKAMutableControlConfiguration  AKAMutableControlConfiguration*_Nullable
+#define req_AKAMutableControlConfiguration  AKAMutableControlConfiguration*_Nonnull
 
 #endif /* AKAControlConfiguration_h */
+
+#pragma clang diagnostic pop

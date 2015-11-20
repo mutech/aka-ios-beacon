@@ -304,7 +304,14 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
 #pragma mark - Initialization
 /// @name Initialization
 
-//- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+/**
+ Creates a new instance using the specified extension based on this instance.
+
+ @param extension the specification containing the extensions
+
+ @return a new specification based on this instance created by adding (or overriding) items with the specified extension.
+*/
+- (nonnull instancetype)             specificationExtendedWith:(req_AKABindingSpecification)extension;
 
 - (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
                                                        basedOn:(opt_AKABindingSpecification)base;

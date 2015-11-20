@@ -6,12 +6,12 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKABindingProvider.h"
+#import "AKASelectionControlViewBindingProvider.h"
 
 #pragma mark - AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding - Interface
 #pragma mark -
 
 
-@interface AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding: AKABindingProvider
+@interface AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding: AKASelectionControlViewBindingProvider
 
 @end

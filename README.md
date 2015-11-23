@@ -24,7 +24,7 @@ AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Kn
 
 ## Installation & Integration
 
-Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". This version is not fit for production. Please wait until the "-pre" goes away. To experiment with and get to know Beacon, use the head revision meanwhile:
+Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". Until the first stable release is out, please use the head branch. 
 
 ```
 pod 'AKABeacon', :head
@@ -32,9 +32,10 @@ pod 'AKABeacon', :head
 
 ## Documentation
 
-* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)–work in progress.
-* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/). The API documentation is very incomplete and still needs a lot of work, but you might find some useful information. Quality documentation will be coming with v1.0.
-* May the source be with you!
+Documentation is still incomplete and not up to date, because interfaces are not frozen. As soon as the first release (0.1.0) is out, we're going to work on that. For the time being, please refer to examples and the code itself.
+
+* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
+* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/)
 
 ## How Beacon works
 
@@ -166,7 +167,9 @@ dateValue
 
 ### Label Binding Demo
 
-The corresponding view controller source is:
+The following examples demonstrate the built-in formatting capabilities of Beacon. Beacon uses NSFormatter as interface for formatting and NSNumberFormatter and NSDateFormatter for numbers and dates respectively. You can define custom formatters other types.
+
+The view controller source used in these examples is:
 
 * [LabelDemoTableViewController.h](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h) and
 * [LabelDemoTableViewController.m](AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m)
@@ -245,10 +248,6 @@ dateValue {
 ## Status
 
 Beacon is approaching a state where it's really useful and sufficiently stable to be used without too many worries. It's not yet feature complete and also not yet well tested, so we still need some time. Our goal is to get a feature complete version out at the end of 2015 (that would be v0.1.0) and a well documented and tested release (v1.0) a couple of months later.
-
-However, the interface is not yet stable, there are a couple of important features missing, we need to refactor some parts and there will certainly be some ugly bugs that we didn't find yet or that we don't want to admit. If you look for a high quality solution, wait a bit, we'll get there.
-
-On the other hand, we desperately seek for feedback, both to make sure that the interface is sufficiently stable so that we won't break all of your code when we release 1.1 or 2.0 and also because it was a lot of work and it would be nice to hear some praise ;-)
 
 ## License
 

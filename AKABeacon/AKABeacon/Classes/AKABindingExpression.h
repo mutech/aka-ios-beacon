@@ -13,18 +13,14 @@
 
 
 @class AKABindingExpression;
-typedef AKABindingExpression* _Nullable opt_AKABindingExpression;
-typedef AKABindingExpression* _Nonnull req_AKABindingExpression;
-typedef AKABindingExpression* __autoreleasing _Nullable* _Nullable out_AKABindingExpression;
+typedef AKABindingExpression* _Nullable                             opt_AKABindingExpression;
+typedef AKABindingExpression* _Nonnull                              req_AKABindingExpression;
+typedef AKABindingExpression* __autoreleasing _Nullable* _Nullable  out_AKABindingExpression;
 
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable opt_AKABindingExpressionAttributes;
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull req_AKABindingExpressionAttributes;
+typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable   opt_AKABindingExpressionAttributes;
+typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull    req_AKABindingExpressionAttributes;
 
 typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
-
-@class AKABindingProvider;
-typedef AKABindingProvider* _Nonnull req_AKABindingProvider;
-
 
 /**
    A binding expression specifies the source value of a binding.
@@ -35,7 +31,7 @@ typedef AKABindingProvider* _Nonnull req_AKABindingProvider;
 /// @name Initialization
 
 /**
-   Initializes a binding expression with the specified expression text using the binding provider for validation.
+   Initializes a binding expression with the specified expression text using the binding type for validation.
 
    The expression text has to conform to this grammar:
 
@@ -81,14 +77,14 @@ typedef AKABindingProvider* _Nonnull req_AKABindingProvider;
      <attribute> ::= <identifier> | <identifier> ':' <bindingExpression>
 
    @param expressionText  the expression text.
-   @param bindingProvider the binding provider, used for semantic validation
+   @param bindingType the binding type, used for semantic validation
    @param error           parser and semantic error will be stored here
 
    @return an initialized binding expression equivalent to the specified expressionText.
  */
-+ (instancetype _Nullable)          bindingExpressionWithString:(req_NSString)expressionText
-                                                bindingProvider:(req_AKABindingProvider)bindingProvider
-                                                          error:(out_NSError)error;
++ (instancetype _Nullable)bindingExpressionWithString:(req_NSString)expressionText
+                                          bindingType:(req_Class)bindingType
+                                                error:(out_NSError)error;
 
 #pragma mark - Properties
 /// @name Properties
@@ -116,14 +112,14 @@ typedef AKABindingProvider* _Nonnull req_AKABindingProvider;
 @property(nonatomic, readonly, nonnull) NSString*               text;
 
 /**
-   The binding provider associated with this binding expression.
+   The binding type associated with this binding expression.
  */
-@property(nonatomic, readonly, weak, nullable) AKABindingProvider* bindingProvider;
+@property(nonatomic, readonly, weak, nullable) Class            bindingType;
 
 /**
-   Additional named binding expressions which are used by the binding provider processing this binding expression to setup bindings.
+   Additional named binding expressions which are used by the binding type processing this binding expression to setup bindings.
 
-   The semantics of binding attributes are defined by binding providers.
+   The semantics of binding attributes are defined by binding types.
  */
 @property(nonatomic, readonly, nullable) opt_AKABindingExpressionAttributes attributes;
 

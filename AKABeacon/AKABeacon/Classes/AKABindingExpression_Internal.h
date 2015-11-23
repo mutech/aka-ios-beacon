@@ -7,7 +7,6 @@
 //
 
 #import "AKABindingExpression.h"
-#import "AKABindingProvider.h"
 
 @import AKACommons.AKANullability;
 
@@ -17,7 +16,7 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                           provider:(opt_AKABindingProvider)provider;
+                                        bindingType:(opt_Class)bindingType;
 
 @end
 
@@ -28,7 +27,7 @@
 #pragma mark - Initialization
 
 - (instancetype _Nonnull)initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
-                                   provider:(opt_AKABindingProvider)provider;
+                                bindingType:(opt_Class)bindingType;
 
 #pragma mark - Properties
 
@@ -41,7 +40,7 @@
 
 - (instancetype _Nonnull)initWithArray:(NSArray<AKABindingExpression*>*_Nullable)array
                             attributes:(opt_AKABindingExpressionAttributes)attributes
-                              provider:(opt_AKABindingProvider)provider;
+                           bindingType:(opt_Class)bindingType;
 
 @property(nonatomic, readonly, nullable) NSArray<AKABindingExpression*>* array;
 
@@ -52,7 +51,7 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_id)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider;
+                              bindingType:(opt_Class)bindingType;
 
 @property(nonatomic, readonly, nullable) id constant;
 
@@ -64,7 +63,7 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_Class)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider;
+                              bindingType:(opt_Class)bindingType;
 
 @property(nonatomic, readonly, nullable) Class constant;
 
@@ -74,7 +73,7 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_NSString)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider;
+                              bindingType:(opt_Class)bindingType;
 
 @property(nonatomic, readonly, nullable) NSString* constant;
 
@@ -84,7 +83,7 @@
 
 - (instancetype _Nonnull)  initWithNumber:(opt_NSNumber)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider;
+                              bindingType:(opt_Class)bindingType;
 
 @property(nonatomic, readonly, nullable) NSNumber* constant;
 
@@ -149,8 +148,8 @@
 @interface AKAKeyPathBindingExpression: AKABindingExpression
 
 - (instancetype _Nonnull)initWithKeyPath:(opt_NSString)keyPath
-                               attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider;
+                              attributes:(opt_AKABindingExpressionAttributes)attributes
+                             bindingType:(opt_Class)bindingType;
 
 /**
  * The key path referencing the bindings source value relative to the defined scope.

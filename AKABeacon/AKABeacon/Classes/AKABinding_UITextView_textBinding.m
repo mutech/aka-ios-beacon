@@ -17,6 +17,7 @@
 
 @property(nonatomic, weak) id<UITextViewDelegate>          savedTextViewDelegate;
 @property(nonatomic, nullable) NSString*                   originalText;
+@property(nonatomic, nullable) NSString*                   previousText;
 
 #pragma mark - Convenience
 
@@ -26,6 +27,24 @@
 
 
 @implementation AKABinding_UITextView_textBinding
+
++ (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        // see specification defined in AKAKeyboardControlViewBindingProvider:
+        NSDictionary* spec =
+        @{ @"bindingType":          [AKABinding_UITextView_textBinding class],
+           @"targetType":           [UITextView class],
+           @"expressionType":       @(AKABindingExpressionTypeString)
+           };
+
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    return result;
+}
 
 #pragma mark - Initialization
 
@@ -61,7 +80,7 @@
                     binding.textView.text = [NSString stringWithFormat:@"%@", value];
                 }
             }
-            observationStarter:
+                          observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
@@ -74,19 +93,23 @@
                     binding.savedTextViewDelegate = textViewDelegate;
                     textView.delegate = binding;
                 }
-                else
-                {
-                    //AKALogDebug(@"Binding %@ is already observing %@", binding, binding.textField);
-                }
 
                 return YES;
             }
-            observationStopper:
+                          observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_UITextView_textBinding* binding = target;
-                binding.textView.delegate = binding.savedTextViewDelegate;
-                binding.originalText = nil;
+                UITextView* textView = binding.textView;
+                id<UITextViewDelegate> textViewDelegate = textView.delegate;
+
+                if (textViewDelegate == binding)
+                {
+                    textView.delegate = binding.savedTextViewDelegate;
+                    binding.savedTextViewDelegate = nil;
+                    textView.text = binding.originalText;
+                    binding.originalText = nil;
+                }
 
                 return YES;
             }];
@@ -112,14 +135,9 @@
 
 #pragma mark - Change Observation
 
-- (void)                   updateOriginalTextBeforeEditing
-{
-    self.originalText = self.textView.text;
-}
-
 - (void)                                viewValueDidChange
 {
-    NSString* oldValue = self.originalText;
+    NSString* oldValue = self.previousText;
     NSString* newValue = self.textView.text;
 
     // Send change notification
@@ -132,7 +150,7 @@
     if (newValue != oldValue && ![newValue isEqualToString:oldValue])
     {
         [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
-        self.originalText = newValue;
+        self.previousText = newValue;
     }
 }
 
@@ -202,7 +220,7 @@
     NSParameterAssert(textView == self.textView);
     id<UITextViewDelegate> secondary = self.savedTextViewDelegate;
 
-    [self updateOriginalTextBeforeEditing];
+    self.previousText = self.textView.text;
     [self responderDidActivate:self.textView];
 
     if ([secondary respondsToSelector:@selector(textViewDidBeginEditing:)])

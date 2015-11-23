@@ -37,6 +37,50 @@
 
 @implementation AKABinding_UIStepper_valueBinding
 
++  (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":              [AKABinding_UIStepper_valueBinding class],
+           @"targetType":               [UIStepper class],
+           @"expressionType":           @(AKABindingExpressionTypeNumber),
+           @"attributes":
+               @{ @"minimumValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"minimumValueExpression"
+                         },
+                  @"maximumValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"maximumValueExpression"
+                         },
+                  @"stepValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"stepValueExpression"
+                         },
+                  @"autorepeat":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"continuous":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"wraps":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  },
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (void)dealloc

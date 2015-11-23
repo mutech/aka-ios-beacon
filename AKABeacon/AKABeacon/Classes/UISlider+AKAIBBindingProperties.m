@@ -9,7 +9,7 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "UISlider+AKAIBBindingProperties.h"
-#import "AKABindingProvider_UISlider_valueBinding.h"
+#import "AKABinding_UISlider_valueBinding.h"
 #import "AKAControlConfiguration.h"
 #import "AKAScalarControl.h"
 
@@ -17,21 +17,15 @@
 
 - (NSString*)              valueBinding_aka
 {
-    AKABindingProvider_UISlider_valueBinding* provider =
-        [AKABindingProvider_UISlider_valueBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(valueBinding_aka)
-                                               inView:self];
+    return [AKABinding_UISlider_valueBinding bindingExpressionTextForSelector:@selector(valueBinding_aka)
+                                                                       inView:self];
 }
 
 - (void)                 setValueBinding_aka:(opt_NSString)valueBinding
 {
-    AKABindingProvider_UISlider_valueBinding* provider =
-        [AKABindingProvider_UISlider_valueBinding sharedInstance];
-
-    [provider setBindingExpressionText:valueBinding
-                           forSelector:@selector(valueBinding_aka)
-                                inView:self];
+    [AKABinding_UISlider_valueBinding setBindingExpressionText:valueBinding
+                                                   forSelector:@selector(valueBinding_aka)
+                                                        inView:self];
 }
 
 - (AKAMutableControlConfiguration*)aka_controlConfiguration

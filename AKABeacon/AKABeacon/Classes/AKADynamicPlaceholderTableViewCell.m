@@ -15,15 +15,7 @@
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
-#import "AKABindingProvider.h"
-
-
-@interface AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding: AKABindingProvider
-
-+ (instancetype)sharedInstance;
-
-@end
-
+#import "AKABinding.h"
 
 @implementation AKADynamicPlaceholderTableViewCell
 
@@ -31,21 +23,15 @@
 
 - (NSString*)collectionBinding
 {
-    AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding* provider =
-        [AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(collectionBinding)
-                                               inView:self];
+    return [AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding bindingExpressionTextForSelector:@selector(collectionBinding)
+                                                                                                      inView:self];
 }
 
 - (void)setCollectionBinding:(NSString*)collectionBinding
 {
-    AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding* provider =
-        [AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding sharedInstance];
-
-    [provider setBindingExpressionText:collectionBinding
-                           forSelector:@selector(collectionBinding)
-                                inView:self];
+    [AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding setBindingExpressionText:collectionBinding
+                                                                                  forSelector:@selector(collectionBinding)
+                                                                                       inView:self];
 }
 
 #pragma mark - Control Configuration
@@ -92,63 +78,6 @@
 @end
 
 
-@implementation AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding
-
-+ (instancetype)sharedInstance
-{
-    static AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding* result = nil;
-    static dispatch_once_t onceToken;
-
-    // TODO: write specification
-    dispatch_once(&onceToken, ^{
-        result = [AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding new];
-    });
-
-    return result;
-}
-
-- (AKABindingSpecification*)specification
-{
-    static AKABindingSpecification* result;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        NSDictionary* spec =
-            @{ @"bindingType":          [AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding class],
-               @"bindingProviderType":  [AKABindingProvider_AKADynamicPlaceholderTableViewCell_collectionBinding class],
-               @"targetType":           [AKADynamicPlaceholderTableViewCell class],
-               @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
-               @"attributes":
-               @{ @"dataSource":
-                  @{ @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
-                     @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                     @"bindingProperty": @"placeholderDataSource" },
-                  @"delegate":
-                  @{ @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
-                     @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                     @"bindingProperty": @"placeholderDelegate" },
-                  @"section":
-                  @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
-                     @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                     @"bindingProperty": @"dataSourceSectionIndex" },
-                  @"firstRow":
-                  @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
-                     @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                     @"bindingProperty": @"dataSourceRowIndex" },
-                  @"numberOfRows":
-                  @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
-                     @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                     @"bindingProperty": @"dataSourceNumberOfRows" }, }
-        };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
-    });
-
-    return result;
-}
-
-@end
-
-
 @interface AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding()
 
 @property(nonatomic, readonly) NSArray* actualItems;
@@ -156,6 +85,44 @@
 @end
 
 @implementation AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding
+
++ (AKABindingSpecification*)specification
+{
+    static AKABindingSpecification* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":          [AKABinding_AKADynamicPlaceholderTableViewCell_collectionBinding class],
+           @"targetType":           [AKADynamicPlaceholderTableViewCell class],
+           @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
+           @"attributes":
+               @{ @"dataSource":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"placeholderDataSource" },
+                  @"delegate":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"placeholderDelegate" },
+                  @"section":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"dataSourceSectionIndex" },
+                  @"firstRow":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"dataSourceRowIndex" },
+                  @"numberOfRows":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeInteger),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"dataSourceNumberOfRows" }, }
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    
+    return result;
+}
 
 #pragma mark - Initialization
 

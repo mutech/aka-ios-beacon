@@ -20,7 +20,7 @@
 // New bindings infrastructure
 #import "UIView+AKABindingSupport.h"
 #import "AKAKeyboardControlViewBinding.h"
-#import "AKABindingProvider.h"
+#import "AKABinding.h"
 #import "AKAControl+BindingDelegate.h"
 
 @interface AKAControl()
@@ -320,12 +320,14 @@ static NSString* const kRegisteredControlKey = @"aka_control";
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
     BOOL result = NO;
-    AKABindingProvider* provider = bindingExpression.bindingProvider;
-    AKABinding* binding = [provider bindingWithTarget:view
-                                             property:property
-                                           expression:bindingExpression
-                                              context:self
-                                             delegate:self];
+    NSError* error;
+    Class bindingType = bindingExpression.bindingType;
+    AKABinding* binding = [[bindingType alloc] initWithTarget:view
+                                                     property:property
+                                                   expression:bindingExpression
+                                                      context:self
+                                                     delegate:self
+                                                        error:&error];
     if (binding)
     {
         result = [self addBinding:binding];

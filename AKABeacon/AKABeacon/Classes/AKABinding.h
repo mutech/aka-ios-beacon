@@ -12,6 +12,7 @@
 
 #import "AKABindingDelegate.h"
 #import "AKABindingExpression.h"
+#import "AKABindingSpecification.h"
 
 @class AKABinding;
 @class AKAControlViewBinding;
@@ -24,7 +25,6 @@ typedef AKAKeyboardControlViewBinding*_Nullable             opt_AKAKeyboardContr
 typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardControlViewBinding;
 
 @protocol AKAControlViewBindingDelegate;
-
 
 @interface AKABinding: NSObject
 
@@ -52,21 +52,8 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
                                                    delegate:(opt_AKABindingDelegate)delegate
                                                       error:(out_NSError)error;
 
-/**
- Sets up the binding source for the specified binding expression and binding context with the specified change observer.
- 
- The default implementation evaluates the binding expression's primary expression and returns a property set up with the specified change observer or returns nil and sets the specified error to an error message explaining that the binding expression invalidly did not provide a binding source.
 
- This can be overridden by implementing sub classes to provide a default value when the binding expression does not define a primary expression or, less commonly, to replace the binding source or to allow a binding with undefined source (by not setting the error).
-
- @param bindingExpression the binding expression
- @param bindingContext    the binding context
- @param changeObserver    the change observer provided by the binding which has to be used by the resulting property to notify the binding of changes.
- @param error             only set if an undefined result is returned. Describes the error or if nil, indicates that the result is validly undefined.
-
- @return A property referring to the binding source of nil if an error occurred or if there is no binding source.
- */
-- (opt_AKAProperty)        setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
+- (BOOL)                   setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                       error:(out_NSError)error;
@@ -144,4 +131,15 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 @end
 
 
+@interface AKABinding(BindingSpecification)
+
+#pragma mark - Binding Expression Specification
+
++ (req_AKABindingSpecification)     specification;
+
++ (opt_Class)bindingTypeForBindingExpressionInPrimaryExpressionArray;
+
++ (opt_Class)bindingTypeForAttributeNamed:(req_NSString)attributeName;
+
+@end
 

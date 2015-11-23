@@ -20,6 +20,33 @@
 
 @implementation AKABinding_UISlider_valueBinding
 
++ (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":              self,
+           @"targetType":               [UISlider class],
+           @"expressionType":           @(AKABindingExpressionTypeNumber),
+           @"attributes":
+               @{ @"minimumValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"minimumValue"
+                         },
+                  @"maximumValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"maximumValue"
+                         },
+                  },
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (void)validateTargetView:(req_UIView)targetView

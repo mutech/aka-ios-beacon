@@ -9,6 +9,10 @@
 #import "AKABinding_UITextField_textBinding.h"
 #import "AKABindingErrors.h"
 
+#import "AKABinding_AKABinding_formatter.h"
+#import "AKABinding_AKABinding_numberFormatter.h"
+#import "AKABinding_AKABinding_dateFormatter.h"
+
 #pragma mark - AKABinding_UITextField_textBinding - Private Interface
 #pragma mark -
 
@@ -20,7 +24,7 @@
 @property(nonatomic, nullable) NSString*                   originalPlaceholder;
 @property(nonatomic, nullable) NSString*                   originalText;
 @property(nonatomic, nullable) NSString*                   previousText;
-@property(nonatomic) BOOL                                  useEditingFormat;
+@property(nonatomic) BOOL useEditingFormat;
 
 #pragma mark - Convenience
 
@@ -34,12 +38,73 @@
 
 @implementation AKABinding_UITextField_textBinding
 
+
++ (AKABindingSpecification*)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        // see specification defined in AKAKeyboardControlViewBindingProvider:
+        NSDictionary* spec = @{
+            @"bindingType":          [AKABinding_UITextField_textBinding class],
+            @"targetType":           [UITextField class],
+            @"expressionType":       @(AKABindingExpressionTypeAny),
+            @"attributes": @{
+                @"numberFormatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_numberFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
+                },
+                @"dateFormatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_dateFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
+                },
+                @"formatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_formatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"formatter"
+                },
+                @"editingNumberFormatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_numberFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
+                @"editingDateFormatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_dateFormatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
+                @"editingFormatter": @{
+                    @"bindingType":         [AKABinding_AKABinding_formatter class],
+                    @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty":     @"editingFormatter"
+                },
+                @"textForUndefinedValue": @{
+                    @"expressionType":      @(AKABindingExpressionTypeString),
+                    @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty":     @"textForUndefinedValue"
+                },
+                @"treatEmptyTextAsUndefined": @{
+                    @"expressionType":      @(AKABindingExpressionTypeBoolean),
+                    @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty":     @"treatEmptyTextAsUndefined"
+                }
+            }
+        };
+
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (void)validateTargetView:(req_UIView)targetView
 {
     NSParameterAssert([targetView isKindOfClass:[UITextField class]]);
-
 }
 
 - (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
@@ -76,7 +141,7 @@
                 // A programmatic change resets edits and thus needs to be reflected in previousText
                 self.previousText = binding.textField.text;
             }
-                          observationStarter:
+            observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
@@ -96,6 +161,7 @@
                     // Format text for editing and save the result as previousText
                     // representing the target value for the current source value.
                     BOOL wasEditing = self.useEditingFormat;
+
                     if (!wasEditing)
                     {
                         binding.useEditingFormat = YES;
@@ -123,7 +189,7 @@
 
                 return YES;
             }
-                          observationStopper:
+            observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_UITextField_textBinding* binding = target;
@@ -168,7 +234,7 @@
     _savedTextViewDelegate = savedTextViewDelegate;
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (BOOL)                                convertTargetValue:(opt_id)targetValue
                                              toSourceValue:(out_id)sourceValueStore
@@ -180,6 +246,7 @@
     {
         NSString* errorDescription = nil;
         NSFormatter* formatter = nil;
+
         if (self.useEditingFormat && self.editingFormatter)
         {
             formatter = self.editingFormatter;
@@ -226,6 +293,7 @@
     BOOL result = NO;
 
     id effectiveSourceValue = sourceValue;
+
     if (self.treatEmptyTextAsUndefined && [effectiveSourceValue isKindOfClass:[NSString class]])
     {
         NSString* text = (NSString*)effectiveSourceValue;
@@ -245,7 +313,7 @@
         NSString* errorDescription = nil;
         NSFormatter* formatter = nil;
         NSString* text = nil;
-        
+
         if (self.useEditingFormat && self.editingFormatter)
         {
             formatter = self.editingFormatter;
@@ -255,6 +323,7 @@
         else if (self.formatter)
         {
             formatter = self.formatter;
+
             if (self.useEditingFormat)
             {
                 text = [formatter editingStringForObjectValue:(req_id)effectiveSourceValue];
@@ -325,6 +394,7 @@
     id<UITextFieldDelegate> secondary = self.savedTextViewDelegate;
 
     self.useEditingFormat = YES;
+
     if (self.liveModelUpdates || self.textField.text.length > 0 || self.textField.clearButtonMode == UITextFieldViewModeNever)
     {
         // update unless the current state may be the result of a clear button press, in which case
@@ -338,8 +408,6 @@
     {
         [secondary textFieldDidBeginEditing:textField];
     }
-
-
 }
 
 - (BOOL)                             textFieldShouldReturn:(UITextField*)textField
@@ -359,39 +427,39 @@
         result = NO;
         switch (textField.returnKeyType)
         {
-        case UIReturnKeyNext:
-        {
-            id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-            if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedActivateNext:)])
+            case UIReturnKeyNext:
             {
-                if (![delegate binding:self responderRequestedActivateNext:self.textField])
+                id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
+
+                if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedActivateNext:)])
                 {
-                    [self deactivateResponder];
+                    if (![delegate binding:self responderRequestedActivateNext:self.textField])
+                    {
+                        [self deactivateResponder];
+                    }
                 }
+                break;
             }
-            break;
-        }
 
-        case UIReturnKeyGo:
-        case UIReturnKeyDone:
-        {
-            id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-            if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])
+            case UIReturnKeyGo:
+            case UIReturnKeyDone:
             {
-                if (![delegate binding:self responderRequestedGoOrDone:self.textField])
-                {
-                    [self deactivateResponder];
-                }
-            }
-            break;
-        }
+                id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
 
-        default:
-            // This will call the corresponding should/did end editing handlers
-            [self deactivateResponder];
-            break;
+                if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])
+                {
+                    if (![delegate binding:self responderRequestedGoOrDone:self.textField])
+                    {
+                        [self deactivateResponder];
+                    }
+                }
+                break;
+            }
+
+            default:
+                // This will call the corresponding should/did end editing handlers
+                [self deactivateResponder];
+                break;
         }
     }
 

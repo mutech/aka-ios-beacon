@@ -23,6 +23,8 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_selectionBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_selectionBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.h" isTestSource="false" />
@@ -41,24 +43,6 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UILabel_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UILabel_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISlider_valueBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISlider_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UIStepper_valueBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UIStepper_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISwitch_stateBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UISwitch_stateBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextField_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextField_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextView_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingProvider_UITextView_textBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" isTestSource="false" />
@@ -125,8 +109,6 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingProvider.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingProvider.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" isTestSource="false" />
@@ -142,6 +124,8 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" isTestSource="false" />
@@ -172,6 +156,8 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/NSScanner+AKABindingExpressionParser.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.h" isTestSource="false" />

@@ -13,90 +13,6 @@
 #import "AKAPropertyBinding.h"
 #import "AKANSEnumerations.h"
 
-#pragma mark - AKABindingProvider_AKABinding_dateFormatter - Implementation
-#pragma mark -
-
-@implementation AKABindingProvider_AKABinding_dateFormatter
-
-#pragma mark - Initialization
-
-+ (instancetype)                            sharedInstance
-{
-    static AKABindingProvider_AKABinding_dateFormatter* instance = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [AKABindingProvider_AKABinding_dateFormatter new];
-    });
-
-    return instance;
-}
-
-#pragma mark - Binding Expression Validation
-
-- (AKABindingSpecification*)               specification
-{
-    Class bindingType = [AKABinding_AKABinding_dateFormatter class];
-    Class providerType = self.class;
-
-    static AKABindingSpecification* result = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        NSDictionary* spec =
-            @{ @"bindingType":                  bindingType,
-               @"bindingProviderType":          providerType,
-               @"targetType":                   [AKAProperty class],
-               @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
-               @"attributes":
-                   @{ @"dateStyle":
-                          @{ @"required":        @NO,
-                             @"use":             @(AKABindingAttributeUseIgnore),
-                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                             @"enumerationType": @"NSDateFormatterStyle" },
-
-                      @"timeStyle":
-                          @{ @"required":        @NO,
-                             @"use":             @(AKABindingAttributeUseIgnore),
-                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                             @"enumerationType": @"NSDateFormatterStyle" },
-
-                      // TODO: should be inherited/merged from base class:
-                      @"formattingContext":
-                          @{ @"required":        @NO,
-                             @"use":             @(AKABindingAttributeUseIgnore),
-                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                             @"enumerationType": @"NSFormattingContext" },
-
-                      @"locale":
-                          @{ @"required":        @NO,
-                             @"use":             @(AKABindingAttributeUseIgnore),
-                             @"expressionType":  @(AKABindingExpressionTypeString) }, },
-               @"allowUnspecifiedAttributes":   @YES };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
-    });
-
-    return result;
-}
-
-
-#pragma mark - Enumeration Name Value Mapping
-
-- (void)registerEnumerationAndOptionTypes
-{
-    [super registerEnumerationAndOptionTypes];
-
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [AKABindingExpressionSpecification registerEnumerationType:@"NSDateFormatterStyle"
-                                                  withValuesByName:[AKANSEnumerations
-                                                                    dateFormatterStylesByName]];
-    });
-}
-
-@end
-
-
 #pragma mark - AKABinding_AKABinding_dateFormatter - Private Interface
 #pragma mark -
 
@@ -112,6 +28,59 @@
 #pragma mark -
 
 @implementation AKABinding_AKABinding_dateFormatter
+
++ (AKABindingSpecification*)               specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":                  self,
+           @"targetType":                   [AKAProperty class],
+           @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
+           @"attributes":
+               @{ @"dateStyle":
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSDateFormatterStyle" },
+
+                  @"timeStyle":
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSDateFormatterStyle" },
+
+                  // TODO: should be inherited/merged from base class:
+                  @"formattingContext":
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSFormattingContext" },
+
+                  @"locale":
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeString) }, },
+           @"allowUnspecifiedAttributes":   @YES };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+
+    return result;
+}
+
++ (void)registerEnumerationAndOptionTypes
+{
+    [super registerEnumerationAndOptionTypes];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [AKABindingExpressionSpecification registerEnumerationType:@"NSDateFormatterStyle"
+                                                  withValuesByName:[AKANSEnumerations
+                                                                    dateFormatterStylesByName]];
+    });
+}
 
 - (NSFormatter *)defaultFormatter
 {

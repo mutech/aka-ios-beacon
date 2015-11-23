@@ -26,6 +26,36 @@
 
 @dynamic delegate;
 
++ (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":          [AKAKeyboardControlViewBinding class],
+           @"targetType":           [UIResponder class],
+           @"expressionType":       @(AKABindingExpressionTypeAny),
+           @"attributes":
+               @{ @"liveModelUpdates":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         },
+                  @"autoActivate":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty)
+                         },
+                  @"KBActivationSequence":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
+                         }
+                  }
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[AKAControlViewBinding specification]];
+    });
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (instancetype)init

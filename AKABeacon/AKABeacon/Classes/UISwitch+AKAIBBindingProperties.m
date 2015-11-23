@@ -10,7 +10,7 @@
 
 #import "UISwitch+AKAIBBindingProperties.h"
 
-#import "AKABindingProvider_UISwitch_stateBinding.h"
+#import "AKABinding_UISwitch_stateBinding.h"
 #import "AKAScalarControl.h"
 
 
@@ -18,21 +18,15 @@
 
 - (NSString*)              stateBinding_aka
 {
-    AKABindingProvider_UISwitch_stateBinding* provider =
-        [AKABindingProvider_UISwitch_stateBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(stateBinding_aka)
-                                               inView:self];
+    return [AKABinding_UISwitch_stateBinding bindingExpressionTextForSelector:@selector(stateBinding_aka)
+                                                                       inView:self];
 }
 
 - (void)                 setStateBinding_aka:(opt_NSString)stateBinding
 {
-    AKABindingProvider_UISwitch_stateBinding* provider =
-        [AKABindingProvider_UISwitch_stateBinding sharedInstance];
-
-    [provider setBindingExpressionText:stateBinding
-                           forSelector:@selector(stateBinding_aka)
-                                inView:self];
+    [AKABinding_UISwitch_stateBinding setBindingExpressionText:stateBinding
+                                                   forSelector:@selector(stateBinding_aka)
+                                                        inView:self];
 }
 
 - (AKAMutableControlConfiguration*)aka_controlConfiguration

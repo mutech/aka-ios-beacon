@@ -11,6 +11,7 @@
 #import "AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h"
 #import "AKAPickerKeyboardTriggerView.h"
 #import "AKAKeyboardActivationSequenceAccessoryView.h"
+#import "AKASelectionControlViewBinding.h"
 
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
@@ -40,6 +41,27 @@
 #pragma mark -
 
 @implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
+
++ (AKABindingSpecification *)                   specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        AKABindingSpecification* selectionSpecification =
+            [AKASelectionControlViewBinding specification];
+        AKABindingSpecification* baseSpecification =
+            [[super specification] specificationExtendedWith:selectionSpecification];
+
+        NSDictionary* spec =
+        @{ @"bindingType":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
+           @"targetType":               [AKAPickerKeyboardTriggerView class],
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:baseSpecification];
+    });
+
+    return result;
+}
 
 - (void)                                    validateTargetView:(req_UIView)targetView
 {

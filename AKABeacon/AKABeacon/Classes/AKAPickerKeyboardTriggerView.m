@@ -9,7 +9,7 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "AKAPickerKeyboardTriggerView.h"
-#import "AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h"
+#import "AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h"
 #import "AKAKeyboardControl.h"
 
 
@@ -17,21 +17,15 @@
 
 - (NSString*)              pickerBinding_aka
 {
-    AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding* provider =
-        [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(pickerBinding_aka)
-                                               inView:self];
+    return [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding bindingExpressionTextForSelector:@selector(pickerBinding_aka)
+                                                                                            inView:self];
 }
 
 - (void)                setPickerBinding_aka:(opt_NSString)pickerBinding
 {
-    AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding* provider =
-        [AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding sharedInstance];
-
-    [provider setBindingExpressionText:pickerBinding
-                           forSelector:@selector(pickerBinding_aka)
-                                inView:self];
+    [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding setBindingExpressionText:pickerBinding
+                                                                        forSelector:@selector(pickerBinding_aka)
+                                                                             inView:self];
 }
 
 - (void)           setupControlConfiguration:(AKAMutableControlConfiguration*)controlConfiguration

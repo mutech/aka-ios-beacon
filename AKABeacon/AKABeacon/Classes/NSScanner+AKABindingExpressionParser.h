@@ -9,7 +9,7 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
-#import "AKABindingProvider.h"
+#import "AKABinding.h"
 #import "AKABindingExpression.h"
 
 typedef enum AKABindingExpressionParseErrorCode
@@ -77,14 +77,14 @@ typedef NSScanner AKABindingExpressionParser;
 
 #pragma mark - Binding Expression Parser
 
-- (BOOL)    parseBindingExpression:(out_AKABindingExpression)store
-                      withProvider:(opt_AKABindingProvider)provider
-                             error:(out_NSError)error;
+- (BOOL)parseBindingExpression:(out_AKABindingExpression)store
+                forBindingType:(opt_Class)bindingType
+                         error:(out_NSError)error;
 
-- (BOOL)      parseConstantOrScope:(out_id)constantStore
-                      withProvider:(opt_AKABindingProvider)provider
-                              type:(out_Class)bindingExpressionType
-                             error:(out_NSError)error;
+- (BOOL)parseConstantOrScope:(out_id)constantStore
+              forBindingType:(opt_Class)bindingType
+                        type:(out_Class)bindingExpressionType
+                       error:(out_NSError)error;
 
 - (BOOL)              parseKeyPath:(out_NSString)store
                              error:(out_NSError)error;

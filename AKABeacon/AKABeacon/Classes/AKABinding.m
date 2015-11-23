@@ -23,6 +23,8 @@
     BOOL _isUpdatingTargetValueForSourceValueChange;
 }
 
+@property(nonatomic, readonly, nullable) NSMutableDictionary<NSString*, AKABinding*>* attributeBindings;
+
 @end
 
 #pragma mark - AKABinding Implementation
@@ -42,21 +44,29 @@
     return self;
 }
 
-- (instancetype _Nullable)         initWithTarget:(id)target
-                                         property:(opt_SEL)property
-                                       expression:(req_AKABindingExpression)bindingExpression
-                                          context:(req_AKABindingContext)bindingContext
-                                         delegate:(opt_AKABindingDelegate)delegate
-                                            error:(out_NSError)error
+- (instancetype _Nullable)                   initWithTarget:(id)target
+                                                   property:(opt_SEL)property
+                                                 expression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error
 {
+    NSError* localError = nil;
+
+    AKABindingSpecification* specification = [self.class specification];
+
+    if (![bindingExpression validateWithSpecification:specification.bindingSourceSpecification
+                                                error:&localError])
+    {
+        self = nil;
+    }
+
     if (self = [self init])
     {
         _bindingTarget = target;
-        _bindingProperty = property;
+        _bindingProperty = property; // TODO: rename to bindingExpressionProperty or remove it
         _bindingContext = bindingContext;
         _delegate = delegate;
-
-        NSError* localError = nil;
 
         __weak AKABinding* weakSelf = self;
         req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
@@ -64,62 +74,161 @@
                                             toNewValue:newValue];
         };
 
-        opt_AKAProperty bindingSource =
-            [self setupBindingSourceWithExpression:bindingExpression
-                                           context:bindingContext
-                                    changeObserver:changeObserver
-                                             error:&localError];
-
-        if (bindingSource)
+        if (![self setupBindingSourceWithExpression:bindingExpression
+                                            context:bindingContext
+                                     changeObserver:changeObserver
+                                              error:&localError])
         {
-            _bindingSource = (req_AKAProperty)bindingSource;
+            self = nil;
         }
-        else if (localError == nil)
+
+        if (![self setupAttributeBindingsWithExpression:bindingExpression
+                                         bindingContext:bindingContext
+                                                  error:&localError])
         {
-            // binding expression does not define a primary expression and this is intentional
-            // indicated by the undefined error returned by setupBindingSourceWithExpression:...
-            _bindingSource = [AKAProperty propertyOfWeakKeyValueTarget:nil
-                                                               keyPath:nil
-                                                        changeObserver:changeObserver];
+            self = nil;
+        }
+    }
+
+    if (self == nil)
+    {
+        if (error)
+        {
+            *error = localError;
         }
         else
         {
-            self = nil;
-            if (!error)
-            {
-                // If the caller does not provide an error storage, we assume that it's not taking
-                // care of error handling and consider the missing binding error a fatal condition.
-                @throw [NSException exceptionWithName:@"Failed to create a binding source"
-                                               reason:localError.localizedDescription
-                                             userInfo:nil];
-            }
+            // If the caller does not provide an error storage, we assume that it's not taking
+            // care of error handling and consider the missing binding error a fatal condition.
+            @throw [NSException exceptionWithName:@"Failed to create binding"
+                                           reason:localError.localizedDescription
+                                         userInfo:nil];
         }
     }
 
     return self;
 }
 
-- (opt_AKAProperty)        setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
+- (BOOL)                   setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                       error:(out_NSError)error
 {
-    (void)error;
+    BOOL result = YES;
 
-    opt_AKAProperty result = [bindingExpression bindingSourcePropertyInContext:bindingContext
-                                                                 changeObserer:changeObserver];
+    opt_AKAProperty bindingSource = [bindingExpression bindingSourcePropertyInContext:bindingContext
+                                                                        changeObserer:changeObserver];
 
-    if (result || bindingExpression.class == [AKABindingExpression class])
+    if (bindingSource)
+    {
+        _bindingSource = (req_AKAProperty)bindingSource;
+    }
+    else if (bindingExpression.class == [AKABindingExpression class])
     {
         // If bindingExpression is AKABindingExpression (not a subclass), then delivering no bindingSource
         // is expected and not an error.
-        _bindingSource = (req_AKAProperty)result;
+        _bindingSource = [AKAProperty propertyOfWeakKeyValueTarget:nil
+                                                           keyPath:nil
+                                                    changeObserver:changeObserver];
     }
-    else if (error)
+    else
     {
+        result = NO;
         *error = [AKABindingErrors bindingErrorUndefinedBindingSourceForExpression:bindingExpression
                                                                            context:bindingContext];
     }
+
+    return result;
+}
+
+- (BOOL)               setupAttributeBindingsWithExpression:(req_AKABindingExpression)bindingExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                                      error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    (void)error;
+
+    AKABindingSpecification* specification = [self.class specification];
+
+    [((opt_AKABindingExpressionAttributes)(bindingExpression.attributes)) enumerateKeysAndObjectsUsingBlock:
+     ^(req_NSString attributeName,
+       req_AKABindingExpression attribute,
+       outreq_BOOL stop)
+     {
+         (void)stop;
+
+         AKABindingAttributeSpecification* attributeSpec =
+             specification.bindingSourceSpecification.attributes[attributeName];
+
+         if (attributeSpec)
+         {
+             NSString* bindingPropertyName = attributeSpec.bindingPropertyName;
+
+             if (bindingPropertyName == nil)
+             {
+                 bindingPropertyName = attributeName;
+             }
+
+             switch (attributeSpec.attributeUse)
+             {
+                 case AKABindingAttributeUseAssignValueToBindingProperty:
+                     {
+                         id value = [attribute bindingSourceValueInContext:bindingContext];
+                         [self setValue:value forKey:bindingPropertyName];
+
+                         break;
+                     }
+
+                 case AKABindingAttributeUseAssignExpressionToBindingProperty:
+                     {
+                         [self setValue:attribute forKey:bindingPropertyName];
+
+                         break;
+                     }
+
+                 case AKABindingAttributeUseBindToBindingProperty:
+                     {
+                         // We could assign constant attributes instead of binding them, but their
+                         // nested attributes might need binding, so this is getting to complex for
+                         // now.
+
+                         if (self->_attributeBindings == nil)
+                         {
+                             self->_attributeBindings = [NSMutableDictionary new];
+                         }
+
+                         Class bindingType = attributeSpec.bindingType;
+
+                         if (bindingType != nil)
+                         {
+                             __weak typeof(self) weakSelf = self;
+                             AKAProperty* targetProperty =
+                                 [AKAProperty propertyOfWeakKeyValueTarget:self
+                                                                   keyPath:bindingPropertyName
+                                                            changeObserver:^(opt_id oldValue, opt_id newValue) {
+                                                                [weakSelf bindingProperty:bindingPropertyName
+                                                                                    value:oldValue
+                                                                      didChangeToNewValue:newValue];
+                                                            }];
+                             AKABinding* propertyBinding =
+                                 [[bindingType alloc] initWithTarget:targetProperty
+                                                            property:NSSelectorFromString(bindingPropertyName)
+                                                          expression:attribute
+                                                             context:bindingContext
+                                                            delegate:nil
+                                                               error:error];
+                             self->_attributeBindings[bindingPropertyName] = propertyBinding;
+                         }
+
+                         break;
+                     }
+
+                 default:
+                     break;
+             }
+         }
+     }];
 
     return result;
 }
@@ -307,6 +416,7 @@
 - (void)                                  updateTargetValue
 {
     id sourceValue = self.bindingSource.value;
+
     [self updateTargetValueForSourceValue:sourceValue changeTo:sourceValue];
 }
 
@@ -361,21 +471,45 @@
 
 - (BOOL)                              startObservingChanges
 {
-    BOOL result = YES;
+    __block BOOL result = YES;
 
-    result &= [self.bindingSource startObservingChanges];
-    result &= [self.bindingTarget startObservingChanges];
-    [self updateTargetValueForSourceValue:[NSNull null] changeTo:self.bindingSource.value];
+    [self.attributeBindings enumerateKeysAndObjectsUsingBlock:
+     ^(req_NSString propertyName,
+       req_AKABinding propertyBinding,
+       outreq_BOOL stop)
+     {
+         (void)propertyName;
+         (void)stop;
+
+         result = [propertyBinding startObservingChanges] && result;
+     }];
+
+    result = [self.bindingSource startObservingChanges] && result;
+    result = [self.bindingTarget startObservingChanges] && result;
+
+    [self updateTargetValue];
 
     return result;
 }
 
 - (BOOL)                               stopObservingChanges
 {
-    BOOL result = YES;
+    __block BOOL result = YES;
 
-    result &= [self.bindingTarget stopObservingChanges];
-    result &= [self.bindingSource stopObservingChanges];
+    result = [self.bindingTarget stopObservingChanges] && result;
+    result = [self.bindingSource stopObservingChanges] && result;
+
+
+    [self.attributeBindings enumerateKeysAndObjectsUsingBlock:
+     ^(req_NSString propertyName,
+       req_AKABinding propertyBinding,
+       outreq_BOOL stop)
+     {
+         (void)propertyName;
+         (void)stop;
+
+         result = [propertyBinding stopObservingChanges] && result;
+     }];
 
     return result;
 }
@@ -402,6 +536,37 @@
                                 toInvalidValue:newSourceValue
                                      withError:error];
     }
+}
+
+- (void)                                    bindingProperty:(req_NSString)bindingPropertyName
+                                                      value:(opt_id)oldValue
+                                        didChangeToNewValue:(opt_id)newValue
+{
+    // TODO: remove debug output
+    AKALogDebug(@"Binding %@ property %@ value %@ changed to %@", self, bindingPropertyName, oldValue, newValue);
+}
+
+@end
+
+
+@implementation AKABinding (BindingSpecification)
+
++ (req_AKABindingSpecification)specification
+{
+    // TODO: create default specification
+    return nil;
+}
+
++ (Class)bindingTypeForBindingExpressionInPrimaryExpressionArray
+{
+    AKABindingSpecification* specification = [self specification];
+    return specification.bindingSourceSpecification.arrayItemBindingType;
+}
+
++ (Class)bindingTypeForAttributeNamed:(NSString *)attributeName
+{
+    AKABindingSpecification* specification = [self specification];
+    return specification.bindingSourceSpecification.attributes[attributeName].bindingType;
 }
 
 @end

@@ -7,7 +7,9 @@
 //
 
 #import "AKABinding_UILabel_textBinding.h"
-
+#import "AKABinding_AKABinding_formatter.h"
+#import "AKABinding_AKABinding_numberFormatter.h"
+#import "AKABinding_AKABinding_dateFormatter.h"
 
 #pragma mark - AKABinding_UILabel_textBinding - Private Interface
 #pragma mark -
@@ -17,6 +19,7 @@
 #pragma mark - Saved UILabel State
 
 @property(nonatomic, nullable) NSString*       originalText;
+@property(nonatomic) BOOL                       isObserving;
 @property(nonatomic) UIView*     originalInputAccessoryView;
 
 #pragma mark - Convenience
@@ -30,6 +33,53 @@
 #pragma mark -
 
 @implementation AKABinding_UILabel_textBinding
+
++ (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":          [AKABinding_UILabel_textBinding class],
+           @"targetType":           [UILabel class],
+           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
+           @"attributes":
+               @{ @"numberFormatter":
+                      @{ @"bindingType":    [AKABinding_AKABinding_numberFormatter class],
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"numberFormatter"
+                         },
+                  @"dateFormatter":
+                      @{ @"bindingType":    [AKABinding_AKABinding_dateFormatter class],
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"dateFormatter"
+                         },
+                  @"formatter":
+                      @{ @"bindingType":    [AKABinding_AKABinding_formatter class],
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"formatter"
+                         },
+                  @"textForUndefinedValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForUndefinedValue"
+                         },
+                  @"textForYes":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForYes"
+                         },
+                  @"textForNo":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"textForNo"
+                         },
+                  },
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    return result;
+}
 
 #pragma mark - Initialization
 
@@ -84,14 +134,25 @@
                           observationStarter:
             ^BOOL (id target)
             {
-                (void)target;
-                return YES; // nothing to observe (readonly)
+                AKABinding_UILabel_textBinding* binding = target;
+                if (!binding.isObserving)
+                {
+                    binding.isObserving = YES;
+                    binding.originalText = binding.label.text;
+                }
+                return binding.isObserving;
             }
                           observationStopper:
             ^BOOL (id target)
             {
-                (void)target; // nothing to observer (readonly).
-                return YES;
+                AKABinding_UILabel_textBinding* binding = target;
+                if (binding.isObserving)
+                {
+                    binding.label.text = binding.originalText;
+                    binding.originalText = nil;
+                    binding.isObserving = NO;
+                }
+                return !binding.isObserving;
             }];
 }
 
@@ -102,6 +163,12 @@
     NSAssert(result == nil || [result isKindOfClass:[UILabel class]], @"View for %@ is required to be an instance of UILabel", self.class);
 
     return (UILabel*)result;
+}
+
+- (void)setFormatter:(NSFormatter *)formatter
+{
+    NSAssert(formatter == nil || [formatter isKindOfClass:NSFormatter.class], @"bam!");
+    _formatter = formatter;
 }
 
 #pragma mark - Conversion

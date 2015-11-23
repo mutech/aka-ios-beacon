@@ -6,12 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AKABindingProvider.h"
 #import "AKABinding_AKABinding_formatter.h"
-
-
-@interface AKABindingProvider_AKABinding_numberFormatter: AKABindingProvider_AKABinding_formatter
-@end
 
 
 @interface AKABinding_AKABinding_numberFormatter: AKABinding_AKABinding_formatter

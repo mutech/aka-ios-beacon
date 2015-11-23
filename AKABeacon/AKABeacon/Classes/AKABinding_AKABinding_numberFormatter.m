@@ -12,83 +12,55 @@
 #import "AKABinding_AKABinding_numberFormatter.h"
 #import "AKANSEnumerations.h"
 
-#pragma mark - AKABindingProvider_AKABinding_numberFormatter  - Private Interface
+
+#pragma mark - AKABinding_AKABinding_numberFormatter  - Implementation
 #pragma mark -
 
-@implementation AKABindingProvider_AKABinding_numberFormatter
+@implementation AKABinding_AKABinding_numberFormatter
 
-#pragma mark - Initialization
-
-+ (instancetype)                            sharedInstance
++ (AKABindingSpecification*)                 specification
 {
-    static AKABindingProvider_AKABinding_numberFormatter* instance = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [AKABindingProvider_AKABinding_numberFormatter new];
-    });
-
-    return instance;
-}
-
-#pragma mark - Binding Expression Validation
-
-- (AKABindingSpecification*)                 specification
-{
-    Class bindingType = [AKABinding_AKABinding_numberFormatter class];
-    Class providerType = self.class;
-
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-            @{ @"bindingType":         bindingType,
-               @"bindingProviderType": providerType,
-               @"targetType":          [AKAProperty class],
-               @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
-               @"attributes":
+        @{ @"bindingType":         self,
+           @"targetType":          [AKAProperty class],
+           @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
+           @"attributes":
                @{ @"numberStyle":
-                  @{ @"required":        @NO,
-                     @"use":             @(AKABindingAttributeUseIgnore),
-                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                     @"enumerationType": @"NSNumberFormatterStyle" },
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSNumberFormatterStyle" },
 
                   @"roundingMode":
-                  @{ @"required":        @NO,
-                     @"use":             @(AKABindingAttributeUseIgnore),
-                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                     @"enumerationType": @"NSNumberFormatterRoundingMode" },
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSNumberFormatterRoundingMode" },
 
                   @"paddingPosition":
-                  @{ @"required":        @NO,
-                     @"use":             @(AKABindingAttributeUseIgnore),
-                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                     @"enumerationType": @"NSNumberFormatterPadPosition" },
-
-                  // TODO: should be inherited/merged from base class:
-                  @"formattingContext":
-                  @{ @"required":        @NO,
-                     @"use":             @(AKABindingAttributeUseIgnore),
-                     @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                     @"enumerationType": @"NSFormattingContext" },
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSNumberFormatterPadPosition" },
 
                   @"locale":
-                  @{ @"required":        @NO,
-                     @"use":             @(AKABindingAttributeUseIgnore),
-                     @"expressionType":  @(AKABindingExpressionTypeString) }, },
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeString) }, },
 
-               @"allowUnspecifiedAttributes":   @YES };
-
+           @"allowUnspecifiedAttributes":   @YES };
+        
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
-
+    
     return result;
 }
 
-#pragma mark - Abstract Method Implementation
-
-- (void)registerEnumerationAndOptionTypes
++ (void)registerEnumerationAndOptionTypes
 {
     [super registerEnumerationAndOptionTypes];
 
@@ -106,14 +78,6 @@
                                                                     padPositionsByName]];
     });
 }
-
-@end
-
-
-#pragma mark - AKABinding_AKABinding_numberFormatter  - Implementation
-#pragma mark -
-
-@implementation AKABinding_AKABinding_numberFormatter
 
 - (NSFormatter *)defaultFormatter
 {

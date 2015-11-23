@@ -36,14 +36,14 @@
 #pragma mark - Initialization
 
 + (instancetype)bindingExpressionWithString:(req_NSString)expressionText
-                            bindingProvider:(req_AKABindingProvider)bindingProvider
+                                bindingType:(req_Class)bindingType
                                       error:(out_NSError)error
 {
     NSScanner* parser = [NSScanner scannerWithString:expressionText];
     AKABindingExpression* result = nil;
 
     if ([parser parseBindingExpression:&result
-                          withProvider:bindingProvider
+                        forBindingType:bindingType
                                  error:error])
     {
         if (!parser.isAtEnd)
@@ -59,7 +59,7 @@
         {
             NSError* localError = nil;
             opt_AKABindingExpressionSpecification sourceSpec =
-            bindingProvider.specification.bindingSourceSpecification;
+                [bindingType specification].bindingSourceSpecification;
 
             if (![result validateWithSpecification:sourceSpec error:&localError])
             {
@@ -82,12 +82,12 @@
 }
 
 - (instancetype)initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
-                          provider:(opt_AKABindingProvider)provider;
+                       bindingType:(opt_Class)bindingType
 {
     if (self = [super init])
     {
         _attributes = attributes;
-        _bindingProvider = provider;
+        _bindingType = bindingType;
     }
 
     return self;
@@ -95,11 +95,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                           provider:(opt_AKABindingProvider)provider
+                                        bindingType:(opt_Class)bindingType
 {
     if (primaryExpression == nil)
     {
-        self = [self initWithAttributes:attributes provider:provider];
+        self = [self initWithAttributes:attributes bindingType:bindingType];
     }
     else
     {
@@ -398,10 +398,10 @@
 
 - (instancetype)initWithArray:(NSArray<AKABindingExpression*>*)array
                    attributes:(opt_AKABindingExpressionAttributes)attributes
-                     provider:(opt_AKABindingProvider)provider
+                  bindingType:(opt_Class)bindingType
 {
     if (self = [super initWithAttributes:attributes
-                                provider:provider])
+                             bindingType:bindingType])
     {
         _array = array;
     }
@@ -411,13 +411,13 @@
 
 - (instancetype)initWithPrimaryExpression:(opt_id)primaryExpression
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider
+                              bindingType:(opt_Class)bindingType
 {
     NSAssert(primaryExpression == nil || [primaryExpression isKindOfClass:[NSArray class]], @"AKAArrayBindingExpression requires a primary expression of type NSArray, got %@", primaryExpression);
 
     return [self initWithArray:(NSArray*)primaryExpression
                     attributes:attributes
-                      provider:provider];
+                   bindingType:bindingType];
 }
 
 #pragma mark - Properties
@@ -530,10 +530,10 @@
 
 - (instancetype)initWithConstant:(id)constant
                       attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     if (self = [super initWithAttributes:attributes
-                                provider:provider])
+                             bindingType:bindingType])
     {
         _constant = constant;
     }
@@ -543,11 +543,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                           provider:(opt_AKABindingProvider)provider
+                                        bindingType:(opt_Class)bindingType
 {
     return [self initWithConstant:primaryExpression
                        attributes:attributes
-                         provider:provider];
+                      bindingType:bindingType];
 }
 
 #pragma mark - Properties
@@ -629,11 +629,11 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_NSString)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider
+                              bindingType:(opt_Class)bindingType
 {
     self = [super initWithConstant:constant
                         attributes:attributes
-                          provider:provider];
+                       bindingType:bindingType];
 
     return self;
 }
@@ -714,11 +714,11 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_Class)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                                 provider:(opt_AKABindingProvider)provider
+                              bindingType:(opt_Class)bindingType
 {
     self = [super initWithConstant:constant
                         attributes:attributes
-                          provider:provider];
+                       bindingType:bindingType];
 
     return self;
 }
@@ -758,11 +758,11 @@
 
 - (instancetype)  initWithNumber:(NSNumber*)constant
                       attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     return [super initWithConstant:constant
                         attributes:attributes
-                          provider:provider];
+                       bindingType:bindingType];
 }
 
 #pragma mark - Properties
@@ -822,18 +822,18 @@
 {
     self = [super initWithConstant:@(value)
                         attributes:nil
-                          provider:nil];
+                       bindingType:nil];
 
     return self;
 }
 
 - (instancetype)initWithConstant:(opt_NSNumber)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     if (constant == nil || attributes.count > 0)
     {
-        self = [super initWithConstant:constant attributes:attributes provider:provider];
+        self = [super initWithConstant:constant attributes:attributes bindingType:bindingType];
     }
     else if (constant.boolValue)
     {
@@ -990,7 +990,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     NSString* optionsType;
     NSString* symbolicValue;
@@ -1069,7 +1069,7 @@
         }
     }
 
-    if (self = [super initWithConstant:value attributes:attributes provider:provider])
+    if (self = [super initWithConstant:value attributes:attributes bindingType:bindingType])
     {
         self.optionsType = optionsType;
     }
@@ -1087,6 +1087,7 @@
     if (specification)
     {
         NSString* optionsType = specification.optionsType;
+
         if (self.optionsType == nil)
         {
             if (optionsType.length > 0)
@@ -1129,7 +1130,7 @@
 
 #pragma mark - Properties
 
-- (void)setOptionsType:(NSString *)optionsType
+- (void)setOptionsType:(NSString*)optionsType
 {
     NSParameterAssert(optionsType == _optionsType || _optionsType == nil);
     _optionsType = optionsType;
@@ -1143,11 +1144,13 @@
         self.constant = [AKAOptionsConstantBindingExpression resolveOptionsValue:self.attributes
                                                                          forType:self.optionsType
                                                                            error:&error];
+
         if (super.constant == nil && error != nil)
         {
             NSAssert(NO, @"%@", error.localizedDescription);
         }
     }
+
     return super.constant;
 }
 
@@ -1261,7 +1264,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     NSString* enumerationType;
     NSString* symbolicValue;
@@ -1327,7 +1330,7 @@
         }
     }
 
-    if (self = [super initWithConstant:value attributes:attributes provider:provider])
+    if (self = [super initWithConstant:value attributes:attributes bindingType:bindingType])
     {
         self.enumerationType = enumerationType;
         self.symbolicValue = symbolicValue;
@@ -1335,7 +1338,6 @@
 
     return self;
 }
-
 
 #pragma mark - Validation
 
@@ -1347,6 +1349,7 @@
     if (specification)
     {
         NSString* enumerationType = specification.enumerationType;
+
         if (self.enumerationType == nil)
         {
             if (enumerationType.length > 0)
@@ -1389,7 +1392,7 @@
 
 #pragma mark - Properties
 
-- (void)setEnumerationType:(NSString *)enumerationType
+- (void)setEnumerationType:(NSString*)enumerationType
 {
     NSParameterAssert(enumerationType == _enumerationType || _enumerationType == nil);
     _enumerationType = enumerationType;
@@ -1403,11 +1406,13 @@
         self.constant = [AKAEnumConstantBindingExpression resolveEnumeratedValue:self.symbolicValue
                                                                          forType:self.enumerationType
                                                                            error:&error];
+
         if (super.constant == nil && error != nil)
         {
             NSAssert(NO, @"%@", error.localizedDescription);
         }
     }
+
     return super.constant;
 }
 
@@ -1560,7 +1565,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     UIColor* color = nil;
 
@@ -1603,7 +1608,7 @@
             @throw [NSException exceptionWithName:message reason:message userInfo:nil];
         }
     }
-    self = [super initWithConstant:color attributes:nil provider:provider];
+    self = [super initWithConstant:color attributes:nil bindingType:bindingType];
 
     return self;
 }
@@ -1726,7 +1731,6 @@
 {
     return super.constant;
 }
-
 
 #pragma mark - Properties
 
@@ -2264,7 +2268,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     UIFont* font = nil;
 
@@ -2325,11 +2329,10 @@
         font = [AKAUIFontConstantBindingExpression fontForDescriptor:descriptor];
     }
 
-    self = [super initWithConstant:font attributes:nil provider:provider];
+    self = [super initWithConstant:font attributes:nil bindingType:bindingType];
 
     return self;
 }
-
 
 #pragma mark - Properties
 
@@ -2409,7 +2412,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     NSValue* value = nil;
 
@@ -2436,7 +2439,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGPoint:CGPointMake(x, y)];
     }
-    self = [super initWithConstant:value attributes:nil provider:provider];
+    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
 
     return self;
 }
@@ -2480,7 +2483,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     NSValue* value = nil;
 
@@ -2507,7 +2510,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGSize:CGSizeMake(w, h)];
     }
-    self = [super initWithConstant:value attributes:nil provider:provider];
+    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
 
     return self;
 }
@@ -2551,7 +2554,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                        provider:(opt_AKABindingProvider)provider
+                     bindingType:(opt_Class)bindingType
 {
     NSValue* value = nil;
 
@@ -2584,7 +2587,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGRect:CGRectMake(x, y, w, h)];
     }
-    self = [super initWithConstant:value attributes:nil provider:provider];
+    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
 
     return self;
 }
@@ -2628,10 +2631,10 @@
 
 - (instancetype)initWithKeyPath:(NSString*)keyPath
                      attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                       provider:(opt_AKABindingProvider)provider
+                    bindingType:(opt_Class)bindingType
 {
     if (self = [super initWithAttributes:attributes
-                                provider:provider])
+                             bindingType:bindingType])
     {
         _keyPath = keyPath;
     }
@@ -2641,11 +2644,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                           provider:(opt_AKABindingProvider)provider
+                                        bindingType:(opt_Class)bindingType
 {
     return [self initWithKeyPath:primaryExpression
                       attributes:attributes
-                        provider:provider];
+                     bindingType:bindingType];
 }
 
 #pragma mark - Properties
@@ -2755,7 +2758,6 @@
 
     return result;
 }
-
 
 #pragma mark - Properties
 

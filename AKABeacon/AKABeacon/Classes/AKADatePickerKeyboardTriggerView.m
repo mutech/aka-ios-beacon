@@ -9,7 +9,7 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "AKADatePickerKeyboardTriggerView.h"
-#import "AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h"
+#import "AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h"
 #import "AKAKeyboardControl.h"
 
 
@@ -17,21 +17,15 @@
 
 - (NSString*)              datePickerBinding_aka
 {
-    AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding* provider =
-        [AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(datePickerBinding_aka)
-                                               inView:self];
+    return [AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding bindingExpressionTextForSelector:@selector(datePickerBinding_aka)
+                                                                                                    inView:self];
 }
 
 - (void)                setDatePickerBinding_aka:(opt_NSString)datePickerBinding
 {
-    AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding* provider =
-        [AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding sharedInstance];
-
-    [provider setBindingExpressionText:datePickerBinding
-                           forSelector:@selector(datePickerBinding_aka)
-                                inView:self];
+    [AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding setBindingExpressionText:datePickerBinding
+                                                                                forSelector:@selector(datePickerBinding_aka)
+                                                                                     inView:self];
 }
 
 - (void)              setupControlConfiguration:(AKAMutableControlConfiguration*)controlConfiguration

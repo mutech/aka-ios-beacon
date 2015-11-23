@@ -9,15 +9,11 @@
 #import "AKAPropertyBinding.h"
 
 
-@interface AKABindingProvider_AKABinding_formatter: AKABindingProvider
+@interface AKABinding_AKABinding_formatter : AKAPropertyBinding
 
 #pragma mark - Enumeration and Option Type Registry
 
-- (void)registerEnumerationAndOptionTypes;
-
-@end
-
-@interface AKABinding_AKABinding_formatter : AKAPropertyBinding
++ (void)registerEnumerationAndOptionTypes;
 
 #pragma mark - Initialization
 

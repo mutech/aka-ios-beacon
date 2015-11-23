@@ -13,27 +13,7 @@
 #import "AKABindingExpression.h"
 #import "NSScanner+AKABindingExpressionParser.h"
 #import "AKABindingExpression_Internal.h"
-#import "AKABindingProvider.h"
-
-@interface TestBindingProvider: AKABindingProvider {
-    AKABindingSpecification* _specification;
-}
-- (instancetype)initWithSpecification:(NSDictionary*)specification;
-@end
-@implementation TestBindingProvider
-- (instancetype)initWithSpecification:(NSDictionary *)specification
-{
-    if (self = [super init])
-    {
-        _specification = [[AKABindingSpecification alloc] initWithDictionary:specification basedOn:nil];
-    }
-    return self;
-}
-- (AKABindingSpecification *)specification
-{
-    return _specification;
-}
-@end
+#import "AKABinding.h"
 
 @interface AKABindingExpressionTest : XCTestCase
 
@@ -84,22 +64,6 @@
     [super tearDown];
 }
 
-#pragma mark - Provider Validation Tests
-
-- (void)testBindingProviderValidation
-{
-    // TODO: maybe that's too restrictive, consider to allow everything for unspecified binding expressions
-    // Advantage however is that restrictive policy enforces creation of specs, which might be good...
-    NSString* text = @"\"test\" { unknownAttribute: $true { nestedAttribute: $true } }";
-
-    AKABindingProvider* provider = [AKABindingProvider new];
-    NSError* error = nil;
-    AKABindingExpression* expression = [AKABindingExpression bindingExpressionWithString:text
-                                                                         bindingProvider:provider error:&error];
-    XCTAssertNil(expression);
-    XCTAssertNotNil(error);
-}
-
 #pragma mark - Key Path Parser Tests
 
 - (void)testBindingExpressionPerformance
@@ -130,7 +94,7 @@
             AKABindingExpression* expression = nil;
             NSError* error = nil;
             BOOL result = [scanner parseBindingExpression:&expression
-                                             withProvider:nil
+                                           forBindingType:nil
                                                     error:&error];
             XCTAssert(result, @"%@", [error localizedDescription]);
         }
@@ -180,7 +144,7 @@
     AKABindingExpression* expression = nil;
     NSError* error = nil;
     BOOL result = [scanner parseBindingExpression:&expression
-                                     withProvider:nil
+                                   forBindingType:nil
                                             error:&error];
     XCTAssertTrue(result, @"Failed to parse simplified constant syntax: %@", error.localizedDescription);
     XCTAssertEqualObjects(expectedDescription, expression.description);
@@ -212,37 +176,11 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                         withProvider:nil
+                                       forBindingType:nil
                                                 error:&error];
         XCTAssert(result, @"%@ failed to parse: %@", text, error.localizedDescription);
         XCTAssertEqualObjects(text, expression.description);
         XCTAssertNil(error);
-    }
-}
-
-- (void)testParseArrayValidItems
-{
-    AKABindingProvider* provider = [[TestBindingProvider alloc] initWithSpecification:
-                                    @{ @"expressionType": @(AKABindingExpressionTypeArray)
-                                       }];
-    NSArray* validArrayExpressions =
-    @[ @"[ [ ], $true ]",
-       @"[ 0.1, 1, \"zwei\", <NSNumber>, [ \"another array\" ], [ ], $true, $data.model.name ]"
-       ];
-
-    for (NSString* text in validArrayExpressions)
-    {
-        AKABindingExpression* bindingExpression = nil;
-        NSError* error;
-
-        bindingExpression = [AKABindingExpression bindingExpressionWithString:text
-                                                              bindingProvider:provider
-                                                                        error:&error];
-
-        XCTAssertNotNil(bindingExpression);
-        XCTAssertNil(error);
-        XCTAssertEqual([AKAArrayBindingExpression class], bindingExpression.class);
-        XCTAssertEqualObjects(text, bindingExpression.text);
     }
 }
 
@@ -257,11 +195,10 @@
     for (NSString* text in invalidArrayExpressions)
     {
         AKABindingExpression* bindingExpression = nil;
-        AKABindingProvider* provider = nil;
         NSError* error;
 
         bindingExpression = [AKABindingExpression bindingExpressionWithString:text
-                                                              bindingProvider:provider
+                                                                  bindingType:AKABinding.class
                                                                         error:&error];
 
         XCTAssertNil(bindingExpression);
@@ -283,7 +220,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(result);
@@ -306,7 +243,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(!result);
@@ -330,7 +267,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(!result);
@@ -354,7 +291,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(!result);
@@ -381,7 +318,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(result);
@@ -409,7 +346,7 @@
         NSError* error = nil;
 
         BOOL result = [[NSScanner scannerWithString:text] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
         XCTAssert(result, @"Failed to parse %@", text);
@@ -425,7 +362,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[NSScanner scannerWithString:@"$true"] parseConstantOrScope:&constant
-                                                                  withProvider:nil
+                                                                forBindingType:nil
                                                                           type:&type
                                                                          error:&error];
     XCTAssert(result);
@@ -440,7 +377,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[NSScanner scannerWithString:@"$false"] parseConstantOrScope:&constant
-                                                                   withProvider:nil
+                                                                 forBindingType:nil
                                                                            type:&type
                                                                           error:&error];
     XCTAssert(result);
@@ -591,7 +528,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                         withProvider:nil
+                                       forBindingType:nil
                                                 error:&error];
         XCTAssertTrue(result, @"%@", error.localizedDescription);
 
@@ -624,7 +561,7 @@
     AKABindingExpression* expression = nil;
     NSError* error = nil;
     BOOL result = [scanner parseBindingExpression:&expression
-                                     withProvider:nil
+                                   forBindingType:nil
                                             error:&error];
     XCTAssertTrue(result);
     XCTAssertTrue(expression.class == [AKAArrayBindingExpression class]);
@@ -656,7 +593,7 @@
         NSScanner* scanner = [NSScanner scannerWithString:text];
         AKABindingExpression* expression = nil;
         NSError* error = nil;
-        BOOL result = [scanner parseBindingExpression:&expression withProvider:nil error:&error];
+        BOOL result = [scanner parseBindingExpression:&expression forBindingType:nil error:&error];
 
         XCTAssertTrue(result);
         XCTAssertNil(error);
@@ -686,9 +623,9 @@
         NSError* error = nil;
         NSException* exception;
         @try {
-            (void)[scanner parseBindingExpression:&expression
-                                     withProvider:nil
-                                            error:&error];
+            (void) [scanner parseBindingExpression:&expression
+                                    forBindingType:nil
+                                             error:&error];
         }
         @catch (NSException *e) {
             exception = e;
@@ -709,7 +646,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                         withProvider:nil
+                                       forBindingType:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGPointConstantBindingExpression class]]);
@@ -736,7 +673,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                         withProvider:nil
+                                       forBindingType:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGSizeConstantBindingExpression class]]);
@@ -764,7 +701,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                         withProvider:nil
+                                       forBindingType:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGRectConstantBindingExpression class]]);

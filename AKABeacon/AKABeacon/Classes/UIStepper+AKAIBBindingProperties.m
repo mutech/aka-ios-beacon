@@ -9,7 +9,7 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "UIStepper+AKAIBBindingProperties.h"
-#import "AKABindingProvider_UIStepper_valueBinding.h"
+#import "AKABinding_UIStepper_valueBinding.h"
 #import "AKAControlViewProtocol.h"
 #import "AKAScalarControl.h"
 
@@ -22,21 +22,15 @@
 
 - (NSString*)                              valueBinding_aka
 {
-    AKABindingProvider_UIStepper_valueBinding* provider =
-    [AKABindingProvider_UIStepper_valueBinding sharedInstance];
-
-    return [provider bindingExpressionTextForSelector:@selector(valueBinding_aka)
-                                               inView:self];
+    return [AKABinding_UIStepper_valueBinding bindingExpressionTextForSelector:@selector(valueBinding_aka)
+                                                                        inView:self];
 }
 
 - (void)                                setValueBinding_aka:(opt_NSString)valueBinding
 {
-    AKABindingProvider_UIStepper_valueBinding* provider =
-    [AKABindingProvider_UIStepper_valueBinding sharedInstance];
-
-    [provider setBindingExpressionText:valueBinding
-                           forSelector:@selector(valueBinding_aka)
-                                inView:self];
+    [AKABinding_UIStepper_valueBinding setBindingExpressionText:valueBinding
+                                                    forSelector:@selector(valueBinding_aka)
+                                                         inView:self];
 }
 
 #pragma mark - Control Configuration

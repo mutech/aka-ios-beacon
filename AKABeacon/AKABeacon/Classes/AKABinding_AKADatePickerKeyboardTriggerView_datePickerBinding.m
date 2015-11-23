@@ -31,6 +31,38 @@
 
 @implementation AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding
 
++ (AKABindingSpecification*)                   specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec = @{
+                               @"bindingType":              [AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding class],
+                               @"targetType":               [AKADatePickerKeyboardTriggerView class],
+                               @"expressionType":           @(AKABindingExpressionTypeAnyKeyPath),// TODO: create a date (constant-) type
+                               @"attributes": @{
+                                       @"liveModelUpdates": @{
+                                               @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                                               @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                                               },
+                                       @"autoActivate": @{
+                                               @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                                               @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                                               },
+                                       @"KBActivationSequence": @{
+                                               @"expressionType":  @(AKABindingExpressionTypeBoolean),
+                                               @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                                               @"bindingProperty": @"shouldParticipateInKeyboardActivationSequence"
+                                               }
+                                       }
+                               };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[AKAKeyboardBinding_AKACustomKeyboardResponderView specification]];
+    });
+    
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (void)                                    validateTargetView:(req_UIView)targetView

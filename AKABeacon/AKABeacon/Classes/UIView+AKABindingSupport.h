@@ -22,7 +22,7 @@
  * Provides methods to loosely associate binding expressions to views implementing the storage
  * facility for binding properties which can be added to existing views by defining categories.
  *
- * Binding support methods defined here are typically used through AKABindingProviders which
+ * Binding support methods defined here are typically used through AKABinding support methods which
  * take care of parsing and serializing binding expressions.
  */
 @interface UIView(AKABindingSupport)

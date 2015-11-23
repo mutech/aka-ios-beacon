@@ -11,7 +11,6 @@
 #import "NSScanner+AKABindingExpressionParser.h"
 
 #import "AKABindingExpression_Internal.h"
-#import "AKABindingProvider.h"
 
 @implementation NSScanner(BindingExpressionParser)
 
@@ -154,9 +153,9 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 #pragma mark - Binding Expression Parser
 
-- (BOOL)    parseBindingExpression:(out_AKABindingExpression)store
-                      withProvider:(opt_AKABindingProvider)provider
-                             error:(out_NSError)error
+- (BOOL)parseBindingExpression:(out_AKABindingExpression)store
+                forBindingType:(opt_Class)bindingType
+                         error:(out_NSError)error
 {
     id primaryExpression = nil;
     NSDictionary* attributes = nil;
@@ -164,7 +163,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 
     [self skipWhitespaceAndNewlineCharacters];
     BOOL result = [self parseConstantOrScope:&primaryExpression
-                                withProvider:provider
+                              forBindingType:bindingType
                                         type:&bindingExpressionType
                                        error:error];
 
@@ -215,8 +214,8 @@ static NSString* const keywordCGRect =      @"CGRect";
             BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
 
             result = [self parseAttributes:&attributes
-                              withProvider:provider
-                             asOptions:isOptions
+                            forBindingType:bindingType
+                                 asOptions:isOptions
                                      error:error];
         }
 
@@ -233,17 +232,17 @@ static NSString* const keywordCGRect =      @"CGRect";
         AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
         bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
                                                               attributes:attributes
-                                                                provider:provider];
+                                                             bindingType:bindingType];
         *store = bindingExpression;
     }
 
     return result;
 }
 
-- (BOOL)      parseConstantOrScope:(out_id)constantStore
-                      withProvider:(opt_AKABindingProvider)provider
-                              type:(out_Class)typeStore
-                             error:(out_NSError)error
+- (BOOL)parseConstantOrScope:(out_id)constantStore
+              forBindingType:(opt_Class)bindingType
+                        type:(out_Class)typeStore
+                       error:(out_NSError)error
 {
     BOOL result = YES;
     Class type = nil;
@@ -316,10 +315,10 @@ static NSString* const keywordCGRect =      @"CGRect";
         {
             AKABindingExpression* item = nil;
 
-            AKABindingProvider* itemProvider = [provider providerForBindingExpressionInPrimaryExpressionArray];
+            opt_Class itemBindingType = [bindingType bindingTypeForBindingExpressionInPrimaryExpressionArray];
 
             result = [self parseBindingExpression:&item
-                                     withProvider:itemProvider
+                                   forBindingType:itemBindingType
                                             error:error];
             if (result)
             {
@@ -487,20 +486,20 @@ static NSString* const keywordCGRect =      @"CGRect";
     return result;
 }
 
-- (BOOL)           parseAttributes:(out_NSDictionary)store
-                      withProvider:(AKABindingProvider*)provider
-                             error:(out_NSError)error
+- (BOOL)parseAttributes:(out_NSDictionary)store
+         forBindingType:(opt_Class)bindingType
+                  error:(out_NSError)error
 {
     return [self parseAttributes:store
-                    withProvider:provider
+                  forBindingType:bindingType
                        asOptions:NO
                            error:error];
 }
 
-- (BOOL)           parseAttributes:(out_NSDictionary)store
-                      withProvider:(AKABindingProvider*)provider
-                         asOptions:(BOOL)isEnum
-                             error:(out_NSError)error
+- (BOOL)parseAttributes:(out_NSDictionary)store
+         forBindingType:(opt_Class)bindingType
+              asOptions:(BOOL)isEnum
+                  error:(out_NSError)error
 {
     NSMutableDictionary* attributes = [AKAMutableOrderedDictionary new];
     BOOL result = [self skipCharacter:'{'];
@@ -549,7 +548,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 {
                     [self skipWhitespaceAndNewlineCharacters];
                     result = [self parseBindingExpression:&attributeExpression
-                                             withProvider:[provider providerForAttributeNamed:identifier]
+                                           forBindingType:[bindingType bindingTypeForAttributeNamed:identifier]
                                                     error:error];
                 }
             }

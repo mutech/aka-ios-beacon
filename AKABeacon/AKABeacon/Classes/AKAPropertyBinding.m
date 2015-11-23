@@ -7,7 +7,6 @@
 //
 
 #import "AKAPropertyBinding.h"
-#import "AKABindingProvider.h"
 
 @implementation AKAPropertyBinding
 

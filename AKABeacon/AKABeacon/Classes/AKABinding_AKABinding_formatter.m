@@ -16,38 +16,52 @@
 #import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
 
-#pragma mark - AKABindingProvider_AKABinding_formatter - Private Interface
-#pragma mark -
+@interface AKABinding_AKABinding_formatter()
 
-@implementation AKABindingProvider_AKABinding_formatter
+@property(nonatomic)           id                                  formatterSource;
+@property(nonatomic, readonly) AKABindingExpression*               bindingExpression;
 
-#pragma mark - Initialization
+@end
 
-+ (instancetype)                            sharedInstance
+@implementation AKABinding_AKABinding_formatter
+
++ (AKABindingSpecification*)                         specification
 {
-    static AKABindingProvider_AKABinding_formatter* instance = nil;
+    static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
 
+    // Make sure that enumeration types are initialized before the specification is used the
+    // first time:
+    [self registerEnumerationAndOptionTypes];
+
     dispatch_once(&onceToken, ^{
-        instance = [AKABindingProvider_AKABinding_formatter new];
+
+        NSDictionary* spec =
+        @{ @"bindingType":                  self,
+           @"targetType":                   [AKAProperty class],
+           @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass | AKABindingExpressionTypeNone),
+           @"attributes":
+               @{ @"formattingContext":
+                      @{ @"required":        @NO,
+                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
+                         @"enumerationType": @"NSFormattingContext" },
+
+                  // NSFormatter does not itself provide a locale property:
+                  //                      @"locale":
+                  //                          @{ @"required":        @NO,
+                  //                             @"use":             @(AKABindingAttributeUseIgnore),
+                  //                             @"expressionType":  @(AKABindingExpressionTypeString) }
+                  },
+           @"allowUnspecifiedAttributes":   @YES
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
-
-    return instance;
+    
+    return result;
 }
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self registerEnumerationAndOptionTypes];
-    }
-    return self;
-}
-
-#pragma mark - Binding Expression Validation
-
-- (void)registerEnumerationAndOptionTypes
++ (void)registerEnumerationAndOptionTypes
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -57,47 +71,7 @@
     });
 }
 
-- (AKABindingSpecification*)                 specification
-{
-    static AKABindingSpecification* result = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        Class bindingType = [AKABinding_AKABinding_formatter class];
-        Class providerType = self.class;
-        
-        NSDictionary* spec =
-            @{ @"bindingType":                  bindingType,
-               @"bindingProviderType":          providerType,
-               @"targetType":                   [AKAProperty class],
-               @"expressionType":               @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeClass),
-               @"attributes":
-                   @{ @"formattingContext":
-                          @{ @"required":        @NO,
-                             @"use":             @(AKABindingAttributeUseIgnore),
-                             @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                             @"enumerationType": @"NSFormattingContext" },
-
-// NSFormatter does not itself provide a locale property:
-//                      @"locale":
-//                          @{ @"required":        @NO,
-//                             @"use":             @(AKABindingAttributeUseIgnore),
-//                             @"expressionType":  @(AKABindingExpressionTypeString) }
-                      },
-               @"allowUnspecifiedAttributes":   @YES
-               };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
-    });
-
-    return result;
-}
-
-@end
-
-
 #pragma mark - Initialization
-
-@implementation AKABinding_AKABinding_formatter
 
 - (instancetype)                          initWithTarget:(req_id)target
                                                 property:(opt_SEL)property
@@ -106,29 +80,49 @@
                                                 delegate:(opt_AKABindingDelegate)delegate
                                                    error:(out_NSError)error
 {
-    NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
-
-    NSError* localError = nil;
-
     self = [super initWithTarget:target
                         property:property
                       expression:bindingExpression
                          context:bindingContext
                         delegate:delegate
                            error:error];
-
     if (self)
     {
-        id sourceValue = self.bindingSource.value;
+        _bindingExpression = bindingExpression;
+    }
 
+    return self;
+}
+
+#pragma mark - Conversion
+
+
+- (BOOL)                              convertSourceValue:(id)sourceValue
+                                           toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
+                                                   error:(NSError *__autoreleasing  _Nullable *)error
+{
+    // TODO: this implementation caches source value and conversion result. This is ugly. Don't have an idea how to solve this properly yet.
+    BOOL result = NO;
+    NSError* localError = nil;
+    id targetValue = nil;
+
+    if (sourceValue == self.formatterSource)
+    {
+        targetValue = self.formatter;
+        result = targetValue != nil;
+    }
+
+    if (!result)
+    {
+        result = YES;
         if ([sourceValue isKindOfClass:[NSFormatter class]])
         {
-            _formatter = sourceValue;
-
-            if (_formatter != nil && bindingExpression.attributes.count > 0)
+            targetValue = sourceValue;
+            if (targetValue != nil && self.bindingExpression.attributes.count > 0)
             {
-                // Do not modify an existing formatter, copy it instead
-                _formatter = [_formatter copy];
+                // If using an existing formatter and attributes are defined, we copy the formatter
+                // for not to produce potentially unwanted side effects when customizing it.
+                targetValue = [targetValue copy];
             }
         }
         else if (sourceValue != nil)
@@ -139,87 +133,94 @@
 
                 if ([type isSubclassOfClass:[NSFormatter class]])
                 {
-                    _formatter = [[type alloc] init];
+                    targetValue = [[type alloc] init];
                 }
                 else
                 {
                     localError = [AKABindingErrors invalidBinding:self
                                                       sourceValue:sourceValue
                                                expectedSubclassOf:[NSFormatter class]];
-                    self = nil;
+                    result = NO;
                 }
             }
             else
             {
                 AKATypePattern* typePattern =
-                    [[AKATypePattern alloc]initWithArrayOfClasses:@[ objc_getClass("Class"), [NSFormatter class]]];
+                [[AKATypePattern alloc]initWithArrayOfClasses:@[ objc_getClass("Class"), [NSFormatter class]]];
                 localError = [AKABindingErrors invalidBinding:self
                                                   sourceValue:sourceValue
                                        expectedInstanceOfType:typePattern];
-                self = nil;
+                result = NO;
             }
         }
         else
         {
             // Fallback to createMutableFormatter/defaultFormatter if no formatter was provided by binding source:
-            if (bindingExpression.attributes.count > 0)
+            if (self.bindingExpression.attributes.count > 0)
             {
-                _formatter = [self createMutableFormatter];
+                targetValue = [self createMutableFormatter];
             }
             else
             {
-                _formatter = [self defaultFormatter];
+                targetValue = [self defaultFormatter];
             }
         }
 
-        if (_formatter != nil)
+        // Cache conversion result
+        _formatter = targetValue;
+
+        // Apply formatter customizations (TODO: that could/should be done via sub bindings, check later).
+        if (targetValue != nil)
         {
-            [bindingExpression.attributes
+            NSDictionary<NSString*, AKABindingAttributeSpecification*>* attributeSpecs =
+                [self.bindingExpression.bindingType specification].bindingSourceSpecification.attributes;
+
+            [self.bindingExpression.attributes
              enumerateKeysAndObjectsUsingBlock:
-             ^(NSString* _Nonnull key, AKABindingExpression* _Nonnull obj, BOOL* _Nonnull stop)
+             ^(NSString* _Nonnull attributeName, AKABindingExpression* _Nonnull bindingExpression, BOOL* _Nonnull stop)
              {
                  (void)stop;
 
-                 // TODO: make this more robust and add error handling/reporting
-                 id value = [obj bindingSourceValueInContext:bindingContext];
+                 AKABindingAttributeSpecification* attributeSpec = attributeSpecs[attributeName];
 
-                 id (^converter)(id) = self.configurationValueConvertersByPropertyName[key];
+                 if (attributeSpec == nil || attributeSpec.attributeUse == AKABindingAttributeUseIgnore)
+                 {
+                     id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+                     id value = [bindingExpression bindingSourceValueInContext:bindingContext];
 
-                 if (converter)
-                 {
-                     value = converter(value);
-                 }
+                     id (^converter)(id) = self.configurationValueConvertersByPropertyName[attributeName];
 
-                 if (value != nil)
-                 {
-                     [self->_formatter setValue:value forKey:key];
-                 }
-                 else
-                 {
-                     AKALogError(@"Attempt to set undefined value for key %@ in formatter %@", key, self->_formatter);
+                     if (converter)
+                     {
+                         value = converter(value);
+                     }
+
+                     if (value != nil)
+                     {
+                         [targetValue setValue:value forKey:attributeName];
+                     }
+                     else
+                     {
+                         AKALogError(@"Attempt to set undefined value for key %@ in formatter %@", attributeName, self->_formatter);
+                     }
                  }
              }];
         }
-
-        // This implementation initializes the formatter once and does not observe changes in
-        // neither direction.
-        self.bindingTarget.value = self.formatter;
     }
 
-    if (self == nil && localError)
+    if (result)
+    {
+        *targetValueStore = targetValue;
+    }
+    else
     {
         if (error)
         {
             *error = localError;
         }
-        else
-        {
-            @throw [NSException exceptionWithName:@"UnhandledError"
-                                           reason:localError.localizedDescription
-                                         userInfo:@{ @"error": localError }];
-        }
     }
-    return self;
+    
+    return result;
 }
 
 #pragma mark - Change Propagation

@@ -79,7 +79,6 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABindingErrors.h>
 #import <AKABeacon/AKABindingDelegate.h>
 #import <AKABeacon/AKABinding.h>
-#import <AKABeacon/AKABindingProvider.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
 #import <AKABeacon/UIView+AKABindingSupport.h>
 
@@ -89,46 +88,37 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings/UILabel
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UILabel_textBinding.h>
 #import <AKABeacon/AKABinding_UILabel_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings
 #import <AKABeacon/AKAControlViewBindingDelegate.h>
-#import <AKABeacon/AKAControlViewBindingProvider.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISegmentedControl
 #import <AKABeacon/UISegmentedControl+IBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UISegmentedControl_selectionBinding.h>
 #import <AKABeacon/AKABinding_UISegmentedControl_selectionBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISwitch
 #import <AKABeacon/UISwitch+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UISwitch_stateBinding.h>
 #import <AKABeacon/AKABinding_UISwitch_stateBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISlider
 #import <AKABeacon/UISlider+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UISlider_valueBinding.h>
 #import <AKABeacon/AKABinding_UISlider_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UIStepper
 #import <AKABeacon/UIStepper+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UIStepper_valueBinding.h>
 #import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
-#import <AKABeacon/AKAKeyboardControlViewBindingProvider.h>
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextField
 #import <AKABeacon/UITextField+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UITextField_textBinding.h>
 #import <AKABeacon/AKABinding_UITextField_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextView
 #import <AKABeacon/UITextView+AKAIBBindingProperties.h>
-#import <AKABeacon/AKABindingProvider_UITextView_textBinding.h>
 #import <AKABeacon/AKABinding_UITextView_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/CustomKeyboard
@@ -137,12 +127,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/CustomKeyboard/AKAPickerKeyboard
 #import <AKABeacon/AKAPickerKeyboardTriggerView.h>
-#import <AKABeacon/AKABindingProvider_AKAPickerKeyboardTriggerView_pickerBinding.h>
 #import <AKABeacon/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/CustomKeyboard/AKADatePickerKeyboard
 #import <AKABeacon/AKADatePickerKeyboardTriggerView.h>
-#import <AKABeacon/AKABindingProvider_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
 #import <AKABeacon/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/ComplexControlViewBindings

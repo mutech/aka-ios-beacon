@@ -26,6 +26,21 @@
 
 @implementation AKABinding_UISwitch_stateBinding
 
++ (AKABindingSpecification *)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec =
+        @{ @"bindingType":              [AKABinding_UISwitch_stateBinding class],
+           @"targetType":               [UISwitch class],
+           @"expressionType":           @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray)
+           };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+    return result;
+}
+
 #pragma mark - Initialization
 
 - (void)validateTargetView:(req_UIView)targetView

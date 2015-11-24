@@ -25,6 +25,8 @@
 
 #pragma mark - Saved stepper configuration
 
+
+#if RESTORE_BOUND_VIEW_STATE
 @property(nonatomic) NSNumber*                          originalValue;
 @property(nonatomic) NSNumber*                          originalMinimumValue;
 @property(nonatomic) NSNumber*                          originalMaximumValue;
@@ -32,6 +34,7 @@
 @property(nonatomic) NSNumber*                          originalAutorepeat;
 @property(nonatomic) NSNumber*                          originalContinuous;
 @property(nonatomic) NSNumber*                          originalWraps;
+#endif
 
 @end
 
@@ -199,7 +202,10 @@
                 BOOL result = binding.uiStepper != nil;
                 if (result)
                 {
-                    [binding setupViewAndSaveState];
+#if RESTORE_BOUND_VIEW_STATE
+                    [binding saveViewState];
+#endif
+                    [binding setupView];
                     [binding.uiStepper addTarget:binding
                                          action:@selector(targetValueDidChangeSender:)
                                forControlEvents:UIControlEventValueChanged];
@@ -216,7 +222,10 @@
                     [binding.uiStepper removeTarget:binding
                                             action:@selector(targetValueDidChangeSender:)
                                   forControlEvents:UIControlEventValueChanged];
+
+#if RESTORE_BOUND_VIEW_STATE
                     [binding restoreViewState];
+#endif
                 }
                 return result;
             }];
@@ -242,39 +251,65 @@
     return result;
 }
 
-- (void)                          setupViewAndSaveState
+- (void)                          setupView
+{
+    self.previousValue = @(self.uiStepper.value);
+
+    if (self.minimumValue)
+    {
+        self.uiStepper.minimumValue = self.minimumValue.floatValue;
+    }
+    if (self.maximumValue)
+    {
+        self.uiStepper.maximumValue = self.maximumValue.floatValue;
+    }
+    if (self.stepValue)
+    {
+        self.uiStepper.stepValue = self.stepValue.floatValue;
+    }
+    if (self.autorepeat)
+    {
+        self.uiStepper.autorepeat = self.autorepeat.boolValue;
+    }
+    if (self.continuous)
+    {
+        self.uiStepper.continuous = self.continuous.boolValue;
+    }
+    if (self.wraps)
+    {
+        self.uiStepper.wraps = self.wraps.boolValue;
+    }
+}
+
+
+#if RESTORE_BOUND_VIEW_STATE
+- (void)                                   setViewState
 {
     self.originalValue = self.previousValue = @(self.uiStepper.value);
 
     if (self.minimumValue)
     {
         self.originalMinimumValue = @(self.uiStepper.minimumValue);
-        self.uiStepper.minimumValue = self.minimumValue.floatValue;
     }
     if (self.maximumValue)
     {
         self.originalMaximumValue = @(self.uiStepper.maximumValue);
-        self.uiStepper.maximumValue = self.maximumValue.floatValue;
     }
     if (self.stepValue)
     {
         self.originalStepValue = @(self.uiStepper.stepValue);
-        self.uiStepper.stepValue = self.stepValue.floatValue;
     }
     if (self.autorepeat)
     {
         self.originalAutorepeat = @(self.uiStepper.autorepeat);
-        self.uiStepper.autorepeat = self.autorepeat.boolValue;
     }
     if (self.continuous)
     {
         self.originalContinuous = @(self.uiStepper.continuous);
-        self.uiStepper.continuous = self.continuous.boolValue;
     }
     if (self.wraps)
     {
         self.originalWraps = @(self.uiStepper.wraps);
-        self.uiStepper.wraps = self.wraps.boolValue;
     }
 }
 
@@ -316,6 +351,7 @@
         self.originalWraps = nil;
     }
 }
+#endif
 
 #pragma mark - Properties
 

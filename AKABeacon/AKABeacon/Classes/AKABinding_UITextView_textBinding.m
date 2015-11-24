@@ -15,8 +15,11 @@
 
 #pragma mark - Saved UITextView State
 
-@property(nonatomic, weak) id<UITextViewDelegate>          savedTextViewDelegate;
+#if RESTORE_BOUND_VIEW_STATE
 @property(nonatomic, nullable) NSString*                   originalText;
+#endif
+
+@property(nonatomic, weak) id<UITextViewDelegate>          savedTextViewDelegate;
 @property(nonatomic, nullable) NSString*                   previousText;
 
 #pragma mark - Convenience
@@ -89,7 +92,9 @@
 
                 if (textViewDelegate != binding)
                 {
+#if RESTORE_BOUND_VIEW_STATE
                     binding.originalText = textView.text;
+#endif
                     binding.savedTextViewDelegate = textViewDelegate;
                     textView.delegate = binding;
                 }
@@ -107,8 +112,10 @@
                 {
                     textView.delegate = binding.savedTextViewDelegate;
                     binding.savedTextViewDelegate = nil;
+#if RESTORE_BOUND_VIEW_STATE
                     textView.text = binding.originalText;
                     binding.originalText = nil;
+#endif
                 }
 
                 return YES;

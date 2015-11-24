@@ -18,7 +18,10 @@
 
 #pragma mark - Saved UILabel State
 
+#if RESTORE_BOUND_VIEW_STATE
 @property(nonatomic, nullable) NSString*       originalText;
+#endif
+
 @property(nonatomic) BOOL                       isObserving;
 @property(nonatomic) UIView*     originalInputAccessoryView;
 
@@ -138,7 +141,9 @@
                 if (!binding.isObserving)
                 {
                     binding.isObserving = YES;
+#if RESTORE_BOUND_VIEW_STATE
                     binding.originalText = binding.label.text;
+#endif
                 }
                 return binding.isObserving;
             }
@@ -148,8 +153,10 @@
                 AKABinding_UILabel_textBinding* binding = target;
                 if (binding.isObserving)
                 {
+#if RESTORE_BOUND_VIEW_STATE
                     binding.label.text = binding.originalText;
                     binding.originalText = nil;
+#endif
                     binding.isObserving = NO;
                 }
                 return !binding.isObserving;

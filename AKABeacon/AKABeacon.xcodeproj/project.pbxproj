@@ -38,6 +38,10 @@
 		8E367A131BBADFF70094EF33 /* UISwitch+AKAIBBindingProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E367A111BBADFF70094EF33 /* UISwitch+AKAIBBindingProperties.m */; };
 		8E3F6AAA1C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F6AA81C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.h */; };
 		8E3F6AAB1C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F6AA91C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.m */; };
+		8E3F6AAF1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F6AAD1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.h */; };
+		8E3F6AB01C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F6AAE1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.m */; };
+		8E3F6AB31C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F6AB11C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.h */; };
+		8E3F6AB41C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F6AB21C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.m */; };
 		8E46D4001BEB7394002E497B /* AKABeaconTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E46D3FF1BEB7394002E497B /* AKABeaconTests.m */; };
 		8E46D4021BEB7394002E497B /* AKABeacon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E7232F01B00224400D647A9 /* AKABeacon.framework */; };
 		8E46D4081BEB73B7002E497B /* AKAControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EBC854B1BD1B2B10048950B /* AKAControlTests.m */; };
@@ -249,6 +253,10 @@
 		8E367A111BBADFF70094EF33 /* UISwitch+AKAIBBindingProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISwitch+AKAIBBindingProperties.m"; sourceTree = "<group>"; };
 		8E3F6AA81C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKAViewBinding+IBPropertySupport.h"; sourceTree = "<group>"; };
 		8E3F6AA91C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKAViewBinding+IBPropertySupport.m"; sourceTree = "<group>"; };
+		8E3F6AAD1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+AKAIBBindingProperties.h"; sourceTree = "<group>"; };
+		8E3F6AAE1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+AKAIBBindingProperties.m"; sourceTree = "<group>"; };
+		8E3F6AB11C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UIPickerView_valueBinding.h; sourceTree = "<group>"; };
+		8E3F6AB21C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UIPickerView_valueBinding.m; sourceTree = "<group>"; };
 		8E46D3FD1BEB7394002E497B /* AKABeaconTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKABeaconTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E46D3FF1BEB7394002E497B /* AKABeaconTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKABeaconTests.m; sourceTree = "<group>"; };
 		8E46D4011BEB7394002E497B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -524,6 +532,17 @@
 			name = UISwitch;
 			sourceTree = "<group>";
 		};
+		8E3F6AAC1C040EC900757ABF /* UIPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				8E3F6AAD1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.h */,
+				8E3F6AAE1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.m */,
+				8E3F6AB11C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.h */,
+				8E3F6AB21C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.m */,
+			);
+			name = UIPickerView;
+			sourceTree = "<group>";
+		};
 		8E46D3FE1BEB7394002E497B /* AKABeaconTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +810,7 @@
 				8E4F0A6C1BE3D888006D8876 /* UISilder */,
 				8E6B04D11BF0BC4700A2BCBE /* UIStepper */,
 				8E367A0F1BBADFC60094EF33 /* UISwitch */,
+				8E3F6AAC1C040EC900757ABF /* UIPickerView */,
 				8E8922F91BD2E8C700BCEE88 /* KeyboardControlViewBindings */,
 				8E593DC51BD507030040B391 /* ComplexControlViewBindings */,
 				8E99A3E51BFFC59500595895 /* AKASelectionControlViewBinding.h */,
@@ -990,6 +1010,7 @@
 				8E7233741B0022A200D647A9 /* AKAControlViewProtocol.h in Headers */,
 				8E225FED1BAEB63400BC070F /* UITextField+AKAIBBindingProperties.h in Headers */,
 				8E84A4F61BCBBEF500C5488A /* AKAFormViewController.h in Headers */,
+				8E3F6AB31C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.h in Headers */,
 				8E7233731B0022A200D647A9 /* AKAControlValidatorProtocol.h in Headers */,
 				8E72336C1B0022A200D647A9 /* AKAControlConverterProtocol.h in Headers */,
 				8E3F6AAA1C03D68B00757ABF /* AKAViewBinding+IBPropertySupport.h in Headers */,
@@ -1046,6 +1067,7 @@
 				8E225FE91BAEB41300BC070F /* UIView+AKABindingSupport.h in Headers */,
 				8E225FE11BADEA5C00BC070F /* AKABindingExpression_Internal.h in Headers */,
 				8E7233701B0022A200D647A9 /* AKABeaconErrors_Internal.h in Headers */,
+				8E3F6AAF1C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1329,6 +1351,7 @@
 				8E7233891B0022A200D647A9 /* AKALayoutConstraintSpecification.m in Sources */,
 				8E0714931BAA384E00C1DDC8 /* AKABinding.m in Sources */,
 				8E5A165F1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.m in Sources */,
+				8E3F6AB41C040F5D00757ABF /* AKABinding_UIPickerView_valueBinding.m in Sources */,
 				8E7233721B0022A200D647A9 /* AKABeaconStyleKit.m in Sources */,
 				8EE26D451BCD15BF003ACCEC /* AKAControlViewBinding.m in Sources */,
 				8E99A3E41BFFC57F00595895 /* AKABinding_UISegmentedControl_selectionBinding.m in Sources */,
@@ -1340,6 +1363,7 @@
 				8E646DF61BFF7EE10023C0B9 /* UISegmentedControl+IBBindingProperties.m in Sources */,
 				8EE26D411BCD139F003ACCEC /* AKAViewBinding.m in Sources */,
 				8E7233781B0022A200D647A9 /* AKAEditorControlView.m in Sources */,
+				8E3F6AB01C040F2300757ABF /* UIPickerView+AKAIBBindingProperties.m in Sources */,
 				8E8922FE1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.m in Sources */,
 				8E6B04DD1BF0BCC900A2BCBE /* AKABinding_UIStepper_valueBinding.m in Sources */,
 				8EE26D691BCDC441003ACCEC /* AKAKeyboardControl+KeyboardControlViewBindingDelegate.m in Sources */,

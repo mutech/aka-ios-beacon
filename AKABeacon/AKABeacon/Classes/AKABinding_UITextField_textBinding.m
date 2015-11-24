@@ -20,9 +20,11 @@
 
 #pragma mark - Saved UITextField State
 
-@property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
+#if RESTORE_BOUND_VIEW_STATE
 @property(nonatomic, nullable) NSString*                   originalPlaceholder;
 @property(nonatomic, nullable) NSString*                   originalText;
+#endif
+@property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
 @property(nonatomic, nullable) NSString*                   previousText;
 @property(nonatomic) BOOL useEditingFormat;
 
@@ -150,17 +152,17 @@
 
                 if (textFieldDelegate != binding)
                 {
-                    // Save original text field text
-                    binding.originalText = binding.textField.text;
-                    binding.previousText = nil;
 
-                    // Save and setup placeholder
+#if RESTORE_BOUND_VIEW_STATE
+                    binding.originalText = binding.textField.text;
                     binding.originalPlaceholder = textField.placeholder;
-                    textField.placeholder = self.textForUndefinedValue;
+#endif
+                    binding.previousText = nil;
+                    textField.placeholder = binding.textForUndefinedValue;
 
                     // Format text for editing and save the result as previousText
                     // representing the target value for the current source value.
-                    BOOL wasEditing = self.useEditingFormat;
+                    BOOL wasEditing = binding.useEditingFormat;
 
                     if (!wasEditing)
                     {
@@ -204,12 +206,14 @@
 
                     textField.delegate = binding.savedTextViewDelegate;
 
+#if RESTORE_BOUND_VIEW_STATE
                     textField.text = binding.originalText;
                     binding.originalText = nil;
+                    textField.placeholder = binding.originalPlaceholder;
+                    binding.originalPlaceholder = nil;
+#endif
                     binding.previousText = nil;
 
-                    textField.placeholder = self.originalPlaceholder;
-                    self.originalPlaceholder = nil;
                 }
 
                 return YES;

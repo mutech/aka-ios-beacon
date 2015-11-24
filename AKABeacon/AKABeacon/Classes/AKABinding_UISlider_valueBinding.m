@@ -10,9 +10,12 @@
 
 @interface AKABinding_UISlider_valueBinding()
 
+
+#if RESTORE_BOUND_VIEW_STATE
 @property(nonatomic) float originalValue;
 @property(nonatomic) float originalMinimumValue;
 @property(nonatomic) float originalMaximumValue;
+#endif
 
 @property(nonatomic) float previousValue;
 
@@ -61,11 +64,6 @@
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISlider class]]);
 
-    UISlider* slider = (UISlider*)view;
-    self.originalValue = self.previousValue = slider.value;
-    self.originalMinimumValue = slider.minimumValue;
-    self.originalMaximumValue = slider.maximumValue;
-
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
             ^id (id target)
@@ -92,6 +90,12 @@
                     [binding.uiSlider addTarget:binding
                                          action:@selector(targetValueDidChangeSender:)
                                forControlEvents:UIControlEventValueChanged];
+#if RESTORE_BOUND_VIEW_STATE
+                    self.originalValue = self.previousValue = binding.uiSlider.value;
+                    self.originalMinimumValue = binding.uiSlider.minimumValue;
+                    self.originalMaximumValue = binding.uiSlider.maximumValue;
+#endif
+                    
                 }
                 return result;
             }
@@ -105,9 +109,12 @@
                     [binding.uiSlider removeTarget:binding
                                             action:@selector(targetValueDidChangeSender:)
                                   forControlEvents:UIControlEventValueChanged];
+
+#if RESTORE_BOUND_VIEW_STATE
                     binding.uiSlider.value = binding.originalValue;
                     binding.uiSlider.minimumValue = binding.originalMinimumValue;
                     binding.uiSlider.maximumValue = binding.originalMaximumValue;
+#endif
                 }
                 return result;
             }];

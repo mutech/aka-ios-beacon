@@ -287,9 +287,14 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
                                            AKABindingExpressionTypeUIFontConstant),
 
     /**
-       Specifies any expression (all supported expression types).
+     Specifies any expression except arrays.
      */
-    AKABindingExpressionTypeAny = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeAnyConstant | AKABindingExpressionTypeArray)
+    AKABindingExpressionTypeAnyNoArray = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeAnyConstant),
+
+    /**
+     Specifies any expression (all supported expression types).
+     */
+    AKABindingExpressionTypeAny = (AKABindingExpressionTypeAnyNoArray | AKABindingExpressionTypeArray)
 };
 
 #pragma mark - Binding Specification Constants

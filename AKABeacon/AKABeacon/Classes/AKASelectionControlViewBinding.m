@@ -24,7 +24,7 @@
         NSDictionary* spec =
         @{ @"bindingType":              [AKAControlViewBinding class],
            @"targetType":               [UIView class],
-           @"expressionType":           @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
+           @"expressionType":           @(AKABindingExpressionTypeAnyNoArray),
            @"attributes":
                @{ @"choices":
                       @{ @"required":        @YES,

@@ -5,11 +5,11 @@ import AKABeacon
 class UILabelBindingsSpec: QuickSpec {
     override func spec() {
         describe("UILabelView") {
-            context("when bound to a text") {
-                let initialText = "Initial text";
-                let view = UILabel(frame: CGRect());
-                view.text = initialText;
+            let initialText = "Initial text";
+            let view = UILabel(frame: CGRect());
+            view.text = initialText;
 
+            context("when bound to a text") {
                 let property = Selector("textBinding_aka")
                 view.textBinding_aka = "textValue"
                 let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
@@ -52,8 +52,8 @@ class UILabelBindingsSpec: QuickSpec {
                     context("when no longer observing changes") {
                         binding.stopObservingChanges()
                         let textAfterStopObservingChanges = view.text
-                        it("reverts text to initial value") {
-                            expect(textAfterStopObservingChanges).to(equal(initialText));
+                        it("does not revert text to initial value") {
+                            expect(textAfterStopObservingChanges).toNot(equal(initialText));
                         }
                     }
                 }
@@ -107,8 +107,8 @@ class UILabelBindingsSpec: QuickSpec {
                     context("when no longer observing changes") {
                         binding.stopObservingChanges()
                         let textAfterStopObservingChanges = view.text
-                        it("reverts text to initial value") {
-                            expect(textAfterStopObservingChanges).to(equal(initialText));
+                        it("does not revert text to initial value") {
+                            expect(textAfterStopObservingChanges).toNot(equal(initialText));
                         }
                     }
                 }
@@ -162,8 +162,8 @@ class UILabelBindingsSpec: QuickSpec {
                     context("when no longer observing changes") {
                         binding.stopObservingChanges()
                         let textAfterStopObservingChanges = view.text
-                        it("reverts text to initial value") {
-                            expect(textAfterStopObservingChanges).to(equal(initialText));
+                        it("does not revert text to initial value") {
+                            expect(textAfterStopObservingChanges).toNot(equal(initialText));
                         }
                     }
                 }

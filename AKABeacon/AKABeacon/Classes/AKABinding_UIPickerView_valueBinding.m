@@ -1,48 +1,27 @@
 //
-//  AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m
+//  AKABinding_UIPickerView_valueBinding.m
 //  AKABeacon
 //
-//  Created by Michael Utech on 04.10.15.
-//  Copyright © 2015 AKA Sarl. All rights reserved.
+//  Created by Michael Utech on 24.11.15.
+//  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
-#import "AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h"
-#import "AKAPickerKeyboardTriggerView.h"
-#import "AKAKeyboardActivationSequenceAccessoryView.h"
-#import "AKASelectionControlViewBinding.h"
+#import "AKABinding_UIPickerView_valueBinding.h"
 
-
-#pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
-#pragma mark -
-
-@interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding () <
-    AKACustomKeyboardResponderDelegate,
-    UIPickerViewDelegate,
-    UIPickerViewDataSource
-    >
-
-@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView* triggerView;
+@interface AKABinding_UIPickerView_valueBinding() <UIPickerViewDelegate, UIPickerViewDataSource>
 
 @property(nonatomic, readonly)       UIPickerView*             pickerView;
-
 @property(nonatomic, readonly)       NSArray*                  choices;
 @property(nonatomic, readonly)       AKAProperty*              choicesProperty;
-
 @property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
-
 @property(nonatomic)                 NSInteger                 previouslySelectedRow;
-
 @property(nonatomic)                 NSInteger                 originallySelectedRow;
 
 @end
 
-
-#pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Implementation
-#pragma mark -
-
-@implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
+@implementation AKABinding_UIPickerView_valueBinding
 
 + (AKABindingSpecification *)                   specification
 {
@@ -50,16 +29,11 @@
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        AKABindingSpecification* selectionSpecification =
-            [AKASelectionControlViewBinding specification];
-        AKABindingSpecification* baseSpecification =
-            [[super specification] specificationExtendedWith:selectionSpecification];
-
         NSDictionary* spec =
-        @{ @"bindingType":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
-           @"targetType":               [AKAPickerKeyboardTriggerView class],
+        @{ @"bindingType":              self,
+           @"targetType":               [UIPickerView class],
            };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:baseSpecification];
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
@@ -68,12 +42,12 @@
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
     (void)targetView;
-    NSParameterAssert([targetView isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
+    NSParameterAssert([targetView isKindOfClass:[UIPickerView class]]);
 }
 
 - (req_AKAProperty)         createBindingTargetPropertyForView:(req_UIView)view
 {
-    NSParameterAssert(view == nil || [view isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
+    NSParameterAssert(view == nil || [view isKindOfClass:[UIPickerView class]]);
     (void)view;
 
     return [AKAProperty propertyOfWeakTarget:self
@@ -81,7 +55,7 @@
             ^id (id target)
             {
                 id result;
-                AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+                AKABinding_UIPickerView_valueBinding* binding = target;
 
                 NSInteger row = [binding.pickerView selectedRowInComponent:0];
                 result = [binding itemForRow:row];
@@ -91,7 +65,7 @@
                                       setter:
             ^(id target, id value)
             {
-                AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+                AKABinding_UIPickerView_valueBinding* binding = target;
                 NSInteger row = [binding rowForItem:value];
 
                 if (row != NSNotFound)
@@ -120,9 +94,8 @@
                           observationStarter:
             ^BOOL (id target)
             {
-                AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+                AKABinding_UIPickerView_valueBinding* binding = target;
 
-                [binding attachToCustomKeyboardResponderView];
                 binding.pickerView.delegate = binding;
                 binding.pickerView.dataSource = binding;
 
@@ -135,13 +108,11 @@
                           observationStopper:
             ^BOOL (id target)
             {
-                AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
+                AKABinding_UIPickerView_valueBinding* binding = target;
 
                 binding.pickerView.delegate = nil;
                 binding.pickerView.dataSource = nil;
-
-                [binding detachFromCustomKeyboardResponderView];
-
+                
                 return YES;
             }];
 }
@@ -168,86 +139,14 @@
 
 #pragma mark - Properties
 
-- (AKAPickerKeyboardTriggerView*)                 triggerView
-{
-    UIView* result = super.triggerView;
-
-    NSParameterAssert(result == nil || [result isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
-
-    return (AKAPickerKeyboardTriggerView*)result;
-}
-
-@synthesize pickerView = _pickerView;
 - (UIPickerView*)                                  pickerView
 {
-    if (_pickerView == nil)
-    {
-        AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
-        UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
+    UIView* result = self.view;
 
-        if ([inputView isKindOfClass:[UIPickerView class]])
-        {
-            _pickerView = (UIPickerView*)inputView;
-        }
-        else
-        {
-            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, triggerView, inputView);
-
-            _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
-            _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        }
-    }
-
-    return _pickerView;
+    NSAssert([result isKindOfClass:[UIPickerView class]], @"Internal inconsistency, expected view %@ to be an instance of UIPickerView", result);
+    
+    return (UIPickerView*)result;
 }
-
-#pragma mark - AKACustomKeyboardResponderDelegate Implementation
-
-- (UIView*)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
-{
-    (void)view;
-    NSParameterAssert(view == self.triggerView);
-
-    // The view returned by the super class implementation, if defined and valid, is used by
-
-    // self.pickerView if possible.
-    return self.pickerView;
-}
-
-#pragma mark -
-
-- (void)                                 responderWillActivate:(req_UIResponder)responder
-{
-    [super responderWillActivate:responder];
-
-    self.originallySelectedRow = [self rowForItem:self.bindingSource.value];
-}
-
-- (void)                                responderDidDeactivate:(req_UIResponder)responder
-{
-    if (!self.liveModelUpdates)
-    {
-        NSInteger row = [self.pickerView selectedRowInComponent:0];
-
-        if (row != self.originallySelectedRow)
-        {
-            id value = [self itemForRow:row];
-            id oldValue = [self itemForRow:self.previouslySelectedRow];
-            __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
-            [self animateTriggerForSelectedRow:self.originallySelectedRow
-                                      changeTo:row
-                                    animations:
-             ^{
-                 [weakSelf targetValueDidChangeFromOldValue:oldValue
-                                                 toNewValue:value];
-             }];
-        }
-    }
-
-    [super responderDidDeactivate:responder];
-}
-
-#pragma mark - Title
 
 @synthesize titleProperty = _titleProperty;
 - (AKAUnboundProperty*)                         titleProperty
@@ -265,48 +164,6 @@
     return _titleProperty;
 }
 
-#pragma mark - Animated Target Value Update
-
-- (void)                          animateTriggerForSelectedRow:(NSInteger)oldSelectedRow
-                                                      changeTo:(NSInteger)newSelectedRow
-                                                    animations:(void (^)())block
-{
-    if (block)
-    {
-        double duration = .3;
-        UIViewAnimationOptions options;
-
-        if (oldSelectedRow < newSelectedRow)
-        {
-            options = UIViewAnimationOptionTransitionFlipFromTop;
-        }
-        else if (oldSelectedRow > newSelectedRow)
-        {
-            options = UIViewAnimationOptionTransitionFlipFromBottom;
-        }
-        else
-        {
-            options = UIViewAnimationOptionTransitionCrossDissolve;
-        }
-        [UIView transitionWithView:self.triggerView
-                          duration:duration
-                           options:options
-                        animations:
-         ^{
-             block();
-         }
-                        completion:nil];
-    }
-}
-
-- (BOOL)        shouldResignFirstResponderOnSelectedRowChanged
-{
-    return (self.liveModelUpdates &&
-            ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]]);
-}
-
-#pragma mark - Choices
-
 @synthesize choicesProperty = _choicesProperty;
 - (AKAProperty*)choicesProperty
 {
@@ -319,7 +176,7 @@
             __weak typeof(self) weakSelf = self;
             _choicesProperty = [self.choicesBindingExpression
                                 bindingSourcePropertyInContext:context
-                                                 changeObserer:
+                                changeObserer:
                                 ^(opt_id oldValue, opt_id newValue)
                                 {
                                     (void)oldValue;
@@ -362,9 +219,9 @@
 - (void)                                      choicesDidChange
 {
     [self aka_performBlockInMainThreadOrQueue:^{
-         self->_choices = nil;
-         [self setNeedsReloadChoices];
-     }
+        self->_choices = nil;
+        [self setNeedsReloadChoices];
+    }
                             waitForCompletion:NO];
 }
 
@@ -450,22 +307,10 @@
     id value = [self itemForRow:row];
     id oldValue = [self itemForRow:self.previouslySelectedRow];
 
-    if (self.liveModelUpdates)
-    {
-        [self animateTriggerForSelectedRow:self.previouslySelectedRow
-                                  changeTo:row
-                                animations:
-         ^{
-             [self targetValueDidChangeFromOldValue:oldValue
-                                         toNewValue:value];
-             self.previouslySelectedRow = row;
-         }];
-    }
+    [self targetValueDidChangeFromOldValue:oldValue
+                                toNewValue:value];
 
-    if ([self shouldResignFirstResponderOnSelectedRowChanged])
-    {
-        [self.triggerView resignFirstResponder];
-    }
+    self.previouslySelectedRow = row;
 }
 
 #pragma mark - UIPickerViewDataSource Implementation
@@ -678,7 +523,7 @@
     {
         result = [self rowForIndex:index];
     }
-
+    
     return result;
 }
 

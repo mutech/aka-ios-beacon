@@ -11,6 +11,7 @@
 #import "UISwitch+AKAIBBindingProperties.h"
 
 #import "AKABinding_UISwitch_stateBinding.h"
+#import "AKAViewBinding+IBPropertySupport.h"
 #import "AKAScalarControl.h"
 
 

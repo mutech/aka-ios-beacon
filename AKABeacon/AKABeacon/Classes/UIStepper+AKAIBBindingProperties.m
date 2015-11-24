@@ -9,7 +9,9 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "UIStepper+AKAIBBindingProperties.h"
+
 #import "AKABinding_UIStepper_valueBinding.h"
+#import "AKAViewBinding+IBPropertySupport.h"
 #import "AKAControlViewProtocol.h"
 #import "AKAScalarControl.h"
 

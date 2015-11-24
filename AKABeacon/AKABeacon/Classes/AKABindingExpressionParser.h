@@ -52,9 +52,18 @@ typedef enum AKABindingExpressionParseErrorCode
     
 } AKABindingExpressionParseErrorCode;
 
-typedef NSScanner AKABindingExpressionParser;
+@interface AKABindingExpressionParser: NSObject
 
-@interface NSScanner(BindingExpressionParser)
+#pragma mark - Initialization
+
++ (nonnull instancetype)parserWithString:(req_NSString)string;
+- (nonnull instancetype)initWithString:(req_NSString)expressionText;
+
+#pragma mark - Properties
+
+@property(nonatomic, nonnull)NSScanner* scanner;
+
+#pragma mark - Keywords
 
 + (req_NSString) keywordTrue;
 + (req_NSString) keywordFalse;

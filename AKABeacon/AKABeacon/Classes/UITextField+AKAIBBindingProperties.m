@@ -10,7 +10,9 @@
 @import AKACommons.NSObject_AKAAssociatedValues;
 
 #import "UITextField+AKAIBBindingProperties.h"
+
 #import "AKABinding_UITextField_textBinding.h"
+#import "AKAViewBinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
 @implementation UITextField(AKAIBBindingProperties)

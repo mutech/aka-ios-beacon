@@ -8,11 +8,27 @@
 
 @import AKACommons.AKAMutableOrderedDictionary;
 
-#import "NSScanner+AKABindingExpressionParser.h"
+#import "AKABindingExpressionParser.h"
 
 #import "AKABindingExpression_Internal.h"
 
-@implementation NSScanner(BindingExpressionParser)
+@implementation AKABindingExpressionParser
+
+#pragma mark - Initialization
+
++ (instancetype)parserWithString:(NSString *)string
+{
+    return [[AKABindingExpressionParser alloc] initWithString:string];
+}
+
+- (instancetype)initWithString:(NSString *)string
+{
+    if (self = [super init])
+    {
+        _scanner = [NSScanner scannerWithString:string];
+    }
+    return self;
+}
 
 #pragma mark - Configuration
 
@@ -179,7 +195,7 @@ static NSString* const keywordCGRect =      @"CGRect";
             result = NO;
             [self registerParseError:error
                             withCode:AKAParseErrorUnterminatedKeyPathAfterDot
-                          atPosition:self.scanLocation
+                          atPosition:self.scanner.scanLocation
                               reason:@"Expected a key (path component) following trailing dot."];
         }
         else if (possiblyKeyPath)
@@ -191,7 +207,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 
                 [self registerParseError:error
                                 withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:[NSString stringWithFormat:@"Key path following expression type '%@' is not supported", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
             }
             else
@@ -270,7 +286,7 @@ static NSString* const keywordCGRect =      @"CGRect";
             {
                 [self registerParseError:error
                                 withCode:AKAParseErrorUnterminatedParenthizedExpression
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:@"Unterminated parenthisized expression"];
             }
         }
@@ -288,7 +304,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 result = NO;
                 [self registerParseError:error
                                 withCode:AKAParseErrorUnknownClass
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:[NSString stringWithFormat:@"There is no class loaded with the name %@", className]];
             }
             if (result)
@@ -298,7 +314,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 {
                     [self registerParseError:error
                                     withCode:AKAParseErrorUnterminatedClassReference
-                                  atPosition:self.scanLocation
+                                  atPosition:self.scanner.scanLocation
                                       reason:@"Unterminated class reference, expected '>'"];
                 }
             }
@@ -310,7 +326,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         NSMutableArray* array = [NSMutableArray new];
 
         [self skipWhitespaceAndNewlineCharacters];
-        BOOL done=(self.isAtEnd || [self skipCharacter:']']);
+        BOOL done=(self.scanner.isAtEnd || [self skipCharacter:']']);
         for (NSUInteger i=0; result && !done; ++i)
         {
             AKABindingExpression* item = nil;
@@ -347,7 +363,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         result = [self parseIdentifier:&identifier error:error];
         if (result)
         {
-            NSDictionary<NSString*, id>* namedScope = [NSScanner namedScopesAndConstants][identifier];
+            NSDictionary<NSString*, id>* namedScope = [AKABindingExpressionParser namedScopesAndConstants][identifier];
             if (namedScope != nil)
             {
                 type = namedScope[@"type"];
@@ -362,7 +378,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 result = NO;
                 [self registerParseError:error
                                 withCode:AKAParseErrorInvalidConstantOrScopeName
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:[NSString stringWithFormat:@"Invalid binding scope or named constant '$%@'", identifier]];
             }
         }
@@ -389,18 +405,18 @@ static NSString* const keywordCGRect =      @"CGRect";
 - (BOOL)              parseKeyPath:(out_NSString)store
                              error:(out_NSError)error
 {
-    NSUInteger start = self.scanLocation;
+    NSUInteger start = self.scanner.scanLocation;
     NSUInteger length = 0;
 
     BOOL expectKey = NO; // most @-operators (all but @count) require a subsequent key
     NSString* lastOperator = nil;
 
-    BOOL done = self.isAtEnd;
+    BOOL done = self.scanner.isAtEnd;
     BOOL result = YES;
     while (result && !done)
     {
         // Record start of component for error reporting
-        NSUInteger pathComponentStart = self.scanLocation;
+        NSUInteger pathComponentStart = self.scanner.scanLocation;
 
         // Parse operator (@), key or extension path component:
         if ([self skipCharacter:'@'])
@@ -410,7 +426,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 result = NO;
                 [self registerParseError:error
                                 withCode:AKAParseErrorKeyPathOperatorRequiresSubsequentKey
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:[NSString stringWithFormat:@"Key path operator '@%@' requires a subsequent key, not another operator", lastOperator]];
             }
             else if ([self isAtValidFirstIdentifierCharacter])
@@ -438,7 +454,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 result = NO;
                 [self registerParseError:error
                                 withCode:AKAParseErrorKeyPathOperatorNameExpectedAfterAtSign
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:@"Operator name expected after @"];
             }
         }
@@ -455,14 +471,14 @@ static NSString* const keywordCGRect =      @"CGRect";
             [self registerParseError:error
                             withCode:AKAParseErrorInvalidKeyPathComponent
                           atPosition:pathComponentStart
-                              reason:[NSString stringWithFormat:@"Invalid key path component starting with '%C'", [self.string characterAtIndex:pathComponentStart]]];
+                              reason:[NSString stringWithFormat:@"Invalid key path component starting with '%C'", [self.scanner.string characterAtIndex:pathComponentStart]]];
             result = NO;
         }
 
         if (result)
         {
             // Record end of last valid component
-            length = self.scanLocation - start;
+            length = self.scanner.scanLocation - start;
 
             // Done when there is no other path component separated by '.', skip separator
             done = ![self skipCharacter:'.'];
@@ -474,13 +490,13 @@ static NSString* const keywordCGRect =      @"CGRect";
         result = NO;
         [self registerParseError:error
                         withCode:AKAParseErrorKeyPathOperatorRequiresSubsequentKey
-                      atPosition:self.scanLocation
+                      atPosition:self.scanner.scanLocation
                           reason:[NSString stringWithFormat:@"Key path operator '@%@' requires a subsequent key, not another operator", lastOperator]];
     }
 
     if (result && store)
     {
-        *store = [self.string substringWithRange:NSMakeRange(start, length)];
+        *store = [self.scanner.string substringWithRange:NSMakeRange(start, length)];
     }
 
     return result;
@@ -528,8 +544,8 @@ static NSString* const keywordCGRect =      @"CGRect";
         {
             [self registerParseError:error
                             withCode:AKAParseErrorInvalidAttributeName
-                          atPosition:self.scanLocation
-                              reason:[NSString stringWithFormat:@"Invalid attribute name, expected a valid identifier, got '%C'", [self.string characterAtIndex:self.scanLocation ]]];
+                          atPosition:self.scanner.scanLocation
+                              reason:[NSString stringWithFormat:@"Invalid attribute name, expected a valid identifier, got '%C'", [self.scanner.string characterAtIndex:self.scanner.scanLocation ]]];
         }
 
         if (result)
@@ -541,7 +557,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                 {
                     [self registerParseError:error
                                     withCode:AKAParseErrorUnexpectedColonForEnumerationValue
-                                  atPosition:self.scanLocation
+                                  atPosition:self.scanner.scanLocation
                                       reason:@"Invalid attempt to specify an attribute value for an enumeration constant"];
                 }
                 else
@@ -602,7 +618,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         {
             [self registerParseError:error
                             withCode:AKAParseErrorUnterminatedBindingExpressionList
-                          atPosition:self.scanLocation
+                          atPosition:self.scanner.scanLocation
                               reason:[NSString stringWithFormat:@"Unterminated binding expression list, expected '%C' or '%C'", separator, terminator]];
         }
     }
@@ -616,21 +632,21 @@ static NSString* const keywordCGRect =      @"CGRect";
     BOOL result = [self isAtValidFirstIdentifierCharacter];
     if (result)
     {
-        NSUInteger start = self.scanLocation++;
+        NSUInteger start = self.scanner.scanLocation++;
         while ([self isAtValidIdentifierCharacter])
         {
-            ++self.scanLocation;
+            ++self.scanner.scanLocation;
         }
         if (result && store)
         {
-            *store = [self.string substringWithRange:NSMakeRange(start, self.scanLocation - start)];
+            *store = [self.scanner.string substringWithRange:NSMakeRange(start, self.scanner.scanLocation - start)];
         }
     }
     if (!result)
     {
         [self registerParseError:error
                         withCode:AKAParseErrorInvalidIdentifierCharacter
-                      atPosition:self.scanLocation
+                      atPosition:self.scanner.scanLocation
                               reason:@"Invalid character, expected a valid identifier character"];
     }
     return result;
@@ -647,11 +663,11 @@ static NSString* const keywordCGRect =      @"CGRect";
 
         while (result && !done)
         {
-            if (self.isAtEnd)
+            if (self.scanner.isAtEnd)
             {
                 [self registerParseError:error
                                 withCode:AKAParseErrorUnterminatedStringConstant
-                              atPosition:self.scanLocation
+                              atPosition:self.scanner.scanLocation
                                   reason:@"Unterminated string constant"];
                 done = YES;
                 result = NO;
@@ -675,8 +691,8 @@ static NSString* const keywordCGRect =      @"CGRect";
             }
             else
             {
-                unichar c = [self.string characterAtIndex:self.scanLocation];
-                self.scanLocation += 1;
+                unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
+                self.scanner.scanLocation += 1;
 
                 [string appendFormat:@"%C", c];
             }
@@ -691,8 +707,8 @@ static NSString* const keywordCGRect =      @"CGRect";
     {
         [self registerParseError:error
                         withCode:AKAParseErrorInvalidStringDelimiter
-                      atPosition:self.scanLocation
-                          reason:[NSString stringWithFormat:@"Invalid character introducting expected string: %U, expected \".", [self.string characterAtIndex:self.scanLocation]]];
+                      atPosition:self.scanner.scanLocation
+                          reason:[NSString stringWithFormat:@"Invalid character introducting expected string: %U, expected \".", [self.scanner.string characterAtIndex:self.scanner.scanLocation]]];
     }
 
 
@@ -704,7 +720,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 {
     BOOL result = YES;
     unichar unescaped = '\0';
-    unichar c = [self.string characterAtIndex:self.scanLocation];
+    unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
     switch (c)
     {
         case 'a':
@@ -746,7 +762,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         case 'U':
             [self registerParseError:error
                             withCode:AKAParseErrorUnsupportedCharacterEscapeSequence
-                          atPosition:self.scanLocation
+                          atPosition:self.scanner.scanLocation
                               reason:[NSString stringWithFormat:@"Character escape sequence starting with '%c' is valid but not (yet) supported by this implementation", (char)c]];
             result = NO;
             break;
@@ -766,14 +782,14 @@ static NSString* const keywordCGRect =      @"CGRect";
     BOOL result = YES;
     Class type = nil;
 
-    NSUInteger savedLocation = self.scanLocation;
+    NSUInteger savedLocation = self.scanner.scanLocation;
 
     if ([self isAtValidFirstIntegerCharacter])
     {
         // Try to parse integer first
         long long longValue;
         type = [AKAIntegerConstantBindingExpression class];
-        result = [self scanLongLong:&longValue];
+        result = [self.scanner scanLongLong:&longValue];
         if (result && constantStore != nil)
         {
             *constantStore = @(longValue);
@@ -782,12 +798,12 @@ static NSString* const keywordCGRect =      @"CGRect";
     }
     if (!result || [self isAtValidDoubleCharacter])
     {
-        self.scanLocation = savedLocation;
+        self.scanner.scanLocation = savedLocation;
 
         type = [AKADoubleConstantBindingExpression class];
 
         double doubleValue;
-        result = [self scanDouble:&doubleValue];
+        result = [self.scanner scanDouble:&doubleValue];
         if (result && constantStore != nil)
         {
             *constantStore = @(doubleValue);
@@ -796,7 +812,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         {
             [self registerParseError:error
                             withCode:AKAParseErrorInvalidNumberConstant
-                          atPosition:self.scanLocation
+                          atPosition:self.scanner.scanLocation
                               reason:@"Invalid number constant"];
         }
     }
@@ -823,10 +839,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
     NSString* leadingContextElipsis = @"";
     NSString* leadingContext = @"";
-    if (self.scanLocation > 0)
+    if (self.scanner.scanLocation > 0)
     {
         // Number of characters to the left of current location;
-        NSUInteger leadingContextLength = self.scanLocation;
+        NSUInteger leadingContextLength = self.scanner.scanLocation;
 
         if (leadingContextLength > maxLeading)
         {
@@ -834,17 +850,17 @@ static NSString* const keywordCGRect =      @"CGRect";
             leadingContextElipsis = @"…";
         }
 
-        NSRange range = NSMakeRange(self.scanLocation - leadingContextLength,
+        NSRange range = NSMakeRange(self.scanner.scanLocation - leadingContextLength,
                                     leadingContextLength);
 
-        leadingContext = [self.string substringWithRange:range];
+        leadingContext = [self.scanner.string substringWithRange:range];
     }
 
     NSString* trailingContextElipsis = @"";
     NSString* trailingContext = @"";
-    if (self.string.length >= self.scanLocation+1)
+    if (self.scanner.string.length >= self.scanner.scanLocation+1)
     {
-        NSUInteger trailingContextLength = self.string.length - (self.scanLocation + 1);
+        NSUInteger trailingContextLength = self.scanner.string.length - (self.scanner.scanLocation + 1);
 
         if (trailingContextLength > maxTrailing)
         {
@@ -852,18 +868,18 @@ static NSString* const keywordCGRect =      @"CGRect";
             trailingContextElipsis = @"…";
         }
 
-        NSRange range = NSMakeRange(self.scanLocation + 1, trailingContextLength);
+        NSRange range = NSMakeRange(self.scanner.scanLocation + 1, trailingContextLength);
 
-        trailingContext = [self.string substringWithRange:range];
+        trailingContext = [self.scanner.string substringWithRange:range];
     }
 
-    if (self.scanLocation < self.string.length)
+    if (self.scanner.scanLocation < self.scanner.string.length)
     {
         result = [NSString stringWithFormat:@"“%@%@»%C«%@%@”",
                   leadingContextElipsis,
                   leadingContext,
 
-                  [self.string characterAtIndex:self.scanLocation],
+                  [self.scanner.string characterAtIndex:self.scanner.scanLocation],
 
                   trailingContext,
                   trailingContextElipsis];
@@ -889,7 +905,7 @@ static NSString* const keywordCGRect =      @"CGRect";
     if (result)
     {
         NSString* context = @"";
-        BOOL isOff = self.scanLocation > self.string.length;
+        BOOL isOff = self.scanner.scanLocation > self.scanner.string.length;
         if (!isOff)
         {
             context = [self contextMessage];
@@ -908,9 +924,9 @@ static NSString* const keywordCGRect =      @"CGRect";
 - (BOOL)    isAtCharacter:(unichar)character
 {
     BOOL result = NO;
-    if (!self.isAtEnd)
+    if (!self.scanner.isAtEnd)
     {
-        result = [self.string characterAtIndex:self.scanLocation] == character;
+        result = [self.scanner.string characterAtIndex:self.scanner.scanLocation] == character;
     }
     return result;
 }
@@ -922,10 +938,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidFirstNumberCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-' || c == '+' || c == '.');
     }
     return result;
@@ -933,10 +949,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidDoubleCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-' || c == '+' || c == '.' || c == 'e' || c == 'E');
     }
     return result;
@@ -944,10 +960,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidFirstIntegerCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-');
     }
     return result;
@@ -955,10 +971,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidIntegerCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = (c >= '0' && c <= '9');
     }
     return result;
@@ -966,10 +982,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidFirstIdentifierCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
     }
     return result;
@@ -977,10 +993,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtValidIdentifierCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        unichar c = [self.string characterAtIndex:self.scanLocation];
+        unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_');
     }
     return result;
@@ -998,20 +1014,20 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    skipCurrentCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        self.scanLocation += 1;
+        self.scanner.scanLocation += 1;
     }
     return result;
 }
 
 - (BOOL)    isAtWhitespaceCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        result = [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self.string characterAtIndex:self.scanLocation]];
+        result = [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self.scanner.string characterAtIndex:self.scanner.scanLocation]];
     }
     return result;
 }
@@ -1028,10 +1044,10 @@ static NSString* const keywordCGRect =      @"CGRect";
 
 - (BOOL)    isAtWhitespaceOrNewlineCharacter
 {
-    BOOL result = !self.isAtEnd;
+    BOOL result = !self.scanner.isAtEnd;
     if (result)
     {
-        result = [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self.string characterAtIndex:self.scanLocation]];
+        result = [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self.scanner.string characterAtIndex:self.scanner.scanLocation]];
     }
     return result;
 }

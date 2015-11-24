@@ -7,7 +7,7 @@
 //
 
 #import "AKABindingExpression_Internal.h"
-#import "NSScanner+AKABindingExpressionParser.h"
+#import "AKABindingExpressionParser.h"
 #import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
 #import "AKABindingSpecification.h"
@@ -39,19 +39,19 @@
                                 bindingType:(req_Class)bindingType
                                       error:(out_NSError)error
 {
-    NSScanner* parser = [NSScanner scannerWithString:expressionText];
+    AKABindingExpressionParser* parser = [AKABindingExpressionParser parserWithString:expressionText];
     AKABindingExpression* result = nil;
 
     if ([parser parseBindingExpression:&result
                         forBindingType:bindingType
                                  error:error])
     {
-        if (!parser.isAtEnd)
+        if (!parser.scanner.isAtEnd)
         {
             result = nil;
             [parser registerParseError:error
                               withCode:AKAParseErrorInvalidPrimaryExpressionExpectedAttributesOrEnd
-                            atPosition:parser.scanLocation
+                            atPosition:parser.scanner.scanLocation
                                 reason:@"Invalid character, expected attributes (starting with '{') or end of binding expression"];
         }
 
@@ -864,11 +864,11 @@
     {
         if (self.constant.boolValue)
         {
-            result = [NSString stringWithFormat:@"$%@", [NSScanner keywordTrue]];
+            result = [NSString stringWithFormat:@"$%@", [AKABindingExpressionParser keywordTrue]];
         }
         else
         {
-            result = [NSString stringWithFormat:@"$%@", [NSScanner keywordFalse]];
+            result = [NSString stringWithFormat:@"$%@", [AKABindingExpressionParser keywordFalse]];
         }
     }
 
@@ -1163,7 +1163,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordOptions];
+    return [AKABindingExpressionParser keywordOptions];
 }
 
 - (NSString*)textForConstant
@@ -1423,7 +1423,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordEnum];
+    return [AKABindingExpressionParser keywordEnum];
 }
 
 - (NSString*)textForConstant
@@ -1703,7 +1703,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordUIColor];
+    return [AKABindingExpressionParser keywordUIColor];
 }
 
 @end
@@ -1743,7 +1743,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGColor];
+    return [AKABindingExpressionParser keywordCGColor];
 }
 
 @end
@@ -2345,7 +2345,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordUIFont];
+    return [AKABindingExpressionParser keywordUIFont];
 }
 
 - (NSString*)textForConstant
@@ -2455,7 +2455,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGPoint];
+    return [AKABindingExpressionParser keywordCGPoint];
 }
 
 - (NSString*)textForConstant
@@ -2526,7 +2526,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGSize];
+    return [AKABindingExpressionParser keywordCGSize];
 }
 
 - (NSString*)textForConstant
@@ -2603,7 +2603,7 @@
 
 - (NSString*)keyword
 {
-    return [NSScanner keywordCGRect];
+    return [AKABindingExpressionParser keywordCGRect];
 }
 
 - (NSString*)textForConstant
@@ -2777,7 +2777,7 @@
 
 - (NSString*)textForScope
 {
-    return [NSString stringWithFormat:@"$%@", [NSScanner keywordData]];
+    return [NSString stringWithFormat:@"$%@", [AKABindingExpressionParser keywordData]];
 }
 
 @end
@@ -2828,7 +2828,7 @@
 
 - (NSString*)textForScope
 {
-    return [NSString stringWithFormat:@"$%@", [NSScanner keywordRoot]];
+    return [NSString stringWithFormat:@"$%@", [AKABindingExpressionParser keywordRoot]];
 }
 
 @end
@@ -2887,7 +2887,7 @@
 
 - (NSString*)textForScope
 {
-    return [NSString stringWithFormat:@"$%@", [NSScanner keywordControl]];
+    return [NSString stringWithFormat:@"$%@", [AKABindingExpressionParser keywordControl]];
 }
 
 @end

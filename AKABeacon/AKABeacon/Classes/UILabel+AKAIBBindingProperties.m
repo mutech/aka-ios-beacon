@@ -7,7 +7,9 @@
 //
 
 #import "UILabel+AKAIBBindingProperties.h"
+
 #import "AKABinding_UILabel_textBinding.h"
+#import "AKAViewBinding+IBPropertySupport.h"
 
 #if TARGET_INTERFACE_BUILDER
 #  import "UIView+AKABindingSupport.h"

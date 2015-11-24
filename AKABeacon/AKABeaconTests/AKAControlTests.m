@@ -226,36 +226,4 @@
     XCTAssertThrows([control setOwner:owner], @"Expected exception for invalid attempt to change owner of a control which is already owned");
 }
 
-/**
- * Verifies that setView set a controls view, that changing a controls view to another defined view
- * fails with an exception and that the view is weakly referenced.
- */
-- (void)testControl_setView
-{
-    AKAControl* control;
-    UIView* view1;
-    UIView* view2;
-
-    @autoreleasepool {
-        control = [[AKAControl alloc] initWithConfiguration:nil];
-        view1 = [UIView new];
-        view2 = [UIView new];
-
-        [control setView:view1];
-        XCTAssertEqualObjects(view1, control.view);
-
-        // Prevet assert to throw exception
-        NSUInteger failedAssertionCount = self.failedAssertionCount;
-        [self.assertionHandler install];
-        [control setView:view2];
-        [self.assertionHandler uninstall];
-        XCTAssert(self.failedAssertionCount > failedAssertionCount, @"Expected assertion failure for invalid attempt to change view of a control which is already attached to a view");
-        //[control setView:view1];
-        //XCTAssertEqualObjects(view1, control.view);
-
-        view1 = nil; // control holds weak ref to view1, view1 -> nil
-    }
-    XCTAssert(control.view == nil, @"Retain cycle between control and view1");
-}
-
 @end

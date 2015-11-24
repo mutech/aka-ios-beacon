@@ -160,7 +160,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/Specification
 #import <AKABeacon/AKABindingExpression.h>
 #import <AKABeacon/AKABindingSpecification.h>
-#import <AKABeacon/NSScanner+AKABindingExpressionParser.h>
+#import <AKABeacon/AKABindingExpressionParser.h>
 
 
 // KeyboardActivationSequence

@@ -8,8 +8,10 @@
 
 @import AKACommons.NSObject_AKAAssociatedValues;
 
-#import "AKABinding_UITextView_textBinding.h"
 #import "UITextView+AKAIBBindingProperties.h"
+
+#import "AKABinding_UITextView_textBinding.h"
+#import "AKAViewBinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
 @implementation UITextView (AKAIBBindingProperties)

@@ -591,6 +591,13 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationBin
 #pragma mark - Initialization
 /// @name Initialization
 
++ (nullable instancetype)                 typePatternWithObject:(nullable id)value
+                                                      required:(BOOL)required;
+
++ (nullable instancetype)                 typePatternWithObject:(nullable id)value
+                                                        basedOn:(nullable AKATypePattern*)base
+                                                       required:(BOOL)required;
+
 - (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
 
 - (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary

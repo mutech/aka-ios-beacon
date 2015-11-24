@@ -23,188 +23,6 @@ NSString*const kAKABindingAttributesSpecificationRequiredKey = @"required";
 NSString*const kAKABindingAttributesSpecificationUseKey = @"use";
 NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingProperty";
 
-@interface NSDictionary (AKABindingSpecification)
-
-#pragma mark - Convenience
-
-- (BOOL)aka_booleanForKey:(req_NSString)key withDefault:(BOOL)defaultValue;
-
-- (NSDictionary*)aka_dictionaryForKey:(req_NSString)key required:(BOOL)required;
-
-- (Class)aka_classTypeForKey:(req_NSString)key required:(BOOL)required;
-
-- (opt_NSNumber)aka_enumValueForKey:(req_NSString)key
-                           required:(BOOL)required;
-
-- (req_NSNumber)aka_enumValueForKey:(req_NSString)key
-                       defaultValue:(req_NSNumber)defaultValue;
-
-- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required;
-
-- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key basedOn:(AKATypePattern*)base required:(BOOL)required;
-
-@end
-
-@implementation NSDictionary (AKABindingSpecification)
-
-- (BOOL)aka_booleanForKey:(req_NSString)key withDefault:(BOOL)defaultValue
-{
-    BOOL result = defaultValue;
-    id value = self[key];
-
-    if ([value isKindOfClass:[NSNumber class]])
-    {
-        NSNumber* number = value;
-
-        if (kCFNumberCharType != CFNumberGetType((__bridge CFNumberRef)number))
-        {
-            AKALogWarn(@"Specification %@ at key %@ is expected to be a boolean value, however the value is a number of a different number type. This is most proabably not a problem, but take a look at it to be sure and convert the setting to get rid of this warning.", self, key);
-        }
-        else if (number != (NSNumber*)(void*)kCFBooleanTrue &&
-                 number != (NSNumber*)(void*)kCFBooleanFalse)
-        {
-            // Just checking to see if the test works to detect a BOOL constant, going
-            // to remove this later.
-            AKALogWarn(@"Specification %@ at key %@ is expected to be a boolean value, however the value is neither YES nor NO (it is of type char though). This is most proabably not a problem, but take a look at it to be sure and convert the setting to get rid of this warning.", self, key);
-        }
-        result = number.boolValue;
-    }
-    else
-    {
-        NSAssert(value == nil, @"Invalid type for specification %@, expected NSNumber(BOOL), got: %@", key, value);
-    }
-
-    return result;
-}
-
-- (NSDictionary*)aka_dictionaryForKey:(req_NSString)key required:(BOOL)required
-{
-    NSDictionary* result = nil;
-    id value = self[key];
-
-    if ([value isKindOfClass:[NSDictionary class]])
-    {
-        result = value;
-    }
-    else if (value == nil && required)
-    {
-        NSAssert(NO, @"Dictionary %@ does not contain a value for key %@, expected a dictionary", self, key);
-    }
-    else if (value != nil)
-    {
-        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: %@", key, value);
-    }
-
-    return result;
-}
-
-- (Class)aka_classTypeForKey:(req_NSString)key required:(BOOL)required
-{
-    Class result = nil;
-    id value = self[key];
-
-    if (object_isClass(value))
-    {
-        result = (Class)value;
-    }
-    else if (value == nil && required)
-    {
-        NSAssert(NO, @"Dictionary %@ does not contain a value for key %@, expected a dictionary", self, key);
-    }
-    else if (value != nil)
-    {
-        NSAssert(NO, @"Invalid type for specification %@, expected Class, got: %@", key, value);
-    }
-
-    return result;
-}
-
-- (opt_NSNumber)aka_enumValueForKey:(req_NSString)key required:(BOOL)required
-{
-    NSNumber* result = nil;
-    id value = self[key];
-
-    if (value == [NSNull null])
-    {
-        value = nil;
-    }
-
-    if ([value isKindOfClass:[NSNumber class]])
-    {
-        result = value;
-    }
-    else if (value != nil)
-    {
-        NSAssert(NO, @"Invalid type for specification %@, expected NSDictionary, got: '%@'.", key, value);
-    }
-    else if (required)
-    {
-        NSAssert(NO, @"Dictionary %@ does not contain a value for key '%@', expected an NSNumber (enumeration value).", self, key);
-    }
-
-    return result;
-}
-
-- (req_NSNumber)aka_enumValueForKey:(req_NSString)key
-                       defaultValue:(req_NSNumber)defaultValue
-{
-    NSNumber* result = [self aka_enumValueForKey:key required:NO];
-
-    if (result == nil)
-    {
-        result = defaultValue;
-    }
-
-    return result;
-}
-
-- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key required:(BOOL)required
-{
-    return [self aka_classTypePatternForKey:key basedOn:nil required:required];
-}
-
-- (AKATypePattern*)aka_classTypePatternForKey:(req_NSString)key basedOn:(AKATypePattern*)base required:(BOOL)required
-{
-    AKATypePattern* result = nil;
-    id value = self[key];
-
-    if (value != nil)
-    {
-        if ([value isKindOfClass:[AKATypePattern class]])
-        {
-            result = value;
-        }
-        else if ([value isKindOfClass:[NSDictionary class]])
-        {
-            result = [[AKATypePattern alloc] initWithDictionary:value basedOn:base];
-        }
-        else if ([value isKindOfClass:[NSArray class]])
-        {
-            result = [[AKATypePattern alloc] initWithArrayOfClasses:value basedOn:base];
-        }
-        else if (object_isClass(value))
-        {
-            result = [[AKATypePattern alloc] initWithClass:value basedOn:base];
-        }
-        else
-        {
-            NSAssert(NO, @"Invalid type for specification %@, expected Class, NSArray<Class>, NSDictionary or an instance of AKATypePattern, got: %@", key, value);
-        }
-    }
-    else if (base != nil)
-    {
-        result = base;
-    }
-    else if (required)
-    {
-        NSAssert(NO, @"Dictionary %@ does not contain a value for key %@, expected Class, NSArray<Class>, NSDictionary or an instance of AKATypePattern.", self, key);
-    }
-
-    return result;
-}
-
-@end
-
 
 #pragma mark - AKABindingSpecification
 #pragma mark -
@@ -240,10 +58,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
     if (self = [super init])
     {
-        _bindingType =
-            [dictionary aka_classTypeForKey:kAKABindingSpecificationBindingTypeKey
-                                   required:NO];
-
+        _bindingType = [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationBindingTypeKey]
+                                                          required:NO];
         if (!_bindingType)
         {
             _bindingType = base.bindingType;
@@ -270,7 +86,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             [[AKABindingExpressionSpecification alloc] initWithDictionary:dictionary
                                                                   basedOn:mergedExpressionBase];
 
-        _arrayItemBindingType = [dictionary aka_classTypeForKey:kAKABindingSpecificationArrayItemBindingProviderTypeKey required:NO];
+        _arrayItemBindingType = [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey]
+                                                                   required:NO];
 
         if (!_arrayItemBindingType)
         {
@@ -304,6 +121,117 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     return self.bindingSourceSpecification.attributes[attributeName].bindingType;
 }
 
+
+#pragma mark - Dictionary Access Helpers
+
++ (Class)classTypeForObject:(id)value required:(BOOL)required
+{
+    Class result = nil;
+
+    if (object_isClass(value))
+    {
+        result = (Class)value;
+    }
+    else if (value == nil && required)
+    {
+        NSAssert(NO, @"Undefined required value, expected a dictionary", self);
+    }
+    else if (value != nil)
+    {
+        NSAssert(NO, @"Invalid type for specification item, expected Class, got: %@", value);
+    }
+
+    return result;
+}
+
++ (BOOL)booleanForObject:(id)value withDefault:(BOOL)defaultValue
+{
+    BOOL result = defaultValue;
+
+    if ([value isKindOfClass:[NSNumber class]])
+    {
+        NSNumber* number = value;
+
+#if DEBUG
+        if (kCFNumberCharType != CFNumberGetType((__bridge CFNumberRef)number))
+        {
+            AKALogWarn(@"Specification item expected to be a boolean value, however the value %@ is a number of a different number type. This is most proabably not a problem, but take a look at it to be sure and convert the setting to get rid of this warning.", value);
+        }
+        else if (number != (NSNumber*)(void*)kCFBooleanTrue &&
+                 number != (NSNumber*)(void*)kCFBooleanFalse)
+        {
+            // TODO: remove this later.
+            AKALogWarn(@"Specification item expected to be a literal boolean value (YES or NO), got %@. This is most proabably not a problem, but take a look at it to be sure and convert the setting to get rid of this warning.", value);
+        }
+#endif
+        result = number.boolValue;
+    }
+    else
+    {
+        NSAssert(value == nil, @"Invalid type for specification item, expected NSNumber(BOOL), got: %@", value);
+    }
+
+    return result;
+}
+
++ (NSDictionary*)dictionaryForObject:(id)value required:(BOOL)required
+{
+    NSDictionary* result = nil;
+
+    if ([value isKindOfClass:[NSDictionary class]])
+    {
+        result = value;
+    }
+    else if (value == nil && required)
+    {
+        NSAssert(NO, @"Undefined required specification item, expected a dictionary");
+    }
+    else if (value != nil)
+    {
+        NSAssert(NO, @"Invalid type for specification item, expected NSDictionary, got: %@", value);
+    }
+
+    return result;
+}
+
++ (opt_NSNumber)enumValueForObject:(id)value required:(BOOL)required
+{
+    NSNumber* result = nil;
+
+    if (value == [NSNull null])
+    {
+        value = nil;
+    }
+
+    if ([value isKindOfClass:[NSNumber class]])
+    {
+        result = value;
+    }
+    else if (value != nil)
+    {
+        NSAssert(NO, @"Invalid type for specification item, expected NSDictionary, got: '%@'.", value);
+    }
+    else if (required)
+    {
+        NSAssert(NO, @"Undefined required specification item, expected an NSNumber (enumeration value).");
+    }
+
+    return result;
+}
+
++ (req_NSNumber)enumValueForObject:(id)value
+                      defaultValue:(req_NSNumber)defaultValue
+{
+    NSNumber* result = [self enumValueForObject:value required:NO];
+
+    if (result == nil)
+    {
+        result = defaultValue;
+    }
+    
+    return result;
+}
+
 @end
 
 
@@ -325,9 +253,9 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     if (self = [super init])
     {
         _typePattern =
-            [dictionary aka_classTypePatternForKey:kAKABindingSpecificationBindingTargetSpecificationKey
-                                           basedOn:base.typePattern
-                                          required:NO];
+            [AKATypePattern typePatternWithObject:dictionary[kAKABindingSpecificationBindingTargetSpecificationKey]
+                                          basedOn:base.typePattern
+                                         required:NO];
     }
 
     return self;
@@ -366,11 +294,14 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     if (self = [super init])
     {
         _expressionType =
-            [dictionary aka_enumValueForKey:kAKABindingSpecificationBindingExpressionType
-                               defaultValue:base ? @(base.expressionType) : @(AKABindingExpressionTypeAny)].unsignedLongValue;
+            [AKABindingSpecification enumValueForObject:dictionary[kAKABindingSpecificationBindingExpressionType]
+                                           defaultValue:(base
+                                                         ? @(base.expressionType)
+                                                         : @(AKABindingExpressionTypeAny) )].unsignedLongValue;
 
         _arrayItemBindingType =
-            [dictionary aka_classTypeForKey:kAKABindingSpecificationArrayItemBindingProviderTypeKey
+            [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey]
+
                                    required:NO];
         if (_arrayItemBindingType == nil)
         {
@@ -378,8 +309,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         }
 
         NSMutableDictionary* attributeSpecifications = [NSMutableDictionary new];
-        NSDictionary* attributes = [dictionary aka_dictionaryForKey:kAKABindingSpecificationAttributesKey
-                                                           required:NO];
+        NSDictionary* attributes = [AKABindingSpecification dictionaryForObject:dictionary[kAKABindingSpecificationAttributesKey]
+                                                                       required:NO];
         [attributes enumerateKeysAndObjectsUsingBlock:
          ^(req_id key, req_id obj, outreq_BOOL stop)
          {
@@ -410,7 +341,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                  id expressionBase = attributeDictionary[@"base"];
                  if (expressionBase == nil)
                  {
-                     expressionBase = [[attributeDictionary aka_classTypeForKey:kAKABindingSpecificationBindingTypeKey required:NO] specification].bindingSourceSpecification;
+                     expressionBase = [[AKABindingSpecification classTypeForObject:attributeDictionary[kAKABindingSpecificationBindingTypeKey]
+                                                                          required:NO] specification].bindingSourceSpecification;
                  }
 
                  NSAssert(expressionBase == nil || [expressionBase isKindOfClass:[AKABindingExpressionSpecification class]],
@@ -444,7 +376,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
         _attributes = [NSDictionary dictionaryWithDictionary:attributeSpecifications];
 
-        _allowUnspecifiedAttributes = [dictionary aka_booleanForKey:@"allowUnspecifiedAttributes" withDefault:base.allowUnspecifiedAttributes];
+        _allowUnspecifiedAttributes = [AKABindingSpecification booleanForObject:dictionary[@"allowUnspecifiedAttributes"]
+                                                                    withDefault:base.allowUnspecifiedAttributes];
 
         // TODO: check if expression type is enum or options respectively, error handling:
         _enumerationType = [dictionary valueForKey:@"enumerationType"];
@@ -662,10 +595,12 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                     basedOnSpecification:base
                  expressionSpecification:expressionBase])
     {
-        _required = [dictionary aka_booleanForKey:kAKABindingAttributesSpecificationRequiredKey
-                                      withDefault:base ? base.required : NO];
-        _attributeUse = [dictionary aka_enumValueForKey:kAKABindingAttributesSpecificationUseKey
-                                           defaultValue:base ? @(base.attributeUse) : @(AKABindingAttributeUseIgnore)].unsignedIntegerValue;
+        _required = [AKABindingSpecification booleanForObject:dictionary[kAKABindingAttributesSpecificationRequiredKey]
+                                                  withDefault:base ? base.required : NO];
+        _attributeUse = [AKABindingSpecification enumValueForObject:dictionary[kAKABindingAttributesSpecificationUseKey]
+                                                       defaultValue:(base
+                                                                     ? @(base.attributeUse)
+                                                                     : @(AKABindingAttributeUseIgnore))].unsignedIntegerValue;
         switch (self.attributeUse)
         {
             case AKABindingAttributeUseAssignValueToBindingProperty:
@@ -717,6 +652,51 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 @implementation AKATypePattern
 
 #pragma mark - Initialization
+
+
++ (AKATypePattern*)typePatternWithObject:(id)value required:(BOOL)required
+{
+    return [self typePatternWithObject:(id)value basedOn:nil required:required];
+}
+
++ (AKATypePattern*)typePatternWithObject:(id)value basedOn:(AKATypePattern*)base required:(BOOL)required
+{
+    AKATypePattern* result = nil;
+
+    if (value != nil)
+    {
+        if ([value isKindOfClass:[AKATypePattern class]])
+        {
+            result = value;
+        }
+        else if ([value isKindOfClass:[NSDictionary class]])
+        {
+            result = [[AKATypePattern alloc] initWithDictionary:value basedOn:base];
+        }
+        else if ([value isKindOfClass:[NSArray class]])
+        {
+            result = [[AKATypePattern alloc] initWithArrayOfClasses:value basedOn:base];
+        }
+        else if (object_isClass(value))
+        {
+            result = [[AKATypePattern alloc] initWithClass:value basedOn:base];
+        }
+        else
+        {
+            NSAssert(NO, @"Invalid type for specification item, expected Class, NSArray<Class>, NSDictionary or an instance of AKATypePattern, got: %@", value);
+        }
+    }
+    else if (base != nil)
+    {
+        result = base;
+    }
+    else if (required)
+    {
+        NSAssert(NO, @"Undefined required type pattern, expected Class, NSArray<Class>, NSDictionary or an instance of AKATypePattern.");
+    }
+
+    return result;
+}
 
 - (instancetype)                            initWithDictionary:(req_NSDictionary)dictionary
 {

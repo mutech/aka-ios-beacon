@@ -13,6 +13,8 @@
 @import AKACommons.AKALog;
 
 #import "AKADynamicPlaceholderTableViewCell.h"
+
+#import "AKAViewBinding+IBPropertySupport.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
 #import "AKABinding.h"

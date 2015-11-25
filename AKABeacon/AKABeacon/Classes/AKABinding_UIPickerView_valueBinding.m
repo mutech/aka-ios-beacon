@@ -17,8 +17,6 @@
 @property(nonatomic, readonly)       AKAProperty*              choicesProperty;
 @property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
 @property(nonatomic)                 NSInteger                 previouslySelectedRow;
-@property(nonatomic)                 NSInteger                 originallySelectedRow;
-
 @end
 
 @implementation AKABinding_UIPickerView_valueBinding
@@ -85,7 +83,6 @@
                         // may have the same associated values and in these
                         // cases we don't want to change the selection).
                         [binding.pickerView selectRow:row inComponent:0 animated:YES];
-                        binding.originallySelectedRow = row;
                         binding.previouslySelectedRow = row;
                     }
                 }
@@ -130,6 +127,7 @@
 
 - (BOOL)stopObservingChanges
 {
+    // Use field to prevent lazy creation:
     [_choicesProperty stopObservingChanges];
 
     BOOL result = [super stopObservingChanges];
@@ -247,6 +245,25 @@
     }
 }
 
+- (NSComparisonResult)orderInChoicesForValue:(id)firstValue value:(id)secondValue
+{
+    NSInteger firstRow = [self rowForItem:firstValue];
+    NSInteger secondRow = [self rowForItem:secondValue];
+
+    if (firstRow < secondRow)
+    {
+        return NSOrderedAscending;
+    }
+    else if (firstRow > secondRow)
+    {
+        return NSOrderedDescending;
+    }
+    else
+    {
+        return NSOrderedSame;
+    }
+}
+
 #pragma mark - UIPickerViewDelegate Implementation
 
 - (NSString*)                                      pickerView:(UIPickerView*)pickerView
@@ -310,7 +327,7 @@
     [self targetValueDidChangeFromOldValue:oldValue
                                 toNewValue:value];
 
-    self.previouslySelectedRow = row;
+    _previouslySelectedRow = row;
 }
 
 #pragma mark - UIPickerViewDataSource Implementation

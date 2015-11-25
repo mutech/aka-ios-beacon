@@ -126,11 +126,18 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 #pragma mark - Validation
 
 - (BOOL)                              validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                          error:(out_NSError)error;
+
+- (BOOL)                              validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
                                                           error:(out_NSError)error;
 
 - (BOOL)                          validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
                                                           error:(out_NSError)error;
 
+- (BOOL)                    validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                          error:(out_NSError)error;
 - (BOOL)                    validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
                                                           error:(out_NSError)error;
 

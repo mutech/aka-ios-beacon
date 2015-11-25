@@ -55,7 +55,9 @@
 
     AKABindingSpecification* specification = [self.class specification];
 
+    BOOL relaxAttributeChecks = self.class != bindingExpression.bindingType;
     if (![bindingExpression validateWithSpecification:specification.bindingSourceSpecification
+                       overrideAllowUnknownAttributes:relaxAttributeChecks
                                                 error:&localError])
     {
         self = nil;
@@ -373,7 +375,7 @@
 
     id<AKABindingDelegate> delegate = self.delegate;
 
-    if ([delegate respondsToSelector:@selector(shouldUpdateTargetValue:to:forSourceValue:changeTo:)])
+    if ([delegate respondsToSelector:@selector(shouldBinding:updateTargetValue:to:forSourceValue:changeTo:)])
     {
         result = [delegate
                       shouldBinding:self

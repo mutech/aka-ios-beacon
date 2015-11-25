@@ -13,28 +13,26 @@
 #import "AKAKeyboardActivationSequenceAccessoryView.h"
 #import "AKASelectionControlViewBinding.h"
 
+#import "AKABinding_UIPickerView_valueBinding.h"
+#import "UIPickerView+AKAIBBindingProperties.h"
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -
 
 @interface AKABinding_AKAPickerKeyboardTriggerView_pickerBinding () <
     AKACustomKeyboardResponderDelegate,
-    UIPickerViewDelegate,
-    UIPickerViewDataSource
+    AKAControlViewBindingDelegate
     >
 
-@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView* triggerView;
+@property(nonatomic, readonly)       AKABindingExpression*              bindingExpression;
 
-@property(nonatomic, readonly)       UIPickerView*             pickerView;
+@property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*      triggerView;
 
-@property(nonatomic, readonly)       NSArray*                  choices;
-@property(nonatomic, readonly)       AKAProperty*              choicesProperty;
+@property(nonatomic, readonly)       UIPickerView*                      pickerView;
 
-@property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
+@property(nonatomic, readonly) AKABinding_UIPickerView_valueBinding*    pickerBinding;
 
-@property(nonatomic)                 NSInteger                 previouslySelectedRow;
-
-@property(nonatomic)                 NSInteger                 originallySelectedRow;
+@property(nonatomic)                 id                                 previousValue;
 
 @end
 
@@ -65,6 +63,52 @@
     return result;
 }
 
+- (instancetype)                               initWithTarget:(id)target
+                                                     property:(SEL)property
+                                                   expression:(req_AKABindingExpression)bindingExpression
+                                                      context:(req_AKABindingContext)bindingContext
+                                                     delegate:(opt_AKABindingDelegate)delegate
+                                                        error:(NSError *__autoreleasing  _Nullable *)error
+{
+    if (self = [super initWithTarget:target
+                            property:property
+                          expression:bindingExpression
+                             context:bindingContext
+                            delegate:delegate
+                               error:error])
+    {
+        AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
+        UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
+
+        if ([inputView isKindOfClass:[UIPickerView class]])
+        {
+            _pickerView = (UIPickerView*)inputView;
+        }
+        else
+        {
+            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, triggerView, inputView);
+
+            _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
+            _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
+            // Picker binding uses the same binding expression, which relies on picker binding to accept
+            // unknown attributes.
+            _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
+                                                                                 property:nil
+                                                                               expression:bindingExpression
+                                                                                  context:bindingContext
+                                                                                 delegate:self
+                                                                                    error:error];
+            if (_pickerBinding == nil)
+            {
+                self = nil;
+                return self;
+            }
+        }
+    }
+    return self;
+}
+
 - (void)                                    validateTargetView:(req_UIView)targetView
 {
     (void)targetView;
@@ -80,41 +124,16 @@
                                       getter:
             ^id (id target)
             {
-                id result;
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
-                NSInteger row = [binding.pickerView selectedRowInComponent:0];
-                result = [binding itemForRow:row];
-
-                return result;
+                return binding.pickerBinding.bindingTarget.value;
             }
                                       setter:
             ^(id target, id value)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
-                NSInteger row = [binding rowForItem:value];
 
-                if (row != NSNotFound)
-                {
-                    id currentValue = [binding itemForRow:[binding.pickerView selectedRowInComponent:0]];
-
-                    if (currentValue == nil && currentValue != value)
-                    {
-                        currentValue = [NSNull null];
-                    }
-
-                    if (currentValue != value)
-                    {
-                        // Only update picker, if the value associated with
-                        // the previously selected row is different from the
-                        // new value (selections, especially if undefined,
-                        // may have the same associated values and in these
-                        // cases we don't want to change the selection).
-                        [binding.pickerView selectRow:row inComponent:0 animated:YES];
-                        binding.originallySelectedRow = row;
-                        binding.previouslySelectedRow = row;
-                    }
-                }
+                binding.pickerBinding.bindingTarget.value = value;
             }
 
                           observationStarter:
@@ -123,11 +142,8 @@
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
                 [binding attachToCustomKeyboardResponderView];
-                binding.pickerView.delegate = binding;
-                binding.pickerView.dataSource = binding;
 
-                [binding setNeedsReloadChoices];
-                [binding reloadChoicesIfNeeded];
+                [binding.pickerBinding startObservingChanges];
 
                 return YES;
             }
@@ -137,8 +153,7 @@
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
-                binding.pickerView.delegate = nil;
-                binding.pickerView.dataSource = nil;
+                [binding.pickerBinding stopObservingChanges];
 
                 [binding detachFromCustomKeyboardResponderView];
 
@@ -148,20 +163,37 @@
 
 #pragma mark - Change Tracking
 
+- (void)viewValueDidChange
+{
+    id value;
+    if ([self.pickerBinding convertTargetValue:self.bindingTarget.value
+                                 toSourceValue:&value
+                                         error:nil])
+    {
+        id oldValue = self.previousValue;
+        self.previousValue = value;
+        __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
+        [self animateTriggerForValue:oldValue
+                            changeTo:value
+                          animations:^{
+                              [weakSelf targetValueDidChangeFromOldValue:oldValue
+                                                              toNewValue:value];
+                          }];
+    }
+}
+
 - (BOOL)startObservingChanges
 {
     BOOL result = [super startObservingChanges];
-
-    [self.choicesProperty startObservingChanges];
+    result = [self.pickerBinding startObservingChanges] && result;
 
     return result;
 }
 
 - (BOOL)stopObservingChanges
 {
-    [_choicesProperty stopObservingChanges];
-
     BOOL result = [super stopObservingChanges];
+    result = [self.pickerBinding stopObservingChanges] && result;
 
     return result;
 }
@@ -177,28 +209,45 @@
     return (AKAPickerKeyboardTriggerView*)result;
 }
 
-@synthesize pickerView = _pickerView;
-- (UIPickerView*)                                  pickerView
+#pragma mark - AKAControlViewBindingDelegate (for picker binding)
+
+- (BOOL)                                        shouldBinding:(req_AKAControlViewBinding)binding
+                                            updateSourceValue:(id)oldSourceValue
+                                                           to:(id)newSourceValue
+                                               forTargetValue:(id)oldTargetValue
+                                                     changeTo:(id)newTargetValue
 {
-    if (_pickerView == nil)
+    BOOL result = YES;
+    if (binding == self.pickerBinding)
     {
-        AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
-        UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
+        result = NO;
 
-        if ([inputView isKindOfClass:[UIPickerView class]])
+        // update source value only while keyboard is shown and if live model updates enabled
+        if (self.triggerView.isFirstResponder && self.liveModelUpdates)
         {
-            _pickerView = (UIPickerView*)inputView;
+            id<AKAControlViewBindingDelegate> delegate = self.delegate;
+            if ([delegate respondsToSelector:@selector(shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
+            {
+                result = [delegate shouldBinding:self
+                               updateSourceValue:oldSourceValue
+                                              to:newSourceValue
+                                  forTargetValue:oldTargetValue
+                                        changeTo:newTargetValue];
+            }
+            else
+            {
+                result = YES;
+            }
         }
-        else
-        {
-            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, triggerView, inputView);
 
-            _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
-            _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        if (result)
+        {
+            // Hijack change and process it in this binding:
+            result = NO;
+            [self viewValueDidChange];
         }
     }
-
-    return _pickerView;
+    return result;
 }
 
 #pragma mark - AKACustomKeyboardResponderDelegate Implementation
@@ -209,8 +258,7 @@
     NSParameterAssert(view == self.triggerView);
 
     // The view returned by the super class implementation, if defined and valid, is used by
-
-    // self.pickerView if possible.
+    // self.pickerView if possible, see initialization
     return self.pickerView;
 }
 
@@ -220,74 +268,46 @@
 {
     [super responderWillActivate:responder];
 
-    self.originallySelectedRow = [self rowForItem:self.bindingSource.value];
+    self.previousValue = self.bindingSource.value;
 }
 
 - (void)                                responderDidDeactivate:(req_UIResponder)responder
 {
     if (!self.liveModelUpdates)
     {
-        NSInteger row = [self.pickerView selectedRowInComponent:0];
-
-        if (row != self.originallySelectedRow)
-        {
-            id value = [self itemForRow:row];
-            id oldValue = [self itemForRow:self.previouslySelectedRow];
-            __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
-            [self animateTriggerForSelectedRow:self.originallySelectedRow
-                                      changeTo:row
-                                    animations:
-             ^{
-                 [weakSelf targetValueDidChangeFromOldValue:oldValue
-                                                 toNewValue:value];
-             }];
-        }
+        [self viewValueDidChange];
     }
 
     [super responderDidDeactivate:responder];
 }
 
-#pragma mark - Title
-
-@synthesize titleProperty = _titleProperty;
-- (AKAUnboundProperty*)                         titleProperty
-{
-    if (_titleProperty == nil && self.titleBindingExpression != nil)
-    {
-        id<AKABindingContextProtocol> context = self.bindingContext;
-
-        if (context != nil)
-        {
-            _titleProperty = [self.titleBindingExpression bindingSourceUnboundPropertyInContext:context];
-        }
-    }
-
-    return _titleProperty;
-}
-
 #pragma mark - Animated Target Value Update
 
-- (void)                          animateTriggerForSelectedRow:(NSInteger)oldSelectedRow
-                                                      changeTo:(NSInteger)newSelectedRow
-                                                    animations:(void (^)())block
+- (void)                          animateTriggerForValue:(id)oldValue
+                                                changeTo:(id)newValue
+                                              animations:(void (^)())block
 {
     if (block)
     {
         double duration = .3;
         UIViewAnimationOptions options;
 
-        if (oldSelectedRow < newSelectedRow)
+        NSComparisonResult order = [self.pickerBinding orderInChoicesForValue:oldValue value:newValue];
+
+        switch(order)
         {
-            options = UIViewAnimationOptionTransitionFlipFromTop;
+            case NSOrderedAscending:
+                options = UIViewAnimationOptionTransitionFlipFromTop;
+                break;
+            case NSOrderedDescending:
+                options = UIViewAnimationOptionTransitionFlipFromBottom;
+                break;
+            default:
+                options = UIViewAnimationOptionTransitionCrossDissolve;
+                break;
         }
-        else if (oldSelectedRow > newSelectedRow)
-        {
-            options = UIViewAnimationOptionTransitionFlipFromBottom;
-        }
-        else
-        {
-            options = UIViewAnimationOptionTransitionCrossDissolve;
-        }
+
+
         [UIView transitionWithView:self.triggerView
                           duration:duration
                            options:options
@@ -303,383 +323,6 @@
 {
     return (self.liveModelUpdates &&
             ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]]);
-}
-
-#pragma mark - Choices
-
-@synthesize choicesProperty = _choicesProperty;
-- (AKAProperty*)choicesProperty
-{
-    if (_choicesProperty == nil)
-    {
-        id<AKABindingContextProtocol> context = self.bindingContext;
-
-        if (context)
-        {
-            __weak typeof(self) weakSelf = self;
-            _choicesProperty = [self.choicesBindingExpression
-                                bindingSourcePropertyInContext:context
-                                                 changeObserer:
-                                ^(opt_id oldValue, opt_id newValue)
-                                {
-                                    (void)oldValue;
-                                    (void)newValue;
-                                    [weakSelf choicesDidChange];
-                                }];
-            [_choicesProperty startObservingChanges];
-        }
-    }
-
-    return _choicesProperty;
-}
-
-@synthesize choices = _choices;
-- (NSArray*)                                           choices
-{
-    if (_choices == nil)
-    {
-        id value = self.choicesProperty.value;
-
-        if ([value isKindOfClass:[NSArray class]])
-        {
-            _choices = value;
-        }
-        else if ([value isKindOfClass:[NSSet class]])
-        {
-            _choices = [((NSSet*)value) allObjects];
-        }
-
-        if (_choices != nil)
-        {
-            [self setNeedsReloadChoices];
-            [self reloadChoicesIfNeeded];
-        }
-    }
-
-    return _choices;
-}
-
-- (void)                                      choicesDidChange
-{
-    [self aka_performBlockInMainThreadOrQueue:^{
-         self->_choices = nil;
-         [self setNeedsReloadChoices];
-     }
-                            waitForCompletion:NO];
-}
-
-- (void)                                 setNeedsReloadChoices
-{
-    _needsReloadChoices = YES;
-}
-
-- (void)                                 reloadChoicesIfNeeded
-{
-    if (self.needsReloadChoices)
-    {
-        [self reloadChoices];
-    }
-}
-
-- (void)                                         reloadChoices
-{
-    if (self.pickerView.dataSource == self)
-    {
-        [self.pickerView reloadAllComponents];
-        _needsReloadChoices = NO;
-    }
-}
-
-#pragma mark - UIPickerViewDelegate Implementation
-
-- (NSString*)                                      pickerView:(UIPickerView*)pickerView
-                                                  titleForRow:(NSInteger)row
-                                                 forComponent:(NSInteger)component
-{
-    (void)pickerView;
-    (void)component;
-    NSParameterAssert(pickerView == self.pickerView);
-    NSAssert(component == 0, @"AKAPickerViewBinding currently only supports single component picker views");
-
-    NSString* result = nil;
-
-    if (row == self.rowForUndefinedValue)
-    {
-        result = self.titleForUndefinedValue;
-    }
-    else if (row == self.rowForOtherValue)
-    {
-        result = self.titleForOtherValue;
-    }
-    else
-    {
-        NSInteger index = [self indexForRow:row];
-
-        if (index >= 0 && index < self.choices.count)
-        {
-            id choice = self.choices[(NSUInteger)index];
-
-            if (self.titleProperty != nil)
-            {
-                choice = [self.titleProperty valueForTarget:choice];
-            }
-
-            if ([choice isKindOfClass:NSString.class])
-            {
-                result = choice;
-            }
-            else if ([choice isKindOfClass:NSObject.class])
-            {
-                result = ((NSObject*)choice).description;
-            }
-        }
-    }
-
-    return result;
-}
-
-- (void)                                            pickerView:(UIPickerView*)pickerView
-                                                  didSelectRow:(NSInteger)row
-                                                   inComponent:(NSInteger)component
-{
-    (void)pickerView;
-    (void)component;
-    NSParameterAssert(pickerView == self.pickerView);
-    NSParameterAssert(component == 0);
-
-    id value = [self itemForRow:row];
-    id oldValue = [self itemForRow:self.previouslySelectedRow];
-
-    if (self.liveModelUpdates)
-    {
-        [self animateTriggerForSelectedRow:self.previouslySelectedRow
-                                  changeTo:row
-                                animations:
-         ^{
-             [self targetValueDidChangeFromOldValue:oldValue
-                                         toNewValue:value];
-             self.previouslySelectedRow = row;
-         }];
-    }
-
-    if ([self shouldResignFirstResponderOnSelectedRowChanged])
-    {
-        [self.triggerView resignFirstResponder];
-    }
-}
-
-#pragma mark - UIPickerViewDataSource Implementation
-
-- (NSInteger)                   numberOfComponentsInPickerView:(UIPickerView*)pickerView
-{
-    (void)pickerView;
-    NSParameterAssert(pickerView == self.pickerView);
-
-    return 1;
-}
-
-- (NSInteger)                                       pickerView:(UIPickerView*)pickerView
-                                       numberOfRowsInComponent:(NSInteger)component
-{
-    (void)pickerView;
-    (void)component;
-    NSParameterAssert(pickerView == self.pickerView);
-    NSParameterAssert(component == 0);
-
-    NSInteger result = (NSInteger)self.choices.count;
-
-    if (self.supportsUndefinedValue)
-    {
-        ++result;
-    }
-
-    if (self.supportsOtherValue)
-    {
-        ++result;
-    }
-
-    return result;
-}
-
-#pragma mark - Implementation
-
-- (BOOL)                                supportsUndefinedValue
-{
-    return self.titleForUndefinedValue.length > 0;
-}
-
-- (NSInteger)                             rowForUndefinedValue
-{
-    return self.supportsUndefinedValue ? 0 : NSNotFound;
-}
-
-- (BOOL)                                    supportsOtherValue
-{
-    return self.titleForOtherValue.length > 0;
-}
-
-- (NSInteger)                                 rowForOtherValue
-{
-    NSInteger result = self.supportsOtherValue ? (NSInteger)self.choices.count : NSNotFound;
-
-    if (result != NSNotFound && self.supportsUndefinedValue)
-    {
-        ++result;
-    }
-
-    return result;
-}
-
-- (NSInteger)                                      indexForRow:(NSInteger)row
-{
-    NSInteger result = row;
-    NSInteger undefinedValueRow = self.rowForUndefinedValue;
-    NSInteger otherValueRow = self.rowForOtherValue;
-
-    if (undefinedValueRow != NSNotFound && otherValueRow != NSNotFound)
-    {
-        NSInteger minSpecial;
-        NSInteger maxSpecial;
-
-        if (undefinedValueRow < otherValueRow)
-        {
-            minSpecial = undefinedValueRow;
-            maxSpecial = otherValueRow;
-        }
-        else
-        {
-            NSAssert(undefinedValueRow != otherValueRow, @"Undefined and other value use the same row index");
-            minSpecial = otherValueRow;
-            maxSpecial = undefinedValueRow;
-        }
-
-        if (row >= maxSpecial)
-        {
-            result -= 2;
-        }
-        else if (row >= minSpecial)
-        {
-            result -= 1;
-        }
-    }
-    else if (undefinedValueRow != NSNotFound)
-    {
-        if (row > undefinedValueRow)
-        {
-            result -= 1;
-        }
-    }
-    else if (otherValueRow != NSNotFound)
-    {
-        if (row >= otherValueRow)
-        {
-            result -= 1;
-        }
-    }
-
-    return result;
-}
-
-- (NSInteger)                                      rowForIndex:(NSInteger)index
-{
-    NSInteger result = index;
-    NSInteger undefinedValueRow = self.rowForUndefinedValue;
-    NSInteger otherValueRow = self.rowForOtherValue;
-
-    if (undefinedValueRow != NSNotFound && otherValueRow != NSNotFound)
-    {
-        NSInteger minSpecial;
-        NSInteger maxSpecial;
-
-        if (undefinedValueRow < otherValueRow)
-        {
-            minSpecial = undefinedValueRow;
-            maxSpecial = otherValueRow;
-        }
-        else
-        {
-            NSAssert(undefinedValueRow != otherValueRow, @"Undefined and other value use the same row index");
-            minSpecial = otherValueRow;
-            maxSpecial = undefinedValueRow;
-        }
-
-        if (index >= minSpecial)
-        {
-            ++result;
-        }
-
-        if (index >= maxSpecial)
-        {
-            ++result;
-        }
-    }
-    else if (undefinedValueRow != NSNotFound)
-    {
-        if (index >= undefinedValueRow)
-        {
-            ++result;
-        }
-    }
-    else if (otherValueRow != NSNotFound)
-    {
-        if (index >= otherValueRow)
-        {
-            ++result;
-        }
-    }
-
-    return result;
-}
-
-- (id)                                              itemForRow:(NSInteger)row
-{
-    id result = nil;
-    NSInteger undefinedValueRow = self.rowForUndefinedValue;
-    NSInteger otherValueRow = self.rowForOtherValue;
-
-    if (undefinedValueRow != NSNotFound && row == undefinedValueRow)
-    {
-        return nil;
-    }
-    else if (otherValueRow != NSNotFound && row == otherValueRow)
-    {
-        return self.otherValue;
-    }
-    else
-    {
-        NSInteger index = [self indexForRow:row];
-
-        if (index >= 0 && index < self.choices.count)
-        {
-            result = self.choices[(NSUInteger)index];
-        }
-    }
-
-    return result;
-}
-
-- (NSInteger)                                       rowForItem:(id)item
-{
-    NSInteger result = NSNotFound;
-    NSInteger index = (NSInteger)[self.choices indexOfObject:(item == nil ? [NSNull null] : item)];
-
-    if (index == NSNotFound)
-    {
-        if (self.supportsUndefinedValue && (item == nil || item == [NSNull null]))
-        {
-            result = self.rowForUndefinedValue;
-        }
-        else if (self.supportsOtherValue)
-        {
-            result = self.rowForOtherValue;
-        }
-    }
-    else
-    {
-        result = [self rowForIndex:index];
-    }
-
-    return result;
 }
 
 @end

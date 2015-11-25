@@ -18,4 +18,6 @@
 @property(nonatomic, readonly) BOOL                                 needsReloadChoices;
 @property(nonatomic, readonly, nullable) id                         otherValue;
 
+- (NSComparisonResult)orderInChoicesForValue:(nullable id)firstValue value:(nullable id)secondValue;
+
 @end

@@ -120,6 +120,23 @@
     }
 }
 
+- (BOOL)                            shouldUpdateSourceValue:(id)oldSourceValue
+                                                         to:(id)newSourceValue
+                                             forTargetValue:(id)oldTargetValue
+                                                   changeTo:(id)newTargetValue
+{
+    id<AKAControlViewBindingDelegate> delegate = self.delegate;
+    BOOL result = YES;
+    if ([delegate respondsToSelector:@selector(shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
+    {
+        result = [delegate shouldBinding:self
+                       updateSourceValue:oldSourceValue
+                                      to:newSourceValue
+                          forTargetValue:oldTargetValue
+                                changeTo:newTargetValue];
+    }
+    return result;
+}
 
 - (void)                              willUpdateSourceValue:(opt_id)oldSourceValue
                                                          to:(opt_id)newSourceValue
@@ -165,11 +182,14 @@
 
                  id oldSourceValue = self.bindingSource.value;
 
-                 [self willUpdateSourceValue:oldSourceValue to:sourceValue];
+                 if ([self shouldUpdateSourceValue:oldSourceValue to:sourceValue forTargetValue:oldTargetValue changeTo:newTargetValue])
+                 {
+                     [self willUpdateSourceValue:oldSourceValue to:sourceValue];
 
-                 self.bindingSource.value = sourceValue;
+                     self.bindingSource.value = sourceValue;
 
-                 [self didUpdateSourceValue:oldSourceValue to:sourceValue];
+                     [self didUpdateSourceValue:oldSourceValue to:sourceValue];
+                 }
              }
              else
              {

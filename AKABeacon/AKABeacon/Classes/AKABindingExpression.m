@@ -121,6 +121,13 @@
 - (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
                             error:(out_NSError)error
 {
+    return [self validateWithSpecification:specification overrideAllowUnknownAttributes:NO error:error];
+}
+
+- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+   overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                            error:(out_NSError)error
+{
     BOOL result = YES;
 
     if (result)
@@ -140,6 +147,7 @@
     if (result)
     {
         result = [self validateAttributesWithSpecification:specification
+                            overrideAllowUnknownAttributes:allowUnknownAttributes
                                                      error:error];
     }
 
@@ -164,10 +172,19 @@
 - (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
                                       error:(out_NSError)error
 {
+    return [self validateAttributesWithSpecification:specification
+                      overrideAllowUnknownAttributes:NO
+                                               error:error];
+}
+
+- (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
+             overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                      error:(out_NSError)error
+{
     __block BOOL result = YES;
     __block NSError* localError = nil;
 
-    BOOL allowUnspecified = specification.allowUnspecifiedAttributes;
+    BOOL allowUnspecified = allowUnknownAttributes || specification.allowUnspecifiedAttributes;
 
     [self.attributes
      enumerateKeysAndObjectsUsingBlock:

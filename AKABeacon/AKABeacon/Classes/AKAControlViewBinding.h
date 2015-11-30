@@ -83,4 +83,6 @@
                                                    changeTo:(opt_id)newTargetValue
                                                 validatedTo:(opt_id)targetValue;
 
+- (void)                                  updateSourceValueSkipDelegateRequests:(BOOL)skipDelegateRequests;
+
 @end

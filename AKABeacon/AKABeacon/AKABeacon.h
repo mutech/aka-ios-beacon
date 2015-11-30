@@ -84,6 +84,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings
 #import <AKABeacon/AKAViewBinding.h>
+#import <AKABeacon/AKAViewBinding+IBPropertySupport.h>
 #import <AKABeacon/AKAControlViewBinding.h>
 
 // Bindings/ViewBindings/UILabel
@@ -95,7 +96,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings/ControlViewBindings/UISegmentedControl
 #import <AKABeacon/UISegmentedControl+IBBindingProperties.h>
-#import <AKABeacon/AKABinding_UISegmentedControl_selectionBinding.h>
+#import <AKABeacon/AKABinding_UISegmentedControl_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISwitch
 #import <AKABeacon/UISwitch+AKAIBBindingProperties.h>
@@ -108,6 +109,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/ControlViewBindings/UIStepper
 #import <AKABeacon/UIStepper+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
+
+// Bindings/ViewBindings/ControlViewBindings/UIPickerView
+#import <AKABeacon/UIPickerView+AKAIBBindingProperties.h>
+#import <AKABeacon/AKABinding_UIPickerView_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */; };
 		8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */; };
+		8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */; };
 		8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */; };
 		8E91E73F1BB228A900F7618F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E73E1BB228A900F7618F /* main.m */; };
 		8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7411BB228A900F7618F /* AppDelegate.m */; };
@@ -53,6 +54,8 @@
 		8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKACommons.framework; path = "Pods/../build/Debug-iphoneos/AKACommons.framework"; sourceTree = "<group>"; };
 		8E5720871BBFDD650056A013 /* PickerKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickerKeyboardViewController.h; sourceTree = "<group>"; };
 		8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickerKeyboardViewController.m; sourceTree = "<group>"; };
+		8E5F34C01C07130000397C2C /* SegmentedControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedControlViewController.h; sourceTree = "<group>"; };
+		8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedControlViewController.m; sourceTree = "<group>"; };
 		8E7BAD211BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicPlaceholderCellTableViewController.h; sourceTree = "<group>"; };
 		8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicPlaceholderCellTableViewController.m; sourceTree = "<group>"; };
 		8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKABeaconDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +164,8 @@
 				8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */,
 				8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */,
 				8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */,
+				8E5F34C01C07130000397C2C /* SegmentedControlViewController.h */,
+				8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -333,6 +338,7 @@
 				8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */,
 				8E91E73F1BB228A900F7618F /* main.m in Sources */,
 				8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */,
+				8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */,
 				8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

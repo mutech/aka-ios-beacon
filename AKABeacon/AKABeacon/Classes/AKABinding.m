@@ -12,6 +12,7 @@
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKABinding.h"
+#import "AKAPropertyBinding.h"
 #import "AKABindingDelegate.h"
 #import "AKABindingExpression.h"
 #import "AKABindingErrors.h"
@@ -21,9 +22,8 @@
 
 @interface AKABinding () {
     BOOL _isUpdatingTargetValueForSourceValueChange;
+    NSMutableDictionary<NSString*, AKABinding*>* _attributeBindings;
 }
-
-@property(nonatomic, readonly, nullable) NSMutableDictionary<NSString*, AKABinding*>* attributeBindings;
 
 @end
 
@@ -56,11 +56,14 @@
     AKABindingSpecification* specification = [self.class specification];
 
     BOOL relaxAttributeChecks = self.class != bindingExpression.bindingType;
-    if (![bindingExpression validateWithSpecification:specification.bindingSourceSpecification
-                       overrideAllowUnknownAttributes:relaxAttributeChecks
-                                                error:&localError])
+    if (specification.bindingSourceSpecification)
     {
-        self = nil;
+        if (![bindingExpression validateWithSpecification:specification.bindingSourceSpecification
+                           overrideAllowUnknownAttributes:relaxAttributeChecks
+                                                    error:&localError])
+        {
+            self = nil;
+        }
     }
 
     if (self = [self init])
@@ -202,8 +205,19 @@
 
                          Class bindingType = attributeSpec.bindingType;
 
+                         if (bindingType == nil)
+                         {
+                             bindingType = [AKAPropertyBinding class];
+                         }
+
                          if (bindingType != nil)
                          {
+                             NSAssert(self->_attributeBindings[bindingPropertyName] == nil, @"Invalid attempt to bind property %@ with expression %@ in context %@. Property is already bound: %@. Binding expression validation of binding %@ should have failed for use of exclusive attribute bindings.", bindingPropertyName,
+                                      attribute,
+                                      bindingContext,
+                                      self->_attributeBindings[bindingPropertyName],
+                                      self);
+
                              __weak typeof(self) weakSelf = self;
                              AKAProperty* targetProperty =
                                  [AKAProperty propertyOfWeakKeyValueTarget:self
@@ -218,7 +232,7 @@
                                                             property:NSSelectorFromString(bindingPropertyName)
                                                           expression:attribute
                                                              context:bindingContext
-                                                            delegate:nil
+                                                            delegate:weakSelf
                                                                error:error];
                              self->_attributeBindings[bindingPropertyName] = propertyBinding;
                          }
@@ -240,6 +254,11 @@
 - (BOOL)isUpdatingTargetValueForSourceValueChange
 {
     return _isUpdatingTargetValueForSourceValueChange;
+}
+
+- (NSDictionary<NSString *,AKABinding *> *)attributeBindings
+{
+    return _attributeBindings;
 }
 
 #pragma mark - Conversion
@@ -544,7 +563,6 @@
                                                       value:(opt_id)oldValue
                                         didChangeToNewValue:(opt_id)newValue
 {
-    // TODO: remove debug output
     AKALogDebug(@"Binding %@ property %@ value %@ changed to %@", self, bindingPropertyName, oldValue, newValue);
 }
 

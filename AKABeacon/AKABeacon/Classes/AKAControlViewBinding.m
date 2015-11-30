@@ -162,8 +162,26 @@
 
 #pragma mark - Source Value Updates
 
+- (void)                                  updateSourceValueSkipDelegateRequests:(BOOL)skipDelegateRequests
+
+{
+    id targetValue = self.bindingTarget.value;
+    [self updateSourceValueForTargetValue:targetValue
+                                 changeTo:targetValue
+                     skipDelegateRequests:skipDelegateRequests];
+}
+
 - (void)                    updateSourceValueForTargetValue:(opt_id)oldTargetValue
                                                    changeTo:(opt_id)newTargetValue
+{
+    [self updateSourceValueForTargetValue:oldTargetValue
+                                 changeTo:newTargetValue
+                     skipDelegateRequests:NO];
+}
+
+- (void)                    updateSourceValueForTargetValue:(opt_id)oldTargetValue
+                                                   changeTo:(opt_id)newTargetValue
+                                       skipDelegateRequests:(BOOL)skipDelegateRequests
 {
     (void)oldTargetValue;
     
@@ -182,7 +200,10 @@
 
                  id oldSourceValue = self.bindingSource.value;
 
-                 if ([self shouldUpdateSourceValue:oldSourceValue to:sourceValue forTargetValue:oldTargetValue changeTo:newTargetValue])
+                 if (skipDelegateRequests || [self shouldUpdateSourceValue:oldSourceValue
+                                                                        to:sourceValue
+                                                            forTargetValue:oldTargetValue
+                                                                  changeTo:newTargetValue])
                  {
                      [self willUpdateSourceValue:oldSourceValue to:sourceValue];
 

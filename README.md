@@ -1,10 +1,13 @@
 # AKA Beacon
 
-AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Knockout.
+AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Knockout. 
 
-> We prepared [a short survey](https://mutechaka.typeform.com/to/caKeuX). Please help us and give us some feedback. Thank you for taking the time (it's really short)
+(It has nothing to do with iBeacon's. Please suggest a better name if you find this one confusing or misleading. I had a hard time coming up with a name, Beacon is directing a stream of information like a beacon for sea bound traffic.)
 
+## Contents
 
+- [What is Data Binding](#about-data-binding)
+  - [Beacons Data Binding Implementation Overview](#beacons-data-binding-implementation-overview)
 - [Installation & Integration](#installation-&-integration)
 - [Documentation](#documentation)
 - [How Beacon works](#how-beacon-works)
@@ -18,9 +21,25 @@ AKA Beacon is a binding framework for iOS. It is similar in scope to XAML and Kn
      - [Complex values and custom formatters:](#complex-values-and-custom-formatters)
      - [Date values:](#date-values)
 - [Demo Video](#demo-video)
-- [Status](#status)
-- [License](#license)
+- [Status](#status) (pre-Release)
+- [License](#license) (BSD 2-clause license)
 - [What others do](#what-others-do)
+
+## About Data Binding
+
+Data binding reduces glue code that you would otherwise need to move data between your model and your user interface. It takes care of observing changes on both sides and performs the necessary updates. It also can serve as event bus, connecting user interface elements just by binding them to the same data source which results in a synchronization between them.
+
+### Beacons Data Binding Implementation Overview
+
+The way beacon implements data binding focusses on reducing the effort for getting standard behavior with the least amount of effort possible while at the same time trying to be uninvasive. For example, if Beacon requires to install a delegate for a view, it will save a previously set delegate and use it as backup forwarding requests whenever possible.
+
+Bindings are declared in Interface Builder along with other view properties. For system views (such as UITextField), Beacon defines extension properties. Beacon is designed with extendibility in mind. You can easily define your own bindings from scratch or extend existing bindings.
+
+
+Beacon provides base view controllers which automatically find and manage bindings, but you can always do that manually. Events occuring anywhere in a network of bindings will be forwarded to AKAControls and from there to your view controller, which allows you to easily customize the behaviour of bindings and to react to events.
+
+You don't have to take care of Key-Value observation and its deinitialization, it's taken care of properly.
+
 
 ## Installation & Integration
 
@@ -251,9 +270,7 @@ Beacon is approaching a state where it's really useful and sufficiently stable t
 
 ## License
 
-Beacon will be dual-licensed. The open source license is GPL-v3.
-
-The details for commercials licensing are not yet set in stone. We plan to offer free licenses for individual developers on a per app and per beacon version basis. Please contact us if you want to use Beacon in a closed source application.
+BSD 2-clause, see LICENSE.txt
 
 ## What others do
 

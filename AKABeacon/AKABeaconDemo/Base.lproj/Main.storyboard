@@ -6,7 +6,7 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Demos-->
         <scene sceneID="W6f-dg-wNI">
             <objects>
                 <tableViewController id="tjz-Jc-o9z" customClass="LabelDemoTableViewController" sceneMemberID="viewController">
@@ -156,6 +156,29 @@
                                             <segue destination="5zU-PD-VgZ" kind="show" id="bDJ-NV-zpU"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="kwJ-6D-xND" style="IBUITableViewCellStyleDefault" id="vwM-1s-oVW">
+                                        <rect key="frame" x="0.0" y="328" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vwM-1s-oVW" id="ffm-zj-lal">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Segmented Controls" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kwJ-6D-xND">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <animations/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                        <connections>
+                                            <segue destination="kg5-no-hyw" kind="show" id="7b1-oo-wMg"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -164,11 +187,11 @@
                             <outlet property="delegate" destination="tjz-Jc-o9z" id="PeO-Rm-cGS"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="3ac-kH-CTe"/>
+                    <navigationItem key="navigationItem" title="Demos" id="3ac-kH-CTe"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="llc-TO-8PA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="300.5" y="388.5"/>
+            <point key="canvasLocation" x="553.5" y="388.5"/>
         </scene>
         <!--Text Field Binding View Controller-->
         <scene sceneID="tG1-MO-Szj">
@@ -650,18 +673,17 @@ The number editor text field uses two different formatters, one for display and 
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="us9-qa-rgQ" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="254"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
-                                                <rect key="frame" x="20" y="20" width="335" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose string value from array of strings, custom text for undefined value in label, picker supports undefined value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
+                                                <rect key="frame" x="20" y="20" width="335" height="27"/>
                                                 <animations/>
-                                                <string key="text">Choose string value from array of strings, custom text for undefined value in label, picker updates model value on change (closing keyboard), picker supports undefined value.</string>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="67" width="335" height="29"/>
+                                                <rect key="frame" x="20" y="55" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
                                                         <rect key="frame" x="4" y="4" width="327" height="21"/>
@@ -687,24 +709,25 @@ The number editor text field uses two different formatters, one for display and 
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding_aka">
-                                                        <string key="value">stringValue {
-	choices: stringArrayValue,
-	titleForUndefinedValue: "(please choose)"
+                                                        <string key="value">{
+	picker: stringValue {
+		choices: stringArrayValue,
+		titleForUndefinedValue: "(please choose)"
+	}
 }</string>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDU-dm-w6n">
-                                                <rect key="frame" x="20" y="104" width="335" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Choose object value from array of objects, object property title and value are used in label, title in picker." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDU-dm-w6n">
+                                                <rect key="frame" x="20" y="91" width="335" height="27"/>
                                                 <animations/>
-                                                <string key="text">Choose object value from array of objects, update on resign first responder (end edit), object property title and value are used in label, title in picker.</string>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="151" width="335" height="29"/>
+                                                <rect key="frame" x="20" y="126" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyl-gr-qGe" userLabel="Title Label">
                                                         <rect key="frame" x="4" y="4" width="34" height="21"/>
@@ -717,7 +740,7 @@ The number editor text field uses two different formatters, one for display and 
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuB-G7-7Ip" userLabel="Value Label">
-                                                        <rect key="frame" x="45" y="4" width="42" height="21"/>
+                                                        <rect key="frame" x="46" y="4" width="42" height="21"/>
                                                         <animations/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -739,24 +762,25 @@ The number editor text field uses two different formatters, one for display and 
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding_aka">
-                                                        <string key="value">objectValue {
-	title: title,
-	choices: objectArrayValue,
-	liveModelUpdates: $false
+                                                        <string key="value">{
+	picker: objectValue {
+		title: title,
+		choices: objectArrayValue
+	}
 }</string>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
-                                                <rect key="frame" x="20" y="188" width="335" height="14"/>
+                                                <rect key="frame" x="20" y="162" width="335" height="14"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnP-bs-nQR" userLabel="DatePickerKeyboardTriggerView" customClass="AKADatePickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="209" width="335" height="29"/>
+                                                <rect key="frame" x="20" y="184" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-Gt-BuC" userLabel="SelectedItemLabel">
                                                         <rect key="frame" x="4" y="4" width="327" height="21"/>
@@ -1248,7 +1272,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <rect key="frame" x="20" y="300" width="335" height="29"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFc-5z-ZRV" userLabel="SelectedItemLabel">
-                                                        <rect key="frame" x="4" y="4" width="327" height="20.5"/>
+                                                        <rect key="frame" x="4" y="4" width="327" height="21"/>
                                                         <animations/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -1271,9 +1295,11 @@ The number editor text field uses two different formatters, one for display and 
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="pickerBinding_aka">
-                                                        <string key="value">stringValue {
-	choices: stringArrayValue,
-	titleForUndefinedValue: "(please choose)"
+                                                        <string key="value">{
+	picker: stringValue {
+		choices: stringArrayValue,
+		titleForUndefinedValue: "(please choose)"
+	}
 }</string>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
@@ -1337,6 +1363,152 @@ The number editor text field uses two different formatters, one for display and 
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d5N-g4-FMj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="553.5" y="1267.5"/>
+        </scene>
+        <!--Segmented Controls-->
+        <scene sceneID="tkn-bZ-0bI">
+            <objects>
+                <viewController title="Segmented Controls" id="kg5-no-hyw" customClass="SegmentedControlViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RjO-7n-fSL"/>
+                        <viewControllerLayoutGuide type="bottom" id="65C-PK-as3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r7m-9H-16h">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jHn-EU-jVi">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b2e-KD-wPs" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOI-ga-4le">
+                                                <rect key="frame" x="126" y="202" width="122" height="20"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected:" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqz-Gi-4tZ">
+                                                        <rect key="frame" x="0.0" y="0.0" width="72" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdC-ZI-R69">
+                                                        <rect key="frame" x="80" y="0.0" width="42" height="21"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stringValue"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </label>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="rqz-Gi-4tZ" firstAttribute="top" secondItem="ZOI-ga-4le" secondAttribute="top" id="6fG-4g-Vct"/>
+                                                    <constraint firstAttribute="bottom" secondItem="rqz-Gi-4tZ" secondAttribute="bottom" id="Cdb-Tm-Yw7"/>
+                                                    <constraint firstAttribute="trailing" secondItem="vdC-ZI-R69" secondAttribute="trailing" id="JPn-tu-eHr"/>
+                                                    <constraint firstItem="rqz-Gi-4tZ" firstAttribute="leading" secondItem="ZOI-ga-4le" secondAttribute="leading" id="TJG-gx-N48"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vdC-ZI-R69" secondAttribute="bottom" id="aXE-P1-3bF"/>
+                                                    <constraint firstItem="vdC-ZI-R69" firstAttribute="top" secondItem="ZOI-ga-4le" secondAttribute="top" id="bHw-t0-Aft"/>
+                                                    <constraint firstItem="vdC-ZI-R69" firstAttribute="leading" secondItem="rqz-Gi-4tZ" secondAttribute="trailing" constant="8" id="gVI-Jq-3ks"/>
+                                                </constraints>
+                                            </view>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="sL4-JJ-UjH">
+                                                <rect key="frame" x="127" y="240" width="121" height="29"/>
+                                                <animations/>
+                                                <segments>
+                                                    <segment title="First"/>
+                                                    <segment title="Second"/>
+                                                </segments>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka" value="stringValue { choices: stringValues }"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </segmentedControl>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="ryV-mw-M0K">
+                                                <rect key="frame" x="69" y="287" width="236" height="31"/>
+                                                <animations/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka">
+                                                        <string key="value">numberOfSegments {
+	minimumValue: 2,
+	maximumValue: 10
+}</string>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </slider>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVr-yj-9fx">
+                                                <rect key="frame" x="166" y="325" width="42" height="21"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
+                                                        <string key="value">numberOfSegments {
+	numberFormatter: { }
+}</string>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="ryV-mw-M0K" firstAttribute="width" secondItem="b2e-KD-wPs" secondAttribute="width" multiplier="0.618" id="471-GD-gc4"/>
+                                            <constraint firstItem="ZOI-ga-4le" firstAttribute="centerX" secondItem="b2e-KD-wPs" secondAttribute="centerX" id="6HN-N3-E7W"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GVr-yj-9fx" secondAttribute="trailing" constant="8" id="F44-vn-Ryy"/>
+                                            <constraint firstItem="GVr-yj-9fx" firstAttribute="top" secondItem="ryV-mw-M0K" secondAttribute="bottom" constant="8" id="Fgq-Qh-nr0"/>
+                                            <constraint firstItem="GVr-yj-9fx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="b2e-KD-wPs" secondAttribute="leading" constant="8" id="JNE-fo-LWH"/>
+                                            <constraint firstItem="sL4-JJ-UjH" firstAttribute="centerX" secondItem="b2e-KD-wPs" secondAttribute="centerX" id="Nje-QW-S3q"/>
+                                            <constraint firstItem="ryV-mw-M0K" firstAttribute="centerX" secondItem="b2e-KD-wPs" secondAttribute="centerX" id="RNJ-tu-D2A"/>
+                                            <constraint firstItem="ryV-mw-M0K" firstAttribute="top" secondItem="GVr-yj-9fx" secondAttribute="bottom" constant="8" id="X44-qf-PZy"/>
+                                            <constraint firstItem="GVr-yj-9fx" firstAttribute="centerX" secondItem="b2e-KD-wPs" secondAttribute="centerX" id="Ydb-w0-jtF"/>
+                                            <constraint firstItem="sL4-JJ-UjH" firstAttribute="top" secondItem="ZOI-ga-4le" secondAttribute="bottom" constant="18" id="tpj-bU-Tjm"/>
+                                            <constraint firstItem="ryV-mw-M0K" firstAttribute="centerY" secondItem="b2e-KD-wPs" secondAttribute="centerY" id="vsR-un-I3e"/>
+                                            <constraint firstItem="ryV-mw-M0K" firstAttribute="top" secondItem="sL4-JJ-UjH" secondAttribute="bottom" constant="19" id="zGs-dF-Tpd"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="X44-qf-PZy"/>
+                                            </mask>
+                                        </variation>
+                                    </view>
+                                </subviews>
+                                <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="b2e-KD-wPs" secondAttribute="trailing" id="0JC-3K-uRG"/>
+                                    <constraint firstItem="b2e-KD-wPs" firstAttribute="top" secondItem="jHn-EU-jVi" secondAttribute="top" id="8Mw-eD-Zr1"/>
+                                    <constraint firstItem="b2e-KD-wPs" firstAttribute="leading" secondItem="jHn-EU-jVi" secondAttribute="leading" id="KTW-9N-ib5"/>
+                                    <constraint firstAttribute="bottom" secondItem="b2e-KD-wPs" secondAttribute="bottom" id="QL2-6u-1De"/>
+                                    <constraint firstItem="b2e-KD-wPs" firstAttribute="height" secondItem="jHn-EU-jVi" secondAttribute="height" id="dz5-ye-xpe"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="b2e-KD-wPs" firstAttribute="height" secondItem="r7m-9H-16h" secondAttribute="height" id="CRT-Dg-DxN"/>
+                            <constraint firstItem="65C-PK-as3" firstAttribute="top" secondItem="jHn-EU-jVi" secondAttribute="bottom" id="J8H-3r-uki"/>
+                            <constraint firstItem="jHn-EU-jVi" firstAttribute="top" secondItem="RjO-7n-fSL" secondAttribute="bottom" id="OoS-vs-Oix"/>
+                            <constraint firstAttribute="trailing" secondItem="jHn-EU-jVi" secondAttribute="trailing" id="ZeL-p0-39Q"/>
+                            <constraint firstItem="jHn-EU-jVi" firstAttribute="leading" secondItem="r7m-9H-16h" secondAttribute="leading" id="aa8-1l-2xh"/>
+                            <constraint firstItem="b2e-KD-wPs" firstAttribute="height" secondItem="r7m-9H-16h" secondAttribute="height" id="cT6-op-d4x"/>
+                            <constraint firstItem="b2e-KD-wPs" firstAttribute="width" secondItem="r7m-9H-16h" secondAttribute="width" id="wfZ-wN-WxV"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="CRT-Dg-DxN"/>
+                                <exclude reference="cT6-op-d4x"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Segmented Controls" id="00C-Tc-aWN"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jdz-ND-iey" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1751.5" y="1267.5"/>
         </scene>
     </scenes>
 </document>

@@ -27,6 +27,9 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorInvalidBindingExpressionInvalidUIFontTraitSpecification,
 
     AKABindingErrorInvalidBindingSourceValueType,
+    AKABindingErrorConversionOfTargetToSourceFailedTargetOutOfRange,
+    AKABindingErrorConversionOfTargetToSourceFailedInvalidTargetType,
+    AKABindingErrorConversionOfSourceToTargetFailedInvalidSourceType,
     AKABindingErrorConversionOfTargetToSourceUsingFormatterFailed,
     AKABindingErrorConversionOfSourceToTargetUsingFormatterFailed,
 };
@@ -75,7 +78,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                             forEnumerationType:(req_NSString)enumerationType
                                               withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
 
-#pragma mark - Binding Source Validation Errrors (Runtime validation)
+#pragma mark - Binding Source Validation Errors (Runtime validation)
 
 + (req_NSError)                                 invalidBinding:(req_AKABinding)binding
                                                    sourceValue:(opt_id)value
@@ -86,6 +89,18 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                             expectedSubclassOf:(req_Class)baseClass;
 
 #pragma mark - Binding Conversion Errors
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                   targetValue:(opt_id)targetValue
+                                          failedWithRangeError:(NSRange)expectedRange;
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                   targetValue:(opt_id)targetValue
+                                 failedWithInvalidTypeExpected:(req_Class)expectedType;
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)sourceValue
+                                 failedWithInvalidTypeExpected:(req_Class)expectedType;
 
 + (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
                                                    targetValue:(opt_id)targetValue

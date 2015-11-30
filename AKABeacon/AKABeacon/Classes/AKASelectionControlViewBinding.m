@@ -30,8 +30,8 @@
                       @{ @"required":        @YES,
                          @"expressionType":  @(labelBindingSpec.bindingSourceSpecification.expressionType),
                          @"attributes":      labelBindingSpec.bindingSourceSpecification.attributes ? labelBindingSpec.bindingSourceSpecification.attributes : @{},
-                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                         @"bindingProperty": @"choicesBindingExpression"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"choices"
                          },
                   @"title":
                       @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath),

@@ -103,6 +103,11 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 
 @end
 
+@interface AKABinding(BindingAttributeBindings)
+
+@property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABinding*>* attributeBindings;
+
+@end
 
 @interface AKABinding(Internal)
 

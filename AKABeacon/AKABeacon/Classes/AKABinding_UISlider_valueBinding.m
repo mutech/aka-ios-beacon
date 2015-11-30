@@ -35,13 +35,13 @@
            @"attributes":
                @{ @"minimumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"minimumValue"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"uiSlider.minimumValue"
                          },
                   @"maximumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"maximumValue"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"uiSlider.maximumValue"
                          },
                   },
            };
@@ -118,6 +118,11 @@
                 }
                 return result;
             }];
+}
+
+- (BOOL)startObservingChanges
+{
+    return [super startObservingChanges];
 }
 
 #pragma mark - Properties

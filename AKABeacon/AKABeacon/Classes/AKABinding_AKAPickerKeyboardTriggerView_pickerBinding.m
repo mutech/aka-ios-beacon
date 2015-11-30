@@ -24,6 +24,8 @@
     AKAControlViewBindingDelegate
     >
 
+@property(nonatomic)                 NSArray*                           choices;
+
 @property(nonatomic, readonly)       AKABindingExpression*              bindingExpression;
 
 @property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*      triggerView;
@@ -32,7 +34,7 @@
 
 @property(nonatomic, readonly) AKABinding_UIPickerView_valueBinding*    pickerBinding;
 
-@property(nonatomic)                 id                                 previousValue;
+@property(nonatomic)                 id previousValue;
 
 @end
 
@@ -42,22 +44,24 @@
 
 @implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
 
-+ (AKABindingSpecification *)                   specification
++ (AKABindingSpecification*)                   specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        AKABindingSpecification* selectionSpecification =
-            [AKASelectionControlViewBinding specification];
-        AKABindingSpecification* baseSpecification =
-            [[super specification] specificationExtendedWith:selectionSpecification];
-
         NSDictionary* spec =
-        @{ @"bindingType":              [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
-           @"targetType":               [AKAPickerKeyboardTriggerView class],
-           };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:baseSpecification];
+            @{ @"bindingType":  self,
+               @"targetType":   [AKAPickerKeyboardTriggerView class],
+               @"expressionType": @(AKABindingExpressionTypeNone),
+               @"attributes":   @{
+                   @"picker":   @{
+                       @"base":             [AKABinding_UIPickerView_valueBinding specification].bindingSourceSpecification,
+                       @"use":              @(AKABindingAttributeUseIgnore)
+                   }
+               }
+        };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
@@ -68,7 +72,7 @@
                                                    expression:(req_AKABindingExpression)bindingExpression
                                                       context:(req_AKABindingContext)bindingContext
                                                      delegate:(opt_AKABindingDelegate)delegate
-                                                        error:(NSError *__autoreleasing  _Nullable *)error
+                                                        error:(NSError* __autoreleasing _Nullable*)error
 {
     if (self = [super initWithTarget:target
                             property:property
@@ -95,17 +99,20 @@
             // unknown attributes.
             _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
                                                                                  property:nil
-                                                                               expression:bindingExpression
+                                                                               expression:bindingExpression.attributes[@"picker"]
                                                                                   context:bindingContext
                                                                                  delegate:self
                                                                                     error:error];
+
             if (_pickerBinding == nil)
             {
                 self = nil;
+
                 return self;
             }
         }
     }
+
     return self;
 }
 
@@ -136,7 +143,7 @@
                 binding.pickerBinding.bindingTarget.value = value;
             }
 
-                          observationStarter:
+            observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
@@ -148,7 +155,7 @@
                 return YES;
             }
 
-                          observationStopper:
+            observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
@@ -166,25 +173,28 @@
 - (void)viewValueDidChange
 {
     id value;
+
     if ([self.pickerBinding convertTargetValue:self.bindingTarget.value
                                  toSourceValue:&value
                                          error:nil])
     {
         id oldValue = self.previousValue;
         self.previousValue = value;
-        __weak AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* weakSelf = self;
         [self animateTriggerForValue:oldValue
                             changeTo:value
-                          animations:^{
-                              [weakSelf targetValueDidChangeFromOldValue:oldValue
-                                                              toNewValue:value];
-                          }];
+                          animations:
+         ^{
+             [self.pickerBinding updateSourceValueSkipDelegateRequests:YES];
+             [self targetValueDidChangeFromOldValue:oldValue
+                                             toNewValue:value];
+         }];
     }
 }
 
 - (BOOL)startObservingChanges
 {
     BOOL result = [super startObservingChanges];
+
     result = [self.pickerBinding startObservingChanges] && result;
 
     return result;
@@ -193,6 +203,7 @@
 - (BOOL)stopObservingChanges
 {
     BOOL result = [super stopObservingChanges];
+
     result = [self.pickerBinding stopObservingChanges] && result;
 
     return result;
@@ -218,6 +229,7 @@
                                                      changeTo:(id)newTargetValue
 {
     BOOL result = YES;
+
     if (binding == self.pickerBinding)
     {
         result = NO;
@@ -226,6 +238,7 @@
         if (self.triggerView.isFirstResponder && self.liveModelUpdates)
         {
             id<AKAControlViewBindingDelegate> delegate = self.delegate;
+
             if ([delegate respondsToSelector:@selector(shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
             {
                 result = [delegate shouldBinding:self
@@ -242,11 +255,19 @@
 
         if (result)
         {
+            // TODO: refactor that, too hacky: Find a good way to handle bindings for composite views
+            // where components are not part of the subview hierarchy (these are cleanly handled by controls
+            // managing bindings), like with keyboards. Problems:
+            // - Event propagation/handling
+            // - Binding expressions (too much nesting versus problems with combined attributes and their definitions)
+            // - Alt.: single keyboard trigger view with different possible keyboard type sub bindings
+            // - etc.
             // Hijack change and process it in this binding:
             result = NO;
             [self viewValueDidChange];
         }
     }
+
     return result;
 }
 
@@ -258,6 +279,7 @@
     NSParameterAssert(view == self.triggerView);
 
     // The view returned by the super class implementation, if defined and valid, is used by
+
     // self.pickerView if possible, see initialization
     return self.pickerView;
 }
@@ -275,6 +297,7 @@
 {
     if (!self.liveModelUpdates)
     {
+        [self.pickerBinding updateTargetValue];
         [self viewValueDidChange];
     }
 
@@ -294,14 +317,16 @@
 
         NSComparisonResult order = [self.pickerBinding orderInChoicesForValue:oldValue value:newValue];
 
-        switch(order)
+        switch (order)
         {
             case NSOrderedAscending:
                 options = UIViewAnimationOptionTransitionFlipFromTop;
                 break;
+
             case NSOrderedDescending:
                 options = UIViewAnimationOptionTransitionFlipFromBottom;
                 break;
+
             default:
                 options = UIViewAnimationOptionTransitionCrossDissolve;
                 break;

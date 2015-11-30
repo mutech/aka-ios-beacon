@@ -17,6 +17,7 @@
 @property(nonatomic, readonly)       AKAProperty*              choicesProperty;
 @property(nonatomic, readonly)       AKAUnboundProperty*       titleProperty;
 @property(nonatomic)                 NSInteger                 previouslySelectedRow;
+
 @end
 
 @implementation AKABinding_UIPickerView_valueBinding

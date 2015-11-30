@@ -10,4 +10,6 @@
 
 @interface UISegmentedControl (IBBindingProperties)
 
+@property(nonatomic) IBInspectable NSString* valueBinding_aka;
+
 @end

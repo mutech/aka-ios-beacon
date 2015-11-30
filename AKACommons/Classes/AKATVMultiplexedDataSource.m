@@ -41,7 +41,7 @@ typedef enum
 
 @property(nonatomic, readonly) NSMutableDictionary* dataSourcesByKey;
 @property(nonatomic, readonly) NSMutableDictionary* tableViewDelegateSelectorMapping;
-@property(nonatomic, readonly) NSMapTable<req_NSString, req_UITableViewDelegate>* tableViewDelegateOverrides;
+@property(nonatomic, readonly) NSMapTable<NSString*, id<UITableViewDelegate>>* tableViewDelegateOverrides;
 
 @property(nonatomic) NSMutableArray<AKATVSection*>* sectionSegments;
 @property(nonatomic, readonly) NSUInteger numberOfSections;

@@ -13,31 +13,57 @@
 @class AKAProperty;
 @class AKAUnboundProperty;
 
-typedef AKAUnboundProperty* _Nullable                   opt_AKAUnboundProperty;
-typedef AKAUnboundProperty* _Nonnull                    req_AKAUnboundProperty;
-typedef AKAProperty* _Nullable                          opt_AKAProperty;
-typedef AKAProperty* _Nonnull                           req_AKAProperty;
+#ifndef opt_AKAUnboundProperty
+#define opt_AKAUnboundProperty AKAUnboundProperty* _Nullable
+#endif
+#ifndef req_AKAUnboundProperty
+#define req_AKAUnboundProperty AKAUnboundProperty* _Nonnull
+#endif
+#ifndef opt_AKAProperty
+#define opt_AKAProperty AKAProperty* _Nullable
+#endif
+#ifndef req_AKAProperty
+#define req_AKAProperty AKAProperty* _Nonnull
+#endif
 
 typedef void(^AKAPropertySetter)(req_id target, opt_id value);
-typedef AKAPropertySetter _Nullable                     opt_AKAPropertySetter;
-typedef AKAPropertySetter _Nonnull                      req_AKAPropertySetter;
+#ifndef opt_AKAPropertySetter
+#define opt_AKAPropertySetter AKAPropertySetter _Nullable
+#endif
+#ifndef req_AKAPropertySetter
+#define req_AKAPropertySetter AKAPropertySetter _Nonnull
+#endif
 
 typedef opt_id(^AKAPropertyGetter)(req_id target);
-typedef AKAPropertyGetter _Nullable                     opt_AKAPropertyGetter;
-typedef AKAPropertyGetter _Nonnull                      req_AKAPropertyGetter;
+#ifndef opt_AKAPropertyGetter
+#define opt_AKAPropertyGetter AKAPropertyGetter _Nullable
+#endif
+#ifndef req_AKAPropertyGetter
+#define req_AKAPropertyGetter AKAPropertyGetter _Nonnull
+#endif
 
 typedef void(^AKAPropertyChangeObserver)(opt_id oldValue, opt_id newValue);
-typedef AKAPropertyChangeObserver _Nullable             opt_AKAPropertyChangeObserver;
-typedef AKAPropertyChangeObserver _Nonnull              req_AKAPropertyChangeObserver;
+#ifndef opt_AKAPropertyChangeObserver
+#define opt_AKAPropertyChangeObserver AKAPropertyChangeObserver _Nullable
+#endif
+#ifndef req_AKAPropertyChangeObserver
+#define req_AKAPropertyChangeObserver AKAPropertyChangeObserver _Nonnull
+#endif
 
 typedef BOOL(^AKAPropertyObservationStarter)(req_id target);
-typedef AKAPropertyObservationStarter _Nullable         opt_AKAPropertyObservationStarter;
+#ifndef opt_AKAPropertyObservationStarter
+#define opt_AKAPropertyObservationStarter AKAPropertyObservationStarter _Nullable
+#endif
 
 typedef BOOL(^AKAPropertyObservationStopper)(req_id target);
-typedef AKAPropertyObservationStopper _Nullable         opt_AKAPropertyObservationStopper;
+#ifndef opt_AKAPropertyObservationStopper
+#define opt_AKAPropertyObservationStopper AKAPropertyObservationStopper _Nullable
+#endif
 
 typedef opt_id(^AKAPropertyComputation)(opt_id value);
-typedef AKAPropertyComputation _Nonnull                 req_AKAPropertyComputation;
+#ifndef req_AKAPropertyComputation
+#define req_AKAPropertyComputation AKAPropertyComputation _Nonnull
+#endif
 
 
 #pragma mark - AKAUnboundProperty

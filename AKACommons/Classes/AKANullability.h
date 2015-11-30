@@ -12,94 +12,250 @@
 #ifndef AKANullability_h
 #define AKANullability_h
 
-// Rationale:
-//
-// Adding nullability annotations (both to support Swift and also for the greater good)
-// makes interfaces very unreadable, so unreadable that I am even willing to create
-// typedefs for about every frequently used type.
-//
-// The advantage for readability should become clear if you compare the typedefs to their
-// definitions.
-//
-// So far, I used the prefix "opt_" for nullable types and "req_" non-nullables. A special
-// case is "out_" which is primarily used for NSError, where both the error itself and its
-// storage location are nullable.
+/* Rationale:
+ 
+ We decided to (progressively) use nullability annotations in all interfaces, for the sake of Swift and also for the greater good.
+ 
+ That however rendered the source completely unreadable (Objective-C is already noisy, but with type declarations like `NSError* _Nullable __autoreleasing*_Nullable` it's just going too far.
+ 
+ So we decided to create type aliases using prefixes like 'opt_' (-ional), 'req_' (-uired), 'out_' (optional output parameter), 'reqout_' (required output parameter) and 'inout_' (optional input/output parameter). Out- and inout types are pointers to the respective type.
+ 
+ We initially used typedefs, but since these are visible in Swift (where it just creates confusion but doesn't help readability) we decided to use macros instead.
+ 
+ The #ifdef's should not be necessary if you create typedefs for prefixed type names such as opt_AKAProperty. We use them here, because it seems possible that something like out_NSError might be defined by another party. In this case we expect that it will be easier to detect such a conflict if we use their definition and get errors on our side of the table, since we are obviously not following naming conventions with this approach (the other party might be Apple).
+
+ We hate this approach, we just hate unreadable source code a bit more. If your point of view differs, we apologize (sincerely).
+ */
 
 
+#ifndef opt_id
+#define opt_id                      id _Nullable
+#endif
+#ifndef req_id
+#define req_id                      id _Nonnull
+#endif
+#ifndef out_id
+#define out_id                      id __autoreleasing _Nullable * _Nullable
+#endif
+#ifndef inout_id
+#define inout_id                    out_id
+#endif
 
-typedef id _Nullable                                    opt_id;
-typedef id _Nonnull                                     req_id;
-typedef id __autoreleasing _Nullable * _Nullable        out_id;
-typedef out_id                                          inout_id;
+#ifndef opt_id_NSCopying
+#define opt_id_NSCopying            id<NSCopying> _Nullable
+#endif
+#ifndef req_id_NSCopying
+#define req_id_NSCopying            id<NSCopying> _Nonnull
+#endif
 
-typedef id<NSCopying> _Nullable                         opt_id_NSCopying;
-typedef id<NSCopying> _Nonnull                          req_id_NSCopying;
 
+#ifndef opt_NSObject
+#define opt_NSObject                NSObject* _Nullable
+#endif
+#ifndef req_NSObject
+#define req_NSObject                NSObject* _Nonnull
+#endif
 
-typedef NSObject* _Nullable                             opt_NSObject;
-typedef NSObject* _Nonnull                              req_NSObject;
+#ifndef opt_Class
+#define opt_Class                   Class _Nullable
+#endif
+#ifndef req_Class
+#define req_Class                   Class _Nonnull
+#endif
+#ifndef out_Class
+#define out_Class                   Class _Nullable* _Nullable
+#endif
 
-typedef Class _Nullable                                 opt_Class;
-typedef Class _Nonnull                                  req_Class;
-typedef Class _Nullable* _Nullable                      out_Class;
+#ifndef outreq_BOOL
+#define outreq_BOOL                 BOOL* _Nonnull
+#endif
 
-typedef BOOL* _Nonnull                                  outreq_BOOL;
+#ifndef opt_NSError
+#define opt_NSError                 NSError* _Nullable
+#endif
+#ifndef out_NSError
+#define out_NSError                 NSError* _Nullable __autoreleasing*_Nullable
+#endif
+#ifndef req_NSError
+#define req_NSError                 NSError* _Nonnull
+#endif
+#ifndef inout_NSError
+#define inout_NSError               out_NSError
+#endif
 
-typedef NSError* _Nullable                              opt_NSError;
-typedef NSError* _Nullable __autoreleasing*_Nullable    out_NSError;
-typedef out_NSError                                     inout_NSError;
+#ifndef opt_NSString
+#define opt_NSString                NSString* _Nullable
+#endif
+#ifndef req_NSString
+#define req_NSString                NSString* _Nonnull
+#endif
+#ifndef out_NSString
+#define out_NSString                NSString* _Nullable __autoreleasing*_Nullable
+#endif
 
-typedef NSString* _Nullable                             opt_NSString;
-typedef NSString* _Nonnull                              req_NSString;
-typedef NSString* _Nullable __autoreleasing*_Nullable   out_NSString;
+#ifndef out_unichar
+#define out_unichar                 unichar* _Nullable
+#endif
 
-typedef unichar* _Nullable                              out_unichar;
+#ifndef opt_NSNumber
+#define opt_NSNumber                NSNumber* _Nullable
+#endif
+#ifndef req_NSNumber
+#define req_NSNumber                NSNumber* _Nonnull
+#endif
+#ifndef out_NSNumber
+#define out_NSNumber                NSNumber* _Nullable __autoreleasing*_Nullable
+#endif
 
-typedef NSNumber* _Nullable                             opt_NSNumber;
-typedef NSNumber* _Nonnull                              req_NSNumber;
-typedef NSNumber* _Nullable __autoreleasing*_Nullable   out_NSNumber;
+#ifndef opt_NSDate
+#define opt_NSDate                  NSDate* _Nullable
+#endif
+#ifndef req_NSDate
+#define req_NSDate                  NSDate* _Nonnull
+#endif
 
-typedef NSDate* _Nullable                               opt_NSDate;
-typedef NSDate* _Nonnull                                req_NSDate;
+#ifndef opt_NSArray
+#define opt_NSArray                 NSArray* _Nullable
+#endif
+#ifndef req_NSArray
+#define req_NSArray                 NSArray* _Nonnull
+#endif
 
-typedef NSArray* _Nullable                              opt_NSArray;
-typedef NSArray* _Nonnull                               req_NSArray;
+#ifndef opt_NSSet
+#define opt_NSSet                   NSSet* _Nullable
+#endif
+#ifndef req_NSSet
+#define req_NSSet                   NSSet* _Nonnull
+#endif
 
-typedef NSSet* _Nullable                                opt_NSSet;
-typedef NSSet* _Nonnull                                 req_NSSet;
+#ifndef opt_NSDictionary
+#define opt_NSDictionary            NSDictionary* _Nullable
+#endif
+#ifndef req_NSDictionary
+#define req_NSDictionary            NSDictionary* _Nonnull
+#endif
+#ifndef out_NSDictionary
+#define out_NSDictionary            NSDictionary* _Nullable __autoreleasing* _Nullable
+#endif
+#ifndef opt_NSMutableDictionary
+#define opt_NSMutableDictionary     NSMutableDictionary* _Nullable
+#endif
+#ifndef req_NSMutableDictionary
+#define req_NSMutableDictionary     NSMutableDictionary* _Nonnull
+#endif
 
-typedef NSDictionary* _Nullable                         opt_NSDictionary;
-typedef NSDictionary* _Nonnull                          req_NSDictionary;
-typedef NSDictionary* _Nullable __autoreleasing* _Nullable out_NSDictionary;
-typedef NSMutableDictionary* _Nullable                  opt_NSMutableDictionary;
-typedef NSMutableDictionary* _Nonnull                   req_NSMutableDictionary;
+#ifndef opt_NSFormatter
+#define opt_NSFormatter             NSFormatter* _Nullable
+#endif
+#ifndef req_NSFormatter
+#define req_NSFormatter             NSFormatter* _Nonnull
+#endif
+#ifndef opt_NSDateFormatter
+#define opt_NSDateFormatter         NSDateFormatter* _Nullable
+#endif
+#ifndef req_NSDateFormatter
+#define req_NSDateFormatter         NSDateFormatter* _Nonnull
+#endif
+#ifndef opt_NSNumberFormatter
+#define opt_NSNumberFormatter       NSNumberFormatter* _Nullable
+#endif
+#ifndef req_NSNumberFormatter
+#define req_NSNumberFormatter       NSNumberFormatter* _Nonnull
+#endif
 
-typedef NSIndexPath* _Nullable                          opt_NSIndexPath;
-typedef NSIndexPath* _Nonnull                           req_NSIndexPath;
+#ifndef opt_NSLocale
+#define opt_NSLocale                NSLocale* _Nullable
+#endif
+#ifndef req_NSLocale
+#define req_NSLocale                NSLocale* _Nonnull
+#endif
+#ifndef opt_NSCalendar
+#define opt_NSCalendar              NSCalendar* _Nullable
+#endif
+#ifndef req_NSCalendar
+#define req_NSCalendar              NSCalendar* _Nonnull
+#endif
+#ifndef opt_NSTimeZone
+#define opt_NSTimeZone              NSTimeZone* _Nullable
+#endif
+#ifndef req_NSTimeZone
+#define req_NSTimeZone              NSTimeZone* _Nonnull
+#endif
 
-typedef SEL _Nullable                                   opt_SEL;
-typedef SEL _Nonnull                                    req_SEL;
+#ifndef opt_NSIndexPath
+#define opt_NSIndexPath             NSIndexPath* _Nullable
+#endif
+#ifndef req_NSIndexPath
+#define req_NSIndexPath             NSIndexPath* _Nonnull
+#endif
 
-typedef UIResponder* _Nullable                          opt_UIResponder;
-typedef UIResponder* _Nonnull                           req_UIResponder;
+#ifndef opt_SEL
+#define opt_SEL                     SEL _Nullable
+#endif
+#ifndef req_SEL
+#define req_SEL                     SEL _Nonnull
+#endif
 
-typedef UIView* _Nullable                               opt_UIView;
-typedef UIView* _Nonnull                                req_UIView;
-typedef UILabel* _Nullable                              opt_UILabel;
-typedef UILabel* _Nonnull                               req_UILabel;
-typedef UITextField* _Nullable                          opt_UITextField;
-typedef UITextField* _Nonnull                           req_UITextField;
-typedef UITextView* _Nullable                           opt_UITextView;
-typedef UITextView* _Nonnull                            req_UITextView;
-typedef UISwitch* _Nullable                             opt_UISwitch;
-typedef UISwitch* _Nonnull                              req_UISwitch;
-typedef UITableView* _Nullable                          opt_UITableView;
-typedef UITableView* _Nonnull                           req_UITableView;
-typedef UITableViewCell* _Nullable                      opt_UITableViewCell;
-typedef UITableViewCell* _Nonnull                       req_UITableViewCell;
-typedef id<UITableViewDataSource>_Nullable              opt_UITableViewDataSource;
-typedef id<UITableViewDataSource>_Nonnull               req_UITableViewDataSource;
-typedef id<UITableViewDelegate>_Nullable                opt_UITableViewDelegate;
-typedef id<UITableViewDelegate>_Nonnull                 req_UITableViewDelegate;
+#ifndef opt_UIResponder
+#define opt_UIResponder             UIResponder* _Nullable
+#endif
+#ifndef req_UIResponder
+#define req_UIResponder             UIResponder* _Nonnull
+#endif
+
+#ifndef opt_UIView
+#define opt_UIView                  UIView* _Nullable
+#endif
+#ifndef req_UIView
+#define req_UIView                  UIView* _Nonnull
+#endif
+#ifndef opt_UILabel
+#define opt_UILabel                 UILabel* _Nullable
+#endif
+#ifndef req_UILabel
+#define req_UILabel                 UILabel* _Nonnull
+#endif
+#ifndef opt_UITextField
+#define opt_UITextField             UITextField* _Nullable
+#endif
+#ifndef req_UITextField
+#define req_UITextField             UITextField* _Nonnull
+#endif
+#ifndef opt_UITextView
+#define opt_UITextView              UITextView* _Nullable
+#endif
+#ifndef req_UITextView
+#define req_UITextView              UITextView* _Nonnull
+#endif
+#ifndef opt_UISwitch
+#define opt_UISwitch                UISwitch* _Nullable
+#endif
+#ifndef req_UISwitch
+#define req_UISwitch                UISwitch* _Nonnull
+#endif
+#ifndef opt_UITableView
+#define opt_UITableView             UITableView* _Nullable
+#endif
+#ifndef req_UITableView
+#define req_UITableView             UITableView* _Nonnull
+#endif
+#ifndef opt_UITableViewCell
+#define opt_UITableViewCell         UITableViewCell* _Nullable
+#endif
+#ifndef req_UITableViewCell
+#define req_UITableViewCell         UITableViewCell* _Nonnull
+#endif
+#ifndef opt_UITableViewDataSource
+#define opt_UITableViewDataSource   id<UITableViewDataSource>_Nullable
+#endif
+#ifndef req_UITableViewDataSource
+#define req_UITableViewDataSource   id<UITableViewDataSource>_Nonnull
+#endif
+#ifndef opt_UITableViewDelegate
+#define opt_UITableViewDelegate     id<UITableViewDelegate>_Nullable
+#endif
+#ifndef req_UITableViewDelegate
+#define req_UITableViewDelegate     id<UITableViewDelegate>_Nonnull
+#endif
 
 #endif /* AKANullability_h */

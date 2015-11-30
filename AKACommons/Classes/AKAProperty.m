@@ -807,6 +807,7 @@
     if (!result && self.observationStarter)
     {
         result = self.observationStarter(self.target);
+        _isObservingChanges = result;
     }
     return result;
 }
@@ -817,6 +818,7 @@
     if (!result)
     {
         result = self.observationStopper(self.target);
+        _isObservingChanges = !result;
     }
     return result;
 }

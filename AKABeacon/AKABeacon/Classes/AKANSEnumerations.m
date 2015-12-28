@@ -443,4 +443,27 @@
     return result;
 }
 
+#pragma mark - String Compare Options
+
++ (NSDictionary<NSString*, NSNumber*>*)       stringCompareOptions
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result =
+        @{ @"CaseInsensitiveSearch":        @(NSCaseInsensitiveSearch),
+           @"LiteralSearch":                @(NSLiteralSearch),
+           @"BackwardsSearch":              @(NSBackwardsSearch),
+           @"AnchoredSearch":               @(NSAnchoredSearch),
+           @"NumericSearch":                @(NSNumericSearch),
+           @"DiacriticInsensitiveSearch":   @(NSDiacriticInsensitiveSearch),
+           @"WidthInsensitiveSearch":       @(NSWidthInsensitiveSearch),
+           @"ForcedOrderingSearch":         @(NSForcedOrderingSearch),
+           @"RegularExpressionSearch":      @(NSRegularExpressionSearch) };
+    });
+
+    return result;
+}
+
 @end

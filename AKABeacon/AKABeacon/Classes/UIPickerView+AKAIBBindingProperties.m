@@ -11,6 +11,7 @@
 #import "UIPickerView+AKAIBBindingProperties.h"
 #import "AKABinding_UIPickerView_valueBinding.h"
 #import "AKAViewBinding+IBPropertySupport.h"
+#import "AKAScalarControl.h"
 
 @implementation UIPickerView (AKAIBBindingProperties)
 

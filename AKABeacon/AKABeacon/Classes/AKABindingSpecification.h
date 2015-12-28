@@ -58,9 +58,14 @@ typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
     AKABindingAttributeUseAssignValueToBindingProperty,
 
     /**
-       The attribute's binding expression will be used to create a property binding targeting the owner binding's bindingProperty specified in the attribute specification.
+     The attribute's binding expression will be used to create a property binding targeting the owner binding's bindingProperty specified in the attribute specification.
      */
-    AKABindingAttributeUseBindToBindingProperty
+    AKABindingAttributeUseBindToBindingProperty,
+
+    /**
+     The attribute's binding expression will be used to create a property binding targeting the binding target. This allows multiple target property bindings to be defined in a binding expression using attributes (most common use case is the style binding for views.
+     */
+    AKABindingAttributeUseBindToTargetProperty
 };
 
 
@@ -255,12 +260,15 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
      */
     AKABindingExpressionTypeAnyColorConstant = (AKABindingExpressionTypeUIColorConstant | AKABindingExpressionTypeCGColorConstant),
 
+    AKABindingExpressionTypeUIColor =
+        (AKABindingExpressionTypeUIColorConstant |
+         AKABindingExpressionTypeAnyKeyPath),
+
     /**
      Specifies a number constant expression (integer (long logn) or double)
      */
     AKABindingExpressionTypeAnyNumberConstant = (AKABindingExpressionTypeIntegerConstant |
                                                  AKABindingExpressionTypeDoubleConstant),
-
 
     /**
      Specifies a number constant, key path or enum expression.

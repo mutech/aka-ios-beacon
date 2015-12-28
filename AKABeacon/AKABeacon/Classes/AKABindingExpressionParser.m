@@ -16,131 +16,115 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)parserWithString:(NSString *)string
++ (instancetype)parserWithString:(NSString*)string
 {
     return [[AKABindingExpressionParser alloc] initWithString:string];
 }
 
-- (instancetype)initWithString:(NSString *)string
+- (instancetype)initWithString:(NSString*)string
 {
     if (self = [super init])
     {
         _scanner = [NSScanner scannerWithString:string];
     }
+
     return self;
 }
 
 #pragma mark - Configuration
 
-static NSString* const keywordTrue =        @"true";
-static NSString* const keywordFalse =       @"false";
-static NSString* const keywordEnum =        @"enum";
-static NSString* const keywordOptions =     @"options";
-static NSString* const keywordData =        @"data";
-static NSString* const keywordRoot =        @"root";
-static NSString* const keywordControl =     @"control";
-+ (NSString*) keywordTrue       { return    keywordTrue; }
-+ (NSString*) keywordFalse      { return    keywordFalse; }
-+ (NSString*) keywordEnum       { return    keywordEnum; }
-+ (NSString*) keywordOptions    { return    keywordOptions; }
-+ (NSString*) keywordData       { return    keywordData; }
-+ (NSString*) keywordRoot       { return    keywordRoot; }
-+ (NSString*) keywordControl    { return    keywordControl; }
+static NSString*const   keywordTrue = @"true";
+static NSString*const   keywordFalse = @"false";
+static NSString*const   keywordEnum = @"enum";
+static NSString*const   keywordOptions = @"options";
+static NSString*const   keywordData = @"data";
+static NSString*const   keywordRoot = @"root";
+static NSString*const   keywordControl = @"control";
++ (NSString*)           keywordTrue       { return keywordTrue; }
++ (NSString*)           keywordFalse      { return keywordFalse; }
++ (NSString*)           keywordEnum       { return keywordEnum; }
++ (NSString*)           keywordOptions    { return keywordOptions; }
++ (NSString*)           keywordData       { return keywordData; }
++ (NSString*)           keywordRoot       { return keywordRoot; }
++ (NSString*)           keywordControl    { return keywordControl; }
 
-static NSString* const keywordColor =       @"color";
-static NSString* const keywordUIColor =     @"UIColor";
-static NSString* const keywordCGColor =     @"CGColor";
-+ (NSString*) keywordColor      { return    keywordColor; }
-+ (NSString*) keywordUIColor    { return    keywordUIColor; }
-+ (NSString*) keywordCGColor    { return    keywordCGColor; }
+static NSString*const   keywordColor = @"color";
+static NSString*const   keywordUIColor = @"UIColor";
+static NSString*const   keywordCGColor = @"CGColor";
++ (NSString*)           keywordColor      { return keywordColor; }
++ (NSString*)           keywordUIColor    { return keywordUIColor; }
++ (NSString*)           keywordCGColor    { return keywordCGColor; }
 
-static NSString* const keywordFont =        @"font";
-static NSString* const keywordUIFont =      @"UIFont";
-+ (NSString*) keywordFont       { return    keywordFont; }
-+ (NSString*) keywordUIFont     { return    keywordUIFont; }
+static NSString*const   keywordFont = @"font";
+static NSString*const   keywordUIFont = @"UIFont";
++ (NSString*)           keywordFont       { return keywordFont; }
++ (NSString*)           keywordUIFont     { return keywordUIFont; }
 
-static NSString* const keywordPoint =       @"point";
-static NSString* const keywordCGPoint =     @"CGPoint";
-static NSString* const keywordSize =        @"size";
-static NSString* const keywordCGSize =      @"CGSize";
-static NSString* const keywordRect =        @"rect";
-static NSString* const keywordCGRect =      @"CGRect";
-+ (NSString*) keywordPoint      { return    keywordPoint; }
-+ (NSString*) keywordCGPoint    { return    keywordCGPoint; }
-+ (NSString*) keywordSize       { return    keywordSize; }
-+ (NSString*) keywordCGSize     { return    keywordCGSize; }
-+ (NSString*) keywordRect       { return    keywordRect; }
-+ (NSString*) keywordCGRect     { return    keywordCGRect; }
+static NSString*const   keywordPoint = @"point";
+static NSString*const   keywordCGPoint = @"CGPoint";
+static NSString*const   keywordSize = @"size";
+static NSString*const   keywordCGSize = @"CGSize";
+static NSString*const   keywordRect = @"rect";
+static NSString*const   keywordCGRect = @"CGRect";
++ (NSString*)           keywordPoint      { return keywordPoint; }
++ (NSString*)           keywordCGPoint    { return keywordCGPoint; }
++ (NSString*)           keywordSize       { return keywordSize; }
++ (NSString*)           keywordCGSize     { return keywordCGSize; }
++ (NSString*)           keywordRect       { return keywordRect; }
++ (NSString*)           keywordCGRect     { return keywordCGRect; }
 
 + (NSDictionary<NSString*, NSDictionary<NSString*, Class>*>*)namedScopesAndConstants
 {
     static NSDictionary* namedScopes;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         namedScopes =
-        @{ keywordTrue:    @{ @"value": @(YES),
-                              @"type":  [AKABooleanConstantBindingExpression class]
-                              },
-           keywordFalse:   @{ @"value": @(NO),
-                              @"type":  [AKABooleanConstantBindingExpression class]
-                              },
+            @{ keywordTrue:    @{ @"value": @(YES),
+                                  @"type":  [AKABooleanConstantBindingExpression class] },
+               keywordFalse:   @{ @"value": @(NO),
+                                  @"type":  [AKABooleanConstantBindingExpression class] },
 
-           keywordEnum:    @{ @"value": [NSNull null],
-                              @"type":  [AKAEnumConstantBindingExpression class]
-                              },
-           keywordOptions: @{ @"value": [NSNull null],
-                              @"type":  [AKAOptionsConstantBindingExpression class]
-                              },
+               keywordEnum:    @{ @"value": [NSNull null],
+                                  @"type":  [AKAEnumConstantBindingExpression class] },
+               keywordOptions: @{ @"value": [NSNull null],
+                                  @"type":  [AKAOptionsConstantBindingExpression class] },
 
-           keywordData:    @{ @"value": [NSNull null],
-                              @"type":  [AKADataContextKeyPathBindingExpression class]
-                              },
-           keywordRoot:    @{ @"value": [NSNull null],
-                              @"type":  [AKARootDataContextKeyPathBindingExpression class]
-                              },
-           keywordControl: @{ @"value": [NSNull null],
-                              @"type":  [AKAControlKeyPathBindingExpression class]
-                              },
+               keywordData:    @{ @"value": [NSNull null],
+                                  @"type":  [AKADataContextKeyPathBindingExpression class] },
+               keywordRoot:    @{ @"value": [NSNull null],
+                                  @"type":  [AKARootDataContextKeyPathBindingExpression class] },
+               keywordControl: @{ @"value": [NSNull null],
+                                  @"type":  [AKAControlKeyPathBindingExpression class] },
 
-           keywordColor:   @{ @"value": [NSNull null],
-                              @"type":  [AKAUIColorConstantBindingExpression class]
-                              },
-           keywordUIColor: @{ @"value": [NSNull null],
-                              @"type":  [AKAUIColorConstantBindingExpression class]
-                              },
-           keywordCGColor: @{ @"value": [NSNull null],
-                              @"type":  [AKACGColorConstantBindingExpression class]
-                              },
+               keywordColor:   @{ @"value": [NSNull null],
+                                  @"type":  [AKAUIColorConstantBindingExpression class] },
+               keywordUIColor: @{ @"value": [NSNull null],
+                                  @"type":  [AKAUIColorConstantBindingExpression class] },
+               keywordCGColor: @{ @"value": [NSNull null],
+                                  @"type":  [AKACGColorConstantBindingExpression class] },
 
-           keywordFont:    @{ @"value": [NSNull null],
-                              @"type":  [AKAUIFontConstantBindingExpression class]
-                              },
-           keywordUIFont:  @{ @"value": [NSNull null],
-                              @"type":  [AKAUIFontConstantBindingExpression class]
-                              },
+               keywordFont:    @{ @"value": [NSNull null],
+                                  @"type":  [AKAUIFontConstantBindingExpression class] },
+               keywordUIFont:  @{ @"value": [NSNull null],
+                                  @"type":  [AKAUIFontConstantBindingExpression class] },
 
-           keywordPoint:   @{ @"value": [NSNull null],
-                              @"type":  [AKACGPointConstantBindingExpression class]
-                              },
-           keywordCGPoint: @{ @"value": [NSNull null],
-                              @"type":  [AKACGPointConstantBindingExpression class]
-                              },
+               keywordPoint:   @{ @"value": [NSNull null],
+                                  @"type":  [AKACGPointConstantBindingExpression class] },
+               keywordCGPoint: @{ @"value": [NSNull null],
+                                  @"type":  [AKACGPointConstantBindingExpression class] },
 
-           keywordSize:   @{ @"value": [NSNull null],
-                              @"type":  [AKACGSizeConstantBindingExpression class]
-                              },
-           keywordCGSize: @{ @"value": [NSNull null],
-                              @"type":  [AKACGSizeConstantBindingExpression class]
-                              },
+               keywordSize:   @{ @"value": [NSNull null],
+                                 @"type":  [AKACGSizeConstantBindingExpression class] },
+               keywordCGSize: @{ @"value": [NSNull null],
+                                 @"type":  [AKACGSizeConstantBindingExpression class] },
 
-           keywordRect:    @{ @"value": [NSNull null],
-                              @"type":  [AKACGRectConstantBindingExpression class]
-                              },
-           keywordCGRect:  @{ @"value": [NSNull null],
-                              @"type":  [AKACGRectConstantBindingExpression class]
-                              },
-           };
+               keywordRect:    @{ @"value": [NSNull null],
+                                  @"type":  [AKACGRectConstantBindingExpression class] },
+               keywordCGRect:  @{ @"value": [NSNull null],
+                                  @"type":  [AKACGRectConstantBindingExpression class] }, };
     });
+
     return namedScopes;
 }
 
@@ -148,6 +132,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 {
     static NSDictionary* operators;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         // Used to recognize invalid operators and to decide if an operator requires
         // a subsequent key as in: "...@avg.salary" vs. "...@count"
@@ -161,17 +146,17 @@ static NSString* const keywordCGRect =      @"CGRect";
                        @"distinctUnionOfArrays": @YES,
                        @"unionOfArrays": @YES,
                        @"distinctUnionOfSets": @YES,
-                       @"unionOfSets": @YES
-                       };
+                       @"unionOfSets": @YES };
     });
+
     return operators;
 }
 
 #pragma mark - Binding Expression Parser
 
-- (BOOL)parseBindingExpression:(out_AKABindingExpression)store
-                forBindingType:(opt_Class)bindingType
-                         error:(out_NSError)error
+- (BOOL)                     parseBindingExpression:(out_AKABindingExpression)store
+                                  withSpecification:(opt_AKABindingSpecification)specification
+                                              error:(out_NSError)error
 {
     id primaryExpression = nil;
     NSDictionary* attributes = nil;
@@ -179,7 +164,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 
     [self skipWhitespaceAndNewlineCharacters];
     BOOL result = [self parseConstantOrScope:&primaryExpression
-                              forBindingType:bindingType
+                           withSpecification:specification
                                         type:&bindingExpressionType
                                        error:error];
 
@@ -204,7 +189,6 @@ static NSString* const keywordCGRect =      @"CGRect";
                 ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]] &&
                 ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
             {
-
                 [self registerParseError:error
                                 withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
                               atPosition:self.scanner.scanLocation
@@ -213,6 +197,7 @@ static NSString* const keywordCGRect =      @"CGRect";
             else
             {
                 result = [self parseKeyPath:&primaryExpression error:error];
+
                 if (result && bindingExpressionType == nil)
                 {
                     bindingExpressionType = [AKAKeyPathBindingExpression class];
@@ -225,12 +210,13 @@ static NSString* const keywordCGRect =      @"CGRect";
     if (result)
     {
         [self skipWhitespaceAndNewlineCharacters];
+
         if ([self isAtCharacter:'{'])
         {
             BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
 
             result = [self parseAttributes:&attributes
-                            forBindingType:bindingType
+                         withSpecification:specification
                                  asOptions:isOptions
                                      error:error];
         }
@@ -248,17 +234,17 @@ static NSString* const keywordCGRect =      @"CGRect";
         AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
         bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
                                                               attributes:attributes
-                                                             bindingType:bindingType];
+                                                           specification:specification];
         *store = bindingExpression;
     }
 
     return result;
 }
 
-- (BOOL)parseConstantOrScope:(out_id)constantStore
-              forBindingType:(opt_Class)bindingType
-                        type:(out_Class)typeStore
-                       error:(out_NSError)error
+- (BOOL)                       parseConstantOrScope:(out_id)constantStore
+                                  withSpecification:(opt_AKABindingSpecification)specification
+                                               type:(out_Class)typeStore
+                                              error:(out_NSError)error
 {
     BOOL result = YES;
     Class type = nil;
@@ -279,9 +265,11 @@ static NSString* const keywordCGRect =      @"CGRect";
                                           type:&type
                                          error:error];
         }
+
         if (result)
         {
             result = [self skipCharacter:')'];
+
             if (!result)
             {
                 [self registerParseError:error
@@ -296,9 +284,11 @@ static NSString* const keywordCGRect =      @"CGRect";
         type = [AKAClassConstantBindingExpression class];
         NSString* className;
         result = [self parseIdentifier:&className error:error];
+
         if (result)
         {
             constant = NSClassFromString(className);
+
             if (constant == nil)
             {
                 result = NO;
@@ -307,9 +297,11 @@ static NSString* const keywordCGRect =      @"CGRect";
                               atPosition:self.scanner.scanLocation
                                   reason:[NSString stringWithFormat:@"There is no class loaded with the name %@", className]];
             }
+
             if (result)
             {
                 result = [self skipCharacter:'>'];
+
                 if (!result)
                 {
                     [self registerParseError:error
@@ -326,16 +318,18 @@ static NSString* const keywordCGRect =      @"CGRect";
         NSMutableArray* array = [NSMutableArray new];
 
         [self skipWhitespaceAndNewlineCharacters];
-        BOOL done=(self.scanner.isAtEnd || [self skipCharacter:']']);
-        for (NSUInteger i=0; result && !done; ++i)
+        BOOL done = (self.scanner.isAtEnd || [self skipCharacter:']']);
+        for (NSUInteger i = 0; result && !done; ++i)
         {
             AKABindingExpression* item = nil;
 
-            opt_Class itemBindingType = [bindingType bindingTypeForBindingExpressionInPrimaryExpressionArray];
-
+            // TODO: get item specification from specification (add a property there)
+            opt_Class itemBindingType = [specification.bindingType bindingTypeForBindingExpressionInPrimaryExpressionArray];
+            opt_AKABindingSpecification itemSpecification = [itemBindingType specification];
             result = [self parseBindingExpression:&item
-                                   forBindingType:itemBindingType
+                                withSpecification:itemSpecification
                                             error:error];
+
             if (result)
             {
                 [array addObject:item];
@@ -346,6 +340,7 @@ static NSString* const keywordCGRect =      @"CGRect";
                                             error:error];
             }
         }
+
         if (result && array.count > 0)
         {
             constant = [NSArray arrayWithArray:array];
@@ -361,13 +356,16 @@ static NSString* const keywordCGRect =      @"CGRect";
     {
         NSString* identifier;
         result = [self parseIdentifier:&identifier error:error];
+
         if (result)
         {
             NSDictionary<NSString*, id>* namedScope = [AKABindingExpressionParser namedScopesAndConstants][identifier];
+
             if (namedScope != nil)
             {
                 type = namedScope[@"type"];
                 constant = namedScope[@"value"];
+
                 if (constant == [NSNull null])
                 {
                     constant = nil;
@@ -387,6 +385,7 @@ static NSString* const keywordCGRect =      @"CGRect";
     if (result)
     {
         NSAssert(constant != nil ? type != nil : YES, @"Expected a defined binding expression type if a constant was found");
+
         if (typeStore != nil)
         {
             *typeStore = type;
@@ -398,12 +397,12 @@ static NSString* const keywordCGRect =      @"CGRect";
             *constantStore = constant;
         }
     }
-    
+
     return result;
 }
 
-- (BOOL)              parseKeyPath:(out_NSString)store
-                             error:(out_NSError)error
+- (BOOL)                               parseKeyPath:(out_NSString)store
+                                              error:(out_NSError)error
 {
     NSUInteger start = self.scanner.scanLocation;
     NSUInteger length = 0;
@@ -413,6 +412,7 @@ static NSString* const keywordCGRect =      @"CGRect";
 
     BOOL done = self.scanner.isAtEnd;
     BOOL result = YES;
+
     while (result && !done)
     {
         // Record start of component for error reporting
@@ -432,9 +432,11 @@ static NSString* const keywordCGRect =      @"CGRect";
             else if ([self isAtValidFirstIdentifierCharacter])
             {
                 result = [self parseIdentifier:&lastOperator error:error];
+
                 if (result)
                 {
                     NSNumber* needsKey = self.keyPathOperators[lastOperator];
+
                     if (needsKey != nil)
                     {
                         expectKey = needsKey.boolValue;
@@ -502,30 +504,22 @@ static NSString* const keywordCGRect =      @"CGRect";
     return result;
 }
 
-- (BOOL)parseAttributes:(out_NSDictionary)store
-         forBindingType:(opt_Class)bindingType
-                  error:(out_NSError)error
-{
-    return [self parseAttributes:store
-                  forBindingType:bindingType
-                       asOptions:NO
-                           error:error];
-}
-
-- (BOOL)parseAttributes:(out_NSDictionary)store
-         forBindingType:(opt_Class)bindingType
-              asOptions:(BOOL)isEnum
-                  error:(out_NSError)error
+- (BOOL)                            parseAttributes:(out_NSDictionary)store
+                                  withSpecification:(opt_AKABindingSpecification)specification
+                                          asOptions:(BOOL)isEnum
+                                              error:(out_NSError)error
 {
     NSMutableDictionary* attributes = [AKAMutableOrderedDictionary new];
     BOOL result = [self skipCharacter:'{'];
     BOOL done = NO;
+
     while (result && !done)
     {
         NSString* identifier = nil;
         AKABindingExpression* attributeExpression = nil;
 
         [self skipWhitespaceAndNewlineCharacters];
+
         if (attributes.count == 0 && [self isAtCharacter:'}'])
         {
             // Allow for empty { }
@@ -551,6 +545,7 @@ static NSString* const keywordCGRect =      @"CGRect";
         if (result)
         {
             [self skipWhitespaceAndNewlineCharacters];
+
             if ([self skipCharacter:':'])
             {
                 if (isEnum)
@@ -563,8 +558,11 @@ static NSString* const keywordCGRect =      @"CGRect";
                 else
                 {
                     [self skipWhitespaceAndNewlineCharacters];
+
+                    AKABindingAttributeSpecification* attributeSpecification =
+                        specification.bindingSourceSpecification.attributes[identifier];
                     result = [self parseBindingExpression:&attributeExpression
-                                           forBindingType:[bindingType bindingTypeForAttributeNamed:identifier]
+                                        withSpecification:attributeSpecification
                                                     error:error];
                 }
             }
@@ -594,10 +592,10 @@ static NSString* const keywordCGRect =      @"CGRect";
     return result;
 }
 
-- (BOOL)parseListSeparator:(unichar)separator
-              orTerminator:(unichar)terminator
-           terminatorFound:(BOOL*_Nonnull)terminatorFound
-                     error:(out_NSError)error
+- (BOOL)                         parseListSeparator:(unichar)separator
+                                       orTerminator:(unichar)terminator
+                                    terminatorFound:(BOOL* _Nonnull)terminatorFound
+                                              error:(out_NSError)error
 {
     BOOL result = YES;
 
@@ -608,6 +606,7 @@ static NSString* const keywordCGRect =      @"CGRect";
     {
         [self skipWhitespaceAndNewlineCharacters];
         result = [self skipCharacter:separator];
+
         if (result)
         {
             // Allow for trailing ','
@@ -623,13 +622,15 @@ static NSString* const keywordCGRect =      @"CGRect";
         }
     }
     *terminatorFound = done;
+
     return result;
 }
 
-- (BOOL)           parseIdentifier:(out_NSString)store
-                             error:(out_NSError)error
+- (BOOL)                            parseIdentifier:(out_NSString)store
+                                              error:(out_NSError)error
 {
     BOOL result = [self isAtValidFirstIdentifierCharacter];
+
     if (result)
     {
         NSUInteger start = self.scanner.scanLocation++;
@@ -637,29 +638,33 @@ static NSString* const keywordCGRect =      @"CGRect";
         {
             ++self.scanner.scanLocation;
         }
+
         if (result && store)
         {
             *store = [self.scanner.string substringWithRange:NSMakeRange(start, self.scanner.scanLocation - start)];
         }
     }
+
     if (!result)
     {
         [self registerParseError:error
                         withCode:AKAParseErrorInvalidIdentifierCharacter
                       atPosition:self.scanner.scanLocation
-                              reason:@"Invalid character, expected a valid identifier character"];
+                          reason:@"Invalid character, expected a valid identifier character"];
     }
+
     return result;
 }
 
-- (BOOL)       parseStringConstant:(out_NSString)stringStorage
-                             error:(out_NSError)error
+- (BOOL)                        parseStringConstant:(out_NSString)stringStorage
+                                              error:(out_NSError)error
 {
     BOOL done = NO;
     BOOL result = [self skipCharacter:'"'];
+
     if (result)
     {
-        NSMutableString* string  = [NSMutableString new];
+        NSMutableString* string = [NSMutableString new];
 
         while (result && !done)
         {
@@ -679,6 +684,7 @@ static NSString* const keywordCGRect =      @"CGRect";
             else if ([self skipCharacter:'\\'])
             {
                 unichar escapedCharacter;
+
                 if ([self parseEscapedCharacter:&escapedCharacter error:error])
                 {
                     [string appendFormat:@"%C", escapedCharacter];
@@ -715,47 +721,59 @@ static NSString* const keywordCGRect =      @"CGRect";
     return result;
 }
 
-- (BOOL)     parseEscapedCharacter:(out_unichar)unicharStorage
-                             error:(out_NSError)error
+- (BOOL)                      parseEscapedCharacter:(out_unichar)unicharStorage
+                                              error:(out_NSError)error
 {
     BOOL result = YES;
     unichar unescaped = '\0';
     unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
+
     switch (c)
     {
         case 'a':
             unescaped = 0x07;
             break;
+
         case 'b':
             unescaped = 0x08;
             break;
+
         case 'f':
             unescaped = 0x0C;
             break;
+
         case 'n':
             unescaped = 0x0A;
             break;
+
         case 'r':
             unescaped = 0x0D;
             break;
+
         case 't':
             unescaped = 0x09;
             break;
+
         case 'v':
             unescaped = 0x0B;
             break;
+
         case '\\':
             unescaped = 0x5C;
             break;
+
         case '\'':
             unescaped = 0x27;
             break;
+
         case '\"':
             unescaped = 0x22;
             break;
+
         case '?':
             unescaped = 0x3F;
             break;
+
         case '0':
         case 'x':
         case 'u':
@@ -767,17 +785,18 @@ static NSString* const keywordCGRect =      @"CGRect";
             result = NO;
             break;
     }
+
     if (result && unicharStorage != nil)
     {
         *unicharStorage = unescaped;
     }
+
     return result;
 }
 
-
-- (BOOL)       parseNumberConstant:(out_id)constantStore
-                              type:(out_Class)typeStore
-                             error:(out_NSError)error
+- (BOOL)                        parseNumberConstant:(out_id)constantStore
+                                               type:(out_Class)typeStore
+                                              error:(out_NSError)error
 {
     BOOL result = YES;
     Class type = nil;
@@ -790,12 +809,14 @@ static NSString* const keywordCGRect =      @"CGRect";
         long long longValue;
         type = [AKAIntegerConstantBindingExpression class];
         result = [self.scanner scanLongLong:&longValue];
+
         if (result && constantStore != nil)
         {
             *constantStore = @(longValue);
         }
         // TODO: decide whether to support smaller integer types and if so, down cast if possible
     }
+
     if (!result || [self isAtValidDoubleCharacter])
     {
         self.scanner.scanLocation = savedLocation;
@@ -804,10 +825,12 @@ static NSString* const keywordCGRect =      @"CGRect";
 
         double doubleValue;
         result = [self.scanner scanDouble:&doubleValue];
+
         if (result && constantStore != nil)
         {
             *constantStore = @(doubleValue);
         }
+
         if (!result)
         {
             [self registerParseError:error
@@ -821,24 +844,26 @@ static NSString* const keywordCGRect =      @"CGRect";
     {
         *typeStore = type;
     }
+
     return result;
 }
 
 #pragma mark - Error Handling
 
-- (NSString*)contextMessage
+- (NSString*)                        contextMessage
 {
     return [self contextMessageWithMaxLeading:16
-                                             maxTrailing:10];
+                                  maxTrailing:10];
 }
 
-- (NSString*)contextMessageWithMaxLeading:(NSUInteger)maxLeading
-                              maxTrailing:(NSUInteger)maxTrailing
+- (NSString*)          contextMessageWithMaxLeading:(NSUInteger)maxLeading
+                                        maxTrailing:(NSUInteger)maxTrailing
 {
     NSString* result = nil;
 
     NSString* leadingContextElipsis = @"";
     NSString* leadingContext = @"";
+
     if (self.scanner.scanLocation > 0)
     {
         // Number of characters to the left of current location;
@@ -858,7 +883,8 @@ static NSString* const keywordCGRect =      @"CGRect";
 
     NSString* trailingContextElipsis = @"";
     NSString* trailingContext = @"";
-    if (self.scanner.string.length >= self.scanner.scanLocation+1)
+
+    if (self.scanner.string.length >= self.scanner.scanLocation + 1)
     {
         NSUInteger trailingContextLength = self.scanner.string.length - (self.scanner.scanLocation + 1);
 
@@ -893,19 +919,22 @@ static NSString* const keywordCGRect =      @"CGRect";
                   trailingContext,
                   trailingContextElipsis];
     }
+
     return result;
 }
 
-- (BOOL)        registerParseError:(out_NSError)error
-                          withCode:(AKABindingExpressionParseErrorCode)errorCode
-                        atPosition:(NSUInteger)position
-                            reason:(NSString*)reason
+- (BOOL)                         registerParseError:(out_NSError)error
+                                           withCode:(AKABindingExpressionParseErrorCode)errorCode
+                                         atPosition:(NSUInteger)position
+                                             reason:(NSString*)reason
 {
     BOOL result = (error != nil);
+
     if (result)
     {
         NSString* context = @"";
         BOOL isOff = self.scanner.scanLocation > self.scanner.string.length;
+
         if (!isOff)
         {
             context = [self contextMessage];
@@ -916,18 +945,21 @@ static NSString* const keywordCGRect =      @"CGRect";
                                  userInfo:@{ NSLocalizedDescriptionKey: description,
                                              NSLocalizedFailureReasonErrorKey: reason }];
     }
+
     return result;
 }
 
 #pragma mark - Scanner Tools (Convenience)
 
-- (BOOL)    isAtCharacter:(unichar)character
+- (BOOL)                              isAtCharacter:(unichar)character
 {
     BOOL result = NO;
+
     if (!self.scanner.isAtEnd)
     {
         result = [self.scanner.string characterAtIndex:self.scanner.scanLocation] == character;
     }
+
     return result;
 }
 
@@ -936,129 +968,153 @@ static NSString* const keywordCGRect =      @"CGRect";
     return [self isAtCharacter:'@'] || [self isAtValidFirstIdentifierCharacter];
 }
 
-- (BOOL)    isAtValidFirstNumberCharacter
+- (BOOL)              isAtValidFirstNumberCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-' || c == '+' || c == '.');
     }
+
     return result;
 }
 
-- (BOOL)    isAtValidDoubleCharacter
+- (BOOL)                   isAtValidDoubleCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-' || c == '+' || c == '.' || c == 'e' || c == 'E');
     }
+
     return result;
 }
 
-- (BOOL)    isAtValidFirstIntegerCharacter
+- (BOOL)             isAtValidFirstIntegerCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-');
     }
+
     return result;
 }
 
-- (BOOL)    isAtValidIntegerCharacter
+- (BOOL)                  isAtValidIntegerCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = (c >= '0' && c <= '9');
     }
+
     return result;
 }
 
-- (BOOL)    isAtValidFirstIdentifierCharacter
+- (BOOL)          isAtValidFirstIdentifierCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
     }
+
     return result;
 }
 
-- (BOOL)    isAtValidIdentifierCharacter
+- (BOOL)               isAtValidIdentifierCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_');
     }
+
     return result;
 }
 
-- (BOOL)    skipCharacter:(unichar)character
+- (BOOL)                              skipCharacter:(unichar)character
 {
     BOOL result = [self isAtCharacter:character];
+
     if (result)
     {
         [self skipCurrentCharacter];
     }
+
     return result;
 }
 
-- (BOOL)    skipCurrentCharacter
+- (BOOL)                       skipCurrentCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         self.scanner.scanLocation += 1;
     }
+
     return result;
 }
 
-- (BOOL)    isAtWhitespaceCharacter
+- (BOOL)                    isAtWhitespaceCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         result = [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self.scanner.string characterAtIndex:self.scanner.scanLocation]];
     }
+
     return result;
 }
 
-- (BOOL)    skipWhitespaceCharacters
+- (BOOL)                   skipWhitespaceCharacters
 {
     BOOL result = NO;
+
     while ([self isAtWhitespaceCharacter])
     {
         result |= [self skipCurrentCharacter];
     }
+
     return result;
 }
 
-- (BOOL)    isAtWhitespaceOrNewlineCharacter
+- (BOOL)           isAtWhitespaceOrNewlineCharacter
 {
     BOOL result = !self.scanner.isAtEnd;
+
     if (result)
     {
         result = [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self.scanner.string characterAtIndex:self.scanner.scanLocation]];
     }
+
     return result;
 }
 
 - (BOOL)    skipWhitespaceAndNewlineCharacters
 {
     BOOL result = NO;
+
     while ([self isAtWhitespaceOrNewlineCharacter])
     {
         result |= [self skipCurrentCharacter];
     }
+
     return result;
 }
 

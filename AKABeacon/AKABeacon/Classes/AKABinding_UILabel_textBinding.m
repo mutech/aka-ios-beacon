@@ -6,24 +6,22 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.NSObject_AKAConcurrencyTools;
+
 #import "AKABinding_UILabel_textBinding.h"
 #import "AKABinding_AKABinding_formatter.h"
 #import "AKABinding_AKABinding_numberFormatter.h"
 #import "AKABinding_AKABinding_dateFormatter.h"
+#import "AKABinding_AKABinding_attributedFormatter.h"
 
 #pragma mark - AKABinding_UILabel_textBinding - Private Interface
 #pragma mark -
 
-@interface AKABinding_UILabel_textBinding() <UITextFieldDelegate>
+@interface AKABinding_UILabel_textBinding () <UITextFieldDelegate, AKABindingDelegate>
 
 #pragma mark - Saved UILabel State
 
-#if RESTORE_BOUND_VIEW_STATE
-@property(nonatomic, nullable) NSString*       originalText;
-#endif
-
-@property(nonatomic) BOOL                       isObserving;
-@property(nonatomic) UIView*     originalInputAccessoryView;
+@property(nonatomic) BOOL isObserving;
 
 #pragma mark - Convenience
 
@@ -37,50 +35,58 @@
 
 @implementation AKABinding_UILabel_textBinding
 
-+ (AKABindingSpecification *)specification
++ (AKABindingSpecification*)specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
-        NSDictionary* spec =
-        @{ @"bindingType":          [AKABinding_UILabel_textBinding class],
-           @"targetType":           [UILabel class],
-           @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
-           @"attributes":
-               @{ @"numberFormatter":
-                      @{ @"bindingType":    [AKABinding_AKABinding_numberFormatter class],
-                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"numberFormatter"
-                         },
-                  @"dateFormatter":
-                      @{ @"bindingType":    [AKABinding_AKABinding_dateFormatter class],
-                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"dateFormatter"
-                         },
-                  @"formatter":
-                      @{ @"bindingType":    [AKABinding_AKABinding_formatter class],
-                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"formatter"
-                         },
-                  @"textForUndefinedValue":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"textForUndefinedValue"
-                         },
-                  @"textForYes":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"textForYes"
-                         },
-                  @"textForNo":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                         @"bindingProperty": @"textForNo"
-                         },
-                  },
-           };
+        NSDictionary* spec = @{
+            @"bindingType":          [AKABinding_UILabel_textBinding class],
+            @"targetType":           [UILabel class],
+            @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
+            @"attributes": @{
+                @"numberFormatter": @{
+                    @"bindingType":    [AKABinding_AKABinding_numberFormatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"numberFormatter"
+                },
+                @"dateFormatter": @{
+                    @"bindingType":    [AKABinding_AKABinding_dateFormatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"dateFormatter"
+                },
+                @"formatter": @{
+                    @"bindingType":    [AKABinding_AKABinding_formatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"formatter"
+                },
+                @"textAttributeFormatter": @{
+                    @"expressionType":  @(AKABindingExpressionTypeNone | AKABindingExpressionTypeAnyKeyPath),
+                    @"bindingType":     [AKABinding_AKABinding_attributedFormatter class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                    @"bindingProperty": @"textAttributeFormatter"
+                },
+                @"textForUndefinedValue": @{
+                    @"expressionType":  @(AKABindingExpressionTypeString),
+                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty": @"textForUndefinedValue"
+                },
+                @"textForYes": @{
+                    @"expressionType":  @(AKABindingExpressionTypeString),
+                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty": @"textForYes"
+                },
+                @"textForNo": @{
+                    @"expressionType":  @(AKABindingExpressionTypeString),
+                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                    @"bindingProperty": @"textForNo"
+                }
+            }
+        };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
+
     return result;
 }
 
@@ -100,6 +106,7 @@
             ^id (id target)
             {
                 AKABinding_UILabel_textBinding* binding = target;
+
                 return binding.label.text;
             }
                                       setter:
@@ -107,6 +114,7 @@
             {
                 AKABinding_UILabel_textBinding* binding = target;
                 NSString* text;
+
                 if ([value isKindOfClass:[NSString class]])
                 {
                     text = value;
@@ -133,37 +141,48 @@
                 }
 
                 binding.label.text = text;
+                if (self.textAttributeFormatter)
+                {
+                    [binding applyTextAttributesToLabelText];
+                }
             }
-                          observationStarter:
+            observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_UILabel_textBinding* binding = target;
+
                 if (!binding.isObserving)
                 {
                     binding.isObserving = YES;
-#if RESTORE_BOUND_VIEW_STATE
-                    binding.originalText = binding.label.text;
-#endif
                 }
+
                 return binding.isObserving;
             }
-                          observationStopper:
+            observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_UILabel_textBinding* binding = target;
+
                 if (binding.isObserving)
                 {
-#if RESTORE_BOUND_VIEW_STATE
-                    binding.label.text = binding.originalText;
-                    binding.originalText = nil;
-#endif
                     binding.isObserving = NO;
                 }
+
                 return !binding.isObserving;
             }];
 }
 
-- (UILabel *)label
+- (void)applyTextAttributesToLabelText
+{
+    if (self.label.text)
+    {
+        self.label.attributedText =
+            [self.textAttributeFormatter attributedStringForObjectValue:(req_NSString)self.label.text
+                                                  withDefaultAttributes:nil];
+    }
+}
+
+- (UILabel*)label
 {
     UIView* result = self.view;
 
@@ -172,7 +191,7 @@
     return (UILabel*)result;
 }
 
-- (void)setFormatter:(NSFormatter *)formatter
+- (void)setFormatter:(NSFormatter*)formatter
 {
     NSAssert(formatter == nil || [formatter isKindOfClass:NSFormatter.class], @"bam!");
     _formatter = formatter;
@@ -185,7 +204,9 @@
                      error:(out_NSError)error
 {
     BOOL result = NO;
+
     NSParameterAssert(targetValueStore != nil);
+
     if ([sourceValue isKindOfClass:[NSNumber class]])
     {
         if (self.numberFormatter)
@@ -231,8 +252,32 @@
     {
         result = [super convertSourceValue:sourceValue toTargetValue:targetValueStore error:error];
     }
+
     return result;
 }
 
-@end
+#pragma mark - Binding Delegate implementation
 
+- (void)binding:(req_AKABinding)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+{
+    // TODO: this is a bit crude, check if there is a more elegant way to do this:
+    // Update target value if the attribute formatter or its pattern changes (f.e. a search pattern)
+    if (self.textAttributeFormatter)
+    {
+        if (binding.bindingTarget.value == self.textAttributeFormatter ||
+            binding.bindingTarget.value == self.textAttributeFormatter.pattern)
+        {
+            [self aka_performBlockInMainThreadOrQueue:^{
+                [self applyTextAttributesToLabelText];
+            } waitForCompletion:NO];
+        }
+    }
+
+    id<AKABindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
+    {
+        [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];
+    }
+}
+
+@end

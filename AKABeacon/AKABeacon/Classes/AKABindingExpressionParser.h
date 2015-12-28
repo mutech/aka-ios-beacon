@@ -87,11 +87,11 @@ typedef enum AKABindingExpressionParseErrorCode
 #pragma mark - Binding Expression Parser
 
 - (BOOL)parseBindingExpression:(out_AKABindingExpression)store
-                forBindingType:(opt_Class)bindingType
+             withSpecification:(opt_AKABindingSpecification)specification
                          error:(out_NSError)error;
 
 - (BOOL)parseConstantOrScope:(out_id)constantStore
-              forBindingType:(opt_Class)bindingType
+           withSpecification:(opt_AKABindingSpecification)specification
                         type:(out_Class)bindingExpressionType
                        error:(out_NSError)error;
 

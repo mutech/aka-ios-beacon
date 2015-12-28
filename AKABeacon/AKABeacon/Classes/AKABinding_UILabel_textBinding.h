@@ -7,7 +7,7 @@
 //
 
 #import "AKAViewBinding.h"
-
+#import "AKAAttributedFormatter.h"
 
 @interface AKABinding_UILabel_textBinding: AKAViewBinding
 
@@ -20,5 +20,6 @@
 @property(nonatomic, nullable) NSNumberFormatter* numberFormatter;
 @property(nonatomic, nullable) NSDateFormatter* dateFormatter;
 @property(nonatomic, nullable) NSFormatter* formatter;
+@property(nonatomic, nullable) AKAAttributedFormatter* textAttributeFormatter;
 
 @end

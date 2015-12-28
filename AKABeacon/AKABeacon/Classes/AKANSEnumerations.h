@@ -61,4 +61,8 @@
 + (NSDictionary<NSString*, NSNumber*>*_Nonnull)       uifontWeightsByName;
 + (opt_NSNumber)                                    uifontWeightForObject:(opt_id)nameOrFontWeight;
 
+#pragma mark - String Compare Options
+
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)      stringCompareOptions;
+
 @end

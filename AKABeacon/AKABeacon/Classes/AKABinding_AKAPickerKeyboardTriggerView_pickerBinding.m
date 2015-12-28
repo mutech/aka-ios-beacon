@@ -95,14 +95,18 @@
             _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
             _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
-            // Picker binding uses the same binding expression, which relies on picker binding to accept
-            // unknown attributes.
-            _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
-                                                                                 property:nil
-                                                                               expression:bindingExpression.attributes[@"picker"]
-                                                                                  context:bindingContext
-                                                                                 delegate:self
-                                                                                    error:error];
+            AKABindingExpression* pickerBindingExpression = bindingExpression.attributes[@"picker"];
+            if (pickerBindingExpression)
+            {
+                // Picker binding uses the same binding expression, which relies on picker binding to accept
+                // unknown attributes.
+                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
+                                                                                     property:nil
+                                                                                   expression:pickerBindingExpression
+                                                                                      context:bindingContext
+                                                                                     delegate:self
+                                                                                        error:error];
+            }
 
             if (_pickerBinding == nil)
             {
@@ -114,6 +118,21 @@
     }
 
     return self;
+}
+
+- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                           context:(req_AKABindingContext)bindingContext
+                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                             error:(NSError *__autoreleasing  _Nullable *)error
+{
+    (void)bindingExpression;
+    (void)bindingContext;
+    (void)changeObserver;
+    (void)error;
+
+    return [AKAProperty propertyOfWeakKeyValueTarget:nil
+                                             keyPath:nil
+                                      changeObserver:changeObserver];
 }
 
 - (void)                                    validateTargetView:(req_UIView)targetView

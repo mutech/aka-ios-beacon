@@ -3,648 +3,642 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$/.idea" />
     <content url="file://$MODULE_DIR$/AKABeacon">
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/AKABeacon.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_selectionBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_selectionBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingContextProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConfiguration.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConverterProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidationState.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidatorProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView_Protected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView_Protected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeProviderProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/NSScanner+AKABindingExpressionParser.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/NSScanner+AKABindingExpressionParser.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemoUITests/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemoUITests/AKAControlsGalleryUITests.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SegmentedControlViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/main.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SearchResultHighlightingViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Assets.xcassets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SearchResultHighlightingViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/BindingExpressionsPlayground.playground" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/LaunchScreen.storyboard" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/Main.storyboard" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/BindingExpressionsPlayground.playground" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/main.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemoUITests/AKAControlsGalleryUITests.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemoUITests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKABeacon-BridgingHeader.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKABindingProvider_UITextView_textBindingSpec.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKABindingSpecificationSpec.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABeaconTests.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionSpecificationTest.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionTest.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SegmentedControlViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicFormTableViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicFormTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding+IBPropertySupport.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding+IBPropertySupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIPickerView+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIPickerView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingContextProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConfiguration.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_valueBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_valueBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_formatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeProviderProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_styleBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_attributedFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidatorProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_attributedFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_dateFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKABinding_numberFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConverterProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidationState.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_styleBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_styleBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_styleBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/AKABeacon.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAControlTests.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAEmailValidatorTest.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAThemeTests.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAEmailValidatorTest.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABeaconTests.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionTest.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionSpecificationTest.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/UILabelBindingsSpec.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/UITextViewBindingsSpec.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/TestModel.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKABeacon-BridgingHeader.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/Info.plist" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/AKABeacon.podspec">
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon.podspec" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/AKABeacon.xcworkspace" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeacon" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeacon.xcodeproj" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeacon/AKABeacon.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Info.plist" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo.xcodeproj" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/AppDelegate.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Assets.xcassets" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/LaunchScreen.storyboard" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/Main.storyboard" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/BindingExpressionsPlayground.playground" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/Info.plist" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/SliderViewController.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemo/main.m" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconDemoUITests" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests" />
-    <content url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests" />
     <content url="file://$MODULE_DIR$/Podfile">
       <sourceFolder url="file://$MODULE_DIR$/Podfile" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/Pods">
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/CocoaLumberjack.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogger.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAssertMacros.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLegacyMacros.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog+LOGV.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLogMacros.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDContextFilterLogFormatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDContextFilterLogFormatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDMultiFormatter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDMultiFormatter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AdapterProtocols.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionDispatcher.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionRecorder.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/NimbleXCTestHandler.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL+Wait.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expectation.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expression.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/FailureMessage.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/AllPass.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAKindOf.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAnInstanceOf.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeCloseTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeEmpty.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeginWith.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThan.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThanOrEqualTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeIdenticalTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThan.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThanOrEqual.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLogical.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeNil.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Contain.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/EndWith.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Equal.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/HaveCount.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Match.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/MatcherProtocols.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/RaisesException.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/ThrowError.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Nimble.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/ObjCExpectation.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Functional.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Poll.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/SourceLocation.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Stringers.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/AsyncMatcherWrapper.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/MatcherFunc.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/ObjCMatcher.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Callsite.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/Configuration.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/QuickConfiguration.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/QuickConfiguration.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/DSL.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Example.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/ExampleGroup.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/ExampleMetadata.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Filter.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/Closures.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/ExampleHooks.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/SuiteHooks.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/NSString+QCKSelectorName.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/NSString+QCKSelectorName.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Quick.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/QuickSpec.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/QuickSpec.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/World.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/World.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-prefix.pch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-prefix.pch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.markdown" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-frameworks.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.debug.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.modulemap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-frameworks.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.markdown" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.markdown" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-frameworks.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.debug.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.markdown" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-acknowledgements.markdown" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.release.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-acknowledgements.markdown" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-resources.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-dummy.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-frameworks.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.debug.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-prefix.pch" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.modulemap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.markdown" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.modulemap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-frameworks.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-resources.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.release.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons.modulemap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-prefix.pch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-prefix.pch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Nimble/Nimble.modulemap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick.modulemap" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-prefix.pch" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Quick/Quick.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAssertMacros.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLegacyMacros.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLogMacros.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogger.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDMultiFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDContextFilterLogFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDMultiFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDContextFilterLogFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDDispatchQueueLogFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog+LOGV.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/CocoaLumberjack.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Nimble.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expectation.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Stringers.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Poll.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/SourceLocation.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Functional.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL+Wait.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/MatcherProtocols.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThanOrEqual.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeIdenticalTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThan.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Contain.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeNil.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Match.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/ThrowError.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeEmpty.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/AllPass.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLogical.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/HaveCount.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAnInstanceOf.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/RaisesException.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeCloseTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAKindOf.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Equal.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThan.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThanOrEqualTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/EndWith.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeginWith.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expression.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AdapterProtocols.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/NimbleXCTestHandler.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionRecorder.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionDispatcher.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/MatcherFunc.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/AsyncMatcherWrapper.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/ObjCMatcher.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/FailureMessage.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/ObjCExpectation.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Callsite.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Filter.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Quick.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/QuickSpec.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/NSString+QCKSelectorName.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/QuickSpec.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/NSString+QCKSelectorName.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/SuiteHooks.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/Closures.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Hooks/ExampleHooks.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/QuickConfiguration.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/QuickConfiguration.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Configuration/Configuration.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/ExampleMetadata.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/ExampleGroup.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/World.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/World.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Example.swift" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../aka-ios-commons">
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAArrayComparer.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAArrayComparer.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVProxy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVProxy.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVMultiplexedDataSource.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAAssociatedValues.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVMultiplexedDataSource.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAAssociatedValues.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAReference.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVCoordinateMappingProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAReusableViewsSupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVDataSourceSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAReusableViewsSupport.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVDataSourceSpecification.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAObservableCollection.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAReference.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAObservableCollection.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSMutableString+AKATools.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSMutableString+AKATools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKATools.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKATools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPNetmask.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPNetmask.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOChangeEvent.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOChangeEvent.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANetworkingErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANetworkingErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANullability.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAObservableCollection.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAObservableCollection.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAProperty.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAProperty.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAReference.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAReference.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVCoordinateMappingProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVDataSourceSpecification.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVDataSourceSpecification.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVMultiplexedDataSource.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVMultiplexedDataSource.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVProxy.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVProxy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVSection.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANetworkingErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVSection.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVUpdateBatch.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVUpdateBatch.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSIndexPath+AKARowAndSectionAsInteger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSIndexPath+AKARowAndSectionAsInteger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSMutableString+AKATools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSMutableString+AKATools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAAssociatedValues.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAAssociatedValues.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKAKeyPathUtilities.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKAKeyPathUtilities.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKATools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKATools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVSection.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAReusableViewsSupport.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAReusableViewsSupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSIndexPath+AKARowAndSectionAsInteger.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANullability.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKAKeyPathUtilities.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAProperty.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSString+AKAKeyPathUtilities.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVUpdateBatch.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAProperty.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOChangeEvent.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAArrayComparer.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVUpdateBatch.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOChangeEvent.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAArrayComparer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.h" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
+          <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
+          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accounts.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBook.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBookUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AssetsLibrary.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioUnit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVFoundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CFNetwork.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CloudKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Contacts.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ContactsUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudio.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PassKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudioKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreData.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreImage.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreLocation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMedia.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMIDI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMotion.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MultipeerConnectivity.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AssetsLibrary.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchConnectivity.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreVideo.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/StoreKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SceneKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenGLES.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CFNetwork.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBookUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GSS.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioUnit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKitUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/VideoToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Contacts.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuickLook.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SafariServices.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameplayKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WebKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CloudKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreImage.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Photos.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVFoundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/JavaScriptCore.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PushKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreText.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreVideo.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKitUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ExternalAccessory.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Foundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameController.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameplayKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GLKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GSS.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HomeKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/iAd.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ImageIO.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/JavaScriptCore.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MapKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaAccessibility.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MessageUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ModelIO.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MultipeerConnectivity.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NetworkExtension.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NewsstandKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NotificationCenter.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenAL.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenGLES.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PassKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Photos.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PhotosUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PushKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuartzCore.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuickLook.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ReplayKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SafariServices.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SceneKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Social.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SpriteKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/StoreKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Twitter.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NetworkExtension.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudio.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreData.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/UIKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/VideoToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchConnectivity.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WebKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Foundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MapKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ContactsUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMedia.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaAccessibility.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ExternalAccessory.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ModelIO.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GLKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HomeKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameController.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMIDI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Social.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accounts.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenAL.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NotificationCenter.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ImageIO.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PhotosUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBook.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NewsstandKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MessageUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreLocation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuartzCore.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/iAd.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMotion.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.2/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include" />
-          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
-          <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
         </CLASSES>
         <SOURCES>
+          <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
+          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accounts.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBook.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBookUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AssetsLibrary.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioUnit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVFoundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CFNetwork.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CloudKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Contacts.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ContactsUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudio.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PassKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudioKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreData.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreImage.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreLocation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMedia.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMIDI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMotion.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MultipeerConnectivity.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AssetsLibrary.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchConnectivity.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreVideo.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/StoreKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SceneKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenGLES.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CFNetwork.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vImage.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBookUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GSS.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioUnit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreSpotlight.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKitUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/VideoToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Contacts.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuickLook.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SafariServices.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameplayKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WebKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CloudKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreImage.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Photos.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVFoundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/JavaScriptCore.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PushKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreText.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreVideo.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/EventKitUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ExternalAccessory.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Foundation.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameController.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameplayKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GLKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GSS.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HealthKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HomeKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/iAd.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ImageIO.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/JavaScriptCore.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/LocalAuthentication.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MapKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaAccessibility.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaPlayer.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MessageUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Metal.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalPerformanceShaders.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ModelIO.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MultipeerConnectivity.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NetworkExtension.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NewsstandKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NotificationCenter.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenAL.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenGLES.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PassKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Photos.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PhotosUI.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PushKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuartzCore.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuickLook.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ReplayKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SafariServices.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SceneKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Social.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SpriteKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/StoreKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Twitter.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NetworkExtension.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreAudio.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreData.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/UIKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/VideoToolbox.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchConnectivity.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WatchKit.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/WebKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Foundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MapKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ContactsUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMedia.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MediaAccessibility.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ExternalAccessory.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ModelIO.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GLKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MetalKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/HomeKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameController.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AVKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreBluetooth.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AdSupport.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMIDI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Social.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/SystemConfiguration.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Accounts.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/OpenAL.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NotificationCenter.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/ImageIO.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/PhotosUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/AddressBook.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/NewsstandKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MessageUI.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/GameKit.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreLocation.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/QuartzCore.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/iAd.framework/Headers" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreMotion.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include" />
+          <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.2/include" />
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1" />
-          <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/7.0.0/include" />
-          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />
-          <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
-          <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
         </SOURCES>
       </library>
     </orderEntry>

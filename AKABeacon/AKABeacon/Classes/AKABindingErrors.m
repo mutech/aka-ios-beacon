@@ -134,8 +134,9 @@
 
 + (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
                     unknownAttribute:(NSString*)attributeName
+                     knownAttributes:(NSArray<NSString*>*_Nonnull)knownAttributes
 {
-    NSString* reason = [NSString stringWithFormat:@"Unknown attribute %@", attributeName];
+    NSString* reason = [NSString stringWithFormat:@"Unknown attribute %@ (known attributes are: %@)", attributeName, [knownAttributes componentsJoinedByString:@", "]];
     NSString* description = [NSString stringWithFormat:@"Invalid binding expression %@: %@", bindingExpression, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorInvalidBindingExpressionUnknownAttribute

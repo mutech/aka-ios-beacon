@@ -606,6 +606,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             case AKABindingAttributeUseAssignValueToBindingProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
             case AKABindingAttributeUseBindToBindingProperty:
+            case AKABindingAttributeUseBindToTargetProperty:
             {
                 _bindingPropertyName = dictionary[kAKABindingAttributesSpecificationBindingPropertyKey];
                 if (_bindingPropertyName == nil)

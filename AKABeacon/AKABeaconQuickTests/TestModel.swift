@@ -18,13 +18,35 @@ class TestModel: NSObject, AKABindingContextProtocol {
     dynamic var numberFormatter: NSNumberFormatter
     dynamic var dateFormatter: NSDateFormatter
 
-    init(text: String = "Default text", date: NSDate = NSDate(), double: Double = 12345.678, numberFormatter: NSNumberFormatter = NSNumberFormatter(), dateFormatter: NSDateFormatter = NSDateFormatter()) {
+    dynamic var pattern: String?
+    dynamic var patternOptions: NSStringCompareOptions
+
+    dynamic var matchingSearchResultBackgroundColor: UIColor?
+
+    init(
+        text: String = "Default text",
+        date: NSDate = NSDate(),
+        double: Double = 12345.678,
+        numberFormatter: NSNumberFormatter = NSNumberFormatter(),
+        dateFormatter: NSDateFormatter = NSDateFormatter(),
+        pattern: String? = nil,
+        patternOptions: NSStringCompareOptions = .LiteralSearch)
+    {
         self.textValue = text
         self.dateValue = date
         self.doubleValue = double
 
         self.numberFormatter = numberFormatter
         self.dateFormatter = dateFormatter
+
+        self.pattern = pattern
+        self.patternOptions = patternOptions
+
+        self.matchingSearchResultBackgroundColor = UIColor(
+            red: 1.0,
+            green: 1.0,
+            blue: 0.0,
+            alpha: 1.0)
     }
 
     func dataContextPropertyForKeyPath(keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {

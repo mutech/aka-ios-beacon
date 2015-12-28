@@ -11,6 +11,8 @@
 #import "UISegmentedControl+IBBindingProperties.h"
 #import "AKABinding_UISegmentedControl_valueBinding.h"
 #import "AKAViewBinding+IBPropertySupport.h"
+#import "AKAControlConfiguration.h"
+#import "AKAScalarControl.h"
 
 @implementation UISegmentedControl (IBBindingProperties)
 

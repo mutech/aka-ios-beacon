@@ -6,7 +6,7 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <AKABeacon/AKABeacon.h>
+#import "AKAViewBinding.h"
 
 @interface AKAViewBinding (IBPropertySupport)
 

@@ -7,7 +7,7 @@
 //
 
 #import "AKAViewBinding+IBPropertySupport.h"
-
+#import "UIView+AKABindingSupport.h"
 
 @implementation AKAViewBinding (IBPropertySupport)
 
@@ -18,8 +18,7 @@
 {
     AKABindingExpression* expression = [view aka_bindingExpressionForProperty:selector];
 
-    Class bindingType = expression.bindingType;
-
+    Class bindingType = expression.specification.bindingType;
     NSAssert(bindingType == self.class,
              @"Binding expression %@.%@ was created by a different provider %@",
              view, NSStringFromSelector(selector), bindingType);

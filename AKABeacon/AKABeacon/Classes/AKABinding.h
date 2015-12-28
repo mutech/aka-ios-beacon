@@ -24,14 +24,15 @@ typedef AKAControlViewBinding* _Nonnull                     req_AKAControlViewBi
 typedef AKAKeyboardControlViewBinding*_Nullable             opt_AKAKeyboardControlViewBinding;
 typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardControlViewBinding;
 
+
 @protocol AKAControlViewBindingDelegate;
 
-@interface AKABinding: NSObject
+@interface AKABinding: NSObject<AKABindingDelegate>
 
 #pragma mark - Initialization
 
 /**
- Initializes a binding with the specified binding target, expression, context and delegate.
+ Initializes a binding with the specified parameters.
  
  If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
 
@@ -57,6 +58,21 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                       error:(out_NSError)error;
+
+- (opt_AKAProperty)       defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error;
+
+#pragma mark - Ad hoc binding application
+
++ (BOOL)applyBindingExpression:(req_AKABindingExpression)expression
+                      toTarget:(req_id)target
+                     inContext:(req_AKABindingContext)context
+                         error:(out_NSError)error;
+
+// TODO: review/refactor this; protected interface:
+- (BOOL)applyToTargetOnce:(out_NSError)error;
 
 #pragma mark - Configuration
 
@@ -106,6 +122,7 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 @interface AKABinding(BindingAttributeBindings)
 
 @property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABinding*>* attributeBindings;
+@property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABindingAttributeSpecification*>* attributeBindingSpecifications;
 
 @end
 
@@ -142,9 +159,11 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 
 + (req_AKABindingSpecification)     specification;
 
++ (opt_AKABindingAttributeSpecification)specificationForAttributeNamed:(req_NSString)attributeName;
+
 + (opt_Class)bindingTypeForBindingExpressionInPrimaryExpressionArray;
 
-+ (opt_Class)bindingTypeForAttributeNamed:(req_NSString)attributeName;
+//+ (opt_Class)bindingTypeForAttributeNamed:(req_NSString)attributeName;
 
 @end
 

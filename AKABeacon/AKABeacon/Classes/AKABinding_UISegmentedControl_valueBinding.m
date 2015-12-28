@@ -141,10 +141,10 @@
     }
     else if ([targetValue isKindOfClass:[NSNumber class]])
     {
-        NSUInteger index = (NSUInteger)[targetValue integerValue];
+        NSInteger index = [targetValue integerValue];
         if (index >= 0 && index < self.choices.count)
         {
-            *sourceValueStore = self.choices[index];
+            *sourceValueStore = self.choices[(NSUInteger)index];
         }
         else if (index == NSNotFound)
         {
@@ -174,6 +174,8 @@
              toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
                      error:(NSError *__autoreleasing  _Nullable *)error
 {
+    (void)error;
+
     BOOL result = YES;
     if (sourceValue == nil)
     {

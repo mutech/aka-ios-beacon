@@ -13,12 +13,12 @@
 
 
 @class AKABindingExpression;
-typedef AKABindingExpression* _Nullable                             opt_AKABindingExpression;
-typedef AKABindingExpression* _Nonnull                              req_AKABindingExpression;
-typedef AKABindingExpression* __autoreleasing _Nullable* _Nullable  out_AKABindingExpression;
+typedef AKABindingExpression* _Nullable opt_AKABindingExpression;
+typedef AKABindingExpression* _Nonnull req_AKABindingExpression;
+typedef AKABindingExpression* __autoreleasing _Nullable* _Nullable out_AKABindingExpression;
 
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable   opt_AKABindingExpressionAttributes;
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull    req_AKABindingExpressionAttributes;
+typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable opt_AKABindingExpressionAttributes;
+typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull req_AKABindingExpressionAttributes;
 
 typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 
@@ -33,15 +33,13 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 /**
    Initializes a binding expression with the specified expression text using the binding type for validation.
 
-   The expression text has to conform to this grammar:
+   The expression text has to conform to this grammar (TODO: outdated/incomplete):
 
      <bindingExpression> ::= <primaryExpression> <attributes>? |
                              <compositeExpression> <attributes> |
                              "$options" <attributes>? | "$options." <optionsType> <attributes>?
 
-     <attributes>
-
-     <primaryExpression> ::= <constantExpression> | <keyPathExpression> | <arrayExpression> |
+     <primaryExpression> ::= <constantExpression> | <keyPathExpression> | <arrayExpression> | <constantExpression>
 
 
      <constantExpression> ::= <booleanExpression> | <integerExpression> | <doubleExpression> |
@@ -92,29 +90,26 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 /**
    Determines the type of the binding expression's primary expression.
  */
-@property(nonatomic, readonly) AKABindingExpressionType         expressionType;
+@property(nonatomic, readonly) AKABindingExpressionType expressionType;
 
 /**
    Determines whether the binding expression is constant. Constant binding expressions can be evaluated without (or with an undefined) binding context.
  */
-@property(nonatomic, readonly) BOOL                             isConstant;
+@property(nonatomic, readonly) BOOL isConstant;
 
 /**
    A string value representing the constant value of the binding expression.
  */
-@property(nonatomic, readonly) opt_NSString                     constantStringValueOrDescription;
+@property(nonatomic, readonly) opt_NSString constantStringValueOrDescription;
 
 /**
    The serialized form of the binding expression.
 
    Please note that there is no guarantee that this equals the string that was used to define the binding expression. The text will however produce an equivalent binding expression when parsed again.
  */
-@property(nonatomic, readonly, nonnull) NSString*               text;
+@property(nonatomic, readonly, nonnull) NSString*                   text;
 
-/**
-   The binding type associated with this binding expression.
- */
-@property(nonatomic, readonly, weak, nullable) Class            bindingType;
+@property(nonatomic, readonly, weak, nullable) AKABindingSpecification* specification;
 
 /**
    Additional named binding expressions which are used by the binding type processing this binding expression to setup bindings.
@@ -125,21 +120,17 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 
 #pragma mark - Validation
 
-- (BOOL)                              validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+- (BOOL)                 validateOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
                                                           error:(out_NSError)error;
 
-- (BOOL)                              validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                                                          error:(out_NSError)error;
+- (BOOL)                                               validate:(out_NSError)error;
 
 - (BOOL)                          validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
                                                           error:(out_NSError)error;
 
-- (BOOL)                    validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+- (BOOL)       validateAttributesOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
                                                           error:(out_NSError)error;
-- (BOOL)                    validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                                                          error:(out_NSError)error;
+- (BOOL)                                     validateAttributes:(out_NSError)error;
 
 #pragma mark - Binding Support
 /// @name Binding Support

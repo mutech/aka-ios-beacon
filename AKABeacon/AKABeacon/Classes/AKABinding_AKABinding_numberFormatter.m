@@ -31,19 +31,19 @@
            @"attributes":
                @{ @"numberStyle":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterStyle" },
 
                   @"roundingMode":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterRoundingMode" },
 
                   @"paddingPosition":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterPadPosition" },
 
@@ -101,7 +101,7 @@
                     @"locale":           ^id (id value) {
                         return [AKANSEnumerations localeForObject:value];
                     },
-                    @"numberStyle":      ^id (id value) {
+                    /*@"numberStyle":      ^id (id value) {
                         return [AKANSEnumerations numberFormatterStyleForObject:value];
                     },
                     @"roundingMode":     ^id (id value) {
@@ -109,7 +109,7 @@
                     },
                     @"paddingPosition":  ^id (id value) {
                         return [AKANSEnumerations numberFormatterPadForObject:value];
-                    }, };
+                    },*/ };
     });
 
     return result;

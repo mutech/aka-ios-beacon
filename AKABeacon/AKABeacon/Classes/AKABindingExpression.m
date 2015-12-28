@@ -43,7 +43,7 @@
     AKABindingExpression* result = nil;
 
     if ([parser parseBindingExpression:&result
-                        forBindingType:bindingType
+                     withSpecification:[bindingType specification]
                                  error:error])
     {
         if (!parser.scanner.isAtEnd)
@@ -58,10 +58,8 @@
         if (result)
         {
             NSError* localError = nil;
-            opt_AKABindingExpressionSpecification sourceSpec =
-                [bindingType specification].bindingSourceSpecification;
 
-            if (![result validateWithSpecification:sourceSpec error:&localError])
+            if (![result validate:&localError])
             {
                 if (error)
                 {
@@ -82,12 +80,12 @@
 }
 
 - (instancetype)initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
-                       bindingType:(opt_Class)bindingType
+                     specification:(opt_AKABindingSpecification)specification
 {
     if (self = [super init])
     {
         _attributes = attributes;
-        _bindingType = bindingType;
+        _specification = specification;
     }
 
     return self;
@@ -95,11 +93,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                        bindingType:(opt_Class)bindingType
+                                      specification:(opt_AKABindingSpecification)specification
 {
     if (primaryExpression == nil)
     {
-        self = [self initWithAttributes:attributes bindingType:bindingType];
+        self = [self initWithAttributes:attributes specification:specification];
     }
     else
     {
@@ -118,17 +116,17 @@
 
 #pragma mark - Validation
 
-- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                            error:(out_NSError)error
+- (BOOL)validate:(out_NSError)error
 {
-    return [self validateWithSpecification:specification overrideAllowUnknownAttributes:NO error:error];
+    return [self validateOverrideAllowUnknownAttributes:NO error:error];
 }
 
-- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
-   overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
-                            error:(out_NSError)error
+- (BOOL)validateOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                         error:(out_NSError)error
 {
     BOOL result = YES;
+
+    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
 
     if (result)
     {
@@ -139,16 +137,19 @@
         }
         else
         {
+            // TODO: check if no validation (assuming success) is ok if no specification is provided
+            result = YES;
+
+            /* Previous approach would require to create specifications to ensure validation succeeds:
             result = [self validatePrimaryExpressionType:AKABindingExpressionTypeNone
-                                                   error:error];
+                                                   error:error];*/
         }
     }
 
     if (result)
     {
-        result = [self validateAttributesWithSpecification:specification
-                            overrideAllowUnknownAttributes:allowUnknownAttributes
-                                                     error:error];
+        result = [self validateAttributesOverrideAllowUnknownAttributes:allowUnknownAttributes
+                                                                  error:error];
     }
 
     return result;
@@ -169,22 +170,33 @@
     return result;
 }
 
-- (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
-                                      error:(out_NSError)error
+- (BOOL)validateAttributes:(out_NSError)error
 {
-    return [self validateAttributesWithSpecification:specification
-                      overrideAllowUnknownAttributes:NO
-                                               error:error];
+    return [self validateAttributesOverrideAllowUnknownAttributes:NO
+                                                            error:error];
 }
 
-- (BOOL)validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
-             overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
-                                      error:(out_NSError)error
+- (BOOL)validateAttributesOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                   error:(out_NSError)error
 {
     __block BOOL result = YES;
     __block NSError* localError = nil;
 
+    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
+
     BOOL allowUnspecified = allowUnknownAttributes || specification.allowUnspecifiedAttributes;
+
+    // Validation of option values specified as attributes:
+    BOOL isOptionsConstant = specification.expressionType == AKABindingExpressionTypeOptionsConstant && specification.optionsType;
+    NSSet* options = nil;
+    if (isOptionsConstant)
+    {
+        NSArray* optionNames = [AKAOptionsConstantBindingExpression registeredOptionNamesForOptionsType:(req_NSString)specification.optionsType];
+        if (optionNames.count > 0)
+        {
+            options = [NSSet setWithArray:optionNames];
+        }
+    }
 
     [self.attributes
      enumerateKeysAndObjectsUsingBlock:
@@ -192,6 +204,12 @@
        req_AKABindingExpression bindingExpression,
        outreq_BOOL stop)
      {
+         if (isOptionsConstant && [options containsObject:attributeName])
+         {
+             // Attribute is a valid option, no further validation needed
+             return;
+         }
+
          // Check for invalidly unknown attributes, note that if specification is nil, validation will fail:
          AKABindingAttributeSpecification* attributeSpecification =
              specification.attributes[attributeName];
@@ -199,7 +217,8 @@
          if (result && !allowUnspecified && attributeSpecification == nil)
          {
              localError = [AKABindingErrors invalidBindingExpression:self
-                                                    unknownAttribute:attributeName];
+                                                    unknownAttribute:attributeName
+                                                     knownAttributes:specification.attributes.allKeys];
              result = NO;
          }
 
@@ -211,8 +230,7 @@
 
              if (attributeExpressionSpecification)
              {
-                 result = [bindingExpression validateWithSpecification:attributeExpressionSpecification
-                                                                 error:&localError];
+                 result = [bindingExpression validate:&localError];
              }
          }
          *stop = !result;
@@ -272,12 +290,7 @@
 {
     (void)bindingContext;
     (void)changeObserver;
-
-    // The default implementation returns nil which is the result when a binding expression does not
-    // define a primary expression. Please note that this is the only case where this method delivers
-    // an undefined value.
-
-    return nil;
+    AKAErrorAbstractMethodImplementationMissing();
 }
 
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
@@ -415,10 +428,10 @@
 
 - (instancetype)initWithArray:(NSArray<AKABindingExpression*>*)array
                    attributes:(opt_AKABindingExpressionAttributes)attributes
-                  bindingType:(opt_Class)bindingType
+                specification:(opt_AKABindingSpecification)specification
 {
     if (self = [super initWithAttributes:attributes
-                             bindingType:bindingType])
+                           specification:specification])
     {
         _array = array;
     }
@@ -428,13 +441,13 @@
 
 - (instancetype)initWithPrimaryExpression:(opt_id)primaryExpression
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                              bindingType:(opt_Class)bindingType
+                            specification:(opt_AKABindingSpecification)specification
 {
     NSAssert(primaryExpression == nil || [primaryExpression isKindOfClass:[NSArray class]], @"AKAArrayBindingExpression requires a primary expression of type NSArray, got %@", primaryExpression);
 
     return [self initWithArray:(NSArray*)primaryExpression
                     attributes:attributes
-                   bindingType:bindingType];
+                 specification:specification];
 }
 
 #pragma mark - Properties
@@ -547,10 +560,10 @@
 
 - (instancetype)initWithConstant:(id)constant
                       attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     if (self = [super initWithAttributes:attributes
-                             bindingType:bindingType])
+                           specification:specification])
     {
         _constant = constant;
     }
@@ -560,11 +573,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                        bindingType:(opt_Class)bindingType
+                                      specification:(opt_AKABindingSpecification)specification
 {
     return [self initWithConstant:primaryExpression
                        attributes:attributes
-                      bindingType:bindingType];
+                    specification:specification];
 }
 
 #pragma mark - Properties
@@ -646,11 +659,11 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_NSString)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                              bindingType:(opt_Class)bindingType
+                            specification:(opt_AKABindingSpecification)specification
 {
     self = [super initWithConstant:constant
                         attributes:attributes
-                       bindingType:bindingType];
+                     specification:specification];
 
     return self;
 }
@@ -731,11 +744,11 @@
 
 - (instancetype _Nonnull)initWithConstant:(opt_Class)constant
                                attributes:(opt_AKABindingExpressionAttributes)attributes
-                              bindingType:(opt_Class)bindingType
+                            specification:(opt_AKABindingSpecification)specification
 {
     self = [super initWithConstant:constant
                         attributes:attributes
-                       bindingType:bindingType];
+                     specification:specification];
 
     return self;
 }
@@ -775,11 +788,11 @@
 
 - (instancetype)  initWithNumber:(NSNumber*)constant
                       attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     return [super initWithConstant:constant
                         attributes:attributes
-                       bindingType:bindingType];
+                     specification:specification];
 }
 
 #pragma mark - Properties
@@ -839,18 +852,18 @@
 {
     self = [super initWithConstant:@(value)
                         attributes:nil
-                       bindingType:nil];
+                     specification:nil];
 
     return self;
 }
 
 - (instancetype)initWithConstant:(opt_NSNumber)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     if (constant == nil || attributes.count > 0)
     {
-        self = [super initWithConstant:constant attributes:attributes bindingType:bindingType];
+        self = [super initWithConstant:constant attributes:attributes specification:specification];
     }
     else if (constant.boolValue)
     {
@@ -977,6 +990,7 @@
                      }
                  }
              }];
+            result = @(resultValue);
         }
     }
 
@@ -1005,9 +1019,14 @@
     return result;
 }
 
++ (NSArray<NSString*>* _Nullable)registeredOptionNamesForOptionsType:(req_NSString)optionsType
+{
+    return [AKAOptionsConstantBindingExpression registry][optionsType].allKeys;
+}
+
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     NSString* optionsType;
     NSString* symbolicValue;
@@ -1058,7 +1077,7 @@
         [NSException exceptionWithName:name reason:reason userInfo:nil];
     }
 
-    if (value != nil)
+    if (value == nil)
     {
         if (symbolicValue.length > 0)
         {
@@ -1086,7 +1105,7 @@
         }
     }
 
-    if (self = [super initWithConstant:value attributes:attributes bindingType:bindingType])
+    if (self = [super initWithConstant:value attributes:attributes specification:specification])
     {
         self.optionsType = optionsType;
     }
@@ -1096,9 +1115,10 @@
 
 #pragma mark - Validation
 
-- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification error:(out_NSError)error
+- (BOOL)validate:(out_NSError)error
 {
-    BOOL result = [super validateWithSpecification:specification error:error];
+    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
+    BOOL result = [super validate:error];
     NSError* localError = nil;
 
     if (specification)
@@ -1113,18 +1133,16 @@
             }
             else if (self.attributes.count > 0)
             {
-                // Only an error if a value is given, otherwise the expression will validly evaluate
-                // to zero.
+                // Only an error if a value is given, otherwise the expression will validly evaluate to zero.
                 result = NO;
-                localError = [AKABindingErrors invalidBindingExpression:self
-                                       noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification];
+                localError = [AKABindingErrors invalidBindingExpression:self noOptionsTypeInSpecification:specification];;
             }
         }
         else if (optionsType.length > 0 && ![optionsType isEqualToString:(req_NSString)self.optionsType])
         {
             result = NO;
             localError = [AKABindingErrors invalidBindingExpression:self
-                                            enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification];
+                                                optionsTypeMismatch:specification];
         }
     }
 
@@ -1163,7 +1181,7 @@
                                                                            error:&error];
 
         if (super.constant == nil && error != nil)
-        {
+        {   // TODO: Error handling!
             NSAssert(NO, @"%@", error.localizedDescription);
         }
     }
@@ -1281,7 +1299,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     NSString* enumerationType;
     NSString* symbolicValue;
@@ -1347,7 +1365,7 @@
         }
     }
 
-    if (self = [super initWithConstant:value attributes:attributes bindingType:bindingType])
+    if (self = [super initWithConstant:value attributes:attributes specification:specification])
     {
         self.enumerationType = enumerationType;
         self.symbolicValue = symbolicValue;
@@ -1358,9 +1376,10 @@
 
 #pragma mark - Validation
 
-- (BOOL)validateWithSpecification:(opt_AKABindingExpressionSpecification)specification error:(out_NSError)error
+- (BOOL)validate:(out_NSError)error
 {
-    BOOL result = [super validateWithSpecification:specification error:error];
+    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
+    BOOL result = [super validate:error];
     NSError* localError = nil;
 
     if (specification)
@@ -1582,7 +1601,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     UIColor* color = nil;
 
@@ -1625,7 +1644,7 @@
             @throw [NSException exceptionWithName:message reason:message userInfo:nil];
         }
     }
-    self = [super initWithConstant:color attributes:nil bindingType:bindingType];
+    self = [super initWithConstant:color attributes:nil specification:specification];
 
     return self;
 }
@@ -2274,7 +2293,8 @@
                  if (error)
                  {
                      *error = [AKABindingErrors invalidBindingExpression:traitBindingExpression
-                                                        unknownAttribute:traitAttributeName];
+                                                        unknownAttribute:traitAttributeName
+                                                         knownAttributes:spec.allKeys];
                  }
              }
          }];
@@ -2285,7 +2305,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     UIFont* font = nil;
 
@@ -2346,7 +2366,7 @@
         font = [AKAUIFontConstantBindingExpression fontForDescriptor:descriptor];
     }
 
-    self = [super initWithConstant:font attributes:nil bindingType:bindingType];
+    self = [super initWithConstant:font attributes:nil specification:specification];
 
     return self;
 }
@@ -2429,7 +2449,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     NSValue* value = nil;
 
@@ -2456,7 +2476,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGPoint:CGPointMake(x, y)];
     }
-    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
+    self = [super initWithConstant:value attributes:nil specification:specification];
 
     return self;
 }
@@ -2500,7 +2520,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     NSValue* value = nil;
 
@@ -2527,7 +2547,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGSize:CGSizeMake(w, h)];
     }
-    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
+    self = [super initWithConstant:value attributes:nil specification:specification];
 
     return self;
 }
@@ -2571,7 +2591,7 @@
 
 - (instancetype)initWithConstant:(opt_id)constant
                       attributes:(opt_AKABindingExpressionAttributes)attributes
-                     bindingType:(opt_Class)bindingType
+                   specification:(opt_AKABindingSpecification)specification
 {
     NSValue* value = nil;
 
@@ -2604,7 +2624,7 @@
                                                                    required:YES].floatValue;
         value = [NSValue valueWithCGRect:CGRectMake(x, y, w, h)];
     }
-    self = [super initWithConstant:value attributes:nil bindingType:bindingType];
+    self = [super initWithConstant:value attributes:nil specification:specification];
 
     return self;
 }
@@ -2648,10 +2668,9 @@
 
 - (instancetype)initWithKeyPath:(NSString*)keyPath
                      attributes:(NSDictionary<NSString*, AKABindingExpression*>* __nullable)attributes
-                    bindingType:(opt_Class)bindingType
+                  specification:(opt_AKABindingSpecification)specification
 {
-    if (self = [super initWithAttributes:attributes
-                             bindingType:bindingType])
+    if (self = [super initWithAttributes:attributes specification:specification])
     {
         _keyPath = keyPath;
     }
@@ -2661,11 +2680,11 @@
 
 - (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
-                                        bindingType:(opt_Class)bindingType
+                                      specification:(opt_AKABindingSpecification)specification
 {
     return [self initWithKeyPath:primaryExpression
                       attributes:attributes
-                     bindingType:bindingType];
+                   specification:specification];
 }
 
 #pragma mark - Properties

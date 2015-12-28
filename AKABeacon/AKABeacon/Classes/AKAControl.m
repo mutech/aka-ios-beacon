@@ -321,13 +321,14 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 
     BOOL result = NO;
     NSError* error;
-    Class bindingType = bindingExpression.bindingType;
-    AKABinding* binding = [[bindingType alloc] initWithTarget:view
-                                                     property:property
-                                                   expression:bindingExpression
-                                                      context:self
-                                                     delegate:self
-                                                        error:&error];
+    Class bindingType = bindingExpression.specification.bindingType;
+    AKABinding* binding = [bindingType alloc];
+    binding = [binding initWithTarget:view
+                             property:property
+                           expression:bindingExpression
+                              context:self
+                             delegate:self
+                                error:&error];
     if (binding)
     {
         result = [self addBinding:binding];

@@ -65,7 +65,8 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                            invalidTypeExpected:(NSArray<Class>*_Nonnull)expectedType;
 
 + (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
-                                              unknownAttribute:(req_NSString)attributeName;
+                                              unknownAttribute:(req_NSString)attributeName
+                                               knownAttributes:(NSArray<NSString*>*_Nonnull)knownAttributes;
 
 + (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
                                       missingRequiredAttribute:(req_NSString)attributeName;

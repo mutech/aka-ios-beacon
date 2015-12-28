@@ -94,6 +94,24 @@
     return self;
 }
 
+- (AKAProperty *)      defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                 context:(req_AKABindingContext)bindingContext
+                                          changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                   error:(out_NSError)error
+{
+    (void)bindingExpression;
+    (void)bindingContext;
+    (void)error;
+    if (_formatter == nil)
+    {
+        _formatter = [self defaultFormatter];
+    }
+    AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:_formatter
+                                                            keyPath:nil
+                                                     changeObserver:changeObserver];
+    return result;
+}
+
 #pragma mark - Conversion
 
 
@@ -115,6 +133,13 @@
     if (!result)
     {
         result = YES;
+
+        // Unwrap sourceValue if it is an AKAProperty
+        if ([sourceValue isKindOfClass:[AKAProperty class]])
+        {
+            sourceValue = [(AKAProperty*)sourceValue value];
+        }
+
         if ([sourceValue isKindOfClass:[NSFormatter class]])
         {
             targetValue = sourceValue;
@@ -155,6 +180,7 @@
         }
         else
         {
+            // TODO: this should not be reached anymore:
             // Fallback to createMutableFormatter/defaultFormatter if no formatter was provided by binding source:
             if (self.bindingExpression.attributes.count > 0)
             {
@@ -173,7 +199,7 @@
         if (targetValue != nil)
         {
             NSDictionary<NSString*, AKABindingAttributeSpecification*>* attributeSpecs =
-                [self.bindingExpression.bindingType specification].bindingSourceSpecification.attributes;
+                self.bindingExpression.specification.bindingSourceSpecification.attributes;
 
             [self.bindingExpression.attributes
              enumerateKeysAndObjectsUsingBlock:
@@ -186,7 +212,12 @@
                  if (attributeSpec == nil || attributeSpec.attributeUse == AKABindingAttributeUseIgnore)
                  {
                      id<AKABindingContextProtocol> bindingContext = self.bindingContext;
-                     id value = [bindingExpression bindingSourceValueInContext:bindingContext];
+                     id value = nil;
+                     if (bindingExpression.class != [AKABindingExpression class])
+                     {
+                         // Only evaluate expression if it is a base type of AKABindingExpression (otherwise it does not have a defined value).
+                         value = [bindingExpression bindingSourceValueInContext:bindingContext];
+                     }
 
                      id (^converter)(id) = self.configurationValueConvertersByPropertyName[attributeName];
 

@@ -42,22 +42,15 @@
            @"attributes":
                @{ @"dateStyle":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSDateFormatterStyle" },
 
                   @"timeStyle":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSDateFormatterStyle" },
-
-                  // TODO: should be inherited/merged from base class:
-                  @"formattingContext":
-                      @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
-                         @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
-                         @"enumerationType": @"NSFormattingContext" },
 
                   @"locale":
                       @{ @"required":        @NO,
@@ -99,13 +92,7 @@
 
     dispatch_once(&onceToken, ^{
         result =
-            @{ @"dateStyle":        ^id (id value) {
-                   return [AKANSEnumerations dateFormatterStyleForObject:value];
-               },
-               @"timeStyle":        ^id (id value) {
-                   return [AKANSEnumerations dateFormatterStyleForObject:value];
-               },
-               @"locale":           ^id (id value) {
+            @{ @"locale":           ^id (id value) {
                    return [AKANSEnumerations localeForObject:value];
                },
                @"calendar":         ^id (id value) {

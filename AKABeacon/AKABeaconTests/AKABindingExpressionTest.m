@@ -104,7 +104,7 @@
              AKABindingExpression* expression = nil;
              NSError* error = nil;
              BOOL result = [scanner parseBindingExpression:&expression
-                                            forBindingType:nil
+                                         withSpecification:nil
                                                      error:&error];
              XCTAssert(result, @"%@", [error localizedDescription]);
          }
@@ -154,7 +154,7 @@
     AKABindingExpression* expression = nil;
     NSError* error = nil;
     BOOL result = [scanner parseBindingExpression:&expression
-                                   forBindingType:nil
+                                withSpecification:nil
                                             error:&error];
 
     XCTAssertTrue(result, @"Failed to parse simplified constant syntax: %@", error.localizedDescription);
@@ -187,7 +187,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                       forBindingType:nil
+                                    withSpecification:nil
                                                 error:&error];
         XCTAssert(result, @"%@ failed to parse: %@", text, error.localizedDescription);
         XCTAssertEqualObjects(text, expression.description);
@@ -231,7 +231,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(result);
@@ -254,7 +254,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(!result);
@@ -278,7 +278,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(!result);
@@ -301,7 +301,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(!result);
@@ -328,7 +328,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(result);
@@ -356,7 +356,7 @@
         NSError* error = nil;
 
         BOOL result = [[AKABindingExpressionParser parserWithString:text] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
         XCTAssert(result, @"Failed to parse %@", text);
@@ -372,7 +372,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[AKABindingExpressionParser parserWithString:@"$true"] parseConstantOrScope:&constant
-                                                                                forBindingType:nil
+                                                                             withSpecification:nil
                                                                                           type:&type
                                                                                          error:&error];
 
@@ -388,7 +388,7 @@
     NSNumber* constant = nil;
     NSError* error = nil;
     BOOL result = [[AKABindingExpressionParser parserWithString:@"$false"] parseConstantOrScope:&constant
-                                                                                 forBindingType:nil
+                                                                              withSpecification:nil
                                                                                            type:&type
                                                                                           error:&error];
 
@@ -543,7 +543,7 @@
          AKABindingExpression* expression = nil;
          NSError* error = nil;
          BOOL result = [scanner parseBindingExpression:&expression
-                                        forBindingType:nil
+                                     withSpecification:nil
                                                  error:&error];
          XCTAssertTrue(result, @"%@", error.localizedDescription);
 
@@ -576,7 +576,7 @@
     AKABindingExpression* expression = nil;
     NSError* error = nil;
     BOOL result = [scanner parseBindingExpression:&expression
-                                   forBindingType:nil
+                                withSpecification:nil
                                             error:&error];
 
     XCTAssertTrue(result);
@@ -610,7 +610,7 @@
         AKABindingExpressionParser* scanner = [AKABindingExpressionParser parserWithString:text];
         AKABindingExpression* expression = nil;
         NSError* error = nil;
-        BOOL result = [scanner parseBindingExpression:&expression forBindingType:nil error:&error];
+        BOOL result = [scanner parseBindingExpression:&expression withSpecification:nil error:&error];
 
         XCTAssertTrue(result);
         XCTAssertNil(error);
@@ -642,7 +642,7 @@
         @try
         {
             (void) [scanner parseBindingExpression:&expression
-                                    forBindingType:nil
+                                 withSpecification:nil
                                              error:&error];
         }
         @catch(NSException* e)
@@ -666,7 +666,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                       forBindingType:nil
+                                    withSpecification:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGPointConstantBindingExpression class]]);
@@ -694,7 +694,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                       forBindingType:nil
+                                    withSpecification:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGSizeConstantBindingExpression class]]);
@@ -723,7 +723,7 @@
         AKABindingExpression* expression = nil;
         NSError* error = nil;
         BOOL result = [scanner parseBindingExpression:&expression
-                                       forBindingType:nil
+                                    withSpecification:nil
                                                 error:&error];
         XCTAssertTrue(result);
         XCTAssertTrue([expression isKindOfClass:[AKACGRectConstantBindingExpression class]]);

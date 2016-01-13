@@ -20,10 +20,10 @@ class UITextViewBindingsSpec: QuickSpec {
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;
 
-                let bindingType: AKABinding.Type = expression.bindingType as! AKABinding.Type;
+                let bindingType: AKABinding.Type? = expression.specification?.bindingType as? AKABinding.Type;
 
                 // Act
-                let binding = try! bindingType.init (
+                let binding = try! bindingType?.init (
                     target: view,
                     property: property,
                     expression: expression,
@@ -37,7 +37,7 @@ class UITextViewBindingsSpec: QuickSpec {
                 }
 
                 context("when observing changes") {
-                    binding.startObservingChanges()
+                    binding!.startObservingChanges()
                     let textAfterStartObservingChanges = view.text;
 
                     it("updates its text to bound value") {
@@ -67,7 +67,7 @@ class UITextViewBindingsSpec: QuickSpec {
                     }
 
                     context("when no longer observing changes") {
-                        binding.stopObservingChanges()
+                        binding!.stopObservingChanges()
                         let textAfterStopObservingChanges = view.text
                         it("does not revert text to initial value") {
                             expect(textAfterStopObservingChanges).toNot(equal(initialText));

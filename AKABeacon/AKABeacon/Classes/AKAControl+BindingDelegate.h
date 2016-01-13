@@ -7,7 +7,7 @@
 //
 
 #import "AKAControl.h"
-#import "AKABindingDelegate.h"
+#import "AKAControlViewBindingDelegate.h"
 
 
 @interface AKAControl(BindingDelegate) <AKABindingDelegate>

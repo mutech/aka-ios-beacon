@@ -46,5 +46,5 @@ target :AKABeaconDemo, :exclusive => true do
         xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
     end
     xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
-    commons_pods
+    beacon_pods
 end

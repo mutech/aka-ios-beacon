@@ -43,14 +43,14 @@
            @"attributes":
                @{ @"formattingContext":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseManually),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSFormattingContext" },
 
                   // NSFormatter does not itself provide a locale property:
                   //                      @"locale":
                   //                          @{ @"required":        @NO,
-                  //                             @"use":             @(AKABindingAttributeUseIgnore),
+                  //                             @"use":             @(AKABindingAttributeUseManually),
                   //                             @"expressionType":  @(AKABindingExpressionTypeString) }
                   },
            @"allowUnspecifiedAttributes":   @YES
@@ -209,7 +209,7 @@
 
                  AKABindingAttributeSpecification* attributeSpec = attributeSpecs[attributeName];
 
-                 if (attributeSpec == nil || attributeSpec.attributeUse == AKABindingAttributeUseIgnore)
+                 if (attributeSpec == nil || attributeSpec.attributeUse == AKABindingAttributeUseManually)
                  {
                      id<AKABindingContextProtocol> bindingContext = self.bindingContext;
                      id value = nil;

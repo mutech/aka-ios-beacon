@@ -293,20 +293,42 @@
 }
 
 + (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                sourceValue:(opt_id)targetValue
+                                sourceValue:(opt_id)sourceValue
                              usingFormatter:(req_NSFormatter)formatter
                           failedWithMessage:(opt_NSString)message
 {
     NSString* reason = message;
-    NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source %@ value %@ using formatter %@ failed: %@",
-                             binding, binding.bindingTarget.value, targetValue, formatter, message];
+    NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source value %@ using formatter %@ failed: %@",
+                             binding,
+                             sourceValue,
+                             formatter,
+                             message];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorConversionOfSourceToTargetUsingFormatterFailed
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
                                                   NSLocalizedFailureReasonErrorKey: reason,
                                                   @"binding": binding,
-                                                  @"value": targetValue,
+                                                  @"value": sourceValue,
                                                   @"formatter": formatter }];
+    return result;
+}
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                    sourceValuePredicateFormat:(opt_id)sourceValue
+                                           failedWithException:(NSException*_Nonnull)exception
+{
+    NSString* reason = exception.description;
+    NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source predicate format `%@' failed with exception: %@",
+                             binding,
+                             sourceValue,
+                             reason];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorConversionOfSourcePredicateFormatToTargetPredicateFailed
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason,
+                                                  @"binding": binding,
+                                                  @"value": sourceValue,
+                                                  @"exception": exception }];
     return result;
 }
 

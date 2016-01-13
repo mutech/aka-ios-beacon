@@ -52,12 +52,6 @@
         control = [[controlType alloc] initWithOwner:self
                                        configuration:configuration];
         [control setView:view];
-        [control addBindingsForView:view];
-        if ([control isKindOfClass:[AKACompositeControl class]])
-        {
-            AKACompositeControl* composite = (AKACompositeControl*)control;
-            [composite autoAddControlsForControlViewSubviewsInViewHierarchy:view];
-        }
     }
 
     return control;
@@ -452,12 +446,17 @@
              {
                  [self insertControl:control
                              atIndex:index + count];
-                 ++count;
 
+                 // Add bindings and controls (recursively)
+                 [control addBindingsForView:view];
                  if ([control isKindOfClass:[AKACompositeControl class]])
                  {
                      *doNotDescend = YES;
+                     AKACompositeControl* composite = (AKACompositeControl*)control;
+                     [composite autoAddControlsForControlViewSubviewsInViewHierarchy:view];
                  }
+
+                 ++count;
              }
              else
              {
@@ -589,6 +588,11 @@
                 UIView<AKAControlViewProtocol>* controlView = (id)cell;
                 AKAControl* control = [self createControlForView:controlView
                                                withConfiguration:controlView.aka_controlConfiguration];
+
+                // Add bindings, this is done before inserting the control because the collection
+                // binding is needed by AKAFormTableViewController (TODO: much too complex, refactor this)
+                [control addBindingsForView:controlView];
+
                 if (control)
                 {
                     if ([control isKindOfClass:[AKATableViewCellCompositeControl class]])
@@ -606,6 +610,14 @@
 
                     [self insertControl:control atIndex:index + count];
                     ++count;
+
+                    // Add controls (recursively), this is done after inserting the control to ensure
+                    // that nested bindings using $root key paths will see the real root
+                    if ([control isKindOfClass:[AKACompositeControl class]])
+                    {
+                        AKACompositeControl* composite = (AKACompositeControl*)control;
+                        [composite autoAddControlsForControlViewSubviewsInViewHierarchy:controlView];
+                    }
                 }
             }
             else if (cell != nil)

@@ -7,12 +7,12 @@
 //
 
 @import AKACommons.AKANullability;
-@class AKAControlViewBinding;
 
+@class AKAControlViewBinding;
 typedef AKAControlViewBinding*_Nonnull req_AKAControlViewBinding;
 
 
-@protocol AKAControlViewBindingDelegate<AKABindingDelegate>
+@protocol AKAControlViewBindingDelegate<AKAViewBindingDelegate>
 
 #pragma mark - Change Tracking
 

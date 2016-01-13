@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorConversionOfSourceToTargetFailedInvalidSourceType,
     AKABindingErrorConversionOfTargetToSourceUsingFormatterFailed,
     AKABindingErrorConversionOfSourceToTargetUsingFormatterFailed,
+    AKABindingErrorConversionOfSourcePredicateFormatToTargetPredicateFailed,
 };
 
 
@@ -109,8 +110,13 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                              failedWithMessage:(opt_NSString)message;
 
 + (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                                   sourceValue:(opt_id)targetValue
+                                                   sourceValue:(opt_id)sourceValue
                                                 usingFormatter:(req_NSFormatter)formatter
                                              failedWithMessage:(opt_NSString)message;
+
++ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                    sourceValuePredicateFormat:(opt_id)sourceValue
+                                           failedWithException:(NSException*_Nonnull)exception;
+
 
 @end

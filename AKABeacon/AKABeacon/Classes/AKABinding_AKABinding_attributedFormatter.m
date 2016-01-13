@@ -12,11 +12,6 @@
 
 @implementation AKABinding_AKABinding_attributedFormatter
 
-- (instancetype)initWithTarget:(id)target property:(SEL)property expression:(req_AKABindingExpression)bindingExpression context:(req_AKABindingContext)bindingContext delegate:(opt_AKABindingDelegate)delegate error:(NSError* __autoreleasing _Nullable*)error
-{
-    return self = [super initWithTarget:target property:property expression:bindingExpression context:bindingContext delegate:delegate error:error];
-}
-
 + (AKABindingSpecification*)                 specification
 {
     static AKABindingSpecification* result = nil;
@@ -80,47 +75,6 @@
         [AKABindingExpressionSpecification registerOptionsType:@"NSStringCompareOptions"
                                               withValuesByName:[AKANSEnumerations stringCompareOptions]];
     });
-}
-
-- (BOOL)applyToTargetOnce:(out_NSError)error
-{
-    BOOL result = YES;
-
-    [self updateTargetValue];
-    for (AKABinding* attributeBinding in self.attributeBindings.allValues)
-    {
-        result = [attributeBinding applyToTargetOnce:error];
-
-        if (!result)
-        {
-            break;
-        }
-    }
-
-    return result;
-}
-
-- (BOOL)                              startObservingChanges
-{
-    __block BOOL result = YES;
-
-    [self.attributeBindings enumerateKeysAndObjectsUsingBlock:
-     ^(req_NSString propertyName,
-       req_AKABinding propertyBinding,
-       outreq_BOOL stop)
-     {
-         (void)propertyName;
-         (void)stop;
-
-         result = [propertyBinding startObservingChanges] && result;
-     }];
-
-    result = [self.bindingTarget startObservingChanges] && result;
-    result = [self.bindingSource startObservingChanges] && result;
-
-    [self updateTargetValue];
-    
-    return result;
 }
 
 - (NSFormatter*)defaultFormatter

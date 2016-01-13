@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E2653331C3060B1001AC635 /* AKABeacon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E2653321C3060B1001AC635 /* AKABeacon.framework */; };
+		60762480812CFA496E34964F /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */; };
+		8E2ED22B1C3D53F000FBA44D /* TableViewBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2ED22A1C3D53F000FBA44D /* TableViewBindingViewController.m */; };
 		8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */; };
 		8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */; };
 		8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */; };
@@ -21,7 +22,6 @@
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; };
 		8ED3FD071C2AA8A500C44412 /* SearchResultHighlightingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */; };
 		8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */; };
-		A4FA6D5A73ED43DC987E44AC /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54424237AC09E7B725D37610 /* Pods_AKABeaconDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +52,8 @@
 		5EE7DFAB46B4CDC640EF258D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = BindingExpressionsPlayground.playground; path = AKABeaconDemo/BindingExpressionsPlayground.playground; sourceTree = "<group>"; };
 		8E2653321C3060B1001AC635 /* AKABeacon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKABeacon.framework; path = "build/Debug-iphoneos/AKABeacon.framework"; sourceTree = "<group>"; };
+		8E2ED2291C3D53F000FBA44D /* TableViewBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewBindingViewController.h; sourceTree = "<group>"; };
+		8E2ED22A1C3D53F000FBA44D /* TableViewBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewBindingViewController.m; sourceTree = "<group>"; };
 		8E4F0A691BE39D29006D8876 /* SliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderViewController.h; sourceTree = "<group>"; };
 		8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewController.m; sourceTree = "<group>"; };
 		8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKACommons.framework; path = "Pods/../build/Debug-iphoneos/AKACommons.framework"; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 		8E91E7591BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
+		8EABEF4A1C31FAF300EA95DF /* NSPredicates.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = NSPredicates.playground; sourceTree = "<group>"; };
 		8ED3FD051C2AA8A500C44412 /* SearchResultHighlightingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultHighlightingViewController.h; sourceTree = "<group>"; };
 		8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultHighlightingViewController.m; sourceTree = "<group>"; };
 		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
@@ -87,8 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E2653331C3060B1001AC635 /* AKABeacon.framework in Frameworks */,
-				A4FA6D5A73ED43DC987E44AC /* Pods_AKABeaconDemo.framework in Frameworks */,
+				60762480812CFA496E34964F /* Pods_AKABeaconDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +118,7 @@
 		8E91E7311BB228A900F7618F = {
 			isa = PBXGroup;
 			children = (
+				8EABEF4A1C31FAF300EA95DF /* NSPredicates.playground */,
 				8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */,
 				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
 				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,
@@ -175,6 +178,8 @@
 				8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */,
 				8ED3FD051C2AA8A500C44412 /* SearchResultHighlightingViewController.h */,
 				8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */,
+				8E2ED2291C3D53F000FBA44D /* TableViewBindingViewController.h */,
+				8E2ED22A1C3D53F000FBA44D /* TableViewBindingViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -316,7 +321,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh\"\n";
+			shellScript = "set -x; \"${SRCROOT}/../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F18D087FA5F3FC06E73FFEF4 /* Check Pods Manifest.lock */ = {
@@ -345,6 +350,7 @@
 				8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */,
 				8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */,
 				8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */,
+				8E2ED22B1C3D53F000FBA44D /* TableViewBindingViewController.m in Sources */,
 				8E91E73F1BB228A900F7618F /* main.m in Sources */,
 				8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */,
 				8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */,

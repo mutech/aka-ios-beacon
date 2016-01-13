@@ -324,7 +324,7 @@ static NSString*const   keywordCGRect = @"CGRect";
             AKABindingExpression* item = nil;
 
             // TODO: get item specification from specification (add a property there)
-            opt_Class itemBindingType = [specification.bindingType bindingTypeForBindingExpressionInPrimaryExpressionArray];
+            opt_Class itemBindingType = specification.bindingSourceSpecification.arrayItemBindingType;
             opt_AKABindingSpecification itemSpecification = [itemBindingType specification];
             result = [self parseBindingExpression:&item
                                 withSpecification:itemSpecification

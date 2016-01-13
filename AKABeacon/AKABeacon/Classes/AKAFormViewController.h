@@ -16,6 +16,10 @@
 
 @property(nonatomic, readonly) AKAFormControl* formControl;
 
+- (void)                             initializeFormControl;
+- (void)                        initializeFormControlTheme;
+- (void)                      initializeFormControlMembers;
+
 #pragma mark - Outlets
 
 @property(nonatomic, weak) IBOutlet UIScrollView *scrollView;

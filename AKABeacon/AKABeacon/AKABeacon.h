@@ -43,6 +43,11 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import "AKABeaconErrors.h"
 #import "AKABeaconStyleKit.h"
 
+// Commons
+// Commons/Runtime
+#import <AKABeacon/AKAProtocolInfo.h>
+#import <AKABeacon/AKADelegateDispatcher.h>
+
 // ViewControllers
 #import <AKABeacon/AKAFormViewController.h>
 #import <AKABeacon/AKAFormTableViewController.h>
@@ -85,6 +90,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings
 #import <AKABeacon/AKAViewBinding.h>
+#import <AKABeacon/AKAViewBindingDelegate.h>
 #import <AKABeacon/AKAViewBinding+IBPropertySupport.h>
 #import <AKABeacon/AKAControlViewBinding.h>
 
@@ -96,6 +102,13 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UILabel_textBinding.h>
 #import <AKABeacon/AKABinding_UILabel_styleBinding.h>
+
+// Bindings/ViewBindings/UITableView
+#import <AKABeacon/UITableView+AKAIBBindingProperties.h>
+#import <AKABeacon/AKABinding_UITableView_dataSourceBinding.h>
+#import <AKABeacon/AKATableViewCellFactory.h>
+#import <AKABeacon/AKATableViewCellFactoryArrayPropertyBinding.h>
+#import <AKABeacon/AKATableViewCellFactoryPropertyBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings
 #import <AKABeacon/AKAControlViewBindingDelegate.h>
@@ -163,6 +176,8 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/PropertyBindings
 #import <AKABeacon/AKAPropertyBinding.h>
+#import <AKABeacon/AKAPredicatePropertyBinding.h>
+#import <AKABeacon/AKAArrayPropertyBinding.h>
 #import <AKABeacon/AKABinding_AKABinding_formatter.h>
 #import <AKABeacon/AKABinding_AKABinding_numberFormatter.h>
 #import <AKABeacon/AKABinding_AKABinding_dateFormatter.h>

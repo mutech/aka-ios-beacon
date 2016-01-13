@@ -218,6 +218,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
     {
         [binding startObservingChanges];
     }
+    _isObservingChanges = YES;
 }
 
 - (void)                         stopObservingChanges
@@ -226,9 +227,14 @@ static NSString* const kRegisteredControlKey = @"aka_control";
     {
         [binding stopObservingChanges];
     }
+    _isObservingChanges = NO;
 }
 
 @end
+
+
+#pragma mark - AKAControl(BindingContext)
+#pragma mark -
 
 @implementation AKAControl(BindingContext)
 

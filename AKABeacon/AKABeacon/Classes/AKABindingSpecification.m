@@ -16,7 +16,7 @@
 NSString*const kAKABindingSpecificationBindingTypeKey = @"bindingType";
 NSString*const kAKABindingSpecificationBindingTargetSpecificationKey = @"targetType";
 NSString*const kAKABindingSpecificationBindingExpressionType = @"expressionType";
-NSString*const kAKABindingSpecificationArrayItemBindingProviderTypeKey = @"arrayItemBindingProviderType";
+NSString*const kAKABindingSpecificationArrayItemBindingProviderTypeKey = @"arrayItemBindingType";
 NSString*const kAKABindingSpecificationAttributesKey = @"attributes";
 
 NSString*const kAKABindingAttributesSpecificationRequiredKey = @"required";
@@ -85,14 +85,6 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         _bindingSourceSpecification =
             [[AKABindingExpressionSpecification alloc] initWithDictionary:dictionary
                                                                   basedOn:mergedExpressionBase];
-
-        _arrayItemBindingType = [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey]
-                                                                   required:NO];
-
-        if (!_arrayItemBindingType)
-        {
-            _arrayItemBindingType = base.arrayItemBindingType;
-        }
     }
 
     return self;
@@ -105,11 +97,6 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     if (self.bindingType)
     {
         dictionary[kAKABindingSpecificationBindingTypeKey] = self.bindingType;
-    }
-
-    if (self.arrayItemBindingType)
-    {
-        dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey] = self.arrayItemBindingType;
     }
 
     [self.bindingTargetSpecification addToDictionary:dictionary];
@@ -299,10 +286,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                                                          ? @(base.expressionType)
                                                          : @(AKABindingExpressionTypeAny) )].unsignedLongValue;
 
-        _arrayItemBindingType =
-            [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey]
-
-                                   required:NO];
+        _arrayItemBindingType = [AKABindingSpecification classTypeForObject:dictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey]
+                                                                   required:NO];
         if (_arrayItemBindingType == nil)
         {
             _arrayItemBindingType = base.arrayItemBindingType;
@@ -414,14 +399,15 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 
     if (attributes.count > 0)
     {
-        specDictionary[@"attributes"] = attributes;
+        specDictionary[kAKABindingSpecificationAttributesKey] = attributes;
     }
 
     specDictionary[@"expressionType"] = @(self.expressionType);
 
+
     if (self.arrayItemBindingType)
     {
-        specDictionary[@"arrayItemBindingType"] = self.arrayItemBindingType;
+        specDictionary[kAKABindingSpecificationArrayItemBindingProviderTypeKey] = self.arrayItemBindingType;
     }
 
     if (self.enumerationType.length > 0)
@@ -600,10 +586,11 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         _attributeUse = [AKABindingSpecification enumValueForObject:dictionary[kAKABindingAttributesSpecificationUseKey]
                                                        defaultValue:(base
                                                                      ? @(base.attributeUse)
-                                                                     : @(AKABindingAttributeUseIgnore))].unsignedIntegerValue;
+                                                                     : @(AKABindingAttributeUseManually))].unsignedIntegerValue;
         switch (self.attributeUse)
         {
             case AKABindingAttributeUseAssignValueToBindingProperty:
+            case AKABindingAttributeUseAssignValueToTargetProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
             case AKABindingAttributeUseBindToBindingProperty:
             case AKABindingAttributeUseBindToTargetProperty:
@@ -616,14 +603,14 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                 break;
             }
 
-            case AKABindingAttributeUseIgnore:
+            case AKABindingAttributeUseManually:
                 NSAssert(dictionary[kAKABindingAttributesSpecificationBindingPropertyKey] == nil,
-                         @"bindingProperty specified for AKABindingAttributeUseIgnore");
+                         @"bindingProperty specified for AKABindingAttributeUseManually");
                 _bindingPropertyName = nil;
                 break;
 
             default:
-                @throw [NSException exceptionWithName:@"Unknown enumeration value" reason:[NSString stringWithFormat:@"Enumeration value %@ is not known", @(self.attributeUse)] userInfo:nil];
+                @throw [NSException exceptionWithName:@"Unknown binding attribute use" reason:[NSString stringWithFormat:@"Enumeration value %@ is not known", @(self.attributeUse)] userInfo:nil];
                 self = nil;
         }
     }
@@ -638,7 +625,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     specDictionary[kAKABindingAttributesSpecificationRequiredKey] = @(self.required);
     specDictionary[kAKABindingAttributesSpecificationUseKey] = @(self.attributeUse);
 
-    if (self.attributeUse != AKABindingAttributeUseIgnore && self.bindingPropertyName.length > 0)
+    if (self.attributeUse != AKABindingAttributeUseManually && self.bindingPropertyName.length > 0)
     {
         specDictionary[kAKABindingAttributesSpecificationBindingPropertyKey] = self.bindingPropertyName;
     }

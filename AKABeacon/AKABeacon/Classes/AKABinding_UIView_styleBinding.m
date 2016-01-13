@@ -73,4 +73,16 @@
             }];
 }
 
+- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                           context:(req_AKABindingContext)bindingContext
+                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                             error:(NSError *__autoreleasing  _Nullable *)error
+{
+    (void)bindingExpression;
+    (void)bindingContext;
+    (void)error;
+    
+    return [AKAProperty propertyOfWeakKeyValueTarget:nil keyPath:nil changeObserver:changeObserver];
+}
+
 @end

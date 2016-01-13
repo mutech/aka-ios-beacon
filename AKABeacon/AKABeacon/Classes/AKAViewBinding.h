@@ -9,6 +9,7 @@
 @import UIKit;
 
 #import "AKABinding.h"
+#import "AKAViewBindingDelegate.h"
 
 /**
  * Abstract base class for bindings which target views.
@@ -17,7 +18,8 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, readonly, weak) UIView*                view;
+@property(nonatomic, readonly, weak) UIView*                    view;
+@property(nonatomic, readonly, weak) id<AKAViewBindingDelegate> delegate;
 
 @end
 

@@ -49,7 +49,7 @@
 
                   @"locale":
                       @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseIgnore),
+                         @"use":             @(AKABindingAttributeUseManually),
                          @"expressionType":  @(AKABindingExpressionTypeString) }, },
 
            @"allowUnspecifiedAttributes":   @YES };

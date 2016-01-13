@@ -53,8 +53,9 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
                                                    delegate:(opt_AKABindingDelegate)delegate
                                                       error:(out_NSError)error;
 
+#pragma mark - Binding Source Initialization
 
-- (BOOL)                   setupBindingSourceWithExpression:(req_AKABindingExpression)bindingExpression
+- (opt_AKAProperty)              bindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                       error:(out_NSError)error;
@@ -63,6 +64,135 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                       error:(out_NSError)error;
+
+#pragma mark - Binding Attribute Initialization
+
+- (BOOL)               setupAttributeBindingsWithExpression:(req_AKABindingExpression)bindingExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                                      error:(out_NSError)error;
+
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseManually. The default implementation ignores the attribute.
+
+ @param attributeName       the attribute's name
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      the binding context in which the attribute expression can be evaluated
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL              )setupAttributeBindingManuallyWithName:(req_NSString)attributeName
+                                              specification:(req_AKABindingAttributeSpecification)specification
+                                        attributeExpression:(req_AKABindingExpression)attributeExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                                      error:(out_NSError)error;
+
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseAssignValueToBindingProperty. The default implementation assignes the result of evaluating the attribute expression in the binding context to the binding (self)'s property using bindingProperty as key (KVC).
+
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      the binding context in which the attribute expression can be evaluated
+ @param bindingProperty     the property name of this object (self) to which the result of evaluating the binding expression is to be assigned to.
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL)setupAttributeBindingByAssigningValueToBindingProperty:(req_NSString)bindingProperty
+                                             withSpecification:(req_AKABindingAttributeSpecification)specification
+                                           attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                bindingContext:(req_AKABindingContext)bindingContext
+                                                         error:(out_NSError)error;
+
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseAssignExpressionToBindingProperty. The default implementation assigns the attribute expression (not the result of its evaluation) to the binding (self)'s property using  bindingProperty as key (KVC).
+
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      not used by the default implementation, can be used if evaluation of the attribute expression is required in overriding sub classes
+ @param bindingProperty     the property name of this object (self) to which the binding expression is to be assigned to.
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL)setupAttributeBindingByAssigningExpressionToBindingProperty:(req_NSString)bindingProperty
+                                                  withSpecification:(req_AKABindingAttributeSpecification)specification
+                                                attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                     bindingContext:(req_AKABindingContext)bindingContext
+                                                              error:(out_NSError)error;
+
+- (BOOL)setupAttributeBindingByAssigningValueToTargetProperty:(req_NSString)bindingProperty
+                                            withSpecification:(req_AKABindingAttributeSpecification)specification
+                                          attributeExpression:(req_AKABindingExpression)attributeExpression
+                                               bindingContext:(req_AKABindingContext)bindingContext
+                                                        error:(out_NSError)error;
+
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseBindToBindingProperty. The default implementation creates an attribute binding targeting the binding (self)'s property using bindingProperty as key.
+
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      the binding context in which the attribute expression can be evaluated
+ @param bindingProperty     the property name of this object (self) that the attribute binding will target.
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL)    setupAttributeBindingByBindingToBindingProperty:(opt_NSString)bindingProperty
+                                          withSpecification:(req_AKABindingAttributeSpecification)specification
+                                        attributeExpression:(req_AKABindingExpression)attributeExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                                      error:(out_NSError)error;
+
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseBindToTargetProperty. The default implementation creates an attribute binding targeting the binding (self)'s binding target property (self.bindingTarget's value) using bindingProperty as key.
+ 
+ Please note that the bindingTarget is not necessarily defined at the time when the binding attribute's binding is created.
+
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      the binding context in which the attribute expression can be evaluated
+ @param bindingProperty     the property name of this object's binding target that the attribute binding will target.
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL)             setupAttributeBindingWithSpecification:(req_AKABindingAttributeSpecification)specification
+                                        attributeExpression:(req_AKABindingExpression)attributeExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                  byBindingToTargetProperty:(req_NSString)bindingProperty
+                                                      error:(out_NSError)error;
+/**
+ Called by setupAttributeBindingsWithExpression:bindingContext:error: if the binding does not specify the attribute. The default implementation does nothing and returns YES. Specific binding types handling unspecified attributes should override this method to process these.
+
+ @param attributeName       the name of the attribute
+ @param attributeExpression the binding expression of the attribute
+ @param bindingContext      the binding context in which the binding expression can be evaluated
+ @param error               the error location to be set in case of errors
+
+ @return YES if the attribute has been set up successfully, NO otherwise. Overriding classes have to set error accordingly if returning NO.
+ */
+- (BOOL)           setupUnspecifiedAttributeBindingWithName:(req_NSString)attributeName
+                                        attributeExpression:(req_AKABindingExpression)attributeExpression
+                                             bindingContext:(req_AKABindingContext)bindingContext
+                                                      error:(out_NSError)error;
+
+#if 0
+/**
+ Used by setupAttributeBindingsWithExpression:bindingContext:error: and related methods to store attribute bindings.
+
+ @param binding       the attribute binding
+ @param specification the attribute binding's specification (may be nil for unspecified attribute bindings and should otherwise not be nil).
+ @param key           the key identifying the binding attribute, this is typically the binding or target property name.
+ */
+- (void)addAttributeBinding:(req_AKABinding)binding
+          withSpecification:(opt_AKABindingAttributeSpecification)specification
+                     forKey:(req_NSString)key;
+#else
+- (void)addBindingPropertyBinding:(req_AKABinding)binding;
+- (void)addTargetPropertyBinding:(req_AKABinding)binding;
+#endif
 
 #pragma mark - Ad hoc binding application
 
@@ -121,8 +251,13 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 
 @interface AKABinding(BindingAttributeBindings)
 
+#if 0
 @property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABinding*>* attributeBindings;
 @property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABindingAttributeSpecification*>* attributeBindingSpecifications;
+#else
+@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* bindingPropertyBindings;
+@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* targetPropertyBindings;
+#endif
 
 @end
 

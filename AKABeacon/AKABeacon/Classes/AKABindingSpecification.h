@@ -43,9 +43,9 @@ typedef AKABindingAttributeSpecification* _Nullable opt_AKABindingAttributeSpeci
 typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
 {
     /**
-       The attribute is ignored by the processing binding provider. The binding processes the attribute itself.
+       The attribute is processed manually by the concrete binding type.
      */
-    AKABindingAttributeUseIgnore = 0,
+    AKABindingAttributeUseManually = 0,
 
     /**
        The attribute's binding expression will be stored (unevaluated) in the owner binding's bindingProperty specified in the attribute specification.
@@ -53,12 +53,17 @@ typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
     AKABindingAttributeUseAssignExpressionToBindingProperty,
 
     /**
-       The attribute's binding expression will be evaluated in the current binding context and the resulting value will be stored in the owner binding's bindingProperty specified in the attribute specification.
+       The attribute's binding expression will be evaluated in the current binding context and the resulting value will be stored in the owner binding's property specified in the attribute specification ("bindingProperty" or if not defined, the attribute name).
      */
     AKABindingAttributeUseAssignValueToBindingProperty,
 
     /**
-     The attribute's binding expression will be used to create a property binding targeting the owner binding's bindingProperty specified in the attribute specification.
+     The attribute's binding expression will be evaluated in the current binding context and the resulting value will be assigned to the owner binding's target property specified in the attribute specification ("bindingProperty" or if not defined, the attribute name).
+     */
+    AKABindingAttributeUseAssignValueToTargetProperty,
+
+    /**
+     The attribute's binding expression will be used to create a property binding targeting the owner binding's property specified in the attribute specification ("bindingProperty" or if not defined, the attribute name).
      */
     AKABindingAttributeUseBindToBindingProperty,
 
@@ -371,10 +376,7 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 
 @property(nonatomic, readonly, nullable) AKABindingExpressionSpecification* bindingSourceSpecification;
 
-@property(nonatomic, readonly, nullable) Class                              arrayItemBindingType;
-
 - (opt_Class)bindingTypeForAttributeWithName:(req_NSString)attributeName;
-
 
 @end
 
@@ -576,7 +578,7 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
 FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationRequiredKey;
 
 /**
-   Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property use. The entry is mandatory defaulting to AKABindingAttributeUseIgnore and specifies how the attribute is processed by the binding provider when setting up a binding.
+   Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property use. The entry is mandatory defaulting to AKABindingAttributeUseManually and specifies how the attribute is processed by the binding provider when setting up a binding.
 
    @see AKABindingAttributeUse
    @see kAKABindingAttributesSpecificationBindingPropertyKey
@@ -586,7 +588,7 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationUse
 /**
    Key in the serialized AKABindingAttributeSpecification dictionary corresponding to the property bindingProperty. The entry is optional defaulting to attribute's name and specifies the target property in the owner binding, that will be setup using this attribute.
 
-   It is invalid to specify a bindingProperty for AKABindingAttributeUseIgnore.
+   It is invalid to specify a bindingProperty for AKABindingAttributeUseManually.
 
    @see kAKABindingAttributesSpecificationUseKey
    @see AKABindingAttributeUse

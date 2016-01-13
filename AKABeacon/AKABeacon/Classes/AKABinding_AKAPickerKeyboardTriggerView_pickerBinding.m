@@ -57,7 +57,7 @@
                @"attributes":   @{
                    @"picker":   @{
                        @"base":             [AKABinding_UIPickerView_valueBinding specification].bindingSourceSpecification,
-                       @"use":              @(AKABindingAttributeUseIgnore)
+                       @"use":              @(AKABindingAttributeUseManually)
                    }
                }
         };

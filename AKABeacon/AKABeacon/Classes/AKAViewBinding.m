@@ -14,6 +14,8 @@
 
 @implementation AKAViewBinding
 
+@dynamic delegate;
+
 #pragma mark - Initialization
 
 - (instancetype)                initWithTarget:(req_id)target

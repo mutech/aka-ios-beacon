@@ -220,7 +220,11 @@
 
 - (void)binding:(req_AKABinding)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
 {
+#if 0
     if (binding == (req_AKABinding)self.attributeBindings[@"choices"])
+#else
+    if (YES)
+#endif
     {
         // TODO: This should be implemented as AKACollectionProperty or AKACollectionBinding or something else which is reusable, review later
         NSArray* items = nil;

@@ -55,7 +55,7 @@
                        @"expressionType":       @(AKABindingExpressionTypeStringConstant)
                    },
                    @"cellMapping":          @{
-                       @"use":                  @(AKABindingAttributeUseBindToBindingProperty),
+                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
                        @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class]
                    },
                }, };

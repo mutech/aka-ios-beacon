@@ -38,7 +38,7 @@ typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeybo
 @property(nonatomic, readonly) NSUInteger             countOfItems;
 
 - (void)                                            setNeedsUpdate;
-
+- (void)                                            updateIfNeeded;
 - (void)                                                    update;
 
 #pragma mark - Properties

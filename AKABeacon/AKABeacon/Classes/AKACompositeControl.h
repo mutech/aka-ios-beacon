@@ -139,4 +139,9 @@
 
 
 @interface AKACompositeControl (DelegatePropagation)
+
+- (void)                  controlWillInsertMemberControls:(req_AKACompositeControl)compositeControl;
+
+- (void)             controlDidEndInsertingMemberControls:(req_AKACompositeControl)compositeControl;
+
 @end

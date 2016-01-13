@@ -100,8 +100,18 @@
 
 @implementation AKAFormControl(DelegatePropagation)
 
-
 #pragma mark Delegat'ish Methods for Notifications and Customization
+
+- (void)controlWillInsertMemberControls:(req_AKACompositeControl)compositeControl
+{
+    (void)compositeControl;
+}
+
+- (void)controlDidEndInsertingMemberControls:(req_AKACompositeControl)compositeControl
+{
+    (void)compositeControl;
+    [self.keyboardActivationSequence updateIfNeeded];
+}
 
 - (BOOL)  shouldControl:(AKACompositeControl *)compositeControl
              addControl:(AKAControl *)memberControl
@@ -153,7 +163,7 @@
 
     if ([memberControl isKindOfClass:[AKAKeyboardControl class]])
     {
-        [self.keyboardActivationSequence update];
+        [self.keyboardActivationSequence setNeedsUpdate];
     }
 }
 

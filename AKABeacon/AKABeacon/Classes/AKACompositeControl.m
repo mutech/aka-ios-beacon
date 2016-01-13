@@ -429,11 +429,22 @@
                                                       atIndex:self.controlsStorage.count];
 }
 
+- (void)beginInsertingControls
+{
+    [self controlWillInsertMemberControls:self];
+}
+
+- (void)endInsertingControls
+{
+    [self controlDidEndInsertingMemberControls:self];
+}
+
 - (NSUInteger)insertControlsForControlViewsInViewHierarchy:(UIView*)rootView
                                                    atIndex:(NSUInteger)index
 {
     NSUInteger __block count = 0;
 
+    [self beginInsertingControls];
     [rootView aka_enumerateSelfAndSubviewsUsingBlock:^(UIView* view, BOOL* stop, BOOL* doNotDescend) {
          (void)stop; // not used
 
@@ -449,6 +460,7 @@
 
                  // Add bindings and controls (recursively)
                  [control addBindingsForView:view];
+                 
                  if ([control isKindOfClass:[AKACompositeControl class]])
                  {
                      *doNotDescend = YES;
@@ -470,6 +482,7 @@
              [self addBindingsForView:view];
          }
      }];
+    [self endInsertingControls];
 
     return count;
 }
@@ -520,11 +533,13 @@
 {
     NSUInteger count = 0;
 
+    [self beginInsertingControls];
     for (UIView* view in outletCollection)
     {
         count += [self insertControlsForControlViewsInViewHierarchy:view
                                                             atIndex:index + count];
     }
+    [self endInsertingControls];
 }
 
 - (void)     addControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*)arrayOfOutletCollections
@@ -538,6 +553,7 @@
 {
     NSUInteger count = 0;
 
+    [self beginInsertingControls];
     for (NSArray* outletCollection in arrayOfOutletCollections)
     {
         AKACompositeControl* collectionControl = [[AKACompositeControl alloc] initWithOwner:self configuration:nil];
@@ -548,6 +564,7 @@
             [collectionControl addControlsForControlViewsInOutletCollection:outletCollection];
         }
     }
+    [self endInsertingControls];
 }
 
 - (void)       addControlsForControlViewsInStaticTableView:(UITableView*)tableView
@@ -565,6 +582,7 @@
     NSUInteger count = 0;
     NSUInteger numberOfSections = (NSUInteger)[dataSource numberOfSectionsInTableView:tableView];
 
+    [self beginInsertingControls];
     for (NSInteger sectionIndex = 0; sectionIndex < numberOfSections; ++sectionIndex)
     {
         NSUInteger numberOfRows = (NSUInteger)[dataSource tableView:tableView numberOfRowsInSection:sectionIndex];
@@ -630,12 +648,23 @@
             }
         }
     }
+    [self endInsertingControls];
 }
 
 @end
 
 
 @implementation AKACompositeControl (DelegatePropagation)
+
+- (void)                  controlWillInsertMemberControls:(AKACompositeControl*)compositeControl
+{
+    [self.owner controlWillInsertMemberControls:compositeControl];
+}
+
+- (void)             controlDidEndInsertingMemberControls:(AKACompositeControl*)compositeControl
+{
+    [self.owner controlDidEndInsertingMemberControls:compositeControl];
+}
 
 - (BOOL)  shouldControl:(AKACompositeControl*)compositeControl
              addControl:(AKAControl*)memberControl

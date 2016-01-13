@@ -118,7 +118,16 @@
 
 - (void)                                  setNeedsUpdate
 {
+    [self removeAllItems];
     _items = nil;
+}
+
+- (void)                                  updateIfNeeded
+{
+    if (_items == nil)
+    {
+        [self update];
+    }
 }
 
 - (void)addItem:(AKAKeyboardActivationSequenceItem)item

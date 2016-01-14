@@ -12,7 +12,12 @@
 
 #import "AKAFormControl.h"
 
-@interface AKADynamicFormTableViewController : UITableViewController
+/**
+ UITableViewController that allows cells to use data bindinging.
+ 
+ @warning This class has been superceeded by AKABinding_UITableView_dataSourceBinding and the corresponding UITableView.dataSourceBinding_aka property. You should not need to use this class in favor to data source bindings. If you have a use case that justifies its usage, please let us know. If we don't get feedback, we will most likely remove this class in the upcoming release.
+ */
+@interface AKADynamicFormTableViewController: UITableViewController
 
 @property(nonatomic, readonly, nonnull) AKAFormControl* formControl;
 
@@ -44,9 +49,7 @@
 - (req_UITableViewCell)tableView:(req_UITableView)tableView
            cellForRowAtIndexPath:(req_NSIndexPath)indexPath;
 
-#pragma mark - Abstract Methods
-
-#pragma mark Data Context Mapping
+#pragma mark - Abstract Methods - Data Context Mapping
 
 - (req_NSString)                            tableView:(req_UITableView)tableView
                          cellIdentifierForDataContext:(req_id)dataContext;
@@ -54,7 +57,7 @@
 - (opt_id)                                  tableView:(req_UITableView)tableView
                               dataContextForIndexPath:(req_NSIndexPath)indexPath;
 
-#pragma mark UITableViewDataSource
+#pragma mark - Abstract Methods - UITableViewDataSource
 
 - (NSInteger)             numberOfSectionsInTableView:(req_UITableView)tableView;
 

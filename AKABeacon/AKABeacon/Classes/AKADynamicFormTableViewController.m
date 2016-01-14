@@ -167,15 +167,15 @@
     [self removeControlForRowAtIndexPath:indexPath];
 }
 
-- (void)addControl:(AKACompositeControl*)control
- forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)                                   addControl:(AKACompositeControl*)control
+                                    forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     self.visibleCellControlsByIndexPath[indexPath] = control;
 
     [self.formControl addControl:control];
 }
 
-- (void)removeControlForRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)              removeControlForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     AKACompositeControl* control = self.visibleCellControlsByIndexPath[indexPath];
     if (control)
@@ -186,7 +186,7 @@
     }
 }
 
-- (void)removeAllRowControls
+- (void)                        removeAllRowControls
 {
     for (NSIndexPath* indexPath in self.visibleCellControlsByIndexPath.allKeys)
     {
@@ -194,38 +194,7 @@
     }
 }
 
-#pragma mark - Cell Rendering
-
-- (BOOL)                                   _renderCell:(UITableViewCell *)cell
-                                      withDataContext:(id)dataContext
-                                                error:(out_NSError)error
-{
-    __block BOOL result = YES;
-
-    id<AKABindingContextProtocol> bindingContext =
-    [[AKADynamicFormTableViewCellBindingContext alloc] initWithRoot:self
-                                                        dataContext:dataContext];
-    __strong UIView* contentView = cell.contentView;
-    [contentView aka_enumerateSelfAndSubviewsUsingBlock:
-     ^(UIView *view, BOOL *stopEnumeratingViews, BOOL *doNotDescend)
-     {
-         (void)doNotDescend;
-         [view aka_enumerateBindingExpressionsWithBlock:
-          ^(SEL _Nonnull property, req_AKABindingExpression expression, BOOL * _Nonnull stop)
-          {
-              (void)property;
-              result = [AKABinding applyBindingExpression:expression
-                                                 toTarget:view
-                                                inContext:bindingContext
-                                                    error:error];
-              *stop = !result;
-          }];
-         *stopEnumeratingViews = !result;
-     }];
-    return result;
-}
-
-#pragma mark - Abstract - Data Context Mapping
+#pragma mark - Abstract Methods - Data Context Mapping
 
 - (req_NSString)                            tableView:(UITableView*)tableView
                          cellIdentifierForDataContext:(id)dataContext
@@ -243,7 +212,7 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-#pragma mark - Abstract - UITableViewDataSource
+#pragma mark - Abstract Methods - UITableViewDataSource
 
 - (NSInteger)             numberOfSectionsInTableView:(UITableView *)tableView
 {

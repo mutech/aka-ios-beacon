@@ -141,7 +141,7 @@
                 }
 
                 // A programmatic change resets edits and thus needs to be reflected in previousText
-                self.previousText = binding.textField.text;
+                binding.previousText = binding.textField.text;
             }
             observationStarter:
             ^BOOL (id target)

@@ -16,7 +16,7 @@
  */
 @interface AKAKeyboardControl : AKAScalarControl
 
-@property(nonatomic, readonly, strong, nullable) AKAKeyboardControlViewBinding* controlViewBinding;
+@property(nonatomic, readonly, weak, nullable) AKAKeyboardControlViewBinding* controlViewBinding;
 
 @end
 

@@ -11,6 +11,7 @@
 @interface AKABinding_UISegmentedControl_valueBinding : AKASelectionControlViewBinding
 
 @property(nonatomic, readonly) opt_AKABindingExpression             choicesBindingExpression;
+
 @property(nonatomic, readonly) BOOL                                 preferTitleOverImage;
 @property(nonatomic, readonly) opt_AKABindingExpression             titleBindingExpression;
 @property(nonatomic, readonly) opt_NSString                         titleForUndefinedValue;

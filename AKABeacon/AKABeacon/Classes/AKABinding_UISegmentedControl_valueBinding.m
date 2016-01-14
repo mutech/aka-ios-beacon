@@ -59,10 +59,9 @@
                                       getter:
             ^id (id target)
             {
-                id result;
                 AKABinding_UISegmentedControl_valueBinding* binding = target;
 
-                return @(binding.segmentedControl.selectedSegmentIndex);
+                id result = @(binding.segmentedControl.selectedSegmentIndex);
 
                 return result;
             }
@@ -70,14 +69,15 @@
             ^(id target, id value)
             {
                 AKABinding_UISegmentedControl_valueBinding* binding = target;
+
                 NSInteger row = value ? [value integerValue] : NSNotFound;
 
                 if (row != NSNotFound)
                 {
                     id currentValue = nil;
-                    [self convertTargetValue:@(binding.segmentedControl.selectedSegmentIndex)
-                               toSourceValue:&currentValue
-                                       error:nil];
+                    [binding convertTargetValue:@(binding.segmentedControl.selectedSegmentIndex)
+                                  toSourceValue:&currentValue
+                                          error:nil];
 
                     if (currentValue == nil && currentValue != value)
                     {

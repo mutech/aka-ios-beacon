@@ -39,13 +39,8 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
 @interface AKABinding () {
     BOOL _isUpdatingTargetValueForSourceValueChange;
-#if 0
-    NSMutableDictionary<NSString*, AKABinding*>* _attributeBindings;
-    NSMutableDictionary<NSString*, AKABindingAttributeSpecification*>* _attributeBindingSpecifications;
-#else
     NSMutableArray<AKABinding*>* _bindingPropertyBindings;
     NSMutableArray<AKABinding*>* _targetPropertyBindings;
-#endif
 }
 
 @end
@@ -200,30 +195,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-#if 0
-- (void)addAttributeBinding:(AKABinding*)binding
-          withSpecification:(AKABindingAttributeSpecification*)specification
-                     forKey:(NSString*)key
-{
-    NSAssert(self->_attributeBindings[key] == nil,
-             @"Attribute binding %@ already defined in binding %@ as %@",
-             key,
-             self,
-             self->_attributeBindings[key]);
-
-    if (self->_attributeBindings == nil)
-    {
-        self->_attributeBindings = [NSMutableDictionary new];
-        self->_attributeBindingSpecifications = [NSMutableDictionary new];
-    }
-
-    self->_attributeBindings[key] = binding;
-    if (specification)
-    {
-        self->_attributeBindingSpecifications[key] = specification;
-    }
-}
-#else
 - (void)addBindingPropertyBinding:(AKABinding*)bpBinding
 {
     // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
@@ -243,7 +214,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     }
     [_targetPropertyBindings addObject:bpBinding];
 }
-#endif
 
 - (BOOL)               setupAttributeBindingsWithExpression:(req_AKABindingExpression)bindingExpression
                                              bindingContext:(req_AKABindingContext)bindingContext
@@ -464,13 +434,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         result = propertyBinding != nil;
         if (result)
         {
-#if 0
-            [self addAttributeBinding:propertyBinding
-                    withSpecification:specification
-                               forKey:bindingProperty];
-#else
             [self addBindingPropertyBinding:propertyBinding];
-#endif
         }
     }
     return result;
@@ -512,13 +476,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         result = propertyBinding != nil;
         if (result)
         {
-#if 0
-            [self addAttributeBinding:propertyBinding
-                    withSpecification:specification
-                               forKey:bindingProperty];
-#else
             [self addTargetPropertyBinding:propertyBinding];
-#endif
         }
     }
     return result;
@@ -533,6 +491,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     (void)attributeExpression;
     (void)bindingContext;
     (void)error;
+
     return YES;
 }
 
@@ -588,11 +547,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
     if (result)
     {
-        [binding startObservingChanges];
-        [binding updateTargetValue];
-        [binding stopObservingChanges];
-        
-        //result = [binding applyToTargetOnce:error];
+        result = [binding applyToTargetOnce:error];
     }
 
     return result;
@@ -602,20 +557,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 {
     BOOL result = YES;
 
-#if 0
-    for (AKABinding* attributeBinding in self.attributeBindings.allValues)
-    {
-        result = [attributeBinding applyToTargetOnce:error];
-        if (!result)
-        {
-            break;
-        }
-    }
-    if (result)
-    {
-        [self updateTargetValue];
-    }
-#else
     for (AKABinding* bpBinding in self.bindingPropertyBindings)
     {
         result = [bpBinding applyToTargetOnce:error] && result;
@@ -625,7 +566,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     {
         result = [tpBinding applyToTargetOnce:error] && result;
     }
-#endif
 
     return result;
 }
@@ -637,17 +577,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return _isUpdatingTargetValueForSourceValueChange;
 }
 
-#if 0
-- (NSDictionary<NSString *,AKABinding *> *)attributeBindings
-{
-    return _attributeBindings;
-}
-
-- (NSDictionary<NSString *,AKABindingAttributeSpecification *> *)attributeBindingSpecifications
-{
-    return _attributeBindingSpecifications;
-}
-#else
 - (NSArray<AKABinding *> *)targetPropertyBindings
 {
     return _targetPropertyBindings;
@@ -657,7 +586,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 {
     return _bindingPropertyBindings;
 }
-#endif
 
 #pragma mark - Conversion
 
@@ -871,21 +799,10 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
                      if (oldTargetValue != targetValue)
                      {
-#if 0
-                         for (NSString* key in self.attributeBindings.allKeys)
-                         {
-                             AKABindingAttributeSpecification* spec = self.attributeBindingSpecifications[key];
-                             if (spec.attributeUse == AKABindingAttributeUseBindToTargetProperty)
-                             {
-                                 [self.attributeBindings[key] updateTargetValue];
-                             }
-                         }
-#else
                          for (AKABinding* tpBinding in self.targetPropertyBindings)
                          {
                              [tpBinding updateTargetValue];
                          }
-#endif
                      }
                      [self didUpdateTargetValue:oldTargetValue
                                              to:targetValue];

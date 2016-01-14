@@ -141,7 +141,7 @@
                 }
 
                 binding.label.text = text;
-                if (self.textAttributeFormatter)
+                if (binding.textAttributeFormatter)
                 {
                     [binding applyTextAttributesToLabelText];
                 }

@@ -32,9 +32,11 @@
       <file leaf-file-name="AKABinding.m" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45824635">
-              <caret line="166" column="5" selection-start-line="166" selection-start-column="5" selection-end-line="166" selection-end-column="5" />
-              <folding />
+            <state vertical-scroll-proportion="0.31732777">
+              <caret line="156" column="1" selection-start-line="156" selection-start-column="1" selection-end-line="156" selection-end-column="1" />
+              <folding>
+                <marker date="1452774239000" expanded="true" signature="31154:31801" placeholder="^{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -771,9 +773,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45824635">
-          <caret line="166" column="5" selection-start-line="166" selection-start-column="5" selection-end-line="166" selection-end-column="5" />
-          <folding />
+        <state vertical-scroll-proportion="0.31732777">
+          <caret line="156" column="1" selection-start-line="156" selection-start-column="1" selection-end-line="156" selection-end-column="1" />
+          <folding>
+            <marker date="1452774239000" expanded="true" signature="31154:31801" placeholder="^{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

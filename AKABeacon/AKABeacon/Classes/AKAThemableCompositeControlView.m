@@ -27,7 +27,6 @@
     if (self = [super initWithCoder:aDecoder])
     {
         //_controlConfiguration = [aDecoder decodeObjectForKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
-        [self setupDefaultValues];
     }
     return self;
 }
@@ -36,10 +35,6 @@
 {
     [super encodeWithCoder:aCoder];
     //[aCoder encodeObject:_controlConfiguration forKey:NSStringFromSelector(@selector(aka_controlConfiguration))];
-}
-
-- (void)setupDefaultValues
-{
 }
 
 #pragma mark - Configuration

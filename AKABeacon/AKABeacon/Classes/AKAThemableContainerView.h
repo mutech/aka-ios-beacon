@@ -24,3 +24,9 @@ IB_DESIGNABLE
 @property (nonatomic)IBInspectable BOOL IBEnablePreview;
 
 @end
+
+@interface AKAThemableContainerView(Protected)
+
+- (void)setupDefaultValues;
+
+@end

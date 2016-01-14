@@ -39,9 +39,3 @@
 @property(nonatomic) IBInspectable NSString* controlRole;
 
 @end
-
-@interface AKAThemableCompositeControlView(Protected)
-
-- (void)setupDefaultValues;
-
-@end

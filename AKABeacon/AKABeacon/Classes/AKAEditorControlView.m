@@ -33,6 +33,10 @@ static NSString*const kMessageRole = @"message";
 
 #pragma mark - Initialization
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return self = [super initWithFrame:frame];
+}
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {

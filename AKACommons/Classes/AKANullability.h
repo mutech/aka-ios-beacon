@@ -203,6 +203,13 @@
 #define req_UIResponder             UIResponder* _Nonnull
 #endif
 
+#ifndef opt_UIViewController
+#define opt_UIViewController        UIViewController* _Nullable
+#endif
+#ifndef req_UIViewController
+#define req_UIViewController        UIViewController* _Nonnull
+#endif
+
 #ifndef opt_UIView
 #define opt_UIView                  UIView* _Nullable
 #endif

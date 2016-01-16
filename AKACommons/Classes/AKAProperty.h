@@ -135,6 +135,9 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
                                     observationStarter:(opt_AKAPropertyObservationStarter)observationStarter
                                     observationStopper:(opt_AKAPropertyObservationStopper)observationStopper;
 
++ (req_AKAProperty)       propertyOfWeakIndexedTarget:(opt_NSObject)target
+                                                index:(NSInteger)index
+                                       changeObserver:(void(^_Nullable)(opt_id oldValue, opt_id newValue))valueDidChange;
 #pragma mark - Value Access
 
 /**

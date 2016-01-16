@@ -9,7 +9,7 @@
 #import "AKAProperty.h"
 #import "AKALog.h"
 #import "NSString+AKATools.h"
-
+#import "NSObject+AKAAssociatedValues.h"
 #import "AKAErrors.h"
 
 
@@ -145,7 +145,7 @@
 
 #pragma mark - Initialization
 
-+ (AKAProperty*)propertyOfWeakKeyValueTarget:(NSObject*)target
++ (AKAProperty*)propertyOfWeakIndexedTarget:(NSObject*)target
                                        index:(NSInteger)index
                               changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
@@ -289,9 +289,9 @@
 {
     AKAProperty* result = nil;
 
-    result = [AKAProperty propertyOfWeakKeyValueTarget:self.value
-                                                 index:index
-                                        changeObserver:valueDidChange];
+    result = [AKAProperty propertyOfWeakIndexedTarget:self.value
+                                                index:index
+                                       changeObserver:valueDidChange];
     [self addDependentProperty:result];
     [result addDependencyProperty:self];
 
@@ -373,6 +373,17 @@
     // Nothing to do, subclasses which do not manage notifications will need this to notify dependant properties.
 }
 
+- (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    for (id dependant in self.dependentPropertiesStorage)
+    {
+        if (dependant && dependant != [NSNull null])
+        {
+            [((AKAProperty*)dependant) dependencyDidChangeValueFrom:oldValue to:newValue];
+        }
+    }
+}
+
 - (void)notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
     for (AKAProperty* property in self.dependentProperties)
@@ -429,17 +440,6 @@
     [self.dependentPropertiesStorage addObject:derived];
 }
 
-- (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
-{
-    for (id dependant in self.dependentPropertiesStorage)
-    {
-        if (dependant && dependant != [NSNull null])
-        {
-            [((AKAProperty*)dependant) dependencyDidChangeValueFrom:oldValue to:newValue];
-        }
-    }
-}
-
 - (void)dependencyDidChangeValueFrom:(id)oldValue to:(id)newValue
 {
     (void)oldValue; // not used, throwing exception
@@ -468,15 +468,15 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithWeakTarget:(NSObject*)target
-                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+- (instancetype)      initWithWeakTarget:(NSObject*)target
+                          changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
     return [self initWithWeakTarget:target keyPath:nil changeObserver:valueDidChange];
 }
 
-- (instancetype)initWithWeakTarget:(NSObject*)target
-                       keyPath:(NSString *)keyPath
-                changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+- (instancetype)      initWithWeakTarget:(NSObject*)target
+                                 keyPath:(NSString *)keyPath
+                          changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
 {
     self = [super initWithWeakTarget:target];
     if (self)
@@ -500,9 +500,9 @@
     {
         id oldValue = self.target;
         self.target = value;
-        if (self.isObservingChanges && self.changeObserver)
+        if (self.isObservingChanges)
         {
-            self.changeObserver(oldValue, value);
+            [self propertyValueDidChangeFrom:oldValue to:value];
         }
     }
 }
@@ -514,6 +514,8 @@
 
 - (void)setValue:(id)value forTarget:(id)target
 {
+    NSAssert(self.keyPath.length > 0, @"Invalid attempt to use KVO property without key(Path) as unbound property; setValue:forTarget: can only be used with a defined non-empty keyPath.");
+
     [target setValue:value forKeyPath:self.keyPath];
 }
 
@@ -524,16 +526,35 @@
 {
     BOOL result = YES;
     id target = self.target;
-    if (self.keyPath.length > 0)
+    if (target != nil)
     {
-        result = [target validateValue:ioValue
-                            forKeyPath:self.keyPath
-                                 error:outError];
+        // Validation is not possible if the target is nil. The target might become defined later on and we probably do not want to reject a then valid value here.
+        // TODO: either keep this logic or create a reasonable error message, in this case probably an exception forcing the caller to check if the target is defined and not attempt to validate properties otherwise.
+        if (self.keyPath.length > 0)
+        {
+            // TODO: check if normalizing NSNull to nil is correct.
+            if (ioValue && *ioValue == [NSNull null])
+            {
+                *ioValue = nil;
+            }
+            result = [target validateValue:ioValue
+                                forKeyPath:self.keyPath
+                                     error:outError];
+        }
     }
     return result;
 }
 
 #pragma mark - Notifications
+
+- (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    if (self.changeObserver)
+    {
+        self.changeObserver(oldValue, newValue);
+    }
+    [super propertyValueDidChangeFrom:oldValue to:newValue];
+}
 
 - (BOOL)isObservingChanges
 {
@@ -546,20 +567,15 @@
 
     if (!self.isObservingChanges)
     {
-        if (self.keyPath.length == 0)
+        if (self.keyPath.length > 0)
         {
-            // target without keypath, in this case value wraps the target and
-            // changing value <-> changing target, setter will send notification
-            _isObservingChanges = YES;
-        }
-        else if (self.changeObserver)
-        {
+            // Can only addObserver if keyPath is defined, otherwise the target itself the value; in this case changing the value results in changing the target, the setter will take care to notify observers
             [target addObserver:self
                      forKeyPath:self.keyPath
                         options:(NSKeyValueObservingOptions)(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
                         context:(__bridge void *)(self)];
-            _isObservingChanges = YES;
         }
+        _isObservingChanges = YES;
     }
     return self.isObservingChanges;
 }
@@ -601,10 +617,7 @@
     {
         id oldValue = change[NSKeyValueChangeOldKey];
         id newValue = change[NSKeyValueChangeNewKey];
-        if (self.changeObserver)
-        {
-            self.changeObserver(oldValue, newValue);
-        }
+        [self propertyValueDidChangeFrom:oldValue to:newValue];
     }
 }
 
@@ -626,6 +639,10 @@
         }
         if (myOldValue != myNewValue)
         {
+            if (self.changeObserver)
+            {
+                self.changeObserver(myOldValue, myNewValue);
+            }
             [self propertyValueDidChangeFrom:myOldValue to:myNewValue];
         }
     }
@@ -633,7 +650,8 @@
 
 @end
 
-/////
+
+
 #pragma mark - AKAIndexedProperty (Implementation)
 #pragma mark -
 
@@ -691,20 +709,28 @@
     return array;
 }
 
-- (void)setValue:(id)value
-{
-    [self setValue:value forTarget:self.target];
-}
-
 - (id)valueForTarget:(id)target
 {
     NSAssert(self.index >= 0, @"Invalid index %ld", (long)self.index);
-    return [self targetAsArray:target][(NSUInteger)self.index];
+    id result = [self targetAsArray:target][(NSUInteger)self.index];
+    return result == [NSNull null] ? nil : result;
 }
 
 - (void)setValue:(id)value forTarget:(id)target
 {
-    [self targetAsMutableArray:target][self.index] = value;
+    NSMutableArray* effectiveTarget = [self targetAsMutableArray:target];
+
+    if (self.isObservingChanges && target == self.target)
+    {
+        id oldValue = [self valueForTarget:target];
+        effectiveTarget[self.index] = value == nil ? [NSNull null] : value;
+
+        [self propertyValueDidChangeFrom:oldValue to:value];
+    }
+    else
+    {
+        effectiveTarget[self.index] = value == nil ? [NSNull null] : value;
+    }
 }
 
 #pragma mark - Validation
@@ -713,17 +739,29 @@
 
 - (BOOL)isObservingChanges
 {
+    // Please note that for an indexed property, only changes made by assigning to value will call the change observer, since KVO does not support array item change events.
     return _isObservingChanges;
 }
 
 - (BOOL)startObservingChanges
 {
-    return NO;
+    _isObservingChanges = YES;
+    return self.isObservingChanges;
 }
 
 - (BOOL)stopObservingChanges
 {
+    _isObservingChanges = NO;
     return !self.isObservingChanges;
+}
+
+- (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
+    if (self.changeObserver)
+    {
+        self.changeObserver(oldValue, newValue);
+    }
+    [super propertyValueDidChangeFrom:oldValue to:newValue];
 }
 
 #pragma mark - Dependent Properties
@@ -825,8 +863,7 @@
 
 - (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
-    [self notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue];
+    [self propertyValueDidChangeFrom:oldValue to:newValue];
 }
-
 
 @end

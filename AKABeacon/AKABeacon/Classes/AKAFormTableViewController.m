@@ -94,16 +94,18 @@ static NSString*const defaultDataSourceKey = @"default";
 
     if (self.tableView.tableHeaderView)
     {
-        [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableHeaderView];
+        [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableHeaderView
+                                                       excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:self]];
     }
 
-    [self.formControl
-     addControlsForControlViewsInStaticTableView:tvProxy
-                                      dataSource:defaultDataSource.dataSource];
+    [self.formControl addControlsForControlViewsInStaticTableView:tvProxy
+                                                       dataSource:defaultDataSource.dataSource
+                                                     excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:self]];
 
     if (self.tableView.tableFooterView)
     {
-        [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableFooterView];
+        [self.formControl addControlsForControlViewsInViewHierarchy:self.tableView.tableFooterView
+                                                       excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:self]];
     }
 }
 

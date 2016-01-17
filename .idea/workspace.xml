@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fa26bcb-7e48-4423-a3a7-b049b6bd183e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" afterPath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/Main.storyboard" afterPath="$PROJECT_DIR$/AKABeacon/AKABeaconDemo/Base.lproj/Main.storyboard" />
     </list>
     <ignored path="aka-ios-beacon.iws" />
@@ -23,7 +25,7 @@
     <option name="hideWarnings" value="true" />
     <option name="HIDE_WARNINGS" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_1ef3cb1fb60cb1ca2e75507044d277e14468b326" />
   <component name="FavoritesManager">
     <favorites_list name="AKAControls" />
   </component>
@@ -33,10 +35,8 @@
         <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.31732777">
-              <caret line="156" column="1" selection-start-line="156" selection-start-column="1" selection-end-line="156" selection-end-column="1" />
-              <folding>
-                <marker date="1452774239000" expanded="true" signature="31154:31801" placeholder="^{...}" />
-              </folding>
+              <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -93,8 +93,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1680" />
-    <option name="y" value="36" />
+    <option name="x" value="-1920" />
     <option name="width" value="1920" />
     <option name="height" value="1080" />
   </component>
@@ -382,7 +381,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1680" y="36" width="1920" height="1080" extended-state="0" />
+    <frame x="-1920" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -774,10 +773,8 @@
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.31732777">
-          <caret line="156" column="1" selection-start-line="156" selection-start-column="1" selection-end-line="156" selection-end-column="1" />
-          <folding>
-            <marker date="1452774239000" expanded="true" signature="31154:31801" placeholder="^{...}" />
-          </folding>
+          <caret line="123" column="1" selection-start-line="123" selection-start-column="1" selection-end-line="123" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>

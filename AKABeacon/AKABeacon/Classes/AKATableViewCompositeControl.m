@@ -44,7 +44,9 @@
     [control setView:cell];
     self.controlsByIndexPath[indexPath] = control;
     [self addControl:control];
-    [control addControlsForControlViewsInViewHierarchy:cell.contentView];
+    // TODO: get the exclusion views from delegate?
+    [control addControlsForControlViewsInViewHierarchy:cell.contentView
+                                          excludeViews:nil];
 }
 
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding

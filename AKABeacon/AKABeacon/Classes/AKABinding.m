@@ -792,10 +792,16 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                      [self willUpdateTargetValue:oldTargetValue
                                               to:targetValue];
 
-                     if (self.bindingTarget.value != targetValue)
-                     {
+                     // Some bindings update the binding target value (with an identical value) to
+                     // indicate a change of a property value; especially those which convert a source value
+                     // an object wrapping it (which then might also have additional target bindings).
+                     // TODO: refactor this (requires dynamic binding creations, which we originally
+                     // did not intend to support, we will probably have to)
+                     // See UITableView dataSourceBinding -> section infos
+                     //if (self.bindingTarget.value != targetValue)
+                     //{
                          self.bindingTarget.value = targetValue;
-                     }
+                     //}
 
                      if (oldTargetValue != targetValue)
                      {
@@ -830,23 +836,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 {
     __block BOOL result = YES;
 
-#if 0
-    [self.attributeBindings enumerateKeysAndObjectsUsingBlock:
-     ^(req_NSString propertyName,
-       req_AKABinding propertyBinding,
-       outreq_BOOL stop)
-     {
-         (void)propertyName;
-         (void)stop;
-
-         result = [propertyBinding startObservingChanges] && result;
-     }];
-
-    result = [self.bindingTarget startObservingChanges] && result;
-    result = [self.bindingSource startObservingChanges] && result;
-
-    [self updateTargetValue];
-#else
     for (AKABinding* bpBinding in self.bindingPropertyBindings)
     {
         result = [bpBinding startObservingChanges] && result;
@@ -858,7 +847,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     {
         result = [tpBinding startObservingChanges];
     }
-#endif
+
     return result;
 }
 
@@ -866,21 +855,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 {
     __block BOOL result = YES;
 
-#if 0
-    result = [self.bindingTarget stopObservingChanges] && result;
-    result = [self.bindingSource stopObservingChanges] && result;
-
-    [self.attributeBindings enumerateKeysAndObjectsUsingBlock:
-     ^(req_NSString propertyName,
-       req_AKABinding propertyBinding,
-       outreq_BOOL stop)
-     {
-         (void)propertyName;
-         (void)stop;
-
-         result = [propertyBinding stopObservingChanges] && result;
-     }];
-#else
     for (AKABinding* tpBinding in self.targetPropertyBindings)
     {
         result = [tpBinding stopObservingChanges];
@@ -891,7 +865,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     {
         result = [bpBinding stopObservingChanges] && result;
     }
-#endif
 
     return result;
 }
@@ -925,6 +898,15 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                                         didChangeToNewValue:(opt_id)newValue
 {
     AKALogDebug(@"Binding %@ property %@ value %@ changed to %@", self, bindingPropertyName, oldValue, newValue);
+}
+
+#pragma mark - Diagnostics
+
+- (NSString*)                                   description
+{
+    return [NSString stringWithFormat:@"<%@: %p; source=%@, target=%@>",
+            self.class, self,
+            self.bindingSource, self.bindingTarget];
 }
 
 @end

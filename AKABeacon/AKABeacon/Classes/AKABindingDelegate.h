@@ -67,6 +67,7 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
                            sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                              toInvalidValue:(opt_id)newSourceValue
                                                   withError:(opt_NSError)error;
+
 @optional
 /**
  * Determines whether the binding should update the target value from the specified

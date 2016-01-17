@@ -67,7 +67,8 @@
 
 - (void)                      initializeFormControlMembers
 {
-    [self.formControl addControlsForControlViewsInViewHierarchy:self.view];
+    [self.formControl addControlsForControlViewsInViewHierarchy:self.view
+                                                   excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:self]];
 }
 
 - (void)                       activateFormControlBindings

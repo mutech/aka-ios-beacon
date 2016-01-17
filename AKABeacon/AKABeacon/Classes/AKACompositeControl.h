@@ -90,14 +90,18 @@
 
 @interface AKACompositeControl(MemberAdditionAndRemoval)
 
++ (opt_NSArray)             viewsToExcludeFromScanningViewController:(opt_UIViewController)viewController;
+
 - (BOOL)                                                  addControl:(req_AKAControl)control __unused;
 
 - (BOOL)                                               removeControl:(req_AKAControl)control;
 
-- (NSUInteger)             addControlsForControlViewsInViewHierarchy:(UIView*_Nullable)rootView;
+- (NSUInteger)             addControlsForControlViewsInViewHierarchy:(opt_UIView)rootView
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (NSUInteger)          insertControlsForControlViewsInViewHierarchy:(UIView*_Nullable)rootView
-                                                             atIndex:(NSUInteger)index;
+- (NSUInteger)          insertControlsForControlViewsInViewHierarchy:(opt_UIView)rootView
+                                                             atIndex:(NSUInteger)index
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
 /**
  * Called by createControlForView:withConfiguration: when a new composite control was
@@ -112,28 +116,38 @@
  *
  * @return the number of controls added.
  */
-- (NSUInteger)  autoAddControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)controlView;
+- (NSUInteger)  autoAddControlsForControlViewSubviewsInViewHierarchy:(opt_UIView)controlView
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (NSUInteger)      addControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)rootView;
+- (NSUInteger)      addControlsForControlViewSubviewsInViewHierarchy:(opt_UIView)rootView
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (NSUInteger)   insertControlsForControlViewSubviewsInViewHierarchy:(UIView*_Nullable)rootView
-                                                             atIndex:(NSUInteger)index;
+- (NSUInteger)   insertControlsForControlViewSubviewsInViewHierarchy:(opt_UIView)rootView
+                                                             atIndex:(NSUInteger)index
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (void)                addControlsForControlViewsInOutletCollection:(NSArray*_Nullable)outletCollection;
+- (void)                addControlsForControlViewsInOutletCollection:(NSArray<UIView*>*_Nullable)outletCollection
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (void)             insertControlsForControlViewsInOutletCollection:(NSArray*_Nullable)outletCollection
-                                                             atIndex:(NSUInteger)index;
+- (void)             insertControlsForControlViewsInOutletCollection:(NSArray<UIView*>*_Nullable)outletCollection
+                                                             atIndex:(NSUInteger)index
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (void)               addControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*_Nullable)arrayOfOutletCollections;
+- (void)               addControlsForControlViewsInOutletCollections:(NSArray<NSArray<UIView*>*>*_Nullable)arrayOfOutletCollections
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (void)            insertControlsForControlViewsInOutletCollections:(NSArray<NSArray*>*_Nullable)arrayOfOutletCollections
-                                                             atIndex:(NSUInteger)index;
+- (void)            insertControlsForControlViewsInOutletCollections:(NSArray<NSArray<UIView*>*>*_Nullable)arrayOfOutletCollections
+                                                             atIndex:(NSUInteger)index
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
-- (void)                 addControlsForControlViewsInStaticTableView:(UITableView*_Nullable)tableView
-                                                          dataSource:(id<UITableViewDataSource>_Nullable)dataSource;
+- (void)                 addControlsForControlViewsInStaticTableView:(opt_UITableView)tableView
+                                                          dataSource:(id<UITableViewDataSource>_Nullable)dataSource
+                                                        excludeViews:(opt_NSArray)childControllerViews;
+
 - (void)              insertControlsForControlViewsInStaticTableView:(UITableView*_Nullable)tableView
                                                           dataSource:(id<UITableViewDataSource>_Nullable)dataSource
-                                                             atIndex:(NSUInteger)index;
+                                                             atIndex:(NSUInteger)index
+                                                        excludeViews:(opt_NSArray)childControllerViews;
 
 @end
 

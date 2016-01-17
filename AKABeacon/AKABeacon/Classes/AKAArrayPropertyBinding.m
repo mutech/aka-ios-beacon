@@ -39,9 +39,17 @@
             valueDidChangeFrom:(id)oldValue
                             to:(id)newValue
 {
-    (void)index;
-    (void)oldValue;
-    (void)newValue;
+    if ([self.delegate conformsToProtocol:@protocol(AKAArrayPropertyBindingDelegate)])
+    {
+        id<AKAArrayPropertyBindingDelegate> delegate = (id)self.delegate;
+        if ([delegate respondsToSelector:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)])
+        {
+            [delegate binding:self
+       sourceArrayItemAtIndex:index
+                        value:oldValue
+                  didChangeTo:newValue];
+        }
+    }
 }
 
 - (opt_AKAProperty)bindingSourceForExpression:(req_AKABindingExpression)bindingExpression

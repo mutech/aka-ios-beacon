@@ -8,5 +8,18 @@
 
 #import "AKAPropertyBinding.h"
 
+@class AKAArrayPropertyBinding;
+
+@protocol AKAArrayPropertyBindingDelegate <AKABindingDelegate>
+
+@optional
+- (void)                                            binding:(AKAArrayPropertyBinding*_Nonnull)binding
+                                     sourceArrayItemAtIndex:(NSUInteger)arrayItemIndex
+                                                      value:(opt_id)oldValue
+                                                didChangeTo:(opt_id)newValue;
+
+@end
+
+
 @interface AKAArrayPropertyBinding : AKAPropertyBinding
 @end

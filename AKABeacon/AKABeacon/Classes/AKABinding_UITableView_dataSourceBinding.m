@@ -12,6 +12,10 @@
 #import "AKAPredicatePropertyBinding.h"
 #import "AKADelegateDispatcher.h"
 
+
+#pragma mark - AKATableViewSectionDataSourceInfo Interface
+#pragma mark -
+
 @interface AKATableViewSectionDataSourceInfo: NSObject
 
 @property(nonatomic) NSArray* rows;
@@ -21,17 +25,42 @@
 
 @end
 
+
+#pragma mark - AKATableViewSectionDataSourceInfo Implementation
+#pragma mark -
+
 @implementation AKATableViewSectionDataSourceInfo
+
+- (void)setRows:(NSArray*)rows
+{
+    _rows = rows;
+}
 
 @end
 
 
-@interface AKATableViewSectionDataSourceInfoPropertyBinding: AKAPropertyBinding
+@class AKATableViewSectionDataSourceInfoPropertyBinding;
+@protocol AKATableViewSectionDataSourceInfoPropertyBindingDelegate <AKABindingDelegate>
+
+- (void)                     binding:(AKATableViewSectionDataSourceInfoPropertyBinding*)binding
+            dataSourceInfoForSection:(NSUInteger)section
+                     rowsDidChangeTo:(NSArray*)newRows;
+
+@end
+
+#pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Interface
+#pragma mark -
+
+@interface AKATableViewSectionDataSourceInfoPropertyBinding: AKAPropertyBinding<AKAArrayPropertyBindingDelegate>
 
 @property(nonatomic) id sourceValue;
 @property(nonatomic) AKATableViewSectionDataSourceInfo* cachedTargetValue;
 
 @end
+
+
+#pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Implementation
+#pragma mark -
 
 @implementation AKATableViewSectionDataSourceInfoPropertyBinding
 
@@ -57,8 +86,9 @@
                    @"cellMapping":          @{
                        @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
                        @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class]
-                   },
-               }, };
+                   }
+               }
+        };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
@@ -73,12 +103,13 @@
 
     if (result)
     {
-        if (sourceValue != self.sourceValue)
+        if (!self.cachedTargetValue)
         {
-            if (!self.cachedTargetValue)
-            {
-                self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
-            }
+            self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
+        }
+
+        if (sourceValue != self.sourceValue || sourceValue == nil)
+        {
             self.cachedTargetValue.rows = sourceValue;
         }
         *targetValueStore = self.cachedTargetValue;
@@ -91,8 +122,28 @@
     return result;
 }
 
+#pragma mark - Binding Delegate
+
+- (void)                binding:(AKAArrayPropertyBinding*)binding
+         sourceArrayItemAtIndex:(NSUInteger)arrayItemIndex
+                          value:(id)oldValue
+                    didChangeTo:(id)newValue
+{
+    if ([self.delegate conformsToProtocol:@protocol(AKATableViewSectionDataSourceInfoPropertyBindingDelegate)])
+    {
+        id<AKATableViewSectionDataSourceInfoPropertyBindingDelegate> delegate = (id)self.delegate;
+        if ([delegate respondsToSelector:@selector(binding:dataSourceInfoForSection:rowsDidChangeTo:)])
+        {
+            [delegate binding:self dataSourceInfoForSection:arrayItemIndex rowsDidChangeTo:[newValue rows]];
+        }
+    }
+}
+
 @end
 
+
+#pragma mark - AKATableViewDataSourceAndDelegateDispatcher Interface
+#pragma mark -
 
 @interface AKATableViewDataSourceAndDelegateDispatcher: AKADelegateDispatcher<UITableViewDataSource, UITableViewDelegate>
 
@@ -108,10 +159,12 @@
 @end
 
 
+#pragma mark - AKATableViewDataSourceAndDelegateDispatcher Implementation
+#pragma mark -
+
 // Ignore warning about missing protocol implementations, these are provided dynamically
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wprotocol"
-
 @implementation AKATableViewDataSourceAndDelegateDispatcher
 
 - (instancetype)initWithTableView:(UITableView*)tableView
@@ -120,26 +173,31 @@
 {
     static NSArray<Protocol*>* protocols;
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         protocols = @[ @protocol(UITableViewDataSource),
                        @protocol(UITableViewDelegate) ];
     });
 
     id<UITableViewDataSource> tableViewDataSource = tableView.dataSource;
-    id<UITableViewDelegate>   tableViewDelegate   = tableView.delegate;
+    id<UITableViewDelegate>   tableViewDelegate = tableView.delegate;
     NSMutableArray* delegates = [NSMutableArray new];
+
     if (dataSource)
     {
         [delegates addObject:dataSource];
     }
+
     if (delegate && (id)delegate != (id)dataSource)
     {
         [delegates addObject:delegate];
     }
+
     if (tableViewDataSource)
     {
         [delegates addObject:tableViewDataSource];
     }
+
     if (tableViewDelegate && (id)tableViewDelegate != (id)tableViewDataSource)
     {
         [delegates addObject:tableViewDelegate];
@@ -154,6 +212,7 @@
         _originalDataSource = tableViewDataSource;
         _originalDelegate = tableViewDelegate;
     }
+
     return self;
 }
 
@@ -165,6 +224,7 @@
 - (void)restoreOriginalDataSourceAndDelegate
 {
     UITableView* tableView = self.tableView;
+
     if (tableView)
     {
         tableView.dataSource = self.originalDataSource;
@@ -176,26 +236,35 @@
 }
 
 @end
-
 #pragma clang diagnostic pop
 
 
-@interface AKABinding_UITableView_dataSourceBinding () <UITableViewDataSource, UITableViewDelegate>
+#pragma mark - AKABinding_UITableView_dataSourceBinding Private Interface
+#pragma mark -
 
+@interface AKABinding_UITableView_dataSourceBinding () <
+    UITableViewDataSource,
+    UITableViewDelegate,
+    AKATableViewSectionDataSourceInfoPropertyBindingDelegate,
+    AKAArrayPropertyBindingDelegate
+>
 @property(nonatomic, readonly) BOOL isObserving;
 @property(nonatomic, readonly) UITableView*                                 tableView;
 @property(nonatomic, readonly) AKATableViewDataSourceAndDelegateDispatcher* delegateDispatcher;
-@property(nonatomic, readonly) NSMutableArray<AKATableViewCellFactory*>*    defaultCellMapping;
-@property(nonatomic, readonly) NSArray<AKATableViewSectionDataSourceInfo*>* sections;
+@property(nonatomic) NSMutableArray<AKATableViewCellFactory*>*              defaultCellMapping;
+@property(nonatomic) NSArray<AKATableViewSectionDataSourceInfo*>*           sections;
 
 @end
 
+
+#pragma mark - AKABinding_UITableView_dataSourceBinding Implementation
+#pragma mark -
 
 @implementation AKABinding_UITableView_dataSourceBinding
 
 @dynamic delegate;
 
-+ (AKABindingSpecification*)specification
++ (AKABindingSpecification*)            specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -223,18 +292,31 @@
     return result;
 }
 
-- (BOOL)isObserving
+- (BOOL)                                  isObserving
 {
     return self.delegateDispatcher != nil;
 }
 
-- (void)reloadTableViewData
+- (void)binding:(AKATableViewSectionDataSourceInfoPropertyBinding *)binding dataSourceInfoForSection:(NSUInteger)section rowsDidChangeTo:(NSArray *)newRows
+{
+    [self reloadTableViewData];
+}
+
+- (void)binding:(AKAArrayPropertyBinding *)binding sourceArrayItemAtIndex:(NSUInteger)arrayItemIndex value:(id)oldValue didChangeTo:(id)newValue
+{
+    [self reloadTableViewData];
+}
+
+- (void)                          reloadTableViewData
 {
     // TODO: change management, also remember possibly invalid selections
     [self.tableView reloadData];
 }
 
-- (AKAProperty*)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression context:(req_AKABindingContext)bindingContext changeObserver:(AKAPropertyChangeObserver)changeObserver error:(NSError* __autoreleasing _Nullable*)error
+- (AKAProperty*)    defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                              context:(req_AKABindingContext)bindingContext
+                                       changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                error:(NSError* __autoreleasing _Nullable*)error
 {
     (void)bindingExpression;
     (void)bindingContext;
@@ -243,7 +325,7 @@
     return [AKAProperty propertyOfWeakKeyValueTarget:nil keyPath:nil changeObserver:changeObserver];
 }
 
-- (AKAProperty*)createBindingTargetPropertyForView:(req_UIView)view
+- (AKAProperty*)   createBindingTargetPropertyForView:(req_UIView)view
 {
     (void)view;
 
@@ -299,15 +381,15 @@
             }];
 }
 
-- (UITableView *)tableView
+- (UITableView*)                           tableView
 {
     return (UITableView*)self.view;
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView
-                  cellForItem:(id)item
-                  atIndexPath:(NSIndexPath*)indexPath
-                  withMapping:(NSArray<AKATableViewCellFactory*>*)itemToCellMapping
+- (UITableViewCell*)                        tableView:(UITableView*)tableView
+                                          cellForItem:(id)item
+                                          atIndexPath:(NSIndexPath*)indexPath
+                                          withMapping:(NSArray<AKATableViewCellFactory*>*)itemToCellMapping
 {
     UITableViewCell* result = nil;
 
@@ -327,9 +409,9 @@
     return result;
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView
-        cellForRowAtIndexPath:(NSIndexPath*)indexPath
-                  withFactory:(AKATableViewCellFactory*)factory
+- (UITableViewCell*)                        tableView:(UITableView*)tableView
+                                cellForRowAtIndexPath:(NSIndexPath*)indexPath
+                                          withFactory:(AKATableViewCellFactory*)factory
 {
     UITableViewCell* result = nil;
 
@@ -356,9 +438,22 @@
     return result;
 }
 
+- (AKATableViewSectionDataSourceInfo*)      tableView:(UITableView*)tableView
+                                       infoForSection:(NSInteger)section
+{
+    id result = self.sections[(NSUInteger)section];
+
+    if (result == [NSNull null])
+    {
+        result = nil;
+    }
+
+    return result;
+}
+
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
+- (NSInteger)             numberOfSectionsInTableView:(UITableView*)tableView
 {
     (void)tableView;
     NSAssert(tableView == self.tableView,
@@ -367,18 +462,19 @@
     return (NSInteger)self.sections.count;
 }
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)                               tableView:(UITableView*)tableView
+                                numberOfRowsInSection:(NSInteger)section
 {
-    (void)tableView;
     NSAssert(tableView == self.tableView,
              @"Invalid tableView %@, expected binding target %@", tableView, self.tableView);
 
-    return (NSInteger)self.sections[(NSUInteger)section].rows.count;
+    return (NSInteger)[self tableView:tableView infoForSection:section].rows.count;
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)                        tableView:(UITableView*)tableView
+                                cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    AKATableViewSectionDataSourceInfo* sectionInfo = self.sections[(NSUInteger)indexPath.section];
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:indexPath.section];
     id item = sectionInfo.rows[(NSUInteger)indexPath.row];
 
     UITableViewCell* result = [self tableView:tableView cellForItem:item
@@ -401,32 +497,46 @@
     return result;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString*)                              tableView:(UITableView*)tableView
+                             titleForHeaderInSection:(NSInteger)section
 {
-    NSString* result = self.sections[(NSUInteger)section].headerTitle;
+    NSString* result = nil;
 
-    if (!result)
+    if (self.isObserving)
     {
-        id<UITableViewDataSource> original = self.delegateDispatcher.originalDataSource;
-        if ([original respondsToSelector:@selector(tableView:titleForHeaderInSection:)])
+        result = [self tableView:tableView infoForSection:section].headerTitle;
+
+        if (!result)
         {
-            result = [original tableView:tableView titleForHeaderInSection:section];
+            id<UITableViewDataSource> original = self.delegateDispatcher.originalDataSource;
+
+            if ([original respondsToSelector:@selector(tableView:titleForHeaderInSection:)])
+            {
+                result = [original tableView:tableView titleForHeaderInSection:section];
+            }
         }
     }
-    
+
     return result;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString*)                              tableView:(UITableView*)tableView
+                             titleForFooterInSection:(NSInteger)section
 {
-    NSString* result = self.sections[(NSUInteger)section].footerTitle;
+    NSString* result = nil;
 
-    if (!result)
+    if (self.isObserving)
     {
-        id<UITableViewDataSource> original = self.delegateDispatcher.originalDataSource;
-        if ([original respondsToSelector:@selector(tableView:titleForFooterInSection:)])
+        result = [self tableView:tableView infoForSection:section].footerTitle;
+
+        if (!result)
         {
-            result = [original tableView:tableView titleForFooterInSection:section];
+            id<UITableViewDataSource> original = self.delegateDispatcher.originalDataSource;
+
+            if ([original respondsToSelector:@selector(tableView:titleForFooterInSection:)])
+            {
+                result = [original tableView:tableView titleForFooterInSection:section];
+            }
         }
     }
 
@@ -435,13 +545,13 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)    tableView:(UITableView*)tableView
-      willDisplayCell:(UITableViewCell*)cell
-    forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)                                    tableView:(UITableView*)tableView
+                                      willDisplayCell:(UITableViewCell*)cell
+                                    forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     (void)tableView;
 
-    AKATableViewSectionDataSourceInfo* sectionInfo = self.sections[(NSUInteger)indexPath.section];
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:indexPath.section];
     id item = sectionInfo.rows[(NSUInteger)indexPath.row];
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
@@ -455,13 +565,16 @@
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
     if ([original respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)])
     {
         [original tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
 }
 
-- (void)tableView:(UITableView*)tableView didEndDisplayingCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)                                    tableView:(UITableView*)tableView
+                                 didEndDisplayingCell:(UITableViewCell*)cell
+                                    forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     (void)tableView;
 
@@ -475,6 +588,7 @@
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
     if ([original respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)])
     {
         [original tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];

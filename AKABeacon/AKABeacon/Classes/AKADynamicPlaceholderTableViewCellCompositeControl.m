@@ -7,6 +7,7 @@
 //
 
 @import AKACommons.NSObject_AKAAssociatedValues;
+@import AKACommons.AKALog;
 
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"
@@ -21,6 +22,7 @@
 #pragma mark - Configuration
 
 - (NSUInteger)autoAddControlsForControlViewSubviewsInViewHierarchy:(UIView *)controlView
+                                                      excludeViews:(NSArray * _Nullable)childControllerViews
 {
     // Do not automatically add controls in the cells contentView hierarchy, because
     // this is only a placeholder (prototype) cell. Adding controlls will be done
@@ -77,10 +79,12 @@
 
     AKACompositeControl* member = (AKACompositeControl*)control;
     id dataContext = member.dataContext;
-    NSAssert(sourceCollectionItem == dataContext,
-             @"Member %@ at index %lu for indexPath %@ does not refer to %@ as data context, "
-             @"found %@ instead",
-             member, (unsigned long)index, indexPath, sourceCollectionItem, dataContext);
+    if (sourceCollectionItem == dataContext)
+    {
+        AKALogError(@"Member %@ at index %lu for indexPath %@ does not refer to %@ as data context, "
+                    @"found %@ instead",
+                    member, (unsigned long)index, indexPath, sourceCollectionItem, dataContext);
+    }
     (void)dataContext;
 
     if (indexStorage != nil)
@@ -232,7 +236,9 @@
         if ([result isKindOfClass:[AKADynamicPlaceholderTableViewCell class]])
         {
             memberControl.view = result;
-            [memberControl addControlsForControlViewsInViewHierarchy:result.contentView];
+            // TODO: get exclusion views from delegate?
+            [memberControl addControlsForControlViewsInViewHierarchy:result.contentView
+                                                        excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:nil]];
             [memberControl startObservingChanges];
         }
     }

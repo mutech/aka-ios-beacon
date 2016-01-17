@@ -153,7 +153,8 @@
 
     [self addControl:control forRowAtIndexPath:indexPath];
 
-    [control addControlsForControlViewsInViewHierarchy:cell.contentView];
+    [control addControlsForControlViewsInViewHierarchy:cell.contentView
+                                          excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:self]];
 }
 
 - (void)                                    tableView:(UITableView *)tableView

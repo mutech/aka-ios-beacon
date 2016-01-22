@@ -12,6 +12,7 @@
 
 @property(nonatomic) NSArray* section1Items;
 @property(nonatomic) NSArray* section2Items;
+@property(nonatomic) NSString* tvTitle;
 
 @end
 
@@ -22,6 +23,7 @@
 
 - (void)viewDidLoad
 {
+    _tvTitle = @"Hello";
     _section1Items = @[ @"one", @(2), @"three", @(-5), [NSDate date] ];
     _section2Items = @[ @(1.234), @"two", @(-2.34), [NSDate date] ];
 

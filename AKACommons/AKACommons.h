@@ -54,3 +54,6 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/AKAKVOChangeEvent.h>
 #import <AKACommons/AKAKVOPublisher.h>
 #import <AKACommons/AKAKVOSubscription.h>
+
+// DataStructures
+#import <AKACommons/AKAObservableCollection.h>

@@ -448,6 +448,28 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
+- (NSString*)dependenciesDescription
+{
+    NSString* result = @"-";
+
+    if (self.dependencyPropertiesStorage.count > 0)
+    {
+        result = [NSString stringWithFormat:@"[%@]", [self.dependencyPropertiesStorage.allObjects componentsJoinedByString:@", "]];
+    }
+    return result;
+}
+
+- (id)targetDescription
+{
+    id result = self.target;
+    if ([result conformsToProtocol:@protocol(NSObject)])
+    {
+        id<NSObject> target = result;
+        result = [NSString stringWithFormat:@"<%@: %p>", target.class, target];
+    }
+    return result;
+}
+
 @end
 
 
@@ -648,6 +670,14 @@
     }
 }
 
+#pragma mark - Diagnostics
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<%@: %p; target=%@, keyPath=%@, dependencies=%@>",
+            self.class, self, [self targetDescription], self.keyPath, [self dependenciesDescription]];
+}
+
 @end
 
 
@@ -787,6 +817,14 @@
     }
 }
 
+#pragma mark - Diagnostics
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<%@: %p target=%@, index=%lu, dependencies=%@>",
+            self.class, self, [self targetDescription], (unsigned long)self.index, [self dependenciesDescription]];
+}
+
 @end
 
 #pragma mark - AKACustomProperty (Implementation)
@@ -864,6 +902,14 @@
 - (void)notifyPropertyValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
     [self propertyValueDidChangeFrom:oldValue to:newValue];
+}
+
+#pragma mark - Diagnostics
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<%@: %p target=%@, dependencies=%@>",
+            self.class, self, [self targetDescription], [self dependenciesDescription]];
 }
 
 @end

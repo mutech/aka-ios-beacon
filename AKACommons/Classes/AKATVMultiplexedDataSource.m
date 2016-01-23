@@ -259,12 +259,15 @@ static DDLogLevel _ddLogLevel = DDLogLevelWarning;
 
         if (useRowsFromSource)
         {
-            [section insertRowsFromDataSource:dataSourceEntry
-                              sourceIndexPath:[NSIndexPath indexPathForRow:0
-                                                                 inSection:(NSInteger)(sourceSectionIndex + i)]
-                                        count:(NSUInteger)[dataSource tableView:self.tableView
-                                                          numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)]
-                                   atRowIndex:0];
+            NSUInteger count = (NSUInteger)[dataSource tableView:self.tableView
+                                           numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)];
+            if (count > 0)
+            {
+                [section insertRowsFromDataSource:dataSourceEntry
+                                  sourceIndexPath:[NSIndexPath indexPathForRow:0
+                                                                     inSection:(NSInteger)(sourceSectionIndex + i)]
+                                            count:count                                   atRowIndex:0];
+            }
         }
         [self insertSection:section
                     atIndex:i + targetSectionIndex

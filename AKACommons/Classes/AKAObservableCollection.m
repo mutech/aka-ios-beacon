@@ -8,9 +8,10 @@
 
 #import "AKAObservableCollection.h"
 
-@interface AKAObservableCollection()
+@interface AKAObservableCollection<__covariant ObjectType>()
 
 @property(nonatomic) NSMutableArray* itemsStorage;
+@property(nonatomic) NSMutableArray* cachedMutableItems;
 
 @end
 
@@ -18,18 +19,18 @@
 
 #pragma mark - Initialization
 
-- (instancetype)init
+- (instancetype)                   init
 {
     return [self initWithMutableArray:[NSMutableArray new]];
 }
 
-- (instancetype)initWithArray:(NSArray*)array
+- (instancetype)          initWithArray:(NSArray*)array
 {
     NSMutableArray* mutableArray = [NSMutableArray arrayWithArray:array];
     return [self initWithMutableArray:mutableArray];
 }
 
-- (instancetype)initWithMutableArray:(NSMutableArray*)mutableArray
+- (instancetype)   initWithMutableArray:(NSMutableArray*)mutableArray
 {
     if (self = [super init])
     {
@@ -38,48 +39,92 @@
     return self;
 }
 
-#pragma mark - Indexed Item Property Implementation
+#pragma mark - Properties
 
-- (void)insertObject:(id)object inItemsAtIndex:(NSUInteger)index
+- (NSArray *)items
 {
-    [self.itemsStorage insertObject:object atIndex:index];
+    return [NSArray arrayWithArray:self.itemsStorage];
 }
 
-- (void)insertItems:(NSArray *)array atIndexes:(NSIndexSet *)indexes
+@synthesize mutableItems = _mutableItems;
+- (NSMutableArray *)mutableItems
 {
-    [self.itemsStorage insertObjects:array atIndexes:indexes];
+    if (!self.mutableItems)
+    {
+        _mutableItems = [self mutableArrayValueForKey:@"items"];
+    }
+    return self.mutableItems;
 }
 
-- (void)removeObjectFromItemsAtIndex:(NSUInteger)index
-{
-    [self.itemsStorage removeObjectAtIndex:index];
-}
+#pragma mark - Indexed Accessors
 
-- (void)removeItemsAtIndexes:(NSIndexSet *)indexes
-{
-    [self.itemsStorage removeObjectsAtIndexes:indexes];
-}
-
-- (id)objectInItemsAtIndex:(NSUInteger)index
-{
-    return self.itemsStorage[index];
-}
-
-- (NSUInteger)countOfItems
+- (NSUInteger)             countOfItems
 {
     return self.itemsStorage.count;
 }
 
-#pragma mark - Convenience Methods for Indexed Item Property
-
-- (void)removeAllItems
+- (id)             objectInItemsAtIndex:(NSUInteger)index
 {
-    [self.itemsStorage removeAllObjects];
+    return self.itemsStorage[index];
 }
+
+- (void)                       getItems:(__unsafe_unretained id _Nonnull*)buffer
+                                  range:(NSRange)inRange
+{
+    [self.itemsStorage getObjects:buffer range:inRange];
+}
+
+#pragma mark - Mutable Indexed Accessors
+
+- (void)                   insertObject:(id)object
+                         inItemsAtIndex:(NSUInteger)index
+{
+    [self.itemsStorage insertObject:object atIndex:index];
+}
+
+- (void)                    insertItems:(NSArray *)array
+                              atIndexes:(NSIndexSet *)indexes
+{
+    [self.itemsStorage insertObjects:array atIndexes:indexes];
+}
+
+- (void)   removeObjectFromItemsAtIndex:(NSUInteger)index
+{
+    [self.itemsStorage removeObjectAtIndex:index];
+}
+
+- (void)           removeItemsAtIndexes:(NSIndexSet *)indexes
+{
+    [self.itemsStorage removeObjectsAtIndexes:indexes];
+}
+
+- (void)    replaceObjectInItemsAtIndex:(NSUInteger)index
+                             withObject:(id)object
+{
+    [self.itemsStorage replaceObjectAtIndex:index withObject:object];
+}
+
+- (void)          replaceItemsAtIndexes:(NSIndexSet *)indexes
+                              withItems:(NSArray *)array
+{
+    [self.itemsStorage replaceObjectsAtIndexes:indexes withObjects:array];
+}
+
+#pragma mark - Unordered Accessors
+
+- (NSEnumerator *)    enumeratorOfItems
+{
+    return [self.itemsStorage objectEnumerator];
+}
+
+@end
+
+
+@implementation AKAObservableCollection(Convenience)
 
 #pragma mark - Mutable Array Proxy
 
-- (NSMutableArray *)mutableArray
+- (NSMutableArray *)       mutableArray
 {
     return [self mutableArrayValueForKey:@"items"];
 }

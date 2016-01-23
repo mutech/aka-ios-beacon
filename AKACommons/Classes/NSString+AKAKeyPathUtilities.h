@@ -15,7 +15,7 @@
  *
  * If the key path consists of only one key, this key will be returned.
  */
-@property(nonatomic, readonly, getter = aka_lastKeyPathComponent) NSString*aka_lastKeyPathComponent;
+@property(nonatomic, readonly) NSString* aka_lastKeyPathComponent;
 
 /**
  * Interprets this string as key path and returns the key path resulting from removing
@@ -23,7 +23,7 @@
  *
  * If the key path consists of only one key, the property returns nil.
  */
-@property(nonatomic, readonly, getter = aka_baseKeyPath) NSString*aka_baseKeyPath;
+@property(nonatomic, readonly) NSString* aka_baseKeyPath;
 
 /**
  * Interprets this string as key path and adds the specified component as key.

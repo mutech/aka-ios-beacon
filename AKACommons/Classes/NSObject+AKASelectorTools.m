@@ -12,26 +12,28 @@
 @implementation NSObject (AKASelectorTools)
 
 - (BOOL)aka_savePerformSelector:(SEL)selector
-                              storeResult:(out __autoreleasing id*)resultStorage
+                    storeResult:(out __autoreleasing id*)resultStorage
 {
     NSParameterAssert(selector != (SEL)0);
     NSAssert([self methodSignatureForSelector:selector].numberOfArguments == 2, @"Wrong number of arguments %lu (expected 2+0) in selector %s", (unsigned long)[self methodSignatureForSelector:selector].numberOfArguments, sel_getName(selector));
 
     BOOL result = NO;
+
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL) = (id(*)(id, SEL))imp;
+        id (* function)(id, SEL) = (id (*)(id, SEL))imp;
         id value = function(self, selector);
+
         if (resultStorage)
         {
             *resultStorage = value;
         }
         result = YES;
     }
+
     return result;
 }
-
 
 - (BOOL)aka_savePerformSelectorFromString:(NSString*)selectorName
                               storeResult:(out __autoreleasing id*)resultStorage
@@ -42,17 +44,20 @@
     NSAssert([self methodSignatureForSelector:selector].numberOfArguments == 2, @"Wrong number of arguments %lu (expected 2+0) in selector %@", (unsigned long)[self methodSignatureForSelector:selector].numberOfArguments, selectorName);
 
     BOOL result = NO;
+
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL) = (id(*)(id, SEL))imp;
+        id (* function)(id, SEL) = (id (*)(id, SEL))imp;
         id value = function(self, selector);
+
         if (resultStorage)
         {
             *resultStorage = value;
         }
         result = YES;
     }
+
     return result;
 }
 
@@ -70,10 +75,11 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL) = (void(*)(id, SEL))imp;
+        void (* function)(id, SEL) = (void (*)(id, SEL))imp;
         function(self, selector);
         result = YES;
     }
+
     return result;
 }
 
@@ -90,10 +96,11 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL, id) = (void(*)(id, SEL, id))imp;
+        void (* function)(id, SEL, id) = (void (*)(id, SEL, id))imp;
         function(self, selector, object1);
         result = YES;
     }
+
     return result;
 }
 
@@ -111,14 +118,16 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL, id) = (id(*)(id, SEL, id))imp;
+        id (* function)(id, SEL, id) = (id (*)(id, SEL, id))imp;
         id value = function(self, selector, object1);
+
         if (resultStorage)
         {
             *resultStorage = value;
         }
         result = YES;
     }
+
     return result;
 }
 
@@ -136,10 +145,11 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        void(*function)(id, SEL, id, id) = (void(*)(id, SEL, id, id))imp;
+        void (* function)(id, SEL, id, id) = (void (*)(id, SEL, id, id))imp;
         function(self, selector, object1, object2);
         result = YES;
     }
+
     return result;
 }
 
@@ -158,14 +168,16 @@
     if ([self respondsToSelector:selector])
     {
         IMP imp = [self methodForSelector:selector];
-        id(*function)(id, SEL, id, id) = (id(*)(id, SEL, id, id))imp;
+        id (* function)(id, SEL, id, id) = (id (*)(id, SEL, id, id))imp;
         id value = function(self, selector, object1, object2);
+
         if (resultStorage)
         {
             *resultStorage = value;
         }
         result = YES;
     }
+
     return result;
 }
 

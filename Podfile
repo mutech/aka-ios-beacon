@@ -43,10 +43,12 @@ target :AKABeacon, :exclusive => true do
     commons_pods
 end
 
+# Using explicit versions to support pod try.
 target :AKABeaconDemo, :exclusive => true do
     target :AKABeaconDemoUITests do
         xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
     end
     xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
-    beacon_pods
+    pod 'AKACommons', '~> 0.1.1-pre.1'
+    pod 'AKABeacon', '~> 0.1.1-pre.2'
 end

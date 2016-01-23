@@ -1,3 +1,6 @@
+# This podfile is used for development and assumes that aka-ios-commons and aka-ios-beacon are
+# checked out side-by-side.
+
 source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 

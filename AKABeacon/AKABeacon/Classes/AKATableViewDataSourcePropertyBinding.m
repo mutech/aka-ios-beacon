@@ -8,7 +8,7 @@
 
 #import "AKATableViewDataSourcePropertyBinding.h"
 
-@interface AKATableViewDataSourcePropertyBinding() <UITableViewDataSource>
+@interface AKATableViewDataSourcePropertyBinding()
 
 @end
 

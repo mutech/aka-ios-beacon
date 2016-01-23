@@ -13,7 +13,7 @@
 
 @interface AKACollectionControlViewBinding : AKAComplexControlViewBinding
 
-@property(nonatomic, readonly, nullable) id<AKACollectionControlViewBindingDelegate> delegate;
+@property(nonatomic, readonly, nullable) id<AKACollectionControlViewBindingDelegate, AKAControlViewBindingDelegate> delegate;
 
 @end
 

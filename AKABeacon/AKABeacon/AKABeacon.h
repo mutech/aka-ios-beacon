@@ -71,6 +71,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // ComplexControls
 #import <AKABeacon/AKACompositeControl.h>
 #import <AKABeacon/AKACompositeControl+BindingDelegatePropagation.h>
+#import <AKABeacon/AKATableViewCompositeControl.h>
 #import <AKABeacon/AKATableViewCellCompositeControl.h>
 #import <AKABeacon/AKADynamicPlaceholderTableViewCellCompositeControl.h>
 #import <AKABeacon/AKAFormControl.h>
@@ -109,6 +110,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKATableViewCellFactory.h>
 #import <AKABeacon/AKATableViewCellFactoryArrayPropertyBinding.h>
 #import <AKABeacon/AKATableViewCellFactoryPropertyBinding.h>
+#import <AKABeacon/AKATableViewDataSourcePropertyBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings
 #import <AKABeacon/AKAControlViewBindingDelegate.h>

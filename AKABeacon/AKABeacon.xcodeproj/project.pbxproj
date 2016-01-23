@@ -32,7 +32,7 @@
 		8E2ED21D1C3A540B00FBA44D /* AKATableViewCellFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2ED21B1C3A540B00FBA44D /* AKATableViewCellFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E2ED21E1C3A540B00FBA44D /* AKATableViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2ED21C1C3A540B00FBA44D /* AKATableViewCellFactory.m */; };
 		8E2ED2201C3BD6F900FBA44D /* AKAViewBindingDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2ED21F1C3BD6F900FBA44D /* AKAViewBindingDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8E2ED2231C3D37E300FBA44D /* AKATableViewCompositeControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2ED2211C3D37E300FBA44D /* AKATableViewCompositeControl.h */; };
+		8E2ED2231C3D37E300FBA44D /* AKATableViewCompositeControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2ED2211C3D37E300FBA44D /* AKATableViewCompositeControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E2ED2241C3D37E300FBA44D /* AKATableViewCompositeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2ED2221C3D37E300FBA44D /* AKATableViewCompositeControl.m */; };
 		8E2ED2271C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2ED2251C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E2ED2281C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2ED2261C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties.m */; };

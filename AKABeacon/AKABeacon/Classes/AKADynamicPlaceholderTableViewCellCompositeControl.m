@@ -28,6 +28,7 @@
     // this is only a placeholder (prototype) cell. Adding controlls will be done
     // (dynamically) when the placeholder is connected to its data source.
     (void)controlView;
+    (void)childControllerViews;
     return 0;
 }
 

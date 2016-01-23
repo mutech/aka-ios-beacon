@@ -242,9 +242,6 @@
 
     }
     free(protocols);
-
-    [self enumerateProtocolsWithBlock:^(Protocol* protocol) {
-    }];
 }
 
 @end

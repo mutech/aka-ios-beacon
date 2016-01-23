@@ -11,7 +11,7 @@
 #import "AKATableViewCellFactory.h"
 #import "AKAPredicatePropertyBinding.h"
 #import "AKADelegateDispatcher.h"
-
+#import "AKABindingErrors.h"
 
 #pragma mark - AKATableViewSectionDataSourceInfo Interface
 #pragma mark -
@@ -116,7 +116,12 @@
     }
     else
     {
-        // TODO: error handling
+        if (error)
+        {
+            *error = [AKABindingErrors bindingErrorConversionOfBinding:self
+                                                           sourceValue:sourceValue
+                                         failedWithInvalidTypeExpected:[NSArray class]];
+        }
     }
 
     return result;
@@ -129,9 +134,13 @@
                           value:(id)oldValue
                     didChangeTo:(id)newValue
 {
+    (void)binding; // not used
+    (void)oldValue; // not used
+
     if ([self.delegate conformsToProtocol:@protocol(AKATableViewSectionDataSourceInfoPropertyBindingDelegate)])
     {
         id<AKATableViewSectionDataSourceInfoPropertyBindingDelegate> delegate = (id)self.delegate;
+
         if ([delegate respondsToSelector:@selector(binding:dataSourceInfoForSection:rowsDidChangeTo:)])
         {
             [delegate binding:self dataSourceInfoForSection:arrayItemIndex rowsDidChangeTo:[newValue rows]];
@@ -247,7 +256,7 @@
     UITableViewDelegate,
     AKATableViewSectionDataSourceInfoPropertyBindingDelegate,
     AKAArrayPropertyBindingDelegate
->
+    >
 @property(nonatomic, readonly) BOOL isObserving;
 @property(nonatomic, readonly) UITableView*                                 tableView;
 @property(nonatomic, readonly) AKATableViewDataSourceAndDelegateDispatcher* delegateDispatcher;
@@ -297,13 +306,21 @@
     return self.delegateDispatcher != nil;
 }
 
-- (void)binding:(AKATableViewSectionDataSourceInfoPropertyBinding *)binding dataSourceInfoForSection:(NSUInteger)section rowsDidChangeTo:(NSArray *)newRows
+- (void)binding:(AKATableViewSectionDataSourceInfoPropertyBinding*)binding dataSourceInfoForSection:(NSUInteger)section rowsDidChangeTo:(NSArray*)newRows
 {
+    (void)binding;
+    (void)section;
+    (void)newRows;
+
     [self reloadTableViewData];
 }
 
-- (void)binding:(AKAArrayPropertyBinding *)binding sourceArrayItemAtIndex:(NSUInteger)arrayItemIndex value:(id)oldValue didChangeTo:(id)newValue
+- (void)binding:(AKAArrayPropertyBinding*)binding sourceArrayItemAtIndex:(NSUInteger)arrayItemIndex value:(id)oldValue didChangeTo:(id)newValue
 {
+    (void)binding;
+    (void)arrayItemIndex;
+    (void)oldValue;
+    (void)newValue;
     [self reloadTableViewData];
 }
 
@@ -441,6 +458,8 @@
 - (AKATableViewSectionDataSourceInfo*)      tableView:(UITableView*)tableView
                                        infoForSection:(NSInteger)section
 {
+    (void)tableView;
+
     id result = self.sections[(NSUInteger)section];
 
     if (result == [NSNull null])

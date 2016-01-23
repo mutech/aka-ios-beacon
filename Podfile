@@ -11,7 +11,6 @@ platform :ios, '8.2'
 
 def commons_pods
     pod 'AKACommons', :path => '../aka-ios-commons'
-    #pod 'AKACommons', :head
 end
 
 def beacon_pods

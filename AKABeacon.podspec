@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name          = 'AKABeacon'
-    spec.version       = '0.1.0-pre.2'
+    spec.version       = '0.1.0'
     spec.license       = 'BSD'
     spec.homepage      = 'https://github.com/mutech/aka-ios-beacon/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
@@ -16,5 +16,5 @@ Pod::Spec.new do |spec|
     spec.framework     = 'Foundation'
     spec.module_name   = 'AKABeacon'
 
-    spec.dependency    'AKACommons', '0.1.0.pre'
+    spec.dependency    'AKACommons', '0.1.0'
 end

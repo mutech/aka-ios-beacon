@@ -334,11 +334,6 @@
     }
 }
 
-- (void)binding:(req_AKABinding)binding sourceValueDidChangeFromOldValue:(id)oldSourceValue toInvalidValue:(id)newSourceValue withError:(NSError *)error
-{
-    return;
-}
-
 - (void)binding:(req_AKACollectionControlViewBinding)binding sourceControllerWillChangeContent:(id)sourceDataController
 {
     (void)binding;

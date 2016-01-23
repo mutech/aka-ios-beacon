@@ -7,6 +7,7 @@
 //
 
 #import "AKAEditorControlView.h"
+#import "AKAThemableContainerView_Protected.h"
 
 @interface AKAEditorControlView (Protected)
 

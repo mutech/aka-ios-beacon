@@ -32,4 +32,7 @@
 
 @property(nonatomic, readonly, weak) id<AKABindingDelegate_UITableView_dataSourceBinding> delegate;
 
+
+@property(nonatomic, readonly, weak) UITableView*                                 tableView;
+
 @end

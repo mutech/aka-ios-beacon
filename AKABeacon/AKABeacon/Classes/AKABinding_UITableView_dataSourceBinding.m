@@ -258,7 +258,6 @@
     AKAArrayPropertyBindingDelegate
     >
 @property(nonatomic, readonly) BOOL isObserving;
-@property(nonatomic, readonly) UITableView*                                 tableView;
 @property(nonatomic, readonly) AKATableViewDataSourceAndDelegateDispatcher* delegateDispatcher;
 @property(nonatomic) NSMutableArray<AKATableViewCellFactory*>*              defaultCellMapping;
 @property(nonatomic) NSArray<AKATableViewSectionDataSourceInfo*>*           sections;

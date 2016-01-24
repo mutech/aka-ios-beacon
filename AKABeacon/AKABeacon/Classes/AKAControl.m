@@ -321,8 +321,6 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                                              property:(req_SEL)property
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
-    // TODO: add the property (adding it to binding constructor):
-
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
     BOOL result = NO;

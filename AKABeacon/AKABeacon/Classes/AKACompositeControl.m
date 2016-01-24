@@ -482,43 +482,50 @@
          {
              (void)stop; // not used
 
-             if (![childControllerViews containsObject:view])
+             BOOL excludeView = [childControllerViews containsObject:view];
+             BOOL createControl = [view conformsToProtocol:@protocol(AKAControlViewProtocol)];
+
+             if (excludeView)
              {
-                 if ([view conformsToProtocol:@protocol(AKAControlViewProtocol)])
+                 // Skip view hierarchy if the view is requested to be excluded (used to ensure
+                 // that embedded view controller root views are managed by their proper view controller
+                 // and not the enclosing one).
+                 *doNotDescend = YES;
+             }
+             else if (createControl)
+             {
+                 UIView<AKAControlViewProtocol>* controlView = (id)view;
+                 AKAControl* control = [self createControlForView:controlView
+                                                withConfiguration:controlView.aka_controlConfiguration];
+
+                 if (control)
                  {
-                     UIView<AKAControlViewProtocol>* controlView = (id)view;
-                     AKAControl* control = [self createControlForView:controlView
-                                                    withConfiguration:controlView.aka_controlConfiguration];
+                     [self insertControl:control
+                                 atIndex:index + count];
 
-                     if (control)
+                     // Add bindings and controls (recursively)
+                     [control addBindingsForView:view];
+
+                     if ([control isKindOfClass:[AKACompositeControl class]])
                      {
-                         [self insertControl:control
-                                     atIndex:index + count];
-
-                         // Add bindings and controls (recursively)
-                         [control addBindingsForView:view];
-
-                         if ([control isKindOfClass:[AKACompositeControl class]])
-                         {
-                             *doNotDescend = YES;
-                             AKACompositeControl* composite = (AKACompositeControl*)control;
-                             [composite autoAddControlsForControlViewSubviewsInViewHierarchy:view
-                                                                                excludeViews:childControllerViews];
-                         }
-
-                         ++count;
+                         *doNotDescend = YES;
+                         AKACompositeControl* composite = (AKACompositeControl*)control;
+                         [composite autoAddControlsForControlViewSubviewsInViewHierarchy:view
+                                                                            excludeViews:childControllerViews];
                      }
-                     else
-                     {
-                         NSAssert(NO, @"Failed to create member control in %@ for control view %@", self, controlView);
-                         AKALogError(@"Failed to create member control in %@ for control view %@. Trying to recover by attaching defined binding to surrounding composite control. This should not happen, please investigate!", self, controlView);
-                         [self addBindingsForView:view];
-                     }
+
+                     ++count;
                  }
                  else
                  {
+                     NSAssert(NO, @"Failed to create member control in %@ for control view %@", self, controlView);
+                     AKALogError(@"Failed to create member control in %@ for control view %@. Trying to recover by attaching defined binding to surrounding composite control. This should not happen, please investigate!", self, controlView);
                      [self addBindingsForView:view];
                  }
+             }
+             else
+             {
+                 [self addBindingsForView:view];
              }
          }];
         [self endInsertingControls];

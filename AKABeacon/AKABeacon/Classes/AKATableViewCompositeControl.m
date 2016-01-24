@@ -71,10 +71,9 @@
                didUpdateTargetValue:(id)oldTargetValue
                                  to:(id)newTargetValue
 {
-    if ([self.controlViewBinding isKindOfClass:[AKABinding_UITableView_dataSourceBinding class]])
+    if ([self.view isKindOfClass:[UITableView class]])
     {
-        AKABinding_UITableView_dataSourceBinding* dsBinding = (id)self.controlViewBinding;
-        UITableView* tableView = dsBinding.tableView;
+        UITableView* tableView = (UITableView*)self.view;
 
         // Trigger a recomputation of table view row heights if any bindings
         // update target values. Dispatching the update to the main queue

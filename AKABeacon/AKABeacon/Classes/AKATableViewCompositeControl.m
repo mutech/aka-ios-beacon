@@ -16,6 +16,7 @@
 
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
 @property(nonatomic) NSMutableArray<NSIndexPath*>* indexPathsNeedingUpdate;
+@property(nonatomic) BOOL tableViewNeedsUpdate;
 
 @end
 
@@ -28,8 +29,8 @@
 {
     if (self = [super init])
     {
-        _controlsByIndexPath = [NSMutableDictionary new];
         _indexPathsNeedingUpdate = [NSMutableArray new];
+        _controlsByIndexPath = [NSMutableDictionary new];
     }
     return self;
 }
@@ -48,7 +49,6 @@
     [control setView:cell];
     self.controlsByIndexPath[indexPath] = control;
     [self addControl:control];
-
     // TODO: get the exclusion views from delegate?
     [control addControlsForControlViewsInViewHierarchy:cell.contentView
                                           excludeViews:nil];
@@ -111,26 +111,20 @@
     {
         UITableView* tableView = (UITableView*)self.view;
 
-        BOOL updateDispatched = self.indexPathsNeedingUpdate.count > 0;
-
         // Trigger a recomputation of table view row heights if any bindings
         // update target values. Dispatching the update to the main queue
         // will defer the update until the current queue job is finished which
         // should reduce unneccessary table view updates to a minimum and also
         // prevent nested updates from occuring when a binding change event would
         // trigger another change.
-        NSIndexPath* indexPath = [self indexPathOfRowAffectedByBinding:binding];
-        if (indexPath)
+        if (!self.tableViewNeedsUpdate)
         {
-            [self.indexPathsNeedingUpdate addObject:indexPath];
-            if (!updateDispatched)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSLog(@"Updating row heights for binding event: %@", binding);
-                    [tableView reloadRowsAtIndexPaths:self.indexPathsNeedingUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
-                    [self.indexPathsNeedingUpdate removeAllObjects];
-                });
-            }
+            self.tableViewNeedsUpdate = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.tableViewNeedsUpdate = NO;
+                [tableView beginUpdates];
+                [tableView endUpdates];
+            });
         }
     }
 

@@ -15,7 +15,7 @@
 @interface AKATableViewCompositeControl()
 
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
-@property(nonatomic) BOOL tableViewNeedsUpdate;
+@property(nonatomic) NSMutableArray<NSIndexPath*>* indexPathsNeedingUpdate;
 
 @end
 
@@ -29,6 +29,7 @@
     if (self = [super init])
     {
         _controlsByIndexPath = [NSMutableDictionary new];
+        _indexPathsNeedingUpdate = [NSMutableArray new];
     }
     return self;
 }
@@ -47,6 +48,7 @@
     [control setView:cell];
     self.controlsByIndexPath[indexPath] = control;
     [self addControl:control];
+
     // TODO: get the exclusion views from delegate?
     [control addControlsForControlViewsInViewHierarchy:cell.contentView
                                           excludeViews:nil];
@@ -66,6 +68,40 @@
 
 #pragma mark - 
 
+- (UITableViewCell*)cellAffectedByBinding:(AKABinding*)binding
+{
+    UITableViewCell* result = nil;
+
+    if ([binding isKindOfClass:[AKAViewBinding class]])
+    {
+        AKAViewBinding* viewBinding = (AKAViewBinding*)binding;
+        UIView* targetView = viewBinding.view;
+        result = [targetView aka_selfOrSuperviewOfType:[UITableViewCell class]];
+    }
+    else
+    {
+        id delegate = binding.delegate;
+        if ([delegate isKindOfClass:[AKABinding class]])
+        {
+            result = [self cellAffectedByBinding:delegate];
+        }
+        else
+        {
+            // Controls
+        }
+    }
+
+    return result;
+}
+
+- (NSIndexPath*)indexPathOfRowAffectedByBinding:(AKABinding*)binding
+{
+    UITableViewCell* cell = [self cellAffectedByBinding:binding];
+    NSIndexPath* result = [(UITableView*)self.view indexPathForCell:cell];
+
+    return result;
+}
+
 - (void)                    control:(req_AKAControl)control
                             binding:(req_AKABinding)binding
                didUpdateTargetValue:(id)oldTargetValue
@@ -75,20 +111,26 @@
     {
         UITableView* tableView = (UITableView*)self.view;
 
+        BOOL updateDispatched = self.indexPathsNeedingUpdate.count > 0;
+
         // Trigger a recomputation of table view row heights if any bindings
         // update target values. Dispatching the update to the main queue
         // will defer the update until the current queue job is finished which
         // should reduce unneccessary table view updates to a minimum and also
         // prevent nested updates from occuring when a binding change event would
         // trigger another change.
-        if (!self.tableViewNeedsUpdate)
+        NSIndexPath* indexPath = [self indexPathOfRowAffectedByBinding:binding];
+        if (indexPath)
         {
-            self.tableViewNeedsUpdate = YES;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.tableViewNeedsUpdate = NO;
-                [tableView beginUpdates];
-                [tableView endUpdates];
-            });
+            [self.indexPathsNeedingUpdate addObject:indexPath];
+            if (!updateDispatched)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSLog(@"Updating row heights for binding event: %@", binding);
+                    [tableView reloadRowsAtIndexPaths:self.indexPathsNeedingUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.indexPathsNeedingUpdate removeAllObjects];
+                });
+            }
         }
     }
 

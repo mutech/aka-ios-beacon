@@ -366,14 +366,14 @@
             ^BOOL (id target)
             {
                 AKABinding_UITableView_dataSourceBinding* binding = target;
-
+                UITableView* tableView = binding.tableView;
                 if (binding.delegateDispatcher == nil)
                 {
-                    binding->_delegateDispatcher = [[AKATableViewDataSourceAndDelegateDispatcher alloc] initWithTableView:binding.tableView
+                    binding->_delegateDispatcher = [[AKATableViewDataSourceAndDelegateDispatcher alloc] initWithTableView:tableView
                                                                                                      dataSourceOverwrites:binding
                                                                                                        delegateOverwrites:binding];
                     // TODO: deselect currently selected rows, may save them
-                    [binding.tableView reloadData];
+                    [tableView reloadData];
                 }
 
                 return binding.isObserving;
@@ -383,6 +383,7 @@
             ^BOOL (id target)
             {
                 AKABinding_UITableView_dataSourceBinding* binding = target;
+                UITableView* tableView = binding.tableView;
 
                 if (binding.delegateDispatcher)
                 {
@@ -390,7 +391,7 @@
                     binding->_delegateDispatcher = nil;
 
                     // TODO: deselect currently selected rows, maybe restore previously selected
-                    [binding.tableView reloadData];
+                    [tableView reloadData];
                 }
 
                 return !binding.isObserving;
@@ -475,7 +476,7 @@
 {
     (void)tableView;
     NSAssert(tableView == self.tableView,
-             @"Invalid tableView %@, expected binding target %@", tableView, self.tableView);
+             @"numberOfSectionsInTableView: Invalid tableView, expected binding target tableViw");
 
     return (NSInteger)self.sections.count;
 }
@@ -484,7 +485,7 @@
                                 numberOfRowsInSection:(NSInteger)section
 {
     NSAssert(tableView == self.tableView,
-             @"Invalid tableView %@, expected binding target %@", tableView, self.tableView);
+             @"tableView:numberOfRowsInSection: Invalid tableView, expected binding targettableView");
 
     return (NSInteger)[self tableView:tableView infoForSection:section].rows.count;
 }

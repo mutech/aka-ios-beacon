@@ -17,6 +17,7 @@
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
 @property(nonatomic) NSMutableArray<NSIndexPath*>* indexPathsNeedingUpdate;
 @property(nonatomic) BOOL tableViewNeedsUpdate;
+@property(nonatomic) BOOL addingDynamicBindings;
 
 @end
 
@@ -44,6 +45,9 @@
 {
     (void)binding;
 
+    BOOL wasAddingDynamicBindings = self.addingDynamicBindings;
+    self.addingDynamicBindings = YES;
+
     AKACompositeControl* control = [[AKACompositeControl alloc] initWithDataContext:dataContext
                                                                       configuration:nil];
     [control setView:cell];
@@ -52,6 +56,8 @@
     // TODO: get the exclusion views from delegate?
     [control addControlsForControlViewsInViewHierarchy:cell.contentView
                                           excludeViews:nil];
+
+    self.addingDynamicBindings = wasAddingDynamicBindings;
 }
 
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
@@ -107,7 +113,7 @@
                didUpdateTargetValue:(id)oldTargetValue
                                  to:(id)newTargetValue
 {
-    if ([self.view isKindOfClass:[UITableView class]])
+    if (!self.addingDynamicBindings && [self.view isKindOfClass:[UITableView class]])
     {
         UITableView* tableView = (UITableView*)self.view;
 

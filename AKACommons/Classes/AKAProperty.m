@@ -639,7 +639,8 @@
     {
         id oldValue = change[NSKeyValueChangeOldKey];
         id newValue = change[NSKeyValueChangeNewKey];
-        [self propertyValueDidChangeFrom:oldValue to:newValue];
+        [self propertyValueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
+                                      to:newValue == [NSNull null] ? nil : newValue];
     }
 }
 

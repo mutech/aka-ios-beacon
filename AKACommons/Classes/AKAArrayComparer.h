@@ -85,6 +85,8 @@
  
  3) Insertions of items that were not contained in oldArray, starting from the last insertion (highest index).
 
+ @note Callers have to ensure that this method call is embedded in begin/endUpdates
+
  @param tableView       the table view to update
  @param section         the section to update
  @param deleteAnimation the row animation to use for deletions

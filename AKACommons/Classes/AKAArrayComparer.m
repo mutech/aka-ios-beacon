@@ -10,9 +10,6 @@
 
 @interface AKAArrayComparer()
 
-@property(nonatomic, readonly, nonnull) NSDictionary<id, NSNumber*>* oldIndexesByItems;
-@property(nonatomic, readonly, nonnull) NSDictionary<id, NSNumber*>* indexesByItems;
-
 @end
 
 @implementation AKAArrayComparer
@@ -21,13 +18,10 @@
 
 - (id)initWithOldArray:(NSArray *)oldArray newArray:(NSArray *)newArray
 {
-    NSParameterAssert(oldArray != nil);
-    NSParameterAssert(newArray != nil);
-
     if (self = [self init])
     {
-        _oldArray = oldArray;
-        _array = newArray;
+        _oldArray = oldArray ? oldArray : @[];
+        _array = newArray ? newArray : @[];
     }
     return self;
 }
@@ -35,33 +29,6 @@
 #pragma mark - Properties
 
 #pragma mark - Analysis
-
-@synthesize oldIndexesByItems = _oldIndexesByItems;
-- (NSDictionary<id, NSNumber*>*)oldIndexesByItems
-{
-    if (_oldIndexesByItems == nil)
-    {
-        // Record old indexes by items
-        NSMutableDictionary* oldIndexesByItems = [NSMutableDictionary new];
-        for (NSInteger i=(NSInteger)self.oldArray.count - 1; i >= 0; --i)
-        {
-            id item = self.oldArray[(NSUInteger)i];
-            oldIndexesByItems[item] = @(i);
-        }
-        _oldIndexesByItems = oldIndexesByItems;
-    }
-    return _oldIndexesByItems;
-}
-
-@synthesize indexesByItems = _indexesByItems;
-- (NSDictionary<id,NSNumber *> *)indexesByItems
-{
-    if (_indexesByItems == nil)
-    {
-        [self recordInsertions];
-    }
-    return _indexesByItems;
-}
 
 @synthesize deletedItemIndexes = _deletedItemIndexes;
 - (NSIndexSet *)deletedItemIndexes
@@ -116,7 +83,7 @@
 - (void)recordInsertions
 {
     // Analyze new array identifying insertions
-    NSMutableDictionary* indexesByItems = [NSMutableDictionary new];
+    //NSMutableDictionary* indexesByItems = [NSMutableDictionary new];
     NSMutableIndexSet* insertedItemIndexes = [NSMutableIndexSet new];
     //NSMutableSet* insertedItems = [NSMutableSet new]; // not needed
     NSMutableArray* newArrayWithoutInsertions = [NSMutableArray new];
@@ -125,21 +92,19 @@
     {
         id item = self.array[(NSUInteger)i];
 
-        NSNumber* oldIndex = self.oldIndexesByItems[item];
-        if (oldIndex == nil)
+        NSUInteger oldIndex = [self.oldArray indexOfObject:item];
+        if (oldIndex == NSNotFound)
         {
             // Record inserted item
             [insertedItemIndexes addIndex:(NSUInteger)i];
-            //[insertedItems addObject:item];
         }
         else
         {
             // Record item that was already in old array but possibly at a different position.
             [newArrayWithoutInsertions insertObject:item atIndex:0];
         }
-        indexesByItems[item] = @(i);
     }
-    _indexesByItems = indexesByItems;
+    //_indexesByItems = indexesByItems;
     _insertedItemIndexes = insertedItemIndexes;
     _arrayWithoutInsertions = newArrayWithoutInsertions;
 }
@@ -153,8 +118,8 @@
     {
         id item = self.oldArray[(NSUInteger)i];
 
-        NSNumber* newIndex = self.indexesByItems[item];
-        if (newIndex == nil)
+        NSUInteger newIndex = [self.array indexOfObject:item];
+        if (newIndex == NSNotFound)
         {
             [deletedItemIndexes addIndex:(NSUInteger)i];
         }
@@ -197,13 +162,29 @@
     _permutationAfterDeletionsAndBeforeInsertions = permutationAfterDeletionsAndBeforeInsertions;
 }
 
+- (NSArray*)movementsForTableViews
+{
+    // Scan for reordered items
+    NSAssert(self.oldArrayWithDeletionsApplied.count == self.arrayWithoutInsertions.count,
+             @"Intermediate representation inconsistent");
+    NSMutableArray* oldArrayWithDeletionsApplied = [NSMutableArray arrayWithArray:self.oldArrayWithDeletionsApplied];
+
+    NSMutableArray* permutationAfterDeletionsAndBeforeInsertions = [NSMutableArray new];
+    for (NSUInteger i=0; i < self.arrayWithoutInsertions.count; ++i)
+    {
+        id item = self.arrayWithoutInsertions[i];
+        NSUInteger oldIndex = [oldArrayWithDeletionsApplied indexOfObject:item];
+
+        permutationAfterDeletionsAndBeforeInsertions[i] = @(oldIndex - i);
+    }
+    return permutationAfterDeletionsAndBeforeInsertions;
+}
+
 - (void)updateTableView:(UITableView*)tableView
                 section:(NSUInteger)section
         deleteAnimation:(UITableViewRowAnimation)deleteAnimation
         insertAnimation:(UITableViewRowAnimation)insertAnimation
 {
-    [tableView beginUpdates];
-
     // Deletions
     NSMutableArray* deletedIndexPaths = [NSMutableArray new];
     [self.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
@@ -217,11 +198,12 @@
     [tableView deleteRowsAtIndexPaths:deletedIndexPaths withRowAnimation:deleteAnimation];
 
     // Movements
+    NSArray* permutation = [self movementsForTableViews];
     for (NSUInteger targetIndex=0;
-         targetIndex < self.permutationAfterDeletionsAndBeforeInsertions.count;
+         targetIndex < permutation.count;
          ++targetIndex)
     {
-        NSUInteger offset = [self.permutationAfterDeletionsAndBeforeInsertions[targetIndex] unsignedIntegerValue];
+        NSUInteger offset = [permutation[targetIndex] unsignedIntegerValue];
         if (offset != 0)
         {
             NSIndexPath* source = [NSIndexPath indexPathForRow:(NSInteger)(targetIndex + offset)
@@ -243,8 +225,6 @@
          [insertedIndexPaths addObject:indexPath];
      }];
     [tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:insertAnimation];
-
-    [tableView endUpdates];
 }
 
 @end

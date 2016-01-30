@@ -211,6 +211,12 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 @property(nonatomic, readonly, nullable) SEL                bindingProperty;
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol> bindingContext;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
+@property(nonatomic, readonly) id                           syntheticTargetValue;
+#pragma mark - Secondary Bindings
+
+@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* arrayItemBindings;
+@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* bindingPropertyBindings;
+@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* targetPropertyBindings;
 
 #pragma mark - Conversion
 
@@ -232,6 +238,14 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 - (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                                  toNewValue:(opt_id)newSourceValue;
 
+- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue;
+
+- (void)                             targetArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue;
+
 - (BOOL)                              startObservingChanges;
 
 - (BOOL)                               stopObservingChanges;
@@ -246,18 +260,6 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
  @note Please note that source value changes are tracked automatically and do not require this method to be called.
  */
 - (void)                                  updateTargetValue;
-
-@end
-
-@interface AKABinding(BindingAttributeBindings)
-
-#if 0
-@property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABinding*>* attributeBindings;
-@property(nonatomic, readonly, nullable) NSDictionary<NSString*, AKABindingAttributeSpecification*>* attributeBindingSpecifications;
-#else
-@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* bindingPropertyBindings;
-@property(nonatomic, readonly, nullable) NSArray<AKABinding*>* targetPropertyBindings;
-#endif
 
 @end
 

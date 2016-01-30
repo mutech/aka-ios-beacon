@@ -51,6 +51,12 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
                                    convertedFromSourceValue:(opt_id)sourceValue
                                                   withError:(opt_NSError)error;
 
+@optional
+- (void)                                            binding:(req_AKABinding)binding
+                           sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
+                                                         to:(id _Nullable)newSourceValue;
+
+@optional
 // TODO: support delegate method in AKAControlDelegate propagation:
 /**
  * Informs the delegate, that the source value changed to the specified invalid value.
@@ -62,11 +68,32 @@ typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelega
  *      and/or incomplete validation - the invalid data should not have made it to
  *      the data model/source).
  */
-@optional
 - (void)                                            binding:(req_AKABinding)binding
                            sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                              toInvalidValue:(opt_id)newSourceValue
                                                   withError:(opt_NSError)error;
+
+@optional
+/**
+ Informs the delegate, that the source value of the array item at the specified index
+ changed. Please note that this refers to binding expression array constants only (and
+ then for items defined as non-constant binding expressions
+
+ @param binding  a binding with a literal array constant primary binding expression.
+ @param index    the index of the array item
+ @param oldValue the old array item source value
+ @param newValue the new array item source value.
+ */
+- (void)                                            binding:(req_AKABinding)binding
+                                     sourceArrayItemAtIndex:(NSUInteger)index
+                                                      value:(opt_id)oldValue
+                                                didChangeTo:(opt_id)newValue;
+
+@optional
+- (void)                                            binding:(req_AKABinding)binding
+                                     targetArrayItemAtIndex:(NSUInteger)index
+                                                      value:(opt_id)oldValue
+                                                didChangeTo:(opt_id)newValue;
 
 @optional
 /**

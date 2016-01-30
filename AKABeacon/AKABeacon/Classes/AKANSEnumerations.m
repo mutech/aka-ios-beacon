@@ -424,6 +424,8 @@
     static NSDictionary<NSString*, NSString*>* result = nil;
     static dispatch_once_t onceToken;
 
+    // These are camel- and not pascal case, because they are used as binding expression
+    // attribute names, not as enumeration constants:
     dispatch_once(&onceToken, ^{
         result =
         @{ @"family":           UIFontDescriptorFamilyAttribute,
@@ -463,6 +465,27 @@
            @"RegularExpressionSearch":      @(NSRegularExpressionSearch) };
     });
 
+    return result;
+}
+
+#pragma mark - UITableViewRowAnimations
+
++ (NSDictionary<NSString*, NSNumber*>*)       uitableViewRowAnimationsByName
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result =
+        @{  @"None":            @(UITableViewRowAnimationNone),
+            @"Automatic":       @(UITableViewRowAnimationAutomatic),
+            @"Top":             @(UITableViewRowAnimationTop),
+            @"Left":            @(UITableViewRowAnimationLeft),
+            @"Bottom":          @(UITableViewRowAnimationBottom),
+            @"Right":           @(UITableViewRowAnimationRight),
+            @"Fade":            @(UITableViewRowAnimationFade),
+            @"Middle":          @(UITableViewRowAnimationMiddle),
+            };
+    });
     return result;
 }
 

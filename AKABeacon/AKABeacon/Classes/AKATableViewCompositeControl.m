@@ -15,8 +15,6 @@
 @interface AKATableViewCompositeControl()
 
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
-@property(nonatomic) NSMutableArray<NSIndexPath*>* indexPathsNeedingUpdate;
-@property(nonatomic) BOOL tableViewNeedsUpdate;
 @property(nonatomic) BOOL addingDynamicBindings;
 
 @end
@@ -30,7 +28,6 @@
 {
     if (self = [super init])
     {
-        _indexPathsNeedingUpdate = [NSMutableArray new];
         _controlsByIndexPath = [NSMutableDictionary new];
     }
     return self;
@@ -45,6 +42,22 @@
 {
     (void)binding;
 
+    // TODO: Check: I thought the bindings would be released before data contexts (as soon as owner controls are removed), there might be another retain cycle involved
+    
+    // If table view cells are created in response to manual reloads (e.g. not triggered by
+    // data source binding), dynamic bindings have not been removed. This may lead to a situation
+    // where observed data contexts could be released before observing bindings which in turn
+    // results in exceptions.
+    AKAControl* previousControlAtIndexPath = self.controlsByIndexPath[indexPath];
+    if (previousControlAtIndexPath)
+    {
+        UITableViewCell* previousCell = (UITableViewCell*)previousControlAtIndexPath.view;
+        NSAssert(previousCell == nil || [previousCell isKindOfClass:[UITableViewCell class]], nil);
+
+        [self binding:binding removeDynamicBindingsForCell:previousCell indexPath:indexPath];
+    }
+
+    // TODO: obsolete, remove if new update logic in data source binding proves to do the job:
     BOOL wasAddingDynamicBindings = self.addingDynamicBindings;
     self.addingDynamicBindings = YES;
 
@@ -66,78 +79,13 @@
 {
     (void)binding;
     (void)cell;
-    
-    AKAControl* control = self.controlsByIndexPath[indexPath];
-    [self.controlsByIndexPath removeObjectForKey:indexPath];
-    [self removeControl:control];
-}
 
-#pragma mark - 
-
-- (UITableViewCell*)cellAffectedByBinding:(AKABinding*)binding
-{
-    UITableViewCell* result = nil;
-
-    if ([binding isKindOfClass:[AKAViewBinding class]])
+    if (indexPath)
     {
-        AKAViewBinding* viewBinding = (AKAViewBinding*)binding;
-        UIView* targetView = viewBinding.view;
-        result = [targetView aka_selfOrSuperviewOfType:[UITableViewCell class]];
+        AKAControl* control = self.controlsByIndexPath[indexPath];
+        [self.controlsByIndexPath removeObjectForKey:indexPath];
+        [self removeControl:control];
     }
-    else
-    {
-        id delegate = binding.delegate;
-        if ([delegate isKindOfClass:[AKABinding class]])
-        {
-            result = [self cellAffectedByBinding:delegate];
-        }
-        else
-        {
-            // Controls
-        }
-    }
-
-    return result;
-}
-
-- (NSIndexPath*)indexPathOfRowAffectedByBinding:(AKABinding*)binding
-{
-    UITableViewCell* cell = [self cellAffectedByBinding:binding];
-    NSIndexPath* result = [(UITableView*)self.view indexPathForCell:cell];
-
-    return result;
-}
-
-- (void)                    control:(req_AKAControl)control
-                            binding:(req_AKABinding)binding
-               didUpdateTargetValue:(id)oldTargetValue
-                                 to:(id)newTargetValue
-{
-    if (!self.addingDynamicBindings && [self.view isKindOfClass:[UITableView class]])
-    {
-        UITableView* tableView = (UITableView*)self.view;
-
-        // Trigger a recomputation of table view row heights if any bindings
-        // update target values. Dispatching the update to the main queue
-        // will defer the update until the current queue job is finished which
-        // should reduce unneccessary table view updates to a minimum and also
-        // prevent nested updates from occuring when a binding change event would
-        // trigger another change.
-        if (!self.tableViewNeedsUpdate)
-        {
-            self.tableViewNeedsUpdate = YES;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.tableViewNeedsUpdate = NO;
-                [tableView beginUpdates];
-                [tableView endUpdates];
-            });
-        }
-    }
-
-    [super                  control:control
-                            binding:binding
-               didUpdateTargetValue:oldTargetValue
-                                 to:newTargetValue];
 }
 
 @end

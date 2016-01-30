@@ -40,7 +40,13 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 @interface AKABinding () {
     BOOL _isUpdatingTargetValueForSourceValueChange;
     NSMutableArray<AKABinding*>* _bindingPropertyBindings;
+    NSMutableArray<AKABinding*>* _arrayItemBindings;
     NSMutableArray<AKABinding*>* _targetPropertyBindings;
+
+    // Strong storage for a target value that is derived from the source value and has to be preserved
+    // to be able to store target properties or array items (if the target is an array derived from
+    // a constant array binding expression)
+    id _syntheticTargetValue;
 }
 
 @end
@@ -150,10 +156,10 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return self;
 }
 
-- (opt_AKAProperty)    bindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                          context:(req_AKABindingContext)bindingContext
-                                   changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
-                                            error:(out_NSError)error
+- (opt_AKAProperty)              bindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error
 {
     opt_AKAProperty bindingSource = nil;
 
@@ -166,6 +172,13 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                                                         context:bindingContext
                                                  changeObserver:changeObserver
                                                           error:error];
+    }
+    else if (bindingExpression.expressionType == AKABindingExpressionTypeArray)
+    {
+        bindingSource = [self bindingSourceForArrayExpression:bindingExpression
+                                                      context:bindingContext
+                                               changeObserver:changeObserver
+                                                        error:error];
     }
     else
     {
@@ -181,10 +194,10 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return bindingSource;
 }
 
-- (AKAProperty*)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                          context:(req_AKABindingContext)bindingContext
-                                   changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
-                                            error:(out_NSError)error
+- (AKAProperty*)          defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error
 {
     (void)bindingExpression;
     (void)bindingContext;
@@ -195,7 +208,241 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (void)addBindingPropertyBinding:(AKABinding*)bpBinding
+
+- (void)                             targetArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(id)oldValue
+                                                         to:(id)newValue
+{
+    id<AKABindingDelegate> delegate = (id)self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:targetArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate           binding:self
+             targetArrayItemAtIndex:index
+                              value:oldValue
+                        didChangeTo:newValue];
+    }
+}
+
+- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(id)oldValue
+                                                         to:(id)newValue
+{
+    id<AKABindingDelegate> delegate = (id)self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate           binding:self
+             sourceArrayItemAtIndex:index
+                              value:oldValue
+                        didChangeTo:newValue];
+    }
+}
+
+- (void)                                            binding:(AKABinding*)binding
+                           sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
+                                                         to:(id _Nullable)newSourceValue
+{
+    id<AKABindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:to:)])
+    {
+        [delegate binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+    }
+
+    if (self.arrayItemBindings.count > 0)
+    {
+        NSUInteger arrayItemIndex = [self.arrayItemBindings indexOfObject:binding];
+        if (arrayItemIndex != NSNotFound)
+        {
+            [self sourceArrayItemAtIndex:arrayItemIndex
+                      valueDidChangeFrom:oldSourceValue
+                                      to:newSourceValue];
+        }
+    }
+}
+
+- (AKAProperty*)            bindingSourceForArrayExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                      error:(out_NSError)error
+{
+    // Binding source will not be updated (for target changes), so the change observer will not
+    // be used; however, changes in array items will trigger source array item events:
+    (void)changeObserver;
+
+    BOOL result = YES;
+    AKAProperty* bindingSource = nil;
+
+    id sourceValue = [bindingExpression bindingSourceValueInContext:bindingContext];
+
+    if ([sourceValue isKindOfClass:[NSArray class]])
+    {
+        BOOL isConstant = YES;
+        NSArray* sourceArray = sourceValue;
+        NSMutableArray* targetArray = [NSMutableArray new];
+
+        for (id sourceItem in sourceArray)
+        {
+            // If an array item does not have a binding, null is stored to preserve index integrity.
+            id arrayItemBinding = [NSNull null];
+
+            if ([sourceItem isKindOfClass:[AKABindingExpression class]])
+            {
+                AKABindingExpression* sourceExpression = sourceItem;
+                if (sourceExpression.isConstant)
+                {
+                    // Constant expressions will be evaluated immediately and no binding is created.
+                    id targetValue = [sourceExpression bindingSourceValueInContext:bindingContext];
+                    if (targetValue == nil)
+                    {
+                        [targetArray addObject:[NSNull null]];
+                    }
+                    else
+                    {
+                        [targetArray addObject:targetValue];
+                    }
+                }
+                else
+                {
+                    // All other binding expressions require the creation of a binding for the array
+                    // item, the target array is thus not constant.
+                    isConstant = NO;
+
+                    // The target value will be initialized as undefined value, as soon as the binding
+                    // will start observing changes, the value will be updated by the binding.
+                    [targetArray addObject:[NSNull null]];
+                    NSUInteger index = targetArray.count - 1;
+
+                    __weak typeof(self) weakSelf = self;
+                    AKAProperty* arrayItemTargetProperty =
+                    [AKAProperty propertyOfWeakIndexedTarget:targetArray
+                                                       index:(NSInteger)index
+                                              changeObserver:
+                     ^(id  _Nullable oldValue, id  _Nullable newValue)
+                     {
+                         [weakSelf targetArrayItemAtIndex:index
+                                       valueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
+                                                       to:newValue == [NSNull null] ? nil : newValue];
+                     }];
+                    Class bindingType = sourceExpression.specification.bindingType;
+                    if (bindingType == nil)
+                    {
+                        bindingType = [AKAPropertyBinding class];
+                    }
+
+                    AKABinding* binding = [bindingType alloc];
+                    binding = [binding initWithTarget:arrayItemTargetProperty
+                                             property:nil
+                                           expression:sourceExpression
+                                              context:bindingContext
+                                             delegate:weakSelf
+                                                error:error];
+                    if (binding)
+                    {
+                        arrayItemBinding = binding;
+                    }
+                    else
+                    {
+                        result = NO;
+                        break;
+                    }
+                }
+            }
+            if (result)
+            {
+                [self addArrayItemBinding:arrayItemBinding];
+            }
+        }
+
+        if (result)
+        {
+            if (isConstant)
+            {
+                // Create a non-mutable copy
+                _syntheticTargetValue = [NSArray arrayWithArray:targetArray];
+            }
+            else
+            {
+                // Preserve the mutable array, because bindings may update array items
+                _syntheticTargetValue = targetArray;
+            }
+
+            bindingSource = [AKAProperty propertyOfWeakTarget:self
+                                                       getter:
+                             ^id _Nullable(req_id target)
+                             {
+                                 AKABinding* binding = target;
+                                 return binding->_syntheticTargetValue;
+                             }
+                                                       setter:
+                             ^(req_id target, opt_id value)
+                             {
+                                 (void)target;
+                                 (void)value;
+                                 NSAssert(NO, @"Updating binding source is not supported by array property bindings (yet)");
+                             }
+                                           observationStarter:
+                             ^BOOL(req_id target)
+                             {
+                                 BOOL sresult = YES;
+                                 AKABinding* binding = target;
+
+                                 for (AKABinding* itemBinding in binding.arrayItemBindings)
+                                 {
+                                     sresult = [itemBinding startObservingChanges] && sresult;
+                                 }
+
+                                 return sresult;
+                             }
+                                           observationStopper:
+                             ^BOOL(req_id target)
+                             {
+                                 BOOL sresult = YES;
+                                 AKABinding* binding = target;
+
+                                 for (AKABinding* itemBinding in binding.arrayItemBindings)
+                                 {
+                                     sresult = [itemBinding stopObservingChanges] && sresult;
+                                 }
+
+                                 return sresult;
+                             }];
+        }
+    }
+    else
+    {
+        NSError* e = [AKABindingErrors invalidBinding:self
+                                          sourceValue:sourceValue
+                                   expectedSubclassOf:[NSArray class]];
+        if (error)
+        {
+            *error = e;
+        }
+        else
+        {
+            @throw [NSException exceptionWithName:@"InvalidOperation"
+                                           reason:e.localizedDescription
+                                         userInfo:@{ @"error": e }];
+        }
+        result = NO;
+    }
+    
+    return bindingSource;
+}
+
+- (void)                                addArrayItemBinding:(AKABinding*)binding
+{
+    if (_arrayItemBindings == nil)
+    {
+        _arrayItemBindings = [NSMutableArray new];
+    }
+    [_arrayItemBindings addObject:binding];
+
+    if (binding != (id)[NSNull null])
+    {
+        [self addTargetPropertyBinding:binding];
+    }
+}
+
+- (void)                          addBindingPropertyBinding:(AKABinding*)bpBinding
 {
     // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
     if (_bindingPropertyBindings == nil)
@@ -205,7 +452,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     [_bindingPropertyBindings addObject:bpBinding];
 }
 
-- (void)addTargetPropertyBinding:(AKABinding*)bpBinding
+- (void)                           addTargetPropertyBinding:(AKABinding*)bpBinding
 {
     // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
     if (_targetPropertyBindings == nil)
@@ -792,16 +1039,12 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                      [self willUpdateTargetValue:oldTargetValue
                                               to:targetValue];
 
-                     // Some bindings update the binding target value (with an identical value) to
-                     // indicate a change of a property value; especially those which convert a source value
-                     // an object wrapping it (which then might also have additional target bindings).
-                     // TODO: refactor this (requires dynamic binding creations, which we originally
-                     // did not intend to support, we will probably have to)
-                     // See UITableView dataSourceBinding -> section infos
-                     //if (self.bindingTarget.value != targetValue)
-                     //{
+                     // Some bindings wrap the source value in an object that may not change when the
+                     // source value changes or perform other transformations that would not either.
+                     if (oldTargetValue != targetValue || oldSourceValue != newSourceValue)
+                     {
                          self.bindingTarget.value = targetValue;
-                     //}
+                     }
 
                      if (oldTargetValue != targetValue)
                      {
@@ -810,6 +1053,8 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                              [tpBinding updateTargetValue];
                          }
                      }
+
+
                      [self didUpdateTargetValue:oldTargetValue
                                              to:targetValue];
                  }
@@ -877,6 +1122,13 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
     if ([self validateSourceValue:&sourceValue error:&error])
     {
+        id<AKABindingDelegate> delegate = self.delegate;
+        if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:to:)])
+        {
+            [delegate                       binding:self
+                   sourceValueDidChangeFromOldValue:oldSourceValue
+                                                 to:newSourceValue];
+        }
         if ([self shouldUpdateTargetValueForSourceValue:oldSourceValue
                                                changeTo:newSourceValue
                                             validatedTo:sourceValue])

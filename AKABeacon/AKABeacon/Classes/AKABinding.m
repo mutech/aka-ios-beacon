@@ -1046,7 +1046,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
                          self.bindingTarget.value = targetValue;
                      }
 
-                     if (oldTargetValue != targetValue)
+                     if (oldTargetValue != targetValue || oldSourceValue != newSourceValue)
                      {
                          for (AKABinding* tpBinding in self.targetPropertyBindings)
                          {

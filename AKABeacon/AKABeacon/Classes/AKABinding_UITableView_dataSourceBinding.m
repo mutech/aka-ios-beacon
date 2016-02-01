@@ -336,20 +336,6 @@
                                          valueDidChangeFrom:(id)oldValue
                                                          to:(id)newValue
 {
-    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:removeDynamicBindingsForCell:indexPath:)])
-    {
-        NSArray* oldItems = oldValue == [NSNull null] ? nil : oldValue;
-        for (NSInteger i = 0; i < oldItems.count; ++i)
-        {
-            NSIndexPath* indexPath = [NSIndexPath indexPathForRow:i inSection:index];
-            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-            [delegate               binding:self
-               removeDynamicBindingsForCell:cell
-                                  indexPath:indexPath];
-        }
-    }
     [self dispatchTableViewUpdateForSection:index
                          forChangesFromRows:oldValue
                                      toRows:newValue];
@@ -421,10 +407,11 @@
             for (NSNumber* sectionN in strongSelf.pendingTableViewChanges.keyEnumerator)
             {
                 AKAArrayComparer* pendingChanges = strongSelf.pendingTableViewChanges[sectionN];
+
                 [pendingChanges updateTableView:strongSelf.tableView
                                         section:sectionN.integerValue
-                                deleteAnimation:self.deleteAnimation
-                                insertAnimation:self.insertAnimation];
+                                deleteAnimation:strongSelf.deleteAnimation
+                                insertAnimation:strongSelf.insertAnimation];
                 [strongSelf.pendingTableViewChanges removeObjectForKey:sectionN];
             }
             [strongSelf.tableView endUpdates];
@@ -469,6 +456,31 @@
         pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:pendingChanges.array];
     }
     self.pendingTableViewChanges[@(section)] = pendingChanges;
+
+    // The tableview delegate method cellwilldisappear that also triggers removal of cell controls
+    // is not reliably called. To ensure that AKAControls in charge of table view cells will detach
+    // observers, we are )also) removing member controls here, because at that point in time, oldRows
+    // still holds strong references to data contexts used by these controls.
+    //
+    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+    if (![delegate respondsToSelector:@selector(binding:suspendDynamicBindingsForCell:indexPath:)])
+    {
+        delegate = nil;
+    }
+    if (delegate)
+    {
+        [pendingChanges.deletedItemIndexes enumerateIndexesUsingBlock:
+         ^(NSUInteger idx, BOOL * _Nonnull stop)
+         {
+             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)idx
+                                                         inSection:(NSInteger)section];
+             UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+             [delegate               binding:self
+               suspendDynamicBindingsForCell:cell
+                                   indexPath:indexPath];
+
+         }];
+    }
 
     [self dispatchTableViewUpdateImmediately:updateTableViewImmediately];
 }

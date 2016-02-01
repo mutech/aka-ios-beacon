@@ -6,6 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.AKALog;
 @import AKACommons.UIView_AKAHierarchyVisitor                              ;
 
 #import "AKATableViewCompositeControl.h"
@@ -15,7 +16,7 @@
 @interface AKATableViewCompositeControl()
 
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
-@property(nonatomic) BOOL addingDynamicBindings;
+@property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* replacedControlsByIndexPath;
 
 @end
 
@@ -29,6 +30,7 @@
     if (self = [super init])
     {
         _controlsByIndexPath = [NSMutableDictionary new];
+        _replacedControlsByIndexPath = [NSMutableDictionary new];
     }
     return self;
 }
@@ -42,35 +44,54 @@
 {
     (void)binding;
 
-    // TODO: Check: I thought the bindings would be released before data contexts (as soon as owner controls are removed), there might be another retain cycle involved
-    
-    // If table view cells are created in response to manual reloads (e.g. not triggered by
-    // data source binding), dynamic bindings have not been removed. This may lead to a situation
-    // where observed data contexts could be released before observing bindings which in turn
-    // results in exceptions.
+
+    // Due to deferred updates (and possibly also in other situations), the order in which dynamic
+    // bindings are added and removed is not necessarily as expected (remove old then add new for a
+    // given indexpath). For that reason we keep a record of replaced cells but make sure their bindings
+    // are deactivated (stopObservingChanges).
+
     AKAControl* previousControlAtIndexPath = self.controlsByIndexPath[indexPath];
     if (previousControlAtIndexPath)
     {
         UITableViewCell* previousCell = (UITableViewCell*)previousControlAtIndexPath.view;
         NSAssert(previousCell == nil || [previousCell isKindOfClass:[UITableViewCell class]], nil);
 
-        [self binding:binding removeDynamicBindingsForCell:previousCell indexPath:indexPath];
+        [previousControlAtIndexPath stopObservingChanges];
+        [self.replacedControlsByIndexPath setObject:previousControlAtIndexPath forKey:indexPath];
+        [self.controlsByIndexPath removeObjectForKey:indexPath];
+        [self removeControl:previousControlAtIndexPath];
     }
-
-    // TODO: obsolete, remove if new update logic in data source binding proves to do the job:
-    BOOL wasAddingDynamicBindings = self.addingDynamicBindings;
-    self.addingDynamicBindings = YES;
 
     AKACompositeControl* control = [[AKACompositeControl alloc] initWithDataContext:dataContext
                                                                       configuration:nil];
     [control setView:cell];
     self.controlsByIndexPath[indexPath] = control;
     [self addControl:control];
-    // TODO: get the exclusion views from delegate?
+
+    // TODO: get the exclusion views (for embedded view controllers) from delegate?
     [control addControlsForControlViewsInViewHierarchy:cell.contentView
                                           excludeViews:nil];
+}
 
-    self.addingDynamicBindings = wasAddingDynamicBindings;
+/*
+ This has to be called at a point in time where it's known that a cell's bindings will be released but the data context is not yet released.
+ 
+ The table view dataSourceBinding will call this method when it's scheduling an update of the table view for a change rows array while that array is still referenced (as oldValue in the change notification).
+ 
+ If this is not done correctly, the result will most likely be exceptions for dangling observations on released objects. If you see these, double check if you call this method before the data context is released.
+ */
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
+      suspendDynamicBindingsForCell:(UITableViewCell *)cell
+                          indexPath:(NSIndexPath*)indexPath
+{
+    (void)binding;
+    (void)cell;
+
+    if (indexPath)
+    {
+        AKAControl* control = self.controlsByIndexPath[indexPath];
+        [control stopObservingChanges];
+    }
 }
 
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
@@ -80,11 +101,41 @@
     (void)binding;
     (void)cell;
 
+    // Due to deferred updates (and possibly also in other situations), the order in which dynamic
+    // bindings are added and removed is not necessarily as expected (remove old then add new for a
+    // given indexpath). For that reason we keep a record of replaced cells and remove these if they match.
+
     if (indexPath)
     {
+        AKAControl* replacedControl = self.replacedControlsByIndexPath[indexPath];
         AKAControl* control = self.controlsByIndexPath[indexPath];
-        [self.controlsByIndexPath removeObjectForKey:indexPath];
-        [self removeControl:control];
+
+        if (replacedControl && !(cell != nil && cell == control.view))
+        {
+            if (cell == nil || replacedControl.view == cell || replacedControl.view == nil)
+            {
+                [self.replacedControlsByIndexPath removeObjectForKey:indexPath];
+            }
+            else
+            {
+                NSString* message = [NSString stringWithFormat:@"Attempt to remove previously replaced control %@ for non-matching cell %@", replacedControl, cell];
+                NSAssert(NO, @"%@", message);
+                AKALogError(@"%@", message);
+            }
+        }
+        else if (cell == nil || control.view == cell || control.view == nil)
+        {
+            [self.controlsByIndexPath removeObjectForKey:indexPath];
+            [self removeControl:control];
+        }
+        else
+        {
+            // For some reason, tableView:didEndDisplayingCell:indexPath gets called multiple times for the replaced
+            // cells.
+            // TODO: check if we do something wrong which is causing this behaviour of if its just like that.
+            NSString* message = [NSString stringWithFormat:@"Attempt to remove control %@ for non-matching cell %@", control, cell];
+            AKALogWarn(@"%@", message);
+        }
     }
 }
 

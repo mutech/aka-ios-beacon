@@ -16,7 +16,7 @@
 @interface AKATableViewCompositeControl()
 
 @property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
-@property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* replacedControlsByIndexPath;
+@property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, NSMutableSet<AKAControl*>*>* replacedControlsByIndexPath;
 
 @end
 
@@ -37,13 +37,63 @@
 
 #pragma mark - View Binding Delegate (Cell bindings)
 
+- (void)replaceControl:(AKAControl*)control
+           atIndexPath:(NSIndexPath*)indexPath
+{
+    NSMutableSet<AKAControl*>* replacedControls = self.replacedControlsByIndexPath[indexPath];
+    if (replacedControls == nil)
+    {
+        replacedControls = [NSMutableSet new];
+    }
+    [replacedControls addObject:control];
+    [self.controlsByIndexPath removeObjectForKey:indexPath];
+    [self removeControl:control];
+}
+
+- (BOOL)removeReplacedControlAtIndexPath:(NSIndexPath*)indexPath
+                                 forCell:(UITableViewCell*)cell
+{
+    NSMutableSet* controls = self.replacedControlsByIndexPath[indexPath];
+
+    __block AKAControl* match = nil;
+
+    if (controls)
+    {
+        __block AKAControl* potentialMatch = nil;
+        [self.replacedControlsByIndexPath[indexPath] enumerateObjectsUsingBlock:^(AKAControl * _Nonnull control, BOOL * _Nonnull stop) {
+            if (control.view == nil && cell == nil && potentialMatch == nil)
+            {
+                potentialMatch = control;
+            }
+            else if (control.view == cell)
+            {
+                *stop = YES;
+                match = control;
+            }
+        }];
+        if (!match)
+        {
+            match = potentialMatch;
+        }
+        if (match)
+        {
+            [controls removeObject:match];
+            if (controls.count == 0)
+            {
+                [self.replacedControlsByIndexPath removeObjectForKey:indexPath];
+            }
+        }
+    }
+
+    return match != nil;
+}
+
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
           addDynamicBindingsForCell:(UITableViewCell *)cell
                           indexPath:(NSIndexPath*)indexPath
                         dataContext:(id)dataContext
 {
     (void)binding;
-
 
     // Due to deferred updates (and possibly also in other situations), the order in which dynamic
     // bindings are added and removed is not necessarily as expected (remove old then add new for a
@@ -57,9 +107,7 @@
         NSAssert(previousCell == nil || [previousCell isKindOfClass:[UITableViewCell class]], nil);
 
         [previousControlAtIndexPath stopObservingChanges];
-        [self.replacedControlsByIndexPath setObject:previousControlAtIndexPath forKey:indexPath];
-        [self.controlsByIndexPath removeObjectForKey:indexPath];
-        [self removeControl:previousControlAtIndexPath];
+        [self replaceControl:previousControlAtIndexPath atIndexPath:indexPath];
     }
 
     AKACompositeControl* control = [[AKACompositeControl alloc] initWithDataContext:dataContext
@@ -107,34 +155,22 @@
 
     if (indexPath)
     {
-        AKAControl* replacedControl = self.replacedControlsByIndexPath[indexPath];
-        AKAControl* control = self.controlsByIndexPath[indexPath];
-
-        if (replacedControl && !(cell != nil && cell == control.view))
+        if (![self removeReplacedControlAtIndexPath:indexPath forCell:cell])
         {
-            if (cell == nil || replacedControl.view == cell || replacedControl.view == nil)
+            AKAControl* control = self.controlsByIndexPath[indexPath];
+            if (cell == nil || control.view == cell || control.view == nil)
             {
-                [self.replacedControlsByIndexPath removeObjectForKey:indexPath];
+                [self.controlsByIndexPath removeObjectForKey:indexPath];
+                [self removeControl:control];
             }
             else
             {
-                NSString* message = [NSString stringWithFormat:@"Attempt to remove previously replaced control %@ for non-matching cell %@", replacedControl, cell];
-                NSAssert(NO, @"%@", message);
-                AKALogError(@"%@", message);
+                // For some reason, tableView:didEndDisplayingCell:indexPath gets called multiple times for the replaced
+                // cells.
+                // TODO: check if we do something wrong which is causing this behaviour of if its just like that.
+                NSString* message = [NSString stringWithFormat:@"Attempt to remove control %@ for non-matching cell %@", control, cell];
+                AKALogWarn(@"%@", message);
             }
-        }
-        else if (cell == nil || control.view == cell || control.view == nil)
-        {
-            [self.controlsByIndexPath removeObjectForKey:indexPath];
-            [self removeControl:control];
-        }
-        else
-        {
-            // For some reason, tableView:didEndDisplayingCell:indexPath gets called multiple times for the replaced
-            // cells.
-            // TODO: check if we do something wrong which is causing this behaviour of if its just like that.
-            NSString* message = [NSString stringWithFormat:@"Attempt to remove control %@ for non-matching cell %@", control, cell];
-            AKALogWarn(@"%@", message);
         }
     }
 }

@@ -44,6 +44,7 @@
     if (replacedControls == nil)
     {
         replacedControls = [NSMutableSet new];
+        self.replacedControlsByIndexPath[indexPath] = replacedControls;
     }
     [replacedControls addObject:control];
     [self.controlsByIndexPath removeObjectForKey:indexPath];

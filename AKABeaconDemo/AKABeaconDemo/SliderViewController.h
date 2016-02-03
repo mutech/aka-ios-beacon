@@ -16,5 +16,8 @@
 @property(nonatomic) double minimumValue;
 @property(nonatomic) double maximumValue;
 @property(nonatomic) double stepValue;
+@property(nonatomic) BOOL autorepeat;
+@property(nonatomic) BOOL continuous;
+@property(nonatomic) BOOL wraps;
 
 @end

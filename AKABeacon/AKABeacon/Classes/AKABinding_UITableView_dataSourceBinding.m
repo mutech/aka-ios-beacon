@@ -393,6 +393,40 @@
     }
 }
 
+- (void)performPendingTableViewUpdates
+{
+    if (!self.tableView.isDragging && !self.tableView.isDecelerating)
+    {
+        // It's only safe to update if the tableview is not scrolling:
+        [self.tableView beginUpdates];
+        for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+        {
+            AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
+
+            [pendingChanges updateTableView:self.tableView
+                                    section:sectionN.integerValue
+                            deleteAnimation:self.deleteAnimation
+                            insertAnimation:self.insertAnimation];
+            [self.pendingTableViewChanges removeObjectForKey:sectionN];
+        }
+        [self.tableView endUpdates];
+        self.tableViewReloadDispatched = NO;
+
+        // Perform update for self-sizing cells now to ensure this will be done, disable
+        // deferred updates which have already been scheduled (not necessary if done now).
+        [self updateTableViewRowHeights];
+        self.tableViewUpdateDispatched = NO;
+    }
+    else
+    {
+        // It's not safe to update, redispatch and try again.
+        // TODO: replace this busy waiting by something more sensible
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performPendingTableViewUpdates];
+        });
+    }
+}
+
 - (void)dispatchTableViewUpdateImmediately:(BOOL)updateTableViewImmediately
 {
     __weak typeof(self) weakSelf = self;
@@ -400,28 +434,6 @@
     if (!self.tableViewReloadDispatched)
     {
         self.tableViewReloadDispatched = YES;
-        void(^update)() = ^{
-            typeof(weakSelf) strongSelf = weakSelf;
-
-            [weakSelf.tableView beginUpdates];
-            for (NSNumber* sectionN in strongSelf.pendingTableViewChanges.keyEnumerator)
-            {
-                AKAArrayComparer* pendingChanges = strongSelf.pendingTableViewChanges[sectionN];
-
-                [pendingChanges updateTableView:strongSelf.tableView
-                                        section:sectionN.integerValue
-                                deleteAnimation:strongSelf.deleteAnimation
-                                insertAnimation:strongSelf.insertAnimation];
-                [strongSelf.pendingTableViewChanges removeObjectForKey:sectionN];
-            }
-            [strongSelf.tableView endUpdates];
-            strongSelf.tableViewReloadDispatched = NO;
-
-            // Perform update for self-sizing cells now to ensure this will be done, disable
-            // deferred updates which have already been scheduled (not necessary if done now).
-            [strongSelf updateTableViewRowHeights];
-            strongSelf.tableViewUpdateDispatched = NO;
-        };
 
         // We generally want to update the TV in a newly dispatched job, which will allow subsequent
         // changes to binding sources to accumulate updates and perform them in one batch (better animations)
@@ -431,11 +443,13 @@
         // whenever self.updateTableViewSynchronously is YES) and then revert to deferred updates.
         if (updateTableViewImmediately)
         {
-            update();
+            [self performPendingTableViewUpdates];
         }
         else
         {
-            dispatch_async(dispatch_get_main_queue(), update);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf performPendingTableViewUpdates];
+            });
         }
     }
 }

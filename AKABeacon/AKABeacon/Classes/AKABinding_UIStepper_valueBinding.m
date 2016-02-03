@@ -12,15 +12,31 @@
 #import "AKABinding_UIStepper_valueBinding.h"
 #import "AKABindingExpression.h"
 
+
+#pragma mark - AKABinding_UIStepper_valueBinding - Private Interface
+#pragma mark -
+
 @interface AKABinding_UIStepper_valueBinding()
 
+/**
+ Convenience property accessing self.view as UIStepper.
+ */
+@property(nonatomic, readonly) UIStepper* uiStepper;
+
+/**
+ Records the target value prior to changing it to be able to pass the old value in change notifications.
+ */
 @property(nonatomic) NSNumber*                          previousValue;
 
 @end
 
+
+#pragma mark - AKABinding_UIStepper_valueBinding - Implementation
+#pragma mark -
+
 @implementation AKABinding_UIStepper_valueBinding
 
-+  (AKABindingSpecification *)specification
++  (AKABindingSpecification *)            specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -126,7 +142,6 @@
                 return result;
             }];
 }
-
 
 #pragma mark - Properties
 

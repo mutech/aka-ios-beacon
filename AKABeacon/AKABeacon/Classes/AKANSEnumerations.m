@@ -468,7 +468,7 @@
     return result;
 }
 
-#pragma mark - UITableViewRowAnimations
+#pragma mark - Animations
 
 + (NSDictionary<NSString*, NSNumber*>*)       uitableViewRowAnimationsByName
 {
@@ -484,6 +484,39 @@
             @"Right":           @(UITableViewRowAnimationRight),
             @"Fade":            @(UITableViewRowAnimationFade),
             @"Middle":          @(UITableViewRowAnimationMiddle),
+            };
+    });
+    return result;
+}
+
++ (NSDictionary<NSString *,NSNumber *> *)uiviewAnimationOptions
+{
+    static NSDictionary<NSString*, NSNumber*>* result = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result =
+        @{  @"Repeat":                      @(UIViewAnimationOptionRepeat),
+            @"Autoreverse":                 @(UIViewAnimationOptionAutoreverse),
+            @"CurveEaseIn":                 @(UIViewAnimationOptionCurveEaseIn),
+            @"CurveLinear":                 @(UIViewAnimationOptionCurveLinear),
+            @"CurveEaseOut":                @(UIViewAnimationOptionCurveEaseOut),
+            @"CurveEaseInOut":              @(UIViewAnimationOptionCurveEaseInOut),
+            @"LayoutSubviews":              @(UIViewAnimationOptionLayoutSubviews),
+            @"TransitionNone":              @(UIViewAnimationOptionTransitionNone),
+            @"TransitionCurlUp":            @(UIViewAnimationOptionTransitionCurlUp),
+            @"TransitionCurlDown":          @(UIViewAnimationOptionTransitionCurlDown),
+            @"TransitionFlipFromTop":       @(UIViewAnimationOptionTransitionFlipFromTop),
+            @"TransitionFlipFromLeft":      @(UIViewAnimationOptionTransitionFlipFromLeft),
+            @"TransitionFlipFromRight":     @(UIViewAnimationOptionTransitionFlipFromRight),
+            @"TransitionFlipFromBottom":    @(UIViewAnimationOptionTransitionFlipFromBottom),
+            @"TransitionCrossDissolve":     @(UIViewAnimationOptionTransitionCrossDissolve),
+            @"ShowHideTransitionViews":     @(UIViewAnimationOptionShowHideTransitionViews),
+            @"AllowAnimatedContent":        @(UIViewAnimationOptionAllowAnimatedContent),
+            @"AllowUserInteraction":        @(UIViewAnimationOptionAllowUserInteraction),
+            @"BeginFromCurrentState":       @(UIViewAnimationOptionBeginFromCurrentState),
+            @"OverrideInheritedCurve":      @(UIViewAnimationOptionOverrideInheritedCurve),
+            @"OverrideInheritedOptions":    @(UIViewAnimationOptionOverrideInheritedOptions),
+            @"OverrideInheritedDuration":   @(UIViewAnimationOptionOverrideInheritedDuration),
             };
     });
     return result;

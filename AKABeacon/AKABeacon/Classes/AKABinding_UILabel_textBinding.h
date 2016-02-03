@@ -9,6 +9,15 @@
 #import "AKAViewBinding.h"
 #import "AKAAttributedFormatter.h"
 
+#define opt_AKATransitionAnimationParameters AKATransitionAnimationParameters*_Nullable
+
+@interface AKATransitionAnimationParameters: NSObject
+
+@property(nonatomic) CGFloat duration;
+@property(nonatomic) UIViewAnimationOptions options;
+
+@end
+
 @interface AKABinding_UILabel_textBinding: AKAViewBinding
 
 #pragma mark - Binding Configuration
@@ -21,5 +30,10 @@
 @property(nonatomic, nullable) NSDateFormatter* dateFormatter;
 @property(nonatomic, nullable) NSFormatter* formatter;
 @property(nonatomic, nullable) AKAAttributedFormatter* textAttributeFormatter;
+
+#pragma mark - Animations
+
+@property(nonatomic, readonly) BOOL isTransitionAnimationActive;
+@property(nonatomic)           opt_AKATransitionAnimationParameters transitionAnimation;
 
 @end

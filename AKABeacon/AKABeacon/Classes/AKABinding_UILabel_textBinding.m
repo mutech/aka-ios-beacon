@@ -14,6 +14,94 @@
 #import "AKABinding_AKABinding_dateFormatter.h"
 #import "AKABinding_AKABinding_attributedFormatter.h"
 
+#import "AKANSEnumerations.h"
+@implementation AKATransitionAnimationParameters
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        self.duration = .2f;
+        self.options = (UIViewAnimationOptionCurveEaseInOut |
+                        UIViewAnimationOptionTransitionCrossDissolve);
+    }
+
+    return self;
+}
+
+@end
+
+@interface AKATransitionAnimationParametersPropertyBinding: AKAPropertyBinding
+@end
+
+@implementation AKATransitionAnimationParametersPropertyBinding
+
++ (AKABindingSpecification*)specification
+{
+    static AKABindingSpecification* result = nil;
+    static dispatch_once_t onceToken;
+
+    [self registerEnumerationAndOptionTypes];
+
+    dispatch_once(&onceToken, ^{
+        NSDictionary* spec = @{
+            @"bindingType":          [AKATransitionAnimationParametersPropertyBinding class],
+            @"expressionType":       @(AKABindingExpressionTypeNone),
+            @"attributes": @{
+                @"duration": @{
+                    @"bindingType":     [AKAPropertyBinding class],
+                    @"expressionType":  @(AKABindingExpressionTypeNumber),
+                    @"use":             @(AKABindingAttributeUseBindToTargetProperty)
+                },
+                @"options": @{
+                    @"bindingType":     [AKAPropertyBinding class],
+                    @"expressionType":  @((AKABindingExpressionTypeOptionsConstant |
+                                           AKABindingExpressionTypeAnyKeyPath)),
+                    @"optionsType":     @"UIViewAnimationOptions",
+                    @"use":             @(AKABindingAttributeUseBindToTargetProperty)
+                },
+            }
+        };
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+    });
+
+    return result;
+}
+
++ (void)registerEnumerationAndOptionTypes
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        [AKABindingExpressionSpecification registerOptionsType:@"UIViewAnimationOptions"
+                                              withValuesByName:[AKANSEnumerations
+                                                                    uiviewAnimationOptions]];
+    });
+}
+
+
+- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                           context:(req_AKABindingContext)bindingContext
+                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                             error:(NSError *__autoreleasing  _Nullable *)error
+{
+    (void)bindingExpression;
+    (void)bindingContext;
+    (void)error;
+
+    if (self.syntheticTargetValue == nil)
+    {
+        self.syntheticTargetValue = [AKATransitionAnimationParameters new];
+    }
+    AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:self
+                                                            keyPath:@"syntheticTargetValue"
+                                                     changeObserver:changeObserver];
+    return result;
+}
+
+@end
+
+
 #pragma mark - AKABinding_UILabel_textBinding - Private Interface
 #pragma mark -
 
@@ -48,40 +136,37 @@
             @"attributes": @{
                 @"numberFormatter": @{
                     @"bindingType":    [AKABinding_AKABinding_numberFormatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"numberFormatter"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"dateFormatter": @{
                     @"bindingType":    [AKABinding_AKABinding_dateFormatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"dateFormatter"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"formatter": @{
                     @"bindingType":    [AKABinding_AKABinding_formatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"formatter"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textAttributeFormatter": @{
                     @"expressionType":  @(AKABindingExpressionTypeNone | AKABindingExpressionTypeAnyKeyPath),
                     @"bindingType":     [AKABinding_AKABinding_attributedFormatter class],
-                    @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                    @"bindingProperty": @"textAttributeFormatter"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textForUndefinedValue": @{
                     @"expressionType":  @(AKABindingExpressionTypeString),
-                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                    @"bindingProperty": @"textForUndefinedValue"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textForYes": @{
                     @"expressionType":  @(AKABindingExpressionTypeString),
-                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                    @"bindingProperty": @"textForYes"
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textForNo": @{
                     @"expressionType":  @(AKABindingExpressionTypeString),
-                    @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
-                    @"bindingProperty": @"textForNo"
-                }
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
+                },
+                @"transitionAnimation": @{
+                    @"bindingType":     [AKATransitionAnimationParametersPropertyBinding class],
+                    @"use":             @(AKABindingAttributeUseBindToBindingProperty)
+                },
             }
         };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -140,11 +225,14 @@
                     text = @" ";
                 }
 
-                binding.label.text = text;
-                if (binding.textAttributeFormatter)
-                {
-                    [binding applyTextAttributesToLabelText];
-                }
+                [self transitionAnimation:^{
+                     binding.label.text = text;
+
+                     if (binding.textAttributeFormatter)
+                     {
+                         [binding applyTextAttributesToLabelText];
+                     }
+                 }];
             }
             observationStarter:
             ^BOOL (id target)
@@ -170,6 +258,45 @@
 
                 return !binding.isObserving;
             }];
+}
+
+- (void)transitionAnimation:(void (^)())animations
+{
+    if (!_transitionAnimation)
+    {
+        //self.transitionAnimation = [AKATransitionAnimationParameters new];
+    }
+
+    // Using the field to prevent lazy initialization of self.transitionAnimation
+    if (_transitionAnimation.duration > 0.0 && !self.isTransitionAnimationActive)
+    {
+        [UIView transitionWithView:self.label
+                          duration:self.transitionAnimation.duration
+                           options:self.transitionAnimation.options
+                        animations:^{
+             self->_isTransitionAnimationActive = YES;
+
+             if (animations != NULL)
+             {
+                 animations();
+             }
+         }
+                        completion:^(BOOL finished) {
+             // We ignore finished, since we can't know when the animation
+             // is really finished if it is not yet when the handler is
+             // called. (What's this completion for if it's not for the
+             // completion of the animation??)
+             (void)finished;
+             self->_isTransitionAnimationActive = NO;
+         }];
+    }
+    else
+    {
+        if (animations != NULL)
+        {
+            animations();
+        }
+    }
 }
 
 - (void)applyTextAttributesToLabelText
@@ -268,12 +395,14 @@
             binding.bindingTarget.value == self.textAttributeFormatter.pattern)
         {
             [self aka_performBlockInMainThreadOrQueue:^{
-                [self applyTextAttributesToLabelText];
-            } waitForCompletion:NO];
+                 [self applyTextAttributesToLabelText];
+             }
+                                    waitForCompletion:NO];
         }
     }
 
     id<AKABindingDelegate> delegate = self.delegate;
+
     if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
     {
         [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];

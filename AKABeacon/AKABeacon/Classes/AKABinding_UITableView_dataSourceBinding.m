@@ -361,8 +361,9 @@
 
 - (void)updateTableViewRowHeights
 {
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    UITableView* tableView = self.tableView;
+    [tableView beginUpdates];
+    [tableView endUpdates];
 }
 
 - (void)dispatchTableViewUpdateForSection:(NSUInteger)section
@@ -395,35 +396,39 @@
 
 - (void)performPendingTableViewUpdates
 {
-    if (!self.tableView.isDragging && !self.tableView.isDecelerating)
+    UITableView* tableView = self.tableView;
+    if (tableView)
     {
-        // It's only safe to update if the tableview is not scrolling:
-        [self.tableView beginUpdates];
-        for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+        if (!tableView.isDragging && !tableView.isDecelerating)
         {
-            AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
+            // It's only safe to update if the tableview is not scrolling:
+            [tableView beginUpdates];
+            for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+            {
+                AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
 
-            [pendingChanges updateTableView:self.tableView
-                                    section:sectionN.integerValue
-                            deleteAnimation:self.deleteAnimation
-                            insertAnimation:self.insertAnimation];
-            [self.pendingTableViewChanges removeObjectForKey:sectionN];
+                [pendingChanges updateTableView:tableView
+                                        section:sectionN.unsignedIntegerValue
+                                deleteAnimation:self.deleteAnimation
+                                insertAnimation:self.insertAnimation];
+                [self.pendingTableViewChanges removeObjectForKey:sectionN];
+            }
+            [tableView endUpdates];
+            self.tableViewReloadDispatched = NO;
+
+            // Perform update for self-sizing cells now to ensure this will be done, disable
+            // deferred updates which have already been scheduled (not necessary if done now).
+            [self updateTableViewRowHeights];
+            self.tableViewUpdateDispatched = NO;
         }
-        [self.tableView endUpdates];
-        self.tableViewReloadDispatched = NO;
-
-        // Perform update for self-sizing cells now to ensure this will be done, disable
-        // deferred updates which have already been scheduled (not necessary if done now).
-        [self updateTableViewRowHeights];
-        self.tableViewUpdateDispatched = NO;
-    }
-    else
-    {
-        // It's not safe to update, redispatch and try again.
-        // TODO: replace this busy waiting by something more sensible
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self performPendingTableViewUpdates];
-        });
+        else
+        {
+            // It's not safe to update, redispatch and try again.
+            // TODO: replace this busy waiting by something more sensible
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self performPendingTableViewUpdates];
+            });
+        }
     }
 }
 
@@ -486,6 +491,7 @@
         [pendingChanges.deletedItemIndexes enumerateIndexesUsingBlock:
          ^(NSUInteger idx, BOOL * _Nonnull stop)
          {
+             (void)stop;
              NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)idx
                                                          inSection:(NSInteger)section];
              UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
@@ -731,16 +737,6 @@
 }
 
 #pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewAutomaticDimension;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewAutomaticDimension;
-}
 
 - (void)                                    tableView:(UITableView*)tableView
                                       willDisplayCell:(UITableViewCell*)cell

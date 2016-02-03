@@ -187,7 +187,7 @@
     BOOL allowUnspecified = allowUnknownAttributes || specification.allowUnspecifiedAttributes;
 
     // Validation of option values specified as attributes:
-    BOOL isOptionsConstant = specification.expressionType == AKABindingExpressionTypeOptionsConstant && specification.optionsType;
+    BOOL isOptionsConstant = (specification.expressionType & AKABindingExpressionTypeOptionsConstant) && specification.optionsType;
     NSSet* options = nil;
     if (isOptionsConstant)
     {
@@ -216,9 +216,14 @@
 
          if (result && !allowUnspecified && attributeSpecification == nil)
          {
+             NSArray* attributeNames = specification.attributes.allKeys;
+             if (isOptionsConstant && options.count > 0)
+             {
+                 attributeNames = [attributeNames arrayByAddingObjectsFromArray:options.allObjects];
+             }
              localError = [AKABindingErrors invalidBindingExpression:self
                                                     unknownAttribute:attributeName
-                                                     knownAttributes:specification.attributes.allKeys];
+                                                     knownAttributes:attributeNames];
              result = NO;
          }
 

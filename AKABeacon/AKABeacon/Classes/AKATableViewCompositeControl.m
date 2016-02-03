@@ -61,17 +61,20 @@
     if (controls)
     {
         __block AKAControl* potentialMatch = nil;
-        [self.replacedControlsByIndexPath[indexPath] enumerateObjectsUsingBlock:^(AKAControl * _Nonnull control, BOOL * _Nonnull stop) {
-            if (control.view == nil && cell == nil && potentialMatch == nil)
-            {
-                potentialMatch = control;
-            }
-            else if (control.view == cell)
-            {
-                *stop = YES;
-                match = control;
-            }
-        }];
+        [self.replacedControlsByIndexPath[indexPath] enumerateObjectsUsingBlock:
+         ^(AKAControl * _Nonnull control, BOOL * _Nonnull stop)
+         {
+             UIView* view = control.view;
+             if (view == nil && cell == nil && potentialMatch == nil)
+             {
+                 potentialMatch = control;
+             }
+             else if (view == cell)
+             {
+                 *stop = YES;
+                 match = control;
+             }
+         }];
         if (!match)
         {
             match = potentialMatch;
@@ -159,7 +162,8 @@
         if (![self removeReplacedControlAtIndexPath:indexPath forCell:cell])
         {
             AKAControl* control = self.controlsByIndexPath[indexPath];
-            if (cell == nil || control.view == cell || control.view == nil)
+            UIView* view = control.view;
+            if (cell == nil || view == cell || view == nil)
             {
                 [self.controlsByIndexPath removeObjectForKey:indexPath];
                 [self removeControl:control];

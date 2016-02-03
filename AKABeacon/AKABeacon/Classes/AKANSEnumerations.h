@@ -65,8 +65,10 @@
 
 + (NSDictionary<NSString*, NSNumber*>*_Nonnull)      stringCompareOptions;
 
-#pragma mark - UITableViewRowAnimations
+#pragma mark - Animations
 
 + (NSDictionary<NSString*, NSNumber*>*_Nonnull)uitableViewRowAnimationsByName;
+
++ (NSDictionary<NSString*, NSNumber*>*_Nonnull)uiviewAnimationOptions;
 
 @end

@@ -86,13 +86,7 @@
     result = attributeBinding != nil;
     if (result)
     {
-#if 0
-        [self addAttributeBinding:attributeBinding
-                withSpecification:nil
-                           forKey:attributeName];
-#else
         [self addBindingPropertyBinding:attributeBinding];
-#endif
     }
     return result;
 }

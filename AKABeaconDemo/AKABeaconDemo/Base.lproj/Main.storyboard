@@ -1108,8 +1108,11 @@ The number editor text field uses two different formatters, one for display and 
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </slider>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02w-9d-CMm">
-                                                <rect key="frame" x="166" y="258" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999 %" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02w-9d-CMm">
+                                                <rect key="frame" x="163" y="259" width="50" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="ECr-Mc-NeX"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1120,6 +1123,10 @@ The number editor text field uses two different formatters, one for display and 
 		numberStyle: $enum.PercentStyle,
 		maximumFractionDigits: 0,
 		roundingMode: $enum.RoundHalfUp
+	},
+	transitionAnimation: {
+		duration: .15,
+		options: $options{CurveEaseInOut, TransitionCrossDissolve}
 	}
 }</string>
                                                     </userDefinedRuntimeAttribute>

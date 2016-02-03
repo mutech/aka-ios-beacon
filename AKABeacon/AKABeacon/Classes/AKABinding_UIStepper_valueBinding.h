@@ -10,6 +10,4 @@
 
 @interface AKABinding_UIStepper_valueBinding : AKAControlViewBinding
 
-@property(nonatomic, readonly) UIStepper*   uiStepper;
-
 @end

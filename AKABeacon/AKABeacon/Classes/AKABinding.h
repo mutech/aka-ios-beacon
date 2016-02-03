@@ -211,7 +211,8 @@ typedef AKAKeyboardControlViewBinding*_Nonnull              req_AKAKeyboardContr
 @property(nonatomic, readonly, nullable) SEL                bindingProperty;
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol> bindingContext;
 @property(nonatomic, readonly, weak) id<AKABindingDelegate> delegate;
-@property(nonatomic, readonly, nullable) id                 syntheticTargetValue;
+@property(nonatomic, nullable) id                           syntheticTargetValue;
+
 #pragma mark - Secondary Bindings
 
 @property(nonatomic, readonly, nullable) NSArray<AKABinding*>* arrayItemBindings;

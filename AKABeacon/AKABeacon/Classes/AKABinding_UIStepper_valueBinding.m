@@ -14,27 +14,7 @@
 
 @interface AKABinding_UIStepper_valueBinding()
 
-@property(nonatomic, readonly) AKAProperty*             minimumValueProperty;
-@property(nonatomic, readonly) AKAProperty*             maximumValueProperty;
-@property(nonatomic, readonly) AKAProperty*             stepValueProperty;
-@property(nonatomic, readonly) NSNumber*                minimumValue;
-@property(nonatomic, readonly) NSNumber*                maximumValue;
-@property(nonatomic, readonly) NSNumber*                stepValue;
-
 @property(nonatomic) NSNumber*                          previousValue;
-
-#pragma mark - Saved stepper configuration
-
-
-#if RESTORE_BOUND_VIEW_STATE
-@property(nonatomic) NSNumber*                          originalValue;
-@property(nonatomic) NSNumber*                          originalMinimumValue;
-@property(nonatomic) NSNumber*                          originalMaximumValue;
-@property(nonatomic) NSNumber*                          originalStepValue;
-@property(nonatomic) NSNumber*                          originalAutorepeat;
-@property(nonatomic) NSNumber*                          originalContinuous;
-@property(nonatomic) NSNumber*                          originalWraps;
-#endif
 
 @end
 
@@ -52,30 +32,33 @@
            @"attributes":
                @{ @"minimumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
-                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                         @"bindingProperty": @"minimumValueExpression"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.minimumValue"
                          },
                   @"maximumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
-                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                         @"bindingProperty": @"maximumValueExpression"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.maximumValue"
                          },
                   @"stepValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
-                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                         @"bindingProperty": @"stepValueExpression"
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.stepValue"
                          },
                   @"autorepeat":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.autorepeat"
                          },
                   @"continuous":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.continuous"
                          },
                   @"wraps":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
-                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"view.wraps"
                          },
                   },
            };
@@ -86,89 +69,10 @@
 
 #pragma mark - Initialization
 
-- (void)dealloc
-{
-    [_minimumValueProperty stopObservingChanges];
-    [_maximumValueProperty stopObservingChanges];
-    [_stepValueProperty stopObservingChanges];
-}
-
 - (void)                             validateTargetView:(req_UIView)targetView
 {
     (void)targetView;
     NSParameterAssert([targetView isKindOfClass:[UIStepper class]]);
-}
-
-#pragma mark - Properties
-
-- (NSNumber *)minimumValue { return self.minimumValueProperty.value; }
-
-- (NSNumber *)maximumValue { return self.maximumValueProperty.value; }
-
-- (NSNumber *)stepValue { return self.stepValueProperty.value; }
-
-@synthesize minimumValueProperty = _minimumValueProperty;
-- (AKAProperty *)minimumValueProperty
-{
-    id<AKABindingContextProtocol> context = self.bindingContext;
-    if (_minimumValueProperty == nil && self.minimumValueExpression && context)
-    {
-        __weak AKABinding_UIStepper_valueBinding* weakSelf = self;
-        _minimumValueProperty =
-            [self.minimumValueExpression bindingSourcePropertyInContext:context
-                                                          changeObserer:
-             ^(opt_id oldValue, opt_id newValue)
-             {
-                 (void)oldValue;
-                 NSParameterAssert(newValue == nil || [newValue isKindOfClass:[NSNumber class]]);
-                 AKABinding_UIStepper_valueBinding* binding = weakSelf;
-                 binding.uiStepper.minimumValue = ((NSNumber*)newValue).floatValue;
-                 [binding updateTargetValue];
-             }];
-    }
-    return _minimumValueProperty;
-}
-
-@synthesize maximumValueProperty = _maximumValueProperty;
-- (AKAProperty *)maximumValueProperty
-{
-    id<AKABindingContextProtocol> context = self.bindingContext;
-    if (_maximumValueProperty == nil && self.maximumValueExpression && context)
-    {
-        __weak AKABinding_UIStepper_valueBinding* weakSelf = self;
-        _maximumValueProperty = [self.maximumValueExpression bindingSourcePropertyInContext:context
-                                                                              changeObserer:
-         ^(opt_id oldValue, opt_id newValue)
-         {
-             (void)oldValue;
-             NSParameterAssert(newValue == nil || [newValue isKindOfClass:[NSNumber class]]);
-             AKABinding_UIStepper_valueBinding* binding = weakSelf;
-             binding.uiStepper.maximumValue = ((NSNumber*)newValue).floatValue;
-             [binding updateTargetValue];
-         }];
-    }
-    return _maximumValueProperty;
-}
-
-@synthesize stepValueProperty = _stepValueProperty;
-- (AKAProperty *)stepValueProperty
-{
-    id<AKABindingContextProtocol> context = self.bindingContext;
-    if (_stepValueProperty == nil && self.stepValueExpression && context)
-    {
-        __weak AKABinding_UIStepper_valueBinding* weakSelf = self;
-        _stepValueProperty = [self.stepValueExpression bindingSourcePropertyInContext:context
-                                                                        changeObserer:
-         ^(opt_id oldValue, opt_id newValue)
-         {
-             (void)oldValue;
-             NSParameterAssert(newValue == nil || [newValue isKindOfClass:[NSNumber class]]);
-             AKABinding_UIStepper_valueBinding* binding = weakSelf;
-             binding.uiStepper.stepValue = ((NSNumber*)newValue).floatValue;
-             [binding updateTargetValue];
-         }];
-    }
-    return _stepValueProperty;
 }
 
 #pragma mark - Binding Target
@@ -202,10 +106,6 @@
                 BOOL result = binding.uiStepper != nil;
                 if (result)
                 {
-#if RESTORE_BOUND_VIEW_STATE
-                    [binding saveViewState];
-#endif
-                    [binding setupView];
                     [binding.uiStepper addTarget:binding
                                          action:@selector(targetValueDidChangeSender:)
                                forControlEvents:UIControlEventValueChanged];
@@ -222,136 +122,11 @@
                     [binding.uiStepper removeTarget:binding
                                             action:@selector(targetValueDidChangeSender:)
                                   forControlEvents:UIControlEventValueChanged];
-
-#if RESTORE_BOUND_VIEW_STATE
-                    [binding restoreViewState];
-#endif
                 }
                 return result;
             }];
 }
 
-- (BOOL)startObservingChanges
-{
-    [self.minimumValueProperty startObservingChanges];
-    [self.maximumValueProperty startObservingChanges];
-    [self.stepValueProperty startObservingChanges];
-
-    return [super startObservingChanges];
-}
-
-- (BOOL)stopObservingChanges
-{
-    BOOL result = [super stopObservingChanges];
-
-    [self.stepValueProperty stopObservingChanges];
-    [self.maximumValueProperty stopObservingChanges];
-    [self.minimumValueProperty stopObservingChanges];
-
-    return result;
-}
-
-- (void)                          setupView
-{
-    self.previousValue = @(self.uiStepper.value);
-
-    if (self.minimumValue)
-    {
-        self.uiStepper.minimumValue = self.minimumValue.floatValue;
-    }
-    if (self.maximumValue)
-    {
-        self.uiStepper.maximumValue = self.maximumValue.floatValue;
-    }
-    if (self.stepValue)
-    {
-        self.uiStepper.stepValue = self.stepValue.floatValue;
-    }
-    if (self.autorepeat)
-    {
-        self.uiStepper.autorepeat = self.autorepeat.boolValue;
-    }
-    if (self.continuous)
-    {
-        self.uiStepper.continuous = self.continuous.boolValue;
-    }
-    if (self.wraps)
-    {
-        self.uiStepper.wraps = self.wraps.boolValue;
-    }
-}
-
-
-#if RESTORE_BOUND_VIEW_STATE
-- (void)                                   setViewState
-{
-    self.originalValue = self.previousValue = @(self.uiStepper.value);
-
-    if (self.minimumValue)
-    {
-        self.originalMinimumValue = @(self.uiStepper.minimumValue);
-    }
-    if (self.maximumValue)
-    {
-        self.originalMaximumValue = @(self.uiStepper.maximumValue);
-    }
-    if (self.stepValue)
-    {
-        self.originalStepValue = @(self.uiStepper.stepValue);
-    }
-    if (self.autorepeat)
-    {
-        self.originalAutorepeat = @(self.uiStepper.autorepeat);
-    }
-    if (self.continuous)
-    {
-        self.originalContinuous = @(self.uiStepper.continuous);
-    }
-    if (self.wraps)
-    {
-        self.originalWraps = @(self.uiStepper.wraps);
-    }
-}
-
-- (void)                               restoreViewState
-{
-    if (self.originalValue)
-    {
-        self.uiStepper.value = self.originalValue.floatValue;
-        self.originalValue = self.previousValue = nil;
-    }
-    if (self.originalMinimumValue)
-    {
-        self.uiStepper.minimumValue = self.originalMinimumValue.floatValue;
-        self.originalMinimumValue = nil;
-    }
-    if (self.originalMaximumValue)
-    {
-        self.uiStepper.maximumValue = self.originalMaximumValue.floatValue;
-        self.originalMaximumValue = nil;
-    }
-    if (self.originalStepValue)
-    {
-        self.uiStepper.stepValue = self.originalStepValue.floatValue;
-        self.originalStepValue = nil;
-    }
-    if (self.originalAutorepeat)
-    {
-        self.uiStepper.autorepeat = self.originalAutorepeat.boolValue;
-        self.originalAutorepeat = nil;
-    }
-    if (self.originalContinuous)
-    {
-        self.uiStepper.continuous = self.originalContinuous.boolValue;
-        self.originalContinuous = nil;
-    }
-    if (self.originalWraps)
-    {
-        self.uiStepper.wraps = self.originalWraps.boolValue;
-        self.originalWraps = nil;
-    }
-}
-#endif
 
 #pragma mark - Properties
 

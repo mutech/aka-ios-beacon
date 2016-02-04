@@ -46,7 +46,7 @@
     dispatch_once(&onceToken, ^{
         NSDictionary* spec = @{
             @"bindingType":          [AKATransitionAnimationParametersPropertyBinding class],
-            @"expressionType":       @(AKABindingExpressionTypeNone),
+            @"expressionType":       @(AKABindingExpressionTypeNone|AKABindingExpressionTypeAnyKeyPath),
             @"attributes": @{
                 @"duration": @{
                     @"bindingType":     [AKAPropertyBinding class],
@@ -262,13 +262,7 @@
 
 - (void)transitionAnimation:(void (^)())animations
 {
-    if (!_transitionAnimation)
-    {
-        //self.transitionAnimation = [AKATransitionAnimationParameters new];
-    }
-
-    // Using the field to prevent lazy initialization of self.transitionAnimation
-    if (_transitionAnimation.duration > 0.0 && !self.isTransitionAnimationActive)
+    if (self.transitionAnimation.duration > 0.0)
     {
         [UIView transitionWithView:self.label
                           duration:self.transitionAnimation.duration

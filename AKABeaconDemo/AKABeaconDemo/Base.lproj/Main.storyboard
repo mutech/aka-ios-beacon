@@ -1125,7 +1125,7 @@ The number editor text field uses two different formatters, one for display and 
 		roundingMode: $enum.RoundHalfUp
 	},
 	transitionAnimation: {
-		duration: .15,
+		duration: .25,
 		options: $options{CurveEaseInOut, TransitionCrossDissolve}
 	}
 }</string>
@@ -1807,7 +1807,8 @@ The number editor text field uses two different formatters, one for display and 
                                                         <string key="value">numberValue {
 	numberFormatter: {
 		numberStyle: $enum.DecimalStyle
-	}
+	},
+	transitionAnimation: numberValueLabelTransitionAnimation
 }</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>

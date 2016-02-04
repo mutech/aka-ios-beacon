@@ -475,7 +475,6 @@
 
     if (target)
     {
-        AKALogWarn(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
         result = [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
                                                    keyPath:nil
                                             changeObserver:changeObserver];
@@ -487,8 +486,6 @@
 - (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext;
-    AKALogError(@"AKAArrayBindingExpression: bindingSourceProperty not yet implemented properly: We just provide a property to the array of binding expressions. Instead we need to provide a proxy that emulates an array of resolved values, where each binding expression element results in a property delivering an item of the proxy array.");
-
     return self.array;
 }
 

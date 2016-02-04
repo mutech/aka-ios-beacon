@@ -7,8 +7,7 @@
 //
 
 @import UIKit;
-@import AKABeacon.AKAFormViewController;
-
+@import AKABeacon;
 
 @interface SliderViewController : AKAFormViewController
 
@@ -19,5 +18,7 @@
 @property(nonatomic) BOOL autorepeat;
 @property(nonatomic) BOOL continuous;
 @property(nonatomic) BOOL wraps;
+
+@property(nonatomic) AKATransitionAnimationParameters* numberValueLabelTransitionAnimation;
 
 @end

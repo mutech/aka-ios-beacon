@@ -62,10 +62,10 @@
     [self updateTargetValue];
 }
 
-- (BOOL)setupUnspecifiedAttributeBindingWithName:(NSString *)attributeName
-                             attributeExpression:(req_AKABindingExpression)attributeExpression
-                                  bindingContext:(req_AKABindingContext)bindingContext
-                                           error:(NSError *__autoreleasing  _Nullable *)error
+- (BOOL)initializeUnspecifiedAttribute:(NSString *)attributeName
+                   attributeExpression:(req_AKABindingExpression)attributeExpression
+                        bindingContext:(req_AKABindingContext)bindingContext
+                                 error:(out_NSError)error
 {
     BOOL result = YES;
     __weak typeof(self) weakSelf = self;

@@ -12,12 +12,12 @@
 
 #pragma mark - Initialization
 
-- (instancetype)                                      initWithTarget:(id)target
-                                                            property:(opt_SEL)property
-                                                          expression:(req_AKABindingExpression)bindingExpression
-                                                             context:(req_AKABindingContext)bindingContext
-                                                            delegate:(opt_AKABindingDelegate)delegate
-                                                               error:(out_NSError)error
+- (instancetype)initWithTarget:(req_AKAProperty)target
+                      property:(opt_SEL)property
+                    expression:(req_AKABindingExpression)bindingExpression
+                       context:(req_AKABindingContext)bindingContext
+                      delegate:(opt_AKABindingDelegate)delegate
+                         error:(out_NSError)error
 {
     NSParameterAssert([target isKindOfClass:[AKAProperty class]]);
 
@@ -30,7 +30,5 @@
 
     return self;
 }
-
-@dynamic bindingTarget;
 
 @end

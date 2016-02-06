@@ -9,10 +9,10 @@
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKABinding_UILabel_textBinding.h"
-#import "AKABinding_AKABinding_formatter.h"
-#import "AKABinding_AKABinding_numberFormatter.h"
-#import "AKABinding_AKABinding_dateFormatter.h"
-#import "AKABinding_AKABinding_attributedFormatter.h"
+#import "AKAFormatterPropertyBinding.h"
+#import "AKANumberFormatterPropertyBinding.h"
+#import "AKADateFormatterPropertyBinding.h"
+#import "AKAAttributedFormatterPropertyBinding.h"
 
 #import "AKANSEnumerations.h"
 @implementation AKATransitionAnimationParameters
@@ -135,20 +135,20 @@
             @"expressionType":       @(AKABindingExpressionTypeAny & ~AKABindingExpressionTypeArray),
             @"attributes": @{
                 @"numberFormatter": @{
-                    @"bindingType":    [AKABinding_AKABinding_numberFormatter class],
+                    @"bindingType":    [AKANumberFormatterPropertyBinding class],
                     @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"dateFormatter": @{
-                    @"bindingType":    [AKABinding_AKABinding_dateFormatter class],
+                    @"bindingType":    [AKADateFormatterPropertyBinding class],
                     @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"formatter": @{
-                    @"bindingType":    [AKABinding_AKABinding_formatter class],
+                    @"bindingType":    [AKAFormatterPropertyBinding class],
                     @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textAttributeFormatter": @{
                     @"expressionType":  @(AKABindingExpressionTypeNone | AKABindingExpressionTypeAnyKeyPath),
-                    @"bindingType":     [AKABinding_AKABinding_attributedFormatter class],
+                    @"bindingType":     [AKAAttributedFormatterPropertyBinding class],
                     @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"textForUndefinedValue": @{

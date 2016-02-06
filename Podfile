@@ -6,7 +6,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 workspace 'AKABeacon.xcworkspace'
 xcodeproj 'AKABeacon/AKABeacon.xcodeproj'
-xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
+xcodeproj 'AKABeaconDemo/AKABeaconDemo.xcodeproj'
 
 use_frameworks!
 
@@ -46,9 +46,8 @@ end
 # Using explicit versions to support pod try.
 target :AKABeaconDemo, :exclusive => true do
     target :AKABeaconDemoUITests do
-        xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
+        xcodeproj 'AKABeaconDemo/AKABeaconDemo.xcodeproj'
     end
-    xcodeproj 'AKABeacon/AKABeaconDemo.xcodeproj'
-    pod 'AKACommons', '~> 0.1.1-pre.1'
-    pod 'AKABeacon', '~> 0.1.1-pre.2'
+    xcodeproj 'AKABeaconDemo/AKABeaconDemo.xcodeproj'
+    beacon_pods
 end

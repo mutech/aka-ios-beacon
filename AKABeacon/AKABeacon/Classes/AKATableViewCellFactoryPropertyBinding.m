@@ -83,11 +83,11 @@
     return self;
 }
 
-- (BOOL)setupAttributeBindingByAssigningValueToTargetProperty:(NSString *)bindingProperty
-                                            withSpecification:(req_AKABindingAttributeSpecification)specification
-                                          attributeExpression:(req_AKABindingExpression)attributeExpression
-                                               bindingContext:(req_AKABindingContext)bindingContext
-                                                        error:(NSError *__autoreleasing  _Nullable *)error
+- (BOOL)initializeTargetPropertyValueAssignmentAttribute:(req_NSString)bindingProperty
+                                       withSpecification:(req_AKABindingAttributeSpecification)specification
+                                     attributeExpression:(req_AKABindingExpression)attributeExpression
+                                          bindingContext:(req_AKABindingContext)bindingContext
+                                                   error:(out_NSError)error
 {
     (void)specification;
     (void)error;
@@ -103,7 +103,7 @@
 - (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                            context:(req_AKABindingContext)bindingContext
                                     changeObserver:(AKAPropertyChangeObserver)changeObserver
-                                             error:(NSError *__autoreleasing  _Nullable *)error
+                                             error:(out_NSError)error
 {
     (void)bindingExpression;
     (void)bindingContext;

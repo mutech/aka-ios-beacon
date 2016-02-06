@@ -1,16 +1,16 @@
 //
-//  AKABinding_AKABinding_attributedFormatter.m
+//  AKAAttributedFormatterPropertyBinding.m
 //  AKABeacon
 //
 //  Created by Michael Utech on 19.12.15.
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKABinding_AKABinding_attributedFormatter.h"
+#import "AKAAttributedFormatterPropertyBinding.h"
 #import "AKANSEnumerations.h"
 #import "AKAAttributedFormatter.h"
 
-@implementation AKABinding_AKABinding_attributedFormatter
+@implementation AKAAttributedFormatterPropertyBinding
 
 + (AKABindingSpecification*)                 specification
 {

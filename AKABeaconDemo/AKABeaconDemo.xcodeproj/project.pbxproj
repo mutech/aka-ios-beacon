@@ -76,7 +76,6 @@
 		8E91E7591BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
-		8EABEF4A1C31FAF300EA95DF /* NSPredicates.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = NSPredicates.playground; sourceTree = "<group>"; };
 		8ED3FD051C2AA8A500C44412 /* SearchResultHighlightingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultHighlightingViewController.h; sourceTree = "<group>"; };
 		8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultHighlightingViewController.m; sourceTree = "<group>"; };
 		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 		8E91E7311BB228A900F7618F = {
 			isa = PBXGroup;
 			children = (
-				8EABEF4A1C31FAF300EA95DF /* NSPredicates.playground */,
 				8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */,
 				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
 				8E91E7561BB228A900F7618F /* AKABeaconDemoUITests */,

@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorInvalidBindingExpressionUnknownEnumerationValue,
     AKABindingErrorInvalidBindingExpressionInvalidUIFontTraitSpecification,
 
-    AKABindingErrorInvalidBindingSourceValueType,
+    AKABindingErrorInvalidBindingSourceValue,
     AKABindingErrorConversionOfTargetToSourceFailedTargetOutOfRange,
     AKABindingErrorConversionOfTargetToSourceFailedInvalidTargetType,
     AKABindingErrorConversionOfSourceToTargetFailedInvalidSourceType,
@@ -81,6 +81,10 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                               withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
 
 #pragma mark - Binding Source Validation Errors (Runtime validation)
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
+                                                        reason:(req_NSString)reason;
 
 + (req_NSError)                                 invalidBinding:(req_AKABinding)binding
                                                    sourceValue:(opt_id)value

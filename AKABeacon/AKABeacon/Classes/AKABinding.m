@@ -11,28 +11,14 @@
 @import AKACommons.AKANullability;
 @import AKACommons.AKAErrors;
 @import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
+
+//@import AKACommons.NSObject_AKAConcurrencyTools; // Does not work in AppCode
+@import AKACommons;
 
 #import "AKABinding.h"
 #import "AKAPropertyBinding.h"
 #import "AKABindingErrors.h"
 
-
-static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
-{
-    // Reference: https://gist.github.com/numist/3838169
-    for (int optionbits = 0; optionbits < (1 << 2); optionbits++) {
-        BOOL required = optionbits & 1;
-        BOOL instance = !(optionbits & (1 << 1));
-
-        struct objc_method_description hasMethod = protocol_getMethodDescription(protocol, selector, required, instance);
-        if (hasMethod.name || hasMethod.types) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
 
 #pragma mark - AKABinding Private Interface
 #pragma mark -
@@ -68,29 +54,30 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return self;
 }
 
-- (instancetype _Nullable)                   initWithTarget:(id)target
-                                                   property:(opt_SEL)property
-                                                 expression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate
-                                                      error:(out_NSError)error
+- (instancetype)initWithTarget:(req_AKAProperty)target
+                      property:(opt_SEL)property
+                    expression:(req_AKABindingExpression)bindingExpression
+                       context:(req_AKABindingContext)bindingContext
+                      delegate:(opt_AKABindingDelegate)delegate
+                         error:(out_NSError)error
 {
     NSError* localError = nil;
 
-    if (self = [self init])
-    {
-        AKABindingSpecification* specification = [self.class specification];
+    if (self = [self init]) {
+        AKABindingSpecification *specification = [self.class specification];
 
-        // TODO: should check that self.class is sub class of bindingType:
+        Class specifiedBindingType = bindingExpression.specification.bindingType;
+        NSAssert(specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType],
+            @"Binding %@ of type %@ is not an instance of specified binding type %@",
+            self, NSStringFromClass(self.class), NSStringFromClass(specifiedBindingType));
+
         // TODO: check if relaxing attribute checks is still needed anyway
         // Perform validation; relax attribute checks if binding type is a sub class of
         // the binding type defined in the specification:
-        BOOL relaxAttributeChecks = self.class != bindingExpression.specification.bindingType;
-        if (specification.bindingSourceSpecification)
-        {
+        BOOL relaxAttributeChecks = self.class != specifiedBindingType;
+        if (specification.bindingSourceSpecification) {
             if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
-                                                                     error:&localError])
-            {
+                                                                     error:&localError]) {
                 self = nil;
             }
             /* TODO: check if we (still?) need alternative validation for extended binding specifications:
@@ -103,20 +90,20 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         }
 
 
-        NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]], @"Invalid target %@, expected instance of AKAProperty", target);
+        NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
+            @"Invalid target %@, expected instance of AKAProperty", target);
         _bindingTarget = target;
-
-        _bindingProperty = property; // TODO: rename to bindingExpressionProperty or remove it
         _bindingContext = bindingContext;
         _delegate = delegate;
 
-        __weak AKABinding* weakSelf = self;
+        _bindingProperty = property; // TODO: rename to bindingExpressionProperty or remove it
+
+        __weak AKABinding *weakSelf = self;
         req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
             [weakSelf sourceValueDidChangeFromOldValue:oldValue
                                             toNewValue:newValue];
         };
-
-        AKAProperty* bindingSource = [self bindingSourceForExpression:bindingExpression
+        AKAProperty *bindingSource = [self bindingSourceForExpression:bindingExpression
                                                               context:bindingContext
                                                        changeObserver:changeObserver
                                                                 error:&localError];
@@ -129,9 +116,9 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
             self = nil;
         }
 
-        if (![self setupAttributeBindingsWithExpression:bindingExpression
-                                                 bindingContext:bindingContext
-                                                          error:&localError])
+        if (![self initializeAttributesWithExpression:bindingExpression
+                                       bindingContext:bindingContext
+                                                error:&localError])
         {
             self = nil;
         }
@@ -155,6 +142,8 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
     return self;
 }
+
+#pragma mark - Binding Source Initialization
 
 - (opt_AKAProperty)              bindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
@@ -208,56 +197,6 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-
-- (void)                             targetArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(id)oldValue
-                                                         to:(id)newValue
-{
-    id<AKABindingDelegate> delegate = (id)self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:targetArrayItemAtIndex:value:didChangeTo:)])
-    {
-        [delegate           binding:self
-             targetArrayItemAtIndex:index
-                              value:oldValue
-                        didChangeTo:newValue];
-    }
-}
-
-- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(id)oldValue
-                                                         to:(id)newValue
-{
-    id<AKABindingDelegate> delegate = (id)self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)])
-    {
-        [delegate           binding:self
-             sourceArrayItemAtIndex:index
-                              value:oldValue
-                        didChangeTo:newValue];
-    }
-}
-
-- (void)                                            binding:(AKABinding*)binding
-                           sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
-                                                         to:(id _Nullable)newSourceValue
-{
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:to:)])
-    {
-        [delegate binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
-    }
-
-    if (self.arrayItemBindings.count > 0)
-    {
-        NSUInteger arrayItemIndex = [self.arrayItemBindings indexOfObject:binding];
-        if (arrayItemIndex != NSNotFound)
-        {
-            [self sourceArrayItemAtIndex:arrayItemIndex
-                      valueDidChangeFrom:oldSourceValue
-                                      to:newSourceValue];
-        }
-    }
-}
 
 - (AKAProperty*)            bindingSourceForArrayExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
@@ -313,15 +252,15 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
                     __weak typeof(self) weakSelf = self;
                     AKAProperty* arrayItemTargetProperty =
-                    [AKAProperty propertyOfWeakIndexedTarget:targetArray
-                                                       index:(NSInteger)index
-                                              changeObserver:
-                     ^(id  _Nullable oldValue, id  _Nullable newValue)
-                     {
-                         [weakSelf targetArrayItemAtIndex:index
-                                       valueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
-                                                       to:newValue == [NSNull null] ? nil : newValue];
-                     }];
+                        [AKAProperty propertyOfWeakIndexedTarget:targetArray
+                                                           index:(NSInteger)index
+                                                  changeObserver:
+                                                      ^(id  _Nullable oldValue, id  _Nullable newValue)
+                                                      {
+                                                          [weakSelf targetArrayItemAtIndex:index
+                                                                        valueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
+                                                                                        to:newValue == [NSNull null] ? nil : newValue];
+                                                      }];
                     Class bindingType = sourceExpression.specification.bindingType;
                     if (bindingType == nil)
                     {
@@ -367,44 +306,44 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 
             bindingSource = [AKAProperty propertyOfWeakTarget:self
                                                        getter:
-                             ^id _Nullable(req_id target)
-                             {
-                                 AKABinding* binding = target;
-                                 return binding->_syntheticTargetValue;
-                             }
+                                                           ^id _Nullable(req_id target)
+                                                           {
+                                                               AKABinding* binding = target;
+                                                               return binding->_syntheticTargetValue;
+                                                           }
                                                        setter:
-                             ^(req_id target, opt_id value)
-                             {
-                                 (void)target;
-                                 (void)value;
-                                 NSAssert(NO, @"Updating binding source is not supported by array property bindings (yet)");
-                             }
+                                                           ^(req_id target, opt_id value)
+                                                           {
+                                                               (void)target;
+                                                               (void)value;
+                                                               NSAssert(NO, @"Updating binding source is not supported by array property bindings (yet)");
+                                                           }
                                            observationStarter:
-                             ^BOOL(req_id target)
-                             {
-                                 BOOL sresult = YES;
-                                 AKABinding* binding = target;
+                                                           ^BOOL(req_id target)
+                                                           {
+                                                               BOOL sresult = YES;
+                                                               AKABinding* binding = target;
 
-                                 for (AKABinding* itemBinding in binding.arrayItemBindings)
-                                 {
-                                     sresult = [itemBinding startObservingChanges] && sresult;
-                                 }
+                                                               for (AKABinding* itemBinding in binding.arrayItemBindings)
+                                                               {
+                                                                   sresult = [itemBinding startObservingChanges] && sresult;
+                                                               }
 
-                                 return sresult;
-                             }
+                                                               return sresult;
+                                                           }
                                            observationStopper:
-                             ^BOOL(req_id target)
-                             {
-                                 BOOL sresult = YES;
-                                 AKABinding* binding = target;
+                                                           ^BOOL(req_id target)
+                                                           {
+                                                               BOOL sresult = YES;
+                                                               AKABinding* binding = target;
 
-                                 for (AKABinding* itemBinding in binding.arrayItemBindings)
-                                 {
-                                     sresult = [itemBinding stopObservingChanges] && sresult;
-                                 }
+                                                               for (AKABinding* itemBinding in binding.arrayItemBindings)
+                                                               {
+                                                                   sresult = [itemBinding stopObservingChanges] && sresult;
+                                                               }
 
-                                 return sresult;
-                             }];
+                                                               return sresult;
+                                                           }];
         }
     }
     else
@@ -424,47 +363,15 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         }
         result = NO;
     }
-    
+
     return bindingSource;
 }
 
-- (void)                                addArrayItemBinding:(AKABinding*)binding
-{
-    if (_arrayItemBindings == nil)
-    {
-        _arrayItemBindings = [NSMutableArray new];
-    }
-    [_arrayItemBindings addObject:binding];
+#pragma mark - Attribute Initialization
 
-    if (binding != (id)[NSNull null])
-    {
-        [self addTargetPropertyBinding:binding];
-    }
-}
-
-- (void)                          addBindingPropertyBinding:(AKABinding*)bpBinding
-{
-    // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
-    if (_bindingPropertyBindings == nil)
-    {
-        _bindingPropertyBindings = [NSMutableArray new];
-    }
-    [_bindingPropertyBindings addObject:bpBinding];
-}
-
-- (void)                           addTargetPropertyBinding:(AKABinding*)bpBinding
-{
-    // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
-    if (_targetPropertyBindings == nil)
-    {
-        _targetPropertyBindings = [NSMutableArray new];
-    }
-    [_targetPropertyBindings addObject:bpBinding];
-}
-
-- (BOOL)               setupAttributeBindingsWithExpression:(req_AKABindingExpression)bindingExpression
-                                             bindingContext:(req_AKABindingContext)bindingContext
-                                                      error:(out_NSError)error
+- (BOOL)initializeAttributesWithExpression:(req_AKABindingExpression)bindingExpression
+                            bindingContext:(req_AKABindingContext)bindingContext
+                                     error:(out_NSError)error
 {
     __block BOOL result = YES;
 
@@ -495,61 +402,57 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
              {
                  case AKABindingAttributeUseManually:
                      {
-                         result = [self setupAttributeBindingManuallyWithName:attributeName
-                                                                specification:attributeSpec
-                                                          attributeExpression:attribute
-                                                               bindingContext:bindingContext
-                                                                        error:error];
+                         result = [self initializeManualAttributeWithName:attributeName
+                                                            specification:attributeSpec
+                                                      attributeExpression:attribute
+                                                           bindingContext:bindingContext
+                                                                    error:error];
                          break;
                      }
 
                  case AKABindingAttributeUseAssignValueToBindingProperty:
                      {
-                         result = [self setupAttributeBindingByAssigningValueToBindingProperty:bindingPropertyName
-                                                                             withSpecification:attributeSpec
-                                                                           attributeExpression:attribute
-                                                                                bindingContext:bindingContext error:error];
+                         result = [self initializeBindingPropertyValueAssignmentAttribute:bindingPropertyName
+                                                                        withSpecification:attributeSpec
+                                                                      attributeExpression:attribute
+                                                                           bindingContext:bindingContext error:error];
                          break;
                      }
 
                  case AKABindingAttributeUseAssignExpressionToBindingProperty:
                      {
-                         result = [self setupAttributeBindingByAssigningExpressionToBindingProperty:bindingPropertyName
-                                                                                  withSpecification:attributeSpec
-                                                                                attributeExpression:attribute
-                                                                                     bindingContext:bindingContext
-                                                                                              error:error];
+                         result = [self initializeBindingPropertyExpressionAssignmentAttribute:bindingPropertyName
+                                                                             withSpecification:attributeSpec
+                                                                           attributeExpression:attribute
+                                                                                bindingContext:bindingContext
+                                                                                         error:error];
                          break;
                      }
 
                  case AKABindingAttributeUseAssignValueToTargetProperty:
                  {
-                     result = [self setupAttributeBindingByAssigningValueToTargetProperty:bindingPropertyName
-                                                                        withSpecification:attributeSpec
-                                                                      attributeExpression:attribute
-                                                                           bindingContext:bindingContext
-                                                                                    error:error];
+                     result = [self initializeTargetPropertyValueAssignmentAttribute:bindingPropertyName
+                                                                   withSpecification:attributeSpec
+                                                                 attributeExpression:attribute
+                                                                      bindingContext:bindingContext
+                                                                               error:error];
                      break;
                  }
 
                  case AKABindingAttributeUseBindToBindingProperty:
                      {
-                         result = [self setupAttributeBindingByBindingToBindingProperty:bindingPropertyName
-                                                                      withSpecification:attributeSpec
-                                                                    attributeExpression:attribute
-                                                                         bindingContext:bindingContext
-                                                                                  error:error];
+                         result = [self initializeBindingPropertyBindingAttribute:bindingPropertyName
+                                                                withSpecification:attributeSpec
+                                                              attributeExpression:attribute
+                                                                   bindingContext:bindingContext
+                                                                            error:error];
 
                          break;
                      }
 
                  case AKABindingAttributeUseBindToTargetProperty:
                  {
-                     result = [self setupAttributeBindingWithSpecification:attributeSpec
-                                                       attributeExpression:attribute
-                                                            bindingContext:bindingContext
-                                                 byBindingToTargetProperty:bindingPropertyName
-                                                                     error:error];
+                     result = [self initializeTargetPropertyBindingAttribute:bindingPropertyName withSpecification:attributeSpec attributeExpression:attribute bindingContext:bindingContext error:error];
                      break;
                  }
 
@@ -559,10 +462,10 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
          }
          else
          {
-             result = [self setupUnspecifiedAttributeBindingWithName:attributeName
-                                                 attributeExpression:attribute
-                                                      bindingContext:bindingContext
-                                                               error:error];
+             result = [self initializeUnspecifiedAttribute:attributeName
+                                       attributeExpression:attribute
+                                            bindingContext:bindingContext
+                                                     error:error];
          }
          *stop = !result;
      }];
@@ -570,11 +473,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return result;
 }
 
-- (BOOL)setupAttributeBindingManuallyWithName:(NSString*)attributeName
-                                specification:(req_AKABindingAttributeSpecification)specification
-                          attributeExpression:(req_AKABindingExpression)attributeExpression
-                               bindingContext:(req_AKABindingContext)bindingContext
-                                        error:(out_NSError)error
+- (BOOL)initializeManualAttributeWithName:(NSString *)attributeName
+                            specification:(req_AKABindingAttributeSpecification)specification
+                      attributeExpression:(req_AKABindingExpression)attributeExpression
+                           bindingContext:(req_AKABindingContext)bindingContext
+                                    error:(out_NSError)error
 {
     (void)attributeName;
     (void)specification;
@@ -585,11 +488,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return YES;
 }
 
-- (BOOL)setupAttributeBindingByAssigningValueToBindingProperty:(NSString *)bindingProperty
-                                             withSpecification:(AKABindingAttributeSpecification *)specification
-                                           attributeExpression:(req_AKABindingExpression)attributeExpression
-                                                bindingContext:(req_AKABindingContext)bindingContext
-                                                         error:(out_NSError)error
+- (BOOL)initializeBindingPropertyValueAssignmentAttribute:(NSString *)bindingProperty
+                                        withSpecification:(AKABindingAttributeSpecification *)specification
+                                      attributeExpression:(req_AKABindingExpression)attributeExpression
+                                           bindingContext:(req_AKABindingContext)bindingContext
+                                                    error:(out_NSError)error
 {
     (void)specification;
     (void)error;
@@ -599,11 +502,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return YES;
 }
 
-- (BOOL)setupAttributeBindingByAssigningExpressionToBindingProperty:(NSString *)bindingProperty
-                                                  withSpecification:(AKABindingAttributeSpecification *)specification
-                                                attributeExpression:(req_AKABindingExpression)attributeExpression
-                                                     bindingContext:(req_AKABindingContext)bindingContext
-                                                              error:(out_NSError)error
+- (BOOL)initializeBindingPropertyExpressionAssignmentAttribute:(NSString *)bindingProperty
+                                             withSpecification:(AKABindingAttributeSpecification *)specification
+                                           attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                bindingContext:(req_AKABindingContext)bindingContext
+                                                         error:(out_NSError)error
 {
     (void)specification;
     (void)bindingContext;
@@ -614,11 +517,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 }
 
 
-- (BOOL)setupAttributeBindingByAssigningValueToTargetProperty:(req_NSString)bindingProperty
-                                            withSpecification:(req_AKABindingAttributeSpecification)specification
-                                          attributeExpression:(req_AKABindingExpression)attributeExpression
-                                               bindingContext:(req_AKABindingContext)bindingContext
-                                                        error:(out_NSError)error;
+- (BOOL)initializeTargetPropertyValueAssignmentAttribute:(req_NSString)bindingProperty
+                                       withSpecification:(req_AKABindingAttributeSpecification)specification
+                                     attributeExpression:(req_AKABindingExpression)attributeExpression
+                                          bindingContext:(req_AKABindingContext)bindingContext
+                                                   error:(out_NSError)error;
 {
     BOOL result = YES;
 
@@ -631,11 +534,7 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         // If the target does not yet have a defined value, a binding will be created to ensure that the value is not lost.
         AKALogWarn(@"Cannot assign binding %@ attribute value %@ to target property %@ because the target is undefined. To support defered target assignment, a property binding will be created instead", self, attributeExpression, bindingProperty);
 
-        result = [self setupAttributeBindingWithSpecification:specification
-                                          attributeExpression:attributeExpression
-                                               bindingContext:bindingContext
-                                    byBindingToTargetProperty:bindingProperty
-                                                        error:error];
+        result = [self initializeTargetPropertyBindingAttribute:bindingProperty withSpecification:specification attributeExpression:attributeExpression bindingContext:bindingContext error:error];
     }
     else
     {
@@ -646,11 +545,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return result;
 }
 
-- (BOOL)setupAttributeBindingByBindingToBindingProperty:(NSString *)bindingProperty
-                                      withSpecification:(AKABindingAttributeSpecification *)specification
-                                    attributeExpression:(req_AKABindingExpression)attributeExpression
-                                         bindingContext:(req_AKABindingContext)bindingContext
-                                                  error:(out_NSError)error
+- (BOOL)initializeBindingPropertyBindingAttribute:(NSString *)bindingProperty
+                                withSpecification:(AKABindingAttributeSpecification *)specification
+                              attributeExpression:(req_AKABindingExpression)attributeExpression
+                                   bindingContext:(req_AKABindingContext)bindingContext
+                                            error:(out_NSError)error
 {
     BOOL result = YES;
     Class bindingType = specification.bindingType;
@@ -687,11 +586,11 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return result;
 }
 
-- (BOOL)             setupAttributeBindingWithSpecification:(AKABindingAttributeSpecification*)specification
-                                        attributeExpression:(req_AKABindingExpression)attributeExpression
-                                             bindingContext:(req_AKABindingContext)bindingContext
-                                  byBindingToTargetProperty:(NSString*)bindingProperty
-                                                      error:(out_NSError)error
+- (BOOL)initializeTargetPropertyBindingAttribute:(NSString *)bindingProperty
+                               withSpecification:(AKABindingAttributeSpecification *)specification
+                             attributeExpression:(req_AKABindingExpression)attributeExpression
+                                  bindingContext:(req_AKABindingContext)bindingContext
+                                           error:(out_NSError)error
 {
     BOOL result = YES;
     Class bindingType = specification.bindingType;
@@ -729,10 +628,10 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return result;
 }
 
-- (BOOL)           setupUnspecifiedAttributeBindingWithName:(NSString*)attributeName
-                                        attributeExpression:(req_AKABindingExpression)attributeExpression
-                                             bindingContext:(req_AKABindingContext)bindingContext
-                                                      error:(out_NSError)error
+- (BOOL)initializeUnspecifiedAttribute:(NSString *)attributeName
+                   attributeExpression:(req_AKABindingExpression)attributeExpression
+                        bindingContext:(req_AKABindingContext)bindingContext
+                                 error:(out_NSError)error
 {
     (void)attributeName;
     (void)attributeExpression;
@@ -740,6 +639,42 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     (void)error;
 
     return YES;
+}
+
+#pragma mark - Sub Bindings
+
+- (void)                                addArrayItemBinding:(AKABinding*)binding
+{
+    if (_arrayItemBindings == nil)
+    {
+        _arrayItemBindings = [NSMutableArray new];
+    }
+    [_arrayItemBindings addObject:binding];
+
+    if (binding != (id)[NSNull null])
+    {
+        [self addTargetPropertyBinding:binding];
+    }
+}
+
+- (void)                          addBindingPropertyBinding:(AKABinding*)bpBinding
+{
+    // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
+    if (_bindingPropertyBindings == nil)
+    {
+        _bindingPropertyBindings = [NSMutableArray new];
+    }
+    [_bindingPropertyBindings addObject:bpBinding];
+}
+
+- (void)                           addTargetPropertyBinding:(AKABinding*)bpBinding
+{
+    // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
+    if (_targetPropertyBindings == nil)
+    {
+        _targetPropertyBindings = [NSMutableArray new];
+    }
+    [_targetPropertyBindings addObject:bpBinding];
 }
 
 #pragma mark - Delegation
@@ -773,33 +708,25 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
     return result;
 }
 
-#pragma mark - Ad hoc binding application
-
-+ (BOOL)                             applyBindingExpression:(req_AKABindingExpression)expression
-                                                   toTarget:(id)target
-                                                  inContext:(req_AKABindingContext)context
-                                                      error:(out_NSError)error
+static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
 {
-    BOOL result = NO;
+    // Reference: https://gist.github.com/numist/3838169
+    for (int optionBits = 0; optionBits < (1 << 2); optionBits++) {
+        BOOL required = (BOOL) (optionBits & 1);
+        BOOL instance = !(optionBits & (1 << 1));
 
-    // Create the binding
-    Class bindingType = expression.specification.bindingType;
-    AKABinding* binding = [(AKABinding*)[bindingType alloc] initWithTarget:target
-                                                     property:nil
-                                                   expression:expression
-                                                      context:context
-                                                     delegate:nil
-                                                        error:error];
-    result = binding != nil;
-
-    if (result)
-    {
-        result = [binding applyToTargetOnce:error];
+        struct objc_method_description hasMethod = protocol_getMethodDescription(protocol, selector, required, instance);
+        if (hasMethod.name || hasMethod.types) {
+            return YES;
+        }
     }
 
-    return result;
+    return NO;
 }
 
+#pragma mark - Ad hoc binding application
+
+// TODO: Remove ad-hoc binding application (not needed - of if so: needs smarter implementation)
 - (BOOL)applyToTargetOnce:(out_NSError)error
 {
     BOOL result = YES;
@@ -1003,6 +930,57 @@ static inline BOOL selector_belongsToProtocol(SEL selector, Protocol * protocol)
         [delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
     }
     _isUpdatingTargetValueForSourceValueChange = NO;
+}
+
+
+- (void)                             targetArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue
+{
+    id<AKABindingDelegate> delegate = (id)self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:targetArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate           binding:self
+             targetArrayItemAtIndex:index
+                              value:oldValue
+                        didChangeTo:newValue];
+    }
+}
+
+- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue
+{
+    id<AKABindingDelegate> delegate = (id)self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate           binding:self
+             sourceArrayItemAtIndex:index
+                              value:oldValue
+                        didChangeTo:newValue];
+    }
+}
+
+- (void)                                            binding:(AKABinding*)binding
+                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                                         to:(opt_id)newSourceValue
+{
+    id<AKABindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:to:)])
+    {
+        [delegate binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+    }
+
+    if (self.arrayItemBindings.count > 0)
+    {
+        NSUInteger arrayItemIndex = [self.arrayItemBindings indexOfObject:binding];
+        if (arrayItemIndex != NSNotFound)
+        {
+            [self sourceArrayItemAtIndex:arrayItemIndex
+                      valueDidChangeFrom:oldSourceValue
+                                      to:newSourceValue];
+        }
+    }
 }
 
 #pragma mark - Target Value Updates

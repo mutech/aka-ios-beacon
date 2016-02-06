@@ -9,9 +9,9 @@
 #import "AKABinding_UITextField_textBinding.h"
 #import "AKABindingErrors.h"
 
-#import "AKABinding_AKABinding_formatter.h"
-#import "AKABinding_AKABinding_numberFormatter.h"
-#import "AKABinding_AKABinding_dateFormatter.h"
+#import "AKAFormatterPropertyBinding.h"
+#import "AKANumberFormatterPropertyBinding.h"
+#import "AKADateFormatterPropertyBinding.h"
 
 #pragma mark - AKABinding_UITextField_textBinding - Private Interface
 #pragma mark -
@@ -54,32 +54,32 @@
             @"expressionType":       @(AKABindingExpressionTypeAny),
             @"attributes": @{
                 @"numberFormatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_numberFormatter class],
+                    @"bindingType":         [AKANumberFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"formatter"
                 },
                 @"dateFormatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_dateFormatter class],
+                    @"bindingType":         [AKADateFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"formatter"
                 },
                 @"formatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_formatter class],
+                    @"bindingType":         [AKAFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"formatter"
                 },
                 @"editingNumberFormatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_numberFormatter class],
+                    @"bindingType":         [AKANumberFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"editingFormatter"
                 },
                 @"editingDateFormatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_dateFormatter class],
+                    @"bindingType":         [AKADateFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"editingFormatter"
                 },
                 @"editingFormatter": @{
-                    @"bindingType":         [AKABinding_AKABinding_formatter class],
+                    @"bindingType":         [AKAFormatterPropertyBinding class],
                     @"use":                 @(AKABindingAttributeUseBindToBindingProperty),
                     @"bindingProperty":     @"editingFormatter"
                 },

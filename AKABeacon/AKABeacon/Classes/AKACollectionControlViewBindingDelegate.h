@@ -13,8 +13,8 @@
 #import "AKAControlViewBindingDelegate.h"
 
 @class AKACollectionControlViewBinding;
-typedef AKACollectionControlViewBinding*_Nonnull  req_AKACollectionControlViewBinding;
-typedef AKACollectionControlViewBinding*_Nullable opt_AKACollectionControlViewBinding;
+#define req_AKACollectionControlViewBinding AKACollectionControlViewBinding*_Nonnull
+#define opt_AKACollectionControlViewBinding AKACollectionControlViewBinding*_Nullable
 
 @protocol AKACollectionControlViewBindingDelegate<AKABindingDelegate>
 

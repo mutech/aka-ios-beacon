@@ -18,23 +18,23 @@
 
 #pragma mark - Initialization
 
-- (instancetype)                initWithTarget:(req_id)target
-                                      property:(opt_SEL)property
-                                    expression:(req_AKABindingExpression)bindingExpression
-                                       context:(req_AKABindingContext)bindingContext
-                                      delegate:(opt_AKABindingDelegate)delegate
-                                         error:(out_NSError)error
+- (instancetype)  initWithView:(UIView*)targetView
+                      property:(opt_SEL)property
+                    expression:(req_AKABindingExpression)bindingExpression
+                       context:(req_AKABindingContext)bindingContext
+                      delegate:(opt_AKABindingDelegate)delegate
+                         error:(out_NSError)error
 {
-    [self validateTargetView:target];
+    [self validateTargetView:targetView];
 
-    if (self = [super initWithTarget:[self createBindingTargetPropertyForView:target]
+    if (self = [super initWithTarget:[self createBindingTargetPropertyForView:targetView]
                             property:property
                       expression:bindingExpression
                          context:bindingContext
                         delegate:delegate
                            error:error])
     {
-        _view = target;
+        _view = targetView;
     }
 
     return self;

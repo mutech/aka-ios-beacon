@@ -1,5 +1,5 @@
 //
-//  AKABinding_AKABinding_numberFormatter.m
+//  AKANumberFormatterPropertyBinding.m
 //  AKABeacon
 //
 //  Created by Michael Utech on 04.10.15.
@@ -9,14 +9,14 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
-#import "AKABinding_AKABinding_numberFormatter.h"
+#import "AKANumberFormatterPropertyBinding.h"
 #import "AKANSEnumerations.h"
+#import "AKALocalePropertyBinding.h"
 
-
-#pragma mark - AKABinding_AKABinding_numberFormatter  - Implementation
+#pragma mark - AKANumberFormatterPropertyBinding  - Implementation
 #pragma mark -
 
-@implementation AKABinding_AKABinding_numberFormatter
+@implementation AKANumberFormatterPropertyBinding
 
 + (AKABindingSpecification*)                 specification
 {
@@ -30,27 +30,24 @@
            @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
            @"attributes":
                @{ @"numberStyle":
-                      @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
+                      @{ @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterStyle" },
 
                   @"roundingMode":
-                      @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
+                      @{ @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterRoundingMode" },
 
                   @"paddingPosition":
-                      @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
+                      @{ @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"expressionType":  @(AKABindingExpressionTypeEnumConstant),
                          @"enumerationType": @"NSNumberFormatterPadPosition" },
 
                   @"locale":
-                      @{ @"required":        @NO,
-                         @"use":             @(AKABindingAttributeUseManually),
-                         @"expressionType":  @(AKABindingExpressionTypeString) }, },
+                      @{ @"use":             @(AKABindingAttributeUseManually),
+                         @"bindingType":     [AKALocalePropertyBinding class] },
+                  },
 
            @"allowUnspecifiedAttributes":   @YES };
         
@@ -87,32 +84,6 @@
 - (NSFormatter*)createMutableFormatter
 {
     return [NSNumberFormatter new];
-}
-
-- (NSDictionary<NSString*, id (^)(id)>*)configurationValueConvertersByPropertyName
-{
-    static NSDictionary<NSString*, id (^)(id)>* result;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        result = @{ @"formattingContext":^id (id value) {
-                        return [AKANSEnumerations formattingContextForObject:value];
-                    },
-                    @"locale":           ^id (id value) {
-                        return [AKANSEnumerations localeForObject:value];
-                    },
-                    /*@"numberStyle":      ^id (id value) {
-                        return [AKANSEnumerations numberFormatterStyleForObject:value];
-                    },
-                    @"roundingMode":     ^id (id value) {
-                        return [AKANSEnumerations numberFormatterRoundingModeForObject:value];
-                    },
-                    @"paddingPosition":  ^id (id value) {
-                        return [AKANSEnumerations numberFormatterPadForObject:value];
-                    },*/ };
-    });
-
-    return result;
 }
 
 @end

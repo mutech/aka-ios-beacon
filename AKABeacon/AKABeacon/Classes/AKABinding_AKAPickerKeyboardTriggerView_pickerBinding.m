@@ -44,7 +44,7 @@
 
 @implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
 
-+ (AKABindingSpecification*)                   specification
++ (AKABindingSpecification*)                     specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -67,14 +67,14 @@
     return result;
 }
 
-- (instancetype)                               initWithTarget:(id)target
-                                                     property:(SEL)property
-                                                   expression:(req_AKABindingExpression)bindingExpression
-                                                      context:(req_AKABindingContext)bindingContext
-                                                     delegate:(opt_AKABindingDelegate)delegate
-                                                        error:(NSError* __autoreleasing _Nullable*)error
+- (instancetype)                                  initWithView:(req_UIView)target
+                                                      property:(opt_SEL)property
+                                                    expression:(req_AKABindingExpression)bindingExpression
+                                                       context:(req_AKABindingContext)bindingContext
+                                                      delegate:(opt_AKABindingDelegate)delegate
+                                                         error:(out_NSError)error
 {
-    if (self = [super initWithTarget:target
+    if (self = [super   initWithView:target
                             property:property
                           expression:bindingExpression
                              context:bindingContext
@@ -100,7 +100,7 @@
             {
                 // Picker binding uses the same binding expression, which relies on picker binding to accept
                 // unknown attributes.
-                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
+                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc]   initWithView:_pickerView
                                                                                      property:nil
                                                                                    expression:pickerBindingExpression
                                                                                       context:bindingContext
@@ -120,10 +120,10 @@
     return self;
 }
 
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                           context:(req_AKABindingContext)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
-                                             error:(NSError *__autoreleasing  _Nullable *)error
+- (AKAProperty *)            defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                       context:(req_AKABindingContext)bindingContext
+                                                changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                         error:(out_NSError)error
 {
     (void)bindingExpression;
     (void)bindingContext;
@@ -189,7 +189,7 @@
 
 #pragma mark - Change Tracking
 
-- (void)viewValueDidChange
+- (void)                                    viewValueDidChange
 {
     id value;
 
@@ -210,7 +210,7 @@
     }
 }
 
-- (BOOL)startObservingChanges
+- (BOOL)                                 startObservingChanges
 {
     BOOL result = [super startObservingChanges];
 
@@ -219,7 +219,7 @@
     return result;
 }
 
-- (BOOL)stopObservingChanges
+- (BOOL)                                  stopObservingChanges
 {
     BOOL result = [super stopObservingChanges];
 
@@ -305,14 +305,14 @@
 
 #pragma mark -
 
-- (void)                                 responderWillActivate:(req_UIResponder)responder
+- (void)                                responderWillActivate:(req_UIResponder)responder
 {
     [super responderWillActivate:responder];
 
     self.previousValue = self.bindingSource.value;
 }
 
-- (void)                                responderDidDeactivate:(req_UIResponder)responder
+- (void)                               responderDidDeactivate:(req_UIResponder)responder
 {
     if (!self.liveModelUpdates)
     {
@@ -325,9 +325,9 @@
 
 #pragma mark - Animated Target Value Update
 
-- (void)                          animateTriggerForValue:(id)oldValue
-                                                changeTo:(id)newValue
-                                              animations:(void (^)())block
+- (void)                               animateTriggerForValue:(id)oldValue
+                                                     changeTo:(id)newValue
+                                                   animations:(void (^)())block
 {
     if (block)
     {
@@ -363,7 +363,7 @@
     }
 }
 
-- (BOOL)        shouldResignFirstResponderOnSelectedRowChanged
+- (BOOL)       shouldResignFirstResponderOnSelectedRowChanged
 {
     return (self.liveModelUpdates &&
             ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]]);

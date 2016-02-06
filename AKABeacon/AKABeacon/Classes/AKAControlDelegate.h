@@ -10,24 +10,21 @@
 @import AKACommons.AKANullability;
 
 @class AKABinding;
-typedef AKABinding*_Nonnull                 req_AKABinding;
+#define req_AKABinding AKABinding*_Nonnull
+#define opt_AKABinding AKABinding*_Nullable
 
 @class AKAControlViewBinding;
-typedef AKAControlViewBinding*_Nonnull      req_AKAControlViewBinding;
+#define req_AKAControlViewBinding AKAControlViewBinding*_Nonnull
 
 @class AKAKeyboardControlViewBinding;
-typedef AKAKeyboardControlViewBinding*_Nonnull req_AKAKeyboardControlViewBinding;
+#define req_AKAKeyboardControlViewBinding AKAKeyboardControlViewBinding*_Nonnull
 
 @class AKACollectionControlViewBinding;
-typedef AKACollectionControlViewBinding*_Nonnull req_AKACollectionControlViewBinding;
+#define req_AKACollectionControlViewBinding AKACollectionControlViewBinding*_Nonnull
 
 @class AKAControl;
 typedef AKAControl*_Nonnull                 req_AKAControl;
 typedef AKAControl*_Nullable                opt_AKAControl;
-
-@class AKABinding;
-typedef AKABinding*_Nonnull                 req_AKABinding;
-typedef AKABinding*_Nullable                opt_AKABinding;
 
 @class AKACompositeControl;
 typedef AKACompositeControl*_Nonnull        req_AKACompositeControl;

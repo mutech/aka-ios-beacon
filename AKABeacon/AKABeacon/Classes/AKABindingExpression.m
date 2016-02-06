@@ -137,12 +137,10 @@
         }
         else
         {
-            // TODO: check if no validation (assuming success) is ok if no specification is provided
+            // No validation (assuming success) is ok if no specification is provided:
+            // Good for lazy binding authors, not so good for users. We relax validation here for users
+            // writing binding extensions.
             result = YES;
-
-            /* Previous approach would require to create specifications to ensure validation succeeds:
-            result = [self validatePrimaryExpressionType:AKABindingExpressionTypeNone
-                                                   error:error];*/
         }
     }
 

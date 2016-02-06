@@ -464,7 +464,8 @@ The number editor text field uses two different formatters, one for display and 
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                             <string key="value">floatValue {
 	numberFormatter: {
-		numberStyle: $enum.CurrencyStyle
+		numberStyle: $enum.CurrencyStyle,
+		currencySymbol: "Euro"
 	}
 }</string>
                                                         </userDefinedRuntimeAttribute>
@@ -629,8 +630,10 @@ The number editor text field uses two different formatters, one for display and 
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                             <string key="value">dateValue {
 	dateFormatter: {
+		locale: "fr_TN",
 		dateStyle: $enum.NSDateFormatterStyle.ShortStyle,
-		timeStyle: $enum.LongStyle
+		timeStyle: $enum.LongStyle,
+		timeZone: "UTC"
 	}
 }</string>
                                                         </userDefinedRuntimeAttribute>

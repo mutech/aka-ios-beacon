@@ -20,15 +20,15 @@ digraph G {
 	"AKAKeyboardActivationSequence" -> "AKAKeyboardActivationSequenceItemProtocol";
 	"AKAKeyboardActivationSequence" -> "AKAKeyboardActivationSequenceItemProtocol_Internal";
 	"AKABindingContextProtocol" -> {};
-	"AKABinding_AKABinding_dateFormatter" -> "AKABindingProvider";
-	"AKABinding_AKABinding_dateFormatter" -> "AKABinding_AKABinding_formatter";
-	"AKABinding_AKABinding_dateFormatter" -> "AKAPropertyBinding";
-	"AKABinding_AKABinding_dateFormatter" -> "AKANSEnumerations";
+	"AKADateFormatterPropertyBinding" -> "AKABindingProvider";
+	"AKADateFormatterPropertyBinding" -> "AKAFormatterPropertyBinding";
+	"AKADateFormatterPropertyBinding" -> "AKAPropertyBinding";
+	"AKADateFormatterPropertyBinding" -> "AKANSEnumerations";
 	"AKACompositeControl_Internal" -> {};
-	"AKABinding_AKABinding_formatter" -> "AKABindingErrors";
-	"AKABinding_AKABinding_formatter" -> "AKABindingSpecification";
-	"AKABinding_AKABinding_formatter" -> "AKANSEnumerations";
-	"AKABinding_AKABinding_formatter" -> "AKAPropertyBinding";
+	"AKAFormatterPropertyBinding" -> "AKABindingErrors";
+	"AKAFormatterPropertyBinding" -> "AKABindingSpecification";
+	"AKAFormatterPropertyBinding" -> "AKANSEnumerations";
+	"AKAFormatterPropertyBinding" -> "AKAPropertyBinding";
 	"AKATextEditorControlView" -> "AKABeaconErrors";
 	"AKATextEditorControlView" -> "AKAEditorControlView";
 	"AKATextEditorControlView" -> "AKAEditorControlView_Protected";
@@ -121,10 +121,10 @@ digraph G {
 	"AKABindingProvider_UISlider_valueBinding" -> "AKABinding_UISlider_valueBinding";
 	"AKANumberTextConverter" -> "AKABeaconErrors_Internal";
 	"AKANumberTextConverter" -> "AKAControlConverterProtocol";
-	"AKABindingProvider_UITextField_textBinding" -> "AKABinding_AKABinding_dateFormatter";
+	"AKABindingProvider_UITextField_textBinding" -> "AKADateFormatterPropertyBinding";
 	"AKABindingProvider_UITextField_textBinding" -> "AKABinding_UITextField_textBinding";
-	"AKABindingProvider_UITextField_textBinding" -> "AKABinding_AKABinding_formatter";
-	"AKABindingProvider_UITextField_textBinding" -> "AKABinding_AKABinding_numberFormatter";
+	"AKABindingProvider_UITextField_textBinding" -> "AKAFormatterPropertyBinding";
+	"AKABindingProvider_UITextField_textBinding" -> "AKANumberFormatterPropertyBinding";
 	"AKABindingProvider_UITextField_textBinding" -> "AKAKeyboardControlViewBindingProvider";
 	"AKAThemeProviderProtocol" -> {};
 	"AKACompositeControl" -> "AKAControlViewProtocol";
@@ -173,8 +173,8 @@ digraph G {
 	"AKASwitchEditorControlView" -> "AKAEditorControlView_Protected";
 	"AKAKeyboardActivationSequenceItemProtocol" -> {};
 	"AKABindingProvider_UILabel_textBinding" -> "AKABindingProvider";
-	"AKABindingProvider_UILabel_textBinding" -> "AKABinding_AKABinding_dateFormatter";
-	"AKABindingProvider_UILabel_textBinding" -> "AKABinding_AKABinding_numberFormatter";
+	"AKABindingProvider_UILabel_textBinding" -> "AKADateFormatterPropertyBinding";
+	"AKABindingProvider_UILabel_textBinding" -> "AKANumberFormatterPropertyBinding";
 	"AKABindingProvider_UILabel_textBinding" -> "AKABinding_UILabel_textBinding";
 	"AKAFormTableViewController" -> "AKAEditorControlView";
 	"AKAFormTableViewController" -> "AKAControl_Internal";
@@ -182,9 +182,9 @@ digraph G {
 	"AKAFormTableViewController" -> "AKADynamicPlaceholderTableViewCell";
 	"AKAFormTableViewController" -> "AKAControlDelegate";
 	"AKAFormTableViewController" -> "AKADynamicPlaceholderTableViewCellCompositeControl";
-	"AKABinding_AKABinding_numberFormatter" -> "AKABindingProvider";
-	"AKABinding_AKABinding_numberFormatter" -> "AKABinding_AKABinding_formatter";
-	"AKABinding_AKABinding_numberFormatter" -> "AKANSEnumerations";
+	"AKANumberFormatterPropertyBinding" -> "AKABindingProvider";
+	"AKANumberFormatterPropertyBinding" -> "AKAFormatterPropertyBinding";
+	"AKANumberFormatterPropertyBinding" -> "AKANSEnumerations";
 	
 	
 	edge [color=blue, dir=both];

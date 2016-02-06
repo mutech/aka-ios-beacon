@@ -190,13 +190,12 @@
 
 + (req_NSError)                                 invalidBinding:(req_AKABinding)binding
                                                    sourceValue:(opt_id)value
-                                        expectedInstanceOfType:(req_AKATypePattern)typePattern
+                                                        reason:(req_NSString)reason
 {
-    NSString* reason = [NSString stringWithFormat:@"Expected binding %@ source value %@ to be an instance of a type matching %@",
-                        binding, value, typePattern.description];
-    NSString* description = [NSString stringWithFormat:@"Invalid binding source value: %@", reason];
+    NSString* description = [NSString stringWithFormat:@"Invalid binding %@ source value %@: %@",
+                             binding, value, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
-                                          code:AKABindingErrorInvalidBindingSourceValueType
+                                          code:AKABindingErrorInvalidBindingSourceValue
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
                                                   NSLocalizedFailureReasonErrorKey: reason }];
     return result;
@@ -204,16 +203,20 @@
 
 + (req_NSError)                                 invalidBinding:(req_AKABinding)binding
                                                    sourceValue:(opt_id)value
+                                        expectedInstanceOfType:(req_AKATypePattern)typePattern
+{
+    NSString* reason = [NSString stringWithFormat:@"Expected an instance of a type matching %@",
+                        typePattern.description];
+    return [self invalidBinding:binding sourceValue:value reason:reason];
+}
+
++ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
+                                                   sourceValue:(opt_id)value
                                             expectedSubclassOf:(req_Class)baseClass
 {
-    NSString* reason = [NSString stringWithFormat:@"Expected binding %@ source value %@ class type to be a sub class of %@",
-                        binding, value, baseClass];
-    NSString* description = [NSString stringWithFormat:@"Invalid binding source value: %@", reason];
-    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
-                                          code:AKABindingErrorInvalidBindingSourceValueType
-                                      userInfo:@{ NSLocalizedDescriptionKey: description,
-                                                  NSLocalizedFailureReasonErrorKey: reason }];
-    return result;
+    NSString* reason = [NSString stringWithFormat:@"Expected a sub class of %@",
+                        baseClass];
+    return [self invalidBinding:binding sourceValue:value reason:reason];
 }
 
 

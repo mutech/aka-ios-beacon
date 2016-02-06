@@ -30,7 +30,7 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                 /* TODO: refactor test, attributeBindings no longer available
                 describe("binding") {
                     describe("textAttributeFormatter attribute binding") {
-                        let textAttributeFormatterBinding = binding?.attributeBindings?["textAttributeFormatter"] as? AKABinding_AKABinding_attributedFormatter;
+                        let textAttributeFormatterBinding = binding?.attributeBindings?["textAttributeFormatter"] as? AKAAttributedFormatterPropertyBinding;
                         it("is not nil") {
                             expect(textAttributeFormatterBinding).toNot(beNil())
                         }

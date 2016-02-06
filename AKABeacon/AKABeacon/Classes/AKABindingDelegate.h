@@ -11,12 +11,12 @@
 
 #import "AKABinding.h"
 
+#ifndef req_AKABinding
 @class AKABinding;
-typedef AKABinding* _Nonnull                                req_AKABinding;
+#define req_AKABinding AKABinding*_Nonnull
+#endif
 
-@protocol AKABindingDelegate;
-typedef id<AKABindingDelegate>_Nullable                     opt_AKABindingDelegate;
-
+#define opt_AKABindingDelegate id<AKABindingDelegate>_Nullable
 
 @protocol AKABindingDelegate<NSObject>
 

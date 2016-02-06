@@ -16,11 +16,6 @@
 + (opt_NSString)                                   nameForEnumeratedValue:(opt_NSNumber)value
                                                              inDictionary:(req_NSDictionary)dictionary;
 
-
-#pragma mark - Locales
-
-+ (opt_NSLocale)                                          localeForObject:(opt_id)localeOrName;
-
 #pragma mark - NSNumberFormatter Enumerations
 
 + (opt_NSNumber)                            numberFormatterStyleForObject:(opt_id)nameOrEnumeratedValue;
@@ -47,7 +42,6 @@
 
 + (NSDictionary<NSString*, NSNumber*>*_Nonnull) dateFormatterStylesByName;
 
-+ (opt_NSCalendar)                                      calendarForObject:(opt_id)calendarOrIdentifier;
 + (opt_NSTimeZone)                                      timeZoneForObject:(opt_id)timeZoneOrNameOrAbbrev;
 
 #pragma mark - UIFont Descriptor Enumerations

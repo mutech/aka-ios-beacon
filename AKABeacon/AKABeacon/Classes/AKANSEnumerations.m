@@ -42,24 +42,6 @@
     return result;
 }
 
-#pragma mark - Locales
-
-+ (NSLocale*)localeForObject:(id)localeOrName
-{
-    NSLocale* result = nil;
-
-    if ([localeOrName isKindOfClass:[NSLocale class]])
-    {
-        result = localeOrName;
-    }
-    else if ([localeOrName isKindOfClass:[NSString class]])
-    {
-        result = [NSLocale localeWithLocaleIdentifier:localeOrName];
-    }
-
-    return result;
-}
-
 #pragma mark - NSFormatter Enumerations
 
 + (NSDictionary<NSString*, NSNumber*>*)   formattingUnitStylesByName
@@ -266,22 +248,6 @@
                @"LongStyle":          @(NSDateFormatterLongStyle),
                @"FullStyle":          @(NSDateFormatterFullStyle) };
     });
-
-    return result;
-}
-
-+ (NSCalendar*)calendarForObject:(id)calendarOrIdentifier
-{
-    NSCalendar* result = nil;
-
-    if ([calendarOrIdentifier isKindOfClass:[NSString class]])
-    {
-        result = [NSCalendar calendarWithIdentifier:calendarOrIdentifier];
-    }
-    else if ([calendarOrIdentifier isKindOfClass:[NSCalendar class]])
-    {
-        result = calendarOrIdentifier;
-    }
 
     return result;
 }

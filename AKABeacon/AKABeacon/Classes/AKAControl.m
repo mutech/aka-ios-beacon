@@ -325,9 +325,13 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 
     BOOL result = NO;
     NSError* error;
+
     Class bindingType = bindingExpression.specification.bindingType;
-    AKABinding* binding = [bindingType alloc];
-    binding = [binding initWithTarget:view
+    NSAssert([bindingType isSubclassOfClass:[AKAViewBinding class]],
+             @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKAViewBinding", view, bindingExpression);
+
+    AKAViewBinding* binding = [bindingType alloc];
+    binding = [binding   initWithView:view
                              property:property
                            expression:bindingExpression
                               context:self

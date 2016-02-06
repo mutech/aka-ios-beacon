@@ -9,7 +9,7 @@
 @import AKACommons.AKANullability;
 
 @class AKAControlViewBinding;
-typedef AKAControlViewBinding*_Nonnull req_AKAControlViewBinding;
+#define req_AKAControlViewBinding AKAControlViewBinding*_Nonnull
 
 
 @protocol AKAControlViewBindingDelegate<AKAViewBindingDelegate>

@@ -6,17 +6,10 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+#import "AKABeaconNullability.h"
+
 #import "AKAViewBinding.h"
 #import "AKAAttributedFormatter.h"
-
-#define opt_AKATransitionAnimationParameters AKATransitionAnimationParameters*_Nullable
-
-@interface AKATransitionAnimationParameters: NSObject
-
-@property(nonatomic) CGFloat duration;
-@property(nonatomic) UIViewAnimationOptions options;
-
-@end
 
 @interface AKABinding_UILabel_textBinding: AKAViewBinding
 

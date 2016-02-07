@@ -6,9 +6,7 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
-@import AKACommons.NSObject_AKAAssociatedValues;
+@import AKACommons;
 
 #import <objc/runtime.h>
 
@@ -19,9 +17,8 @@
 
 // New bindings infrastructure
 #import "UIView+AKABindingSupport.h"
-#import "AKAKeyboardControlViewBinding.h"
-#import "AKABinding.h"
 #import "AKAControl+BindingDelegate.h"
+#import "NSObject+AKAAssociatedValues.h"
 
 @interface AKAControl()
 {
@@ -172,13 +169,13 @@ static NSString* const kRegisteredControlKey = @"aka_control";
     {
         result = ((AKAWeakReference*)result).value;
     }
-    NSAssert(result == nil || [result isKindOfClass:[AKAControl class]], @"Item %@ registered as control in view %@ is not an instance of AKAControl", result, view);
+    NSAssert(result == nil ||
+        [result isKindOfClass:[AKAControl class]],
+        @"Item %@ registered as control in view %@ is not an instance of AKAControl", result, view);
     return (AKAControl*)result;
 }
 
 #pragma mark - Value Access
-
-#pragma mark - Value access
 
 - (opt_id)dataContext
 {
@@ -304,11 +301,10 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                                                      req_AKABindingExpression expression,
                                                      outreq_BOOL stop)
      {
+         (void)property;
          (void)stop;
 
-         if ([self addBindingForView:view
-                            property:property
-               withBindingExpression:expression])
+         if ([self addBindingForView:view withBindingExpression:expression])
          {
              ++result;
          }
@@ -318,7 +314,6 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 }
 
 - (BOOL)                            addBindingForView:(req_UIView)view
-                                             property:(req_SEL)property
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
@@ -331,12 +326,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
              @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKAViewBinding", view, bindingExpression);
 
     AKAViewBinding* binding = [bindingType alloc];
-    binding = [binding   initWithView:view
-                             property:property
-                           expression:bindingExpression
-                              context:self
-                             delegate:self
-                                error:&error];
+    binding = [binding initWithView:view expression:bindingExpression context:self delegate:self error:&error];
     if (binding)
     {
         result = [self addBinding:binding];

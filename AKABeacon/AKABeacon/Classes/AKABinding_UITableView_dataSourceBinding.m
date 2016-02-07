@@ -7,6 +7,7 @@
 //
 
 @import AKACommons.AKAArrayComparer;
+#import "AKABinding_Protected.h"
 #import "AKABinding_UITableView_dataSourceBinding.h"
 #import "AKATableViewCellFactoryArrayPropertyBinding.h"
 #import "AKATableViewCellFactory.h"

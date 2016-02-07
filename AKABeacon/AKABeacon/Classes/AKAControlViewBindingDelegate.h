@@ -8,9 +8,7 @@
 
 @import AKACommons.AKANullability;
 
-@class AKAControlViewBinding;
-#define req_AKAControlViewBinding AKAControlViewBinding*_Nonnull
-
+#import "AKABeaconNullability.h"
 
 @protocol AKAControlViewBindingDelegate<AKAViewBindingDelegate>
 

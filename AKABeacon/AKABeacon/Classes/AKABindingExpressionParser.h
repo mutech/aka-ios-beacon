@@ -56,8 +56,8 @@ typedef enum AKABindingExpressionParseErrorCode
 
 #pragma mark - Initialization
 
-+ (nonnull instancetype)parserWithString:(req_NSString)string;
-- (nonnull instancetype)initWithString:(req_NSString)expressionText;
++ (opt_instancetype)    parserWithString:(req_NSString)string;
+- (opt_instancetype)    initWithString:(req_NSString)expressionText;
 
 #pragma mark - Properties
 

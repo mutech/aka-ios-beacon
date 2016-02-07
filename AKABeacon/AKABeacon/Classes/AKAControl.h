@@ -16,15 +16,9 @@
 #import "AKAControlViewBinding.h"
 
 
-@class AKACompositeControl;
-
-typedef AKAControl* _Nullable opt_AKAControl;
-typedef AKAControl* _Nonnull  req_AKAControl;
-
-
 @interface AKAControl: NSObject
 
-#pragma mark - Configuration
+ #pragma mark - Configuration
 
 /**
  The composite control owning this control.
@@ -68,9 +62,7 @@ typedef AKAControl* _Nonnull  req_AKAControl;
 
 - (NSUInteger)                     addBindingsForView:(req_UIView)view;
 
-- (BOOL)                            addBindingForView:(req_UIView)view
-                                             property:(req_SEL)property
-                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+- (BOOL)addBindingForView:(req_UIView)view withBindingExpression:(req_AKABindingExpression)bindingExpression;
 
 - (BOOL)                                   addBinding:(req_AKABinding)binding;
 

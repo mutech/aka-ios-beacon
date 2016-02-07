@@ -8,98 +8,14 @@
 
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
+#import "AKABinding_Protected.h"
 #import "AKABinding_UILabel_textBinding.h"
 #import "AKAFormatterPropertyBinding.h"
 #import "AKANumberFormatterPropertyBinding.h"
 #import "AKADateFormatterPropertyBinding.h"
 #import "AKAAttributedFormatterPropertyBinding.h"
-
+#import "AKATransitionAnimationParametersPropertyBinding.h"
 #import "AKANSEnumerations.h"
-@implementation AKATransitionAnimationParameters
-
-- (instancetype)init
-{
-    if (self = [super init])
-    {
-        self.duration = .2f;
-        self.options = (UIViewAnimationOptionCurveEaseInOut |
-                        UIViewAnimationOptionTransitionCrossDissolve);
-    }
-
-    return self;
-}
-
-@end
-
-@interface AKATransitionAnimationParametersPropertyBinding: AKAPropertyBinding
-@end
-
-@implementation AKATransitionAnimationParametersPropertyBinding
-
-+ (AKABindingSpecification*)specification
-{
-    static AKABindingSpecification* result = nil;
-    static dispatch_once_t onceToken;
-
-    [self registerEnumerationAndOptionTypes];
-
-    dispatch_once(&onceToken, ^{
-        NSDictionary* spec = @{
-            @"bindingType":          [AKATransitionAnimationParametersPropertyBinding class],
-            @"expressionType":       @(AKABindingExpressionTypeNone|AKABindingExpressionTypeAnyKeyPath),
-            @"attributes": @{
-                @"duration": @{
-                    @"bindingType":     [AKAPropertyBinding class],
-                    @"expressionType":  @(AKABindingExpressionTypeNumber),
-                    @"use":             @(AKABindingAttributeUseBindToTargetProperty)
-                },
-                @"options": @{
-                    @"bindingType":     [AKAPropertyBinding class],
-                    @"expressionType":  @((AKABindingExpressionTypeOptionsConstant |
-                                           AKABindingExpressionTypeAnyKeyPath)),
-                    @"optionsType":     @"UIViewAnimationOptions",
-                    @"use":             @(AKABindingAttributeUseBindToTargetProperty)
-                },
-            }
-        };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
-    });
-
-    return result;
-}
-
-+ (void)registerEnumerationAndOptionTypes
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-        [AKABindingExpressionSpecification registerOptionsType:@"UIViewAnimationOptions"
-                                              withValuesByName:[AKANSEnumerations
-                                                                    uiviewAnimationOptions]];
-    });
-}
-
-
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                           context:(req_AKABindingContext)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
-                                             error:(NSError *__autoreleasing  _Nullable *)error
-{
-    (void)bindingExpression;
-    (void)bindingContext;
-    (void)error;
-
-    if (self.syntheticTargetValue == nil)
-    {
-        self.syntheticTargetValue = [AKATransitionAnimationParameters new];
-    }
-    AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:self
-                                                            keyPath:@"syntheticTargetValue"
-                                                     changeObserver:changeObserver];
-    return result;
-}
-
-@end
 
 
 #pragma mark - AKABinding_UILabel_textBinding - Private Interface
@@ -225,7 +141,7 @@
                     text = @" ";
                 }
 
-                [self transitionAnimation:^{
+                [binding transitionAnimation:^{
                      binding.label.text = text;
 
                      if (binding.textAttributeFormatter)

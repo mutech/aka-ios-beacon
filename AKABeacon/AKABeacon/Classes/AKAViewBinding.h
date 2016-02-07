@@ -18,14 +18,11 @@
 
 #pragma mark - Initialization
 
-- (nullable instancetype)  initWithView:(req_UIView)targetView
-                               property:(opt_SEL)property
-                             expression:(req_AKABindingExpression)bindingExpression
-                                context:(req_AKABindingContext)bindingContext
-                               delegate:(opt_AKABindingDelegate)delegate
-                                  error:(out_NSError)error;
-
-#pragma mark - Configuration
+- (opt_instancetype)                           initWithView:(req_UIView)targetView
+                                                 expression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error;
 
 @property(nonatomic, readonly, weak) UIView*                    view;
 @property(nonatomic, readonly, weak) id<AKAViewBindingDelegate> delegate;

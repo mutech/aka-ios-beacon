@@ -357,9 +357,9 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 
  @return a new specification based on this instance created by adding (or overriding) items with the specified extension.
 */
-- (nonnull instancetype)             specificationExtendedWith:(req_AKABindingSpecification)extension;
+- (req_instancetype)                 specificationExtendedWith:(req_AKABindingSpecification)extension;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary
                                                        basedOn:(opt_AKABindingSpecification)base;
 
 #pragma mark - Conversion
@@ -388,9 +388,9 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 
 #pragma mark - Initialization
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary
                                                        basedOn:(opt_AKABindingTargetSpecification)base;
 #pragma mark - Conversion
 
@@ -409,9 +409,9 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 #pragma mark - Initialization
 /// @name Initialization
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary
                                                        basedOn:(opt_AKABindingExpressionSpecification)base;
 
 #pragma mark - Conversion
@@ -538,9 +538,9 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
 #pragma mark - Initialization
 /// @name Initialization
 
-//- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+//- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary
                                  basedOnAttributeSpecification:(opt_AKABindingAttributeSpecification)attributeBase
                                        expressionSpecification:(opt_AKABindingExpressionSpecification)expressionBase;
 
@@ -606,16 +606,16 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingAttributesSpecificationBin
 #pragma mark - Initialization
 /// @name Initialization
 
-+ (nullable instancetype)                 typePatternWithObject:(nullable id)value
++ (opt_instancetype)                      typePatternWithObject:(nullable id)value
                                                       required:(BOOL)required;
 
-+ (nullable instancetype)                 typePatternWithObject:(nullable id)value
++ (opt_instancetype)                      typePatternWithObject:(nullable id)value
                                                         basedOn:(nullable AKATypePattern*)base
                                                        required:(BOOL)required;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary;
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary;
 
-- (nullable instancetype)                   initWithDictionary:(req_NSDictionary)dictionary
+- (opt_instancetype)                        initWithDictionary:(req_NSDictionary)dictionary
                                                        basedOn:(opt_AKATypePattern)base;
 
 - (instancetype _Nullable)              initWithArrayOfClasses:(req_NSArray)array;

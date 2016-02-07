@@ -6,6 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+#import "AKABinding_Protected.h"
 #import "AKACalendarPropertyBinding.h"
 #import "AKABindingErrors.h"
 

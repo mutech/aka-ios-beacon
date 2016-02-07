@@ -8,6 +8,7 @@
 
 #import <objc/runtime.h>
 
+#import "AKABinding_Protected.h"
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
 
@@ -77,12 +78,7 @@
                                    {
                                        [weakSelf substitutionValue:oldValue didChangeTo:newValue];
                                    }];
-    AKAPropertyBinding* attributeBinding = [[AKAPropertyBinding alloc] initWithTarget:targetProperty
-                                                                             property:nil
-                                                                           expression:attributeExpression
-                                                                              context:bindingContext
-                                                                             delegate:weakSelf
-                                                                                error:error];
+    AKAPropertyBinding* attributeBinding = [[AKAPropertyBinding alloc] initWithTarget:targetProperty expression:attributeExpression context:bindingContext delegate:weakSelf error:error];
     result = attributeBinding != nil;
     if (result)
     {

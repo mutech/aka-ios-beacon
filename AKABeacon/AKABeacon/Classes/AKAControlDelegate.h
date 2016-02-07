@@ -9,27 +9,7 @@
 @import UIKit;
 @import AKACommons.AKANullability;
 
-@class AKABinding;
-#define req_AKABinding AKABinding*_Nonnull
-#define opt_AKABinding AKABinding*_Nullable
-
-@class AKAControlViewBinding;
-#define req_AKAControlViewBinding AKAControlViewBinding*_Nonnull
-
-@class AKAKeyboardControlViewBinding;
-#define req_AKAKeyboardControlViewBinding AKAKeyboardControlViewBinding*_Nonnull
-
-@class AKACollectionControlViewBinding;
-#define req_AKACollectionControlViewBinding AKACollectionControlViewBinding*_Nonnull
-
-@class AKAControl;
-typedef AKAControl*_Nonnull                 req_AKAControl;
-typedef AKAControl*_Nullable                opt_AKAControl;
-
-@class AKACompositeControl;
-typedef AKACompositeControl*_Nonnull        req_AKACompositeControl;
-typedef AKACompositeControl*_Nullable       opt_AKACompositeControl;
-
+#import "AKABeaconNullability.h"
 
 @protocol AKAControlMembershipDelegate <NSObject>
 

@@ -38,10 +38,10 @@ FOUNDATION_EXPORT double AKABeaconVersionNumber;
 //! Project version string for AKAControls.
 FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <AKABeacon/PublicHeader.h>
-
-#import "AKABeaconErrors.h"
-#import "AKABeaconStyleKit.h"
+#import <AKABeacon/AKABeaconErrors.h>
+#import <AKABeacon/AKABeaconStyleKit.h>
+#import <AKABeacon/AKABeaconNullability.h>
+#import <AKABeacon/AKANSEnumerations.h>
 
 // Commons
 // Commons/Runtime
@@ -81,11 +81,12 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAControlValidatorProtocol.h>
 #import <AKABeacon/AKAControlConverterProtocol.h>
 
-
 // Bindings
 #import <AKABeacon/AKABindingErrors.h>
 #import <AKABeacon/AKABindingDelegate.h>
+#import <AKABeacon/AKABindingDelegateDispatcher.h>
 #import <AKABeacon/AKABinding.h>
+#import <AKABeacon/AKABinding_Protected.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
 #import <AKABeacon/UIView+AKABindingSupport.h>
 
@@ -103,6 +104,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UILabel_textBinding.h>
 #import <AKABeacon/AKABinding_UILabel_styleBinding.h>
+
+// Bindings/ViewBindings/UIImageView
+#import <AKABeacon/UIImageView+AKAIBBindingProperties.h>
+#import <AKABeacon/AKABinding_UIImageView_imageBinding.h>
 
 // Bindings/ViewBindings/UITableView
 #import <AKABeacon/UITableView+AKAIBBindingProperties.h>
@@ -177,17 +182,26 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/PropertyBindings
 #import <AKABeacon/AKAPropertyBinding.h>
+
+// Bindings/PropertyBindings/Arrays
+#import <AKABeacon/AKAArrayPropertyBinding.h>
+
+// Bindings/PropertyBindings/Predicates
 #import <AKABeacon/AKAPredicatePropertyBinding.h>
+
+// Bidnings/PropertyBindings/Formatters
+#import <AKABeacon/AKAFormatterPropertyBinding.h>
+#import <AKABeacon/AKANumberFormatterPropertyBinding.h>
+#import <AKABeacon/AKADateFormatterPropertyBinding.h>
 #import <AKABeacon/AKALocalePropertyBinding.h>
 #import <AKABeacon/AKACalendarPropertyBinding.h>
 #import <AKABeacon/AKATimeZonePropertyBinding.h>
-#import <AKABeacon/AKAArrayPropertyBinding.h>
-#import "AKAFormatterPropertyBinding.h"
-#import "AKANumberFormatterPropertyBinding.h"
-#import "AKADateFormatterPropertyBinding.h"
-#import "AKAAttributedFormatterPropertyBinding.h"
+#import <AKABeacon/AKAAttributedFormatterPropertyBinding.h>
 #import <AKABeacon/AKAAttributedFormatter.h>
-#import <AKABeacon/AKANSEnumerations.h>
+
+// Bindings/PropertyBindings/Animations
+#import <AKABeacon/AKATransitionAnimationParameters.h>
+#import <AKABeacon/AKATransitionAnimationParametersPropertyBinding.h>
 
 // Bindings/Specification
 #import <AKABeacon/AKABindingExpression.h>

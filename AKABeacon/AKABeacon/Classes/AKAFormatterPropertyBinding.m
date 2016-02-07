@@ -15,6 +15,7 @@
 #import "AKABindingSpecification.h"
 #import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
+#import "AKABinding_Protected.h"
 
 @interface AKAFormatterPropertyBinding()
 

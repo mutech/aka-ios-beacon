@@ -107,9 +107,6 @@
     AKAControl* previousControlAtIndexPath = self.controlsByIndexPath[indexPath];
     if (previousControlAtIndexPath)
     {
-        UITableViewCell* previousCell = (UITableViewCell*)previousControlAtIndexPath.view;
-        NSAssert(previousCell == nil || [previousCell isKindOfClass:[UITableViewCell class]], nil);
-
         [previousControlAtIndexPath stopObservingChanges];
         [self replaceControl:previousControlAtIndexPath atIndexPath:indexPath];
     }

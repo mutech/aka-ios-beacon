@@ -9,14 +9,8 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
-#import "AKABinding.h"
-
-#ifndef req_AKABinding
-@class AKABinding;
-#define req_AKABinding AKABinding*_Nonnull
-#endif
-
-#define opt_AKABindingDelegate id<AKABindingDelegate>_Nullable
+#import "AKABeaconNullability.h"
+#import "AKAControlDelegate.h"
 
 @protocol AKABindingDelegate<NSObject>
 

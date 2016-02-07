@@ -120,12 +120,7 @@
                     }
 
                     AKABinding* binding = [bindingType alloc];
-                    binding = [binding initWithTarget:arrayItemTargetProperty
-                                             property:nil
-                                           expression:sourceExpression
-                                              context:bindingContext
-                                             delegate:weakSelf
-                                                error:error];
+                    binding = [binding initWithTarget:arrayItemTargetProperty expression:sourceExpression context:bindingContext delegate:weakSelf error:error];
                     if (binding)
                     {
                         if (targetArrayItemBindings == nil)

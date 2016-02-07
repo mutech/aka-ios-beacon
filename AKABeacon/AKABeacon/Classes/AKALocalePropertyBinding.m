@@ -8,6 +8,7 @@
 
 @import AKACommons.AKAErrors;
 
+#import "AKABinding_Protected.h"
 #import "AKALocalePropertyBinding.h"
 #import "AKABindingErrors.h"
 

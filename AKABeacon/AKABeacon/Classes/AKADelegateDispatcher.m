@@ -12,8 +12,8 @@
 #import "AKADelegateDispatcher.h"
 #import "AKAProtocolInfo.h"
 
-@interface AKADelegateDispatcher()
 
+@interface AKADelegateDispatcher()
 
 @property(nonatomic, readonly) NSArray<Protocol*>* protocols;
 
@@ -23,7 +23,10 @@
 
 @end
 
+
 @implementation AKADelegateDispatcher
+
+#pragma mark - Initialization
 
 - (instancetype)initWithProtocols:(NSArray<Protocol*>*)protocols
 {
@@ -114,6 +117,8 @@
     }
 }
 
+#pragma mark - Message Dispatching
+
 - (BOOL)conformsToProtocol:(Protocol *)aProtocol
 {
     BOOL result = [super conformsToProtocol:aProtocol];
@@ -148,6 +153,5 @@
     }
     return result;
 }
-
 
 @end

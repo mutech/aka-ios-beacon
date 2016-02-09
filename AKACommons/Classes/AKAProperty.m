@@ -284,6 +284,22 @@
     return result;
 }
 
+- (AKAProperty*)propertyWithGetter:(id(^)(id target))getter
+                            setter:(void(^)(id target, id value))setter
+                observationStarter:(BOOL(^)(id target))observationStarter
+                observationStopper:(BOOL(^)(id target))observationStopper
+{
+    AKAProperty* result = nil;
+    result = [AKAProperty propertyOfWeakTarget:self.value
+                                        getter:getter
+                                        setter:setter
+                            observationStarter:observationStarter
+                            observationStopper:observationStopper];
+    [self addDependentProperty:result];
+    [result addDependencyProperty:self];
+    return result;
+}
+
 - (AKAProperty *)propertyAtIndex:(NSInteger)index
                 withChangeObserver:(void (^)(id, id))valueDidChange
 {

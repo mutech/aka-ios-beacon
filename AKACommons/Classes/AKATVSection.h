@@ -36,7 +36,7 @@
  *
  * @return An initialized instance.
  */
-- (nullable instancetype)initWithDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
+- (opt_instancetype)     initWithDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
                                       index:(NSUInteger)sectionIndex;
 
 #pragma mark - Properties

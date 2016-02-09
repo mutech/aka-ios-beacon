@@ -164,20 +164,23 @@
 
 - (NSArray*)movementsForTableViews
 {
-    // Scan for reordered items
-    NSAssert(self.oldArrayWithDeletionsApplied.count == self.arrayWithoutInsertions.count,
-             @"Intermediate representation inconsistent");
-    NSMutableArray* oldArrayWithDeletionsApplied = [NSMutableArray arrayWithArray:self.oldArrayWithDeletionsApplied];
-
-    NSMutableArray* permutationAfterDeletionsAndBeforeInsertions = [NSMutableArray new];
-    for (NSUInteger i=0; i < self.arrayWithoutInsertions.count; ++i)
+    // Movement coordinate for table views are appearantly agnostic of deletions and insertions done
+    // in the same begin/endUpdate batch.
+    NSMutableArray* permutation = [NSMutableArray new];
+    for (NSUInteger i=0; i < self.array.count; ++i)
     {
-        id item = self.arrayWithoutInsertions[i];
-        NSUInteger oldIndex = [oldArrayWithDeletionsApplied indexOfObject:item];
-
-        permutationAfterDeletionsAndBeforeInsertions[i] = @(oldIndex - i);
+        if ([self.insertedItemIndexes containsIndex:i])
+        {
+            permutation[i] = @(0);
+        }
+        else
+        {
+            id item = self.array[i];
+            NSUInteger oldIndex = [self.oldArray indexOfObject:item];
+            permutation[i] = @(oldIndex - i);
+        }
     }
-    return permutationAfterDeletionsAndBeforeInsertions;
+    return permutation;
 }
 
 - (void)updateTableView:(UITableView*)tableView
@@ -203,7 +206,7 @@
          targetIndex < permutation.count;
          ++targetIndex)
     {
-        NSUInteger offset = [permutation[targetIndex] unsignedIntegerValue];
+        NSInteger offset = [permutation[targetIndex] integerValue];
         if (offset != 0)
         {
             NSIndexPath* source = [NSIndexPath indexPathForRow:(NSInteger)(targetIndex + offset)

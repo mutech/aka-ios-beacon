@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
+
+#import "AKANullability.h"
 
 @class AKATVDataSourceSpecification;
 
@@ -30,7 +32,7 @@
  *
  * @return an initialized row segment.
  */
-- (nonnull instancetype)initWithDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
+- (opt_instancetype)    initWithDataSource:(AKATVDataSourceSpecification* __nonnull)dataSource
                          indexPath:(NSIndexPath* __nonnull)indexPath
                              count:(NSUInteger)numberOfRows;
 

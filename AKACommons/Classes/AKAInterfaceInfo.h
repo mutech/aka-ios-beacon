@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
+#import "AKANullability.h"
 #import "AKAIPAddress.h"
 #import "AKAIPNetmask.h"
 
@@ -48,7 +49,7 @@
  *
  *  @return the instance
  */
-- (nullable instancetype)initWithName:(NSString*__nonnull)name
+- (opt_instancetype)     initWithName:(NSString*__nonnull)name
                               address:(AKAIPAddress*__nonnull)address
                               netmask:(AKAIPNetmask*__nonnull)netmask
                      broadcastAddress:(AKAIPAddress*__nonnull)broadcastAddress

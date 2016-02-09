@@ -45,7 +45,7 @@
  @param dataSourceKey   the key for which the original dataSource will be registered.
  @return the new instance
  */
-+ (nullable instancetype)proxyDataSourceAndDelegateForKey:(req_NSString)dataSourceKey
++ (opt_instancetype)     proxyDataSourceAndDelegateForKey:(req_NSString)dataSourceKey
                                               inTableView:(req_UITableView)tableView;
 
 /**
@@ -60,7 +60,7 @@
  @param additionalDataSourceKey the key identifying the second data source
  @return the new instance
  */
-+ (nullable instancetype)proxyDataSourceAndDelegateForKey:(req_NSString)dataSourceKey
++ (opt_instancetype)     proxyDataSourceAndDelegateForKey:(req_NSString)dataSourceKey
                                               inTableView:(req_UITableView)tableView
                                       andAppendDataSource:(req_UITableViewDataSource)dataSource
                                              withDelegate:(opt_UITableViewDelegate)delegate

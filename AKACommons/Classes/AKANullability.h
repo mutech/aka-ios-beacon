@@ -28,6 +28,15 @@
  */
 
 
+#ifndef req_instancetype
+// "nonnull instancetype" is not supported by AppCode (yet)
+#define req_instancetype            instancetype _Nonnull
+#endif
+#ifndef opt_instancetype
+// "nullable instancetype" is not supported by AppCode (yet)
+#define opt_instancetype            instancetype _Nullable
+#endif
+
 #ifndef opt_id
 #define opt_id                      id _Nullable
 #endif

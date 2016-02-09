@@ -190,6 +190,9 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
 - (req_AKAProperty)                    propertyAtIndex:(NSInteger)index
                                     withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
-- (req_AKAProperty)                 propertyComputedBy:(req_AKAPropertyComputation)computation;
+- (req_AKAProperty)                 propertyWithGetter:(opt_id(^_Nonnull)(req_id target))getter
+                                                setter:(void(^_Nonnull)(opt_id target, opt_id value))setter
+                                    observationStarter:(BOOL(^_Nonnull)(opt_id target))observationStarter
+                                    observationStopper:(BOOL(^_Nonnull)(opt_id target))observationStopper;
 
 @end

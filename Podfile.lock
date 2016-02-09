@@ -13,12 +13,14 @@ PODS:
     - CocoaLumberjack/Default
   - Nimble (3.0.0)
   - Quick (0.8.0)
+  - Reveal-iOS-SDK (1.6.2)
 
 DEPENDENCIES:
   - AKABeacon (from `.`)
   - AKACommons (from `../aka-ios-commons`)
   - Nimble (~> 3.0.0)
   - Quick (~> 0.8.0)
+  - Reveal-iOS-SDK
 
 EXTERNAL SOURCES:
   AKABeacon:
@@ -32,5 +34,6 @@ SPEC CHECKSUMS:
   CocoaLumberjack: d6627e7ad42e14d41a4fa2e6c7ae42489d5f3e8b
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   Quick: 563d0f6ec5f72e394645adb377708639b7dd38ab
+  Reveal-iOS-SDK: e2250b3c155bcfac53ae223ddc1f76d08f206c33
 
 COCOAPODS: 0.39.0

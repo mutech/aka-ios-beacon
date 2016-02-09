@@ -45,9 +45,7 @@ end
 
 # Using explicit versions to support pod try.
 target :AKABeaconDemo, :exclusive => true do
-    target :AKABeaconDemoUITests do
-        xcodeproj 'AKABeaconDemo/AKABeaconDemo.xcodeproj'
-    end
     xcodeproj 'AKABeaconDemo/AKABeaconDemo.xcodeproj'
     beacon_pods
+    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
 end

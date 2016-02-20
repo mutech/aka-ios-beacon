@@ -43,7 +43,7 @@ You don't have to take care of Key-Value observation and its deinitialization, i
 
 ## Installation & Integration
 
-Beacon is available on Cocoapods, at the time of writing "0.1.0-pre.*". Until the first stable release is out, please use the head branch. 
+Beacon is available on CocoaPods, at the time of writing "0.1.0-pre.*". Until the first stable release is out, please use the head branch. 
 
 ```
 pod 'AKABeacon', :head
@@ -54,7 +54,7 @@ pod 'AKABeacon', :head
 Documentation is still incomplete and not up to date, because interfaces are not frozen. As soon as the first release (0.1.0) is out, we're going to work on that. For the time being, please refer to examples and the code itself.
 
 * [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
-* [Cocoapods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/)
+* [CocoaPods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/0.1.0-pre.2/)
 
 ## How Beacon works
 

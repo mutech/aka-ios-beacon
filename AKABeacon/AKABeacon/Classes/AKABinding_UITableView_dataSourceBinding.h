@@ -25,11 +25,6 @@
    removeDynamicBindingsForCell:(req_UITableViewCell)cell
                       indexPath:(req_NSIndexPath)indexPath;
 
-@optional
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
-  suspendDynamicBindingsForCell:(req_UITableViewCell)cell
-                      indexPath:(req_NSIndexPath)indexPath;
-
 @end
 
 

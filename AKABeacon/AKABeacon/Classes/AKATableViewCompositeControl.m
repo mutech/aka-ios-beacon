@@ -13,10 +13,63 @@
 #import "AKAControl_Internal.h"
 #import "AKABinding_UITableView_dataSourceBinding.h"
 
+/**
+ Contains information about currently displayed table view rows. The primary use is to ensure that data contexts for cells are kept alive while bindings are observing them.
+ */
+@interface AKATableViewDynamicRowInfo: NSObject
+
+/**
+ The data context used by cell bindings. Uses a strong reference to ensure that the data context is retained while the binding is active (which in turn corresponds to the life time of the associated control.
+ */
+@property(nonatomic) id dataContext;
+
+/**
+ The index path of the row.
+ 
+ @note Please note that this value might not be up to date, especially during and short after table view update operations resulting from inserting/deleting/reordering rows.
+ */
+@property(nonatomic) NSIndexPath* indexPath;
+
+/**
+ The cell displayed for the row.
+ */
+@property(nonatomic, weak) UITableViewCell* cell;
+
+/**
+ The control owning bindings and representing this row.
+ */
+@property(nonatomic, weak) AKACompositeControl* control;
+
+@end
+
+
+@implementation AKATableViewDynamicRowInfo
+
+- (instancetype)initWithCell:(UITableViewCell*)cell
+           forRowAtIndexPath:(NSIndexPath*)indexPath
+                     control:(AKACompositeControl*)control
+                 dataContext:(id)dataContext
+{
+    if (self = [super init])
+    {
+        self.indexPath = indexPath;
+        self.cell = cell;
+        self.control = control;
+        self.dataContext = dataContext;
+    }
+    return self;
+}
+
+@end
+
+
 @interface AKATableViewCompositeControl()
 
-@property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, AKAControl*>* controlsByIndexPath;
-@property(nonatomic, readonly) NSMutableDictionary<NSIndexPath*, NSMutableSet<AKAControl*>*>* replacedControlsByIndexPath;
+/**
+ Provides information about visible rows. Most importantly, row infos keep strong references to data contexts used in bindings of rows to ensure that they are kept
+ */
+@property(nonatomic, readonly) NSMutableSet<AKATableViewDynamicRowInfo*>* dynamicRowInfos;
+@property(nonatomic) BOOL dynamicRowInfoUpdateDispatched;
 
 @end
 
@@ -29,67 +82,50 @@
 {
     if (self = [super init])
     {
-        _controlsByIndexPath = [NSMutableDictionary new];
-        _replacedControlsByIndexPath = [NSMutableDictionary new];
+        _dynamicRowInfos = [NSMutableSet new];
     }
     return self;
 }
 
 #pragma mark - View Binding Delegate (Cell bindings)
 
-- (void)replaceControl:(AKAControl*)control
-           atIndexPath:(NSIndexPath*)indexPath
+- (AKATableViewDynamicRowInfo*)dynamicRowInfoForCell:(UITableViewCell*)cell
+                                           indexPath:(NSIndexPath*)indexPath
+                                 requireMatchingCell:(BOOL)requireMatchingCell
+                            requireMatchingIndexPath:(BOOL)requireMatchingIndexPath
 {
-    NSMutableSet<AKAControl*>* replacedControls = self.replacedControlsByIndexPath[indexPath];
-    if (replacedControls == nil)
-    {
-        replacedControls = [NSMutableSet new];
-        self.replacedControlsByIndexPath[indexPath] = replacedControls;
-    }
-    [replacedControls addObject:control];
-    [self.controlsByIndexPath removeObjectForKey:indexPath];
-    [self removeControl:control];
-}
+    __block AKATableViewDynamicRowInfo* result = nil;
+    __block AKATableViewDynamicRowInfo* resultMatchingCell = nil;
+    __block AKATableViewDynamicRowInfo* resultMatchingIndexPath = nil;
 
-- (BOOL)removeReplacedControlAtIndexPath:(NSIndexPath*)indexPath
-                                 forCell:(UITableViewCell*)cell
-{
-    NSMutableSet* controls = self.replacedControlsByIndexPath[indexPath];
-
-    __block AKAControl* match = nil;
-
-    if (controls)
-    {
-        __block AKAControl* potentialMatch = nil;
-        [self.replacedControlsByIndexPath[indexPath] enumerateObjectsUsingBlock:
-         ^(AKAControl * _Nonnull control, BOOL * _Nonnull stop)
+    [self.dynamicRowInfos enumerateObjectsUsingBlock:
+     ^(AKATableViewDynamicRowInfo * _Nonnull rowInfo, BOOL * _Nonnull stop) {
+         if (cell == rowInfo.cell)
          {
-             UIView* view = control.view;
-             if (view == nil && cell == nil && potentialMatch == nil)
+             resultMatchingCell = rowInfo;
+             if ([indexPath isEqual:rowInfo.indexPath])
              {
-                 potentialMatch = control;
-             }
-             else if (view == cell)
-             {
+                 result = rowInfo;
                  *stop = YES;
-                 match = control;
              }
-         }];
-        if (!match)
-        {
-            match = potentialMatch;
-        }
-        if (match)
-        {
-            [controls removeObject:match];
-            if (controls.count == 0)
-            {
-                [self.replacedControlsByIndexPath removeObjectForKey:indexPath];
-            }
-        }
+         }
+         else if ([indexPath isEqual:rowInfo.indexPath])
+         {
+             resultMatchingIndexPath = rowInfo;
+         }
+     }];
+
+    // Fallback if no exact match is found
+    if (!result && !requireMatchingIndexPath)
+    {
+        result = resultMatchingCell;
+    }
+    if (!result && !requireMatchingCell)
+    {
+        result = resultMatchingIndexPath;
     }
 
-    return match != nil;
+    return result;
 }
 
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
@@ -99,48 +135,68 @@
 {
     (void)binding;
 
-    // Due to deferred updates (and possibly also in other situations), the order in which dynamic
-    // bindings are added and removed is not necessarily as expected (remove old then add new for a
-    // given indexpath). For that reason we keep a record of replaced cells but make sure their bindings
-    // are deactivated (stopObservingChanges).
+    AKATableViewDynamicRowInfo* previousRowInfo = [self dynamicRowInfoForCell:cell
+                                                                    indexPath:indexPath
+                                                          requireMatchingCell:NO
+                                                     requireMatchingIndexPath:NO];
+    AKATableViewDynamicRowInfo* rowInfo = nil;
 
-    AKAControl* previousControlAtIndexPath = self.controlsByIndexPath[indexPath];
-    if (previousControlAtIndexPath)
+    if (previousRowInfo)
     {
-        [previousControlAtIndexPath stopObservingChanges];
-        [self replaceControl:previousControlAtIndexPath atIndexPath:indexPath];
+        if (previousRowInfo.cell == cell)
+        {
+            // Cell matches, in this case the old row info will be reused or replaced
+
+            if (previousRowInfo.control && previousRowInfo.dataContext == dataContext)
+            {
+                // cell, control and dataContext are equal, we're going to reuse the cell
+                rowInfo = previousRowInfo;
+
+                if (![indexPath isEqual:rowInfo.indexPath])
+                {
+                    // update index path if it changed.
+                    rowInfo.indexPath = indexPath;
+                }
+            }
+            else
+            {
+                // data context changed or control is undefined, we're going to replace the rowinfo
+                if (previousRowInfo.control)
+                {
+                    [self removeControl:previousRowInfo.control];
+                }
+                [self.dynamicRowInfos removeObject:previousRowInfo];
+            }
+        }
+        else
+        {
+            // If the cell is different, we'll keep the previous rowinfo, it might be removed later
+            // or change it's position due to other TV operations (we might not see these changes, so
+            // the indexPath is not reliable).
+        }
     }
 
-    AKACompositeControl* control = [[AKACompositeControl alloc] initWithDataContext:dataContext
-                                                                      configuration:nil];
-    [control setView:cell];
-    self.controlsByIndexPath[indexPath] = control;
-    [self addControl:control];
+    AKACompositeControl* control = rowInfo.control;
+    if (!control)
+    {
+        control = [[AKACompositeControl alloc] initWithDataContext:dataContext
+                                                     configuration:nil];
+        [control setView:cell];
+        [self addControl:control];
+    }
+
+    if (!rowInfo)
+    {
+        rowInfo = [[AKATableViewDynamicRowInfo alloc] initWithCell:cell
+                                                 forRowAtIndexPath:indexPath
+                                                           control:control
+                                                       dataContext:dataContext];
+        [self.dynamicRowInfos addObject:rowInfo];
+    }
 
     // TODO: get the exclusion views (for embedded view controllers) from delegate?
     [control addControlsForControlViewsInViewHierarchy:cell.contentView
                                           excludeViews:nil];
-}
-
-/*
- This has to be called at a point in time where it's known that a cell's bindings will be released but the data context is not yet released.
- 
- The table view dataSourceBinding will call this method when it's scheduling an update of the table view for a change rows array while that array is still referenced (as oldValue in the change notification).
- 
- If this is not done correctly, the result will most likely be exceptions for dangling observations on released objects. If you see these, double check if you call this method before the data context is released.
- */
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
-      suspendDynamicBindingsForCell:(UITableViewCell *)cell
-                          indexPath:(NSIndexPath*)indexPath
-{
-    (void)binding;
-    (void)cell;
-
-    if (indexPath)
-    {
-        AKAControl* control = self.controlsByIndexPath[indexPath];
-        [control stopObservingChanges];
-    }
 }
 
 - (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
@@ -148,31 +204,75 @@
                           indexPath:(NSIndexPath*)indexPath
 {
     (void)binding;
-    (void)cell;
 
-    // Due to deferred updates (and possibly also in other situations), the order in which dynamic
-    // bindings are added and removed is not necessarily as expected (remove old then add new for a
-    // given indexpath). For that reason we keep a record of replaced cells and remove these if they match.
-
-    if (indexPath)
+    AKATableViewDynamicRowInfo* rowInfo = [self dynamicRowInfoForCell:cell
+                                                            indexPath:indexPath
+                                                  requireMatchingCell:YES
+                                             requireMatchingIndexPath:NO];
+    if (rowInfo)
     {
-        if (![self removeReplacedControlAtIndexPath:indexPath forCell:cell])
+        if (rowInfo.control)
         {
-            AKAControl* control = self.controlsByIndexPath[indexPath];
-            UIView* view = control.view;
-            if (cell == nil || view == cell || view == nil)
-            {
-                [self.controlsByIndexPath removeObjectForKey:indexPath];
-                [self removeControl:control];
-            }
-            else
-            {
-                // For some reason, tableView:didEndDisplayingCell:indexPath gets called multiple times for the replaced
-                // cells.
-                // TODO: check if we do something wrong which is causing this behaviour of if its just like that.
-                NSString* message = [NSString stringWithFormat:@"Attempt to remove control %@ for non-matching cell %@", control, cell];
-                AKALogWarn(@"%@", message);
-            }
+            [self removeControl:rowInfo.control];
+        }
+        [self.dynamicRowInfos removeObject:rowInfo];
+
+        // Other rows might change their position as result of this removal. The information in dynamicRowInfos will be updated in a separate dispatch job to ensure that it's only done once per TV update batch:
+        [self dispatchUpdateRowInfos];
+    }
+}
+
+/**
+ Dispatches a call to performUpdateRowInfos to the main queue in order to do this once for all changes triggered in the current main queue job.
+ */
+- (void)dispatchUpdateRowInfos
+{
+    NSAssert([NSThread isMainThread], @"Has to be called from main thread only");
+    if (!self.dynamicRowInfoUpdateDispatched)
+    {
+        self.dynamicRowInfoUpdateDispatched = YES;
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf performUpdateRowInfos];
+        });
+    }
+}
+
+/**
+ Iterates through all dynamicRowInfos to correct indexPaths that might have changed during the last tableView update.
+ */
+- (void)performUpdateRowInfos
+{
+    if (self.dynamicRowInfoUpdateDispatched)
+    {
+        self.dynamicRowInfoUpdateDispatched = NO;
+
+        UITableView* tableView = (UITableView*)self.view;
+        if (tableView)
+        {
+            // If reporting/logging updates or deletes is needed (TODO: uncomment or remove when code is stable)
+            //__block NSUInteger updated = 0;
+            //__block NSUInteger deleted = 0;
+            [self.dynamicRowInfos enumerateObjectsUsingBlock:^(AKATableViewDynamicRowInfo * _Nonnull obj, BOOL * _Nonnull stop) {
+                NSAssert([obj isKindOfClass:[AKATableViewDynamicRowInfo class]], @"Something ugly happened - investigate");
+                NSIndexPath* indexPath = [tableView indexPathForCell:obj.cell];
+                if (indexPath)
+                {
+                    if (![indexPath isEqual:obj.indexPath])
+                    {
+                        obj.indexPath = indexPath;
+                        //++updated;
+                    }
+                }
+                else
+                {
+                    // TODO: We might want to delete rowInfos for cells which are no longer visible, even though that doesn't seem to be necessary, at least not in all cases -> investigate in which cases this happens.
+
+                    //++deleted;
+                    NSLog(@"Strange: rowInfo refers to a cell which is not visible: investigate this");
+                }
+            }];
+            //NSLog(@"Updated row infos (%lu updated, %lu deleted)", (unsigned long)updated, (unsigned long)deleted);
         }
     }
 }

@@ -66,6 +66,29 @@
 - (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                                  toNewValue:(opt_id)newSourceValue;
 
+
+/**
+ Called before the target value will be updated.
+ 
+ Subclasses overriding this method *have* to call the super implementation.
+
+ @param oldTargetValue old value
+ @param newTargetValue new value
+ */
+- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
+
+/**
+ Called after the target value has been updated.
+
+ Subclasses overriding this method *have* to call the super implementation.
+
+ @param oldTargetValue old value
+ @param newTargetValue new value
+ */
+- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
+
 - (void)                             sourceArrayItemAtIndex:(NSUInteger)index
                                          valueDidChangeFrom:(opt_id)oldValue
                                                          to:(opt_id)newValue;

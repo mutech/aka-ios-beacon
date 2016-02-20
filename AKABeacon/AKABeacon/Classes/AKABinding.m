@@ -437,6 +437,8 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
          id targetValue = nil;
          NSError* error;
 
+         id oldTargetValue = self.bindingTarget.value;
+         
          if ([self convertSourceValue:newSourceValue
                         toTargetValue:&targetValue
                                 error:&error])
@@ -444,8 +446,6 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
              if ([self validateTargetValue:&targetValue
                                      error:&error])
              {
-                 id oldTargetValue = self.bindingTarget.value;
-
                  if ([self shouldUpdateTargetValue:oldTargetValue
                                                 to:targetValue
                                     forSourceValue:oldSourceValue

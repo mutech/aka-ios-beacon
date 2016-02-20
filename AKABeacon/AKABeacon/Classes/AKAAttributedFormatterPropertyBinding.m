@@ -32,7 +32,7 @@
                 @"patternOptions": @{
                     @"required":        @NO,
                     @"use":             @(AKABindingAttributeUseBindToTargetProperty),
-                    @"expressionType":  @(AKABindingExpressionTypeOptionsConstant),
+                    @"expressionType":  @(AKABindingExpressionTypeOptionsConstant|AKABindingExpressionTypeAnyKeyPath),
                     @"optionsType":     @"NSStringCompareOptions"
                 },
 

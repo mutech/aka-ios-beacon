@@ -42,6 +42,7 @@
 
 @end
 
+
 #pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Interface
 #pragma mark -
 
@@ -97,13 +98,9 @@
 
     if (result)
     {
-        if (!self.cachedTargetValue)
+        if (!self.cachedTargetValue || self.cachedTargetValue.rows != sourceValue)
         {
             self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
-        }
-
-        if (sourceValue != self.sourceValue || sourceValue == nil)
-        {
             self.cachedTargetValue.rows = sourceValue;
         }
         *targetValueStore = self.cachedTargetValue;
@@ -238,6 +235,7 @@
 @property(nonatomic) NSArray<AKATableViewSectionDataSourceInfo*>*           sections;
 @property(nonatomic) UITableViewRowAnimation                                insertAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
+@property(nonatomic, weak) void                                           (^animatorBlock)(void(^)());
 
 #pragma mark - Observation
 
@@ -293,6 +291,10 @@
                         @"enumerationType":      @"UITableViewRowAnimation",
                         @"use":                  @(AKABindingAttributeUseBindToBindingProperty)
                         },
+                @"animatorBlock":        @{
+                        @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
+                        @"use":                  @(AKABindingAttributeUseBindToBindingProperty)
+                        },
             }
         };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -333,16 +335,6 @@
     return self.delegateDispatcher != nil;
 }
 
-- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(id)oldValue
-                                                         to:(id)newValue
-{
-    [self dispatchTableViewUpdateForSection:index
-                         forChangesFromRows:oldValue
-                                     toRows:newValue];
-    [super sourceArrayItemAtIndex:index valueDidChangeFrom:oldValue to:newValue];
-}
-
 - (void)                             targetArrayItemAtIndex:(NSUInteger)index
                                          valueDidChangeFrom:(id)oldValue
                                                          to:(id)newValue
@@ -355,9 +347,14 @@
         [self dispatchTableViewUpdateForSection:index
                              forChangesFromRows:oldSectionInfo.rows
                                          toRows:newSectionInfo.rows
-                     updateTableViewImmediately:YES];
+                     updateTableViewImmediately:NO];
     }
     [super targetArrayItemAtIndex:index valueDidChangeFrom:oldValue to:newValue];
+}
+
+- (void)willUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+{
+
 }
 
 - (void)updateTableViewRowHeights
@@ -397,39 +394,49 @@
 
 - (void)performPendingTableViewUpdates
 {
-    UITableView* tableView = self.tableView;
-    if (tableView)
-    {
-        if (!tableView.isDragging && !tableView.isDecelerating)
+    void (^block)() = ^{
+        UITableView* tableView = self.tableView;
+        if (tableView)
         {
-            // It's only safe to update if the tableview is not scrolling:
-            [tableView beginUpdates];
-            for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+            if (!tableView.isDragging && !tableView.isDecelerating)
             {
-                AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
+                // It's only safe to update if the tableview is not scrolling:
+                [tableView beginUpdates];
+                for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+                {
+                    AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
 
-                [pendingChanges updateTableView:tableView
-                                        section:sectionN.unsignedIntegerValue
-                                deleteAnimation:self.deleteAnimation
-                                insertAnimation:self.insertAnimation];
-                [self.pendingTableViewChanges removeObjectForKey:sectionN];
+                    [pendingChanges updateTableView:tableView
+                                            section:sectionN.unsignedIntegerValue
+                                    deleteAnimation:self.deleteAnimation
+                                    insertAnimation:self.insertAnimation];
+                    [self.pendingTableViewChanges removeObjectForKey:sectionN];
+                }
+                [tableView endUpdates];
+                self.tableViewReloadDispatched = NO;
+
+                // Perform update for self-sizing cells now to ensure this will be done, disable
+                // deferred updates which have already been scheduled (not necessary if done now).
+                [self updateTableViewRowHeights];
+                self.tableViewUpdateDispatched = NO;
             }
-            [tableView endUpdates];
-            self.tableViewReloadDispatched = NO;
-
-            // Perform update for self-sizing cells now to ensure this will be done, disable
-            // deferred updates which have already been scheduled (not necessary if done now).
-            [self updateTableViewRowHeights];
-            self.tableViewUpdateDispatched = NO;
+            else
+            {
+                // It's not safe to update, redispatch and try again.
+                // TODO: replace this busy waiting by something more sensible
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self performPendingTableViewUpdates];
+                });
+            }
         }
-        else
-        {
-            // It's not safe to update, redispatch and try again.
-            // TODO: replace this busy waiting by something more sensible
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self performPendingTableViewUpdates];
-            });
-        }
+    };
+    if (self.animatorBlock != NULL)
+    {
+        self.animatorBlock(block);
+    }
+    else
+    {
+        block();
     }
 }
 
@@ -476,32 +483,6 @@
         pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:pendingChanges.array];
     }
     self.pendingTableViewChanges[@(section)] = pendingChanges;
-
-    // The tableview delegate method cellwilldisappear that also triggers removal of cell controls
-    // is not reliably called. To ensure that AKAControls in charge of table view cells will detach
-    // observers, we are )also) removing member controls here, because at that point in time, oldRows
-    // still holds strong references to data contexts used by these controls.
-    //
-    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
-    if (![delegate respondsToSelector:@selector(binding:suspendDynamicBindingsForCell:indexPath:)])
-    {
-        delegate = nil;
-    }
-    if (delegate)
-    {
-        [pendingChanges.deletedItemIndexes enumerateIndexesUsingBlock:
-         ^(NSUInteger idx, BOOL * _Nonnull stop)
-         {
-             (void)stop;
-             NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)idx
-                                                         inSection:(NSInteger)section];
-             UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
-             [delegate               binding:self
-               suspendDynamicBindingsForCell:cell
-                                   indexPath:indexPath];
-
-         }];
-    }
 
     [self dispatchTableViewUpdateImmediately:updateTableViewImmediately];
 }

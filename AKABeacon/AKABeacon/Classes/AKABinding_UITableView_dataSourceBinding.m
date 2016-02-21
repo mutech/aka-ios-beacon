@@ -250,6 +250,7 @@
 @property(nonatomic) BOOL                                                   tableViewUpdateDispatched;
 @property(nonatomic) BOOL                                                   tableViewReloadDispatched;
 @property(nonatomic) NSMutableDictionary<NSNumber*, AKAArrayComparer*>*     pendingTableViewChanges;
+@property(nonatomic) BOOL                                                   startingChangeObservation;
 
 @end
 
@@ -335,6 +336,17 @@
     return self.delegateDispatcher != nil;
 }
 
+- (void)willStartObservingChanges
+{
+    // We need to know to be able to not to dispatch initial table view updates and perform them immediately instead.
+    self.startingChangeObservation = YES;
+}
+
+- (void)didStartObservingChanges
+{
+    self.startingChangeObservation = NO;
+}
+
 - (void)                             targetArrayItemAtIndex:(NSUInteger)index
                                          valueDidChangeFrom:(id)oldValue
                                                          to:(id)newValue
@@ -347,7 +359,7 @@
         [self dispatchTableViewUpdateForSection:index
                              forChangesFromRows:oldSectionInfo.rows
                                          toRows:newSectionInfo.rows
-                     updateTableViewImmediately:NO];
+                     updateTableViewImmediately:self.startingChangeObservation];
     }
     [super targetArrayItemAtIndex:index valueDidChangeFrom:oldValue to:newValue];
 }
@@ -632,7 +644,7 @@
 {
     (void)tableView;
     NSAssert(tableView == self.tableView,
-             @"numberOfSectionsInTableView: Invalid tableView, expected binding target tableViw");
+             @"numberOfSectionsInTableView: Invalid tableView, expected binding target tableView");
 
     return (NSInteger)self.sections.count;
 }
@@ -641,7 +653,7 @@
                                 numberOfRowsInSection:(NSInteger)section
 {
     NSAssert(tableView == self.tableView,
-             @"tableView:numberOfRowsInSection: Invalid tableView, expected binding targettableView");
+             @"tableView:numberOfRowsInSection: Invalid tableView, expected binding target tableView");
 
     return (NSInteger)[self tableView:tableView infoForSection:section].rows.count;
 }

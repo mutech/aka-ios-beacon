@@ -496,20 +496,91 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 {
     __block BOOL result = YES;
 
+    [self willStartObservingChanges];
+
+    result = [self startObservingBindingPropertyBindings] && result;
+    result = [self startObservingBindingTarget] && result;
+    result = [self startObservingBindingSource] && result;
+
+    [self initializeTargetValueForObservationStart];
+
+    result = [self startObservingBindingTargetPropertyBindings];
+
+    [self didStartObservingChanges];
+
+    return result;
+}
+
+- (void)willStartObservingChanges {}
+
+- (void)didStartObservingChanges {}
+
+- (BOOL)startObservingBindingPropertyBindings
+{
+    BOOL result = YES;
+    [self willStartObservingBindingPropertyBindings];
     for (AKABinding* bpBinding in self.bindingPropertyBindings)
     {
         result = [bpBinding startObservingChanges] && result;
     }
-    result = [self.bindingTarget startObservingChanges] && result;
-    result = [self.bindingSource startObservingChanges] && result;
-    [self updateTargetValue];
-    for (AKABinding* tpBinding in self.targetPropertyBindings)
-    {
-        result = [tpBinding startObservingChanges];
-    }
-
+    [self didStartObservingBindingPropertyBindings];
     return result;
 }
+
+- (void)willStartObservingBindingPropertyBindings {}
+
+- (void)didStartObservingBindingPropertyBindings {}
+
+- (BOOL)startObservingBindingTarget
+{
+    [self willStartObservingBindingTarget];
+    BOOL result = [self.bindingTarget startObservingChanges];
+    [self didStartObservingBindingTarget];
+    return result;
+}
+
+- (void)willStartObservingBindingTarget {}
+
+- (void)didStartObservingBindingTarget {}
+
+- (BOOL)startObservingBindingSource
+{
+    [self willStartObservingBindingSource];
+    BOOL result = [self.bindingSource startObservingChanges];
+    [self didStartObservingBindingSource];
+    return result;
+}
+
+- (void)willStartObservingBindingSource {}
+
+- (void)didStartObservingBindingSource {}
+
+- (void)initializeTargetValueForObservationStart
+{
+    [self willInitializeTargetValueForObservationStart];
+    [self updateTargetValue];
+    [self didInitializeTargetValueForObservationStart];
+}
+
+- (void)willInitializeTargetValueForObservationStart {}
+
+- (void)didInitializeTargetValueForObservationStart {}
+
+- (BOOL)startObservingBindingTargetPropertyBindings
+{
+    BOOL result = YES;
+    [self willStartObservingBindingTargetPropertyBindings];
+    for (AKABinding* tpBinding in self.targetPropertyBindings)
+    {
+        result = [tpBinding startObservingChanges] && result;
+    }
+    [self didStartObservingBindingTargetPropertyBindings];
+    return result;
+}
+
+- (void)willStartObservingBindingTargetPropertyBindings {}
+
+- (void)didStartObservingBindingTargetPropertyBindings {}
 
 - (BOOL)                               stopObservingChanges
 {

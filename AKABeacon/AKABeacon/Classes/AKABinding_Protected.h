@@ -152,4 +152,46 @@
                                                 bindingContext:(req_AKABindingContext)bindingContext
                                                          error:(out_NSError)error;
 
+#pragma mark - Change Tracking
+
+- (void)willStartObservingChanges;
+
+- (void)willStartObservingBindingPropertyBindings;
+- (void)didStartObservingBindingPropertyBindings;
+
+- (void)willStartObservingBindingTarget;
+- (void)didStartObservingBindingTarget;
+
+- (void)willStartObservingBindingSource;
+- (void)didStartObservingBindingSource;
+
+- (void)willInitializeTargetValueForObservationStart;
+- (void)didInitializeTargetValueForObservationStart;
+
+- (void)willStartObservingBindingTargetPropertyBindings;
+- (void)didStartObservingBindingTargetPropertyBindings;
+
+- (void)didStartObservingChanges;
+
+/**
+ Called before the target value will be updated by updateTargetValue methods and exposed to allow subclasses to perform additional actions at this point. Overriding implementations have to call the base implementation.
+ 
+ If you need to perform additional actions only before the target value is initialized, consider overriding initializeTargetValueForObservationStart instead.
+
+ @param oldTargetValue old value
+ @param newTargetValue new value
+ */
+- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
+
+/**
+ Called after the target value has been updated by updateTargetValue methods and exposed to allow subclasses to perform additional actions at this point. Overriding implementations have to call the base implementation.
+
+ If you need to perform additional actions only before the target value is initialized, consider overriding initializeTargetValueForObservationStart instead.
+
+ @param oldTargetValue old value
+ @param newTargetValue new value
+ */
+- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
 @end

@@ -33,12 +33,11 @@
 
  @return a new binding
  */
-- (opt_instancetype)                         initWithTarget:(req_AKAProperty)target
-                                                 expression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate
-                                                      error:(out_NSError)error;
-
+- (opt_instancetype)                                 initWithTarget:(req_AKAProperty)target
+                                                         expression:(req_AKABindingExpression)bindingExpression
+                                                            context:(req_AKABindingContext)bindingContext
+                                                           delegate:(opt_AKABindingDelegate)delegate
+                                                              error:(out_NSError)error;
 
 #pragma mark - Configuration
 
@@ -49,57 +48,41 @@
 
 #pragma mark - Conversion
 
-- (BOOL)                                 convertSourceValue:(opt_id)sourceValue
-                                              toTargetValue:(out_id)targetValueStore
-                                                      error:(out_NSError)error;
+- (BOOL)                                         convertSourceValue:(opt_id)sourceValue
+                                                      toTargetValue:(out_id)targetValueStore
+                                                              error:(out_NSError)error;
 
 #pragma mark - Validation
 
-- (BOOL)                                validateSourceValue:(inout_id)sourceValueStore
-                                                      error:(out_NSError)error;
+- (BOOL)                                        validateSourceValue:(inout_id)sourceValueStore
+                                                              error:(out_NSError)error;
 
-- (BOOL)                                validateTargetValue:(inout_id)targetValueStore
-                                                      error:(out_NSError)error;
+- (BOOL)                                        validateTargetValue:(inout_id)targetValueStore
+                                                              error:(out_NSError)error;
 
 #pragma mark - Change Tracking
 
-- (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
-                                                 toNewValue:(opt_id)newSourceValue;
+- (void)                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                                         toNewValue:(opt_id)newSourceValue;
 
+- (void)                                     sourceArrayItemAtIndex:(NSUInteger)index
+                                                 valueDidChangeFrom:(opt_id)oldValue
+                                                                 to:(opt_id)newValue;
+
+- (void)                                     targetArrayItemAtIndex:(NSUInteger)index
+                                                 valueDidChangeFrom:(opt_id)oldValue
+                                                                 to:(opt_id)newValue;
 
 /**
- Called before the target value will be updated.
+ Starts observing changes to binding property bindings, binding target, binding source and binding target property bindings (typically in this order) and initializes the binding target value (right before starting to observe target property bindings).
  
- Subclasses overriding this method *have* to call the super implementation.
+ Sub classes should not override this method. If you need to perform additional actions, consider overriding a suitable method exposed in the protected interface.
 
- @param oldTargetValue old value
- @param newTargetValue new value
+ @return YES if starting all observable items succeeded. A negative result may leave the binding in a partially observing state.
  */
-- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
-                                                         to:(opt_id)newTargetValue;
+- (BOOL)                                      startObservingChanges;
 
-/**
- Called after the target value has been updated.
-
- Subclasses overriding this method *have* to call the super implementation.
-
- @param oldTargetValue old value
- @param newTargetValue new value
- */
-- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
-                                                         to:(opt_id)newTargetValue;
-
-- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(opt_id)oldValue
-                                                         to:(opt_id)newValue;
-
-- (void)                             targetArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(opt_id)oldValue
-                                                         to:(opt_id)newValue;
-
-- (BOOL)                              startObservingChanges;
-
-- (BOOL)                               stopObservingChanges;
+- (BOOL)                                       stopObservingChanges;
 
 #pragma mark - Updating
 
@@ -108,9 +91,9 @@
  
  This can be used by subclasses to initialize the target value or to reset it, for example if configuration parameters have been changed and the target needs to be reinitialized.
  
- @note Please note that source value changes are tracked automatically and do not require this method to be called.
+ @note Please note that source value changes are tracked automatically if change observation is started and do not require this method to be called.
  */
-- (void)                                  updateTargetValue;
+- (void)                                          updateTargetValue;
 
 @end
 

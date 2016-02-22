@@ -7,217 +7,19 @@
 //
 
 @import AKACommons.AKAArrayComparer;
-#import "AKABinding_Protected.h"
+
 #import "AKABinding_UITableView_dataSourceBinding.h"
-#import "AKATableViewCellFactoryArrayPropertyBinding.h"
-#import "AKATableViewCellFactory.h"
+
+#import "AKABinding_Protected.h"
 #import "AKAPredicatePropertyBinding.h"
-#import "AKADelegateDispatcher.h"
 #import "AKABindingErrors.h"
 #import "AKABindingSpecification.h"
 #import "AKANSEnumerations.h"
 
-#pragma mark - AKATableViewSectionDataSourceInfo Interface
-#pragma mark -
-
-@interface AKATableViewSectionDataSourceInfo: NSObject
-
-@property(nonatomic) NSArray* rows;
-@property(nonatomic) NSString* headerTitle;
-@property(nonatomic) NSString* footerTitle;
-@property(nonatomic) NSArray<AKATableViewCellFactory*>* cellMapping;
-
-@end
-
-
-#pragma mark - AKATableViewSectionDataSourceInfo Implementation
-#pragma mark -
-
-@implementation AKATableViewSectionDataSourceInfo
-
-- (void)setRows:(NSArray*)rows
-{
-    _rows = rows;
-}
-
-@end
-
-
-#pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Interface
-#pragma mark -
-
-@interface AKATableViewSectionDataSourceInfoPropertyBinding: AKAPropertyBinding<AKAArrayPropertyBindingDelegate>
-
-@property(nonatomic) id sourceValue;
-@property(nonatomic) AKATableViewSectionDataSourceInfo* cachedTargetValue;
-
-@end
-
-
-#pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Implementation
-#pragma mark -
-
-@implementation AKATableViewSectionDataSourceInfoPropertyBinding
-
-+ (AKABindingSpecification*)specification
-{
-    static AKABindingSpecification* result = nil;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        NSDictionary* spec =
-            @{ @"bindingType":          [AKATableViewSectionDataSourceInfoPropertyBinding class],
-               @"targetType":           [UITableView class],
-               @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
-               @"attributes":           @{
-                   @"headerTitle":          @{
-                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                       @"expressionType":       @(AKABindingExpressionTypeStringConstant)
-                   },
-                   @"footerTitle":          @{
-                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                       @"expressionType":       @(AKABindingExpressionTypeStringConstant)
-                   },
-                   @"cellMapping":          @{
-                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                       @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class]
-                   }
-               }
-        };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
-    });
-
-    return result;
-}
-
-- (BOOL)convertSourceValue:(id)sourceValue
-             toTargetValue:(id _Nullable __autoreleasing*)targetValueStore
-                     error:(NSError* __autoreleasing _Nullable*)error
-{
-    BOOL result = sourceValue == nil || [sourceValue isKindOfClass:[NSArray class]];
-
-    if (result)
-    {
-        if (!self.cachedTargetValue || self.cachedTargetValue.rows != sourceValue)
-        {
-            self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
-            self.cachedTargetValue.rows = sourceValue;
-        }
-        *targetValueStore = self.cachedTargetValue;
-    }
-    else
-    {
-        if (error)
-        {
-            *error = [AKABindingErrors bindingErrorConversionOfBinding:self
-                                                           sourceValue:sourceValue
-                                         failedWithInvalidTypeExpected:[NSArray class]];
-        }
-    }
-
-    return result;
-}
-
-#pragma mark - Binding Delegate
-
-@end
-
-
-#pragma mark - AKATableViewDataSourceAndDelegateDispatcher Interface
-#pragma mark -
-
-@interface AKATableViewDataSourceAndDelegateDispatcher: AKADelegateDispatcher<UITableViewDataSource, UITableViewDelegate>
-
-- (instancetype)initWithTableView:(UITableView*)tableView
-             dataSourceOverwrites:(id<UITableViewDataSource>)dataSource
-               delegateOverwrites:(id<UITableViewDelegate>)delegate;
-- (void)restoreOriginalDataSourceAndDelegate;
-
-@property(nonatomic, readonly, weak) UITableView*              tableView;
-@property(nonatomic, readonly, weak) id<UITableViewDataSource> originalDataSource;
-@property(nonatomic, readonly, weak) id<UITableViewDelegate>   originalDelegate;
-
-@end
-
-
-#pragma mark - AKATableViewDataSourceAndDelegateDispatcher Implementation
-#pragma mark -
-
-// Ignore warning about missing protocol implementations, these are provided dynamically
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wprotocol"
-@implementation AKATableViewDataSourceAndDelegateDispatcher
-
-- (instancetype)initWithTableView:(UITableView*)tableView
-             dataSourceOverwrites:(id<UITableViewDataSource>)dataSource
-               delegateOverwrites:(id<UITableViewDelegate>)delegate
-{
-    static NSArray<Protocol*>* protocols;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        protocols = @[ @protocol(UITableViewDataSource),
-                       @protocol(UITableViewDelegate) ];
-    });
-
-    id<UITableViewDataSource> tableViewDataSource = tableView.dataSource;
-    id<UITableViewDelegate>   tableViewDelegate = tableView.delegate;
-    NSMutableArray* delegates = [NSMutableArray new];
-
-    if (dataSource)
-    {
-        [delegates addObject:dataSource];
-    }
-
-    if (delegate && (id)delegate != (id)dataSource)
-    {
-        [delegates addObject:delegate];
-    }
-
-    if (tableViewDataSource)
-    {
-        [delegates addObject:tableViewDataSource];
-    }
-
-    if (tableViewDelegate && (id)tableViewDelegate != (id)tableViewDataSource)
-    {
-        [delegates addObject:tableViewDelegate];
-    }
-
-    if (self = [super initWithProtocols:protocols
-                              delegates:delegates])
-    {
-        _tableView = tableView;
-        tableView.dataSource = self;
-        tableView.delegate = self;
-        _originalDataSource = tableViewDataSource;
-        _originalDelegate = tableViewDelegate;
-    }
-
-    return self;
-}
-
-- (void)dealloc
-{
-    [self restoreOriginalDataSourceAndDelegate];
-}
-
-- (void)restoreOriginalDataSourceAndDelegate
-{
-    UITableView* tableView = self.tableView;
-
-    if (tableView)
-    {
-        tableView.dataSource = self.originalDataSource;
-        tableView.delegate = self.originalDelegate;
-        _originalDataSource = nil;
-        _originalDelegate = nil;
-        _tableView = nil;
-    }
-}
-
-@end
-#pragma clang diagnostic pop
+#import "AKATableViewCellFactoryArrayPropertyBinding.h"
+#import "AKATableViewCellFactory.h"
+#import "AKATableViewSectionDataSourceInfoPropertyBinding.h"
+#import "AKATableViewDataSourceAndDelegateDispatcher.h"
 
 
 #pragma mark - AKABinding_UITableView_dataSourceBinding Private Interface
@@ -231,15 +33,15 @@
 
 #pragma mark - Binding Configuration
 
+@property(nonatomic, readonly) NSArray<AKATableViewSectionDataSourceInfo*>* sections;
 @property(nonatomic) NSMutableArray<AKATableViewCellFactory*>*              defaultCellMapping;
-@property(nonatomic) NSArray<AKATableViewSectionDataSourceInfo*>*           sections;
 @property(nonatomic) UITableViewRowAnimation                                insertAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
 @property(nonatomic, weak) void                                           (^animatorBlock)(void(^)());
 
 #pragma mark - Observation
 
-@property(nonatomic, readonly) BOOL isObserving;
+@property(nonatomic, readonly) BOOL                                         isObserving;
 
 #pragma mark - UITableView data source and delegate dispatcher
 
@@ -262,7 +64,9 @@
 
 @dynamic delegate;
 
-+ (AKABindingSpecification*)            specification
+#pragma mark - Initialization
+
++ (AKABindingSpecification*)                  specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -304,7 +108,7 @@
     return result;
 }
 
-+ (void)registerEnumerationAndOptionTypes
++ (void)                  registerEnumerationAndOptionTypes
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -314,7 +118,7 @@
     });
 }
 
-- (instancetype)init
+- (instancetype)                                       init
 {
     if (self = [super init])
     {
@@ -326,85 +130,112 @@
     return self;
 }
 
+- (AKAProperty*)          defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                             changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                      error:(NSError* __autoreleasing _Nullable*)error
+{
+    (void)bindingExpression;
+    (void)bindingContext;
+    (void)error;
+
+    // The resulting binding source property will always return nil as binding source. This is because
+    // we require an array binding expression as primary expression.
+    // TODO: too hacky, refactor this
+    return [AKAProperty propertyOfWeakKeyValueTarget:nil keyPath:nil changeObserver:changeObserver];
+}
+
+#pragma mark - Properties
+
 - (NSArray<AKATableViewSectionDataSourceInfo *> *)sections
 {
     return self.syntheticTargetValue;
 }
 
-- (BOOL)                                  isObserving
+#pragma mark - Change Tracking
+
+- (BOOL)                                        isObserving
 {
     return self.delegateDispatcher != nil;
 }
 
-- (void)willStartObservingChanges
+- (void)                          willStartObservingChanges
 {
-    // We need to know to be able to not to dispatch initial table view updates and perform them immediately instead.
+    // We need to skip table view updates while the binding is starting change tracking, which
+    // would in some cases result in table view updates being performed after a table view reload
+    // or before the data is available.
     self.startingChangeObservation = YES;
 }
 
-- (void)didStartObservingChanges
+- (void)                           didStartObservingChanges
 {
     self.startingChangeObservation = NO;
+
+    // Perform a reload of the table view once the change observation start process if finished.
+    // From this point on, the binding will synchronize the table view with changes to row data.
+    [self.tableView reloadData];
+
+    [self updateTableViewRowHeights];
 }
 
 - (void)                             targetArrayItemAtIndex:(NSUInteger)index
                                          valueDidChangeFrom:(id)oldValue
                                                          to:(id)newValue
 {
-    AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
-    AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
-
-    if (oldSectionInfo.rows != newSectionInfo.rows)
+    if (!self.startingChangeObservation)
     {
-        [self dispatchTableViewUpdateForSection:index
-                             forChangesFromRows:oldSectionInfo.rows
-                                         toRows:newSectionInfo.rows
-                     updateTableViewImmediately:self.startingChangeObservation];
+        // Do not update table view if change observation is starting, because this is a rather
+        // fuzzy state. We are going to reload the table as soon as the observation start proceess
+        // completed.
+        AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
+        AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
+
+        if (oldSectionInfo.rows != newSectionInfo.rows)
+        {
+            [self dispatchTableViewUpdateForSection:index
+                                 forChangesFromRows:oldSectionInfo.rows
+                                             toRows:newSectionInfo.rows];
+        }
     }
     [super targetArrayItemAtIndex:index valueDidChangeFrom:oldValue to:newValue];
 }
 
-- (void)willUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
-{
+#pragma mark - Table View Updates
 
-}
-
-- (void)updateTableViewRowHeights
+- (void)                          updateTableViewRowHeights
 {
     UITableView* tableView = self.tableView;
     [tableView beginUpdates];
     [tableView endUpdates];
 }
 
-- (void)dispatchTableViewUpdateForSection:(NSUInteger)section
-                       forChangesFromRows:(NSArray*)oldRows
-                                   toRows:(NSArray*)newRows
+- (void)                  dispatchTableViewUpdateForSection:(NSUInteger)section
+                                         forChangesFromRows:(NSArray*)oldRows
+                                                     toRows:(NSArray*)newRows
 {
-    [self dispatchTableViewUpdateForSection:section
-                         forChangesFromRows:oldRows
-                                     toRows:newRows
-                 updateTableViewImmediately:NO];
-}
+    AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[@(section)];
+    if (pendingChanges == nil)
+    {
+        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:oldRows newArray:newRows];
+    }
+    else
+    {
+        // Merge previous changes with new ones:
+        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:pendingChanges.array];
+    }
+    self.pendingTableViewChanges[@(section)] = pendingChanges;
 
-- (void)initializeTableView
-{
     if (!self.tableViewReloadDispatched)
     {
-        if (self.pendingTableViewChanges.count == 0)
-        {
-            for (NSUInteger section=0; section < self.sections.count; ++section)
-            {
-                AKATableViewSectionDataSourceInfo* sectionInfo = self.sections[section];
-                NSArray* rows = sectionInfo.rows == (id)[NSNull null] ? nil : sectionInfo.rows;
-                self.pendingTableViewChanges[@(section)] =
-                    [[AKAArrayComparer alloc] initWithOldArray:@[] newArray:rows];
-            }
-            [self dispatchTableViewUpdateImmediately:YES];
-        }
-    }
-}
+        self.tableViewReloadDispatched = YES;
 
-- (void)performPendingTableViewUpdates
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf performPendingTableViewUpdates];
+        });
+    }}
+
+- (void)                     performPendingTableViewUpdates
 {
     void (^block)() = ^{
         UITableView* tableView = self.tableView;
@@ -414,7 +245,7 @@
             {
                 // It's only safe to update if the tableview is not scrolling:
                 [tableView beginUpdates];
-                for (NSNumber* sectionN in self.pendingTableViewChanges.keyEnumerator)
+                for (NSNumber* sectionN in self.pendingTableViewChanges.allKeys)
                 {
                     AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
 
@@ -442,9 +273,14 @@
             }
         }
     };
-    if (self.animatorBlock != NULL)
+
+    // Wrap updates in an animator block - if defined. This can be used to synchronize table view
+    // updates with other animations that should be performed alongside. TODO: use delegate to implement
+    // this (will begin/did end update table view); the implementation via block binding is ugly.
+    void (^animatorBlock)() = self.animatorBlock;
+    if (animatorBlock != NULL)
     {
-        self.animatorBlock(block);
+        animatorBlock(block);
     }
     else
     {
@@ -452,66 +288,7 @@
     }
 }
 
-- (void)dispatchTableViewUpdateImmediately:(BOOL)updateTableViewImmediately
-{
-    __weak typeof(self) weakSelf = self;
-
-    if (!self.tableViewReloadDispatched)
-    {
-        self.tableViewReloadDispatched = YES;
-
-        // We generally want to update the TV in a newly dispatched job, which will allow subsequent
-        // changes to binding sources to accumulate updates and perform them in one batch (better animations)
-        // But since Cocoa loads the table view in a job scheduled before this code is executed,
-        // the TV is already loaded when update() is run and this fails because the TV already is set up
-        // for the state of the data source, so we call the update synchronously the first time (or
-        // whenever self.updateTableViewSynchronously is YES) and then revert to deferred updates.
-        if (updateTableViewImmediately)
-        {
-            [self performPendingTableViewUpdates];
-        }
-        else
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf performPendingTableViewUpdates];
-            });
-        }
-    }
-}
-
-- (void)dispatchTableViewUpdateForSection:(NSUInteger)section
-                       forChangesFromRows:(NSArray*)oldRows
-                                   toRows:(NSArray*)newRows
-               updateTableViewImmediately:(BOOL)updateTableViewImmediately
-{
-    AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[@(section)];
-    if (pendingChanges == nil)
-    {
-        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:oldRows newArray:newRows];
-    }
-    else
-    {
-        // Merge previous changes with new ones:
-        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:pendingChanges.array];
-    }
-    self.pendingTableViewChanges[@(section)] = pendingChanges;
-
-    [self dispatchTableViewUpdateImmediately:updateTableViewImmediately];
-}
-
-- (AKAProperty*)    defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                              context:(req_AKABindingContext)bindingContext
-                                       changeObserver:(AKAPropertyChangeObserver)changeObserver
-                                                error:(NSError* __autoreleasing _Nullable*)error
-{
-    (void)bindingExpression;
-    (void)bindingContext;
-    (void)error;
-
-    return [AKAProperty propertyOfWeakKeyValueTarget:nil keyPath:nil changeObserver:changeObserver];
-}
-
-- (AKAProperty*)   createBindingTargetPropertyForView:(req_UIView)view
+- (AKAProperty*)         createBindingTargetPropertyForView:(req_UIView)view
 {
     (void)view;
 
@@ -566,15 +343,15 @@
             }];
 }
 
-- (UITableView*)                           tableView
+- (UITableView*)                                  tableView
 {
     return (UITableView*)self.view;
 }
 
-- (UITableViewCell*)                        tableView:(UITableView*)tableView
-                                          cellForItem:(id)item
-                                          atIndexPath:(NSIndexPath*)indexPath
-                                          withMapping:(NSArray<AKATableViewCellFactory*>*)itemToCellMapping
+- (UITableViewCell*)                              tableView:(UITableView*)tableView
+                                                cellForItem:(id)item
+                                                atIndexPath:(NSIndexPath*)indexPath
+                                                withMapping:(NSArray<AKATableViewCellFactory*>*)itemToCellMapping
 {
     UITableViewCell* result = nil;
 
@@ -594,9 +371,9 @@
     return result;
 }
 
-- (UITableViewCell*)                        tableView:(UITableView*)tableView
-                                cellForRowAtIndexPath:(NSIndexPath*)indexPath
-                                          withFactory:(AKATableViewCellFactory*)factory
+- (UITableViewCell*)                              tableView:(UITableView*)tableView
+                                      cellForRowAtIndexPath:(NSIndexPath*)indexPath
+                                                withFactory:(AKATableViewCellFactory*)factory
 {
     UITableViewCell* result = nil;
 
@@ -623,8 +400,8 @@
     return result;
 }
 
-- (AKATableViewSectionDataSourceInfo*)      tableView:(UITableView*)tableView
-                                       infoForSection:(NSInteger)section
+- (AKATableViewSectionDataSourceInfo*)            tableView:(UITableView*)tableView
+                                             infoForSection:(NSInteger)section
 {
     (void)tableView;
 
@@ -640,26 +417,35 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)             numberOfSectionsInTableView:(UITableView*)tableView
+- (NSInteger)                   numberOfSectionsInTableView:(UITableView*)tableView
 {
     (void)tableView;
     NSAssert(tableView == self.tableView,
              @"numberOfSectionsInTableView: Invalid tableView, expected binding target tableView");
 
-    return (NSInteger)self.sections.count;
+    // Return 0 sections if change observation start process is active, this will reload the
+    // table when completed.
+    NSInteger result = 0;
+    if (!self.startingChangeObservation)
+    {
+        result = (NSInteger)self.sections.count;
+    }
+    return result;
 }
 
-- (NSInteger)                               tableView:(UITableView*)tableView
-                                numberOfRowsInSection:(NSInteger)section
+- (NSInteger)                                     tableView:(UITableView*)tableView
+                                      numberOfRowsInSection:(NSInteger)section
 {
     NSAssert(tableView == self.tableView,
              @"tableView:numberOfRowsInSection: Invalid tableView, expected binding target tableView");
 
-    return (NSInteger)[self tableView:tableView infoForSection:section].rows.count;
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
+    NSInteger result = (NSInteger)sectionInfo.rows.count;
+    return result;
 }
 
-- (UITableViewCell*)                        tableView:(UITableView*)tableView
-                                cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*)                              tableView:(UITableView*)tableView
+                                      cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:indexPath.section];
     id item = sectionInfo.rows[(NSUInteger)indexPath.row];
@@ -684,8 +470,8 @@
     return result;
 }
 
-- (NSString*)                              tableView:(UITableView*)tableView
-                             titleForHeaderInSection:(NSInteger)section
+- (NSString*)                                     tableView:(UITableView*)tableView
+                                    titleForHeaderInSection:(NSInteger)section
 {
     NSString* result = nil;
 
@@ -707,8 +493,8 @@
     return result;
 }
 
-- (NSString*)                              tableView:(UITableView*)tableView
-                             titleForFooterInSection:(NSInteger)section
+- (NSString*)                                     tableView:(UITableView*)tableView
+                                    titleForFooterInSection:(NSInteger)section
 {
     NSString* result = nil;
 
@@ -732,9 +518,9 @@
 
 #pragma mark - UITableViewDelegate
 
-- (void)                                    tableView:(UITableView*)tableView
-                                      willDisplayCell:(UITableViewCell*)cell
-                                    forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)                                          tableView:(UITableView*)tableView
+                                            willDisplayCell:(UITableViewCell*)cell
+                                          forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     (void)tableView;
 
@@ -759,9 +545,9 @@
     }
 }
 
-- (void)                                    tableView:(UITableView*)tableView
-                                 didEndDisplayingCell:(UITableViewCell*)cell
-                                    forRowAtIndexPath:(NSIndexPath*)indexPath
+- (void)                                          tableView:(UITableView*)tableView
+                                       didEndDisplayingCell:(UITableViewCell*)cell
+                                          forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     (void)tableView;
 
@@ -780,6 +566,30 @@
     {
         [original tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat result = UITableViewAutomaticDimension;
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+    if ([original respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)])
+    {
+        result = [original tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+    return result;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat result = UITableViewAutomaticDimension;
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+    if ([original respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)])
+    {
+        result = [original tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+    }
+    return result;
 }
 
 @end

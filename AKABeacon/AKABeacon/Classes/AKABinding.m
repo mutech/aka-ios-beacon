@@ -511,11 +511,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
     return result;
 }
 
-- (void)willStartObservingChanges {}
-
-- (void)didStartObservingChanges {}
-
-- (BOOL)startObservingBindingPropertyBindings
+- (BOOL)              startObservingBindingPropertyBindings
 {
     BOOL result = YES;
     [self willStartObservingBindingPropertyBindings];
@@ -527,11 +523,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
     return result;
 }
 
-- (void)willStartObservingBindingPropertyBindings {}
-
-- (void)didStartObservingBindingPropertyBindings {}
-
-- (BOOL)startObservingBindingTarget
+- (BOOL)                        startObservingBindingTarget
 {
     [self willStartObservingBindingTarget];
     BOOL result = [self.bindingTarget startObservingChanges];
@@ -539,11 +531,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
     return result;
 }
 
-- (void)willStartObservingBindingTarget {}
-
-- (void)didStartObservingBindingTarget {}
-
-- (BOOL)startObservingBindingSource
+- (BOOL)                        startObservingBindingSource
 {
     [self willStartObservingBindingSource];
     BOOL result = [self.bindingSource startObservingChanges];
@@ -551,22 +539,14 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
     return result;
 }
 
-- (void)willStartObservingBindingSource {}
-
-- (void)didStartObservingBindingSource {}
-
-- (void)initializeTargetValueForObservationStart
+- (void)           initializeTargetValueForObservationStart
 {
     [self willInitializeTargetValueForObservationStart];
     [self updateTargetValue];
     [self didInitializeTargetValueForObservationStart];
 }
 
-- (void)willInitializeTargetValueForObservationStart {}
-
-- (void)didInitializeTargetValueForObservationStart {}
-
-- (BOOL)startObservingBindingTargetPropertyBindings
+- (BOOL)        startObservingBindingTargetPropertyBindings
 {
     BOOL result = YES;
     [self willStartObservingBindingTargetPropertyBindings];
@@ -577,10 +557,6 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
     [self didStartObservingBindingTargetPropertyBindings];
     return result;
 }
-
-- (void)willStartObservingBindingTargetPropertyBindings {}
-
-- (void)didStartObservingBindingTargetPropertyBindings {}
 
 - (BOOL)                               stopObservingChanges
 {
@@ -1197,6 +1173,33 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 
     return YES;
 }
+
+#pragma mark - Change Tracking
+
+
+- (void)willStartObservingChanges {}
+
+- (void)didStartObservingChanges {}
+
+- (void)willStartObservingBindingPropertyBindings {}
+
+- (void)didStartObservingBindingPropertyBindings {}
+
+- (void)willStartObservingBindingTarget {}
+
+- (void)didStartObservingBindingTarget {}
+
+- (void)willStartObservingBindingSource {}
+
+- (void)didStartObservingBindingSource {}
+
+- (void)willInitializeTargetValueForObservationStart {}
+
+- (void)didInitializeTargetValueForObservationStart {}
+
+- (void)willStartObservingBindingTargetPropertyBindings {}
+
+- (void)didStartObservingBindingTargetPropertyBindings {}
 
 @end
 

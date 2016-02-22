@@ -8,8 +8,15 @@
 
 #import "AKABinding.h"
 
-@interface AKABinding (Protected)
+/**
+ Category on AKABinding that allows sub classes to customize the default implementaiton of many aspects of bindings.
+ 
+ This mostly covers two areas: The binding's initialization and the change observation start process.
+ 
+ The initialization of the binding object (based on a binding expression and context), which happens when the binding is initialized. Initialization is typically triggered by controls inspecting the view hierarchy for binding expressions.
 
+ */
+@interface AKABinding (Protected)
 
 #pragma mark - Properties
 
@@ -39,6 +46,9 @@
                                                          error:(out_NSError)error;
 
 #pragma mark - Binding Attribute Initialization
+
+// Initialization routines for binding attributes. You can override these to perform additional or
+// alternative actions to setup you bindings for binding attributes.
 
 - (BOOL)                    initializeAttributesWithExpression:(req_AKABindingExpression)bindingExpression
                                                 bindingContext:(req_AKABindingContext)bindingContext
@@ -154,44 +164,70 @@
 
 #pragma mark - Change Tracking
 
+#pragma mark Observation start process events
+
+// These methods are entry points that sub classes can override to perform additional actions during
+// the observation start process. When overriding these methods, you should always call the corresponding
+// super implementation.
+
+/**
+ Called before the binding will start observing changes.
+ */
 - (void)willStartObservingChanges;
 
+/**
+ Called before the binding's sub bindings targeting binding properties will start observing changes.
+ */
 - (void)willStartObservingBindingPropertyBindings;
+
+/**
+ Called after the binding's sub bindings targeting binding properties change observation started.
+ */
 - (void)didStartObservingBindingPropertyBindings;
 
+/**
+ Called before the binding's target property starts observing changes.
+ */
 - (void)willStartObservingBindingTarget;
+
+/**
+ Called after the binding's target properties change observation started.
+ */
 - (void)didStartObservingBindingTarget;
 
+/**
+ Called before the binding's source property starts observing changes.
+ */
 - (void)willStartObservingBindingSource;
+
+/**
+ Called after the binding's source properties change observation started.
+ */
 - (void)didStartObservingBindingSource;
 
+/**
+ Called before the bindings target value will be initialized as part of the observation start process.
+ */
 - (void)willInitializeTargetValueForObservationStart;
+
+/**
+ Called after the bindings target value has been initialized as part of the observation start process.
+ */
 - (void)didInitializeTargetValueForObservationStart;
 
+/**
+ Called before the binding's sub bindings targeting the binding target's properties start observing changes.
+ */
 - (void)willStartObservingBindingTargetPropertyBindings;
+
+/**
+ Called after the binding's sub bindings targeting the binding target's properties change observation started.
+ */
 - (void)didStartObservingBindingTargetPropertyBindings;
 
+/**
+ Called after the bindings change observation started.
+ */
 - (void)didStartObservingChanges;
 
-/**
- Called before the target value will be updated by updateTargetValue methods and exposed to allow subclasses to perform additional actions at this point. Overriding implementations have to call the base implementation.
- 
- If you need to perform additional actions only before the target value is initialized, consider overriding initializeTargetValueForObservationStart instead.
-
- @param oldTargetValue old value
- @param newTargetValue new value
- */
-- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
-                                                         to:(opt_id)newTargetValue;
-
-/**
- Called after the target value has been updated by updateTargetValue methods and exposed to allow subclasses to perform additional actions at this point. Overriding implementations have to call the base implementation.
-
- If you need to perform additional actions only before the target value is initialized, consider overriding initializeTargetValueForObservationStart instead.
-
- @param oldTargetValue old value
- @param newTargetValue new value
- */
-- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
-                                                         to:(opt_id)newTargetValue;
 @end

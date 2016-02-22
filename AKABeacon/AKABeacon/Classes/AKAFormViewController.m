@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
 
-    [self setupScrollView];
+    //[self setupScrollView];
 
     [self initializeFormControl];
 }

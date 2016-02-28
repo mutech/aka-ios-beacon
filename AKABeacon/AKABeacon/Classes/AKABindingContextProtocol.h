@@ -27,10 +27,10 @@ typedef id<AKABindingContextProtocol> _Nullable       opt_AKABindingContext;
 - (opt_AKAProperty)         controlPropertyForKeyPath:(req_NSString)keyPath
                                    withChangeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;
 
-- (opt_id)                 dataContextValueForKeyPath:(req_NSString)keyPath;
+- (opt_id)                 dataContextValueForKeyPath:(opt_NSString)keyPath;
 
-- (opt_id)             rootDataContextValueForKeyPath:(req_NSString)keyPath;
+- (opt_id)             rootDataContextValueForKeyPath:(opt_NSString)keyPath;
 
-- (opt_id)                     controlValueForKeyPath:(req_NSString)keyPath;
+- (opt_id)                     controlValueForKeyPath:(opt_NSString)keyPath;
 
 @end

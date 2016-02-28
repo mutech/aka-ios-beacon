@@ -9,9 +9,13 @@
 #import "UIView+AKAIBBindingProperties.h"
 
 #import "AKABinding_UIView_styleBinding.h"
+#import "AKABinding_UIView_gesturesBinding.h"
+
 #import "AKAViewBinding+IBPropertySupport.h"
 
 @implementation UIView (AKAIBBindingProperties)
+
+#pragma mark - Style Binding
 
 - (NSString *)styleBinding_aka
 {
@@ -29,6 +33,21 @@
 - (Class)aka_styleBindingType
 {
     return [AKABinding_UIView_styleBinding class];
+}
+
+#pragma mark - Gestures Binding
+
+- (NSString *)gesturesBinding_aka
+{
+    return [AKABinding_UIView_gesturesBinding bindingExpressionTextForSelector:@selector(gesturesBinding_aka)
+                                                                        inView:self];
+}
+
+- (void)setGesturesBinding_aka:(NSString *)gesturesBinding_aka
+{
+    [AKABinding_UIView_gesturesBinding setBindingExpressionText:gesturesBinding_aka
+                                                    forSelector:@selector(gesturesBinding_aka)
+                                                         inView:self];
 }
 
 @end

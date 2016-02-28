@@ -12,6 +12,10 @@
 		8E066C041BC284DD006CADDC /* AKADateFormatterPropertyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E066C021BC284DD006CADDC /* AKADateFormatterPropertyBinding.m */; };
 		8E0714921BAA384E00C1DDC8 /* AKABinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E0714901BAA384E00C1DDC8 /* AKABinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E0714931BAA384E00C1DDC8 /* AKABinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0714911BAA384E00C1DDC8 /* AKABinding.m */; };
+		8E1264ED1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1264EB1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E1264EE1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1264EC1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.m */; };
+		8E1264F21C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1264F01C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E1264F31C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E1264F11C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m */; };
 		8E14D46A1BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E14D4681BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E14D46B1BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E14D4691BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m */; };
 		8E1BBDED1BCBD5A200B1ECF1 /* AKABeacon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1BBDEC1BCBD5A200B1ECF1 /* AKABeacon.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -289,6 +293,10 @@
 		8E066C021BC284DD006CADDC /* AKADateFormatterPropertyBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKADateFormatterPropertyBinding.m; sourceTree = "<group>"; };
 		8E0714901BAA384E00C1DDC8 /* AKABinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABinding.h; sourceTree = "<group>"; };
 		8E0714911BAA384E00C1DDC8 /* AKABinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding.m; sourceTree = "<group>"; };
+		8E1264EB1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UIView_gesturesBinding.h; sourceTree = "<group>"; };
+		8E1264EC1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UIView_gesturesBinding.m; sourceTree = "<group>"; };
+		8E1264F01C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATapGestureRecognizerBinding.h; sourceTree = "<group>"; };
+		8E1264F11C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATapGestureRecognizerBinding.m; sourceTree = "<group>"; };
 		8E14D4681BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h; sourceTree = "<group>"; };
 		8E14D4691BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m; sourceTree = "<group>"; };
 		8E1BBDEC1BCBD5A200B1ECF1 /* AKABeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABeacon.h; sourceTree = "<group>"; };
@@ -612,6 +620,15 @@
 			name = CustomKeyboard;
 			sourceTree = "<group>";
 		};
+		8E1264EF1C83063200C6C2AC /* GestureRecognizers */ = {
+			isa = PBXGroup;
+			children = (
+				8E1264F01C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.h */,
+				8E1264F11C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m */,
+			);
+			name = GestureRecognizers;
+			sourceTree = "<group>";
+		};
 		8E2115CB1BF3F75600A89CFC /* AKABeaconQuickTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,6 +794,7 @@
 				8E21A5EF1C666A2C00E69DA9 /* Formatters */,
 				8E21A5F11C666A8000E69DA9 /* Predicates */,
 				8E21A5F71C666C1E00E69DA9 /* Animations */,
+				8E1264EF1C83063200C6C2AC /* GestureRecognizers */,
 			);
 			name = PropertyBindings;
 			sourceTree = "<group>";
@@ -1198,6 +1216,8 @@
 				8EE8FA251C203A1500F1E370 /* UIView+AKAIBBindingProperties.m */,
 				8EE8FA281C203A3A00F1E370 /* AKABinding_UIView_styleBinding.h */,
 				8EE8FA291C203A3A00F1E370 /* AKABinding_UIView_styleBinding.m */,
+				8E1264EB1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.h */,
+				8E1264EC1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.m */,
 			);
 			name = UIView;
 			sourceTree = "<group>";
@@ -1263,6 +1283,7 @@
 				8EE26D4A1BCD1AF6003ACCEC /* AKAKeyboardControlViewBinding.h in Headers */,
 				8EE8FA2A1C203A3A00F1E370 /* AKABinding_UIView_styleBinding.h in Headers */,
 				8EE26D471BCD1A6D003ACCEC /* AKAControlViewBindingDelegate.h in Headers */,
+				8E1264ED1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.h in Headers */,
 				8EE26D601BCDABA5003ACCEC /* AKAControl+BindingDelegate.h in Headers */,
 				8EE26D761BCF0B4F003ACCEC /* AKAScalarControl+ControlViewBindingDelegate.h in Headers */,
 				8EE26D6F1BCEC25A003ACCEC /* AKAScalarControl_Protected.h in Headers */,
@@ -1323,6 +1344,7 @@
 				8E367A121BBADFF70094EF33 /* UISwitch+AKAIBBindingProperties.h in Headers */,
 				8E7233AC1B0022A200D647A9 /* AKAThemeProviderProtocol.h in Headers */,
 				8E7233B71B0022A200D647A9 /* UIView+AKAThemeProvider.h in Headers */,
+				8E1264F21C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.h in Headers */,
 				8ED3FCFF1C24031100C44412 /* AKAAttributedFormatter.h in Headers */,
 				8E81B6691B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h in Headers */,
 				8E7233A81B0022A200D647A9 /* AKATheme.h in Headers */,
@@ -1693,8 +1715,10 @@
 				8E593DD11BD51BFA0040B391 /* AKACollectionControlViewBinding.m in Sources */,
 				8E7233A91B0022A200D647A9 /* AKATheme.m in Sources */,
 				8E7FE4FC1C6376870036349A /* AKATimeZonePropertyBinding.m in Sources */,
+				8E1264F31C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m in Sources */,
 				8E2ED21E1C3A540B00FBA44D /* AKATableViewCellFactory.m in Sources */,
 				8EA7326C1C79C13B0018A8B3 /* AKATableViewSectionDataSourceInfoPropertyBinding.m in Sources */,
+				8E1264EE1C83038C00C6C2AC /* AKABinding_UIView_gesturesBinding.m in Sources */,
 				8E38569E1C2060700038CA5A /* AKABinding_UILabel_styleBinding.m in Sources */,
 				8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */,
 				8EE8FA2B1C203A3A00F1E370 /* AKABinding_UIView_styleBinding.m in Sources */,

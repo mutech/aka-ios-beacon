@@ -13,6 +13,8 @@ IB_DESIGNABLE
 
 @property(nonatomic, nullable) IBInspectable NSString* styleBinding_aka;
 
+@property(nonatomic, nullable) IBInspectable NSString* gesturesBinding_aka;
+
 @end
 
 

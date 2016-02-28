@@ -99,6 +99,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/UIView
 #import <AKABeacon/UIView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIView_styleBinding.h>
+#import <AKABeacon/AKABinding_UIView_gesturesBinding.h>
 
 // Bindings/ViewBindings/UILabel
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>
@@ -189,7 +190,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/PropertyBindings/Predicates
 #import <AKABeacon/AKAPredicatePropertyBinding.h>
 
-// Bidnings/PropertyBindings/Formatters
+// Bindings/PropertyBindings/Formatters
 #import <AKABeacon/AKAFormatterPropertyBinding.h>
 #import <AKABeacon/AKANumberFormatterPropertyBinding.h>
 #import <AKABeacon/AKADateFormatterPropertyBinding.h>
@@ -199,6 +200,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAAttributedFormatterPropertyBinding.h>
 #import <AKABeacon/AKAAttributedFormatter.h>
 
+// Bindings/PropertyBindings/GestureRecognizers
+#import <AKABeacon/AKATapGestureRecognizerBinding.h>
+
 // Bindings/PropertyBindings/Animations
 #import <AKABeacon/AKATransitionAnimationParameters.h>
 #import <AKABeacon/AKATransitionAnimationParametersPropertyBinding.h>
@@ -207,7 +211,6 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABindingExpression.h>
 #import <AKABeacon/AKABindingSpecification.h>
 #import <AKABeacon/AKABindingExpressionParser.h>
-
 
 // KeyboardActivationSequence
 #import <AKABeacon/AKAKeyboardActivationSequence.h>

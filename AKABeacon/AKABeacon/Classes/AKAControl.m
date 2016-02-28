@@ -259,7 +259,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 
 - (id)                     dataContextValueForKeyPath:(NSString *)keyPath
 {
-    return [self.dataContextProperty targetValueForKeyPath:keyPath];
+    return keyPath.length > 0 ? [self.dataContextProperty targetValueForKeyPath:keyPath] : self.dataContextProperty.value;
 }
 
 - (opt_AKAProperty) rootDataContextPropertyForKeyPath:(opt_NSString)keyPath
@@ -268,7 +268,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
     return [[self rootControl] dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
 }
 
-- (opt_id)             rootDataContextValueForKeyPath:(req_NSString)keyPath
+- (opt_id)             rootDataContextValueForKeyPath:(opt_NSString)keyPath
 {
     return [[self rootControl] dataContextValueForKeyPath:keyPath];
 }
@@ -281,11 +281,11 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                                       changeObserver:valueDidChange];
 }
 
-- (opt_id)                     controlValueForKeyPath:(req_NSString)keyPath
+- (opt_id)                     controlValueForKeyPath:(opt_NSString)keyPath
 {
     // TODO: consider using controlPropertyForKeyPath to use the AKAProperty keyPath
     // accessors
-    return [self valueForKeyPath:keyPath];
+    return keyPath.length > 0 ? [self valueForKeyPath:(req_NSString)keyPath] : self.dataContextProperty.value;
 }
 
 @end

@@ -316,17 +316,24 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 - (BOOL)                            addBindingForView:(req_UIView)view
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
+    return [self addBindingForView:view withBindingExpression:bindingExpression error:nil];
+}
+
+- (BOOL)                            addBindingForView:(req_UIView)view
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+                                                error:(out_NSError)error
+{
     NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
 
     BOOL result = NO;
-    NSError* error;
+    NSError* localError = nil;
 
     Class bindingType = bindingExpression.specification.bindingType;
     NSAssert([bindingType isSubclassOfClass:[AKAViewBinding class]],
              @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKAViewBinding", view, bindingExpression);
 
     AKAViewBinding* binding = [bindingType alloc];
-    binding = [binding initWithView:view expression:bindingExpression context:self delegate:self error:&error];
+    binding = [binding initWithView:view expression:bindingExpression context:self delegate:self error:&localError];
     if (binding)
     {
         result = [self addBinding:binding];
@@ -335,6 +342,17 @@ static NSString* const kRegisteredControlKey = @"aka_control";
             [binding startObservingChanges];
         }
     }
+    else if (error == nil)
+    {
+        @throw [NSException exceptionWithName:@"Unhandled error"
+                                       reason:localError.localizedDescription
+                                     userInfo:nil];
+    }
+    else
+    {
+        *error = localError;
+    }
+
     return result;
 }
 

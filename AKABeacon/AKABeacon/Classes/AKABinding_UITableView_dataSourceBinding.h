@@ -15,15 +15,39 @@
 @protocol AKABindingDelegate_UITableView_dataSourceBinding <AKAViewBindingDelegate>
 
 @optional
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
-      addDynamicBindingsForCell:(req_UITableViewCell)cell
-                      indexPath:(req_NSIndexPath)indexPath
-                    dataContext:(opt_id)dataContext;
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+          addDynamicBindingsForCell:(req_UITableViewCell)cell
+                          indexPath:(req_NSIndexPath)indexPath
+                        dataContext:(opt_id)dataContext;
 
 @optional
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
-   removeDynamicBindingsForCell:(req_UITableViewCell)cell
-                      indexPath:(req_NSIndexPath)indexPath;
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+       removeDynamicBindingsForCell:(req_UITableViewCell)cell
+                          indexPath:(req_NSIndexPath)indexPath;
+
+@optional
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+       addDynamicBindingsForSection:(NSInteger)section
+                         headerView:(req_UIView)headerView
+                        dataContext:(opt_id)dataContext;
+
+@optional
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+    removeDynamicBindingsForSection:(NSInteger)section
+                         headerView:(req_UIView)headerView
+                        dataContext:(opt_id)dataContext;
+@optional
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+       addDynamicBindingsForSection:(NSInteger)section
+                         footerView:(req_UIView)headerView
+                        dataContext:(opt_id)dataContext;
+
+@optional
+- (void)                    binding:(AKABinding_UITableView_dataSourceBinding* _Nonnull)binding
+    removeDynamicBindingsForSection:(NSInteger)section
+                         footerView:(req_UIView)headerView
+                        dataContext:(opt_id)dataContext;
+
 
 @end
 

@@ -67,8 +67,17 @@
     return result;
 }
 
-- (instancetype)initWithView:(req_UIView)target expression:(req_AKABindingExpression)bindingExpression context:(req_AKABindingContext)bindingContext delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error {
-    if (self = [super initWithView:target expression:bindingExpression context:bindingContext delegate:delegate error:error])
+- (instancetype)initWithView:(req_UIView)target
+                  expression:(req_AKABindingExpression)bindingExpression
+                     context:(req_AKABindingContext)bindingContext
+                    delegate:(opt_AKABindingDelegate)delegate
+                       error:(out_NSError)error
+{
+    if (self = [super initWithView:target
+                        expression:bindingExpression
+                           context:bindingContext
+                          delegate:delegate
+                             error:error])
     {
         AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
         UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
@@ -79,7 +88,9 @@
         }
         else
         {
-            NSAssert(inputView == nil, @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.", self, triggerView, inputView);
+            NSAssert(inputView == nil,
+                     @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
+                     self, triggerView, inputView);
 
             _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
             _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -89,7 +100,11 @@
             {
                 // Picker binding uses the same binding expression, which relies on picker binding to accept
                 // unknown attributes.
-                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithView:_pickerView expression:pickerBindingExpression context:bindingContext delegate:self error:error];
+                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithView:_pickerView
+                                                                                 expression:pickerBindingExpression
+                                                                                    context:bindingContext
+                                                                                   delegate:self
+                                                                                      error:error];
             }
 
             if (_pickerBinding == nil)

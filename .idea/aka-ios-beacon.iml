@@ -4,42 +4,41 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon.podspec" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SliderViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/AppDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SearchResultHighlightingViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/main.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SearchResultHighlightingViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TableViewBindingViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/Assets.xcassets" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/BindingExpressionsPlayground.playground" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TableViewBindingViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SegmentedControlViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SearchResultHighlightingViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/PickerKeyboardViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/PickerKeyboardViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SearchResultHighlightingViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/Base.lproj/LaunchScreen.storyboard" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/Base.lproj/Main.storyboard" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/Assets.xcassets" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/DynamicPlaceholderCellTableViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TableViewBindingViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/AppDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/DynamicPlaceholderCellTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/BindingExpressionsPlayground.playground" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TableViewBindingViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/ImageViewDemoViewController.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/PickerKeyboardViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/ImageViewDemoViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SegmentedControlViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/LabelDemoTableViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SliderViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/SegmentedControlViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/LabelDemoTableViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemo/AppDelegate.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemoUITests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeaconDemo/AKABeaconDemoUITests/AKAControlsGalleryUITests.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Podfile" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAThemeTests.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionSpecificationTest.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAControlTests.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAEmailValidatorTest.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABeaconTests.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionTest.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionSpecificationTest.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKAThemeTests.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKARuntimeTests.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicFormTableViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconTests/AKABindingExpressionTest.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicFormTableViewController.m" isTestSource="false" />
@@ -47,279 +46,288 @@
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingContextProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicFormTableViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_gesturesBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormatterPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_styleBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconNullability.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactory.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATapGestureRecognizerBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIImageView+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactory.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewDataSourceAndDelegateDispatcher.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconStyleKit.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewDataSourceAndDelegateDispatcher.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALocalePropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding+IBPropertySupport.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALocalePropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding+IBPropertySupport.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConfiguration.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeProviderProtocol.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIPickerView+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATapGestureRecognizerBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIPickerView+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl_Internal.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegateDispatcher.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATransitionAnimationParameters.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCellCompositeControl.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactory.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardBinding_AKACustomKeyboardResponderView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormTableViewController.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKALayoutConstraintSpecification.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewDataSourcePropertyBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIImageView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingContextProtocol.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberFormatterPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITableView+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADateFormatterPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITableView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding+IBPropertySupport.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADateFormatterPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberTextConverter.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISegmentedControl_valueBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_Protected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKABindingSupport.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIImageView_imageBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABeaconErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl_Internal.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADateFormatterPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryArrayPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryArrayPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAThemeProvider.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_gesturesBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceAccessoryView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_styleBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatter.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEmailValidator.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASubviewsSpecification.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewDataSourcePropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequenceItemProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewDataSourcePropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberFormatterPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIPickerView_valueBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAArrayPropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView_Protected.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewCustomization.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextView+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISlider+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeLayout.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors_Internal.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISlider_valueBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATransitionAnimationParameters.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_styleBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATransitionAnimationParametersPropertyBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidatorProtocol.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIStepper_valueBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAProtocolInfo.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISegmentedControl+IBBindingProperties.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidationState.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAProtocolInfo.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCell.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryArrayPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryArrayPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIImageView_imageBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASwitchEditorControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPickerKeyboardTriggerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UISwitch+AKAIBBindingProperties.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATransitionAnimationParametersPropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UISwitch_stateBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl+ControlViewBindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITextField+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACustomKeyboardResponderView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewSectionDataSourceInfoPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABooleanTextConverter.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegateDispatcher.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UITableView+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConverterProtocol.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATimeZonePropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlConfiguration.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATimeZonePropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIStepper+AKAIBBindingProperties.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryPropertyBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormatterPropertyBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControlView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatterPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATheme.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatterPropertyBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADatePickerKeyboardTriggerView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlValidationState.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAAttributedFormatterPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewSectionDataSourceInfo.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextField_textBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_styleBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UIView_styleBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_styleBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableContainerView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewSectionDataSourceInfo.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAScalarControl_Protected.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATimeZonePropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAComplexControlViewBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAEditorControlView_Protected.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANSEnumerations.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACollectionControlViewBindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewProtocol.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKANumberFormatterPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATextEditorControlView.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACalendarPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellCompositeControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardActivationSequence.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACalendarPropertyBinding.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKACompositeControl+BindingDelegatePropagation.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAControl+BindingDelegate.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITextView_textBinding.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKABindingErrors_Internal.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAArrayPropertyBinding.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADynamicPlaceholderTableViewCell.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemableCompositeControlView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewSectionDataSourceInfoPropertyBinding.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAFormControl+BindingDelegatePropagation.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/AKAThemeViewApplicability.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UIView+AKAIBBindingProperties.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Classes/UILabel+AKAIBBindingProperties.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/AKABeaconNullability.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/AKABeacon.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeacon/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/TestBaseBindingContext.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKATableViewCellFactoryArrayPropertyBindingSpec.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/UITextViewBindingsSpec.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKABeacon-BridgingHeader.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKAArrayPropertyBindingSpec.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/UILabelBindingsSpec.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKAPredicatePropertyBindingSpec.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/AKATableViewCellFactoryArrayPropertyBindingSpec.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/TestBaseBindingContext.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/TestModel.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/AKABeacon/AKABeaconQuickTests/UILabelBindingsWithTextAttributes.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.markdown" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-frameworks.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-acknowledgements.markdown" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.release.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-frameworks.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-prefix.pch" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/Info.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon-umbrella.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKABeacon/AKABeacon.modulemap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.markdown" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-dummy.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-acknowledgements.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-acknowledgements.plist" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-frameworks.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.release.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-acknowledgements.markdown" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-resources.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.debug.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-frameworks.sh" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.modulemap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-prefix.pch" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack-dummy.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.modulemap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/CocoaLumberjack/CocoaLumberjack.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-acknowledgements.markdown" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.modulemap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-frameworks.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Info.plist" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-dummy.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-umbrella.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.debug.xcconfig" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests-resources.sh" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods-AKABeaconDemo-AKABeaconDemoUITests/Pods-AKABeaconDemo-AKABeaconDemoUITests.release.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-umbrella.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons.modulemap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/AKACommons/AKACommons-prefix.pch" isTestSource="false" />
@@ -341,14 +349,13 @@
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAssertMacros.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLegacyMacros.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogCapture.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDAbstractDatabaseLogger.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLogMacros.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDFileLogger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDTTYLogger.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDASLLogger.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/Extensions/DDMultiFormatter.m" isTestSource="false" />
@@ -361,53 +368,54 @@
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog+LOGV.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLog.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/CocoaLumberjack.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expectation.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expression.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/CocoaLumberjack/Classes/DDLogMacros.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/DSL.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/objc/NMBExceptionCapture.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Nimble.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL+Wait.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/MatcherProtocols.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThanOrEqual.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeIdenticalTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThan.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Contain.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThanOrEqualTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Match.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeEmpty.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/AllPass.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLogical.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAKindOf.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/HaveCount.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAnInstanceOf.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeNil.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeCloseTo.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/ThrowError.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Equal.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThan.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/RaisesException.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/EndWith.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeginWith.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionDispatcher.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AdapterProtocols.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionRecorder.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/NimbleXCTestHandler.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/FailureMessage.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expectation.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Poll.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Stringers.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/Functional.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Utils/SourceLocation.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/DSL+Wait.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Nimble.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/MatcherProtocols.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThanOrEqual.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeIdenticalTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Contain.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAKindOf.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeNil.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThanOrEqualTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Match.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeGreaterThan.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/AllPass.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLogical.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/HaveCount.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeAnInstanceOf.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/RaisesException.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeCloseTo.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeEmpty.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/ThrowError.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/Equal.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeLessThan.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/EndWith.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Matchers/BeginWith.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Expression.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AdapterProtocols.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/NimbleXCTestHandler.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionRecorder.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Adapters/AssertionDispatcher.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/MatcherFunc.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/AsyncMatcherWrapper.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/ObjCMatcher.swift" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/Wrappers/MatcherFunc.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/FailureMessage.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Nimble/Nimble/ObjCExpectation.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.swift" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/World+DSL.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/QCKDSL.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/DSL/DSL.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Callsite.swift" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Quick/Quick/Filter.swift" isTestSource="false" />
@@ -437,12 +445,13 @@
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAAssociatedValues.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOPublisher_Internal.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAReference.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKAConcurrencyTools.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAConstraintTools.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVCoordinateMappingProtocol.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAReusableViewsSupport.m" isTestSource="false" />
@@ -462,21 +471,19 @@
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVRowSegment.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPNetmask.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPNetmask.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPNetmask.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANetworkingErrors.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANetworkingErrors.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVSection.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSIndexPath+AKARowAndSectionAsInteger.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKATVSection.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/UIView+AKAHierarchyVisitor.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSIndexPath+AKARowAndSectionAsInteger.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAMutableOrderedDictionary.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAIPAddress.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKALog.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKANullability.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOSubscription_Internal.h" isTestSource="false" />
@@ -491,6 +498,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAKVOChangeEvent.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAArrayComparer.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/NSObject+AKASelectorTools.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAErrors.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../aka-ios-commons/AKACommons/Classes/AKAInterfaceInfo.h" isTestSource="false" />
     </content>
@@ -498,6 +506,8 @@
     <orderEntry type="module-library">
       <library name="Header Search Paths">
         <CLASSES>
+          <root url="file://$MODULE_DIR$/Pods/Reveal-iOS-SDK/Reveal-Framework-iOS-1.6.2/Reveal.framework/Headers" />
+          <root url="file://$MODULE_DIR$/Pods/Headers/Public" />
           <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
           <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />
@@ -589,6 +599,8 @@
           <root url="file:///Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1" />
         </CLASSES>
         <SOURCES>
+          <root url="file://$MODULE_DIR$/Pods/Reveal-iOS-SDK/Reveal-Framework-iOS-1.6.2/Reveal.framework/Headers" />
+          <root url="file://$MODULE_DIR$/Pods/Headers/Public" />
           <root url="file://$MODULE_DIR$/Pods/Headers/Private" />
           <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/InterfaceBuilderKit.framework/Headers" />
           <root url="file:///Applications/Xcode.app/Contents/PlugIns/Xcode3Core.ideplugin/Contents/SharedSupport/Developer/Library/Frameworks/DTPerformanceSession.framework/Headers" />

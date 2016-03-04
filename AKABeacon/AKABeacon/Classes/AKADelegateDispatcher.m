@@ -40,10 +40,20 @@
 - (instancetype)initWithProtocols:(NSArray<Protocol*>*)protocols
                         delegates:(NSArray*)delegates
 {
+    return [self initWithProtocols:protocols delegates:delegates autoAddMappings:YES];
+}
+
+- (instancetype)initWithProtocols:(NSArray<Protocol*>*)protocols
+                        delegates:(NSArray*)delegates
+                  autoAddMappings:(BOOL)autoAddMappings
+{
     if (self = [self initWithProtocols:protocols])
     {
         _targetsBySelectorName = [NSMapTable strongToWeakObjectsMapTable];
-        [self addMappingsForDelegates:delegates];
+        if (autoAddMappings)
+        {
+            [self addMappingsForDelegates:delegates];
+        }
     }
     return self;
 }
@@ -60,6 +70,12 @@
                     toDelegate:(req_id)delegate
 {
     [self->_targetsBySelectorName setObject:delegate forKey:selectorName];
+}
+
+- (BOOL)shouldAddMappingFromSelector:(SEL)selector
+                          toDelegate:(id)delegate
+{
+    return YES;
 }
 
 - (void)addMappingsForDelegates:(NSArray*)delegates
@@ -91,10 +107,13 @@
                           }
                           if ([delegate respondsToSelector:selector])
                           {
-                              implementedByDelegates = YES;
-                              [self addMappingFromSelector:selectorName
-                                                toDelegate:delegate];
-                              break;
+                              if ([self shouldAddMappingFromSelector:selector toDelegate:delegate])
+                              {
+                                  implementedByDelegates = YES;
+                                  [self addMappingFromSelector:selectorName
+                                                    toDelegate:delegate];
+                                  break;
+                              }
                           }
                       }
                       if (isRequired && !implementedByDelegates)

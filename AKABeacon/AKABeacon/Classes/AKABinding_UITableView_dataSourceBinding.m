@@ -592,4 +592,107 @@
     return result;
 }
 
+
+- (void)                                          tableView:(UITableView*)tableView
+                                      willDisplayHeaderView:(nonnull UIView *)view
+                                                 forSection:(NSInteger)section
+{
+    (void)tableView;
+
+    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(binding:addDynamicBindingsForSection:headerView:dataContext:)])
+    {
+        [delegate               binding:self
+           addDynamicBindingsForSection:section
+                             headerView:view
+                            dataContext:dataContext];
+    }
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
+    if ([original respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)])
+    {
+        [original tableView:tableView willDisplayHeaderView:view forSection:section];
+    }
+}
+
+- (void)                                          tableView:(UITableView*)tableView
+                                      willDisplayFooterView:(nonnull UIView *)view
+                                                 forSection:(NSInteger)section
+{
+    (void)tableView;
+
+    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(binding:addDynamicBindingsForSection:footerView:dataContext:)])
+    {
+        [delegate               binding:self
+           addDynamicBindingsForSection:section
+                             footerView:view
+                            dataContext:dataContext];
+    }
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
+    if ([original respondsToSelector:@selector(tableView:willDisplayFooterView:forSection:)])
+    {
+        [original tableView:tableView willDisplayFooterView:view forSection:section];
+    }
+}
+
+- (void)                                          tableView:(UITableView*)tableView
+                                 didEndDisplayingHeaderView:(nonnull UIView *)view
+                                                 forSection:(NSInteger)section
+{
+    (void)tableView;
+
+    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    if ([delegate respondsToSelector:@selector(binding:removeDynamicBindingsForSection:headerView:dataContext:)])
+    {
+        [delegate               binding:self
+        removeDynamicBindingsForSection:section
+                             headerView:view
+                            dataContext:dataContext];
+    }
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
+    if ([original respondsToSelector:@selector(tableView:didEndDisplayingHeaderView:forSection:)])
+    {
+        [original tableView:tableView didEndDisplayingHeaderView:view forSection:section];
+    }
+}
+
+- (void)                                          tableView:(UITableView*)tableView
+                                 didEndDisplayingFooterView:(nonnull UIView *)view
+                                                 forSection:(NSInteger)section
+{
+    (void)tableView;
+
+    id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    if ([delegate respondsToSelector:@selector(binding:removeDynamicBindingsForSection:footerView:dataContext:)])
+    {
+        [delegate               binding:self
+        removeDynamicBindingsForSection:section
+                             footerView:view
+                            dataContext:dataContext];
+    }
+
+    id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
+
+    if ([original respondsToSelector:@selector(tableView:didEndDisplayingFooterView:forSection:)])
+    {
+        [original tableView:tableView didEndDisplayingFooterView:view forSection:section];
+    }
+}
+
 @end

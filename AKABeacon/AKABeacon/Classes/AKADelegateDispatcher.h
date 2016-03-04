@@ -32,4 +32,15 @@
 - (instancetype)initWithProtocols:(NSArray<Protocol*>*)protocols
                         delegates:(NSArray*)delegates;
 
+/**
+ Allows sub classes to prevent a selector-delegate mapping to be established. The default implementation returns YES.
+
+ @param selector the selector
+ @param delegate the implementing delegate
+
+ @return YES if the mapping should be established, NO otherwise.
+ */
+- (BOOL)shouldAddMappingFromSelector:(SEL)selector
+                          toDelegate:(id)delegate;
+
 @end

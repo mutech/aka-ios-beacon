@@ -2,37 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fa26bcb-7e48-4423-a3a7-b049b6bd183e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeaconNullability.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegateDispatcher.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegateDispatcher.m" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_Protected.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" afterPath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/project.pbxproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/AKABeacon.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAArrayPropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAArrayPropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpressionParser.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UILabel_textBinding.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACalendarPropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKACalendarPropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlDelegate.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControlViewBindingDelegate.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormatterPropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormatterPropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAKeyboardControlViewBindingDelegate.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKALocalePropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKALocalePropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPredicatePropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAPropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATimeZonePropertyBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATimeZonePropertyBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAViewBinding.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.m" />
     </list>
     <ignored path="aka-ios-beacon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,7 +25,7 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_1ef3cb1fb60cb1ca2e75507044d277e14468b326" />
   <component name="FavoritesManager">
     <favorites_list name="AKAControls" />
   </component>
@@ -59,7 +37,7 @@
             <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="917" column="43" selection-start-line="917" selection-start-column="43" selection-end-line="917" selection-end-column="43" />
+                  <caret line="992" column="27" selection-start-line="992" selection-start-column="27" selection-end-line="992" selection-end-column="27" />
                   <folding>
                     <element signature="e#24629#31651#0" expanded="false" />
                     <element signature="e#27414#27777#0" expanded="false" />
@@ -85,7 +63,7 @@
           <file leaf-file-name="AKASelectionControlViewBinding.m" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.54916316">
+                <state vertical-scroll-proportion="0.5480167">
                   <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
                   <folding />
                 </state>
@@ -121,7 +99,7 @@
           <file leaf-file-name="AKABinding.h" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.025104603">
+                <state vertical-scroll-proportion="0.027139874">
                   <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
                   <folding />
                 </state>
@@ -159,11 +137,11 @@
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingExpression.m" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCellFactoryPropertyBinding.m" />
-        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingDelegate.h" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m" />
         <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABindingSpecification.h" />
+        <option value="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h" />
       </list>
     </option>
   </component>
@@ -405,13 +383,6 @@
       </EXTENSION>
       <method />
     </configuration>
-    <configuration default="false" name="Pods-AKABeaconDemo-AKABeaconDemoUITests" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-AKABeaconDemo-AKABeaconDemoUITests" CONFIG_NAME="Debug" SCHEME_NAME="Pods-AKABeaconDemo-AKABeaconDemoUITests" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
-      <envs />
-      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
-        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
-      </EXTENSION>
-      <method />
-    </configuration>
     <configuration default="false" name="Pods-AKABeaconDemo" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-AKABeaconDemo" CONFIG_NAME="Debug" SCHEME_NAME="Pods-AKABeaconDemo" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
       <envs />
       <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
@@ -433,7 +404,7 @@
       </EXTENSION>
       <method />
     </configuration>
-    <list size="12">
+    <list size="11">
       <item index="0" class="java.lang.String" itemvalue="Application.AKABeacon" />
       <item index="1" class="java.lang.String" itemvalue="Application.AKABeaconUITests" />
       <item index="2" class="java.lang.String" itemvalue="Application.AKABeaconDemo" />
@@ -441,11 +412,10 @@
       <item index="4" class="java.lang.String" itemvalue="Application.CocoaLumberjack" />
       <item index="5" class="java.lang.String" itemvalue="Application.Nimble" />
       <item index="6" class="java.lang.String" itemvalue="Application.Pods-AKABeacon" />
-      <item index="7" class="java.lang.String" itemvalue="Application.Pods-AKABeaconDemo-AKABeaconDemoUITests" />
-      <item index="8" class="java.lang.String" itemvalue="Application.Pods-AKABeaconDemo" />
-      <item index="9" class="java.lang.String" itemvalue="Application.Pods-AKABeaconQuickTests" />
-      <item index="10" class="java.lang.String" itemvalue="Application.Quick" />
-      <item index="11" class="java.lang.String" itemvalue="Application.AKACommons" />
+      <item index="7" class="java.lang.String" itemvalue="Application.Pods-AKABeaconDemo" />
+      <item index="8" class="java.lang.String" itemvalue="Application.Pods-AKABeaconQuickTests" />
+      <item index="9" class="java.lang.String" itemvalue="Application.Quick" />
+      <item index="10" class="java.lang.String" itemvalue="Application.AKACommons" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -474,18 +444,18 @@
     <frame x="-1920" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24381253" sideWeight="0.48411497" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2855691" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24381253" sideWeight="0.48411497" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32825205" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13322802" sideWeight="0.515885" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964718" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2855691" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32825205" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -776,7 +746,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -791,7 +760,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -813,7 +781,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.0178572">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -821,7 +788,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="102" column="5" selection-start-line="102" selection-start-column="5" selection-end-line="102" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -829,7 +795,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.7271096">
           <caret line="192" column="43" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -845,7 +810,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.025104603">
+        <state vertical-scroll-proportion="0.027139874">
           <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
           <folding />
         </state>
@@ -854,7 +819,7 @@
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="917" column="43" selection-start-line="917" selection-start-column="43" selection-end-line="917" selection-end-column="43" />
+          <caret line="992" column="27" selection-start-line="992" selection-start-column="27" selection-end-line="992" selection-end-column="27" />
           <folding>
             <element signature="e#24629#31651#0" expanded="false" />
             <element signature="e#27414#27777#0" expanded="false" />
@@ -884,7 +849,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKASelectionControlViewBinding.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.54916316">
+        <state vertical-scroll-proportion="0.5480167">
           <caret line="37" column="47" selection-start-line="37" selection-start-column="47" selection-end-line="37" selection-end-column="47" />
           <folding />
         </state>

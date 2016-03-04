@@ -85,37 +85,42 @@
              }*/
         }
 
-
-        NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
-            @"Invalid target %@, expected instance of AKAProperty", target);
-        _bindingTarget = target;
-        _bindingContext = bindingContext;
-        _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
-                                                                  delegateOverwrites:self];
-
-        __weak AKABinding *weakSelf = self;
-        req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
-            [weakSelf sourceValueDidChangeFromOldValue:oldValue
-                                            toNewValue:newValue];
-        };
-        AKAProperty *bindingSource = [self bindingSourceForExpression:bindingExpression
-                                                              context:bindingContext
-                                                       changeObserver:changeObserver
-                                                                error:&localError];
-        if (bindingSource)
+        if (self)
         {
-            _bindingSource = (req_AKAProperty)bindingSource;
-        }
-        else
-        {
-            self = nil;
-        }
+            NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
+                     @"Invalid target %@, expected instance of AKAProperty", target);
+            _bindingTarget = target;
+            _bindingContext = bindingContext;
+            _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
+                                                                      delegateOverwrites:self];
 
-        if (![self initializeAttributesWithExpression:bindingExpression
-                                       bindingContext:bindingContext
-                                                error:&localError])
-        {
-            self = nil;
+            __weak AKABinding *weakSelf = self;
+            req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
+                [weakSelf sourceValueDidChangeFromOldValue:oldValue
+                                                toNewValue:newValue];
+            };
+            AKAProperty *bindingSource = [self bindingSourceForExpression:bindingExpression
+                                                                  context:bindingContext
+                                                           changeObserver:changeObserver
+                                                                    error:&localError];
+            if (bindingSource)
+            {
+                _bindingSource = (req_AKAProperty)bindingSource;
+            }
+            else
+            {
+                self = nil;
+            }
+
+            if (self)
+            {
+                if (![self initializeAttributesWithExpression:bindingExpression
+                                               bindingContext:bindingContext
+                                                        error:&localError])
+                {
+                    self = nil;
+                }
+            }
         }
     }
 
@@ -920,6 +925,8 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 
     (void)error;
 
+    __block NSError* localError = nil;
+
     AKABindingSpecification* specification = [self.class specification];
 
     [((opt_AKABindingExpressionAttributes)(bindingExpression.attributes)) enumerateKeysAndObjectsUsingBlock:
@@ -949,7 +956,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                                                         specification:attributeSpec
                                                   attributeExpression:attribute
                                                        bindingContext:bindingContext
-                                                                error:error];
+                                                                error:&localError];
                      break;
                  }
 
@@ -958,7 +965,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                      result = [self initializeBindingPropertyValueAssignmentAttribute:bindingPropertyName
                                                                     withSpecification:attributeSpec
                                                                   attributeExpression:attribute
-                                                                       bindingContext:bindingContext error:error];
+                                                                       bindingContext:bindingContext error:&localError];
                      break;
                  }
 
@@ -968,7 +975,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                                                                          withSpecification:attributeSpec
                                                                        attributeExpression:attribute
                                                                             bindingContext:bindingContext
-                                                                                     error:error];
+                                                                                     error:&localError];
                      break;
                  }
 
@@ -978,7 +985,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                                                                    withSpecification:attributeSpec
                                                                  attributeExpression:attribute
                                                                       bindingContext:bindingContext
-                                                                               error:error];
+                                                                               error:&localError];
                      break;
                  }
 
@@ -988,14 +995,18 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                                                             withSpecification:attributeSpec
                                                           attributeExpression:attribute
                                                                bindingContext:bindingContext
-                                                                        error:error];
+                                                                        error:&localError];
 
                      break;
                  }
 
                  case AKABindingAttributeUseBindToTargetProperty:
                  {
-                     result = [self initializeTargetPropertyBindingAttribute:bindingPropertyName withSpecification:attributeSpec attributeExpression:attribute bindingContext:bindingContext error:error];
+                     result = [self initializeTargetPropertyBindingAttribute:bindingPropertyName
+                                                           withSpecification:attributeSpec
+                                                         attributeExpression:attribute
+                                                              bindingContext:bindingContext
+                                                                       error:&localError];
                      break;
                  }
 
@@ -1008,10 +1019,15 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
              result = [self initializeUnspecifiedAttribute:attributeName
                                        attributeExpression:attribute
                                             bindingContext:bindingContext
-                                                     error:error];
+                                                     error:&localError];
          }
          *stop = !result;
      }];
+
+    if (!result && error)
+    {
+        *error = localError;
+    }
 
     return result;
 }

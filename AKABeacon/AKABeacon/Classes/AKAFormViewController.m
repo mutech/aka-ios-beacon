@@ -6,6 +6,8 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKACommons.UIView_AKAHierarchyVisitor;
+
 #import "AKAFormViewController.h"
 
 #import "AKAControl.h"
@@ -102,6 +104,11 @@
     (void)control;
     (void)binding;
 
+    if (!self.activeResponder)
+    {
+        // There is no guarantee that responderWillActivate will be called, so we might have to do it's job here
+        self.activeResponder = responder;
+    }
     [self scrollViewToVisible:responder animated:YES];
 }
 
@@ -240,9 +247,13 @@
         // that anymore (thanks), but we can't control it either (thanks) so our "friendlyFrame"
         // computation doesn't work anymore. We could wrap the text field in another disabled scrollview
         // to fix this, but we'll leave out the hacks until it's needed.
-        if (!(([[[UIDevice currentDevice] systemVersion] compare:@"9.0"
-                                                         options:NSNumericSearch] == NSOrderedAscending) &&
-              [firstResponder isKindOfClass:[UITextField class]]))
+        //
+        // In the case where there is another scrollview nested in self.scrollView, we still want to do
+        // the scrolling.
+        if ((!(([[[UIDevice currentDevice] systemVersion] compare:@"9.0"
+                                                          options:NSNumericSearch] == NSOrderedAscending) &&
+               [firstResponder isKindOfClass:[UITextField class]])
+             || (self.scrollView != nil && self.scrollView != [firstResponder aka_superviewOfType:[UIScrollView class]])))
         {
             CGRect frame = firstResponder.frame;
             CGRect friendlyFrame = [firstResponder convertRect:CGRectMake(frame.origin.x,

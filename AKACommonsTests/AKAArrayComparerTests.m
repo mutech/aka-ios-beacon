@@ -39,7 +39,7 @@
         NSInteger offset = comparer.permutationAfterDeletionsAndBeforeInsertions[i].integerValue;
         if (offset != 0)
         {
-            XCTAssert(offset > 0, @"Invalid negative offset %lu", (NSUInteger)offset);
+            XCTAssert(offset > 0, @"Invalid negative offset %lu", (unsigned long)offset);
             NSUInteger sourceIndex = i + (NSUInteger)offset;
             id item = replay[sourceIndex];
             [replay removeObjectAtIndex:sourceIndex];

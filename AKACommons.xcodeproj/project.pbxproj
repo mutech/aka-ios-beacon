@@ -178,8 +178,6 @@
 		8EFBE85F1BBC6343004E264F /* AKAMutableOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		8EFBE8601BBC6343004E264F /* AKAMutableOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAMutableOrderedDictionary.m; sourceTree = "<group>"; };
 		970BC6C13CE657F342FB53CD /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5F4812C7A94C62C8C9EB057 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		DE35B7D0FD2319192E94A959 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,7 +277,6 @@
 				8E90F9501AF8E69A00CBBB52 /* AKACommonsTests */,
 				8E90F9421AF8E69A00CBBB52 /* Products */,
 				D6CB84603C8EA8F4C4CBCD3F /* Frameworks */,
-				F1B1568C63B099B984AAF432 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -423,15 +420,6 @@
 				970BC6C13CE657F342FB53CD /* Pods.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F1B1568C63B099B984AAF432 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B5F4812C7A94C62C8C9EB057 /* Pods.debug.xcconfig */,
-				DE35B7D0FD2319192E94A959 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -775,7 +763,6 @@
 		};
 		8E90F9581AF8E69A00CBBB52 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5F4812C7A94C62C8C9EB057 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
@@ -800,7 +787,6 @@
 		};
 		8E90F9591AF8E69A00CBBB52 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE35B7D0FD2319192E94A959 /* Pods.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

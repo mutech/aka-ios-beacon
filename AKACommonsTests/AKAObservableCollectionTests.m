@@ -62,7 +62,7 @@
 
 
     [items addObject:@"four"];
-    XCTAssertEqual(3, changes.count);
+    XCTAssertEqual(3u, changes.count);
 
     change = changes[1];
     changeKind = ((NSNumber*)change[NSKeyValueChangeKindKey]).unsignedIntegerValue;

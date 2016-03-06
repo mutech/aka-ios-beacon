@@ -209,7 +209,7 @@
         NSInteger offset = [permutation[targetIndex] integerValue];
         if (offset != 0)
         {
-            NSIndexPath* source = [NSIndexPath indexPathForRow:(NSInteger)(targetIndex + offset)
+            NSIndexPath* source = [NSIndexPath indexPathForRow:(NSInteger)targetIndex + offset
                                                      inSection:(NSInteger)section];
             NSIndexPath* target = [NSIndexPath indexPathForRow:(NSInteger)targetIndex
                                                      inSection:(NSInteger)section];

@@ -7,7 +7,7 @@
 //
 
 @import AKACommons.AKALog;
-@import AKACommons.UIView_AKAHierarchyVisitor                              ;
+@import AKACommons.UIView_AKAHierarchyVisitor;
 
 #import "AKATableViewCompositeControl.h"
 #import "AKAControl_Internal.h"
@@ -16,29 +16,29 @@
 @interface AKATableViewDynamicSectionInfo: NSObject
 
 /**
- The data context used by cell bindings. Uses a strong reference to ensure that the data context is retained while the binding is active (which in turn corresponds to the life time of the associated control.
+   The data context used by cell bindings. Uses a strong reference to ensure that the data context is retained while the binding is active (which in turn corresponds to the life time of the associated control.
  */
 @property(nonatomic) id dataContext;
 
 /**
- The section index.
+   The section index.
 
- @note Please note that this value might not be up to date, especially during and short after table view update operations resulting from inserting/deleting/reordering sections.
+   @note Please note that this value might not be up to date, especially during and short after table view update operations resulting from inserting/deleting/reordering sections.
  */
 @property(nonatomic) NSInteger section;
 
 /**
- The view displayed for the header of footer.
+   The view displayed for the header of footer.
  */
 @property(nonatomic, weak) UIView* headerOrFooter;
 
 /**
- Determines if the view is used as header or footer of the table view section.
+   Determines if the view is used as header or footer of the table view section.
  */
 @property(nonatomic) BOOL isHeader;
 
 /**
- The control owning bindings and representing this row.
+   The control owning bindings and representing this row.
  */
 @property(nonatomic, weak) AKACompositeControl* control;
 
@@ -59,6 +59,7 @@
         self.control = control;
         self.dataContext = dataContext;
     }
+
     return self;
 }
 
@@ -75,6 +76,7 @@
         self.control = control;
         self.dataContext = dataContext;
     }
+
     return self;
 }
 
@@ -82,29 +84,29 @@
 
 
 /**
- Contains information about currently displayed table view rows. The primary use is to ensure that data contexts for cells are kept alive while bindings are observing them.
+   Contains information about currently displayed table view rows. The primary use is to ensure that data contexts for cells are kept alive while bindings are observing them.
  */
 @interface AKATableViewDynamicRowInfo: NSObject
 
 /**
- The data context used by cell bindings. Uses a strong reference to ensure that the data context is retained while the binding is active (which in turn corresponds to the life time of the associated control.
+   The data context used by cell bindings. Uses a strong reference to ensure that the data context is retained while the binding is active (which in turn corresponds to the life time of the associated control.
  */
 @property(nonatomic) id dataContext;
 
 /**
- The index path of the row.
- 
- @note Please note that this value might not be up to date, especially during and short after table view update operations resulting from inserting/deleting/reordering rows.
+   The index path of the row.
+
+   @note Please note that this value might not be up to date, especially during and short after table view update operations resulting from inserting/deleting/reordering rows.
  */
 @property(nonatomic) NSIndexPath* indexPath;
 
 /**
- The cell displayed for the row.
+   The cell displayed for the row.
  */
 @property(nonatomic, weak) UITableViewCell* cell;
 
 /**
- The control owning bindings and representing this row.
+   The control owning bindings and representing this row.
  */
 @property(nonatomic, weak) AKACompositeControl* control;
 
@@ -125,22 +127,34 @@
         self.control = control;
         self.dataContext = dataContext;
     }
+
     return self;
 }
 
 @end
 
 
-@interface AKATableViewCompositeControl() <AKABindingDelegate_UITableView_dataSourceBinding>
+@interface AKATableViewCompositeControl () <AKABindingDelegate_UITableView_dataSourceBinding>
 
 /**
- Provides information about visible rows. Most importantly, row infos keep strong references to data contexts used in bindings of rows to ensure that they are kept
+   Provides information about visible rows. Most importantly, row infos keep strong references to data contexts used in bindings of rows to ensure that they are kept alive while the bindings are observing changes.
  */
-@property(nonatomic, readonly) NSMutableSet<AKATableViewDynamicRowInfo*>* dynamicRowInfos;
-@property(nonatomic) BOOL dynamicRowInfoUpdateDispatched;
+@property(nonatomic, readonly) NSMutableSet<AKATableViewDynamicRowInfo*>*       dynamicRowInfos;
 
-@property(nonatomic, readonly) NSMutableSet<AKATableViewDynamicSectionInfo*>* dynamicSectionInfos;
-@property(nonatomic) BOOL dynamicSectionInfoUpdateDispatched;
+/**
+ Indicates whether an update for dynamic row infos is dispatched. If so, further updates to rows will not dispatch another update.
+ */
+@property(nonatomic)           BOOL                                             dynamicRowInfoUpdateDispatched;
+
+/**
+ Provides information about visible sections. Most importantly, section infos keep strong references to data contexts used in bindings of section headers and footers to ensure that they are kept alive while the bindings are observing changes.
+ */
+@property(nonatomic, readonly) NSMutableSet<AKATableViewDynamicSectionInfo*>*   dynamicSectionInfos;
+
+/**
+ Indicates whether an update for dynamic section infos is dispatched. If so, further updates to sections will not dispatch another update.
+ */
+@property(nonatomic)           BOOL                                             dynamicSectionInfoUpdateDispatched;
 
 @end
 
@@ -149,31 +163,33 @@
 
 #pragma mark - Initialization
 
-- (instancetype)               init
+- (instancetype)                                        init
 {
     if (self = [super init])
     {
         _dynamicRowInfos = [NSMutableSet new];
     }
+
     return self;
 }
 
-#pragma mark - View Binding Delegate (Cell bindings)
+#pragma mark - Managing Controls and Bindings for Visible Rows
 
-- (AKATableViewDynamicRowInfo*)dynamicRowInfoForCell:(UITableViewCell*)cell
-                                           indexPath:(NSIndexPath*)indexPath
-                                 requireMatchingCell:(BOOL)requireMatchingCell
-                            requireMatchingIndexPath:(BOOL)requireMatchingIndexPath
+- (AKATableViewDynamicRowInfo*)        dynamicRowInfoForCell:(UITableViewCell*)cell
+                                                   indexPath:(NSIndexPath*)indexPath
+                                         requireMatchingCell:(BOOL)requireMatchingCell
+                                    requireMatchingIndexPath:(BOOL)requireMatchingIndexPath
 {
     __block AKATableViewDynamicRowInfo* result = nil;
     __block AKATableViewDynamicRowInfo* resultMatchingCell = nil;
     __block AKATableViewDynamicRowInfo* resultMatchingIndexPath = nil;
 
     [self.dynamicRowInfos enumerateObjectsUsingBlock:
-     ^(AKATableViewDynamicRowInfo * _Nonnull rowInfo, BOOL * _Nonnull stop) {
+     ^(AKATableViewDynamicRowInfo* _Nonnull rowInfo, BOOL* _Nonnull stop) {
          if (cell == rowInfo.cell)
          {
              resultMatchingCell = rowInfo;
+
              if ([indexPath isEqual:rowInfo.indexPath])
              {
                  result = rowInfo;
@@ -191,6 +207,7 @@
     {
         result = resultMatchingCell;
     }
+
     if (!result && !requireMatchingCell)
     {
         result = resultMatchingIndexPath;
@@ -199,10 +216,10 @@
     return result;
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
-          addDynamicBindingsForCell:(UITableViewCell *)cell
-                          indexPath:(NSIndexPath*)indexPath
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                                   addDynamicBindingsForCell:(UITableViewCell*)cell
+                                                   indexPath:(NSIndexPath*)indexPath
+                                                 dataContext:(id)dataContext
 {
     (void)binding;
 
@@ -219,6 +236,7 @@
             // Cell matches, in this case the old row info will be reused or replaced
 
             AKAControl* previousRowInfoControl = previousRowInfo.control;
+
             if (previousRowInfoControl && previousRowInfo.dataContext == dataContext)
             {
                 // cell, control and dataContext are equal, we're going to reuse the cell
@@ -249,6 +267,7 @@
     }
 
     AKACompositeControl* control = rowInfo.control;
+
     if (!control)
     {
         control = [[AKACompositeControl alloc] initWithDataContext:dataContext
@@ -271,9 +290,9 @@
                                           excludeViews:nil];
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding*)binding
-       removeDynamicBindingsForCell:(UITableViewCell *)cell
-                          indexPath:(NSIndexPath*)indexPath
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                                removeDynamicBindingsForCell:(UITableViewCell*)cell
+                                                   indexPath:(NSIndexPath*)indexPath
 {
     (void)binding;
 
@@ -281,9 +300,11 @@
                                                             indexPath:indexPath
                                                   requireMatchingCell:YES
                                              requireMatchingIndexPath:NO];
+
     if (rowInfo)
     {
         AKAControl* rowInfoControl = rowInfo.control;
+
         if (rowInfoControl)
         {
             [self removeControl:rowInfoControl];
@@ -296,11 +317,12 @@
 }
 
 /**
- Dispatches a call to performUpdateRowInfos to the main queue in order to do this once for all changes triggered in the current main queue job.
+   Dispatches a call to performUpdateRowInfos to the main queue in order to do this once for all changes triggered in the current main queue job.
  */
-- (void)dispatchUpdateRowInfos
+- (void)                              dispatchUpdateRowInfos
 {
     NSAssert([NSThread isMainThread], @"Has to be called from main thread only");
+
     if (!self.dynamicRowInfoUpdateDispatched)
     {
         self.dynamicRowInfoUpdateDispatched = YES;
@@ -312,43 +334,46 @@
 }
 
 /**
- Iterates through all dynamicRowInfos to correct indexPaths that might have changed during the last tableView update.
+   Iterates through all dynamicRowInfos to correct indexPaths that might have changed during the last tableView update.
  */
-- (void)performUpdateRowInfos
+- (void)                               performUpdateRowInfos
 {
     if (self.dynamicRowInfoUpdateDispatched)
     {
         self.dynamicRowInfoUpdateDispatched = NO;
 
         UITableView* tableView = (UITableView*)self.view;
+
         if (tableView)
         {
-            [self.dynamicRowInfos enumerateObjectsUsingBlock:^(AKATableViewDynamicRowInfo * _Nonnull obj, BOOL * _Nonnull __unused stop) {
-                NSAssert([obj isKindOfClass:[AKATableViewDynamicRowInfo class]], @"Something ugly happened - investigate");
-                UITableViewCell* cell = obj.cell;
-                if (cell)
-                {
-                    NSIndexPath* indexPath = [tableView indexPathForCell:cell];
-                    if (indexPath)
-                    {
-                        if (![indexPath isEqual:obj.indexPath])
-                        {
-                            obj.indexPath = indexPath;
-                        }
-                    }
-                    else
-                    {
-                        // TODO: We might want to delete rowInfos for cells which are no longer visible, even though that doesn't seem to be necessary, at least not in all cases -> investigate in which cases this happens.
-                        NSLog(@"Strange: rowInfo refers to a cell which is not visible: investigate this");
-                    }
-                }
-            }];
+            [self.dynamicRowInfos enumerateObjectsUsingBlock:
+             ^(AKATableViewDynamicRowInfo* _Nonnull obj, BOOL* _Nonnull __unused stop)
+             {
+                 UITableViewCell* cell = obj.cell;
+
+                 if (cell)
+                 {
+                     NSIndexPath* indexPath = [tableView indexPathForCell:cell];
+
+                     if (indexPath)
+                     {
+                         if (![indexPath isEqual:obj.indexPath])
+                         {
+                             obj.indexPath = indexPath;
+                         }
+                     }
+                     else
+                     {
+                         // TODO: We might want to delete rowInfos for cells which are no longer visible, even though that doesn't seem to be necessary, at least not in all cases -> investigate if and in which cases this happens.
+                         NSLog(@"Strange: rowInfo refers to a cell which is not visible: investigate this");
+                     }
+                 }
+             }];
         }
     }
 }
 
-
-
+#pragma mark - Managing Controls and Bindings for Visible Section Headers and Footers
 
 - (AKATableViewDynamicSectionInfo*)dynamicSectionInfoForView:(UIView*)view
                                                     asHeader:(BOOL)isHeaderView
@@ -361,12 +386,13 @@
     __block AKATableViewDynamicSectionInfo* resultMatchingSection = nil;
 
     [self.dynamicSectionInfos enumerateObjectsUsingBlock:
-     ^(AKATableViewDynamicSectionInfo * _Nonnull sectionInfo, BOOL * _Nonnull stop) {
+     ^(AKATableViewDynamicSectionInfo* _Nonnull sectionInfo, BOOL* _Nonnull stop) {
          if (isHeaderView == sectionInfo.isHeader)
          {
              if (view == sectionInfo.headerOrFooter)
              {
                  resultMatchingView = sectionInfo;
+
                  if (section == sectionInfo.section)
                  {
                      result = sectionInfo;
@@ -385,6 +411,7 @@
     {
         result = resultMatchingView;
     }
+
     if (!result && !requireMatchingView)
     {
         result = resultMatchingSection;
@@ -393,11 +420,11 @@
     return result;
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-       addDynamicBindingsForSection:(NSInteger)section
-                               view:(UIView *)headerOrFooterView
-                           asHeader:(BOOL)isHeader
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                                addDynamicBindingsForSection:(NSInteger)section
+                                                        view:(UIView*)headerOrFooterView
+                                                    asHeader:(BOOL)isHeader
+                                                 dataContext:(id)dataContext
 {
     (void)binding;
 
@@ -417,6 +444,7 @@
             // View matches, in this case the old section info will be reused or replaced
 
             AKAControl* previousSectionInfoControl = previousSectionInfo.control;
+
             if (previousSectionInfoControl && previousSectionInfo.dataContext == dataContext)
             {
                 // view, control and dataContext are equal, we're going to reuse the view
@@ -447,6 +475,7 @@
     }
 
     AKACompositeControl* control = sectionInfo.control;
+
     if (!control)
     {
         control = [[AKACompositeControl alloc] initWithDataContext:dataContext
@@ -479,11 +508,11 @@
                                           excludeViews:nil];
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-    removeDynamicBindingsForSection:(NSInteger)section
-                               view:(UIView *)headerOrFooterView
-                           asHeader:(BOOL)isHeader
-                        dataContext:(id __unused)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                             removeDynamicBindingsForSection:(NSInteger)section
+                                                        view:(UIView*)headerOrFooterView
+                                                    asHeader:(BOOL)isHeader
+                                                 dataContext:(id __unused)dataContext
 {
     (void)binding;
 
@@ -493,9 +522,11 @@
                               inSection:section
                     requireMatchingView:YES
                  requireMatchingSection:NO];
+
     if (sectionInfo)
     {
         AKAControl* sectionInfoControl = sectionInfo.control;
+
         if (sectionInfoControl)
         {
             [self removeControl:sectionInfoControl];
@@ -507,51 +538,50 @@
     }
 }
 
-
 /**
- Dispatches a call to performUpdateSectionInfos to the main queue in order to do this once for all changes triggered in the current main queue job.
+   Dispatches a call to performUpdateSectionInfos to the main queue in order to do this once for all changes triggered in the current main queue job.
  */
-- (void)dispatchUpdateSectionInfos
+- (void)                          dispatchUpdateSectionInfos
 {
     // TODO: implement analog to rows (don't know how to do that yet)
 }
 
 /**
- Iterates through all dynamicSectionInfos to correct section indexes that might have changed during the last tableView update.
+   Iterates through all dynamicSectionInfos to correct section indexes that might have changed during the last tableView update.
  */
-- (void)performUpdateSectionInfos
+- (void)                           performUpdateSectionInfos
 {
     // TODO: How to implement that for sections?
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-       addDynamicBindingsForSection:(NSInteger)section
-                         headerView:(UIView *)headerView
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                                addDynamicBindingsForSection:(NSInteger)section
+                                                  headerView:(UIView*)headerView
+                                                 dataContext:(id)dataContext
 {
     [self binding:binding addDynamicBindingsForSection:section view:headerView asHeader:YES dataContext:dataContext];
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-    removeDynamicBindingsForSection:(NSInteger)section
-                         headerView:(UIView *)headerView
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                             removeDynamicBindingsForSection:(NSInteger)section
+                                                  headerView:(UIView*)headerView
+                                                 dataContext:(id)dataContext
 {
     [self binding:binding removeDynamicBindingsForSection:section view:headerView asHeader:YES dataContext:dataContext];
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-       addDynamicBindingsForSection:(NSInteger)section
-                         footerView:(UIView *)footerView
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                                addDynamicBindingsForSection:(NSInteger)section
+                                                  footerView:(UIView*)footerView
+                                                 dataContext:(id)dataContext
 {
     [self binding:binding addDynamicBindingsForSection:section view:footerView asHeader:NO dataContext:dataContext];
 }
 
-- (void)                    binding:(AKABinding_UITableView_dataSourceBinding *)binding
-    removeDynamicBindingsForSection:(NSInteger)section
-                         footerView:(UIView *)footerView
-                        dataContext:(id)dataContext
+- (void)                                             binding:(AKABinding_UITableView_dataSourceBinding*)binding
+                             removeDynamicBindingsForSection:(NSInteger)section
+                                                  footerView:(UIView*)footerView
+                                                 dataContext:(id)dataContext
 {
     [self binding:binding removeDynamicBindingsForSection:section view:footerView asHeader:NO dataContext:dataContext];
 }

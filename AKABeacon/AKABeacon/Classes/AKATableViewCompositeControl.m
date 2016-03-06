@@ -218,7 +218,8 @@
         {
             // Cell matches, in this case the old row info will be reused or replaced
 
-            if (previousRowInfo.control && previousRowInfo.dataContext == dataContext)
+            AKAControl* previousRowInfoControl = previousRowInfo.control;
+            if (previousRowInfoControl && previousRowInfo.dataContext == dataContext)
             {
                 // cell, control and dataContext are equal, we're going to reuse the cell
                 rowInfo = previousRowInfo;
@@ -232,9 +233,9 @@
             else
             {
                 // data context changed or control is undefined, we're going to replace the rowinfo
-                if (previousRowInfo.control)
+                if (previousRowInfoControl)
                 {
-                    [self removeControl:previousRowInfo.control];
+                    [self removeControl:previousRowInfoControl];
                 }
                 [self.dynamicRowInfos removeObject:previousRowInfo];
             }
@@ -282,9 +283,10 @@
                                              requireMatchingIndexPath:NO];
     if (rowInfo)
     {
-        if (rowInfo.control)
+        AKAControl* rowInfoControl = rowInfo.control;
+        if (rowInfoControl)
         {
-            [self removeControl:rowInfo.control];
+            [self removeControl:rowInfoControl];
         }
         [self.dynamicRowInfos removeObject:rowInfo];
 
@@ -321,29 +323,26 @@
         UITableView* tableView = (UITableView*)self.view;
         if (tableView)
         {
-            // If reporting/logging updates or deletes is needed (TODO: uncomment or remove when code is stable)
-            //__block NSUInteger updated = 0;
-            //__block NSUInteger deleted = 0;
-            [self.dynamicRowInfos enumerateObjectsUsingBlock:^(AKATableViewDynamicRowInfo * _Nonnull obj, BOOL * _Nonnull stop) {
+            [self.dynamicRowInfos enumerateObjectsUsingBlock:^(AKATableViewDynamicRowInfo * _Nonnull obj, BOOL * _Nonnull __unused stop) {
                 NSAssert([obj isKindOfClass:[AKATableViewDynamicRowInfo class]], @"Something ugly happened - investigate");
-                NSIndexPath* indexPath = [tableView indexPathForCell:obj.cell];
-                if (indexPath)
+                UITableViewCell* cell = obj.cell;
+                if (cell)
                 {
-                    if (![indexPath isEqual:obj.indexPath])
+                    NSIndexPath* indexPath = [tableView indexPathForCell:cell];
+                    if (indexPath)
                     {
-                        obj.indexPath = indexPath;
-                        //++updated;
+                        if (![indexPath isEqual:obj.indexPath])
+                        {
+                            obj.indexPath = indexPath;
+                        }
+                    }
+                    else
+                    {
+                        // TODO: We might want to delete rowInfos for cells which are no longer visible, even though that doesn't seem to be necessary, at least not in all cases -> investigate in which cases this happens.
+                        NSLog(@"Strange: rowInfo refers to a cell which is not visible: investigate this");
                     }
                 }
-                else
-                {
-                    // TODO: We might want to delete rowInfos for cells which are no longer visible, even though that doesn't seem to be necessary, at least not in all cases -> investigate in which cases this happens.
-
-                    //++deleted;
-                    NSLog(@"Strange: rowInfo refers to a cell which is not visible: investigate this");
-                }
             }];
-            //NSLog(@"Updated row infos (%lu updated, %lu deleted)", (unsigned long)updated, (unsigned long)deleted);
         }
     }
 }
@@ -417,7 +416,8 @@
         {
             // View matches, in this case the old section info will be reused or replaced
 
-            if (previousSectionInfo.control && previousSectionInfo.dataContext == dataContext)
+            AKAControl* previousSectionInfoControl = previousSectionInfo.control;
+            if (previousSectionInfoControl && previousSectionInfo.dataContext == dataContext)
             {
                 // view, control and dataContext are equal, we're going to reuse the view
                 sectionInfo = previousSectionInfo;
@@ -431,9 +431,9 @@
             else
             {
                 // data context changed or control is undefined, we're going to replace the sectionInfo
-                if (previousSectionInfo.control)
+                if (previousSectionInfoControl)
                 {
-                    [self removeControl:previousSectionInfo.control];
+                    [self removeControl:previousSectionInfoControl];
                 }
                 [self.dynamicSectionInfos removeObject:previousSectionInfo];
             }
@@ -483,7 +483,7 @@
     removeDynamicBindingsForSection:(NSInteger)section
                                view:(UIView *)headerOrFooterView
                            asHeader:(BOOL)isHeader
-                        dataContext:(id)dataContext
+                        dataContext:(id __unused)dataContext
 {
     (void)binding;
 
@@ -495,9 +495,10 @@
                  requireMatchingSection:NO];
     if (sectionInfo)
     {
-        if (sectionInfo.control)
+        AKAControl* sectionInfoControl = sectionInfo.control;
+        if (sectionInfoControl)
         {
-            [self removeControl:sectionInfo.control];
+            [self removeControl:sectionInfoControl];
         }
         [self.dynamicSectionInfos removeObject:sectionInfo];
 

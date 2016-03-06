@@ -1823,9 +1823,6 @@ The number editor text field uses two different formatters, one for display and 
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Table View Binding" id="GaJ-ac-NBZ"/>
-                    <connections>
-                        <outlet property="tableView" destination="U3O-eM-S5F" id="6Df-wg-cLL"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PRa-zh-kQn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1843,9 +1840,14 @@ The number editor text field uses two different formatters, one for display and 
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0WE-oS-g7M">
+                                <rect key="frame" x="140" y="84" width="94" height="29"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka" value="selectedImageIndex"/>
+                                </userDefinedRuntimeAttributes>
+                            </stepper>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="l1d-7S-PU7">
-                                <rect key="frame" x="155" y="80" width="64" height="48"/>
-                                <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                <rect key="frame" x="155" y="133" width="64" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" placeholder="YES" id="01d-Ob-TYv"/>
                                     <constraint firstAttribute="width" constant="64" placeholder="YES" id="guy-5U-qND"/>
@@ -1861,22 +1863,16 @@ The number editor text field uses two different formatters, one for display and 
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" wraps="YES" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0WE-oS-g7M">
-                                <rect key="frame" x="140" y="144" width="94" height="29"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka" value="selectedImageIndex"/>
-                                </userDefinedRuntimeAttributes>
-                            </stepper>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="1Pd-hz-ufm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="0WE-oS-g7M" secondAttribute="bottom" constant="16" id="2Gc-gy-AS9"/>
                             <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="l1d-7S-PU7" secondAttribute="trailing" constant="8" id="B4z-fp-ntC"/>
                             <constraint firstItem="l1d-7S-PU7" firstAttribute="centerX" secondItem="C8N-La-nI6" secondAttribute="centerX" id="FQP-35-W4O"/>
+                            <constraint firstItem="1Pd-hz-ufm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="l1d-7S-PU7" secondAttribute="bottom" constant="8" id="NyU-Ap-a2D"/>
                             <constraint firstItem="0WE-oS-g7M" firstAttribute="centerX" secondItem="C8N-La-nI6" secondAttribute="centerX" id="RNi-sz-ct1"/>
-                            <constraint firstItem="0WE-oS-g7M" firstAttribute="top" secondItem="l1d-7S-PU7" secondAttribute="bottom" constant="16" id="bNj-ae-ZqL"/>
-                            <constraint firstItem="l1d-7S-PU7" firstAttribute="top" secondItem="6Vv-K7-n4n" secondAttribute="bottom" constant="16" id="iUe-IJ-Efb"/>
+                            <constraint firstItem="0WE-oS-g7M" firstAttribute="top" secondItem="6Vv-K7-n4n" secondAttribute="bottom" constant="20" id="egB-C6-GS3"/>
                             <constraint firstItem="l1d-7S-PU7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="C8N-La-nI6" secondAttribute="leadingMargin" constant="8" id="omW-fU-2eQ"/>
+                            <constraint firstItem="l1d-7S-PU7" firstAttribute="top" secondItem="0WE-oS-g7M" secondAttribute="bottom" constant="20" id="wyc-sh-Pwm"/>
                         </constraints>
                     </view>
                 </viewController>

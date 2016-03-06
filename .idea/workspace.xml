@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fa26bcb-7e48-4423-a3a7-b049b6bd183e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" afterPath="$PROJECT_DIR$/.idea/aka-ios-beacon.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon.xcodeproj/xcshareddata/xcschemes/AKABeaconUITests.xcscheme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding_UITableView_dataSourceBinding.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKADelegateDispatcher.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKATableViewCompositeControl.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" afterPath="$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAFormViewController.m" />
     </list>
     <ignored path="aka-ios-beacon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,7 +31,7 @@
             <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="992" column="27" selection-start-line="992" selection-start-column="27" selection-end-line="992" selection-end-column="27" />
+                  <caret line="1008" column="27" selection-start-line="1008" selection-start-column="27" selection-end-line="1008" selection-end-column="27" />
                   <folding>
                     <element signature="e#24629#31651#0" expanded="false" />
                     <element signature="e#27414#27777#0" expanded="false" />
@@ -84,7 +78,7 @@
             <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="254" column="46" selection-start-line="254" selection-start-column="46" selection-end-line="254" selection-end-column="46" />
+                  <caret line="271" column="1" selection-start-line="271" selection-start-column="1" selection-end-line="271" selection-end-column="1" />
                   <folding>
                     <element signature="e#334#370#0" expanded="true" />
                   </folding>
@@ -801,7 +795,7 @@
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKAControl.m">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="254" column="46" selection-start-line="254" selection-start-column="46" selection-end-line="254" selection-end-column="46" />
+          <caret line="271" column="1" selection-start-line="271" selection-start-column="1" selection-end-line="271" selection-end-column="1" />
           <folding>
             <element signature="e#334#370#0" expanded="true" />
           </folding>
@@ -819,7 +813,7 @@
     <entry file="file://$PROJECT_DIR$/AKABeacon/AKABeacon/Classes/AKABinding.m">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="992" column="27" selection-start-line="992" selection-start-column="27" selection-end-line="992" selection-end-column="27" />
+          <caret line="1008" column="27" selection-start-line="1008" selection-start-column="27" selection-end-line="1008" selection-end-column="27" />
           <folding>
             <element signature="e#24629#31651#0" expanded="false" />
             <element signature="e#27414#27777#0" expanded="false" />

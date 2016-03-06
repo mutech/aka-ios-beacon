@@ -15,9 +15,6 @@
 {
     [super viewDidLoad];
     self.images = @[ @"AKALogo",
-                     [AKABeaconStyleKit imageOfBackBarButtonItemIcon],
-                     [AKABeaconStyleKit imageOfForthBarButtonItemIcon],
-                     [AKABeaconStyleKit imageOfCloseKeyboardBarButtonItemIcon],
                      @"Photo"
                     ];
 }

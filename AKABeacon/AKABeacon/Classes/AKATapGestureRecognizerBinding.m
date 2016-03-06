@@ -108,7 +108,7 @@
 
 #pragma mark - Conversion
 
-- (BOOL)                              convertSourceValue:(id)sourceValue
+- (BOOL)                              convertSourceValue:(id __unused)sourceValue
                                            toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
                                                    error:(NSError *__autoreleasing  _Nullable *)error
 {
@@ -169,7 +169,14 @@
     NSAssert(sender == self.syntheticTargetValue,
              @"Unexpected sender %@, expected %@", sender, self.syntheticTargetValue);
 
-    [self.target performSelector:self.action withObject:sender];
+    id target = self.target;
+    SEL action = self.action;
+    if ([target respondsToSelector:action])
+    {
+        IMP imp = [target methodForSelector:action];
+        void (*func)(id, SEL, id) = (void *)imp;
+        func(target, action, sender);
+    }
 }
 
 @end

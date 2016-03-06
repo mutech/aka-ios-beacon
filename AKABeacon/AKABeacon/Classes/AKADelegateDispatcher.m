@@ -72,8 +72,8 @@
     [self->_targetsBySelectorName setObject:delegate forKey:selectorName];
 }
 
-- (BOOL)shouldAddMappingFromSelector:(SEL)selector
-                          toDelegate:(id)delegate
+- (BOOL)shouldAddMappingFromSelector:(__unused SEL)selector
+                          toDelegate:(__unused id)delegate
 {
     return YES;
 }

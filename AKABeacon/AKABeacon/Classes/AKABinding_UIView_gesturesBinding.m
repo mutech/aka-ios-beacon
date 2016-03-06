@@ -44,25 +44,27 @@
 - (AKAProperty*)createBindingTargetPropertyForView:(req_UIView)view
 {
     (void)view;
-    // We might want to use some base style/theming mechanism here. For the time
-    // being, the primary value is simply ignored and the binding target value too.
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-repeated-use-of-weak"
+    // The binding target property is only used to install/uninstall the tapGestureRecognizer on
+    // observation start/stop. Getter and setter are not used.
     __weak typeof(self) weakSelf = self;
     return [AKAProperty propertyOfWeakTarget:view
                                       getter:
-            ^id _Nullable(req_id target)
+            ^id _Nullable(__unused req_id target)
             {
-                return target;
+                return nil;
             }
                                       setter:
-            ^(req_id target, opt_id value)
+            ^(__unused req_id target, __unused opt_id value)
             {
                 (void)target;
                 (void)value;
             }
                           observationStarter:
-            ^BOOL(req_id target)
+            ^BOOL(__unused req_id target)
             {
-                UIView* view = target;
                 if (weakSelf.tapGestureRecognizer)
                 {
                     [view addGestureRecognizer:weakSelf.tapGestureRecognizer];
@@ -70,15 +72,15 @@
                 return YES;
             }
                           observationStopper:
-            ^BOOL(req_id target)
+            ^BOOL(__unused req_id target)
             {
-                UIView* view = target;
                 if (weakSelf.tapGestureRecognizer)
                 {
                     [view removeGestureRecognizer:weakSelf.tapGestureRecognizer];
                 }
                 return YES;
             }];
+#pragma clang diagnostic pop
 }
 
 - (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression

@@ -239,32 +239,46 @@
 
 - (void)                               scrollViewToVisible:(UIResponder*)activeResponder animated:(BOOL)animated
 {
-    if ([activeResponder isKindOfClass:[UIView class]])
+    if (self.scrollView)
     {
-        UIView* firstResponder = (UIView*)activeResponder;
-
-        // Since  iOS9, textfields automatically scroll to visible, which means that we don't have to do
-        // that anymore (thanks), but we can't control it either (thanks) so our "friendlyFrame"
-        // computation doesn't work anymore. We could wrap the text field in another disabled scrollview
-        // to fix this, but we'll leave out the hacks until it's needed.
-        //
-        // In the case where there is another scrollview nested in self.scrollView, we still want to do
-        // the scrolling.
-        if ((!(([[[UIDevice currentDevice] systemVersion] compare:@"9.0"
-                                                          options:NSNumericSearch] == NSOrderedAscending) &&
-               [firstResponder isKindOfClass:[UITextField class]])
-             || (self.scrollView != nil && self.scrollView != [firstResponder aka_superviewOfType:[UIScrollView class]])))
+        if ([activeResponder isKindOfClass:[UIView class]])
         {
-            CGRect frame = firstResponder.frame;
-            CGRect friendlyFrame = [firstResponder convertRect:CGRectMake(frame.origin.x,
-                                                                          frame.origin.y -10.0f,
-                                                                          frame.size.width,
-                                                                          frame.size.height + 20.0f)
-                                                        toView:self.scrollView];
+            UIView* firstResponder = (UIView*)activeResponder;
 
-            [self.scrollView scrollRectToVisible:friendlyFrame animated:animated];
+            BOOL isIOS9 = ([[[UIDevice currentDevice] systemVersion] compare:@"9.0"
+                                                                     options:NSNumericSearch] == NSOrderedAscending);
+            BOOL isAutoScrollingControl = [firstResponder isKindOfClass:[UITextField class]];
+            UIScrollView* closestScrollView = [firstResponder aka_superviewOfType:[UIScrollView class]];
+
+            // Since  iOS9, textfields automatically scroll to visible, which means that we don't have to do
+            // that anymore (thanks), but we can't control it either (thanks) so our "friendlyFrame"
+            // computation doesn't work anymore. We could wrap the text field in another disabled scrollview
+            // to fix this, but we'll leave out the hacks until it's needed.
+            //
+            // In the case where there is another scrollview nested in self.scrollView, we still want to do
+            // the scrolling.
+            if (!(isIOS9 && isAutoScrollingControl) || (self.scrollView != closestScrollView))
+            {
+                CGRect friendlyFrame = [self friendlyFrameForFirstResponder:firstResponder];
+                CGRect convertedFriendlyFrame = [firstResponder.superview convertRect:friendlyFrame
+                                                                     toView:self.scrollView];
+                
+                [self.scrollView scrollRectToVisible:convertedFriendlyFrame animated:animated];
+            }
         }
     }
+}
+
+- (CGRect)                  friendlyFrameForFirstResponder:(UIView*)firstResponder
+{
+    // Include some content above and below, just enough to probably also show at least parts
+    // of a label above and a status indicator (error message) below.
+    CGRect frame = firstResponder.frame;
+    CGRect friendlyFrame = CGRectMake(frame.origin.x,
+                                      frame.origin.y -30.0f,
+                                      frame.size.width,
+                                      frame.size.height + 50.0f);
+    return friendlyFrame;
 }
 
 - (UIScrollView *)scrollView

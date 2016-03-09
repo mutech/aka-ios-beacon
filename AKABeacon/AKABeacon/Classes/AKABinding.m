@@ -15,6 +15,7 @@
 #import "AKABindingErrors.h"
 #import "AKABindingDelegateDispatcher.h"
 #import "NSObject+AKAConcurrencyTools.h"
+#import "AKALog.h"
 
 #pragma mark - AKABinding Private Interface
 #pragma mark -
@@ -58,68 +59,66 @@
 {
     NSError* localError = nil;
 
+    AKABindingSpecification *specification = [self.class specification];
+
+    Class specifiedBindingType = bindingExpression.specification.bindingType;
+    if (specifiedBindingType != nil && ![[self class] isSubclassOfClass:specifiedBindingType])
+    {
+        self = nil;
+        localError = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                                    bindingType:self.class
+                               doesNotMatchSpecifiedBindingType:specifiedBindingType];
+    }
+
+    // TODO: check if relaxing attribute checks is still needed anyway
+    // Perform binding expression validation; relax attribute checks if binding type is a sub class of
+    // the binding type defined in the specification:
+    BOOL relaxAttributeChecks = self.class != specifiedBindingType;
+    if (specification.bindingSourceSpecification)
+    {
+        if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
+                                                                 error:&localError])
+        {
+            self = nil;
+        }
+    }
+
+
     if (self = [self init])
     {
-        AKABindingSpecification *specification = [self.class specification];
+        NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
+                @"Invalid target %@, expected instance of AKAProperty", target);
+        _bindingTarget = target;
 
-        Class specifiedBindingType = bindingExpression.specification.bindingType;
-        NSAssert(specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType],
-            @"Binding %@ of type %@ is not an instance of specified binding type %@",
-            self, NSStringFromClass(self.class), NSStringFromClass(specifiedBindingType));
+        _bindingContext = bindingContext;
+        _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
+                delegateOverwrites:self];
 
-        // TODO: check if relaxing attribute checks is still needed anyway
-        // Perform validation; relax attribute checks if binding type is a sub class of
-        // the binding type defined in the specification:
-        BOOL relaxAttributeChecks = self.class != specifiedBindingType;
-        if (specification.bindingSourceSpecification) {
-            if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
-                                                                     error:&localError]) {
-                self = nil;
-            }
-            /* TODO: check if we (still?) need alternative validation for extended binding specifications:
-             if (![bindingExpression validateWithSpecification:specification.bindingSourceSpecification
-             overrideAllowUnknownAttributes:relaxAttributeChecks
-             error:&localError])
-             {
-             self = nil;
-             }*/
+        __weak AKABinding *weakSelf = self;
+        req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
+            [weakSelf sourceValueDidChangeFromOldValue:oldValue
+                    toNewValue:newValue];
+        };
+        AKAProperty *bindingSource = [self bindingSourceForExpression:bindingExpression
+                context:bindingContext
+                changeObserver:changeObserver
+                error:&localError];
+        if (bindingSource)
+        {
+            _bindingSource = (req_AKAProperty)bindingSource;
+        }
+        else
+        {
+            self = nil;
         }
 
         if (self)
         {
-            NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
-                     @"Invalid target %@, expected instance of AKAProperty", target);
-            _bindingTarget = target;
-            _bindingContext = bindingContext;
-            _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
-                                                                      delegateOverwrites:self];
-
-            __weak AKABinding *weakSelf = self;
-            req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
-                [weakSelf sourceValueDidChangeFromOldValue:oldValue
-                                                toNewValue:newValue];
-            };
-            AKAProperty *bindingSource = [self bindingSourceForExpression:bindingExpression
-                                                                  context:bindingContext
-                                                           changeObserver:changeObserver
-                                                                    error:&localError];
-            if (bindingSource)
-            {
-                _bindingSource = (req_AKAProperty)bindingSource;
-            }
-            else
+            if (![self initializeAttributesWithExpression:bindingExpression
+                    bindingContext:bindingContext
+                    error:&localError])
             {
                 self = nil;
-            }
-
-            if (self)
-            {
-                if (![self initializeAttributesWithExpression:bindingExpression
-                                               bindingContext:bindingContext
-                                                        error:&localError])
-                {
-                    self = nil;
-                }
             }
         }
     }
@@ -184,7 +183,7 @@
 
     id validatedValue = sourceValueStore == nil ? nil : *sourceValueStore;
 
-    if (result && self.bindingSource != nil)
+    if (self.bindingSource != nil)
     {
         result = [self.bindingSource validateValue:&validatedValue error:error];
 
@@ -499,7 +498,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 
 - (BOOL)                              startObservingChanges
 {
-    __block BOOL result = YES;
+    BOOL result = YES;
 
     [self willStartObservingChanges];
 
@@ -509,7 +508,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 
     [self initializeTargetValueForObservationStart];
 
-    result = [self startObservingBindingTargetPropertyBindings];
+    result = [self startObservingBindingTargetPropertyBindings] && result;
 
     [self didStartObservingChanges];
 
@@ -624,7 +623,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 - (NSString*)                                   description
 {
     return [NSString stringWithFormat:@"<%@: %p; source=%@, target=%@>",
-            self.class, self,
+            self.class, (__bridge void*)self,
             self.bindingSource, self.bindingTarget];
 }
 
@@ -829,7 +828,6 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                     else
                     {
                         result = NO;
-                        break;
                     }
                 }
             }
@@ -1191,7 +1189,6 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
 }
 
 #pragma mark - Change Tracking
-
 
 - (void)willStartObservingChanges {}
 

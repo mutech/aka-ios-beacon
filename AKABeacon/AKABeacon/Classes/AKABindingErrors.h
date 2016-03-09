@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 {
     AKABindingErrorUndefinedBindingSource = AKABindingErrorCodesMin,
 
+    AKABindingErrorInvalidBindingType,
+
     AKABindingErrorInvalidPrimaryBindingExpressionType,
     AKABindingErrorInvalidPrimaryBindingExpressionNoEnumerationType,
     AKABindingErrorInvalidPrimaryBindingExpressionMismatchingEnumerationType,
@@ -42,6 +44,11 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
                                                        context:(req_AKABindingContext)bindingContext;
 
 #pragma mark - Binding Expression Validation
+
+
++ (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)expression
+                                                   bindingType:(req_Class)bindingType
+                              doesNotMatchSpecifiedBindingType:(req_Class)requiredBindingType;
 
 + (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
                                   invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
@@ -121,6 +128,5 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 + (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
                                     sourceValuePredicateFormat:(opt_id)sourceValue
                                            failedWithException:(NSException*_Nonnull)exception;
-
 
 @end

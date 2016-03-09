@@ -15,9 +15,23 @@
 
 #pragma mark - Binding Expression Validation
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-        invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
-                            expected:(AKABindingExpressionType)expressionTypePattern
++ (req_NSError)                     invalidBindingExpression:(req_AKABindingExpression)expression
+                                                 bindingType:(req_Class)bindingType
+                            doesNotMatchSpecifiedBindingType:(req_Class)specifiedBindingType
+{
+    NSString* reason = @"Binding type mismatch";
+    NSString* description = [NSString stringWithFormat:@"Binding type %@ does not match type %@ specified by binding expression %@. This is probably an error in the binding library or an extension thereof, indicating that a binding expression property uses a wrong binding type.",
+                                                       bindingType, specifiedBindingType, expression];
+    NSError* result = [NSError errorWithDomain:[AKABeaconErrors akaControlsErrorDomain]
+                                          code:AKABindingErrorInvalidBindingType
+                                      userInfo:@{ NSLocalizedFailureReasonErrorKey: reason,
+                                                  NSLocalizedDescriptionKey: description }];
+    return result;
+}
+
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                                invalidPrimaryExpressionType:(AKABindingExpressionType)expressionType
+                                                    expected:(AKABindingExpressionType)expressionTypePattern
 {
     id expressionTypeDescription =
         [AKABindingExpressionSpecification expressionTypeDescription:expressionType];
@@ -39,8 +53,8 @@
 }
 
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-    noEnumerationTypeInSpecification:(AKABindingExpressionSpecification*)specification
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                            noEnumerationTypeInSpecification:(AKABindingExpressionSpecification*)specification
 {
     NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary enumeration expression does not define an enumeration type, neither does its specification %@",
                         bindingExpression,
@@ -55,8 +69,8 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-             enumerationTypeMismatch:(AKABindingExpressionSpecification*)specification
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                                     enumerationTypeMismatch:(AKABindingExpressionSpecification*)specification
 {
     NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary enumeration expression differs from the type %@ defined in its specification %@",
                         bindingExpression,
@@ -72,8 +86,8 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-        noOptionsTypeInSpecification:(AKABindingExpressionSpecification*)specification
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                                noOptionsTypeInSpecification:(AKABindingExpressionSpecification*)specification
 {
     NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary options expression does not define an options type, neither does its specification %@",
                         bindingExpression,
@@ -88,8 +102,8 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-                 optionsTypeMismatch:(AKABindingExpressionSpecification*)specification
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                                         optionsTypeMismatch:(AKABindingExpressionSpecification*)specification
 {
     NSString* reason = [NSString stringWithFormat:@"Binding expression %@'s primary options expression differs from the type %@ defined in its specification %@",
                         bindingExpression,
@@ -105,8 +119,8 @@
     return result;
 }
 
-+ (NSError*)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
++ (req_NSError)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                     context:(req_AKABindingContext)bindingContext
 {
     NSString* reason = [NSString stringWithFormat:@"Binding expression %@ in context %@ evaluates to an undefined value.", bindingExpression, bindingContext];
     NSString* description = [NSString stringWithFormat:@"Failed to create binding source property: %@", reason];
@@ -119,9 +133,9 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression*)bindingExpression
-                   forAttributeNamed:(NSString*)attributeName
-                 invalidTypeExpected:(NSArray<Class>*)expectedType
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+                                           forAttributeNamed:(NSString*)attributeName
+                                         invalidTypeExpected:(NSArray<Class>*)expectedType
 {
     NSString* reason = [NSString stringWithFormat:@"Invalid binding expression type %@, expected one of: %@", NSStringFromClass([bindingExpression class]), [expectedType componentsJoinedByString:@", "]];
     NSString* description = [NSString stringWithFormat:@"Invalid binding attribute %@: %@", attributeName, reason];
@@ -132,9 +146,9 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-                    unknownAttribute:(NSString*)attributeName
-                     knownAttributes:(NSArray<NSString*>*_Nonnull)knownAttributes
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression *)bindingExpression
+                                            unknownAttribute:(NSString*)attributeName
+                                             knownAttributes:(NSArray<NSString*>*_Nonnull)knownAttributes
 {
     NSString* reason = [NSString stringWithFormat:@"Unknown attribute %@ (known attributes are: %@)", attributeName, [knownAttributes componentsJoinedByString:@", "]];
     NSString* description = [NSString stringWithFormat:@"Invalid binding expression %@: %@", bindingExpression, reason];
@@ -146,8 +160,8 @@
 }
 
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-            missingRequiredAttribute:(NSString*)attributeName
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression *)bindingExpression
+                                    missingRequiredAttribute:(NSString*)attributeName
 {
     NSString* reason = [NSString stringWithFormat:@"Missing required attribute %@", attributeName];
     NSString* description = [NSString stringWithFormat:@"Invalid binding expression %@: %@", bindingExpression, reason];
@@ -158,9 +172,9 @@
     return result;
 }
 
-+ (NSError*)invalidBindingExpression:(AKABindingExpression *)bindingExpression
-                   forAttributeNamed:(NSString *)attributeName
-                   uifontTraitsError:(NSError*)error
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression *)bindingExpression
+                                           forAttributeNamed:(NSString *)attributeName
+                                           uifontTraitsError:(NSError*)error
 {
     NSString* reason = error.localizedDescription;
     NSString* description = [NSString stringWithFormat:@"Invalid binding expression: %@: Invalid UIFont trait specification %@: %@", bindingExpression, attributeName, reason];
@@ -171,26 +185,25 @@
     return result;
 }
 
-+ (NSError*)unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
-                         forEnumerationType:(req_NSString)enumerationType
-                           withValuesByName:(NSDictionary<NSString*,NSNumber*>*)valuesByName
++ (req_NSError)              unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
+                                          forEnumerationType:(req_NSString)enumerationType
+                                            withValuesByName:(NSDictionary<NSString*,NSNumber*>*)valuesByName
 {
     NSString* reason = [NSString stringWithFormat:@"Unknown symbolic enumeration value %@ for type %@, known values are: %@",
                         symbolicValue, enumerationType, [valuesByName.allKeys componentsJoinedByString:@", "]];
     NSString* description = [NSString stringWithFormat:@"Invalid enumeration constant binding expression: %@", reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
-                                          code:AKABindingErrorInvalidBindingExpressionUnknownAttribute
+                                          code:AKABindingErrorInvalidBindingExpressionUnknownEnumerationValue
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
                                                   NSLocalizedFailureReasonErrorKey: reason }];
     return result;
 }
 
+#pragma mark - Binding Source Validation Errors (Runtime validation)
 
-#pragma mark - Binding Source Validation Errrors (Runtime validation)
-
-+ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
-                                                   sourceValue:(opt_id)value
-                                                        reason:(req_NSString)reason
++ (req_NSError)                               invalidBinding:(req_AKABinding)binding
+                                                 sourceValue:(opt_id)value
+                                                      reason:(req_NSString)reason
 {
     NSString* description = [NSString stringWithFormat:@"Invalid binding %@ source value %@: %@",
                              binding, value, reason];
@@ -201,18 +214,18 @@
     return result;
 }
 
-+ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
-                                                   sourceValue:(opt_id)value
-                                        expectedInstanceOfType:(req_AKATypePattern)typePattern
++ (req_NSError)                               invalidBinding:(req_AKABinding)binding
+                                                 sourceValue:(opt_id)value
+                                      expectedInstanceOfType:(req_AKATypePattern)typePattern
 {
     NSString* reason = [NSString stringWithFormat:@"Expected an instance of a type matching %@",
                         typePattern.description];
     return [self invalidBinding:binding sourceValue:value reason:reason];
 }
 
-+ (req_NSError)                                 invalidBinding:(req_AKABinding)binding
-                                                   sourceValue:(opt_id)value
-                                            expectedSubclassOf:(req_Class)baseClass
++ (req_NSError)                               invalidBinding:(req_AKABinding)binding
+                                                 sourceValue:(opt_id)value
+                                          expectedSubclassOf:(req_Class)baseClass
 {
     NSString* reason = [NSString stringWithFormat:@"Expected a sub class of %@",
                         baseClass];
@@ -222,9 +235,9 @@
 
 #pragma mark - Binding Conversion Errors
 
-+ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                targetValue:(opt_id)targetValue
-                       failedWithRangeError:(NSRange)expectedRange
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                 targetValue:(opt_id)targetValue
+                                        failedWithRangeError:(NSRange)expectedRange
 {
     NSString* reason = [NSString stringWithFormat:@"Value out of range [%@..%@]",
                         @(expectedRange.location), @(expectedRange.location + expectedRange.length)];
@@ -241,9 +254,9 @@
 }
 
 
-+ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                targetValue:(opt_id)targetValue
-              failedWithInvalidTypeExpected:(Class)expectedType
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                 targetValue:(opt_id)targetValue
+                               failedWithInvalidTypeExpected:(Class)expectedType
 {
     NSString* reason = [NSString stringWithFormat:@"Invalid type %@,  expected value to be an instance of: %@",
                         targetValue ? NSStringFromClass((Class)[targetValue class]) : @"nil", NSStringFromClass(expectedType)];
@@ -259,9 +272,9 @@
     return result;
 }
 
-+ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                sourceValue:(opt_id)sourceValue
-              failedWithInvalidTypeExpected:(Class)expectedType
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                 sourceValue:(opt_id)sourceValue
+                               failedWithInvalidTypeExpected:(Class)expectedType
 {
     NSString* reason = [NSString stringWithFormat:@"Invalid type %@,  expected value to be an instance of: %@",
                         sourceValue ? NSStringFromClass((Class)[sourceValue class]) : @"nil", NSStringFromClass(expectedType)];
@@ -277,10 +290,10 @@
     return result;
 }
 
-+ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                targetValue:(opt_id)targetValue
-                             usingFormatter:(req_NSFormatter)formatter
-                          failedWithMessage:(opt_NSString)message
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                 targetValue:(opt_id)targetValue
+                                              usingFormatter:(req_NSFormatter)formatter
+                                           failedWithMessage:(opt_NSString)message
 {
     NSString* reason = message;
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ target %@ value %@ using formatter %@ failed: %@",
@@ -295,10 +308,10 @@
     return result;
 }
 
-+ (NSError*)bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                sourceValue:(opt_id)sourceValue
-                             usingFormatter:(req_NSFormatter)formatter
-                          failedWithMessage:(opt_NSString)message
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                                 sourceValue:(opt_id)sourceValue
+                                              usingFormatter:(req_NSFormatter)formatter
+                                           failedWithMessage:(opt_NSString)message
 {
     NSString* reason = message;
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source value %@ using formatter %@ failed: %@",
@@ -316,9 +329,9 @@
     return result;
 }
 
-+ (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
-                                    sourceValuePredicateFormat:(opt_id)sourceValue
-                                           failedWithException:(NSException*_Nonnull)exception
++ (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
+                                  sourceValuePredicateFormat:(opt_id)sourceValue
+                                         failedWithException:(NSException*_Nonnull)exception
 {
     NSString* reason = exception.description;
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source predicate format `%@' failed with exception: %@",

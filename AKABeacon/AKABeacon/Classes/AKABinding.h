@@ -41,9 +41,24 @@
 
 #pragma mark - Configuration
 
+/**
+ Property wrapping the source value of the binding. Bindings which do not support a binding source provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+ */
 @property(nonatomic, readonly, nonnull) AKAProperty*                bindingSource;
+
+/**
+ Property wrapping the target value of the binding. Bindings which do not support a binding target provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+ */
 @property(nonatomic, readonly, nonnull) AKAProperty*                bindingTarget;
+
+/**
+ The context used by the binding to resolve binding expressions.
+ */
 @property(nonatomic, readonly, weak) id<AKABindingContextProtocol>  bindingContext;
+
+/**
+ The binding delegate.
+ */
 @property(nonatomic, readonly, weak) id<AKABindingDelegate>         delegate;
 
 #pragma mark - Conversion

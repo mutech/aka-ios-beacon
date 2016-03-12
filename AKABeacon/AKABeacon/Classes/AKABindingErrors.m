@@ -274,10 +274,12 @@
 
 + (req_NSError)              bindingErrorConversionOfBinding:(req_AKABinding)binding
                                                  sourceValue:(opt_id)sourceValue
-                               failedWithInvalidTypeExpected:(Class)expectedType
+                          failedWithInvalidTypeExpectedTypes:(NSArray<Class>*_Nonnull)expectedTypes
 {
-    NSString* reason = [NSString stringWithFormat:@"Invalid type %@,  expected value to be an instance of: %@",
-                        sourceValue ? NSStringFromClass((Class)[sourceValue class]) : @"nil", NSStringFromClass(expectedType)];
+    NSString* expected = [expectedTypes componentsJoinedByString:@", "];
+    NSString* reason = [NSString stringWithFormat:@"Invalid type %@,  expected value to be an instance of: {%@}",
+                        sourceValue ? NSStringFromClass((Class)[sourceValue class]) : @"nil",
+                        expected];
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source %@ value %@ failed: %@",
                              binding, binding.bindingSource.value, sourceValue, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
@@ -286,7 +288,7 @@
                                                   NSLocalizedFailureReasonErrorKey: reason,
                                                   @"binding": binding,
                                                   @"value": sourceValue,
-                                                  @"expectedType": expectedType } ];
+                                                  @"expectedTypes": expectedTypes } ];
     return result;
 }
 

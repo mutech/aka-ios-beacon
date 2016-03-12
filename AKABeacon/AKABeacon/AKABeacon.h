@@ -51,8 +51,6 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // ViewControllers
 #import <AKABeacon/AKAFormViewController.h>
 #import <AKABeacon/AKAFormTableViewController.h>
-#import <AKABeacon/AKADynamicFormTableViewController.h>
-
 
 // Controls
 #import <AKABeacon/AKAControlValidationState.h>

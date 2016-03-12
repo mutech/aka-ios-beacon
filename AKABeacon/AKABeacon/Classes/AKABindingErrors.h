@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 
 + (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
                                                    sourceValue:(opt_id)sourceValue
-                                 failedWithInvalidTypeExpected:(req_Class)expectedType;
+                            failedWithInvalidTypeExpectedTypes:(NSArray<Class>*_Nonnull)expectedTypes;
 
 + (req_NSError)                bindingErrorConversionOfBinding:(req_AKABinding)binding
                                                    targetValue:(opt_id)targetValue

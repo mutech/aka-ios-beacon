@@ -23,7 +23,6 @@
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
         @{ @"bindingType":          [AKATableViewSectionDataSourceInfoPropertyBinding class],
-           @"targetType":           [UITableView class],
            @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
            @"attributes":           @{
                    @"headerTitle":          @{
@@ -50,14 +49,16 @@
              toTargetValue:(id _Nullable __autoreleasing*)targetValueStore
                      error:(NSError* __autoreleasing _Nullable*)error
 {
-    BOOL result = sourceValue == nil || [sourceValue isKindOfClass:[NSArray class]];
+    BOOL result = (sourceValue == nil
+                   || [sourceValue isKindOfClass:[NSArray class]]
+                   || [sourceValue isKindOfClass:[NSFetchedResultsController class]]);
 
     if (result)
     {
-        if (!self.cachedTargetValue || self.cachedTargetValue.rows != sourceValue)
+        if (!self.cachedTargetValue || self.cachedTargetValue.rowsSource != sourceValue)
         {
             self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
-            self.cachedTargetValue.rows = sourceValue;
+            self.cachedTargetValue.rowsSource = sourceValue;
         }
         *targetValueStore = self.cachedTargetValue;
     }
@@ -67,7 +68,8 @@
         {
             *error = [AKABindingErrors bindingErrorConversionOfBinding:self
                                                            sourceValue:sourceValue
-                                         failedWithInvalidTypeExpected:[NSArray class]];
+                                    failedWithInvalidTypeExpectedTypes:@[ [NSArray class],
+                                                                          [NSFetchedResultsController class] ]];
         }
     }
 

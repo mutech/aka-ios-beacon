@@ -143,7 +143,7 @@
             result = NO;
             NSError* localError = [AKABindingErrors bindingErrorConversionOfBinding:self
                                                                         sourceValue:sourceValue
-                                                      failedWithInvalidTypeExpected:[NSString class]];
+                                                      failedWithInvalidTypeExpectedTypes:@[ [NSString class] ]];
             if (error)
             {
                 *error = localError;

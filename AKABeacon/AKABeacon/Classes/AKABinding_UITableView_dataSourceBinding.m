@@ -7,6 +7,7 @@
 //
 
 @import AKACommons.AKAArrayComparer;
+@import CoreData;
 
 #import "AKABinding_UITableView_dataSourceBinding.h"
 
@@ -28,7 +29,8 @@
 @interface AKABinding_UITableView_dataSourceBinding () <
     UITableViewDataSource,
     UITableViewDelegate,
-    AKAArrayPropertyBindingDelegate
+    AKAArrayPropertyBindingDelegate,
+    AKATableViewSectionDataSourceInfoDelegate
     >
 
 #pragma mark - Binding Configuration
@@ -36,6 +38,7 @@
 @property(nonatomic, readonly) NSArray<AKATableViewSectionDataSourceInfo*>* sections;
 @property(nonatomic) NSMutableArray<AKATableViewCellFactory*>*              defaultCellMapping;
 @property(nonatomic) UITableViewRowAnimation                                insertAnimation;
+@property(nonatomic) UITableViewRowAnimation                                updateAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
 @property(nonatomic, weak) void                                           (^animatorBlock)(void(^)());
 
@@ -126,6 +129,7 @@
 
         _deleteAnimation = UITableViewRowAnimationAutomatic;
         _insertAnimation = UITableViewRowAnimationAutomatic;
+        _updateAnimation = UITableViewRowAnimationAutomatic;
     }
     return self;
 }
@@ -182,15 +186,30 @@
                                          valueDidChangeFrom:(id)oldValue
                                                          to:(id)newValue
 {
+    AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
+    AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
+
+    if (oldSectionInfo != newSectionInfo)
+    {
+        if (oldSectionInfo.delegate == self)
+        {
+            oldSectionInfo.delegate = nil;
+        }
+        if (newSectionInfo.delegate == nil)
+        {
+            newSectionInfo.delegate = self;
+        }
+    }
+    
     if (!self.startingChangeObservation)
     {
         // Do not update table view if change observation is starting, because this is a rather
         // fuzzy state. We are going to reload the table as soon as the observation start proceess
         // completed.
-        AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
-        AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
 
-        if (oldSectionInfo.rows != newSectionInfo.rows)
+        BOOL expectChangeNotification = (oldSectionInfo == newSectionInfo
+                                         && newSectionInfo.willSendDelegateChangeNotifications);
+        if (!expectChangeNotification && oldSectionInfo.rows != newSectionInfo.rows)
         {
             [self dispatchTableViewUpdateForSection:index
                                  forChangesFromRows:oldSectionInfo.rows
@@ -201,6 +220,69 @@
 }
 
 #pragma mark - Table View Updates
+
+- (void)                       sectionInfoWillChangeContent:(AKATableViewSectionDataSourceInfo *)sectionInfo
+{
+    (void)sectionInfo;
+    // TODO: defer updates if scrolling
+    // TODO: don't begin updates if already updating (increment counter)
+
+    [self.tableView beginUpdates];
+}
+
+- (void)                                        sectionInfo:(AKATableViewSectionDataSourceInfo *)sectionInfo
+                                            didInsertObject:(id)object
+                                                 atRowIndex:(NSInteger)index
+{
+    (void)sectionInfo;
+    (void)object;
+    // TODO: defer updates if scrolling
+
+    NSInteger section = (NSInteger)[self.sections indexOfObject:sectionInfo];
+    NSAssert(section != NSNotFound, @"Invalid section info %@: not found in %@", sectionInfo, self.sections);
+
+    [self.tableView insertRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:index inSection:section] ]
+                          withRowAnimation:self.insertAnimation];
+}
+
+- (void)                                        sectionInfo:(AKATableViewSectionDataSourceInfo *)sectionInfo
+                                            didUpdateObject:(id)object
+                                                 atRowIndex:(NSInteger)index
+{
+    (void)sectionInfo;
+    (void)object;
+    // TODO: defer updates if scrolling
+
+    NSInteger section = (NSInteger)[self.sections indexOfObject:sectionInfo];
+    NSAssert(section != NSNotFound, @"Invalid section info %@: not found in %@", sectionInfo, self.sections);
+
+    [self.tableView reloadRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:index inSection:section] ]
+                          withRowAnimation:self.updateAnimation];
+}
+
+- (void)                                        sectionInfo:(AKATableViewSectionDataSourceInfo *)sectionInfo
+                                            didDeleteObject:(id)object
+                                                 atRowIndex:(NSInteger)index
+{
+    (void)sectionInfo;
+    (void)object;
+    // TODO: defer updates if scrolling
+
+    NSInteger section = (NSInteger)[self.sections indexOfObject:sectionInfo];
+    NSAssert(section != NSNotFound, @"Invalid section info %@: not found in %@", sectionInfo, self.sections);
+
+    [self.tableView insertRowsAtIndexPaths:@[ [NSIndexPath indexPathForRow:index inSection:section] ]
+                          withRowAnimation:self.insertAnimation];
+}
+
+- (void)                        sectionInfoDidChangeContent:(AKATableViewSectionDataSourceInfo *)sectionInfo
+{
+    (void)sectionInfo;
+    // TODO: defer end updates if scrolling
+    // TODO: don't end updates if still updating (decrement counter)
+
+    [self.tableView endUpdates];
+}
 
 - (void)                          updateTableViewRowHeights
 {

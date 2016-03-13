@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D19470774410077A79D697E /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 516E19D13873BA75C37DC174 /* Pods_AKABeaconDemo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		4D19470774410077A79D697E /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 516E19D13873BA75C37DC174 /* Pods_AKABeaconDemo.framework */; };
 		8E2ED22B1C3D53F000FBA44D /* TableViewBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2ED22A1C3D53F000FBA44D /* TableViewBindingViewController.m */; };
 		8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E4F0A6A1BE39D29006D8876 /* SliderViewController.m */; };
 		8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5720881BBFDD650056A013 /* PickerKeyboardViewController.m */; };

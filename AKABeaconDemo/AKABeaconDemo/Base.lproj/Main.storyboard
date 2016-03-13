@@ -446,8 +446,11 @@ The number editor text field uses two different formatters, one for display and 
                             <constraint firstItem="Cvw-QV-HGV" firstAttribute="leading" secondItem="S5K-zJ-ZY5" secondAttribute="leading" id="tzB-Oq-0xE"/>
                         </constraints>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="bindingsEnabled_aka" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <outlet property="scrollView" destination="Cvw-QV-HGV" id="c5j-Cq-uJF"/>
+                        <outlet property="scrollView" destination="Cvw-QV-HGV" id="FTd-q0-LND"/>
                         <outlet property="textField1" destination="cb5-P3-rZf" id="kcZ-L9-I4M"/>
                         <outlet property="textField2" destination="PBI-W7-xbX" id="Fwu-gW-LBG"/>
                         <outlet property="textField3" destination="zNO-sr-x58" id="FZ0-q5-IAA"/>
@@ -1003,7 +1006,7 @@ The number editor text field uses two different formatters, one for display and 
                                         <rect key="frame" x="0.0" y="367" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" autoresizesSubviews="NO" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hen-ij-eGt" id="4Ss-cs-Iyw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="752" text="21" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sh9-Vl-WUc">
@@ -1072,7 +1075,7 @@ The number editor text field uses two different formatters, one for display and 
                                         <rect key="frame" x="0.0" y="455" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QMx-01-dEN" id="sKc-NX-MEk">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="752" text="21" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY9-op-tlf">
@@ -1790,8 +1793,9 @@ The number editor text field uses two different formatters, one for display and 
                                         <mutableString key="value">[
 	section1Items {
 		headerTitle: "First section",
-                  cellMapping: [ { predicate: "SELF isKindOfClass:$nsnumber AND SELF &lt; $value" { nsnumber: &lt;NSNumber&gt;, value: 0 },
-                                                cellIdentifier: "alternativeNegativeNumberCell" } ] },
+                  cellMapping: [
+			{ predicate: "SELF isKindOfClass:$nsnumber AND SELF &lt; $value" { nsnumber: &lt;NSNumber&gt;, value: 0 },
+                             cellIdentifier: "alternativeNegativeNumberCell" } ] },
          section2Items {
 		headerTitle: "Second section", footerTitle: "Second section footer" }
 ] {

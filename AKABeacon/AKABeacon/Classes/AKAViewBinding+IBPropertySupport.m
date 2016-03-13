@@ -8,6 +8,7 @@
 
 #import "AKAViewBinding+IBPropertySupport.h"
 #import "UIView+AKABindingSupport.h"
+#import "UIViewController+AKAIBBindingProperties.h"
 
 @implementation AKAViewBinding (IBPropertySupport)
 

@@ -20,9 +20,16 @@
 @property (weak, nonatomic) IBOutlet UITextField *textField2;
 @property (weak, nonatomic) IBOutlet UITextField *textField3;
 
+@property(nonatomic) AKABindingBehaviourViewController* bindingBehaviour;
+
 @end
 
 @implementation TextFieldBindingViewController
+
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    return [super valueForUndefinedKey:key];
+}
 
 #pragma mark - View Life Cycle
 

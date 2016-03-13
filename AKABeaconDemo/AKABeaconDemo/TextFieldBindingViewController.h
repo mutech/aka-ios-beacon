@@ -9,6 +9,8 @@
 @import UIKit;
 @import AKABeacon;
 
-@interface TextFieldBindingViewController : AKAFormViewController
+@interface TextFieldBindingViewController : UIViewController
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end

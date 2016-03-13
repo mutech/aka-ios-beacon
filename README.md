@@ -39,11 +39,14 @@ BSD 2-clause, see LICENSE.txt
 
 ## Getting Started
 
-To use data bindings in a view controller, you typically create a view controller that inherits from AKAFormViewController. The view controller serves the role of a root view model (in MVVM terms), providing key-value-coding compliant properties.
+Once you integrated the framework into your project, all you have to do to use bindings is:
 
-Then you design your view controllers UI in Interface Builder. You will find that most standard UIKit views provide additional binding properties (after integrating AKABeacon), which accept binding expressions. You can reference your view model properties simply by specifying key paths. For example, if your view controller provides a property "familyName", you can set the "Text Binding" property of a UILabel to ```familyName``` and that's all you need to do.
+- **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
+- **Enable binding support** in your view controller. You can do that in Storyboards **by setting the view controllers IB property "Bindings Enabled" to "On"** or programmatically by setting the property ```bindingsEnabled_aka``` to ```YES```.
+- **Define binding expressions in the property inspector for your views**. For example, to bind a label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
+- Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```
 
-Binding expressions are much more powerful and flexible than that tough. Check out the examples in the demo application and the screenshots below.
+
 
 ## Documentation
 
@@ -54,19 +57,21 @@ Documentation is still incomplete, we are working on it.
 
 ## How Beacon works
 
-The typical usage scenario is:
+The typical usage scenario is (what you do - that's the yellow bubbles in the diagram below):
 
-* Your view controller **inherits** from a form view controller (**AKAFormViewController** or **AKAFormTableViewController**) provided by Beacon.
+* You **add the beacon framework to your project**. From then on, you will find additional properties for views and view controllers in Interface Builder's property panel.
+* You **enable binding support** for your view controller, which is implemented by adding a binding behavior as child view controller.
 * Your view controller **provides** properties or a reference to your **model data**
 * You design a view in Interface Builder and **assign binding expressions** to views which should be bound to your data.
 
-![Binding Schematics](Documentation/BindingSchematics.png)
-
 What happens behind the scenes (Beacon's job, everything that's blue in the diagram):
 
-* **viewDidLoad:** The form view controller will **inspect your view hierarchy** to find views defining binding expressions and **create bindings** for them.
-* **viewWillAppear:** The bindings will **initialize views** with content from your data model and **observe changes** on boths ends.
-* **viewWillDisappear:** Bindings will **stop observing changes** and restore the original state of bound views.
+* When you enable binding support, beacon adds a binding behavior as child view controller to yours. This behavior receives life cycle events along with your own controller:
+  * **viewDidLoad:** The binding behavior will **inspect your view hierarchy** to find views defining binding expressions and **create bindings** for them.
+  * **viewWillAppear:** The bindings will **initialize views** with content from your view model **observe changes** on boths ends and **perform the necessary updates**.
+  * **viewWillDisappear:** Bindings will **stop observing changes**.
+
+![Binding Schematics](Documentation/BindingSchematics.png)
 
 Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. If you inherit from a form view controller, all you have to do is to implement one of the optional delegate methods (traditional iOS style).
 

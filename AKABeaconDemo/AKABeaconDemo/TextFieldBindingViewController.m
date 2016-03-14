@@ -7,22 +7,8 @@
 //
 
 @import AKABeacon;
-
 #import "TextFieldBindingViewController.h"
 
-@interface TextFieldBindingViewController ()
-
-@property(nonatomic) NSString* stringValue;
-@property(nonatomic) NSNumber* numberValue;
-@property(nonatomic) NSDate* dateValue;
-
-@property (weak, nonatomic) IBOutlet UITextField *textField1;
-@property (weak, nonatomic) IBOutlet UITextField *textField2;
-@property (weak, nonatomic) IBOutlet UITextField *textField3;
-
-@property(nonatomic) AKABindingBehaviourViewController* bindingBehaviour;
-
-@end
 
 @implementation TextFieldBindingViewController
 
@@ -40,31 +26,31 @@
     self.stringValue = @"Initial value";
     self.numberValue = @(-4999.995);
     self.dateValue = [NSDate new];
+
+    [self aka_enableBindingSupport];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - Actions
 
-- (IBAction)showTextField1Binding:(id)sender
+- (IBAction)done:(id)sender
 {
-    [self showBindingExpressionText:self.textField1.textBinding_aka];
-}
-
-- (IBAction)showTextField2Binding:(id)sender
-{
-    [self showBindingExpressionText:self.textField2.textBinding_aka];
-}
-
-- (IBAction)showTextField3Binding:(id)sender
-{
-    [self showBindingExpressionText:self.textField3.textBinding_aka];
-}
-
-- (void)showBindingExpressionText:(NSString*)text {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Binding Expression"
-                                                                   message:text preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:nil];
-    [alert addAction:ok];
-    [self presentViewController:alert animated:YES completion:nil];
+    NSString* message = [NSString stringWithFormat:@"stringValue: \"%@\"\nnumberValue: %@\ndateValue: %@\n",
+                         self.stringValue, self.numberValue, self.dateValue];
+    UIAlertController* alertController =
+        [UIAlertController alertControllerWithTitle:@"Editing results"
+                                            message:message
+                                     preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self.navigationController popViewControllerAnimated:YES];
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

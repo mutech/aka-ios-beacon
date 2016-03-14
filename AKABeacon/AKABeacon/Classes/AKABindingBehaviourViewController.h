@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKABehaviorViewController.h"
+@import UIKit;
 #import "AKAControlDelegate.h"
 
 @class AKAFormControl;
@@ -17,7 +17,7 @@
 @end
 
 
-@interface AKABindingBehaviourViewController : AKABehaviorViewController
+@interface AKABindingBehaviourViewController : UIViewController
 
 + (void)addToViewController:(UIViewController*)viewController;
 - (void)addToViewController:(UIViewController*)viewController;

@@ -10,17 +10,11 @@
 
 #import "AKABindingBehaviourViewController.h"
 
-IB_DESIGNABLE
 @interface UIViewController (AKAIBBindingProperties)
 
-#pragma mark - Interface Builder Properties
-
-@property(nonatomic,
-          getter=aka_bindingsEnabled,
-          setter=aka_setBindingsEnabled:
-          ) IBInspectable   BOOL                                bindingsEnabled_aka;
-
 #pragma mark - Binding Support
+
+- (void)aka_enableBindingSupport;
 
 @property(nonatomic, nullable,
           setter=aka_setBindingBehaviour:

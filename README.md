@@ -41,10 +41,12 @@ BSD 2-clause, see LICENSE.txt
 
 Once you integrated the framework into your project, all you have to do to use bindings is:
 
-- **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
-- **Enable binding support** in your view controller. You can do that in Storyboards **by setting the view controllers IB property "Bindings Enabled" to "On"** or programmatically by setting the property ```bindingsEnabled_aka``` to ```YES```.
-- **Define binding expressions in the property inspector for your views**. For example, to bind a label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
-- Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```
+- *[Interface Builder]*
+  - **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
+  - **Define binding expressions in the property inspector for your views**. For example, to bind a label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
+- *[Code]*
+  - **Enable binding support** in your view controller. To do that, call ```[self aka_enableBindingSupport]``` in your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
+  - Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```
 
 
 
@@ -73,7 +75,7 @@ What happens behind the scenes (Beacon's job, everything that's blue in the diag
 
 ![Binding Schematics](Documentation/BindingSchematics.png)
 
-Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. If you inherit from a form view controller, all you have to do is to implement one of the optional delegate methods (traditional iOS style).
+Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. Your view controller is automatically used as AKABindingBehaviourDelegate if you conform to that protocol. 
 
 Please note that most modules in Beacon are designed to be independent. You can for example use bindings without controls, and you don't have to use form view controllers to manage controls and bindings.
 

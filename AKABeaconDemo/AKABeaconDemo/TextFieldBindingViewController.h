@@ -11,6 +11,14 @@
 
 @interface TextFieldBindingViewController : UIViewController
 
+#pragma mark - Outlets
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+#pragma mark - View Model
+
+@property(nonatomic) NSString* stringValue;
+@property(nonatomic) NSNumber* numberValue;
+@property(nonatomic) NSDate* dateValue;
 
 @end

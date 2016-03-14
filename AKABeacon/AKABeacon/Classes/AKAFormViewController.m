@@ -7,11 +7,11 @@
 //
 
 #import "AKAFormViewController.h"
-#import "AKABindingBehaviourViewController.h"
+#import "AKABindingBehavior.h"
 
 @implementation AKAFormViewController
 
-// Please note that all functionality has been moved to AKABindingBehaviourViewController, this
+// Please note that all functionality has been moved to AKABindingBehavior, this
 // class will most likely be removed soon.
 
 #pragma mark - View Life Cycle
@@ -22,7 +22,7 @@
 
     //[self setupScrollView];
 
-    [AKABindingBehaviourViewController addToViewController:self];
+    [AKABindingBehavior addToViewController:self];
 }
 
 #if 0

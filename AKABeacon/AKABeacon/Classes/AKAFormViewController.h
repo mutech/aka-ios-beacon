@@ -11,7 +11,7 @@
 #import "AKAFormControl.h"
 
 /**
- Deprecated, use AKABindingBehaviourViewController (see AKABeaconDemo project for examples)
+ Deprecated, use AKABindingBehavior (see AKABeaconDemo project for examples)
  */
 @interface AKAFormViewController: UIViewController<AKAControlDelegate>
 

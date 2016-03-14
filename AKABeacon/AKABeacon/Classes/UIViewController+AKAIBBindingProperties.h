@@ -8,16 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AKABindingBehaviourViewController.h"
+#import "AKABindingBehavior.h"
 
 @interface UIViewController (AKAIBBindingProperties)
 
 #pragma mark - Binding Support
 
-- (void)aka_enableBindingSupport;
-
-@property(nonatomic, nullable,
-          setter=aka_setBindingBehaviour:
-          )                 AKABindingBehaviourViewController*  aka_bindingBehaviour;
+@property(nonatomic, nullable, readonly) AKABindingBehavior *  aka_bindingBehaviour;
 
 @end

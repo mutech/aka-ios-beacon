@@ -75,7 +75,7 @@ What happens behind the scenes (Beacon's job, everything that's blue in the diag
 
 ![Binding Schematics](Documentation/BindingSchematics.png)
 
-Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. Your view controller is automatically used as AKABindingBehaviourDelegate if you conform to that protocol. 
+Many of these tasks are actually carried out by **controls** which are in charge of managing bindings, providing data contexts and controlling the behavior of view hierarchies. In most cases you can ignore controls, since they do their job transparently without bothering you. If you need to interact with them however, they provide fine granular delegate methods, which you can use to inspect and control the behavior of controls and bindings. Your view controller is automatically used as AKABindingBehaviorDelegate if you conform to that protocol. 
 
 Please note that most modules in Beacon are designed to be independent. You can for example use bindings without controls, and you don't have to use form view controllers to manage controls and bindings.
 

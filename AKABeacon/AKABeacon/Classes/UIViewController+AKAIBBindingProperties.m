@@ -14,26 +14,13 @@
 
 #pragma mark - Binding Support
 
-- (void)aka_enableBindingSupport;
+- (AKABindingBehavior *)aka_bindingBehaviour
 {
-    if (self.aka_bindingBehaviour == nil)
-    {
-        self.aka_bindingBehaviour = [AKABindingBehaviourViewController new];
-    }
-}
-
-- (void)aka_disableBindingSupport;
-{
-    [self.aka_bindingBehaviour removeFromViewController:self];
-}
-
-- (AKABindingBehaviourViewController *)aka_bindingBehaviour
-{
-    AKABindingBehaviourViewController* result = nil;
+    AKABindingBehavior * result = nil;
 
     for (UIViewController* child in self.childViewControllers)
     {
-        if ([child isKindOfClass:[AKABindingBehaviourViewController class]])
+        if ([child isKindOfClass:[AKABindingBehavior class]])
         {
             result = (id)child;
             break;
@@ -41,20 +28,6 @@
     }
 
     return result;
-}
-
-
-- (void)aka_setBindingBehaviour:(AKABindingBehaviourViewController *)bindingBehaviour
-{
-    __block AKABindingBehaviourViewController* newBindingBehavior = bindingBehaviour;
-    AKABindingBehaviourViewController* current = self.aka_bindingBehaviour;
-
-    if (current && current != bindingBehaviour)
-    {
-        [current removeFromViewController:self];
-    }
-
-    [newBindingBehavior addToViewController:self];
 }
 
 @end

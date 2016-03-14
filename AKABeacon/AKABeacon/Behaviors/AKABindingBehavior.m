@@ -1,5 +1,5 @@
 //
-//  AKABindingBehaviourViewController.m
+//  AKABindingBehavior.m
 //  AKABeacon
 //
 //  Created by Michael Utech on 13.03.16.
@@ -8,30 +8,30 @@
 
 @import AKACommons.UIView_AKAHierarchyVisitor;
 
-#import "AKABindingBehaviourViewController.h"
+#import "AKABindingBehavior.h"
 #import "AKAEditorControlView.h"
 #import "AKAFormControl.h"
 #import "AKADelegateDispatcher.h"
 
 
-@interface AKABindingBehaviourDelegateDispatcher : AKADelegateDispatcher<AKABindingBehaviourDelegate>
+@interface AKABindingBehaviourDelegateDispatcher : AKADelegateDispatcher<AKABindingBehaviorDelegate>
 
-- (instancetype)initWithBehaviour:(AKABindingBehaviourViewController*)behaviour
-                         delegate:(id<AKABindingBehaviourDelegate>)delegate;
+- (instancetype)initWithBehaviour:(AKABindingBehavior *)behaviour
+                         delegate:(id<AKABindingBehaviorDelegate>)delegate;
 
-@property(nonatomic, weak, readonly) id<AKABindingBehaviourDelegate> delegate;
+@property(nonatomic, weak, readonly) id<AKABindingBehaviorDelegate> delegate;
 
 @end
 
 
 @implementation AKABindingBehaviourDelegateDispatcher
 
-- (instancetype)initWithBehaviour:(AKABindingBehaviourViewController *)behaviour delegate:(id<AKABindingBehaviourDelegate>)delegate
+- (instancetype)initWithBehaviour:(AKABindingBehavior *)behaviour delegate:(id<AKABindingBehaviorDelegate>)delegate
 {
     // The behaviour view controller implements AKAControlDelegate, which is a super protocol of
-    // AKABindingBehaviourDelegate. These methods will potentially be overridden by the behaviour
+    // AKABindingBehaviorDelegate. These methods will potentially be overridden by the behaviour
     // view controller (or its sub classes).
-    if (self = [self initWithProtocols:@[ @protocol(AKABindingBehaviourDelegate) ]
+    if (self = [self initWithProtocols:@[ @protocol(AKABindingBehaviorDelegate) ]
                              delegates:@[ behaviour, delegate]])
     {
         _delegate = delegate;
@@ -42,38 +42,72 @@
 @end
 
 
-@interface AKABindingBehaviourViewController() <AKAControlDelegate>
+@interface AKABindingBehavior () <AKAControlDelegate>
 
+@property(nonatomic) AKAFormControl*                        formControl;
 @property(nonatomic) AKABindingBehaviourDelegateDispatcher* delegateDispatcher;
 
-@property(nonatomic, weak) UIResponder*     activeResponder;
-
-@property(nonatomic) double                 aka_keyboardAdjustment;
-@property(nonatomic) double                 aka_rotationAnimationDuration;
-@property(nonatomic) UIViewAnimationCurve   aka_rotationAnimationCurve;
+@property(nonatomic, readonly, weak) UIScrollView*          scrollView;
+@property(nonatomic, weak) UIResponder*                     activeResponder;
+@property(nonatomic) double                                 keyboardAdjustment;
+@property(nonatomic) double                                 rotationAnimationDuration;
+@property(nonatomic) UIViewAnimationCurve                   rotationAnimationCurve;
 
 @end
 
 
-@implementation AKABindingBehaviourViewController
+@implementation AKABindingBehavior
 
 #pragma mark - Initialization
 
-+ (void)addToViewController:(UIViewController *)viewController
++ (void)                                addToViewController:(UIViewController *)viewController
 {
-    AKABindingBehaviourViewController* bindingBehaviour = [AKABindingBehaviourViewController new];
+    id<AKABindingBehaviorDelegate> delegate = nil;
+    if ([viewController conformsToProtocol:@protocol(AKABindingBehaviorDelegate)])
+    {
+        delegate = (id)viewController;
+    }
 
-    [bindingBehaviour addToViewController:viewController];
+    [self addToViewController:viewController withDataContext:viewController delegate:delegate];
 }
 
-- (void)addToViewController:(UIViewController*)viewController
+
++ (void)                                addToViewController:(UIViewController*)viewController
+                                            withDataContext:(id)dataContext
+                                                   delegate:(id<AKABindingBehaviorDelegate>)delegate
+{
+    AKABindingBehavior* behavior = [[AKABindingBehavior alloc] initWithDataContext:dataContext
+                                                                          delegate:delegate];
+    [behavior addToViewController:viewController];
+}
+
+- (instancetype)                        initWithDataContext:(id)dataContext
+                                                   delegate:(id<AKABindingBehaviorDelegate>)delegate
+{
+    if (self = [super init])
+    {
+        self.view.alpha = 0.0;
+        if (delegate)
+        {
+            self.delegateDispatcher = [[AKABindingBehaviourDelegateDispatcher alloc] initWithBehaviour:self
+                                                                                              delegate:delegate];
+        }
+        self.formControl = [[AKAFormControl alloc] initWithDataContext:dataContext
+                                                              delegate:self.delegateDispatcher];
+    }
+    return self;
+}
+
+#pragma mark - Activation
+
+- (void)                                addToViewController:(UIViewController*)viewController
 {
     [viewController addChildViewController:self];
     [viewController.view addSubview:self.view];
     [self didMoveToParentViewController:viewController];
 }
 
-- (void)removeFromViewController:(UIViewController*)viewController
+- (void)                           removeFromViewController:(UIViewController*)viewController
 {
     NSParameterAssert(viewController == self.parentViewController);
 
@@ -82,28 +116,19 @@
     [self removeFromParentViewController];
 }
 
-- (instancetype)init
-{
-    if (self = [super init])
-    {
-        self.view.alpha = 0.0;
-    }
-    return self;
-}
-
 #pragma mark - View Life Cycle
 
-- (void)didMoveToParentViewController:(UIViewController *)parent
+- (void)                     didMoveToParentViewController:(UIViewController*)parent
 {
-    if ([parent conformsToProtocol:@protocol(AKABindingBehaviourDelegate)])
+    if (parent != nil)
     {
-        id<AKABindingBehaviourDelegate> delegate = (id)parent;
-        _delegateDispatcher = [[AKABindingBehaviourDelegateDispatcher alloc] initWithBehaviour:self
-                                                                                      delegate:delegate];
+        [self initializeFormControl];
     }
-    _formControl = [[AKAFormControl alloc] initWithDataContext:parent
-                                                      delegate:self.delegateDispatcher];
-    [self initializeFormControl];
+    else
+    {
+        [self deactivateFormControlBindings];
+        [self stopObservingKeyboardEvents];
+    }
 }
 
 - (void)                                    viewWillAppear:(BOOL)animated
@@ -124,12 +149,12 @@
 
 #pragma mark - Properties
 
-- (id<AKABindingBehaviourDelegate>)delegate
+- (id<AKABindingBehaviorDelegate>)                delegate
 {
     return self.delegateDispatcher.delegate;
 }
 
-- (UIScrollView *)scrollView
+- (UIScrollView *)                              scrollView
 {
     UIViewController* parent = self.parentViewController;
     UIScrollView* result = nil;
@@ -144,8 +169,6 @@
 
 - (void)                             initializeFormControl
 {
-
-
     // Setup theme name before adding controls for subviews (TODO: order should not matter)
     [self initializeFormControlTheme];
 
@@ -184,6 +207,12 @@
     (void)binding;
 
     self.activeResponder = responder;
+
+    id<AKABindingBehaviorDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    {
+        [delegate control:control binding:binding responderWillActivate:responder];
+    }
 }
 
 - (void)                                           control:(req_AKAControl)control
@@ -199,6 +228,12 @@
         self.activeResponder = responder;
     }
     [self scrollViewToVisible:responder animated:YES];
+
+    id<AKABindingBehaviorDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
+    {
+        [delegate control:control binding:binding responderDidActivate:responder];
+    }
 }
 
 - (void)                                           control:(req_AKAControl)control
@@ -210,6 +245,12 @@
     (void)responder;
 
     self.activeResponder = nil;
+
+    id<AKABindingBehaviorDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
+    {
+        [delegate control:control binding:binding responderDidDeactivate:responder];
+    }
 }
 
 #pragma mark - Keyboard Notifications
@@ -236,21 +277,6 @@
                                                   object:nil];
 }
 
-- (void)                          viewWillTransitionToSize:(CGSize)size
-                                 withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.aka_rotationAnimationCurve = [context completionCurve];
-        self.aka_rotationAnimationDuration = [context transitionDuration];
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        (void)context;
-
-        self.aka_rotationAnimationCurve = 0;
-        self.aka_rotationAnimationDuration = 0.0;
-    }];
-}
-
 - (void)                           keyboardWillChangeFrame:(NSNotification*)notification
 {
     NSDictionary *userInfo = [notification userInfo];
@@ -263,8 +289,9 @@
         newHeight = 0.0;
     }
 
-    if (self.aka_rotationAnimationDuration == 0)
+    if (self.rotationAnimationDuration == 0)
     {
+        // No rotation animation
         NSTimeInterval duration = ((NSNumber*)userInfo[UIKeyboardAnimationDurationUserInfoKey]).doubleValue;
         if (duration == 0)
         {
@@ -280,6 +307,7 @@
     }
     else
     {
+        // Keyboard height change is part of a device rotation, animate alongside the rotation animation
         if ([UIView areAnimationsEnabled])
         {
             [self adjustViewsForKeyboardHeightChangeTo:newHeight];
@@ -288,11 +316,30 @@
         {
             [UIView setAnimationsEnabled:YES];
             [self adjustViewsForKeyboardHeightChangeTo:newHeight
-                                          withDuration:self.aka_rotationAnimationDuration
-                                        animationCurve:self.aka_rotationAnimationCurve];
+                                          withDuration:self.rotationAnimationDuration
+                                        animationCurve:self.rotationAnimationCurve];
             [UIView setAnimationsEnabled:NO];
         }
     }
+}
+
+#pragma mark - Keyboard Height and Geometry Changes
+
+- (void)                          viewWillTransitionToSize:(CGSize)size
+                                 withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    // Record animation curve and duration of geometry changes to implement smooth animations alongside geometry changes (rotations):
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        self.rotationAnimationCurve = [context completionCurve];
+        self.rotationAnimationDuration = [context transitionDuration];
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        (void)context;
+
+        self.rotationAnimationCurve = 0;
+        self.rotationAnimationDuration = 0.0;
+    }];
 }
 
 - (void)              adjustViewsForKeyboardHeightChangeTo:(CGFloat)newHeight
@@ -314,15 +361,15 @@
     UIScrollView* scrollView = self.scrollView;
     UIEdgeInsets svi = scrollView.contentInset;
     scrollView.contentInset = UIEdgeInsetsMake(svi.top, svi.left,
-                                                    svi.bottom + newHeight - (CGFloat)self.aka_keyboardAdjustment,
+                                                    svi.bottom + newHeight - (CGFloat)self.keyboardAdjustment,
                                                     svi.right);
 
     UIEdgeInsets svsii = scrollView.scrollIndicatorInsets;
     scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(svsii.top, svsii.left,
-                                                             svsii.bottom + newHeight - (CGFloat)self.aka_keyboardAdjustment,
+                                                             svsii.bottom + newHeight - (CGFloat)self.keyboardAdjustment,
                                                              svsii.right);
 
-    self.aka_keyboardAdjustment = newHeight;
+    self.keyboardAdjustment = newHeight;
 
     [self scrollViewToVisible:self.activeResponder animated:NO];
 }

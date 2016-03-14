@@ -43,12 +43,12 @@ Once you integrated the framework into your project, all you have to do to use b
 
 - *[Interface Builder]*
   - **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
-  - **Define binding expressions in the property inspector for your views**. For example, to bind a label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
+  - **Define binding expressions in the property inspector for your views**. For example, to bind a text field or label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
 - *[Code]*
-  - **Enable binding support** in your view controller. To do that, call ```[self aka_enableBindingSupport]``` in your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
-  - Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```
+  - **Enable binding support** in your view controller. To do that, add ```[AKABindingBehavior addToViewController:self]``` to your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
+  - Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```.
 
-
+The demo project contains a lot of examples for different binding types.
 
 ## Documentation
 

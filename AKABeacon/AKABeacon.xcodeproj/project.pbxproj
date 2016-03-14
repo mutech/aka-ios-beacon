@@ -184,6 +184,8 @@
 		8E8922FE1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E8922FC1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.m */; };
 		8E979A4B1B9FE6B100E0D29C /* AKABooleanTextConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */; };
+		8E9877221C9717CD0008B836 /* AKABindingBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E9877201C9717CD0008B836 /* AKABindingBehavior.h */; };
+		8E9877231C9717CD0008B836 /* AKABindingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E9877211C9717CD0008B836 /* AKABindingBehavior.m */; };
 		8E99A3E31BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E99A3E11BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E99A3E41BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E99A3E21BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.m */; };
 		8E99A3E71BFFC59500595895 /* AKASelectionControlViewBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E99A3E51BFFC59500595895 /* AKASelectionControlViewBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -262,11 +264,9 @@
 		8EE8FA2A1C203A3A00F1E370 /* AKABinding_UIView_styleBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE8FA281C203A3A00F1E370 /* AKABinding_UIView_styleBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE8FA2B1C203A3A00F1E370 /* AKABinding_UIView_styleBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE8FA291C203A3A00F1E370 /* AKABinding_UIView_styleBinding.m */; };
 		8EF05E7A1BED7A1E009C22EB /* AKABeacon.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 8EF05E791BED7A1E009C22EB /* AKABeacon.podspec */; };
-		DA8001988A1E4B22315455F6 /* AKABindingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = DA888C06FA1E1645BB058B3C /* AKABindingBehavior.m */; };
 		DA81F8D6B57EE3E664AF783A /* AKAThemableCompositeControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA83A82B7647A536E7E97FA9 /* AKAControlValidationState.h in Headers */ = {isa = PBXBuildFile; fileRef = DA8E95DBE783767C049834C0 /* AKAControlValidationState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA8D2B0F757EACBDA395B8D9 /* AKAThemableCompositeControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */; };
-		DA8E1C537786E55D4CC314FD /* AKABindingBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = DA827090A15454518B5648CF /* AKABindingBehavior.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -469,6 +469,8 @@
 		8E8922FC1BD2F49200BCEE88 /* AKAKeyboardBinding_AKACustomKeyboardResponderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKeyboardBinding_AKACustomKeyboardResponderView.m; sourceTree = "<group>"; };
 		8E979A491B9FE6B100E0D29C /* AKABooleanTextConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABooleanTextConverter.h; sourceTree = "<group>"; };
 		8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABooleanTextConverter.m; sourceTree = "<group>"; };
+		8E9877201C9717CD0008B836 /* AKABindingBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKABindingBehavior.h; path = AKABeacon/Classes/AKABindingBehavior.h; sourceTree = SOURCE_ROOT; };
+		8E9877211C9717CD0008B836 /* AKABindingBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKABindingBehavior.m; path = AKABeacon/Classes/AKABindingBehavior.m; sourceTree = SOURCE_ROOT; };
 		8E99A3E11BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UISegmentedControl_valueBinding.h; sourceTree = "<group>"; };
 		8E99A3E21BFFC57F00595895 /* AKABinding_UISegmentedControl_valueBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UISegmentedControl_valueBinding.m; sourceTree = "<group>"; };
 		8E99A3E51BFFC59500595895 /* AKASelectionControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKASelectionControlViewBinding.h; sourceTree = "<group>"; };
@@ -552,9 +554,7 @@
 		A057CD3EA7541930AE3A3FE6 /* Pods-AKABeacon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeacon.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon.release.xcconfig"; sourceTree = "<group>"; };
 		B78B81BFD806D63549E7C0CA /* Pods_AKABeaconQuickTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeaconQuickTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B692C413E8034BC5D04581 /* Pods_AKABeacon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeacon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA827090A15454518B5648CF /* AKABindingBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingBehavior.h; sourceTree = "<group>"; };
 		DA852C4C0E01D3CBF2DDF066 /* AKAThemableCompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAThemableCompositeControlView.m; sourceTree = "<group>"; };
-		DA888C06FA1E1645BB058B3C /* AKABindingBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingBehavior.m; sourceTree = "<group>"; };
 		DA8954D869F7E8766BC23292 /* AKAThemableCompositeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemableCompositeControlView.h; sourceTree = "<group>"; };
 		DA8E95DBE783767C049834C0 /* AKAControlValidationState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAControlValidationState.h; sourceTree = "<group>"; };
 		DC464970138AAC7B8F1998E7 /* Pods-AKABeaconQuickTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconQuickTests.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeaconQuickTests/Pods-AKABeaconQuickTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1261,8 +1261,8 @@
 		DA84859B4268DAA6A3DC7E02 /* Behaviors */ = {
 			isa = PBXGroup;
 			children = (
-				DA827090A15454518B5648CF /* AKABindingBehavior.h */,
-				DA888C06FA1E1645BB058B3C /* AKABindingBehavior.m */,
+				8E9877201C9717CD0008B836 /* AKABindingBehavior.h */,
+				8E9877211C9717CD0008B836 /* AKABindingBehavior.m */,
 			);
 			path = Behaviors;
 			sourceTree = "<group>";
@@ -1311,6 +1311,7 @@
 				8EDFDC881C6665E9004C79CC /* UIImageView+AKAIBBindingProperties.h in Headers */,
 				8EE26D401BCD139F003ACCEC /* AKAViewBinding.h in Headers */,
 				8ED3FD031C255FD100C44412 /* AKAAttributedFormatterPropertyBinding.h in Headers */,
+				8E9877221C9717CD0008B836 /* AKABindingBehavior.h in Headers */,
 				8EE26D681BCDC441003ACCEC /* AKAKeyboardControl+KeyboardControlViewBindingDelegate.h in Headers */,
 				8E066C031BC284DD006CADDC /* AKADateFormatterPropertyBinding.h in Headers */,
 				8E72336E1B0022A200D647A9 /* AKABeaconErrors.h in Headers */,
@@ -1406,7 +1407,6 @@
 				8EA732671C79C0A50018A8B3 /* AKATableViewSectionDataSourceInfo.h in Headers */,
 				8E3CE2951C40552500B7D2A0 /* AKATableViewCellFactoryPropertyBinding.h in Headers */,
 				8E7233701B0022A200D647A9 /* AKABeaconErrors_Internal.h in Headers */,
-				DA8E1C537786E55D4CC314FD /* AKABindingBehavior.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1729,6 +1729,7 @@
 				8E6B04DD1BF0BCC900A2BCBE /* AKABinding_UIStepper_valueBinding.m in Sources */,
 				8EE26D691BCDC441003ACCEC /* AKAKeyboardControl+KeyboardControlViewBindingDelegate.m in Sources */,
 				8E7FE4F41C6366B00036349A /* AKALocalePropertyBinding.m in Sources */,
+				8E9877231C9717CD0008B836 /* AKABindingBehavior.m in Sources */,
 				8E3154551BC726A5003FD085 /* AKABinding_UITextView_textBinding.m in Sources */,
 				8EC0F1621BADB64A0066890A /* AKABindingExpressionParser.m in Sources */,
 				8E593DD11BD51BFA0040B391 /* AKACollectionControlViewBinding.m in Sources */,
@@ -1756,7 +1757,6 @@
 				DA8D2B0F757EACBDA395B8D9 /* AKAThemableCompositeControlView.m in Sources */,
 				8E7FE5021C660E480036349A /* AKABindingDelegateDispatcher.m in Sources */,
 				8E9DE5AC1C43F40D00FCC6AF /* AKAProtocolInfo.m in Sources */,
-				DA8001988A1E4B22315455F6 /* AKABindingBehavior.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

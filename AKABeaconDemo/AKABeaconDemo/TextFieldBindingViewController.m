@@ -27,7 +27,7 @@
     self.numberValue = @(-4999.995);
     self.dateValue = [NSDate new];
 
-    [self aka_enableBindingSupport];
+    [AKABindingBehavior addToViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated

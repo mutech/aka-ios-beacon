@@ -30,7 +30,6 @@ class AKATableViewCellFactoryArrayPropertyBindingSpec: QuickSpec {
 
                 let binding = try! AKATableViewCellFactoryArrayPropertyBinding(
                     target: targetProperty,
-                    property: nil,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil)

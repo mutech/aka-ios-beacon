@@ -6,8 +6,12 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKABeacon;
+@import UIKit;
 
-@interface TableViewBindingViewController : AKAFormViewController
+@interface TableViewBindingViewController : UIViewController
+
+@property(nonatomic) NSArray* section1Items;
+@property(nonatomic) NSArray* section2Items;
+@property(nonatomic) NSString* tvTitle;
 
 @end

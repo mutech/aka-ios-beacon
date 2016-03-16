@@ -8,12 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
-@import AKABeacon.AKAPickerKeyboardTriggerView;
-@import AKABeacon.AKAFormViewController;
+@interface PickerKeyboardViewController : UIViewController
 
-@interface PickerKeyboardViewController : AKAFormViewController
+#pragma mark - Outlets
 
-@property (weak, nonatomic) IBOutlet AKAPickerKeyboardTriggerView *stringPickerTriggerView;
-@property (weak, nonatomic) IBOutlet AKAPickerKeyboardTriggerView *objectPickerTriggerView;
+/**
+ Scroll view used by binding behavior to scroll first responder to visible area.
+ */
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+#pragma mark - View Model
+
+@property(nonatomic) NSString* stringValue;
+@property(nonatomic) NSArray*  stringArrayValue;
+
+@property(nonatomic) id        objectValue;
+@property(nonatomic) NSArray*  objectArrayValue;
+
+@property(nonatomic) NSDate*   dateValue;
 
 @end

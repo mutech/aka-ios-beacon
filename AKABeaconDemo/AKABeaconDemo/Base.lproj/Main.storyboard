@@ -144,7 +144,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Sliders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xZU-lH-br0">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Slider &amp; Stepper" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xZU-lH-br0">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -164,7 +164,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Stepper (Auto-ScrollView)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hvr-ea-5Fe">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Stepper" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hvr-ea-5Fe">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -474,8 +474,11 @@ The number editor text field uses two different formatters, one for display and 
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkv-PY-rf5">
-                                                    <rect key="frame" x="124" y="2" width="259" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkv-PY-rf5">
+                                                    <rect key="frame" x="124" y="2" width="243" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="qMA-xT-g0G"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -492,7 +495,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="xkv-PY-rf5" firstAttribute="trailing" secondItem="2df-hI-9yQ" secondAttribute="trailing" constant="8" id="04E-yZ-eye"/>
+                                                <constraint firstItem="xkv-PY-rf5" firstAttribute="trailing" secondItem="2df-hI-9yQ" secondAttribute="trailing" constant="-8" id="04E-yZ-eye"/>
                                                 <constraint firstItem="xkv-PY-rf5" firstAttribute="leading" secondItem="hJu-PN-jHj" secondAttribute="trailing" constant="8" id="XlM-Qm-U0X"/>
                                                 <constraint firstAttribute="bottom" secondItem="hJu-PN-jHj" secondAttribute="bottom" constant="2" id="acY-61-v1W"/>
                                                 <constraint firstItem="hJu-PN-jHj" firstAttribute="top" secondItem="2df-hI-9yQ" secondAttribute="top" constant="2" id="blR-Sk-Z7k"/>
@@ -518,8 +521,11 @@ The number editor text field uses two different formatters, one for display and 
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="omg-7U-JSE">
-                                                    <rect key="frame" x="124" y="2" width="259" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="omg-7U-JSE">
+                                                    <rect key="frame" x="124" y="2" width="243" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="a0l-a8-Ce0"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -540,7 +546,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <constraint firstItem="cfE-RY-stB" firstAttribute="leading" secondItem="Or7-5i-XaP" secondAttribute="leading" constant="16" id="FBz-1u-j9b"/>
                                                 <constraint firstItem="omg-7U-JSE" firstAttribute="bottom" secondItem="cfE-RY-stB" secondAttribute="bottom" id="Mrz-fB-JZe"/>
                                                 <constraint firstItem="cfE-RY-stB" firstAttribute="top" secondItem="Or7-5i-XaP" secondAttribute="top" constant="2" id="rHX-3D-1RR"/>
-                                                <constraint firstItem="omg-7U-JSE" firstAttribute="trailing" secondItem="Or7-5i-XaP" secondAttribute="trailing" constant="8" id="veo-TZ-54O"/>
+                                                <constraint firstItem="omg-7U-JSE" firstAttribute="trailing" secondItem="Or7-5i-XaP" secondAttribute="trailing" constant="-8" id="veo-TZ-54O"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -560,8 +566,11 @@ The number editor text field uses two different formatters, one for display and 
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2c9-s1-MVg">
-                                                    <rect key="frame" x="124" y="2" width="259" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2c9-s1-MVg">
+                                                    <rect key="frame" x="124" y="2" width="243" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="y8J-2q-uE1"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -573,7 +582,7 @@ The number editor text field uses two different formatters, one for display and 
                                             <constraints>
                                                 <constraint firstItem="LCK-Q4-eUv" firstAttribute="top" secondItem="Q19-9F-34m" secondAttribute="top" constant="2" id="37r-Vr-S6e"/>
                                                 <constraint firstItem="2c9-s1-MVg" firstAttribute="bottom" secondItem="LCK-Q4-eUv" secondAttribute="bottom" id="GYu-Y9-92a"/>
-                                                <constraint firstItem="2c9-s1-MVg" firstAttribute="trailing" secondItem="Q19-9F-34m" secondAttribute="trailing" constant="8" id="Hrq-G3-gCl"/>
+                                                <constraint firstItem="2c9-s1-MVg" firstAttribute="trailing" secondItem="Q19-9F-34m" secondAttribute="trailing" constant="-8" id="Hrq-G3-gCl"/>
                                                 <constraint firstItem="LCK-Q4-eUv" firstAttribute="leading" secondItem="Q19-9F-34m" secondAttribute="leading" constant="16" id="PeX-no-o1i"/>
                                                 <constraint firstItem="2c9-s1-MVg" firstAttribute="top" secondItem="LCK-Q4-eUv" secondAttribute="top" id="XcE-Bh-MLN"/>
                                                 <constraint firstAttribute="bottom" secondItem="LCK-Q4-eUv" secondAttribute="bottom" constant="2" id="pJI-La-kQ0"/>
@@ -598,7 +607,10 @@ The number editor text field uses two different formatters, one for display and 
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ws2-DI-73c">
-                                                    <rect key="frame" x="124" y="2" width="259" height="40"/>
+                                                    <rect key="frame" x="124" y="2" width="243" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="wn9-dV-0Tc"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -620,7 +632,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <constraint firstItem="ws2-DI-73c" firstAttribute="bottom" secondItem="i24-y6-cya" secondAttribute="bottom" id="fjt-JF-uP6"/>
                                                 <constraint firstItem="i24-y6-cya" firstAttribute="leading" secondItem="sKP-9b-Wgo" secondAttribute="leading" constant="16" id="lKU-0i-sRx"/>
                                                 <constraint firstItem="ws2-DI-73c" firstAttribute="leading" secondItem="i24-y6-cya" secondAttribute="trailing" constant="8" id="lxf-4W-poS"/>
-                                                <constraint firstItem="ws2-DI-73c" firstAttribute="trailing" secondItem="sKP-9b-Wgo" secondAttribute="trailing" constant="8" id="lyH-oB-BRC"/>
+                                                <constraint firstItem="ws2-DI-73c" firstAttribute="trailing" secondItem="sKP-9b-Wgo" secondAttribute="trailing" constant="-8" id="lyH-oB-BRC"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -640,8 +652,11 @@ The number editor text field uses two different formatters, one for display and 
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXc-6D-1up">
-                                                    <rect key="frame" x="124" y="2" width="259" height="40"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXc-6D-1up">
+                                                    <rect key="frame" x="124" y="2" width="243" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="z03-LM-hMD"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -665,7 +680,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <constraint firstItem="EXc-6D-1up" firstAttribute="leading" secondItem="ybZ-XK-IRl" secondAttribute="trailing" constant="8" id="N85-ru-bl8"/>
                                                 <constraint firstAttribute="bottom" secondItem="ybZ-XK-IRl" secondAttribute="bottom" constant="2" id="Zib-oV-rwC"/>
                                                 <constraint firstItem="EXc-6D-1up" firstAttribute="bottom" secondItem="ybZ-XK-IRl" secondAttribute="bottom" id="bgA-XO-pz8"/>
-                                                <constraint firstItem="EXc-6D-1up" firstAttribute="trailing" secondItem="LJv-8Z-n35" secondAttribute="trailing" constant="8" id="joU-ZH-py0"/>
+                                                <constraint firstItem="EXc-6D-1up" firstAttribute="trailing" secondItem="LJv-8Z-n35" secondAttribute="trailing" constant="-8" id="joU-ZH-py0"/>
                                                 <constraint firstItem="ybZ-XK-IRl" firstAttribute="top" secondItem="LJv-8Z-n35" secondAttribute="top" constant="2" id="nYg-ba-2Rk"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -870,9 +885,7 @@ The number editor text field uses two different formatters, one for display and 
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="objectPickerTriggerView" destination="Bz0-aN-95m" id="0ML-fd-wGZ"/>
-                        <outlet property="scrollView" destination="sa1-o0-prA" id="S7J-Eh-OqY"/>
-                        <outlet property="stringPickerTriggerView" destination="ri5-zv-jXS" id="vA3-R2-lqP"/>
+                        <outlet property="scrollView" destination="sa1-o0-prA" id="7pW-2c-a15"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7DZ-BM-ZCu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1101,7 +1114,7 @@ The number editor text field uses two different formatters, one for display and 
             </objects>
             <point key="canvasLocation" x="945.5" y="1267.5"/>
         </scene>
-        <!--Sliders-->
+        <!--Slider & Stepper-->
         <scene sceneID="Qsb-YT-rF2">
             <objects>
                 <viewController id="5zU-PD-VgZ" customClass="SliderViewController" sceneMemberID="viewController">
@@ -1120,7 +1133,7 @@ The number editor text field uses two different formatters, one for display and 
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                         <subviews>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="G6U-dH-WBZ">
-                                                <rect key="frame" x="69" y="287" width="236" height="31"/>
+                                                <rect key="frame" x="69" y="249" width="236" height="31"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka">
                                                         <string key="value">numberValue {
@@ -1131,7 +1144,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 </userDefinedRuntimeAttributes>
                                             </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999 %" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02w-9d-CMm">
-                                                <rect key="frame" x="163" y="259" width="50" height="20"/>
+                                                <rect key="frame" x="163" y="221" width="50" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="ECr-Mc-NeX"/>
                                                 </constraints>
@@ -1146,16 +1159,13 @@ The number editor text field uses two different formatters, one for display and 
 		maximumFractionDigits: 0,
 		roundingMode: $enum.RoundHalfUp
 	},
-	transitionAnimation: {
-		duration: .25,
-		options: $options{CurveEaseInOut, TransitionCrossDissolve}
-	}
+	transitionAnimation: numberValueLabelTransitionAnimation
 }</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Muq-aO-dZH">
-                                                <rect key="frame" x="140" y="325" width="94" height="29"/>
+                                                <rect key="frame" x="140" y="287" width="94" height="29"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka">
                                                         <string key="value">numberValue {
@@ -1169,19 +1179,59 @@ The number editor text field uses two different formatters, one for display and 
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </stepper>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A0h-Tp-hKh">
+                                                <rect key="frame" x="71" y="343" width="235" height="44"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adaptive Animations:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0kh-Gv-O5b">
+                                                        <rect key="frame" x="8" y="14" width="162" height="20"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="03J-9B-nQ0">
+                                                        <rect key="frame" x="178" y="8" width="51" height="31"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="49" id="eek-Zw-hJG"/>
+                                                            <constraint firstAttribute="height" constant="31" id="zjm-PV-LhT"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="adaptiveAnimation"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </switch>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstItem="03J-9B-nQ0" firstAttribute="centerY" secondItem="0kh-Gv-O5b" secondAttribute="centerY" id="0sN-yS-pBN"/>
+                                                    <constraint firstAttribute="bottom" secondItem="03J-9B-nQ0" secondAttribute="bottom" constant="5" id="4Cg-WG-PRP"/>
+                                                    <constraint firstAttribute="trailing" secondItem="03J-9B-nQ0" secondAttribute="trailing" constant="8" id="FHl-tW-6hc"/>
+                                                    <constraint firstItem="03J-9B-nQ0" firstAttribute="top" secondItem="A0h-Tp-hKh" secondAttribute="top" constant="8" id="UWB-MF-KNN"/>
+                                                    <constraint firstItem="0kh-Gv-O5b" firstAttribute="leading" secondItem="A0h-Tp-hKh" secondAttribute="leading" constant="8" id="chl-2x-JbV"/>
+                                                    <constraint firstItem="03J-9B-nQ0" firstAttribute="leading" secondItem="0kh-Gv-O5b" secondAttribute="trailing" constant="8" id="eY2-rC-7AI"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="G6U-dH-WBZ" firstAttribute="centerX" secondItem="RMu-rT-ft0" secondAttribute="centerX" id="Axb-nr-MSb"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="02w-9d-CMm" secondAttribute="trailing" constant="8" id="BGt-4p-mhx"/>
+                                            <constraint firstItem="A0h-Tp-hKh" firstAttribute="centerX" secondItem="RMu-rT-ft0" secondAttribute="centerX" id="DPM-Jl-7Df"/>
                                             <constraint firstItem="Muq-aO-dZH" firstAttribute="top" secondItem="G6U-dH-WBZ" secondAttribute="bottom" constant="8" id="FPL-xq-Hvc"/>
-                                            <constraint firstItem="G6U-dH-WBZ" firstAttribute="centerY" secondItem="RMu-rT-ft0" secondAttribute="centerY" id="LxM-uf-Vu6"/>
+                                            <constraint firstItem="G6U-dH-WBZ" firstAttribute="centerY" secondItem="RMu-rT-ft0" secondAttribute="centerY" constant="-66" id="LxM-uf-Vu6"/>
                                             <constraint firstItem="02w-9d-CMm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="RMu-rT-ft0" secondAttribute="leading" constant="8" id="bty-8A-UrX"/>
                                             <constraint firstItem="Muq-aO-dZH" firstAttribute="centerX" secondItem="RMu-rT-ft0" secondAttribute="centerX" id="cXU-ML-VWD"/>
+                                            <constraint firstItem="A0h-Tp-hKh" firstAttribute="top" secondItem="Muq-aO-dZH" secondAttribute="bottom" constant="27" id="e8J-Yy-hfO"/>
                                             <constraint firstItem="02w-9d-CMm" firstAttribute="centerX" secondItem="RMu-rT-ft0" secondAttribute="centerX" id="hJF-fd-6Zj"/>
+                                            <constraint firstItem="A0h-Tp-hKh" firstAttribute="leading" secondItem="RMu-rT-ft0" secondAttribute="leading" constant="8" id="jVt-Wa-KDL"/>
                                             <constraint firstItem="G6U-dH-WBZ" firstAttribute="top" secondItem="02w-9d-CMm" secondAttribute="bottom" constant="8" id="kE7-w6-FH5"/>
                                             <constraint firstItem="G6U-dH-WBZ" firstAttribute="width" secondItem="RMu-rT-ft0" secondAttribute="width" multiplier="0.618" id="kHg-UL-OHg"/>
+                                            <constraint firstItem="Muq-aO-dZH" firstAttribute="centerY" secondItem="RMu-rT-ft0" secondAttribute="centerY" id="y5e-ss-Ryk"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="LxM-uf-Vu6"/>
+                                                <exclude reference="jVt-Wa-KDL"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <constraints>
@@ -1210,7 +1260,7 @@ The number editor text field uses two different formatters, one for display and 
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Sliders" id="skP-QP-tb6"/>
+                    <navigationItem key="navigationItem" title="Slider &amp; Stepper" id="skP-QP-tb6"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3An-lE-8Dn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

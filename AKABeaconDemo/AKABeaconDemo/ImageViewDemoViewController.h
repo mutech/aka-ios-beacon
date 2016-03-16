@@ -6,9 +6,9 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKABeacon;
+@import UIKit;
 
-@interface ImageViewDemoViewController : AKAFormViewController
+@interface ImageViewDemoViewController : UIViewController
 
 @property(nonatomic) NSArray* images;
 @property(nonatomic) id selectedImageOrImageName;

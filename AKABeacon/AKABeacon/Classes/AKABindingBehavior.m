@@ -93,7 +93,7 @@
                                                                                               delegate:delegate];
         }
         self.formControl = [[AKAFormControl alloc] initWithDataContext:dataContext
-                                                              delegate:self.delegateDispatcher];
+                                                              delegate:self.delegateDispatcher ? self.delegateDispatcher : self];
     }
     return self;
 }

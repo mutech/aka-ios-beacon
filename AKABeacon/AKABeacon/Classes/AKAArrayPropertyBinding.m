@@ -7,6 +7,7 @@
 //
 
 #import "AKAArrayPropertyBinding.h"
+#import "AKABinding_Protected.h"
 
 @interface AKAArrayPropertyBinding()
 
@@ -120,7 +121,11 @@
                     }
 
                     AKABinding* binding = [bindingType alloc];
-                    binding = [binding initWithTarget:arrayItemTargetProperty expression:sourceExpression context:bindingContext delegate:weakSelf error:error];
+                    binding = [binding initWithTarget:arrayItemTargetProperty
+                                           expression:sourceExpression
+                                              context:bindingContext
+                                             delegate:weakSelf.delegateForSubBindings
+                                                error:error];
                     if (binding)
                     {
                         if (targetArrayItemBindings == nil)

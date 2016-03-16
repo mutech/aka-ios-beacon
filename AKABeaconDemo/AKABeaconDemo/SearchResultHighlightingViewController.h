@@ -6,8 +6,11 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKABeacon;
+@import UIKit;
 
-@interface SearchResultHighlightingViewController : AKAFormViewController
+@interface SearchResultHighlightingViewController : UIViewController
+
+@property(nonatomic) NSString* searchPattern;
+@property(nonatomic) NSString* textValue;
 
 @end

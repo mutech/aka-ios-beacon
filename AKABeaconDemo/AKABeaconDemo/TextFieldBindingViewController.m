@@ -45,12 +45,13 @@
         [UIAlertController alertControllerWithTitle:@"Editing results"
                                             message:message
                                      preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Ok"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-                                                          [self.navigationController popViewControllerAnimated:YES];
-                                                      }]];
-    [self presentViewController:alertController animated:YES completion:nil];
+    UIAlertAction* action = [UIAlertAction actionWithTitle:@"Ok"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * _Nonnull action) {
+                                                       [self.navigationController popViewControllerAnimated:YES];
+                                                   }];
+    [alertController addAction:action];
+    [self.navigationController presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

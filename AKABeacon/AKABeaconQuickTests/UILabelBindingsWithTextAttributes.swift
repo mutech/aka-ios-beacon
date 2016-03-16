@@ -19,10 +19,9 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;
 
-                let bindingType: AKABinding.Type? = expression.specification?.bindingType as? AKABinding.Type;
+                let bindingType = expression.specification?.bindingType as? AKAViewBinding.Type;
                 let binding: AKABinding_UILabel_textBinding? = try! bindingType?.init (
-                    target: view,
-                    property: property,
+                    view: view,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil) as! AKABinding_UILabel_textBinding;

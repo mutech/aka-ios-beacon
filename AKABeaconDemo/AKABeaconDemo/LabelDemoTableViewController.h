@@ -6,9 +6,12 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
+@import UIKit;
 @import AKABeacon;
 
 @interface LabelDemoTableViewController : AKAFormTableViewController
+
+#pragma mark - View Model
 
 @property(nonatomic) NSString* textValue;
 @property(nonatomic) double floatValue;

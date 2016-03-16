@@ -20,12 +20,11 @@ class UITextViewBindingsSpec: QuickSpec {
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;
 
-                let bindingType: AKABinding.Type? = expression.specification?.bindingType as? AKABinding.Type;
+                let bindingType: AKAViewBinding.Type? = expression.specification?.bindingType as? AKAViewBinding.Type;
 
                 // Act
                 let binding = try! bindingType?.init (
-                    target: view,
-                    property: property,
+                    view: view,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil);

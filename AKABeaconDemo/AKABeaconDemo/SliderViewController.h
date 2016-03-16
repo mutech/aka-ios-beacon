@@ -7,11 +7,17 @@
 //
 
 @import UIKit;
-@import AKABeacon;
 
-@interface SliderViewController : AKAFormViewController
+@interface SliderViewController : UIViewController
+
+#pragma mark View Model
+
+// Selected Value
 
 @property(nonatomic) double numberValue;
+
+// Stepper/Slider configuration
+
 @property(nonatomic) double minimumValue;
 @property(nonatomic) double maximumValue;
 @property(nonatomic) double stepValue;
@@ -19,6 +25,6 @@
 @property(nonatomic) BOOL continuous;
 @property(nonatomic) BOOL wraps;
 
-@property(nonatomic) AKATransitionAnimationParameters* numberValueLabelTransitionAnimation;
+@property(nonatomic) BOOL adaptiveAnimation;
 
 @end

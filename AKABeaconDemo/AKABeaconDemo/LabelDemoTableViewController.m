@@ -34,16 +34,12 @@
 @end
 
 
-@interface LabelDemoTableViewController ()
-
-@end
-
-
 @implementation LabelDemoTableViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.textValue = @"Michael";
     self.floatValue = 12345.678;
     self.dateValue = [NSDate new];

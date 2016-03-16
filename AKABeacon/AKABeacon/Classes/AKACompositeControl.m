@@ -421,11 +421,11 @@
     {
         result = [NSMutableArray new];
         [viewController.childViewControllers enumerateObjectsUsingBlock:
-         ^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)
+         ^(__kindof UIViewController * _Nonnull vc,
+           NSUInteger __unused indx,
+           BOOL * _Nonnull __unused stop)
          {
-             (void)idx;
-             (void)stop;
-             opt_UIView view = [obj view];
+             opt_UIView view = vc.view;
              if (view)
              {
                  [result addObject:(req_UIView)view];

@@ -6,42 +6,61 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
+@import AKABeacon;
+
 #import "SliderViewController.h"
 
 @interface SliderViewController()
+
+// Used to animate label text changes, see setNumberValue:
+@property(nonatomic) AKATransitionAnimationParameters* numberValueLabelTransitionAnimation;
+
 @end
+
 
 @implementation SliderViewController
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
+    [AKABindingBehavior addToViewController:self];
+
     self.minimumValue = 0;
     self.maximumValue = 1.0;
     self.stepValue = .01;
     self.autorepeat = YES;
     self.continuous = YES;
     self.wraps = YES;
+    self.adaptiveAnimation = YES;
+
     self.numberValueLabelTransitionAnimation = [AKATransitionAnimationParameters new];
-    self.numberValueLabelTransitionAnimation.duration = .3;
-    [super viewDidLoad];
+    self.numberValueLabelTransitionAnimation.duration = .25;
 }
 
 #pragma mark - View Model
 
 - (void)setNumberValue:(double)numberValue
 {
-    UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseInOut;
-    double oldValue = self.numberValue;
-
-    if (numberValue < oldValue)
+    if (self.adaptiveAnimation)
     {
-        self.numberValueLabelTransitionAnimation.options =
+        // Adapt animation to how the number was changed (increase or decreased):
+        UIViewAnimationOptions options = UIViewAnimationOptionCurveEaseInOut;
+        double oldValue = self.numberValue;
+        if (numberValue < oldValue)
+        {
+            self.numberValueLabelTransitionAnimation.options =
             (options | UIViewAnimationOptionTransitionFlipFromLeft);
+        }
+        else
+        {
+            self.numberValueLabelTransitionAnimation.options =
+            (options | UIViewAnimationOptionTransitionFlipFromRight);
+        }
     }
     else
     {
-        self.numberValueLabelTransitionAnimation.options =
-            (options | UIViewAnimationOptionTransitionFlipFromRight);
+        self.numberValueLabelTransitionAnimation.options = UIViewAnimationCurveEaseInOut | UIViewAnimationOptionTransitionCrossDissolve;
     }
 
     _numberValue = numberValue;
@@ -54,11 +73,12 @@
     BOOL result = YES;
     if ([@[@"stepValue", @"minimumValue", @"maximumValue"] containsObject:inKey])
     {
+        // Make sure that stepper/slider configuration values are valid positive numbers, revert value if not
         id value = *ioValue;
         if (![value isKindOfClass:[NSNumber class]] ||
             [value doubleValue] <= 0)
         {
-            // Ignore change and use current value
+            // revert to current value
             *ioValue = [self valueForKey:inKey];
         }
     }

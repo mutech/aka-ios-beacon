@@ -7,11 +7,10 @@
 //
 
 #import "SearchResultHighlightingViewController.h"
+@import AKABeacon;
 
 @interface SearchResultHighlightingViewController () <UISearchBarDelegate>
 
-@property(nonatomic) NSString* searchPattern;
-@property(nonatomic) NSString* textValue;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
@@ -20,11 +19,13 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+
+    [AKABindingBehavior addToViewController:self];
+
     self.textValue = @"Demo text";
     self.searchPattern = @"Demo";
     self.searchBar.text = self.searchPattern;
-
-    [super viewDidLoad];
 }
 
 #pragma mark - UISearchBarDelegate

@@ -15,7 +15,7 @@ class TestBaseBindingContext: NSObject, AKABindingContextProtocol {
         return AKAProperty.init(ofWeakKeyValueTarget: self, keyPath: keyPath, changeObserver: valueDidChange);
     }
 
-    func dataContextValueForKeyPath(keyPath: String) -> AnyObject? {
+    func dataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
         return dataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
     }
 
@@ -23,7 +23,7 @@ class TestBaseBindingContext: NSObject, AKABindingContextProtocol {
         return self.dataContextPropertyForKeyPath(keyPath, withChangeObserver: valueDidChange);
     }
 
-    func rootDataContextValueForKeyPath(keyPath: String) -> AnyObject? {
+    func rootDataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
         return rootDataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
     }
 
@@ -31,7 +31,7 @@ class TestBaseBindingContext: NSObject, AKABindingContextProtocol {
         return nil;
     }
 
-    func controlValueForKeyPath(keyPath: String) -> AnyObject? {
+    func controlValueForKeyPath(keyPath: String?) -> AnyObject? {
         return nil;
     }
 }

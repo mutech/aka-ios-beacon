@@ -31,7 +31,6 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
 
                 let binding = try! AKAPredicatePropertyBinding(
                     target: targetProperty,
-                    property: nil,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil);
@@ -103,7 +102,6 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
 
                 let binding = try! AKAPredicatePropertyBinding(
                     target: targetProperty,
-                    property: nil,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil);
@@ -244,7 +242,6 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
 
                 let binding = try! AKAPredicatePropertyBinding(
                     target: targetProperty,
-                    property: nil,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil);
@@ -289,7 +286,6 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
 
                 let binding = try! AKAPredicatePropertyBinding(
                     target: targetProperty,
-                    property: nil,
                     expression: expression,
                     context: bindingContext,
                     delegate: nil);

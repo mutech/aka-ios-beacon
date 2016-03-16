@@ -7,22 +7,9 @@
 //
 
 @import UIKit;
-@import AKABeacon;
+@import AKABeacon.AKABindingBehavior;
 
 #import "PickerKeyboardViewController.h"
-
-@interface PickerKeyboardViewController() <AKACustomKeyboardResponderDelegate>
-
-@property(nonatomic) NSString* stringValue;
-@property(nonatomic) NSArray*  stringArrayValue;
-
-@property(nonatomic) id        objectValue;
-@property(nonatomic) NSArray*  objectArrayValue;
-
-@property(nonatomic) NSDate*   dateValue;
-
-@end
-
 
 @implementation PickerKeyboardViewController
 
@@ -32,8 +19,7 @@
 {
     [super viewDidLoad];
 
-    self.stringPickerTriggerView.delegate = self;
-    self.objectPickerTriggerView.delegate = self;
+    [AKABindingBehavior addToViewController:self];
 
     self.stringArrayValue = @[ @"one",
                                @"two",
@@ -63,12 +49,6 @@
 
     self.dateValue = [NSDate new];
 
-
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 @end

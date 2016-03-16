@@ -7,19 +7,20 @@
 //
 
 #import "ImageViewDemoViewController.h"
-@import AKABeacon.AKABeaconStyleKit;
+@import AKABeacon;
 
 @implementation ImageViewDemoViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.images = @[ @"AKALogo",
-                     @"Photo"
-                    ];
+
+    [AKABindingBehavior addToViewController:self];
+
+    self.images = @[ @"AKALogo", @"Photo" ];
 }
 
-- (void)setSelectedImageIndex:(NSUInteger)selectedImageIndex
+- (void)setSelectedImageIndex:( NSUInteger)selectedImageIndex
 {
     _selectedImageIndex = selectedImageIndex % self.images.count;
     self.selectedImageOrImageName = _selectedImageIndex < self.images.count ? self.images[_selectedImageIndex] : nil;

@@ -8,6 +8,7 @@
 
 #import "AKABinding.h"
 
+// This class is (no longer) needed, but kept as a marker to classify binding types.
 @interface AKAPropertyBinding: AKABinding
 
 @end

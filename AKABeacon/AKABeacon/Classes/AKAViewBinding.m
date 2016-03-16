@@ -29,7 +29,8 @@
     if (self = [super initWithTarget:[self createBindingTargetPropertyForView:targetView]
                           expression:bindingExpression
                              context:bindingContext
-                            delegate:delegate error:error])
+                            delegate:delegate
+                               error:error])
     {
         _view = targetView;
     }

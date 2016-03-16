@@ -149,9 +149,14 @@
     return _isUpdatingTargetValueForSourceValueChange;
 }
 
-- (id<AKABindingDelegate>)delegate
+- (id<AKABindingDelegate>)                         delegate
 {
     return _delegateDispatcher.delegate;
+}
+
+- (id<AKABindingDelegate>)           delegateForSubBindings
+{
+    return self->_delegateDispatcher ? self->_delegateDispatcher : self;
 }
 
 #pragma mark - Conversion
@@ -213,54 +218,6 @@
         {
             *targetValueStore = validatedValue;
         }
-    }
-
-    return result;
-}
-
-#pragma mark - Delegation
-
-- (id)                          forwardingTargetForSelector:(SEL)aSelector
-{
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([super respondsToSelector:aSelector])
-    {
-        return self;
-    }
-    else if ([delegate respondsToSelector:aSelector])
-    {
-        return delegate;
-    }
-    else
-    {
-        return [super forwardingTargetForSelector:aSelector];
-    }
-}
-
-
-static inline BOOL               selector_belongsToProtocol(SEL selector, Protocol * protocol)
-{
-    // Reference: https://gist.github.com/numist/3838169
-    for (int optionBits = 0; optionBits < (1 << 2); optionBits++) {
-        BOOL required = (BOOL) (optionBits & 1);
-        BOOL instance = !(optionBits & (1 << 1));
-
-        struct objc_method_description hasMethod = protocol_getMethodDescription(protocol, selector, required, instance);
-        if (hasMethod.name || hasMethod.types) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
-- (BOOL)                                 respondsToSelector:(SEL)aSelector
-{
-    BOOL result = [super respondsToSelector:aSelector];
-    if (!result)
-    {
-        result = (selector_belongsToProtocol(aSelector, @protocol(AKABindingDelegate)) &&
-                  [self.delegate respondsToSelector:aSelector]);
     }
 
     return result;
@@ -820,7 +777,7 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                     }
 
                     AKABinding* binding = (AKABinding*)[bindingType alloc];
-                    binding = [binding initWithTarget:arrayItemTargetProperty expression:sourceExpression context:bindingContext delegate:weakSelf error:error];
+                    binding = [binding initWithTarget:arrayItemTargetProperty expression:sourceExpression context:bindingContext delegate:weakSelf.delegateForSubBindings error:error];
                     if (binding)
                     {
                         arrayItemBinding = binding;
@@ -1128,7 +1085,11 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                                              didChangeToNewValue:newValue];
                                    }];
         AKABinding* propertyBinding =
-        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty expression:attributeExpression context:bindingContext delegate:weakSelf error:error];
+        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty
+                                                expression:attributeExpression
+                                                   context:bindingContext
+                                                  delegate:weakSelf.delegateForSubBindings
+                                                     error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -1165,7 +1126,11 @@ static inline BOOL               selector_belongsToProtocol(SEL selector, Protoc
                    didChangeToNewValue:newValue];
          }];
         AKABinding* propertyBinding =
-        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty expression:attributeExpression context:bindingContext delegate:weakSelf error:error];
+        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty
+                                                expression:attributeExpression
+                                                   context:bindingContext
+                                                  delegate:weakSelf.delegateForSubBindings
+                                                     error:error];
         result = propertyBinding != nil;
         if (result)
         {

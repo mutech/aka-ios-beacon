@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name          = 'AKACommons'
-    spec.version       = '0.1.2-pre'
+    spec.version       = '0.1.2'
     spec.license       = 'BSD'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }
     spec.homepage      = 'https://github.com/mutech/aka-ios-commons/'

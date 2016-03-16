@@ -24,7 +24,7 @@ To integrate AKABeacon, enable ```use_frameworks!``` in your Podfile and add the
 ```
 use_frameworks!
 ...
-pod 'AKABeacon', '~> 0.1.1'
+pod 'AKABeacon', '~> 0.1.2'
 ```
 
 If you are using the [CocoaPods try plugin](https://github.com/CocoaPods/cocoapods-try), an easy way to start experimenting with Beacon is:

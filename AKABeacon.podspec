@@ -16,5 +16,5 @@ Pod::Spec.new do |spec|
     spec.framework     = 'Foundation'
     spec.module_name   = 'AKABeacon'
 
-    spec.dependency    'AKACommons', '~> 0.1.1'
+    spec.dependency    'AKACommons', '~> 0.1.2-pre'
 end

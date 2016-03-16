@@ -45,6 +45,7 @@ FOUNDATION_EXPORT const unsigned char AKACommonsVersionString[];
 #import <AKACommons/AKAIPAddress.h>
 #import <AKACommons/AKAIPNetmask.h>
 #import <AKACommons/AKAInterfaceInfo.h>
+#import <AKACommons/AKAInterfaceInfo+Deprecated.h>
 
 // Collections/
 #import <AKACommons/AKAMutableOrderedDictionary.h>

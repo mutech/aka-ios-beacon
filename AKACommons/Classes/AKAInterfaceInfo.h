@@ -103,11 +103,6 @@
  */
 @property (nonatomic, readonly) NSUInteger flags;
 
-/**
- * The SSID of the interface, if the interface is a WLAN interface, otherwise nil
- */
-@property (nonnull, readonly) NSString* SSID;
-
 #pragma mark - Iterating over addresses in the connected network
 
 - (id __nonnull)objectAtIndexedSubscript:(NSUInteger)index;

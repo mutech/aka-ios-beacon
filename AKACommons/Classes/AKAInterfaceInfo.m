@@ -136,19 +136,6 @@
 
 #pragma mark - Derived Properties
 
-- (NSString *)SSID
-{
-    NSString *ssid = nil;
-
-    CFDictionaryRef rawInfo =
-        CNCopyCurrentNetworkInfo((__bridge CFStringRef)self.name);
-    NSDictionary *info =
-        CFBridgingRelease(rawInfo);
-    ssid = info[@"SSID"];
-
-    return ssid;
-}
-
 - (NSUInteger)networkSize
 {
     return self.netmask.networkSize;

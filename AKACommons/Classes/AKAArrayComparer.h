@@ -74,6 +74,8 @@
  */
 @property(nonatomic, readonly, nonnull) NSArray<NSNumber*>* permutationAfterDeletionsAndBeforeInsertions;
 
+@property(nonatomic, readonly, nonnull) NSArray<NSNumber*>* movementsForTableViews;
+
 #pragma mark - Table View Updates
 
 /**

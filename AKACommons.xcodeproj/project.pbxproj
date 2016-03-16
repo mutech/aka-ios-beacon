@@ -11,6 +11,8 @@
 		8E1BBDE91BCBD52C00B1ECF1 /* AKAKVOPublisher_Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1BBDE81BCBD52C00B1ECF1 /* AKAKVOPublisher_Internal.h */; };
 		8E1BBDEB1BCBD53900B1ECF1 /* AKACommons.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E1BBDEA1BCBD53900B1ECF1 /* AKACommons.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E225FF61BAEF8E200BC070F /* AKANullability.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E225FF51BAEEB4A00BC070F /* AKANullability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E24B8B51C921F0600879965 /* AKAInterfaceInfo+Deprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E24B8B31C921F0600879965 /* AKAInterfaceInfo+Deprecated.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E24B8B61C921F0600879965 /* AKAInterfaceInfo+Deprecated.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E24B8B41C921F0600879965 /* AKAInterfaceInfo+Deprecated.m */; };
 		8E3F06CC1BBC84DD00E2B164 /* AKAKVOChangeEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E3F06CD1BBC84DD00E2B164 /* AKAKVOChangeEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */; };
 		8E3F06CE1BBC84DD00E2B164 /* AKAKVOPublisher.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -100,6 +102,8 @@
 		8E1BBDE81BCBD52C00B1ECF1 /* AKAKVOPublisher_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAKVOPublisher_Internal.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8E1BBDEA1BCBD53900B1ECF1 /* AKACommons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKACommons.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8E225FF51BAEEB4A00BC070F /* AKANullability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = AKANullability.h; path = Classes/AKANullability.h; sourceTree = "<group>"; };
+		8E24B8B31C921F0600879965 /* AKAInterfaceInfo+Deprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKAInterfaceInfo+Deprecated.h"; sourceTree = "<group>"; };
+		8E24B8B41C921F0600879965 /* AKAInterfaceInfo+Deprecated.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKAInterfaceInfo+Deprecated.m"; sourceTree = "<group>"; };
 		8E3F06C51BBC84DD00E2B164 /* AKAKVOChangeEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAKVOChangeEvent.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8E3F06C61BBC84DD00E2B164 /* AKAKVOChangeEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAKVOChangeEvent.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8E3F06C71BBC84DD00E2B164 /* AKAKVOPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAKVOPublisher.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -170,8 +174,8 @@
 		8ECF293D1BCBDA9600D8CEE2 /* modules.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = modules.modulemap; sourceTree = "<group>"; };
 		8ED5EFBE1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+AKAKeyPathUtilities.h"; path = "Classes/NSString+AKAKeyPathUtilities.h"; sourceTree = "<group>"; };
 		8ED5EFBF1BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+AKAKeyPathUtilities.m"; path = "Classes/NSString+AKAKeyPathUtilities.m"; sourceTree = "<group>"; };
-		8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAArrayComparer.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAArrayComparer.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8EDBBB8B1B63F0D200875D5F /* AKAArrayComparer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAArrayComparer.h; sourceTree = "<group>"; };
+		8EDBBB8C1B63F0D200875D5F /* AKAArrayComparer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAArrayComparer.m; sourceTree = "<group>"; };
 		8EE131161BBB1DFE00E765A2 /* AKAReferenceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAReferenceTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8EED828C1BAF51DA00E45721 /* NSMutableString+AKATools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableString+AKATools.h"; path = "Classes/NSMutableString+AKATools.h"; sourceTree = "<group>"; };
 		8EED828D1BAF51DA00E45721 /* NSMutableString+AKATools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableString+AKATools.m"; path = "Classes/NSMutableString+AKATools.m"; sourceTree = "<group>"; };
@@ -240,6 +244,8 @@
 				8E6C86CA1AF8E7D600FDAD7B /* AKANetworkingErrors.m */,
 				8E6C86C11AF8E7D600FDAD7B /* AKAInterfaceInfo.h */,
 				8E6C86C21AF8E7D600FDAD7B /* AKAInterfaceInfo.m */,
+				8E24B8B31C921F0600879965 /* AKAInterfaceInfo+Deprecated.h */,
+				8E24B8B41C921F0600879965 /* AKAInterfaceInfo+Deprecated.m */,
 				8E6C86C31AF8E7D600FDAD7B /* AKAIPAddress.h */,
 				8E6C86C41AF8E7D600FDAD7B /* AKAIPAddress.m */,
 				8E6C86C51AF8E7D600FDAD7B /* AKAIPNetmask.h */,
@@ -434,6 +440,7 @@
 				8E3F06D01BBC84DD00E2B164 /* AKAKVOSubscription_Internal.h in Headers */,
 				8E6C86EE1AF8E7D600FDAD7B /* AKAErrors.h in Headers */,
 				8E6C86FE1AF8E7D600FDAD7B /* AKAReference.h in Headers */,
+				8E24B8B51C921F0600879965 /* AKAInterfaceInfo+Deprecated.h in Headers */,
 				8E6C86FC1AF8E7D600FDAD7B /* AKAProperty.h in Headers */,
 				8E6C87031AF8E7D600FDAD7B /* AKATVMultiplexedDataSource.h in Headers */,
 				8E6C87051AF8E7D600FDAD7B /* AKATVProxy.h in Headers */,
@@ -596,6 +603,7 @@
 				8E6C870A1AF8E7D600FDAD7B /* AKATVSection.m in Sources */,
 				8E6C87161AF8E7D600FDAD7B /* NSString+AKATools.m in Sources */,
 				8ED5EFC11BB04DCD00002D21 /* NSString+AKAKeyPathUtilities.m in Sources */,
+				8E24B8B61C921F0600879965 /* AKAInterfaceInfo+Deprecated.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -687,7 +695,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -751,7 +759,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

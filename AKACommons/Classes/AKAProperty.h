@@ -69,6 +69,10 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
 #pragma mark - AKAUnboundProperty
 #pragma mark -
 
+/**
+ A property that defines access methods for its value relative to some target object, but
+ does not reference the target itself.
+ */
 @interface AKAUnboundProperty: NSObject
 
 #pragma mark - Initialization
@@ -167,11 +171,11 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
 
 #pragma mark - Notifications
 
-@property(nonatomic, readonly) BOOL isObservingChanges;
+@property(nonatomic, readonly) BOOL                    isObservingChanges;
 
-- (BOOL)    startObservingChanges;
+- (BOOL)                         startObservingChanges;
 
-- (BOOL)    stopObservingChanges;
+- (BOOL)                          stopObservingChanges;
 
 /**
  * Notifies the property, that its value changed. This is only used for custom properties

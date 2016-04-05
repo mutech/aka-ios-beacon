@@ -7,7 +7,7 @@
 //
 
 #import "AKAViewBinding+IBPropertySupport.h"
-#import "UIView+AKABindingSupport.h"
+#import "AKABindingExpression+Accessors.h"
 #import "UIViewController+AKAIBBindingProperties.h"
 
 @implementation AKAViewBinding (IBPropertySupport)
@@ -15,9 +15,10 @@
 #pragma mark - Interface Builder Property Support
 
 + (NSString*)       bindingExpressionTextForSelector:(SEL)selector
-                                              inView:(UIView*)view
+                                              inView:(req_id)view
 {
-    AKABindingExpression* expression = [view aka_bindingExpressionForProperty:selector];
+    AKABindingExpression* expression = [AKABindingExpression bindingExpressionForTarget:view
+                                                                               property:selector];
 
     Class bindingType = expression.specification.bindingType;
     NSAssert(bindingType == self.class,
@@ -30,7 +31,7 @@
 
 + (void)                     setBindingExpressionText:(opt_NSString)bindingExpressionText
                                           forSelector:(req_SEL)selector
-                                               inView:(req_UIView)view
+                                               inView:(req_id)view
 {
     NSParameterAssert(selector != nil);
     NSParameterAssert(view != nil);
@@ -57,7 +58,7 @@
 #endif
         }
 
-        [view aka_setBindingExpression:bindingExpression forProperty:selector];
+        [AKABindingExpression setBindingExpression:bindingExpression forTarget:view property:selector];
     }
 }
 

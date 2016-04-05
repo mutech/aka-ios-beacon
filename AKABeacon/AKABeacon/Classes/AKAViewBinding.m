@@ -9,7 +9,7 @@
 @import AKACommons.AKAErrors;
 
 #import "AKAViewBinding.h"
-#import "UIView+AKABindingSupport.h"
+#import "AKABindingExpression+Accessors.h"
 
 
 @implementation AKAViewBinding

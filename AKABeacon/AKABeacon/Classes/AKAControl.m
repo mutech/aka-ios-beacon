@@ -16,7 +16,7 @@
 #import "AKABeaconErrors_Internal.h"
 
 // New bindings infrastructure
-#import "UIView+AKABindingSupport.h"
+#import "AKABindingExpression+Accessors.h"
 #import "AKAControl+BindingDelegate.h"
 #import "NSObject+AKAAssociatedValues.h"
 
@@ -297,9 +297,9 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 {
     __block NSUInteger result = 0;
 
-    [view aka_enumerateBindingExpressionsWithBlock:^(req_SEL property,
-                                                     req_AKABindingExpression expression,
-                                                     outreq_BOOL stop)
+    [AKABindingExpression enumerateBindingExpressionsForTarget:view
+                                                     withBlock:
+     ^(req_SEL property, req_AKABindingExpression expression, outreq_BOOL stop)
      {
          (void)property;
          (void)stop;

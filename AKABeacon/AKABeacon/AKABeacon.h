@@ -84,13 +84,13 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAControlConverterProtocol.h>
 
 // Bindings
+#import <AKABeacon/AKAbindingExpression+Accessors.h>
 #import <AKABeacon/AKABindingErrors.h>
 #import <AKABeacon/AKABindingDelegate.h>
 #import <AKABeacon/AKABindingDelegateDispatcher.h>
 #import <AKABeacon/AKABinding.h>
 #import <AKABeacon/AKABinding_Protected.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
-#import <AKABeacon/UIView+AKABindingSupport.h>
 
 // Bindings/ViewBindings
 #import <AKABeacon/AKAViewBinding.h>
@@ -102,6 +102,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/UIView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIView_styleBinding.h>
 #import <AKABeacon/AKABinding_UIView_gesturesBinding.h>
+
+// Bindings/ViewBindings/UIControl
+#import <AKABeacon/UIControl+AKAIBBindingProperties.h>
+#import <AKABeacon/AKABinding_UIControl_enabledBinding.h>
 
 // Bindings/ViewBindings/UILabel
 #import <AKABeacon/UILabel+AKAIBBindingProperties.h>

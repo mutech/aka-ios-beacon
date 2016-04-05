@@ -20,7 +20,7 @@
  * @return the text of the binding expression or nil if the binding property is undefined.
  */
 + (opt_NSString)           bindingExpressionTextForSelector:(req_SEL)selector
-                                                     inView:(req_UIView)view;
+                                                     inView:(req_id)view;
 
 /**
  * Associates the binding expression specified by the expression text with the specified
@@ -35,6 +35,6 @@
  */
 + (void)                           setBindingExpressionText:(opt_NSString)bindingExpressionText
                                                 forSelector:(req_SEL)selector
-                                                     inView:(req_UIView)view;
+                                                     inView:(req_id)view;
 
 @end

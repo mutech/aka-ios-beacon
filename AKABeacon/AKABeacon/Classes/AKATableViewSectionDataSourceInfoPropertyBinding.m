@@ -9,6 +9,15 @@
 #import "AKATableViewSectionDataSourceInfoPropertyBinding.h"
 #import "AKATableViewCellFactoryArrayPropertyBinding.h"
 #import "AKABindingErrors.h"
+#import "AKABinding_Protected.h"
+
+
+@interface AKATableViewSectionDataSourceInfo()
+
+@property(nonatomic) AKATableViewSectionDataSourceInfo* sectionDataSourceInfo;
+
+@end
+
 
 #pragma mark - AKATableViewSectionDataSourceInfoPropertyBinding Implementation
 #pragma mark -
@@ -45,6 +54,29 @@
     return result;
 }
 
++ (NSSet *)keyPathsForValuesAffectingSectionDataSourceInfo
+{
+    static NSSet* result;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [NSSet setWithObject:@"syntheticTargetValue"];
+    });
+    return result;
+}
+
+- (AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
+{
+    NSAssert(self.syntheticTargetValue == nil || [self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]], @"Unexpected type of syntethic target value %@, expected %@", self.syntheticTargetValue, NSStringFromClass([self.syntheticTargetValue class]));
+
+    return self.syntheticTargetValue;
+}
+
+- (void)setSectionDataSourceInfo:(AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
+{
+    self.syntheticTargetValue = sectionDataSourceInfo;
+}
+
+
 - (BOOL)convertSourceValue:(id)sourceValue
              toTargetValue:(id _Nullable __autoreleasing*)targetValueStore
                      error:(NSError* __autoreleasing _Nullable*)error
@@ -55,12 +87,12 @@
 
     if (result)
     {
-        if (!self.cachedTargetValue || self.cachedTargetValue.rowsSource != sourceValue)
+        if (self.sectionDataSourceInfo.rowsSource != sourceValue)
         {
-            self.cachedTargetValue = [AKATableViewSectionDataSourceInfo new];
-            self.cachedTargetValue.rowsSource = sourceValue;
+            self.sectionDataSourceInfo = [AKATableViewSectionDataSourceInfo new];
+            self.sectionDataSourceInfo.rowsSource = sourceValue;
         }
-        *targetValueStore = self.cachedTargetValue;
+        *targetValueStore = self.sectionDataSourceInfo;
     }
     else
     {
@@ -74,6 +106,18 @@
     }
 
     return result;
+}
+
+- (BOOL)startObservingChanges
+{
+    [super startObservingChanges];
+    [self.sectionDataSourceInfo startObservingChanges];
+}
+
+- (BOOL)stopObservingChanges
+{
+    [self.sectionDataSourceInfo stopObservingChanges];
+    [super stopObservingChanges];
 }
 
 #pragma mark - Binding Delegate

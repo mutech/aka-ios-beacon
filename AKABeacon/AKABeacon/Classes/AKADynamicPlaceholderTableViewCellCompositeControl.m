@@ -12,7 +12,7 @@
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"
 #import "AKACompositeControl+BindingDelegatePropagation.h"
-#import "UIView+AKABindingSupport.h"
+#import "AKABindingExpression+Accessors.h"
 
 #import "AKAControl_Internal.h" // TODO: expose constructors and remove this import
 
@@ -251,15 +251,14 @@
                                 toView:(UIView*)view
                            recursively:(BOOL)recursively
 {
-    [prototype aka_enumerateBindingExpressionsWithBlock:
-     ^(req_SEL property,
-       req_AKABindingExpression expression,
-       outreq_BOOL stop)
+    [AKABindingExpression enumerateBindingExpressionsForTarget:prototype
+                                                     withBlock:
+     ^(SEL  _Nonnull property, req_AKABindingExpression expression, BOOL * _Nonnull stop)
      {
          (void)stop;
-         if (![view aka_bindingExpressionForProperty:property])
+         if (![AKABindingExpression bindingExpressionForTarget:view property:property])
          {
-             [view aka_setBindingExpression:expression forProperty:property];
+             [AKABindingExpression setBindingExpression:expression forTarget:view property:property];
          }
      }];
 

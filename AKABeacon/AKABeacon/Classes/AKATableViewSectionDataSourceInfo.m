@@ -82,14 +82,16 @@
 
     if (rowsSource != _rowsSource)
     {
+        BOOL wasObservingChanges = [self isObservingChanges];
+        
         [self stopObservingChanges];
-        _rowsSource = rowsSource;
-    }
 
-    id<AKATableViewSectionDataSourceInfoDelegate> delegate = self.delegate;
-    if (delegate)
-    {
-        [self startObservingChanges];
+        _rowsSource = rowsSource;
+
+        if (wasObservingChanges)
+        {
+            [self startObservingChanges];
+        }
     }
 }
 
@@ -99,15 +101,6 @@
     if (delegate != current)
     {
         _delegate = delegate;
-    }
-
-    if (delegate)
-    {
-        [self startObservingChanges];
-    }
-    else
-    {
-        [self stopObservingChanges];
     }
 }
 

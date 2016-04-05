@@ -287,8 +287,11 @@
 - (void)                          updateTableViewRowHeights
 {
     UITableView* tableView = self.tableView;
+    BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
+    [UIView setAnimationsEnabled:NO];
     [tableView beginUpdates];
     [tableView endUpdates];
+    [UIView setAnimationsEnabled:animationsWereEnabled];
 }
 
 - (void)                  dispatchTableViewUpdateForSection:(NSUInteger)section
@@ -303,7 +306,7 @@
     else
     {
         // Merge previous changes with new ones:
-        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:pendingChanges.array];
+        pendingChanges = [[AKAArrayComparer alloc] initWithOldArray:pendingChanges.oldArray newArray:newRows];
     }
     self.pendingTableViewChanges[@(section)] = pendingChanges;
 

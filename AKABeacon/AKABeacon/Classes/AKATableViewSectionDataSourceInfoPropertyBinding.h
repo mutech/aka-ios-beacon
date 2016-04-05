@@ -16,7 +16,6 @@
 
 @interface AKATableViewSectionDataSourceInfoPropertyBinding: AKAPropertyBinding<AKAArrayPropertyBindingDelegate>
 
-@property(nonatomic) id sourceValue;
-@property(nonatomic) AKATableViewSectionDataSourceInfo* cachedTargetValue;
+@property(nonatomic, readonly) AKATableViewSectionDataSourceInfo* sectionDataSourceInfo;
 
 @end

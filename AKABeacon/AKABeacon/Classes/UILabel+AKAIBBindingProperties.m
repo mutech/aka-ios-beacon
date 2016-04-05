@@ -14,7 +14,7 @@
 #import "AKAViewBinding+IBPropertySupport.h"
 
 #if TARGET_INTERFACE_BUILDER
-#  import "UIView+AKABindingSupport.h"
+#  import "AKABindingExpression+Accessors.h"
 #endif
 
 @implementation UILabel (AKAIBBindingProperties)
@@ -38,7 +38,8 @@
         // in IB and will regrettably not work for UILabels directly (since categories defining IBInspectable
         // properties are apperantly not supported by live rendering), but it will let composite controls
         // creating labels display this text. Better than nothing after all...
-        AKABindingExpression* expression = [self aka_bindingExpressionForProperty:@selector(textBinding_aka)];
+        AKABindingExpression* expression = [AKABindingExpression bindingExpressionForTarget:self
+                                                                                    property:@selector(textBinding_aka)];
         if (expression)
         {
             self.text = expression.constantStringValueOrDescription;

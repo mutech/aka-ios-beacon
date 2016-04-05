@@ -65,4 +65,8 @@
 @property(nonatomic, readonly) BOOL                     willSendDelegateChangeNotifications;
 @property(nonatomic, readonly) NSArray*                 rows;
 
+- (BOOL)isObservingChanges;
+- (void)startObservingChanges;
+- (void)stopObservingChanges;
+
 @end

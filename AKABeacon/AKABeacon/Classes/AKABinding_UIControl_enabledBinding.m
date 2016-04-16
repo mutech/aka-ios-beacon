@@ -57,7 +57,7 @@
 
 - (req_AKAProperty)  createBindingTargetPropertyForView:(req_UIView)view
 {
-    NSParameterAssert(view == nil || [view isKindOfClass:[UIStepper class]]);
+    NSParameterAssert(view == nil || [view isKindOfClass:[UIControl class]]);
 
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:

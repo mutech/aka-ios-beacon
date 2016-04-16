@@ -25,7 +25,7 @@
  *
  * @sa AKACustomKeyboardResponderDelegate
  */
-@interface AKACustomKeyboardResponderView: UIView<AKAControlViewProtocol>
+@interface AKACustomKeyboardResponderView: UIControl<AKAControlViewProtocol>
 
 #pragma mark - Control Configuration
 

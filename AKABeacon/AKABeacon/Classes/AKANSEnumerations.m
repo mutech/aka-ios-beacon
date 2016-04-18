@@ -287,7 +287,12 @@
            @"Body":             UIFontTextStyleBody,
            @"Footnote":         UIFontTextStyleFootnote,
            @"Caption1":         UIFontTextStyleCaption1,
-           @"Caption1":         UIFontTextStyleCaption2 };
+           @"Caption1":         UIFontTextStyleCaption2,
+           @"Callout":          UIFontTextStyleCallout,
+           @"Title1":           UIFontTextStyleTitle1,
+           @"Title2":           UIFontTextStyleTitle2,
+           @"Title3":           UIFontTextStyleTitle3,
+           };
     });
 
     return result;

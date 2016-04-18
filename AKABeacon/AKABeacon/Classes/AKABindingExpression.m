@@ -1796,7 +1796,7 @@
 {
     UIFont* result = nil;
     NSString* fontName = nil;
-    CGFloat fontSize = 0;
+    CGFloat fontSize = descriptor.pointSize;
     NSString* textStyle = nil;
 
     fontName = descriptor.fontAttributes[UIFontDescriptorNameAttribute];
@@ -1812,8 +1812,20 @@
     }
     else
     {
-        // TODO: error handling or "best match" selection
+        NSArray<UIFontDescriptor*>* matchingDescriptors =
+            [descriptor matchingFontDescriptorsWithMandatoryKeys:[NSSet setWithArray:descriptor.fontAttributes.allKeys]];
+        if (matchingDescriptors.count > 1)
+        {
+            UIFontDescriptor* firstDescriptor = matchingDescriptors[1];
+            if (fontSize <= 0.0)
+            {
+                fontSize = 15.0;
+            }
+            result = [UIFont fontWithDescriptor:firstDescriptor size:fontSize];
+        }
+#if 0
         NSAssert(NO, @"Insufficient font specification in descriptor %@", descriptor);
+#endif
     }
 
     return result;
@@ -2078,65 +2090,60 @@
             @{ @"family":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSString* string = fa[UIFontDescriptorFamilyAttribute] =
-                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"family"
+                   NSString* string = [AKAUIFontConstantBindingExpression stringForAttribute:@"family"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorFamilyAttribute] = string;
                    return string != nil;
                },
 
                @"name":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSString* string = fa[UIFontDescriptorNameAttribute] =
-                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"name"
+                   NSString* string = [AKAUIFontConstantBindingExpression stringForAttribute:@"name"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorNameAttribute] = string;
                    return string != nil;
                },
 
                @"face":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSString* string = fa[UIFontDescriptorFaceAttribute] =
-                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"face"
+                   NSString* string = [AKAUIFontConstantBindingExpression stringForAttribute:@"face"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorFaceAttribute] = string;
                    return string != nil;
                },
 
                @"size":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSNumber* number = fa[UIFontDescriptorSizeAttribute] =
-                                          [AKAUIFontConstantBindingExpression numberForAttribute:@"size"
+                   NSNumber* number = [AKAUIFontConstantBindingExpression numberForAttribute:@"size"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorSizeAttribute] = number;
                    return number != nil;
                },
 
                @"visibleName":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSString* string = fa[UIFontDescriptorVisibleNameAttribute] =
-                                          [AKAUIFontConstantBindingExpression stringForAttribute:@"visibleName"
+                   NSString* string = [AKAUIFontConstantBindingExpression stringForAttribute:@"visibleName"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorVisibleNameAttribute] = string;
                    return string != nil;
                },
 
                @"traits":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
                    NSError* localError = nil;
-                   NSDictionary* dictionary = fa[UIFontDescriptorTraitsAttribute] =
-                                                  [AKAUIFontConstantBindingExpression uifontTraitsForBindingExpression:bindingExpression
-                                                                                                                 error:&localError];
-
+                   NSDictionary* dictionary = [AKAUIFontConstantBindingExpression uifontTraitsForBindingExpression:bindingExpression
+                                                                                                             error:&localError];
+                   fa[UIFontDescriptorTraitsAttribute] = dictionary;
+                   
                    if (!dictionary && localError != nil && error != nil)
                    {
                        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
@@ -2149,11 +2156,10 @@
 
                @"fixedAdvance":
                ^BOOL (NSMutableDictionary* fa, AKABindingExpression* bindingExpression, out_NSError error) {
-                   NSNumber* number = fa[UIFontDescriptorFixedAdvanceAttribute] =
-                                          [AKAUIFontConstantBindingExpression numberForAttribute:@"fixedAdvance"
+                   NSNumber* number = [AKAUIFontConstantBindingExpression numberForAttribute:@"fixedAdvance"
                                                                                bindingExpression:bindingExpression
                                                                                            error:error];
-
+                   fa[UIFontDescriptorFixedAdvanceAttribute] = number;
                    return number != nil;
                },
 
@@ -2201,47 +2207,39 @@
 
     dispatch_once(&onceToken, ^{
         result =
-            @{ @"symbolic":
-               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+            @{ @"symbolic": ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSNumber* number = traits[UIFontSymbolicTrait] =
-                                          [AKAUIFontConstantBindingExpression uifontSymbolicTraitForAttribute:@"symbolic"
-                                                                                            bindingExpression:bindingExpression
-                                                                                                        error:error];
-
+                   NSNumber* number = [AKAUIFontConstantBindingExpression uifontSymbolicTraitForAttribute:@"symbolic"
+                                                                                        bindingExpression:bindingExpression
+                                                                                                    error:error];
+                   traits[UIFontSymbolicTrait] = number;
                    return number != nil;
                },
 
-               @"weight":
-               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               @"weight": ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSNumber* number = traits[UIFontWeightTrait] =
-                                          [AKAUIFontConstantBindingExpression uifontWeightTraitForAttribute:@"weight"
-                                                                                          bindingExpression:bindingExpression
-                                                                                                      error:error];
-
+                   NSNumber* number = [AKAUIFontConstantBindingExpression uifontWeightTraitForAttribute:@"weight"
+                                                                                      bindingExpression:bindingExpression
+                                                                                                  error:error];
+                   traits[UIFontWeightTrait] = number;
                    return number != nil;
                },
 
-               @"width":
-               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               @"width": ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSNumber* number = traits[UIFontWidthTrait] =
-                                          [AKAUIFontConstantBindingExpression uifontWidthTraitForAttribute:@"width"
-                                                                                         bindingExpression:bindingExpression
-                                                                                                     error:error];
-
+                   NSNumber* number = [AKAUIFontConstantBindingExpression uifontWidthTraitForAttribute:@"width"
+                                                                                     bindingExpression:bindingExpression
+                                                                                                 error:error];
+                   traits[UIFontWidthTrait] = number;
                    return number != nil;
                },
 
-               @"slant":
-               ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
+               @"slant": ^BOOL (NSMutableDictionary* traits, AKABindingExpression* bindingExpression, out_NSError error)
                {
-                   NSNumber* number = traits[UIFontSlantTrait] =
-                                          [AKAUIFontConstantBindingExpression uifontSlantTraitForAttribute:@"slant"
-                                                                                         bindingExpression:bindingExpression
-                                                                                                     error:error];
-
+                   NSNumber* number = [AKAUIFontConstantBindingExpression uifontSlantTraitForAttribute:@"slant"
+                                                                                     bindingExpression:bindingExpression
+                                                                                                 error:error];
+                   traits[UIFontSlantTrait] = number;
                    return number != nil;
                }
         };
@@ -2264,9 +2262,7 @@
     else if (bindingExpression.attributes.count > 0)
     {
         NSDictionary<NSString*, BOOL (^)(NSMutableDictionary*, AKABindingExpression*, out_NSError)>* spec =
-            [AKAUIFontConstantBindingExpression fontAttributesParsersByAttributeName];
-
-        NSMutableDictionary* traits = [NSMutableDictionary new];
+            [AKAUIFontConstantBindingExpression fontTraitsParsersByAttributeName];
 
         [bindingExpression.attributes
          enumerateKeysAndObjectsUsingBlock:
@@ -2279,7 +2275,7 @@
 
              if (processAttribute)
              {
-                 if (!processAttribute(traits, traitBindingExpression, error))
+                 if (!processAttribute(result, traitBindingExpression, error))
                  {
                      *stop = YES;
                      result = nil;

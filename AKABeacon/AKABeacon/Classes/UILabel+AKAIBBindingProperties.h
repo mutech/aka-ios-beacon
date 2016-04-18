@@ -12,5 +12,6 @@ IB_DESIGNABLE
 @interface UILabel (AKAIBBindingProperties)
 
 @property(nonatomic, nullable)IBInspectable NSString* textBinding_aka;
+@property(nonatomic, nullable)IBInspectable NSString* fontBinding_aka;
 
 @end

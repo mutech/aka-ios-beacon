@@ -11,6 +11,8 @@
 
 #import "AKABinding_UILabel_textBinding.h"
 #import "AKABinding_UILabel_styleBinding.h"
+#import "AKAFontPropertyBinding.h"
+
 #import "AKAViewBinding+IBPropertySupport.h"
 
 #if TARGET_INTERFACE_BUILDER
@@ -46,6 +48,19 @@
         }
     }
 #endif
+}
+
+- (NSString*)fontBinding_aka
+{
+    return [AKAFontPropertyBinding bindingExpressionTextForSelector:@selector(fontBinding_aka)
+                                                             inView:self];
+}
+
+- (void)setFontBinding_aka:(NSString *)fontBinding_aka
+{
+    [AKAFontPropertyBinding setBindingExpressionText:fontBinding_aka
+                                         forSelector:@selector(fontBinding_aka)
+                                              inView:self];
 }
 
 - (Class)aka_styleBindingType

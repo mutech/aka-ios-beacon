@@ -532,7 +532,9 @@
              {
                  UIToolbar* toolbar = (id)view;
                  [toolbar.items enumerateObjectsUsingBlock:
-                  ^(UIBarButtonItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop)
+                  ^(UIBarButtonItem * _Nonnull item,
+                    __unused NSUInteger unusedIndex,
+                    __unused BOOL * unusedStop)
                   {
                       // TODO: bar button item is not a view, refactor interface to support cases like this
                       [self addBindingsForView:(id)item];

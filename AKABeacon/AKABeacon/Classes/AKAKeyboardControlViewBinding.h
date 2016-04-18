@@ -15,7 +15,7 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, readonly, weak) id<AKAKeyboardControlViewBindingDelegate> delegate;
+@property(nonatomic, readonly, weak, nullable) id<AKAKeyboardControlViewBindingDelegate> delegate;
 
 #pragma mark - Binding Configuration
 
@@ -81,7 +81,7 @@
 
 @property(nonatomic, readonly) BOOL                                 participatesInKeyboardActivationSequence;
 
-@property(nonatomic, weak, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+@property(nonatomic, weak, readonly, nullable) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 /**
  * The responder participating in the keyboard activation sequence.

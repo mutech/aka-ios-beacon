@@ -20,7 +20,7 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, readonly, weak) id<AKAControlViewBindingDelegate> delegate;
+@property(nonatomic, readonly, weak, nullable) id<AKAControlViewBindingDelegate> delegate;
 
 @end
 

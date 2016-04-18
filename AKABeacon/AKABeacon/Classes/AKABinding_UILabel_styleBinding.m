@@ -24,8 +24,13 @@
                @{ @"textColor":
                       @{ @"bindingType":    [AKAPropertyBinding class],
                          @"expressionType": @(AKABindingExpressionTypeUIColor),
-                         @"use":             @(AKABindingAttributeUseBindToTargetProperty)
+                         @"use":            @(AKABindingAttributeUseBindToTargetProperty)
                          },
+                  @"font":
+                      @{ @"bindingType":    [AKAPropertyBinding class],
+                         @"expressionType": @(AKABindingExpressionTypeUIFontConstant),
+                         @"use":            @(AKABindingAttributeUseBindToTargetProperty)
+                         }
                   },
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];

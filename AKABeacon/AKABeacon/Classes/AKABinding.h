@@ -54,12 +54,12 @@
 /**
  The context used by the binding to resolve binding expressions.
  */
-@property(nonatomic, readonly, weak) id<AKABindingContextProtocol>  bindingContext;
+@property(nonatomic, readonly, weak, nullable) id<AKABindingContextProtocol>  bindingContext;
 
 /**
  The binding delegate.
  */
-@property(nonatomic, readonly, weak) id<AKABindingDelegate>         delegate;
+@property(nonatomic, readonly, weak, nullable) id<AKABindingDelegate>         delegate;
 
 #pragma mark - Conversion
 

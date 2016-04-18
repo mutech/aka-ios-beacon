@@ -180,6 +180,8 @@
 		8E7FE5021C660E480036349A /* AKABindingDelegateDispatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7FE5001C660E480036349A /* AKABindingDelegateDispatcher.m */; };
 		8E81B6691B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E81B6671B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */; };
+		8E8425D21CC4089500310CEC /* AKAFontPropertyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E8425D01CC4089500310CEC /* AKAFontPropertyBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8E8425D31CC4089500310CEC /* AKAFontPropertyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E8425D11CC4089500310CEC /* AKAFontPropertyBinding.m */; };
 		8E84A4F61BCBBEF500C5488A /* AKAFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E84A4F41BCBBEF500C5488A /* AKAFormViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E84A4F71BCBBEF500C5488A /* AKAFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E84A4F51BCBBEF500C5488A /* AKAFormViewController.m */; };
 		8E85EB8A1BE5825500C9CF29 /* AKABindingErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E85EB891BE5825500C9CF29 /* AKABindingErrors.m */; };
@@ -471,6 +473,8 @@
 		8E7FE5001C660E480036349A /* AKABindingDelegateDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingDelegateDispatcher.m; sourceTree = "<group>"; };
 		8E81B6671B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKADynamicPlaceholderTableViewCellCompositeControl.h; sourceTree = "<group>"; };
 		8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKADynamicPlaceholderTableViewCellCompositeControl.m; sourceTree = "<group>"; };
+		8E8425D01CC4089500310CEC /* AKAFontPropertyBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFontPropertyBinding.h; sourceTree = "<group>"; };
+		8E8425D11CC4089500310CEC /* AKAFontPropertyBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFontPropertyBinding.m; sourceTree = "<group>"; };
 		8E84A4F41BCBBEF500C5488A /* AKAFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFormViewController.h; sourceTree = "<group>"; };
 		8E84A4F51BCBBEF500C5488A /* AKAFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFormViewController.m; sourceTree = "<group>"; };
 		8E85EB891BE5825500C9CF29 /* AKABindingErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingErrors.m; sourceTree = "<group>"; };
@@ -841,6 +845,7 @@
 				8E21A5EF1C666A2C00E69DA9 /* Formatters */,
 				8E21A5F11C666A8000E69DA9 /* Predicates */,
 				8E21A5F71C666C1E00E69DA9 /* Animations */,
+				8E8425CF1CC4085C00310CEC /* Fonts */,
 				8E1264EF1C83063200C6C2AC /* GestureRecognizers */,
 			);
 			name = PropertyBindings;
@@ -1038,6 +1043,15 @@
 				8E7233251B0022A200D647A9 /* AKAEmailValidator.m */,
 			);
 			name = Validators;
+			sourceTree = "<group>";
+		};
+		8E8425CF1CC4085C00310CEC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8E8425D01CC4089500310CEC /* AKAFontPropertyBinding.h */,
+				8E8425D11CC4089500310CEC /* AKAFontPropertyBinding.m */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		8E8922F91BD2E8C700BCEE88 /* KeyboardControlViewBindings */ = {
@@ -1424,6 +1438,7 @@
 				8E72337E1B0022A200D647A9 /* AKAFormTableViewController.h in Headers */,
 				8E7233651B0022A200D647A9 /* AKACompositeControl_Internal.h in Headers */,
 				8E367A091BBA8B4C0094EF33 /* UILabel+AKAIBBindingProperties.h in Headers */,
+				8E8425D21CC4089500310CEC /* AKAFontPropertyBinding.h in Headers */,
 				8E225FE11BADEA5C00BC070F /* AKABindingExpression_Internal.h in Headers */,
 				8E7E56291C6679B0008A8BBD /* AKABeaconNullability.h in Headers */,
 				8EA732671C79C0A50018A8B3 /* AKATableViewSectionDataSourceInfo.h in Headers */,
@@ -1695,6 +1710,7 @@
 				8E979A4C1B9FE6B100E0D29C /* AKABooleanTextConverter.m in Sources */,
 				8E26A51D1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.m in Sources */,
 				8E72339D1B0022A200D647A9 /* AKATableViewCellCompositeControl.m in Sources */,
+				8E8425D31CC4089500310CEC /* AKAFontPropertyBinding.m in Sources */,
 				8E31545D1BC73291003FD085 /* UITextView+AKAIBBindingProperties.m in Sources */,
 				8E4F0A781BE3D954006D8876 /* AKABinding_UISlider_valueBinding.m in Sources */,
 				8EA9AB471BAC06DA0070F13E /* AKABindingExpression.m in Sources */,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cbH-v4-Sgd">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -237,6 +237,26 @@
                                             <segue destination="vZ7-rN-XVh" kind="show" id="Bei-C8-5sp"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="phx-mB-6HJ" style="IBUITableViewCellStyleDefault" id="x2p-JT-BfU">
+                                        <rect key="frame" x="0.0" y="548" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x2p-JT-BfU" id="cUC-IX-6MO">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Font Binding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="phx-mB-6HJ">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="GfX-mp-YEr" kind="show" id="odh-qS-Pbb"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -250,6 +270,138 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="llc-TO-8PA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1271.5" y="388.5"/>
+        </scene>
+        <!--Font Binding Demo View Controller-->
+        <scene sceneID="rbF-WJ-cmf">
+            <objects>
+                <viewController id="GfX-mp-YEr" customClass="FontBindingDemoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="l4j-IB-vb6"/>
+                        <viewControllerLayoutGuide type="bottom" id="49H-fg-BQH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Lpg-Wh-SDs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The quick brown Fox jumps no more." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9OO-aj-ZPN">
+                                <rect key="frame" x="63" y="301" width="249" height="66"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{ traits: symbolicTraits, size: pointSize }"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="8" minValue="0.0" maxValue="36" translatesAutoresizingMaskIntoConstraints="NO" id="rqD-vE-Fpj">
+                                <rect key="frame" x="134" y="125" width="199" height="31"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka" value="pointSize"/>
+                                </userDefinedRuntimeAttributes>
+                            </slider>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zHy-Zb-Zg5">
+                                <rect key="frame" x="136" y="163" width="51" height="31"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="bold"/>
+                                </userDefinedRuntimeAttributes>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Bold" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4V-CE-HsX">
+                                <rect key="frame" x="79" y="168" width="35" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Italics" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dRE-bE-PUh">
+                                <rect key="frame" x="69" y="207" width="45" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w3u-6a-ciq">
+                                <rect key="frame" x="136" y="202" width="51" height="31"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="italic"/>
+                                </userDefinedRuntimeAttributes>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="752" text="12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="09D-Im-0gc">
+                                <rect key="frame" x="339" y="129" width="20" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="Fad-Ce-4DP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="pointSize { numberFormatter: { maximumFractionDigits: 0 } }"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Font Attributes (selection)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lTY-rf-pxe">
+                                <rect key="frame" x="88" y="84" width="199" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The quick brown Fox jumps no more." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTQ-t5-Wkg">
+                                <rect key="frame" x="16" y="375" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="15"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{ traits: symbolicTraits, size: pointSize }"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Size" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kfz-Bq-WeQ">
+                                <rect key="frame" x="81" y="129" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="09D-Im-0gc" firstAttribute="leading" secondItem="rqD-vE-Fpj" secondAttribute="trailing" constant="8" id="0UB-fp-Mg9"/>
+                            <constraint firstItem="zHy-Zb-Zg5" firstAttribute="leading" secondItem="rqD-vE-Fpj" secondAttribute="leading" id="1NY-es-3Ji"/>
+                            <constraint firstItem="09D-Im-0gc" firstAttribute="centerY" secondItem="Kfz-Bq-WeQ" secondAttribute="centerY" id="5EW-DQ-0MT"/>
+                            <constraint firstItem="9OO-aj-ZPN" firstAttribute="centerX" secondItem="Lpg-Wh-SDs" secondAttribute="centerX" id="66W-in-Esm"/>
+                            <constraint firstItem="9OO-aj-ZPN" firstAttribute="centerY" secondItem="Lpg-Wh-SDs" secondAttribute="centerY" priority="749" id="6oZ-Ll-qPg"/>
+                            <constraint firstItem="rqD-vE-Fpj" firstAttribute="leading" secondItem="Lpg-Wh-SDs" secondAttribute="leadingMargin" constant="120" id="7X5-k6-rKo"/>
+                            <constraint firstItem="rqD-vE-Fpj" firstAttribute="centerY" secondItem="Kfz-Bq-WeQ" secondAttribute="centerY" id="9az-Al-hYt"/>
+                            <constraint firstItem="w3u-6a-ciq" firstAttribute="leading" secondItem="dRE-bE-PUh" secondAttribute="trailing" constant="22" id="BC1-2k-r2M"/>
+                            <constraint firstItem="Kfz-Bq-WeQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lpg-Wh-SDs" secondAttribute="leadingMargin" constant="20" id="NQT-w4-Mxs"/>
+                            <constraint firstItem="w3u-6a-ciq" firstAttribute="centerY" secondItem="dRE-bE-PUh" secondAttribute="centerY" id="Nes-vb-bQn"/>
+                            <constraint firstItem="hTQ-t5-Wkg" firstAttribute="centerX" secondItem="Lpg-Wh-SDs" secondAttribute="centerX" id="ON2-nB-Vqf"/>
+                            <constraint firstItem="rqD-vE-Fpj" firstAttribute="top" secondItem="lTY-rf-pxe" secondAttribute="bottom" constant="20" id="PDq-JT-4bh"/>
+                            <constraint firstItem="lTY-rf-pxe" firstAttribute="centerX" secondItem="Lpg-Wh-SDs" secondAttribute="centerX" id="Qfp-X8-9zX"/>
+                            <constraint firstItem="lTY-rf-pxe" firstAttribute="top" secondItem="l4j-IB-vb6" secondAttribute="bottom" constant="20" id="ScP-Tm-pGd"/>
+                            <constraint firstItem="zHy-Zb-Zg5" firstAttribute="centerY" secondItem="r4V-CE-HsX" secondAttribute="centerY" id="TeT-0t-6TU"/>
+                            <constraint firstItem="zHy-Zb-Zg5" firstAttribute="top" secondItem="rqD-vE-Fpj" secondAttribute="bottom" constant="8" id="VLH-ad-acq"/>
+                            <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="9OO-aj-ZPN" secondAttribute="trailing" constant="20" id="VfF-x2-WIf"/>
+                            <constraint firstItem="9OO-aj-ZPN" firstAttribute="top" relation="greaterThanOrEqual" secondItem="w3u-6a-ciq" secondAttribute="bottom" constant="20" id="WTP-A3-VoS"/>
+                            <constraint firstItem="hTQ-t5-Wkg" firstAttribute="top" secondItem="9OO-aj-ZPN" secondAttribute="bottom" constant="8" id="XXr-nN-rxH"/>
+                            <constraint firstItem="9OO-aj-ZPN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lpg-Wh-SDs" secondAttribute="leadingMargin" constant="20" id="bdl-3u-p2P"/>
+                            <constraint firstItem="9OO-aj-ZPN" firstAttribute="top" secondItem="w3u-6a-ciq" secondAttribute="bottom" priority="250" constant="20" id="cCd-6M-hIM"/>
+                            <constraint firstItem="hTQ-t5-Wkg" firstAttribute="centerX" secondItem="Lpg-Wh-SDs" secondAttribute="centerX" id="ck3-Iy-aBa"/>
+                            <constraint firstItem="09D-Im-0gc" firstAttribute="centerY" secondItem="rqD-vE-Fpj" secondAttribute="centerY" id="dhe-az-ZPd"/>
+                            <constraint firstItem="zHy-Zb-Zg5" firstAttribute="leading" secondItem="r4V-CE-HsX" secondAttribute="trailing" constant="22" id="fXb-29-eXb"/>
+                            <constraint firstItem="w3u-6a-ciq" firstAttribute="top" secondItem="zHy-Zb-Zg5" secondAttribute="bottom" constant="8" id="ggU-hj-qbD"/>
+                            <constraint firstItem="rqD-vE-Fpj" firstAttribute="trailing" secondItem="Lpg-Wh-SDs" secondAttribute="trailingMargin" id="hiO-Wv-gvc"/>
+                            <constraint firstItem="hTQ-t5-Wkg" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Lpg-Wh-SDs" secondAttribute="trailingMargin" id="q90-LJ-4co"/>
+                            <constraint firstItem="rqD-vE-Fpj" firstAttribute="leading" secondItem="Kfz-Bq-WeQ" secondAttribute="trailing" constant="22" id="rp1-qI-f3V"/>
+                            <constraint firstItem="w3u-6a-ciq" firstAttribute="leading" secondItem="rqD-vE-Fpj" secondAttribute="leading" id="t5O-wM-3CS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="09D-Im-0gc" secondAttribute="trailing" id="tJC-8o-yxn"/>
+                            <constraint firstItem="hTQ-t5-Wkg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lpg-Wh-SDs" secondAttribute="leadingMargin" id="tR1-vd-Qt2"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="hiO-Wv-gvc"/>
+                                <exclude reference="5EW-DQ-0MT"/>
+                                <exclude reference="ck3-Iy-aBa"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SV9-LQ-Njj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3881.5" y="1267.5"/>
         </scene>
         <!--Text Field Demo-->
         <scene sceneID="tG1-MO-Szj">
@@ -713,7 +865,7 @@ The number editor text field uses two different formatters, one for display and 
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sa1-o0-prA">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="us9-qa-rgQ" userLabel="ContentView">
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="us9-qa-rgQ" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose string value from array of strings, custom text for undefined value in label, picker supports undefined value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
@@ -722,7 +874,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ri5-zv-jXS" userLabel="Scalar Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
                                                 <rect key="frame" x="20" y="55" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tKJ-rE-QKb" userLabel="SelectedItemLabel">
@@ -763,7 +915,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bz0-aN-95m" userLabel="Complex Value PickerKeyboardTriggerView" customClass="AKAPickerKeyboardTriggerView">
                                                 <rect key="frame" x="20" y="126" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kyl-gr-qGe" userLabel="Title Label">
@@ -806,13 +958,13 @@ The number editor text field uses two different formatters, one for display and 
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="tapToOpen" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Choose a date value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G07-fu-yYi">
                                                 <rect key="frame" x="20" y="162" width="335" height="14"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnP-bs-nQR" userLabel="DatePickerKeyboardTriggerView" customClass="AKADatePickerKeyboardTriggerView">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jnP-bs-nQR" userLabel="DatePickerKeyboardTriggerView" customClass="AKADatePickerKeyboardTriggerView">
                                                 <rect key="frame" x="20" y="184" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-Gt-BuC" userLabel="SelectedItemLabel">
@@ -1179,7 +1331,7 @@ The number editor text field uses two different formatters, one for display and 
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </stepper>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A0h-Tp-hKh">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A0h-Tp-hKh">
                                                 <rect key="frame" x="71" y="343" width="235" height="44"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adaptive Animations:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0kh-Gv-O5b">
@@ -1416,7 +1568,7 @@ The number editor text field uses two different formatters, one for display and 
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b2e-KD-wPs" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOI-ga-4le">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZOI-ga-4le">
                                                 <rect key="frame" x="126" y="202" width="122" height="20"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected:" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqz-Gi-4tZ">
@@ -1566,7 +1718,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-cc-xuI">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-cc-xuI">
                                                 <rect key="frame" x="91" y="56" width="276" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -1574,7 +1726,7 @@ The number editor text field uses two different formatters, one for display and 
                                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="textValue"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Text" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqw-sw-i0q">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" misplaced="YES" text="Text" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rqw-sw-i0q">
                                                 <rect key="frame" x="171" y="146" width="33" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1935,7 +2087,7 @@ The number editor text field uses two different formatters, one for display and 
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="TPA-ub-Sdj">
+                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="TPA-ub-Sdj">
                                         <rect key="frame" x="140" y="84" width="94" height="29"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="valueBinding_aka">
@@ -1950,7 +2102,7 @@ The number editor text field uses two different formatters, one for display and 
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </stepper>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KEM-Vt-4mJ">
+                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KEM-Vt-4mJ">
                                         <rect key="frame" x="86" y="145" width="204" height="223"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mts-9W-D9X">
@@ -1959,7 +2111,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wDq-ye-WsF">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wDq-ye-WsF">
                                                 <rect key="frame" x="103" y="0.0" width="100" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="v35-7K-ts1"/>
@@ -1976,7 +2128,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z6x-g6-J1G">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z6x-g6-J1G">
                                                 <rect key="frame" x="103" y="38" width="100" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -1990,7 +2142,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gjr-PK-3Hw">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gjr-PK-3Hw">
                                                 <rect key="frame" x="103" y="76" width="100" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
@@ -2004,7 +2156,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0U-7G-qEk">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0U-7G-qEk">
                                                 <rect key="frame" x="103" y="114" width="51" height="31"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="autorepeat"/>
@@ -2016,7 +2168,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lty-K7-lIb">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lty-K7-lIb">
                                                 <rect key="frame" x="103" y="153" width="51" height="31"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="continuous"/>
@@ -2028,7 +2180,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cTK-qX-E0a">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cTK-qX-E0a">
                                                 <rect key="frame" x="103" y="192" width="51" height="31"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="stateBinding_aka" value="wraps"/>

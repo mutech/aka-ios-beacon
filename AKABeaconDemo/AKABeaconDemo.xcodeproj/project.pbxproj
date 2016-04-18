@@ -14,6 +14,7 @@
 		8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E5F34C11C07130000397C2C /* SegmentedControlViewController.m */; };
 		8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */; };
 		8E7E562C1C667C0B008A8BBD /* ImageViewDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7E562B1C667C0B008A8BBD /* ImageViewDemoViewController.m */; };
+		8E8425D61CC4E35C00310CEC /* FontBindingDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E8425D51CC4E35C00310CEC /* FontBindingDemoViewController.m */; };
 		8E91E73F1BB228A900F7618F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E73E1BB228A900F7618F /* main.m */; };
 		8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7411BB228A900F7618F /* AppDelegate.m */; };
 		8E91E7481BB228A900F7618F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E7461BB228A900F7618F /* Main.storyboard */; };
@@ -56,6 +57,8 @@
 		8E7BAD221BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicPlaceholderCellTableViewController.m; sourceTree = "<group>"; };
 		8E7E562A1C667C0B008A8BBD /* ImageViewDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewDemoViewController.h; sourceTree = "<group>"; };
 		8E7E562B1C667C0B008A8BBD /* ImageViewDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewDemoViewController.m; sourceTree = "<group>"; };
+		8E8425D41CC4E35C00310CEC /* FontBindingDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontBindingDemoViewController.h; sourceTree = "<group>"; };
+		8E8425D51CC4E35C00310CEC /* FontBindingDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FontBindingDemoViewController.m; sourceTree = "<group>"; };
 		8E91E73A1BB228A900F7618F /* AKABeaconDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AKABeaconDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E91E73E1BB228A900F7618F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8E91E7401BB228A900F7618F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				8E2ED22A1C3D53F000FBA44D /* TableViewBindingViewController.m */,
 				8E7E562A1C667C0B008A8BBD /* ImageViewDemoViewController.h */,
 				8E7E562B1C667C0B008A8BBD /* ImageViewDemoViewController.m */,
+				8E8425D41CC4E35C00310CEC /* FontBindingDemoViewController.h */,
+				8E8425D51CC4E35C00310CEC /* FontBindingDemoViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -291,6 +296,7 @@
 				8E4F0A6B1BE39D29006D8876 /* SliderViewController.m in Sources */,
 				8E91E7421BB228A900F7618F /* AppDelegate.m in Sources */,
 				8E7BAD231BD5A74400828E52 /* DynamicPlaceholderCellTableViewController.m in Sources */,
+				8E8425D61CC4E35C00310CEC /* FontBindingDemoViewController.m in Sources */,
 				8E2ED22B1C3D53F000FBA44D /* TableViewBindingViewController.m in Sources */,
 				8E7E562C1C667C0B008A8BBD /* ImageViewDemoViewController.m in Sources */,
 				8E91E73F1BB228A900F7618F /* main.m in Sources */,

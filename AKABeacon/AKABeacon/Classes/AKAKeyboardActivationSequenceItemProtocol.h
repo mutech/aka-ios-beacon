@@ -22,7 +22,7 @@
 
 @property(nonatomic, readonly)       BOOL                           participatesInKeyboardActivationSequence;
 
-@property(nonatomic, weak, readonly) AKAKeyboardActivationSequence* keyboardActivationSequence;
+@property(nonatomic, weak, readonly, nullable) AKAKeyboardActivationSequence* keyboardActivationSequence;
 
 @property(nonatomic, readonly, weak) opt_UIResponder                responderForKeyboardActivationSequence;
 

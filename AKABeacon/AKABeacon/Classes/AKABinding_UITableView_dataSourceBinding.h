@@ -54,9 +54,9 @@
 
 @interface AKABinding_UITableView_dataSourceBinding : AKAViewBinding
 
-@property(nonatomic, readonly, weak) id<AKABindingDelegate_UITableView_dataSourceBinding> delegate;
+@property(nonatomic, readonly, weak, nullable) id<AKABindingDelegate_UITableView_dataSourceBinding> delegate;
 
 
-@property(nonatomic, readonly, weak) UITableView*                                 tableView;
+@property(nonatomic, readonly, weak, nullable) UITableView*                                 tableView;
 
 @end

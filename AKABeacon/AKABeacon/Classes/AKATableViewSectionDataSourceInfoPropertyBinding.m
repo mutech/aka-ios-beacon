@@ -66,7 +66,10 @@
 
 - (AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
 {
-    NSAssert(self.syntheticTargetValue == nil || [self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]], @"Unexpected type of syntethic target value %@, expected %@", self.syntheticTargetValue, NSStringFromClass([self.syntheticTargetValue class]));
+    NSAssert(self.syntheticTargetValue == nil ||
+             [self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]],
+             @"Unexpected type of syntethic target value %@, expected %@",
+             self.syntheticTargetValue, NSStringFromClass((req_Class)[self.syntheticTargetValue class]));
 
     return self.syntheticTargetValue;
 }
@@ -110,14 +113,15 @@
 
 - (BOOL)startObservingChanges
 {
-    [super startObservingChanges];
+    BOOL result = [super startObservingChanges];
     [self.sectionDataSourceInfo startObservingChanges];
+    return result;
 }
 
 - (BOOL)stopObservingChanges
 {
     [self.sectionDataSourceInfo stopObservingChanges];
-    [super stopObservingChanges];
+    return [super stopObservingChanges];
 }
 
 #pragma mark - Binding Delegate

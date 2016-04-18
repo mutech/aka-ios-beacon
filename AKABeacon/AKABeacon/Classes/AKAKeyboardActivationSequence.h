@@ -30,7 +30,7 @@ typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeybo
 
 #pragma mark - Configuration
 
-@property(nonatomic, weak) id<AKAKeyboardActivationSequenceDelegate>
+@property(nonatomic, weak, nullable) id<AKAKeyboardActivationSequenceDelegate>
                                                           delegate;
 
 #pragma mark - Items
@@ -66,9 +66,9 @@ typedef AKAKeyboardActivationSequence* _Nullable                    opt_AKAKeybo
 
 @interface AKAKeyboardActivationSequence(Convenience)
 
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  activeItem;
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  previousItem;
-@property(nonatomic, readonly, weak) AKAKeyboardActivationSequenceItem  nextItem;
+@property(nonatomic, readonly, weak, nullable) AKAKeyboardActivationSequenceItem  activeItem;
+@property(nonatomic, readonly, weak, nullable) AKAKeyboardActivationSequenceItem  previousItem;
+@property(nonatomic, readonly, weak, nullable) AKAKeyboardActivationSequenceItem  nextItem;
 
 - (BOOL)                                     activateItemAtIndex:(NSUInteger)index;
 

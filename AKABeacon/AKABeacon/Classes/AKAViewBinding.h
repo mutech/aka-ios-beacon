@@ -24,8 +24,8 @@
                                                    delegate:(opt_AKABindingDelegate)delegate
                                                       error:(out_NSError)error;
 
-@property(nonatomic, readonly, weak) UIView*                    view;
-@property(nonatomic, readonly, weak) id<AKAViewBindingDelegate> delegate;
+@property(nonatomic, readonly, weak, nullable) UIView*                    view;
+@property(nonatomic, readonly, weak, nullable) id<AKAViewBindingDelegate> delegate;
 
 @end
 

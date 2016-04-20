@@ -304,7 +304,9 @@ static NSString* const kRegisteredControlKey = @"aka_control";
          (void)property;
          (void)stop;
 
-         if ([self addBindingForView:view withBindingExpression:expression])
+         if ([self addBindingForView:view
+                            property:property
+               withBindingExpression:expression])
          {
              ++result;
          }
@@ -314,78 +316,96 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 }
 
 - (BOOL)                            addBindingForView:(req_UIView)view
+                                             property:(SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
 {
-    return [self addBindingForView:view withBindingExpression:bindingExpression error:nil];
+    return [self addBindingForView:view
+                          property:bindingProperty
+             withBindingExpression:bindingExpression
+                             error:nil];
 }
 
 - (BOOL)                            addBindingForView:(req_UIView)view
+                                             property:(SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression
                                                 error:(out_NSError)error
 {
-    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
-
-    BOOL result = NO;
-    NSError* localError = nil;
-
-    Class bindingType = bindingExpression.specification.bindingType;
-    NSAssert([bindingType isSubclassOfClass:[AKAViewBinding class]],
-             @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKAViewBinding", view, bindingExpression);
-
-    AKAViewBinding* binding = [bindingType alloc];
-    binding = [binding initWithView:view expression:bindingExpression context:self delegate:self error:&localError];
-    if (binding)
-    {
-        result = [self addBinding:binding];
-        if (result && self.isObservingChanges)
-        {
-            [binding startObservingChanges];
-        }
-    }
-    else if (error == nil)
-    {
-        @throw [NSException exceptionWithName:@"Unhandled error"
-                                       reason:localError.localizedDescription
-                                     userInfo:nil];
-    }
-    else
-    {
-        *error = localError;
-    }
-
-    return result;
-}
-
-- (BOOL)                                   addBinding:(AKABinding*)binding
-{
     __block BOOL result = NO;
 
-    // Paranoia: Binding should only be manipulated from main thread, on the other hand
-    // if this is called from a different thread, there is a possibility for a dead lock
-    // since we are and probably have to wait for completion. So better make sure this
-    // is called from main than to rely on this:
-    [self aka_performBlockInMainThreadOrQueue:^{
-        if ([binding isKindOfClass:[AKAControlViewBinding class]])
-        {
-            AKAControlViewBinding* oldCVB = self.controlViewBinding;
-            NSAssert(oldCVB == nil, @"Invalid attempt to add control view binding %@ to control %@: control already has a defined control view binding %@", binding, self, oldCVB);
-            if (oldCVB == nil)
-            {
-                self.view = ((AKAControlViewBinding*)binding).view;
-                result = YES;
-                self->_controlViewBinding = (id)binding;
-            }
-        }
-        else
-        {
-            // TODO: consider testing if a binding to the same property&view is already present
-            result = YES;
-        }
+    NSAssert([NSThread isMainThread],
+             @"Control binding manipulation is only valid from main thread, please check the call stack and dispatch the action leading to this call to the main thread.");
 
-        if (result)
-        {
-            [self.bindings addObject:binding];
-        }
+    // Paranoia, if assert does not fire, dispatch to main thread as fallback:
+    [self aka_performBlockInMainThreadOrQueue:
+     ^{
+         NSError* localError = nil;
+
+         Class bindingType = bindingExpression.specification.bindingType;
+         NSAssert([bindingType isSubclassOfClass:[AKAViewBinding class]],
+                  @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKAViewBinding", view, bindingExpression);
+
+         if ([self shouldAddBindingOfType:bindingType
+                                  forView:view
+                                 property:bindingProperty
+                    withBindingExpression:bindingExpression])
+         {
+             AKAViewBinding* binding = [bindingType alloc];
+             binding = [binding initWithView:view
+                                  expression:bindingExpression
+                                     context:self
+                                    delegate:self
+                                       error:&localError];
+             if (binding)
+             {
+                 [self       willAddBinding:binding
+                                    forView:view
+                                   property:bindingProperty
+                      withBindingExpression:bindingExpression];
+
+                 if ([binding isKindOfClass:[AKAControlViewBinding class]])
+                 {
+                     AKAControlViewBinding* oldCVB = self.controlViewBinding;
+                     NSAssert(oldCVB == nil, @"Invalid attempt to add control view binding %@ to control %@: control already has a defined control view binding %@", binding, self, oldCVB);
+                     if (oldCVB == nil)
+                     {
+                         self.view = ((AKAControlViewBinding*)binding).view;
+                         result = YES;
+                         self->_controlViewBinding = (id)binding;
+                     }
+                 }
+                 else
+                 {
+                     // TODO: consider testing if a binding to the same property&view is already present
+                     result = YES;
+                 }
+                 
+                 if (result)
+                 {
+                     [self.bindings addObject:binding];
+                 }
+
+
+                 [self        didAddBinding:binding
+                                    forView:view
+                                   property:bindingProperty
+                      withBindingExpression:bindingExpression];
+
+                 if (result && self.isObservingChanges)
+                 {
+                     [binding startObservingChanges];
+                 }
+             }
+             else if (error == nil)
+             {
+                 @throw [NSException exceptionWithName:@"Unhandled error"
+                                                reason:localError.localizedDescription
+                                              userInfo:nil];
+             }
+             else
+             {
+                 *error = localError;
+             }
+         }
     } waitForCompletion:YES];
 
     return result;
@@ -393,20 +413,25 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 
 - (BOOL)                                removeBinding:(AKABinding*)binding
 {
-    NSAssert([[NSThread currentThread] isMainThread], @"Binding manipulation outside of main thread");
+    NSAssert([NSThread isMainThread],
+             @"Control binding manipulation is only valid from main thread, please check the call stack and dispatch the action leading to this call to the main thread.");
+
 
     __block BOOL result = NO;
-    // Paranoia: Binding should only be manipulated from main thread, on the other hand
-    // if this is called from a different thread, there is a possibility for a dead lock
-    // since we are and probably have to wait for completion. So better make sure this
-    // is called from main than to rely on this:
-    [self aka_performBlockInMainThreadOrQueue:^{
+
+    // Paranoia, if assert does not fire, dispatch to main thread as fallback:
+    [self aka_performBlockInMainThreadOrQueue:
+     ^{
         NSUInteger index = [self.bindings indexOfObjectIdenticalTo:binding];
         BOOL localResult = index != NSNotFound;
         if (localResult)
         {
+            [self willRemoveBinding:binding];
+
             [binding stopObservingChanges];
+
             [self.bindings removeObjectAtIndex:index];
+
 
             if ([binding isKindOfClass:[AKAControlViewBinding class]])
             {
@@ -423,9 +448,66 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                     NSAssert(NO, @"Internal inconsistency: control view binding %@ removed from control %@ which references another control view binding %@", binding, self, controlViewBinding);
                 }
             }
+
+            [self didRemoveBinding:binding];
         }
     } waitForCompletion:YES];
     return result;
+}
+
+- (BOOL)                       shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    BOOL result = YES;
+
+    if (self.owner)
+    {
+        result = [self.owner control:self
+              shouldAddBindingOfType:bindingType
+                             forView:view
+                            property:bindingProperty
+               withBindingExpression:bindingExpression];
+    }
+
+    return result;
+}
+
+- (void)                               willAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner         control:self
+                 willAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+}
+
+- (void)                                didAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner         control:self
+                  didAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+}
+
+- (void)                            willRemoveBinding:(AKABinding*)binding
+{
+    [self.owner         control:self
+              willRemoveBinding:binding];
+}
+
+- (void)                             didRemoveBinding:(AKABinding*)binding
+{
+    [self.owner         control:self
+               didRemoveBinding:binding];
 }
 
 @end

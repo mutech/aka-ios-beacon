@@ -60,13 +60,37 @@
 #import "AKABinding.h"
 @interface AKAControl(BindingsOwner)
 
+#pragma mark - Adding and Removing Bindings
+
 - (NSUInteger)                     addBindingsForView:(req_UIView)view;
 
-- (BOOL)addBindingForView:(req_UIView)view withBindingExpression:(req_AKABindingExpression)bindingExpression;
-
-- (BOOL)                                   addBinding:(req_AKABinding)binding;
+- (BOOL)                            addBindingForView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+                                                error:(out_NSError)error;
 
 - (BOOL)                                removeBinding:(req_AKABinding)binding;
+
+#pragma mark - Binding Ownership Events
+
+- (BOOL)                       shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                               willAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                                didAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                            willRemoveBinding:(req_AKABinding)binding;
+
+- (void)                             didRemoveBinding:(req_AKABinding)binding;
 
 @end
 

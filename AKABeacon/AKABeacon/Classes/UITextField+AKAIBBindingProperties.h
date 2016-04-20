@@ -15,6 +15,7 @@ IB_DESIGNABLE
 @interface UITextField(AKAIBBindingProperties) <AKAControlViewProtocol>
 
 @property(nonatomic, nullable) IBInspectable NSString* textBinding_aka;
+@property(nonatomic, nullable) IBInspectable NSString* fontBinding_aka;
 
 @end
 

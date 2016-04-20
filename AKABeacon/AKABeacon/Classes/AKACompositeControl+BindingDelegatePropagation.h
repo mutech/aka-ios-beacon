@@ -12,6 +12,35 @@
 #import "AKABinding.h"
 #import "AKAControlViewBinding.h"
 
+@interface AKACompositeControl (ControlBindingOwnershipDelegatePropagation)
+
+
+- (BOOL)                                      control:(req_AKAControl)control
+                               shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                                      control:(req_AKAControl)control
+                                       willAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+- (void)                                      control:(req_AKAControl)control
+                                        didAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                                      control:(req_AKAControl)control
+                                    willRemoveBinding:(AKABinding*)binding;
+
+- (void)                                      control:(req_AKAControl)control
+                                     didRemoveBinding:(AKABinding*)binding;
+
+@end
+
+
 @interface AKACompositeControl (BindingDelegatePropagation)
 
 - (void)                                      control:(req_AKAControl)control

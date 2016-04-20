@@ -182,6 +182,7 @@
 		8E81B66A1B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */; };
 		8E8425D21CC4089500310CEC /* AKAFontPropertyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E8425D01CC4089500310CEC /* AKAFontPropertyBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E8425D31CC4089500310CEC /* AKAFontPropertyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E8425D11CC4089500310CEC /* AKAFontPropertyBinding.m */; };
+		8E8425D81CC6AEFC00310CEC /* AKAContentSizeCategoryChangeListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E8425D71CC6AEFC00310CEC /* AKAContentSizeCategoryChangeListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E84A4F61BCBBEF500C5488A /* AKAFormViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E84A4F41BCBBEF500C5488A /* AKAFormViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E84A4F71BCBBEF500C5488A /* AKAFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E84A4F51BCBBEF500C5488A /* AKAFormViewController.m */; };
 		8E85EB8A1BE5825500C9CF29 /* AKABindingErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E85EB891BE5825500C9CF29 /* AKABindingErrors.m */; };
@@ -475,6 +476,7 @@
 		8E81B6681B9B05B400EF0772 /* AKADynamicPlaceholderTableViewCellCompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKADynamicPlaceholderTableViewCellCompositeControl.m; sourceTree = "<group>"; };
 		8E8425D01CC4089500310CEC /* AKAFontPropertyBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFontPropertyBinding.h; sourceTree = "<group>"; };
 		8E8425D11CC4089500310CEC /* AKAFontPropertyBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFontPropertyBinding.m; sourceTree = "<group>"; };
+		8E8425D71CC6AEFC00310CEC /* AKAContentSizeCategoryChangeListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAContentSizeCategoryChangeListener.h; path = Classes/AKAContentSizeCategoryChangeListener.h; sourceTree = "<group>"; };
 		8E84A4F41BCBBEF500C5488A /* AKAFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFormViewController.h; sourceTree = "<group>"; };
 		8E84A4F51BCBBEF500C5488A /* AKAFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAFormViewController.m; sourceTree = "<group>"; };
 		8E85EB891BE5825500C9CF29 /* AKABindingErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingErrors.m; sourceTree = "<group>"; };
@@ -993,6 +995,7 @@
 				8E72331C1B0022A200D647A9 /* AKABeaconStyleKit.m */,
 				8EC264C11BC32AC500DE89B5 /* AKANSEnumerations.h */,
 				8EC264C21BC32AC500DE89B5 /* AKANSEnumerations.m */,
+				8E8425D71CC6AEFC00310CEC /* AKAContentSizeCategoryChangeListener.h */,
 				8E9DE5A71C43F39C00FCC6AF /* Commons */,
 				DA84859B4268DAA6A3DC7E02 /* Behaviors */,
 				8E07148F1BAA383100C1DDC8 /* Bindings */,
@@ -1354,6 +1357,7 @@
 				8E7233681B0022A200D647A9 /* AKAControl.h in Headers */,
 				8EC264C31BC32AC500DE89B5 /* AKANSEnumerations.h in Headers */,
 				8E2ED2271C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties.h in Headers */,
+				8E8425D81CC6AEFC00310CEC /* AKAContentSizeCategoryChangeListener.h in Headers */,
 				8E4F8C901C464625008B4F1C /* AKADelegateDispatcher.h in Headers */,
 				8E482C771BC2D96400FF7484 /* AKAPropertyBinding.h in Headers */,
 				8E2ED2111C393A3A00FBA44D /* AKABinding_UITableView_dataSourceBinding.h in Headers */,

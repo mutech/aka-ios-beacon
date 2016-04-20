@@ -12,6 +12,8 @@
 #import "UITextField+AKAIBBindingProperties.h"
 
 #import "AKABinding_UITextField_textBinding.h"
+#import "AKAFontPropertyBinding.h"
+
 #import "AKAViewBinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
@@ -28,6 +30,19 @@
     [AKABinding_UITextField_textBinding setBindingExpressionText:textBinding_aka
                                                      forSelector:@selector(textBinding_aka)
                                                           inView:self];
+}
+
+- (NSString*)fontBinding_aka
+{
+    return [AKAFontPropertyBinding bindingExpressionTextForSelector:@selector(fontBinding_aka)
+                                                             inView:self];
+}
+
+- (void)setFontBinding_aka:(NSString *)fontBinding_aka
+{
+    [AKAFontPropertyBinding setBindingExpressionText:fontBinding_aka
+                                         forSelector:@selector(fontBinding_aka)
+                                              inView:self];
 }
 
 - (AKAMutableControlConfiguration*)aka_controlConfiguration

@@ -43,6 +43,8 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABeaconNullability.h>
 #import <AKABeacon/AKANSEnumerations.h>
 
+#import <AKABeacon/AKAContentSizeCategoryChangeListener.h>
+
 // Commons
 // Commons/Runtime
 #import <AKABeacon/AKAProtocolInfo.h>

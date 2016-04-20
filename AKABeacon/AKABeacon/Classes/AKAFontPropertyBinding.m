@@ -318,7 +318,14 @@
 
 - (void)setTargetFont:(UIFont*)targetFont
 {
-    [self.view setValue:targetFont forKey:@"font"];
+    // TODO: refactor this: not updating target font if not observing, because new target value
+    // is based on original target value, which is set in observation starter. So this binding is
+    // semantically not replacing but customizing the font (in a manner of speaking).
+    // Think about a clean way to do that.
+    if (self.isObserving)
+    {
+        [self.view setValue:targetFont forKey:@"font"];
+    }
 }
 
 - (AKAProperty *)createBindingTargetPropertyForView:(UIView *)targetView
@@ -393,6 +400,14 @@
     {
         UIFont* font = sourceValue;
         baseDescriptor = font.fontDescriptor;
+
+        NSString* textStyle = baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute];
+        if (textStyle)
+        {
+            UIFont* updatedFont = [UIFont preferredFontForTextStyle:textStyle];
+            baseDescriptor = updatedFont.fontDescriptor;
+        }
+
         if (self.fontDescriptorAttributes.symbolicTraits != 0)
         {
             NSString* fontName = baseDescriptor.fontAttributes[UIFontDescriptorNameAttribute];
@@ -451,6 +466,11 @@
     {
         [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];
     }
+}
+
+- (void)contentSizeCategoryChanged
+{
+    [self updateTargetValue];
 }
 
 @end

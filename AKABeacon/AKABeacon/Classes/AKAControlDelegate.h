@@ -45,8 +45,70 @@
 
 @end
 
+@protocol AKAControlBindingOwnershipDelegate <NSObject>
+
+@optional
+- (BOOL)                                      control:(req_AKAControl)control
+                               shouldAddBindingOfType:(req_Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                       willAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                        didAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                    willRemoveBinding:(req_AKABinding)binding;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                     didRemoveBinding:(req_AKABinding)binding;
+
+@end
+
 
 @protocol AKAControl_BindingDelegate <NSObject>
+
+@optional
+- (BOOL)                                      control:(req_AKAControl)control
+                               shouldAddBindingOfType:(req_Class)bindingType
+                                                      forView:(req_UIView)view
+                                                     property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                       willAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                        didAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                    willRemoveBinding:(req_AKABinding)binding;
+
+@optional
+- (void)                                      control:(req_AKAControl)control
+                                     didRemoveBinding:(req_AKABinding)binding;
 
 @optional
 - (void)                                      control:(req_AKAControl)control
@@ -212,6 +274,7 @@
 
 @protocol AKAControlDelegate <
     AKAControlMembershipDelegate,
+    AKAControlBindingOwnershipDelegate,
     AKAControl_BindingDelegate,
     AKAControl_ControlViewBindingDelegate,
     AKAControl_KeyboardControlViewBindingDelegate,

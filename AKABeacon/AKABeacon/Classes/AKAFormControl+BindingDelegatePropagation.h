@@ -42,6 +42,31 @@
 @end
 
 
+@interface AKAFormControl (BindingsOwner)
+
+#pragma mark - Overrides for AKAControl binding events
+
+- (BOOL)                       shouldAddBindingOfType:(req_Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                               willAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                                didAddBinding:(req_AKABinding)binding
+                                              forView:(req_UIView)view
+                                             property:(opt_SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression;
+
+- (void)                            willRemoveBinding:(req_AKABinding)binding;
+
+- (void)                             didRemoveBinding:(req_AKABinding)binding;
+
+@end
+
 @interface AKAFormControl (ControlViewBindingDelegatePropagation)
 
 - (void)                                      control:(req_AKAControl)control

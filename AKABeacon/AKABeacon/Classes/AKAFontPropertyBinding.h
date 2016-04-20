@@ -8,7 +8,8 @@
 
 @import UIKit;
 #import "AKAViewBinding.h"
+#import "AKAContentSizeCategoryChangeListener.h"
 
-@interface AKAFontPropertyBinding : AKAViewBinding
+@interface AKAFontPropertyBinding : AKAViewBinding<AKAContentSizeCategoryChangeListener>
 
 @end

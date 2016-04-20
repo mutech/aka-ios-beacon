@@ -8,6 +8,71 @@
 
 #import "AKACompositeControl+BindingDelegatePropagation.h"
 
+@implementation AKACompositeControl (ControlBindingOwnershipDelegatePropagation)
+
+
+- (BOOL)                                      control:(req_AKAControl)control
+                               shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    BOOL result = YES;
+
+    if (self.owner)
+    {
+        result = [self.owner control:control
+              shouldAddBindingOfType:bindingType
+                             forView:view
+                            property:bindingProperty
+               withBindingExpression:bindingExpression];
+    }
+
+    return result;
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                       willAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner             control:control
+                     willAddBinding:binding
+                            forView:view
+                           property:bindingProperty
+              withBindingExpression:bindingExpression];
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                        didAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner             control:control
+                      didAddBinding:binding
+                            forView:view
+                           property:bindingProperty
+              withBindingExpression:bindingExpression];
+
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                    willRemoveBinding:(AKABinding*)binding
+{
+    [self.owner control:control willRemoveBinding:binding];
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                     didRemoveBinding:(AKABinding*)binding
+{
+    [self.owner control:control didRemoveBinding:binding];
+}
+
+@end
+
+
 @implementation AKACompositeControl (BindingDelegatePropagation)
 
 - (void)                                      control:(req_AKAControl)control

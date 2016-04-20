@@ -10,12 +10,7 @@
 
 #import "AKABindingContextProtocol.h"
 #import "AKABindingSpecification.h"
-
-
-@class AKABindingExpression;
-typedef AKABindingExpression* _Nullable opt_AKABindingExpression;
-typedef AKABindingExpression* _Nonnull req_AKABindingExpression;
-typedef AKABindingExpression* __autoreleasing _Nullable* _Nullable out_AKABindingExpression;
+#import "AKABeaconNullability.h"
 
 typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable opt_AKABindingExpressionAttributes;
 typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull req_AKABindingExpressionAttributes;

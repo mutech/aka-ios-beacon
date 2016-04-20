@@ -9,6 +9,213 @@
 #import "AKAFormControl+BindingDelegatePropagation.h"
 #import "AKAKeyboardActivationSequence.h"
 
+@implementation AKAFormControl (ControlBindingOwnershipDelegatePropagation)
+
+- (BOOL)                                      control:(req_AKAControl)control
+                               shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    BOOL result = YES;
+
+    AKACompositeControl* owner = self.owner;
+    if (owner)
+    {
+        result = [owner control:control
+              shouldAddBindingOfType:bindingType
+                             forView:view
+                            property:bindingProperty
+               withBindingExpression:bindingExpression];
+    }
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if (result && [delegate respondsToSelector:@selector(control:shouldAddBindingOfType:forView:property:withBindingExpression:)])
+    {
+        result = [delegate control:control
+            shouldAddBindingOfType:bindingType
+                           forView:view
+                          property:bindingProperty
+             withBindingExpression:bindingExpression];
+    }
+
+    return result;
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                       willAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner             control:control
+                     willAddBinding:binding
+                            forView:view
+                           property:bindingProperty
+              withBindingExpression:bindingExpression];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willAddBinding:forView:property:withBindingExpression:)])
+    {
+        [delegate       control:control
+                 willAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+    }
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                        didAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [self.owner             control:control
+                      didAddBinding:binding
+                            forView:view
+                           property:bindingProperty
+              withBindingExpression:bindingExpression];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didAddBinding:forView:property:withBindingExpression:)])
+    {
+        [delegate       control:control
+                  didAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+    }
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                    willRemoveBinding:(AKABinding*)binding
+{
+    [self.owner control:control willRemoveBinding:binding];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:)])
+    {
+        [delegate       control:control
+              willRemoveBinding:binding];
+    }
+
+}
+
+- (void)                                      control:(req_AKAControl)control
+                                     didRemoveBinding:(AKABinding*)binding
+{
+    [self.owner control:control didRemoveBinding:binding];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:)])
+    {
+        [delegate       control:control
+               didRemoveBinding:binding];
+    }
+}
+
+@end
+
+@implementation AKAFormControl (BindingsOwner)
+
+#pragma mark - Overrides for AKAControl binding events
+
+- (BOOL)                       shouldAddBindingOfType:(Class)bindingType
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    BOOL result = [super shouldAddBindingOfType:bindingType forView:view property:bindingProperty withBindingExpression:bindingExpression];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if (result && [delegate respondsToSelector:@selector(control:shouldAddBindingOfType:forView:property:withBindingExpression:)])
+    {
+        result = [delegate control:self
+            shouldAddBindingOfType:bindingType
+                           forView:view
+                          property:bindingProperty
+             withBindingExpression:bindingExpression];
+    }
+
+    return result;
+}
+
+- (void)                               willAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [super willAddBinding:binding forView:view property:bindingProperty withBindingExpression:bindingExpression];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:willAddBinding:forView:property:withBindingExpression:)])
+    {
+        [delegate       control:self
+                 willAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+    }
+}
+
+- (void)                                didAddBinding:(AKABinding*)binding
+                                              forView:(req_UIView)view
+                                             property:(SEL)bindingProperty
+                                withBindingExpression:(req_AKABindingExpression)bindingExpression
+{
+    [super didAddBinding:binding forView:view property:bindingProperty withBindingExpression:bindingExpression];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:didAddBinding:forView:property:withBindingExpression:)])
+    {
+        [delegate       control:self
+                  didAddBinding:binding
+                        forView:view
+                       property:bindingProperty
+          withBindingExpression:bindingExpression];
+    }
+
+
+}
+
+- (void)                            willRemoveBinding:(AKABinding*)binding
+{
+    [super willRemoveBinding:binding];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:)])
+    {
+        [delegate       control:self
+              willRemoveBinding:binding];
+    }
+
+}
+
+- (void)                             didRemoveBinding:(AKABinding*)binding
+{
+    [super didRemoveBinding:binding];
+
+    id<AKAControlDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:@selector(control:)])
+    {
+        [delegate       control:self
+               didRemoveBinding:binding];
+    }
+}
+
+@end
+
 @implementation AKAFormControl (BindingDelegatePropagation)
 
 - (void)                                      control:(req_AKAControl)control

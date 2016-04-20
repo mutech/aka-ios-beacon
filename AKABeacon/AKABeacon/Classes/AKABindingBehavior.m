@@ -12,7 +12,7 @@
 #import "AKAEditorControlView.h"
 #import "AKAFormControl.h"
 #import "AKADelegateDispatcher.h"
-
+#import "AKAContentSizeCategoryChangeListener.h"
 
 @interface AKABindingBehaviourDelegateDispatcher : AKADelegateDispatcher<AKABindingBehaviorDelegate>
 
@@ -53,8 +53,10 @@
 @property(nonatomic) double                                 rotationAnimationDuration;
 @property(nonatomic) UIViewAnimationCurve                   rotationAnimationCurve;
 
-@end
+@property(nonatomic, readonly) NSHashTable<id<AKAContentSizeCategoryChangeListener>>*
+                                                            contentSizeCategoryChangeListeners;
 
+@end
 
 @implementation AKABindingBehavior
 
@@ -126,6 +128,7 @@
     }
     else
     {
+        [self stopObservingContentSizeCategoryEvents];
         [self deactivateFormControlBindings];
         [self stopObservingKeyboardEvents];
     }
@@ -137,10 +140,12 @@
 
     [self startObservingKeyboardEvents];
     [self activateFormControlBindings];
+    [self startObservingContentSizeCategoryEvents];
 }
 
 - (void)                                 viewWillDisappear:(BOOL)animated
 {
+    [self stopObservingContentSizeCategoryEvents];
     [self deactivateFormControlBindings];
     [self stopObservingKeyboardEvents];
 
@@ -250,6 +255,49 @@
     if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
     {
         [delegate control:control binding:binding responderDidDeactivate:responder];
+    }
+}
+
+#pragma mark - Content Size Category Notifications
+
+- (void)           startObservingContentSizeCategoryEvents
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentSizeCategoryDidChange:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+}
+
+- (void)            stopObservingContentSizeCategoryEvents
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIContentSizeCategoryDidChangeNotification
+                                                  object:nil];
+}
+
+- (void)                      contentSizeCategoryDidChange:(NSNotification*__unused)notification
+{
+    for (id<AKAContentSizeCategoryChangeListener> listener in self.contentSizeCategoryChangeListeners)
+    {
+        [listener contentSizeCategoryChanged];
+    }
+    [self.parentViewController.view setNeedsLayout];
+}
+
+- (void)                                           control:(AKAControl*__unused)control
+                                             didAddBinding:(AKABinding*)binding
+                                                   forView:(UIView*__unused)view
+                                                  property:(SEL __unused)bindingProperty
+                                     withBindingExpression:(AKABindingExpression*__unused)bindingExpression
+{
+    if ([binding conformsToProtocol:@protocol(AKAContentSizeCategoryChangeListener)])
+    {
+        id<AKAContentSizeCategoryChangeListener> listener = (id)binding;
+        if (!self.contentSizeCategoryChangeListeners)
+        {
+            _contentSizeCategoryChangeListeners = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+        }
+        [self.contentSizeCategoryChangeListeners addObject:listener];
     }
 }
 

@@ -10,6 +10,100 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
+		<key>0940E43E1D65A4D4A41B6869</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>2033EE87D540AFE2597CE8A2</string>
+				<string>0F2215F7B8564C32D62D1E56</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0F2215F7B8564C32D62D1E56</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-AKABeaconDemo.release.xcconfig</string>
+			<key>path</key>
+			<string>../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2033EE87D540AFE2597CE8A2</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-AKABeaconDemo.debug.xcconfig</string>
+			<key>path</key>
+			<string>../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>27647EDBD5BB2FC3316BE2F4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>35D73C143B70C3A49454B7A2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4965DEDB36FB4BF91394E17D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4965DEDB36FB4BF91394E17D</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_AKABeaconDemo.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
 		<key>496D7E3F4BC1D8C3B8EB2345</key>
 		<dict>
 			<key>children</key>
@@ -17,6 +111,7 @@
 				<string>8E2653321C3060B1001AC635</string>
 				<string>8E5386391BB8BB2D0063EDE1</string>
 				<string>5EE7DFAB46B4CDC640EF258D</string>
+				<string>4965DEDB36FB4BF91394E17D</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -316,6 +411,7 @@
 				<string>8E91E73C1BB228A900F7618F</string>
 				<string>8E91E73B1BB228A900F7618F</string>
 				<string>496D7E3F4BC1D8C3B8EB2345</string>
+				<string>0940E43E1D65A4D4A41B6869</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -414,7 +510,9 @@
 			<key>buildActionMask</key>
 			<string>2147483647</string>
 			<key>files</key>
-			<array/>
+			<array>
+				<string>35D73C143B70C3A49454B7A2</string>
+			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
@@ -441,10 +539,13 @@
 			<string>8E91E75C1BB228A900F7618F</string>
 			<key>buildPhases</key>
 			<array>
+				<string>27647EDBD5BB2FC3316BE2F4</string>
 				<string>8E91E7361BB228A900F7618F</string>
 				<string>8E91E7371BB228A900F7618F</string>
 				<string>8E91E7381BB228A900F7618F</string>
 				<string>8EFBE8591BBC4370004E264F</string>
+				<string>9351D7832FA98AE715B2B8AD</string>
+				<string>D8EADCECD4F28F9F0B0480F6</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -834,6 +935,8 @@
 		</dict>
 		<key>8E91E75D1BB228A900F7618F</key>
 		<dict>
+			<key>baseConfigurationReference</key>
+			<string>2033EE87D540AFE2597CE8A2</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
@@ -856,6 +959,8 @@
 		</dict>
 		<key>8E91E75E1BB228A900F7618F</key>
 		<dict>
+			<key>baseConfigurationReference</key>
+			<string>0F2215F7B8564C32D62D1E56</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
@@ -1022,6 +1127,54 @@
 			<key>name</key>
 			<string>Embed Frameworks</string>
 			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>9351D7832FA98AE715B2B8AD</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Embed Pods Frameworks</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>D8EADCECD4F28F9F0B0480F6</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
 			<string>0</string>
 		</dict>
 	</dict>

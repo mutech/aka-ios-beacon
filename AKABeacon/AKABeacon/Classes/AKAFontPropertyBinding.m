@@ -185,6 +185,7 @@
 @property(nonatomic) UIFont* targetFont;
 @property(nonatomic) UIFont* originalTargetFont;
 @property(nonatomic, readonly) UIFontDescriptor* baseFontDescriptor;
+@property(nonatomic) NSLayoutConstraint* textFieldMinHeightConstraint;
 
 @property(nonatomic) BOOL isObserving;
 
@@ -328,8 +329,38 @@
     if (self.isObserving)
     {
         [self.view setValue:targetFont forKey:@"font"];
-        [self.view invalidateIntrinsicContentSize];
-        [self.view setNeedsUpdateConstraints];
+
+        // Sigh: Text fields get an implicit height constraint which uses a font independ height of 30
+        // so we hack our way by overriding this constraint with a constraint that is aware of the font
+        // size.
+        if ([self.view isKindOfClass:[UITextField class]])
+        {
+            if (targetFont.pointSize > 30)
+            {
+                if (!self.textFieldMinHeightConstraint)
+                {
+                    self.textFieldMinHeightConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                                     attribute:NSLayoutAttributeHeight
+                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                        toItem:nil
+                                                                                     attribute:NSLayoutAttributeHeight
+                                                                                    multiplier:1.0
+                                                                                      constant:targetFont.pointSize];
+                    self.textFieldMinHeightConstraint.priority = 750;
+                    [self.view addConstraint:self.textFieldMinHeightConstraint];
+                    [self.view invalidateIntrinsicContentSize];
+                    [self.view setNeedsLayout];
+                }
+            }
+            else
+            {
+                if (self.textFieldMinHeightConstraint)
+                {
+                    [self.view removeConstraint:self.textFieldMinHeightConstraint];
+                    self.textFieldMinHeightConstraint = nil;
+                }
+            }
+        }
     }
 }
 
@@ -369,6 +400,12 @@
                                {
                                    binding.isObserving = NO;
                                    binding.targetFont = binding.originalTargetFont;
+                               }
+
+                               if (self.textFieldMinHeightConstraint)
+                               {
+                                   [self.view removeConstraint:self.textFieldMinHeightConstraint];
+                                   self.textFieldMinHeightConstraint = nil;
                                }
 
                                return !binding.isObserving;

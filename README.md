@@ -24,7 +24,7 @@ To integrate AKABeacon, enable ```use_frameworks!``` in your Podfile and add the
 ```
 use_frameworks!
 ...
-pod 'AKABeacon', '~> 0.1.2'
+pod 'AKABeacon', '~> 0.1.3'
 ```
 
 If you are using the [CocoaPods try plugin](https://github.com/CocoaPods/cocoapods-try), an easy way to start experimenting with Beacon is:
@@ -52,10 +52,8 @@ The demo project contains a lot of examples for different binding types.
 
 ## Documentation
 
-Documentation is still incomplete, we are working on it.
-
 * [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
-* [CocoaPods AKA Beacon Appledoc's](http://cocoadocs.org/docsets/AKABeacon/)
+
 
 ## How Beacon works
 

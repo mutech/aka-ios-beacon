@@ -28,8 +28,7 @@
            @"attributes":
                @{ @"choices":
                       @{ @"required":        @YES,
-                         @"expressionType":  @(labelBindingSpec.bindingSourceSpecification.expressionType),
-                         @"attributes":      labelBindingSpec.bindingSourceSpecification.attributes ? labelBindingSpec.bindingSourceSpecification.attributes : @{},
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"choices"
                          },
@@ -37,6 +36,7 @@
                       @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath),
                          @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
                          @"bindingProperty": @"titleBindingExpression",
+                         @"attributes":      labelBindingSpec.bindingSourceSpecification.attributes ? labelBindingSpec.bindingSourceSpecification.attributes : @{},
                          },
                   @"titleForUndefinedValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeString),

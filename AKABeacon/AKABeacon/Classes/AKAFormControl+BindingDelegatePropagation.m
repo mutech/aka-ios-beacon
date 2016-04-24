@@ -8,6 +8,7 @@
 
 #import "AKAFormControl+BindingDelegatePropagation.h"
 #import "AKAKeyboardActivationSequence.h"
+#import "AKABeaconNullability.h"
 
 @implementation AKAFormControl (ControlBindingOwnershipDelegatePropagation)
 
@@ -98,7 +99,7 @@
 
     id<AKAControlDelegate> delegate = self.delegate;
 
-    if ([delegate respondsToSelector:@selector(control:)])
+    if ([delegate respondsToSelector:@selector(control:willRemoveBinding:)])
     {
         [delegate       control:control
               willRemoveBinding:binding];
@@ -113,7 +114,7 @@
 
     id<AKAControlDelegate> delegate = self.delegate;
 
-    if ([delegate respondsToSelector:@selector(control:)])
+    if ([delegate respondsToSelector:@selector(control:didRemoveBinding:)])
     {
         [delegate       control:control
                didRemoveBinding:binding];
@@ -193,7 +194,7 @@
 
     id<AKAControlDelegate> delegate = self.delegate;
 
-    if ([delegate respondsToSelector:@selector(control:)])
+    if ([delegate respondsToSelector:@selector(control:willRemoveBinding:)])
     {
         [delegate       control:self
               willRemoveBinding:binding];
@@ -207,7 +208,7 @@
 
     id<AKAControlDelegate> delegate = self.delegate;
 
-    if ([delegate respondsToSelector:@selector(control:)])
+    if ([delegate respondsToSelector:@selector(control:didRemoveBinding:)])
     {
         [delegate       control:self
                didRemoveBinding:binding];

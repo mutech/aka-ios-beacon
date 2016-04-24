@@ -419,7 +419,7 @@
 
     self.keyboardAdjustment = newHeight;
 
-    [self scrollViewToVisible:self.activeResponder animated:NO];
+    [self scrollViewToVisible:self.activeResponder animated:YES];
 }
 
 - (void)                               scrollViewToVisible:(UIResponder*)activeResponder animated:(BOOL)animated
@@ -432,7 +432,7 @@
             UIView* firstResponder = (UIView*)activeResponder;
 
             BOOL isIOS9 = ([[[UIDevice currentDevice] systemVersion] compare:@"9.0"
-                                                                     options:NSNumericSearch] == NSOrderedAscending);
+                                                                     options:NSNumericSearch] != NSOrderedAscending);
             BOOL isAutoScrollingControl = [firstResponder isKindOfClass:[UITextField class]];
             UIScrollView* closestScrollView = [firstResponder aka_superviewOfType:[UIScrollView class]];
 

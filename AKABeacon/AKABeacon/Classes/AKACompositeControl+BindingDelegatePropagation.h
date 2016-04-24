@@ -16,27 +16,27 @@
 
 
 - (BOOL)                                      control:(req_AKAControl)control
-                               shouldAddBindingOfType:(Class)bindingType
+                               shouldAddBindingOfType:(req_Class)bindingType
                                               forView:(req_UIView)view
-                                             property:(SEL)bindingProperty
+                                             property:(opt_SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression;
 
 - (void)                                      control:(req_AKAControl)control
-                                       willAddBinding:(AKABinding*)binding
+                                       willAddBinding:(req_AKABinding)binding
                                               forView:(req_UIView)view
-                                             property:(SEL)bindingProperty
+                                             property:(opt_SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression;
 - (void)                                      control:(req_AKAControl)control
-                                        didAddBinding:(AKABinding*)binding
+                                        didAddBinding:(req_AKABinding)binding
                                               forView:(req_UIView)view
-                                             property:(SEL)bindingProperty
+                                             property:(opt_SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression;
 
 - (void)                                      control:(req_AKAControl)control
-                                    willRemoveBinding:(AKABinding*)binding;
+                                    willRemoveBinding:(req_AKABinding)binding;
 
 - (void)                                      control:(req_AKAControl)control
-                                     didRemoveBinding:(AKABinding*)binding;
+                                     didRemoveBinding:(req_AKABinding)binding;
 
 @end
 

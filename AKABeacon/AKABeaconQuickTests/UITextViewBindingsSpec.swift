@@ -15,7 +15,7 @@ class UITextViewBindingsSpec: QuickSpec {
                 // Arrange
                 let property = Selector("textBinding_aka")
                 view.textBinding_aka = "textValue"
-                let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
+                let expression: AKABindingExpression! = AKABindingExpression(forTarget: view, property: property)!
 
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;

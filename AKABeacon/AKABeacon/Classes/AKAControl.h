@@ -73,7 +73,7 @@
 
 #pragma mark - Binding Ownership Events
 
-- (BOOL)                       shouldAddBindingOfType:(Class)bindingType
+- (BOOL)                       shouldAddBindingOfType:(req_Class)bindingType
                                               forView:(req_UIView)view
                                              property:(opt_SEL)bindingProperty
                                 withBindingExpression:(req_AKABindingExpression)bindingExpression;

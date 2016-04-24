@@ -14,7 +14,7 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                 let attributesSpec = "textAttributeFormatter: { pattern: pattern, backgroundColor: matchingSearchResultBackgroundColor }";
                 view.textBinding_aka = "textValue { \(attributesSpec) }";
 
-                let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
+                let expression: AKABindingExpression! = AKABindingExpression(forTarget: view, property: property)!
 
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;

@@ -462,9 +462,10 @@ static NSString* const kRegisteredControlKey = @"aka_control";
 {
     BOOL result = YES;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:self
+        result = [owner control:self
               shouldAddBindingOfType:bindingType
                              forView:view
                             property:bindingProperty

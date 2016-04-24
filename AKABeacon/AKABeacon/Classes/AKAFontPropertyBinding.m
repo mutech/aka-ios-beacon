@@ -19,7 +19,8 @@
 @property(nonatomic) NSString* face;
 @property(nonatomic) NSString* visibleName;
 @property(nonatomic) CGFloat size;
-
+@property(nonatomic) NSNumber* fixedAdvance;
+@property(nonatomic) NSString* textStyle;
 @property(nonatomic) NSNumber* weightTrait;
 @property(nonatomic) NSNumber* widthTrait;
 @property(nonatomic) NSNumber* slantTrait;
@@ -187,6 +188,8 @@
 
 @property(nonatomic) BOOL isObserving;
 
+@property(nonatomic) BOOL isCustomizationBinding;
+
 @end
 
 
@@ -325,10 +328,12 @@
     if (self.isObserving)
     {
         [self.view setValue:targetFont forKey:@"font"];
+        [self.view invalidateIntrinsicContentSize];
+        [self.view setNeedsUpdateConstraints];
     }
 }
 
-- (AKAProperty *)createBindingTargetPropertyForView:(UIView *)targetView
+- (AKAProperty *)createBindingTargetPropertyForView:(UIView *__unused)targetView
 {
     AKAProperty* result = [AKAProperty propertyOfWeakTarget:self
                                                      getter:
@@ -371,56 +376,63 @@
     return result;
 }
 
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
-                                           context:(req_AKABindingContext)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver)changeObserver error:(NSError *__autoreleasing  _Nullable *)error
+- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
+                                           context:(req_AKABindingContext __unused)bindingContext
+                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                             error:(out_NSError __unused)error
 {
     return [AKAProperty propertyOfWeakKeyValueTarget:self
                                              keyPath:@"originalTargetFont"
-                                      changeObserver:^(id  _Nullable oldValue, id  _Nullable newValue) {
-                                          ;
-                                      }];
+                                      changeObserver:changeObserver];
+}
+
+- (BOOL)isCustomizationBinding
+{
+    return !self.fontDescriptorAttributes.textStyle.length;
 }
 
 - (BOOL)convertSourceValue:(id)sourceValue
              toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
-                     error:(NSError *__autoreleasing  _Nullable *)error
+                     error:(out_NSError __unused)error
 {
     BOOL result = YES;
 
-    UIFontDescriptor* baseDescriptor;
-    UIFontDescriptor* descriptor;
+    UIFontDescriptor* baseDescriptor = nil;
+    UIFontDescriptor* descriptor = nil;
     UIFont* font = nil;
 
-    if ([sourceValue isKindOfClass:[UIFontDescriptor class]])
+    if (self.isCustomizationBinding)
     {
-        baseDescriptor = sourceValue;
-    }
-    else if ([sourceValue isKindOfClass:[UIFont class]])
-    {
-        UIFont* font = sourceValue;
-        baseDescriptor = font.fontDescriptor;
-
-        NSString* textStyle = baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute];
-        if (textStyle)
+        if ([sourceValue isKindOfClass:[UIFontDescriptor class]])
         {
-            UIFont* updatedFont = [UIFont preferredFontForTextStyle:textStyle];
-            baseDescriptor = updatedFont.fontDescriptor;
+            baseDescriptor = sourceValue;
         }
-
-        if (self.fontDescriptorAttributes.symbolicTraits != 0)
+        else if ([sourceValue isKindOfClass:[UIFont class]])
         {
-            NSString* fontName = baseDescriptor.fontAttributes[UIFontDescriptorNameAttribute];
-            if (fontName.length > 0)
+            font = sourceValue;
+            baseDescriptor = font.fontDescriptor;
+
+            NSString* textStyle = baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute];
+            if (textStyle)
             {
-                UIFontDescriptor* modifiedBaseDescriptor = [baseDescriptor fontDescriptorWithFamily:font.familyName];
-                baseDescriptor = modifiedBaseDescriptor;
+                UIFont* updatedFont = [UIFont preferredFontForTextStyle:textStyle];
+                baseDescriptor = updatedFont.fontDescriptor;
+            }
+
+            if (self.fontDescriptorAttributes.symbolicTraits != 0)
+            {
+                NSString* fontName = baseDescriptor.fontAttributes[UIFontDescriptorNameAttribute];
+                if (fontName.length > 0)
+                {
+                    UIFontDescriptor* modifiedBaseDescriptor = [baseDescriptor fontDescriptorWithFamily:font.familyName];
+                    baseDescriptor = modifiedBaseDescriptor;
+                }
             }
         }
-    }
-    else if ([sourceValue isKindOfClass:[NSDictionary class]])
-    {
-        baseDescriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:sourceValue];
+        else if ([sourceValue isKindOfClass:[NSDictionary class]])
+        {
+            baseDescriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:sourceValue];
+        }
     }
 
     if (baseDescriptor)
@@ -445,7 +457,6 @@
         font = [UIFont fontWithDescriptor:descriptor size:size];
     }
 
-    // TODO: error handling if no matching font was found.
     *targetValueStore = font;
 
     return result;

@@ -19,9 +19,10 @@
 {
     BOOL result = YES;
 
-    if (self.owner)
+    AKACompositeControl* owner = self.owner;
+    if (owner)
     {
-        result = [self.owner control:control
+        result = [owner control:control
               shouldAddBindingOfType:bindingType
                              forView:view
                             property:bindingProperty

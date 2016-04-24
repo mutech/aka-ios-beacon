@@ -12,7 +12,7 @@ class UILabelBindingsSpec: QuickSpec {
             context("when bound to a text") {
                 let property = Selector("textBinding_aka")
                 view.textBinding_aka = "textValue"
-                let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
+                let expression: AKABindingExpression! = AKABindingExpression(forTarget: view, property:property)!
 
                 let bindingContext = TestModel();
                 let initialModelValue = bindingContext.textValue;
@@ -65,7 +65,7 @@ class UILabelBindingsSpec: QuickSpec {
 
                 let property = Selector("textBinding_aka")
                 view.textBinding_aka = "dateValue { dateFormatter: dateFormatter }"
-                let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
+                let expression: AKABindingExpression! = AKABindingExpression(forTarget: view, property: property)!
 
                 let bindingContext = TestModel();
                 let initialFormattedModelValue = bindingContext.dateFormatter.stringFromDate(bindingContext.dateValue);
@@ -119,7 +119,7 @@ class UILabelBindingsSpec: QuickSpec {
 
                 let property = Selector("textBinding_aka")
                 view.textBinding_aka = "doubleValue { numberFormatter: numberFormatter }"
-                let expression: AKABindingExpression! = view.aka_bindingExpressionForProperty(property)!
+                let expression: AKABindingExpression! = AKABindingExpression(forTarget: view, property: property)!
 
                 let bindingContext = TestModel();
                 let initialFormattedModelValue = bindingContext.numberFormatter.stringFromNumber(bindingContext.doubleValue);

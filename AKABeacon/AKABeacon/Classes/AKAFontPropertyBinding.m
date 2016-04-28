@@ -332,7 +332,7 @@
 
         // Sigh: Text fields get an implicit height constraint which uses a font independ height of 30
         // so we hack our way by overriding this constraint with a constraint that is aware of the font
-        // size.
+        // size. We try to minimize problems by assigning a low priority and using a greater-equal relation
         if ([self.view isKindOfClass:[UITextField class]])
         {
             if (targetFont.pointSize > 30)
@@ -341,14 +341,14 @@
                 {
                     self.textFieldMinHeightConstraint = [NSLayoutConstraint constraintWithItem:self.view
                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                     relatedBy:NSLayoutRelationEqual
+                                                                                     relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                         toItem:nil
                                                                                      attribute:NSLayoutAttributeHeight
                                                                                     multiplier:1.0
                                                                                       constant:targetFont.pointSize];
-                    self.textFieldMinHeightConstraint.priority = 750;
+                    self.textFieldMinHeightConstraint.priority = 500;
                     [self.view addConstraint:self.textFieldMinHeightConstraint];
-                    [self.view invalidateIntrinsicContentSize];
+                    //[self.view invalidateIntrinsicContentSize];
                     [self.view setNeedsLayout];
                 }
             }

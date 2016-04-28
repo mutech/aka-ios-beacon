@@ -6,8 +6,8 @@ AKA Beacon is a binding framework for iOS with Interface Builder support. It all
 ## Contents
 
 - [Installation & Integration](#installation-&-integration)
-- [Getting Started](#getting-started)
 - [License](#license) (BSD 2-clause license)
+- [Getting Started](#getting-started)
 - [Documentation](#documentation)
 - [How Beacon works](#how-beacon-works)
 - [Examples](#examples)
@@ -41,19 +41,22 @@ BSD 2-clause, see LICENSE.txt
 
 Once you integrated the framework into your project, all you have to do to use bindings is:
 
-- *[Interface Builder]*
+### In Interface Builder
+
   - **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
   - **Define binding expressions in the property inspector for your views**. For example, to bind a text field or label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
-- *[Code]*
+
+### In Code
+
   - **Enable binding support** in your view controller. To do that, add ```[AKABindingBehavior addToViewController:self]``` to your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
   - Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```.
 
 The demo project contains a lot of examples for different binding types.
 
+
 ## Documentation
 
-* [Take a look at the Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
-
+* [Beacon's Github Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
 
 ## How Beacon works
 
@@ -119,8 +122,8 @@ numberValue {
 
 #### View Controller
 
-* [TextFieldBindingViewController.h](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.h) and
-* [TextFieldBindingViewController.h](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/TextFieldBindingViewController.m)
+* [TextFieldBindingViewController.h](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.h) and
+* [TextFieldBindingViewController.h](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/TextFieldBindingViewController.m)
 
 #### Screenshot
 
@@ -189,8 +192,8 @@ dateValue
 
 #### View Controller
 
-* [PickerKeyboardViewController.h](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.h) and
-* [PickerKeyboardViewController.m](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/PickerKeyboardViewController.m)
+* [PickerKeyboardViewController.h](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/PickerKeyboardViewController.h) and
+* [PickerKeyboardViewController.m](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/PickerKeyboardViewController.m)
 
 #### Screenshot
 
@@ -268,8 +271,8 @@ dateValue {
 
 #### View Controller
 
-* [LabelDemoTableViewController.h](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.h) and
-* [LabelDemoTableViewController.m](https://github.com/mutech/aka-ios-beacon/AKABeacon/AKABeaconDemo/LabelDemoTableViewController.m)
+* [LabelDemoTableViewController.h](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/LabelDemoTableViewController.h) and
+* [LabelDemoTableViewController.m](https://github.com/mutech/aka-ios-beacon/blob/master/AKABeaconDemo/AKABeaconDemo/LabelDemoTableViewController.m)
 
 #### Screenshot
 

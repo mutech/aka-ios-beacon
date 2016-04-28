@@ -914,7 +914,7 @@ The number editor text field uses two different formatters, one for display and 
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="us9-qa-rgQ" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="227"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Choose string value from array of strings, custom text for undefined value in label, picker supports undefined value." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItR-l1-CLW">
                                                 <rect key="frame" x="20" y="20" width="335" height="27"/>
@@ -1025,11 +1025,11 @@ The number editor text field uses two different formatters, one for display and 
                                                 </userDefinedRuntimeAttributes>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jnP-bs-nQR" userLabel="DatePickerKeyboardTriggerView" customClass="AKADatePickerKeyboardTriggerView">
-                                                <rect key="frame" x="20" y="183" width="335" height="29"/>
+                                                <rect key="frame" x="20" y="183" width="335" height="28"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDZ-Gt-BuC" userLabel="SelectedItemLabel">
-                                                        <rect key="frame" x="4" y="4" width="327" height="21"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <rect key="frame" x="4" y="4" width="327" height="20"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>

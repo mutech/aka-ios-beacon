@@ -11,6 +11,20 @@
 #import "AKABindingExpressionParser.h"
 
 #import "AKABindingExpression_Internal.h"
+#import "AKAArrayBindingExpression.h"
+#import "AKAConstantBindingExpression.h"
+#import "AKAClassConstantBindingExpression.h"
+#import "AKABooleanConstantBindingExpression.h"
+#import "AKAEnumConstantBindingExpression.h"
+#import "AKAOptionsConstantBindingExpression.h"
+#import "AKAStringConstantBindingExpression.h"
+#import "AKADoubleConstantBindingExpression.h"
+#import "AKAColorConstantBindingExpression.h"
+#import "AKAUIFontConstantBindingExpression.h"
+#import "AKACGPointConstantBindingExpression.h"
+#import "AKACGSizeConstantBindingExpression.h"
+#import "AKACGRectConstantBindingExpression.h"
+#import "AKAKeyPathBindingExpression.h"
 
 @implementation AKABindingExpressionParser
 

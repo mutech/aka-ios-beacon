@@ -7,7 +7,8 @@
 //
 
 @import Foundation;
-@import AKACommons.AKANullability;
+
+#import "AKABeaconNullability.h"
 
 
 #pragma mark - Forward Declaration & Type Aliases
@@ -476,21 +477,54 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
                                               withValuesByName:(NSDictionary<NSString*, id>*_Nonnull)valuesByName;
 
 /**
+ Resolves the enumerated value for the key symbolicValue in the specified enumerationType.
+
+ @param symbolicValue   the key for the enumerated value
+ @param enumerationType the registered enumeration type
+ @param error           error information if the value cannot be resolved
+
+ @return the enumerated value or nil if the value cannot be resolved.
+ */
++ (opt_id)                              resolveEnumeratedValue:(opt_NSString)symbolicValue
+                                                       forType:(opt_NSString)enumerationType
+                                                         error:(out_NSError)error;
+
+/**
  Registers a name/value mapping for the options type with the specified options (enum) type name.
 
  Once registered, your options type can be used in binding expressions as "$options.YourType.YourValue", "$options.YourType{Value1, Value2}" or if the options type is known in the context simply as "$options{Value1, Value2}".
 
  It's best practice to register options types from a dispatch_once block before they are first used.
 
- Please note that options type values are restricted to integer number values (internally represented as long long). Use them in favor to enumerations if you want to supply multiple values and if option values are defined as bit flags.
+ Please note that registering an options type will also register an enumeration type for the same name.
 
- @warning Options and Enumerations may share the same namespace!
-
- @param enumerationTypeName Globally unique name of the enumeration. Use the type name of the enumeration for standard enumeration type mappings and be sure to use non conflicting names for custom enumerations.
- @param valuesByName a dictionary mapping enumeration symbols (identifiers) to enumeration values. By beacon convention, Swift style enum values are used (e.g. CurrencyStyle instead of UINumberFormatterCurrencyStyle).
+ @param optionsTypeName Globally unique name of the enumeration. Use the type name of the options enumeration for standard options type mappings and be sure to use non conflicting names for custom options.
+ @param valuesByName a dictionary mapping enumeration symbols (identifiers) to option values. By beacon convention, Swift style enum values are used (f.e. CurrencyStyle instead of UINumberFormatterCurrencyStyle).
  */
 + (void)                                   registerOptionsType:(req_NSString)optionsTypeName
                                               withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
+
+/**
+ Resolves the option value for the key symbolicValue in the specified optionsType.
+
+ @param symbolicValue   the key for the options value
+ @param enumerationType the registered options type
+ @param error           error information if the value cannot be resolved
+
+ @return the options value or nil if the value cannot be resolved.
+ */
++ (opt_NSNumber)                           resolveOptionsValue:(opt_AKABindingExpressionAttributes)attributes
+                                                       forType:(opt_NSString)optionsType
+                                                         error:(out_NSError)error;
+
+/**
+ Returns an array containing all defined option names for the specified options type.
+
+ @param optionsType the options type
+
+ @return An array containing all defined option names for the specified options type
+ */
++ (NSArray<NSString*>* _Nullable)registeredOptionNamesForOptionsType:(req_NSString)optionsType;
 
 #pragma mark - Expression Type (Set) Names
 // @name Accessing expression type and type set names

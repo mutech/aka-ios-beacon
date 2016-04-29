@@ -57,6 +57,8 @@
 #define req_AKAKeyboardControlViewBindingDelegate id<AKAKeyboardControlViewBindingDelegate>_Nonnull
 #define opt_AKAKeyboardControlViewBindingDelegate id<AKAKeyboardControlViewBindingDelegate>_Nullable
 
+#define opt_AKABindingExpressionAttributes NSDictionary<NSString*, AKABindingExpression*>* _Nullable
+#define req_AKABindingExpressionAttributes NSDictionary<NSString*, AKABindingExpression*>* _Nonnull
 
 #pragma mark - Controls
 

@@ -15,6 +15,19 @@
 #import "AKABindingExpression_Internal.h"
 #import "AKABinding.h"
 
+#import "AKAClassConstantBindingExpression.h"
+#import "AKAIntegerConstantBindingExpression.h"
+#import "AKADoubleConstantBindingExpression.h"
+#import "AKABooleanConstantBindingExpression.h"
+#import "AKAEnumConstantBindingExpression.h"
+#import "AKAOptionsConstantBindingExpression.h"
+#import "AKAArrayBindingExpression.h"
+#import "AKAColorConstantBindingExpression.h"
+#import "AKACGPointConstantBindingExpression.h"
+#import "AKACGSizeConstantBindingExpression.h"
+#import "AKACGRectConstantBindingExpression.h"
+
+
 @interface AKABindingExpressionTest: XCTestCase
 
 @end
@@ -510,10 +523,10 @@
 {
     // TODO: elaborate
 
-    [AKAEnumConstantBindingExpression registerEnumerationType:@"TestType"
-                                             withValuesByName:@{ @"One": @(1),
-                                                                 @"Two": @"Zwei",
-                                                                 @"Three": self }];
+    [AKABindingExpressionSpecification registerEnumerationType:@"TestType"
+                                              withValuesByName:@{ @"One": @(1),
+                                                                  @"Two": @"Zwei",
+                                                                  @"Three": self }];
     NSArray* texts = @[ @"$enum.TestType.One",
                         @"$enum.Two",
                         @"$enum.TestType.Three",
@@ -555,7 +568,7 @@
 
          if (value == nil)
          {
-             value = [AKAEnumConstantBindingExpression resolveEnumeratedValue:enumExpression.symbolicValue
+             value = [AKABindingExpressionSpecification resolveEnumeratedValue:enumExpression.symbolicValue
                                                                       forType:@"TestType"
                                                                         error:&error];
              XCTAssertNil(error, @"%@", error.localizedDescription);

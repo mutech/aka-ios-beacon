@@ -12,9 +12,6 @@
 #import "AKABindingSpecification.h"
 #import "AKABeaconNullability.h"
 
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nullable opt_AKABindingExpressionAttributes;
-typedef NSDictionary<NSString*, AKABindingExpression*>* _Nonnull req_AKABindingExpressionAttributes;
-
 typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 
 /**
@@ -111,7 +108,7 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 
    The semantics of binding attributes are defined by binding types.
  */
-@property(nonatomic, readonly, nullable) opt_AKABindingExpressionAttributes attributes;
+@property(nonatomic, readonly) opt_AKABindingExpressionAttributes attributes;
 
 #pragma mark - Validation
 

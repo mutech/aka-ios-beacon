@@ -328,18 +328,19 @@
     // Think about a clean way to do that.
     if (self.isObserving)
     {
-        [self.view setValue:targetFont forKey:@"font"];
+        UIView* view = self.view;
+        [view setValue:targetFont forKey:@"font"];
 
         // Sigh: Text fields get an implicit height constraint which uses a font independ height of 30
         // so we hack our way by overriding this constraint with a constraint that is aware of the font
         // size. We try to minimize problems by assigning a low priority and using a greater-equal relation
-        if ([self.view isKindOfClass:[UITextField class]])
+        if ([view isKindOfClass:[UITextField class]])
         {
             if (targetFont.pointSize > 30)
             {
                 if (!self.textFieldMinHeightConstraint)
                 {
-                    self.textFieldMinHeightConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                    self.textFieldMinHeightConstraint = [NSLayoutConstraint constraintWithItem:view
                                                                                      attribute:NSLayoutAttributeHeight
                                                                                      relatedBy:NSLayoutRelationGreaterThanOrEqual
                                                                                         toItem:nil
@@ -347,16 +348,15 @@
                                                                                     multiplier:1.0
                                                                                       constant:targetFont.pointSize];
                     self.textFieldMinHeightConstraint.priority = 500;
-                    [self.view addConstraint:self.textFieldMinHeightConstraint];
-                    //[self.view invalidateIntrinsicContentSize];
-                    [self.view setNeedsLayout];
+                    [view addConstraint:self.textFieldMinHeightConstraint];
+                    [view setNeedsLayout];
                 }
             }
             else
             {
                 if (self.textFieldMinHeightConstraint)
                 {
-                    [self.view removeConstraint:self.textFieldMinHeightConstraint];
+                    [view removeConstraint:self.textFieldMinHeightConstraint];
                     self.textFieldMinHeightConstraint = nil;
                 }
             }

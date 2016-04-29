@@ -7,11 +7,14 @@
 //
 
 #include <objc/runtime.h>
+
 @import AKACommons.AKALog;
+@import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKABindingSpecification.h"
 #import "AKABindingExpression_Internal.h"
 #import "AKABinding.h"
+#import "AKABindingErrors.h"
 
 NSString*const kAKABindingSpecificationBindingTypeKey = @"bindingType";
 NSString*const kAKABindingSpecificationBindingTargetSpecificationKey = @"targetType";
@@ -421,20 +424,158 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     }
 }
 
-#pragma mark - Enumeration and Options Constant Registry
+#pragma mark - Enumeration Constant Registry
 
-+ (void)                               registerEnumerationType:(req_NSString)enumerationTypeName
-                                              withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName
++ (nonnull NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>*) registry
 {
-    [AKAEnumConstantBindingExpression registerEnumerationType:enumerationTypeName
-                                             withValuesByName:valuesByName];
+    static NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [NSMutableDictionary new];
+    });
+
+    return result;
 }
 
-+ (void)                                   registerOptionsType:(req_NSString)optionsTypeName
-                                              withValuesByName:(NSDictionary<NSString*, NSNumber*>* _Nonnull)valuesByName
++ (id)resolveEnumeratedValue:(opt_NSString)symbolicValue
+                     forType:(opt_NSString)enumerationType
+                       error:(out_NSError)error
 {
-    [AKAOptionsConstantBindingExpression registerOptionsType:optionsTypeName
-                                            withValuesByName:valuesByName];
+    id result = nil;
+
+    if (enumerationType.length > 0)
+    {
+        NSDictionary<NSString*, NSNumber*>* valuesByName =
+            [self registry][(req_NSString)enumerationType];
+
+        if (valuesByName != nil)
+        {
+            if (symbolicValue.length > 0)
+            {
+                result = valuesByName[(req_NSString)symbolicValue];
+
+                if (result == nil && error != nil)
+                {
+                    *error = [AKABindingErrors unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
+                                                            forEnumerationType:(req_NSString)enumerationType
+                                                              withValuesByName:valuesByName];
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
++ (void)registerEnumerationType:(req_NSString)enumerationType
+               withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName
+{
+    __block BOOL result = NO;
+
+    NSAssert([NSThread isMainThread], @"Invalid attempt to register an enumeration type outside of main thread!");
+
+    [enumerationType aka_performBlockInMainThreadOrQueue:^{
+        NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>* registry =
+        [self registry];
+
+        if (!registry[enumerationType])
+        {
+            registry[enumerationType] = valuesByName;
+            result = YES;
+        }
+    }
+                                       waitForCompletion:YES];
+    
+    (void)result; // TODO: add error parameter + handling
+}
+
+#pragma mark - Options Constant Registry
+
++ (nonnull NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>*) optionsRegistry
+{
+    static NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* result;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+        result = [NSMutableDictionary new];
+    });
+
+    return result;
+}
+
++ (NSNumber*)resolveOptionsValue:(opt_AKABindingExpressionAttributes)attributes
+                         forType:(opt_NSString)optionsType
+                           error:(out_NSError)error
+{
+    NSNumber* result = nil;
+
+    if (optionsType.length > 0)
+    {
+        NSDictionary<NSString*, NSNumber*>* valuesByName =
+            [self optionsRegistry][(req_NSString)optionsType];
+
+        if (valuesByName != nil)
+        {
+            __block long long unsigned resultValue = 0;
+            [attributes enumerateKeysAndObjectsUsingBlock:
+             ^(req_NSString symbolicValue, req_AKABindingExpression notUsed, outreq_BOOL stop)
+             {
+                 (void)notUsed;
+                 NSNumber* value = valuesByName[symbolicValue];
+
+                 if (value != nil)
+                 {
+                     resultValue |= value.unsignedLongLongValue;
+                 }
+                 else
+                 {
+                     if (error)
+                     {
+                         *stop = YES;
+                         *error = [AKABindingErrors unknownSymbolicEnumerationValue:symbolicValue
+                                                                 forEnumerationType:(req_NSString)optionsType
+                                                                   withValuesByName:valuesByName];
+                     }
+                 }
+             }];
+            result = @(resultValue);
+        }
+    }
+
+    return result;
+}
+
++ (void)registerOptionsType:(req_NSString)enumerationType
+            withValuesByName:(NSDictionary<NSString*, NSNumber*>* _Nonnull)valuesByName
+{
+    __block BOOL result = NO;
+
+    NSAssert([NSThread isMainThread], @"Invalid attempt to register an options type outside of main thread!");
+
+    [enumerationType aka_performBlockInMainThreadOrQueue:^{
+        NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>* optionsRegistry =
+            [self optionsRegistry];
+        NSMutableDictionary<NSString*, NSDictionary<NSString*, id>*>* enumRegistry =
+            [self registry];
+
+
+        if (!enumRegistry[enumerationType] && !optionsRegistry)
+        {
+            [self registerEnumerationType:enumerationType
+                         withValuesByName:valuesByName];
+            optionsRegistry[enumerationType] = valuesByName;
+            result = YES;
+        }
+    }
+                                       waitForCompletion:YES];
+
+    (void)result;
+}
+
++ (NSArray<NSString*>* _Nullable)registeredOptionNamesForOptionsType:(req_NSString)optionsType
+{
+    return [self optionsRegistry][optionsType].allKeys;
 }
 
 #pragma mark - Expression Type (Set) Names

@@ -490,6 +490,11 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     (void)result; // TODO: add error parameter + handling
 }
 
++ (BOOL)isEnumerationTypeDefined:(NSString *)enumerationType
+{
+    return [self registry][enumerationType] != nil;
+}
+
 #pragma mark - Options Constant Registry
 
 + (nonnull NSMutableDictionary<NSString*, NSDictionary<NSString*, NSNumber*>*>*) optionsRegistry
@@ -560,7 +565,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             [self registry];
 
 
-        if (!enumRegistry[enumerationType] && !optionsRegistry)
+        if (!enumRegistry[enumerationType] && !optionsRegistry[enumerationType])
         {
             [self registerEnumerationType:enumerationType
                          withValuesByName:valuesByName];
@@ -576,6 +581,11 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
 + (NSArray<NSString*>* _Nullable)registeredOptionNamesForOptionsType:(req_NSString)optionsType
 {
     return [self optionsRegistry][optionsType].allKeys;
+}
+
++ (BOOL)isOptionsTypeDefined:(NSString *)optionsType
+{
+    return [self optionsRegistry][optionsType] != nil;
 }
 
 #pragma mark - Expression Type (Set) Names

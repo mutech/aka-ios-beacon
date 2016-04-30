@@ -55,7 +55,7 @@
         }
         else
         {
-            NSString* reason = @"Too many dot-separated components, use $options {VALUE, ...}, $options.TYPE {VALUE, ...}, $options.VALUE or $options.TYPE.VALUE";
+            NSString* reason = @"Too many dot-separated components, use $TYPE {.Value}, {.Value}, $options {VALUE, ...}, $options.TYPE {VALUE, ...}, $options.VALUE or $options.TYPE.VALUE";
             NSString* name = [NSString stringWithFormat:@"Invalid options primary expression: %@: %@", constant, reason];
 
             [NSException exceptionWithName:name reason:reason userInfo:nil];

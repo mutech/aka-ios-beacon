@@ -10,7 +10,7 @@
 
 @import AKACommons.AKANullability;
 
-@interface AKABindingExpression(Internal)
+@interface AKABindingExpression()
 
 #pragma mark - Initialization
 
@@ -18,23 +18,13 @@
                                          attributes:(opt_AKABindingExpressionAttributes)attributes
                                       specification:(opt_AKABindingSpecification)specification;
 
-@end
-
-// Internal Cluster Classes
-
-
-@interface AKABindingExpression ()
-
-#pragma mark - Initialization
-
 - (instancetype _Nonnull)initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
                               specification:(opt_AKABindingSpecification)specification;
 
-#pragma mark - Properties
-
-@property(nonatomic, readonly, nullable)NSString* textForPrimaryExpression;
 
 #pragma mark - Serialization
+
+@property(nonatomic, readonly, nullable)NSString* textForPrimaryExpression;
 
 - (req_NSString)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
                                                   indent:(opt_NSString)indent;
@@ -43,6 +33,7 @@
                               indent:(opt_NSString)indent;
 
 @end
+
 
 
 

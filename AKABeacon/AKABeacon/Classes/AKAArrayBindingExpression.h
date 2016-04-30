@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKABindingExpression_Internal.h"
+#import "AKABindingExpression.h"
 
 
 @interface AKAArrayBindingExpression: AKABindingExpression

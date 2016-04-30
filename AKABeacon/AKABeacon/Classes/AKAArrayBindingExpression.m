@@ -9,7 +9,7 @@
 @import AKACommons.NSMutableString_AKATools;
 
 #import "AKAArrayBindingExpression.h"
-
+#import "AKABindingExpression_Internal.h"
 
 #pragma mark - AKAArrayBindingExpression
 #pragma mark -

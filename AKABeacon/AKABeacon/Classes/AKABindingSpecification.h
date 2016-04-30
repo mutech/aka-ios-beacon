@@ -489,6 +489,8 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
                                                        forType:(opt_NSString)enumerationType
                                                          error:(out_NSError)error;
 
++ (BOOL)                              isEnumerationTypeDefined:(req_NSString)enumerationType;
+
 /**
  Registers a name/value mapping for the options type with the specified options (enum) type name.
 
@@ -525,6 +527,8 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
  @return An array containing all defined option names for the specified options type
  */
 + (NSArray<NSString*>* _Nullable)registeredOptionNamesForOptionsType:(req_NSString)optionsType;
+
++ (BOOL)isOptionsTypeDefined:(req_NSString)optionsType;
 
 #pragma mark - Expression Type (Set) Names
 // @name Accessing expression type and type set names

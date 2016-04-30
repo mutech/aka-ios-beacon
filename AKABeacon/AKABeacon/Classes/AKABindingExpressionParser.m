@@ -177,14 +177,17 @@ static NSString*const   keywordCGRect = @"CGRect";
     Class bindingExpressionType = nil;
 
     [self skipWhitespaceAndNewlineCharacters];
+
+    // Parse constant of scope
     BOOL result = [self parseConstantOrScope:&primaryExpression
                            withSpecification:specification
                                         type:&bindingExpressionType
                                        error:error];
 
-    // Parse a key path following a scope.
+    // Optionally, parse a key path following a scope.
     if (result)
     {
+
         // Order is relevant:
         BOOL requireKeyPath = [self skipCharacter:'.'];
         BOOL possiblyKeyPath = [self isAtValidFirstIdentifierCharacter] || [self isAtCharacter:'@'];
@@ -201,7 +204,8 @@ static NSString*const   keywordCGRect = @"CGRect";
         {
             if (bindingExpressionType != nil &&
                 ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]] &&
-                ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
+                ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]] &&
+                ![bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]])
             {
                 [self registerParseError:error
                                 withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
@@ -228,11 +232,28 @@ static NSString*const   keywordCGRect = @"CGRect";
         if ([self isAtCharacter:'{'])
         {
             BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
+            BOOL hasOptionsValues = NO;
 
             result = [self parseAttributes:&attributes
                          withSpecification:specification
                                  asOptions:isOptions
+                          hasOptionsValues:&hasOptionsValues
                                      error:error];
+
+            if (hasOptionsValues)
+            {
+                if (bindingExpressionType == nil)
+                {
+                    bindingExpressionType = [AKAOptionsConstantBindingExpression class];
+                }
+                else if (bindingExpressionType != [AKAOptionsConstantBindingExpression class])
+                {
+                    result = [self registerParseError:error
+                                             withCode:AKAParseErrorUnexpectedOptionsValueForNonOptionsExpressionType
+                                           atPosition:self.scanner.scanLocation
+                                               reason:[NSString stringWithFormat:@"Options constant values are not allowed as attributes for expression type '%@'.", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
+                }
+            }
         }
 
         // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
@@ -360,6 +381,12 @@ static NSString*const   keywordCGRect = @"CGRect";
             constant = [NSArray arrayWithArray:array];
         }
     }
+    else if ([self isAtValidEnumerationStart]) // has to be tested before isAtValidFirstNumberCharacter!
+    {
+        result = [self parseEnumerationConstant:&constant
+                                           type:&type
+                                          error:error];
+    }
     else if ([self isAtValidFirstNumberCharacter])
     {
         result = [self parseNumberConstant:&constant
@@ -368,6 +395,7 @@ static NSString*const   keywordCGRect = @"CGRect";
     }
     else if (explicitScope && [self isAtValidFirstIdentifierCharacter])
     {
+        NSUInteger savedScanLocation = self.scanner.scanLocation;
         NSString* identifier;
         result = [self parseIdentifier:&identifier error:error];
 
@@ -387,11 +415,29 @@ static NSString*const   keywordCGRect = @"CGRect";
             }
             else
             {
-                result = NO;
-                [self registerParseError:error
-                                withCode:AKAParseErrorInvalidConstantOrScopeName
-                              atPosition:self.scanner.scanLocation
-                                  reason:[NSString stringWithFormat:@"Invalid binding scope or named constant '$%@'", identifier]];
+                result = [AKABindingExpressionSpecification isEnumerationTypeDefined:identifier];
+                if (result)
+                {
+                    // Alternate enumeration syntax $EnumType.Value: Enumeration type will be re-parsed as key path
+                    self.scanner.scanLocation = savedScanLocation;
+
+                    if ([AKABindingExpressionSpecification isOptionsTypeDefined:identifier])
+                    {
+                        type = [AKAOptionsConstantBindingExpression class];
+                    }
+                    else
+                    {
+                        type = [AKAEnumConstantBindingExpression class];
+                    }
+                    constant = nil;
+                }
+                else
+                {
+                    [self registerParseError:error
+                                    withCode:AKAParseErrorInvalidConstantOrScopeName
+                                  atPosition:self.scanner.scanLocation
+                                      reason:[NSString stringWithFormat:@"Invalid binding scope or named constant '$%@'", identifier]];
+                }
             }
         }
     }
@@ -518,14 +564,16 @@ static NSString*const   keywordCGRect = @"CGRect";
     return result;
 }
 
-- (BOOL)                            parseAttributes:(out_NSDictionary)store
+- (BOOL)                            parseAttributes:(out_NSDictionary)attributesStore
                                   withSpecification:(opt_AKABindingSpecification)specification
-                                          asOptions:(BOOL)isEnum
+                                          asOptions:(BOOL)isOptions
+                                   hasOptionsValues:(BOOL* _Nullable)hasOptionsValuesStore
                                               error:(out_NSError)error
 {
     NSMutableDictionary* attributes = [AKAMutableOrderedDictionary new];
     BOOL result = [self skipCharacter:'{'];
     BOOL done = NO;
+    BOOL hasOptionsValues = NO;
 
     while (result && !done)
     {
@@ -541,6 +589,10 @@ static NSString*const   keywordCGRect = @"CGRect";
             done = YES;
             break;
         }
+
+        BOOL isOptionValue = [self skipCharacter:'.'];
+        hasOptionsValues = hasOptionsValues || isOptionValue;
+
         result = [self isAtValidFirstIdentifierCharacter];
 
         if (result)
@@ -562,7 +614,7 @@ static NSString*const   keywordCGRect = @"CGRect";
 
             if ([self skipCharacter:':'])
             {
-                if (isEnum)
+                if (isOptions || isOptionValue)
                 {
                     [self registerParseError:error
                                     withCode:AKAParseErrorUnexpectedColonForEnumerationValue
@@ -598,9 +650,16 @@ static NSString*const   keywordCGRect = @"CGRect";
         }
     }
 
-    if (result && store != nil)
+    if (result)
     {
-        *store = attributes;
+        if (attributesStore != nil)
+        {
+            *attributesStore = attributes;
+        }
+        if (hasOptionsValuesStore != nil)
+        {
+            *hasOptionsValuesStore = hasOptionsValues;
+        }
     }
 
     return result;
@@ -862,6 +921,37 @@ static NSString*const   keywordCGRect = @"CGRect";
     return result;
 }
 
+- (BOOL)                   parseEnumerationConstant:(out_id)constantStore
+                                               type:(out_Class)typeStore
+                                              error:(out_NSError)error
+{
+    BOOL result = [self isAtCharacter:'.'];
+
+    if (result)
+    {
+        // Enumeration value (.Value) is parsed as key path (as if it had the form $enum.Value where $enum would be consumed)
+        // which in turn will be interpreted by AKAEnumConstantBindingExpression, so constantValue is initialized as nil
+        
+        if (constantStore)
+        {
+            *constantStore = nil;
+        }
+        if (typeStore)
+        {
+            *typeStore = [AKAEnumConstantBindingExpression class];
+        }
+    }
+    else
+    {
+        [self registerParseError:error
+                        withCode:AKAParseErrorInvalidNumberConstant
+                      atPosition:self.scanner.scanLocation
+                          reason:@"Invalid enumeration constant"];
+    }
+    
+    return result;
+}
+
 #pragma mark - Error Handling
 
 - (NSString*)                        contextMessage
@@ -1004,6 +1094,21 @@ static NSString*const   keywordCGRect = @"CGRect";
         unichar c = [self.scanner.string characterAtIndex:self.scanner.scanLocation];
         result = ((c >= '0' && c <= '9') || c == '-' || c == '+' || c == '.' || c == 'e' || c == 'E');
     }
+
+    return result;
+}
+
+- (BOOL)            isAtValidEnumerationStart
+{
+    NSUInteger savedLocation = self.scanner.scanLocation;
+    BOOL result = [self skipCharacter:'.'];
+
+    if (result)
+    {
+        result = [self isAtValidFirstIdentifierCharacter];
+    }
+
+    self.scanner.scanLocation = savedLocation;
 
     return result;
 }

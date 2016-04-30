@@ -1193,40 +1193,7 @@
 				8EA9AB441BAC06DA0070F13E /* AKABindingExpression.h */,
 				8E225FE01BADEA5C00BC070F /* AKABindingExpression_Internal.h */,
 				8EA9AB451BAC06DA0070F13E /* AKABindingExpression.m */,
-				8EE4AFCD1CD34251003E2CFC /* AKAArrayBindingExpression.h */,
-				8EE4AFCE1CD34251003E2CFC /* AKAArrayBindingExpression.m */,
-				8EE4AFD11CD34498003E2CFC /* AKAConstantBindingExpression.h */,
-				8EE4AFD21CD34498003E2CFC /* AKAConstantBindingExpression.m */,
-				8EE4AFD51CD3461F003E2CFC /* AKAClassConstantBindingExpression.h */,
-				8EE4AFD61CD3461F003E2CFC /* AKAClassConstantBindingExpression.m */,
-				8EE4AFD91CD346C2003E2CFC /* AKAStringConstantBindingExpression.h */,
-				8EE4AFDA1CD346C2003E2CFC /* AKAStringConstantBindingExpression.m */,
-				8EE4AFDD1CD34716003E2CFC /* AKANumberConstantBindingExpression.h */,
-				8EE4AFDE1CD34716003E2CFC /* AKANumberConstantBindingExpression.m */,
-				8EE4AFE11CD347B0003E2CFC /* AKABooleanConstantBindingExpression.h */,
-				8EE4AFE21CD347B0003E2CFC /* AKABooleanConstantBindingExpression.m */,
-				8EE4AFE51CD34838003E2CFC /* AKAIntegerConstantBindingExpression.h */,
-				8EE4AFE61CD34838003E2CFC /* AKAIntegerConstantBindingExpression.m */,
-				8EE4AFE91CD34871003E2CFC /* AKADoubleConstantBindingExpression.h */,
-				8EE4AFEA1CD34871003E2CFC /* AKADoubleConstantBindingExpression.m */,
-				8EE4AFED1CD348AD003E2CFC /* AKAEnumConstantBindingExpression.h */,
-				8EE4AFEE1CD348AD003E2CFC /* AKAEnumConstantBindingExpression.m */,
-				8EE4AFF11CD34935003E2CFC /* AKAOptionsConstantBindingExpression.h */,
-				8EE4AFF21CD34935003E2CFC /* AKAOptionsConstantBindingExpression.m */,
-				8EE4AFF51CD34A81003E2CFC /* AKAColorConstantBindingExpression.h */,
-				8EE4AFF61CD34A81003E2CFC /* AKAColorConstantBindingExpression.m */,
-				8EE4AFF91CD34B7D003E2CFC /* AKAUIFontConstantBindingExpression.h */,
-				8EE4AFFA1CD34B7D003E2CFC /* AKAUIFontConstantBindingExpression.m */,
-				8EE4B0091CD34E3F003E2CFC /* AKAStructConstantBindingExpression.h */,
-				8EE4B00A1CD34E3F003E2CFC /* AKAStructConstantBindingExpression.m */,
-				8EE4AFFD1CD34C44003E2CFC /* AKACGPointConstantBindingExpression.h */,
-				8EE4AFFE1CD34C44003E2CFC /* AKACGPointConstantBindingExpression.m */,
-				8EE4B0011CD34C88003E2CFC /* AKACGSizeConstantBindingExpression.h */,
-				8EE4B0021CD34C88003E2CFC /* AKACGSizeConstantBindingExpression.m */,
-				8EE4B0051CD34E0A003E2CFC /* AKACGRectConstantBindingExpression.h */,
-				8EE4B0061CD34E0A003E2CFC /* AKACGRectConstantBindingExpression.m */,
-				8EE4B00D1CD34F36003E2CFC /* AKAKeyPathBindingExpression.h */,
-				8EE4B00E1CD34F36003E2CFC /* AKAKeyPathBindingExpression.m */,
+				8EE4B0111CD37304003E2CFC /* Concrete Binding Expressions */,
 			);
 			name = Expressions;
 			sourceTree = "<group>";
@@ -1395,6 +1362,47 @@
 			children = (
 			);
 			name = UITableViewCell;
+			sourceTree = "<group>";
+		};
+		8EE4B0111CD37304003E2CFC /* Concrete Binding Expressions */ = {
+			isa = PBXGroup;
+			children = (
+				8EE4AFCD1CD34251003E2CFC /* AKAArrayBindingExpression.h */,
+				8EE4AFCE1CD34251003E2CFC /* AKAArrayBindingExpression.m */,
+				8EE4AFD11CD34498003E2CFC /* AKAConstantBindingExpression.h */,
+				8EE4AFD21CD34498003E2CFC /* AKAConstantBindingExpression.m */,
+				8EE4AFD51CD3461F003E2CFC /* AKAClassConstantBindingExpression.h */,
+				8EE4AFD61CD3461F003E2CFC /* AKAClassConstantBindingExpression.m */,
+				8EE4AFD91CD346C2003E2CFC /* AKAStringConstantBindingExpression.h */,
+				8EE4AFDA1CD346C2003E2CFC /* AKAStringConstantBindingExpression.m */,
+				8EE4AFDD1CD34716003E2CFC /* AKANumberConstantBindingExpression.h */,
+				8EE4AFDE1CD34716003E2CFC /* AKANumberConstantBindingExpression.m */,
+				8EE4AFE11CD347B0003E2CFC /* AKABooleanConstantBindingExpression.h */,
+				8EE4AFE21CD347B0003E2CFC /* AKABooleanConstantBindingExpression.m */,
+				8EE4AFE51CD34838003E2CFC /* AKAIntegerConstantBindingExpression.h */,
+				8EE4AFE61CD34838003E2CFC /* AKAIntegerConstantBindingExpression.m */,
+				8EE4AFE91CD34871003E2CFC /* AKADoubleConstantBindingExpression.h */,
+				8EE4AFEA1CD34871003E2CFC /* AKADoubleConstantBindingExpression.m */,
+				8EE4AFED1CD348AD003E2CFC /* AKAEnumConstantBindingExpression.h */,
+				8EE4AFEE1CD348AD003E2CFC /* AKAEnumConstantBindingExpression.m */,
+				8EE4AFF11CD34935003E2CFC /* AKAOptionsConstantBindingExpression.h */,
+				8EE4AFF21CD34935003E2CFC /* AKAOptionsConstantBindingExpression.m */,
+				8EE4AFF51CD34A81003E2CFC /* AKAColorConstantBindingExpression.h */,
+				8EE4AFF61CD34A81003E2CFC /* AKAColorConstantBindingExpression.m */,
+				8EE4AFF91CD34B7D003E2CFC /* AKAUIFontConstantBindingExpression.h */,
+				8EE4AFFA1CD34B7D003E2CFC /* AKAUIFontConstantBindingExpression.m */,
+				8EE4B0091CD34E3F003E2CFC /* AKAStructConstantBindingExpression.h */,
+				8EE4B00A1CD34E3F003E2CFC /* AKAStructConstantBindingExpression.m */,
+				8EE4AFFD1CD34C44003E2CFC /* AKACGPointConstantBindingExpression.h */,
+				8EE4AFFE1CD34C44003E2CFC /* AKACGPointConstantBindingExpression.m */,
+				8EE4B0011CD34C88003E2CFC /* AKACGSizeConstantBindingExpression.h */,
+				8EE4B0021CD34C88003E2CFC /* AKACGSizeConstantBindingExpression.m */,
+				8EE4B0051CD34E0A003E2CFC /* AKACGRectConstantBindingExpression.h */,
+				8EE4B0061CD34E0A003E2CFC /* AKACGRectConstantBindingExpression.m */,
+				8EE4B00D1CD34F36003E2CFC /* AKAKeyPathBindingExpression.h */,
+				8EE4B00E1CD34F36003E2CFC /* AKAKeyPathBindingExpression.m */,
+			);
+			name = "Concrete Binding Expressions";
 			sourceTree = "<group>";
 		};
 		DA84859B4268DAA6A3DC7E02 /* Behaviors */ = {

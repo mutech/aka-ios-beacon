@@ -527,54 +527,147 @@
                                               withValuesByName:@{ @"One": @(1),
                                                                   @"Two": @"Zwei",
                                                                   @"Three": self }];
+    [AKABindingExpressionSpecification registerOptionsType:@"OptionsType"
+                                          withValuesByName:@{ @"One": @(1),
+                                                              @"Two": @(2),
+                                                              @"Three": @(4) }];
     NSArray* texts = @[ @"$enum.TestType.One",
                         @"$enum.Two",
                         @"$enum.TestType.Three",
                         @"$enum { value: \"xyz\" }",
-                        @"$enum" ];
-    NSArray* values = @[ @(1), [NSNull null], self, @"xyz", [NSNull null] ];
-    NSArray* valuesWithType = @[ @(1), @"Zwei", self, @"xyz", [NSNull null] ];
+                        @"$enum"];
+    NSArray* textsNewSyntax = @[ @"$TestType.One",
+                                 @".Two",
+                                 @"$TestType.Three" ];
+    NSArray* values = @[ @(1),
+                         [NSNull null],
+                         self,
+                         @"xyz",
+                         [NSNull null] ];
+    NSArray* valuesWithType = @[ @(1),
+                                 @"Zwei",
+                                 self,
+                                 @"xyz",
+                                 [NSNull null] ];
 
-    [texts enumerateObjectsUsingBlock:^(NSString* text, NSUInteger idx, BOOL* _Nonnull stop) {
-         (void)stop;
+    void (^performTest)(NSString*, NSUInteger, BOOL*_Nonnull) =
+    ^(NSString* text, NSUInteger idx, BOOL* _Nonnull stop) {
+        (void)stop;
 
-         id expectedValue = values[idx];
+        id expectedValue = values[idx];
 
-         if (expectedValue == [NSNull null])
-         {
-             expectedValue = nil;
-         }
+        if (expectedValue == [NSNull null])
+        {
+            expectedValue = nil;
+        }
 
-         id expectedValueWithType = valuesWithType[idx];
+        id expectedValueWithType = valuesWithType[idx];
 
-         if (expectedValueWithType == [NSNull null])
-         {
-             expectedValueWithType = nil;
-         }
+        if (expectedValueWithType == [NSNull null])
+        {
+            expectedValueWithType = nil;
+        }
 
-         AKABindingExpressionParser* scanner = [AKABindingExpressionParser parserWithString:text];
-         AKABindingExpression* expression = nil;
-         NSError* error = nil;
-         BOOL result = [scanner parseBindingExpression:&expression
-                                     withSpecification:nil
-                                                 error:&error];
-         XCTAssertTrue(result, @"%@", error.localizedDescription);
+        AKABindingExpressionParser* scanner = [AKABindingExpressionParser parserWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                    withSpecification:nil
+                                                error:&error];
+        XCTAssertTrue(result, @"%@", error.localizedDescription);
 
-         XCTAssertEqualObjects(expression.class, [AKAEnumConstantBindingExpression class]);
-         AKAEnumConstantBindingExpression* enumExpression = (id)expression;
+        XCTAssertEqualObjects(expression.class, [AKAEnumConstantBindingExpression class]);
+        AKAEnumConstantBindingExpression* enumExpression = (id)expression;
 
-         NSNumber* value = enumExpression.constant;
-         //XCTAssertEqualObjects(value, expectedValue);
+        id value = enumExpression.constant;
+        //XCTAssertEqualObjects(value, expectedValue);
 
-         if (value == nil)
-         {
-             value = [AKABindingExpressionSpecification resolveEnumeratedValue:enumExpression.symbolicValue
+        if (value == nil)
+        {
+            value = [AKABindingExpressionSpecification resolveEnumeratedValue:enumExpression.symbolicValue
                                                                       forType:@"TestType"
                                                                         error:&error];
-             XCTAssertNil(error, @"%@", error.localizedDescription);
-             XCTAssertEqualObjects(expectedValueWithType, value);
-         }
-     }];
+            XCTAssertNil(error, @"%@", error.localizedDescription);
+            XCTAssertEqualObjects(expectedValueWithType, value);
+        }
+    };
+
+    [textsNewSyntax enumerateObjectsUsingBlock:performTest];
+    [texts enumerateObjectsUsingBlock:performTest];
+}
+
+- (void)testOptions
+{
+    [AKABindingExpressionSpecification registerOptionsType:@"TestType"
+                                          withValuesByName:@{ @"One": @(1),
+                                                              @"Two": @(2),
+                                                              @"Three": @(4) }];
+    NSArray* texts = @[ @"$options.TestType { One }",
+                        @"$options { Two }",
+                        @"$options.TestType { Three }",
+                        @"$options.TestType { One, Two, Three }",
+                        @"$options { Two, Three }",
+                        @"$options"];
+    NSArray* textsNewSyntax = @[ @"$TestType.One", // Enumeration constant syntax
+                                 @"{ .Two }", // Anonymous option syntax with options value syntax
+                                 @"$TestType { Three }", // Option constant syntax with boolean attribute
+                                 @"$TestType.One { .Two, Three }", // Mixed enumeration constant, boolean attribute and option value syntax
+                                 @"{ .Two, .Three }" ];
+    NSArray* values = @[ @(1),
+                         [NSNull null],
+                         @(4),
+                         @(7),
+                         [NSNull null],
+                         [NSNull null] ];
+    NSArray* valuesWithType = @[ @(1),
+                                 @(2),
+                                 @(4),
+                                 @(7),
+                                 @(6),
+                                 [NSNull null] ];
+
+    void (^performTest)(NSString*, NSUInteger, BOOL*_Nonnull) =
+    ^(NSString* text, NSUInteger idx, BOOL* _Nonnull stop) {
+        (void)stop;
+
+        id expectedValue = values[idx];
+
+        if (expectedValue == [NSNull null])
+        {
+            expectedValue = nil;
+        }
+
+        id expectedValueWithType = valuesWithType[idx];
+
+        if (expectedValueWithType == [NSNull null])
+        {
+            expectedValueWithType = nil;
+        }
+
+        AKABindingExpressionParser* scanner = [AKABindingExpressionParser parserWithString:text];
+        AKABindingExpression* expression = nil;
+        NSError* error = nil;
+        BOOL result = [scanner parseBindingExpression:&expression
+                                    withSpecification:nil
+                                                error:&error];
+        XCTAssertTrue(result, @"%@", error.localizedDescription);
+
+        XCTAssertEqualObjects(expression.class, [AKAOptionsConstantBindingExpression class]);
+        AKAOptionsConstantBindingExpression* optionsExpression = (id)expression;
+
+        id value = optionsExpression.constant;
+
+        if (value == nil)
+        {
+            XCTAssert(optionsExpression.optionsType == nil);
+            optionsExpression.optionsType = @"TestType";
+            value = optionsExpression.constant;
+            XCTAssertEqualObjects(expectedValueWithType, value);
+        }
+    };
+
+    [textsNewSyntax enumerateObjectsUsingBlock:performTest];
+    [texts enumerateObjectsUsingBlock:performTest];
 }
 
 - (void)testValidColors

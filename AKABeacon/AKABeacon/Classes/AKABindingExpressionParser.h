@@ -31,6 +31,7 @@ typedef enum AKABindingExpressionParseErrorCode
     AKAParseErrorUnterminatedBindingExpressionList,
     AKAParseErrorInvalidAttributeName,
     AKAParseErrorUnexpectedColonForEnumerationValue,
+    AKAParseErrorUnexpectedOptionsValueForNonOptionsExpressionType,
     
     // String literal parsing errors
     AKAParseErrorInvalidStringDelimiter,

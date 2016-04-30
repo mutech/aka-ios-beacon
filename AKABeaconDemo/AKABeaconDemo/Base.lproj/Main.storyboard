@@ -501,7 +501,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="numberValue { numberFormatter: { numberStyle: $enum.CurrencyStyle } }"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="numberValue { numberFormatter: { numberStyle: .CurrencyStyle } }"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
                                                 </userDefinedRuntimeAttributes>
                                             </label>
@@ -516,7 +516,7 @@
                                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                         <string key="value">numberValue {
 	numberFormatter: {
-		numberStyle: $enum.CurrencyStyle
+		numberStyle: .CurrencyStyle
 	},
 	editingNumberFormatter: {
 		maximumFractionDigits: 5
@@ -669,7 +669,7 @@ The number editor text field uses two different formatters, one for display and 
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                             <string key="value">floatValue {
 	numberFormatter: {
-		numberStyle: $enum.CurrencyStyle,
+		numberStyle: .CurrencyStyle,
 		currencySymbol: "Euro"
 	}
 }</string>
@@ -864,8 +864,8 @@ The number editor text field uses two different formatters, one for display and 
                                                             <string key="value">dateValue {
 	dateFormatter: {
 		locale: "fr_TN",
-		dateStyle: $enum.NSDateFormatterStyle.ShortStyle,
-		timeStyle: $enum.LongStyle,
+		dateStyle: $NSDateFormatterStyle.ShortStyle,
+		timeStyle: .LongStyle,
 		timeZone: "UTC"
 	}
 }</string>
@@ -1033,7 +1033,7 @@ The number editor text field uses two different formatters, one for display and 
                                                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue { dateFormatter: { dateStyle: $enum.LongStyle, timeStyle: $enum.MediumStyle } } "/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="dateValue { dateFormatter: { dateStyle: .LongStyle, timeStyle: .MediumStyle } } "/>
                                                             <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </label>
@@ -1387,9 +1387,9 @@ The number editor text field uses two different formatters, one for display and 
                                                     <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                         <string key="value">numberValue {
 	numberFormatter: {
-		numberStyle: $enum.PercentStyle,
+		numberStyle: .PercentStyle,
 		maximumFractionDigits: 0,
-		roundingMode: $enum.RoundHalfUp
+		roundingMode: .RoundHalfUp
 	},
 	transitionAnimation: numberValueLabelTransitionAnimation
 }</string>
@@ -1836,7 +1836,7 @@ The number editor text field uses two different formatters, one for display and 
                                                         <string key="value">textValue {
 	textAttributeFormatter: {
 		pattern: searchPattern,
-		patternOptions: $options{CaseInsensitiveSearch},
+        patternOptions: {.CaseInsensitiveSearch},
 		backgroundColor: $UIColor{r:1.0,g:1.0,b:0.0}
 	}
 }</string>
@@ -2150,7 +2150,7 @@ The number editor text field uses two different formatters, one for display and 
                                         <string key="value">selectedImageOrImageName {
 	transitionAnimation: {
 		duration: .5,
-		options: $options{TransitionCrossDissolve}
+		options: {.TransitionCrossDissolve}
 	}
 }</string>
                                     </userDefinedRuntimeAttribute>
@@ -2197,7 +2197,7 @@ The number editor text field uses two different formatters, one for display and 
                                             <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka">
                                                 <string key="value">numberValue {
 	numberFormatter: {
-		numberStyle: $enum.DecimalStyle
+		numberStyle: .DecimalStyle
 	},
 	transitionAnimation: numberValueLabelTransitionAnimation
 }</string>
@@ -2237,7 +2237,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="maximumValue { numberFormatter: { numberStyle: $enum.DecimalStyle } }"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="maximumValue { numberFormatter: { numberStyle: .DecimalStyle } }"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
@@ -2252,7 +2252,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="minimumValue { numberFormatter: { numberStyle: $enum.DecimalStyle } }"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="minimumValue { numberFormatter: { numberStyle: .DecimalStyle } }"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
@@ -2267,7 +2267,7 @@ The number editor text field uses two different formatters, one for display and 
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stepValue { numberFormatter: { numberStyle: $enum.DecimalStyle } }"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="stepValue { numberFormatter: { numberStyle: .DecimalStyle } }"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>

@@ -8,6 +8,7 @@
 
 #import "AKABeaconErrors.h"
 #import "AKAConstantBindingExpression.h"
+#import "AKABindingExpression_Internal.h"
 
 
 #pragma mark - AKAConstantBindingExpression

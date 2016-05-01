@@ -20,7 +20,7 @@
     dispatch_once(&onceToken, ^{
 
         NSDictionary* spec =
-        @{ @"bindingType":                  self,
+        @{ @"bindingType":                  [AKATableViewCellFactoryArrayPropertyBinding self],
            @"expressionType":               @(AKABindingExpressionTypeArray),
            @"arrayItemBindingType":         [AKATableViewCellFactoryPropertyBinding class]
            };

@@ -26,7 +26,7 @@
     dispatch_once(&onceToken, ^{
 
         NSDictionary* spec =
-        @{ @"bindingType":                  self,
+        @{ @"bindingType":                  [AKAArrayPropertyBinding class],
            @"targetType":                   [AKAProperty class],
            @"expressionType":               @(AKABindingExpressionTypeArray)
            };

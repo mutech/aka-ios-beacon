@@ -16,6 +16,9 @@
 #import "AKABinding_UIPickerView_valueBinding.h"
 #import "UIPickerView+AKAIBBindingProperties.h"
 
+#import "AKABinding_Protected.h"
+
+
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -
 
@@ -51,12 +54,13 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-            @{ @"bindingType":  self,
+            @{ @"bindingType":  [AKABinding_AKAPickerKeyboardTriggerView_pickerBinding class],
                @"targetType":   [AKAPickerKeyboardTriggerView class],
                @"expressionType": @(AKABindingExpressionTypeNone),
                @"attributes":   @{
                    @"picker":   @{
-                       @"base":             [AKABinding_UIPickerView_valueBinding specification].bindingSourceSpecification,
+                       @"required":         @YES,
+                       @"bindingType":      [AKABinding_UIPickerView_valueBinding class],
                        @"use":              @(AKABindingAttributeUseManually)
                    }
                }
@@ -67,56 +71,49 @@
     return result;
 }
 
-- (instancetype)initWithView:(req_UIView)target
-                  expression:(req_AKABindingExpression)bindingExpression
-                     context:(req_AKABindingContext)bindingContext
-                    delegate:(opt_AKABindingDelegate)delegate
-                       error:(out_NSError)error
+- (BOOL)                     initializeManualAttributeWithName:(NSString *)attributeName
+                                                 specification:(req_AKABindingAttributeSpecification)specification
+                                           attributeExpression:(AKABindingExpression *)attributeExpression
+                                                bindingContext:(req_AKABindingContext)bindingContext
+                                                         error:(NSError *__autoreleasing  _Nullable *)error
 {
-    if (self = [super initWithView:target
-                        expression:bindingExpression
-                           context:bindingContext
-                          delegate:delegate
-                             error:error])
+    BOOL result = NO;
+    if ([@"picker" isEqualToString:attributeName])
     {
-        AKAPickerKeyboardTriggerView* triggerView = self.triggerView;
-        UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
-
-        if ([inputView isKindOfClass:[UIPickerView class]])
+        if (attributeExpression)
         {
-            _pickerView = (UIPickerView*)inputView;
-        }
-        else
-        {
-            NSAssert(inputView == nil,
-                     @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
-                     self, triggerView, inputView);
+            UIView* inputView = [super inputViewForCustomKeyboardResponderView:self.triggerView];
 
-            _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
-            _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
-            AKABindingExpression* pickerBindingExpression = bindingExpression.attributes[@"picker"];
-            if (pickerBindingExpression)
+            // Use the picker view provided by the delegate or create a new one:
+            if ([inputView isKindOfClass:[UIPickerView class]])
             {
-                // Picker binding uses the same binding expression, which relies on picker binding to accept
-                // unknown attributes.
-                _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithView:_pickerView
-                                                                                 expression:pickerBindingExpression
-                                                                                    context:bindingContext
-                                                                                   delegate:self
-                                                                                      error:error];
+                _pickerView = (UIPickerView*)inputView;
+            }
+            else
+            {
+                NSAssert(inputView == nil,
+                         @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
+                         self, self.triggerView, inputView);
+
+                _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
+                _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
             }
 
-            if (_pickerBinding == nil)
-            {
-                self = nil;
+            // Create the picker binding using the previously obtained picker view as target
+            _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithView:_pickerView
+                                                                             expression:attributeExpression
+                                                                                context:bindingContext
+                                                                               delegate:self
+                                                                                  error:error];
 
-                return self;
-            }
+            // Ensure that the picker binding is tracking changes
+            [self addBindingPropertyBinding:_pickerBinding];
+
+            result = _pickerBinding != nil;
         }
     }
 
-    return self;
+    return result;
 }
 
 - (AKAProperty *)            defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
@@ -124,14 +121,28 @@
                                                 changeObserver:(AKAPropertyChangeObserver)changeObserver
                                                          error:(out_NSError)error
 {
-    (void)bindingExpression;
-    (void)bindingContext;
-    (void)changeObserver;
     (void)error;
 
-    return [AKAProperty propertyOfWeakKeyValueTarget:nil
-                                             keyPath:nil
-                                      changeObserver:changeObserver];
+    AKAProperty* result = nil;
+
+    // Use the same binding source as the picker binding to be able to animate the triggerView's
+    // sub views if the source value changes.
+
+    AKABindingExpression* pickerBindingExpression = bindingExpression.attributes[@"picker"];
+    if (bindingExpression)
+    {
+        result = [pickerBindingExpression bindingSourcePropertyInContext:bindingContext
+                                                           changeObserer:changeObserver];
+    }
+    else
+    {
+        result = [super defaultBindingSourceForExpression:bindingExpression
+                                                  context:bindingContext
+                                           changeObserver:changeObserver
+                                                    error:error];
+    }
+
+    return result;
 }
 
 - (void)                                    validateTargetView:(req_UIView)targetView
@@ -158,7 +169,11 @@
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
-                binding.pickerBinding.bindingTarget.value = value;
+                [self animateTriggerForValue:binding.pickerBinding.bindingTarget.value
+                                    changeTo:value
+                                  animations:^{
+                                      binding.pickerBinding.bindingTarget.value = value;
+                                  }];
             }
 
             observationStarter:
@@ -207,24 +222,6 @@
                                              toNewValue:value];
          }];
     }
-}
-
-- (BOOL)                                 startObservingChanges
-{
-    BOOL result = [super startObservingChanges];
-
-    result = [self.pickerBinding startObservingChanges] && result;
-
-    return result;
-}
-
-- (BOOL)                                  stopObservingChanges
-{
-    BOOL result = [super stopObservingChanges];
-
-    result = [self.pickerBinding stopObservingChanges] && result;
-
-    return result;
 }
 
 #pragma mark - Properties

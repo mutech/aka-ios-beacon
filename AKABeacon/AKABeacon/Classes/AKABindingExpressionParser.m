@@ -187,7 +187,6 @@ static NSString*const   keywordCGRect = @"CGRect";
     // Optionally, parse a key path following a scope.
     if (result)
     {
-
         // Order is relevant:
         BOOL requireKeyPath = [self skipCharacter:'.'];
         BOOL possiblyKeyPath = [self isAtValidFirstIdentifierCharacter] || [self isAtCharacter:'@'];
@@ -215,6 +214,13 @@ static NSString*const   keywordCGRect = @"CGRect";
             else
             {
                 result = [self parseKeyPath:&primaryExpression error:error];
+
+                if (result && requireKeyPath &&
+                    ((NSString*)primaryExpression).length &&
+                    [bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
+                {
+                    primaryExpression = [NSString stringWithFormat:@".%@", primaryExpression];
+                }
 
                 if (result && bindingExpressionType == nil)
                 {
@@ -411,6 +417,13 @@ static NSString*const   keywordCGRect = @"CGRect";
                 if (constant == [NSNull null])
                 {
                     constant = nil;
+                }
+
+                if ([type isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
+                {
+                    // Skip "." in "$enum." to ensure that possible following enumertion type is
+                    // not confused with ".EnumValue"
+                    [self skipCharacter:'.'];
                 }
             }
             else

@@ -207,7 +207,7 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":      self,
+        @{ @"bindingType":      [AKAFontPropertyBinding class],
            @"targetType":       [AKAProperty class],
            @"expressionType":   @((AKABindingExpressionTypeAnyKeyPath       |
                                    AKABindingExpressionTypeNone) ),

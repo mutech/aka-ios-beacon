@@ -2,6 +2,14 @@
 
 AKA Beacon is a binding framework for iOS with Interface Builder support. It allows you to connect your views with model objects right from the properties panel in interface builder.
 
+## News
+
+**Version 0.2**
+
+* New enumeration and options syntax `.Value`, `$EnumType.Value`, `{ .Option1, .Option2 }` or `$OptionType { .Option1 }`; old syntax `$enum.Value` and `$options { Value }` still work. 
+* Enumeration types can now be used to create shared reusable objects such as formatters, color schemes or font dictionaries, see the documentation in the Wiki.
+* Bug fixes
+* Lots of new documentation in the Wiki (it's becoming useful now)
 
 ## Contents
 
@@ -24,7 +32,7 @@ To integrate AKABeacon, enable ```use_frameworks!``` in your Podfile and add the
 ```
 use_frameworks!
 ...
-pod 'AKABeacon', '~> 0.1.3'
+pod 'AKABeacon', '~> 0.2'
 ```
 
 If you are using the [CocoaPods try plugin](https://github.com/CocoaPods/cocoapods-try), an easy way to start experimenting with Beacon is:
@@ -85,6 +93,8 @@ We spend a lot of effort to ensure that you can use the parts of the framework t
 We also tried hard to take over all the work to support standard use cases such that you don't have to write code, just to make sure that your text fields are visible when you're typing, that it still works when you rotate the device. This is going much further than scrolling. In later versions you will get automatic support for theming, automatic font resizing, highlighting of search terms, form transaction support (model values are updated at the end of a form editing session and only if valid) and much more.
 
 ## Examples
+
+**Note:** The examples here are aging, take a look at the demo application for up to date impressions.
 
 ### Example 1: Text Field Binding Example
 

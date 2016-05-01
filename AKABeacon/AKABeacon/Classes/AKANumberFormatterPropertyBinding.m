@@ -25,7 +25,7 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":         self,
+        @{ @"bindingType":         [AKANumberFormatterPropertyBinding class],
            @"targetType":          [AKAProperty class],
            @"expressionType":      @(AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeNone),
            @"attributes":

@@ -50,12 +50,12 @@
         if (numberValue < oldValue)
         {
             self.numberValueLabelTransitionAnimation.options =
-            (options | UIViewAnimationOptionTransitionFlipFromLeft);
+            (options | UIViewAnimationOptionTransitionFlipFromTop);
         }
         else
         {
             self.numberValueLabelTransitionAnimation.options =
-            (options | UIViewAnimationOptionTransitionFlipFromRight);
+            (options | UIViewAnimationOptionTransitionFlipFromBottom);
         }
     }
     else

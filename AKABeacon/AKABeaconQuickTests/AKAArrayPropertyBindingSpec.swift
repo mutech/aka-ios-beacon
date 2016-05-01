@@ -48,9 +48,10 @@ class AKAArrayPropertyBindingSpec: QuickSpec {
                     changeObserver: nil)
 
                 let expressionText = "[numberValue, stringValue, booleanValue, 1.0, 2, $true]"
+                let bindingType = AKAArrayPropertyBinding.self;
                 let expression = try! AKABindingExpression(
                     string: expressionText,
-                    bindingType: AKAArrayPropertyBinding.self)
+                    bindingType: bindingType)
 
                 let binding = try! AKAArrayPropertyBinding(
                     target: targetProperty,

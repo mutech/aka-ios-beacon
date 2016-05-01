@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name          = 'AKABeacon'
-    spec.version       = '0.1.3'
+    spec.version       = '0.2'
     spec.license       = 'BSD'
     spec.homepage      = 'https://github.com/mutech/aka-ios-beacon/'
     spec.authors       = { 'Michael Utech' => 'michael.utech@aka-labs.com' }

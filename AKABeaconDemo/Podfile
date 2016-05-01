@@ -11,4 +11,4 @@ use_frameworks!
 
 platform :ios, '8.2'
 
-pod 'AKABeacon', '~> 0.1.2'
+pod 'AKABeacon', '~> 0.2'

@@ -29,7 +29,7 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":              self,
+        @{ @"bindingType":              [AKABinding_UIPickerView_valueBinding class],
            @"targetType":               [UIPickerView class],
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];

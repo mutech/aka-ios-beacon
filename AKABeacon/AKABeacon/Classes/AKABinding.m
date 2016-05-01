@@ -64,22 +64,25 @@
     Class specifiedBindingType = bindingExpression.specification.bindingType;
     if (specifiedBindingType != nil && ![[self class] isSubclassOfClass:specifiedBindingType])
     {
-        self = nil;
         localError = [AKABindingErrors invalidBindingExpression:bindingExpression
                                                     bindingType:self.class
                                doesNotMatchSpecifiedBindingType:specifiedBindingType];
+        self = nil;
     }
 
-    // TODO: check if relaxing attribute checks is still needed anyway
-    // Perform binding expression validation; relax attribute checks if binding type is a sub class of
-    // the binding type defined in the specification:
-    BOOL relaxAttributeChecks = self.class != specifiedBindingType;
-    if (specification.bindingSourceSpecification)
+    if (self)
     {
-        if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
-                                                                 error:&localError])
+        // TODO: check if relaxing attribute checks is still needed anyway
+        // Perform binding expression validation; relax attribute checks if binding type is a sub class of
+        // the binding type defined in the specification:
+        BOOL relaxAttributeChecks = self.class != specifiedBindingType;
+        if (specification.bindingSourceSpecification)
         {
-            self = nil;
+            if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
+                                                                     error:&localError])
+            {
+                self = nil;
+            }
         }
     }
 
@@ -112,14 +115,11 @@
             self = nil;
         }
 
-        if (self)
+        if (![self initializeAttributesWithExpression:bindingExpression
+                                       bindingContext:bindingContext
+                                                error:&localError])
         {
-            if (![self initializeAttributesWithExpression:bindingExpression
-                    bindingContext:bindingContext
-                    error:&localError])
-            {
-                self = nil;
-            }
+            self = nil;
         }
     }
 

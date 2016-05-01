@@ -29,7 +29,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":              self,
+        @{ @"bindingType":              [AKABinding_UISlider_valueBinding class],
            @"targetType":               [UISlider class],
            @"expressionType":           @(AKABindingExpressionTypeNumber),
            @"attributes":

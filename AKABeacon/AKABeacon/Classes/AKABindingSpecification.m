@@ -453,7 +453,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
         {
             if (symbolicValue.length > 0)
             {
-                result = valuesByName[(req_NSString)symbolicValue];
+                result = [valuesByName valueForKeyPath:(req_NSString)symbolicValue];
 
                 if (result == nil && error != nil)
                 {

@@ -32,7 +32,7 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":              self,
+        @{ @"bindingType":              [AKABinding_UISegmentedControl_valueBinding class],
            @"targetType":               [UISegmentedControl class],
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];

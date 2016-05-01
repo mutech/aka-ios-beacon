@@ -8,6 +8,7 @@
 
 #import "AKABindingErrors_Internal.h"
 #import "AKABeaconErrors_Internal.h"
+#import "AKABeaconNullability.h"
 
 #import "AKABinding.h"
 

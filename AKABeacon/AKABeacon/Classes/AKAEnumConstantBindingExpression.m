@@ -23,43 +23,29 @@
 {
     NSString* enumerationType;
     NSString* symbolicValue;
-    id value;
-
-    if (attributes)
-    {
-        value = attributes[@"value"];
-    }
 
     if ([constant isKindOfClass:[NSString class]])
     {
-        NSArray* components = [((NSString*)constant) componentsSeparatedByString:@"."];
+        NSArray<NSString*>* components = [((NSString*)constant) componentsSeparatedByString:@"."];
+        NSUInteger index = 0;
 
-        if (components.count == 1)
+        if (components.count > 0 && components[0].length == 0)
         {
-            // If only one component is given, it is interpreted either as type or value
-            if (attributes[@"value"] != nil)
-            {
-                // If there are attributes, the only reasonable interpretation is that the
-                // constant is meant to be the enumeration type.
-                enumerationType = components.firstObject;
-            }
-            else
-            {
-                // If there are no attributes, the constant is interpreted as symbolic value
-                symbolicValue = components.firstObject;
-            }
+            ++index;
         }
-        else if (components.count == 2)
+        else if (components.count > 1 && [AKABindingExpressionSpecification isEnumerationTypeDefined:components[0]])
         {
             enumerationType = components[0];
-            symbolicValue = components[1];
+            ++index;
         }
-        else
-        {
-            NSString* reason = @"Too many dot-separated components, use $enum, $enum.TYPE, $enum.VALUE, $enum.TYPE.VALUE or use $enum or $enum.TYPE { value: <constant expression> } to specify a non-symbolic value; note that an unspecified value is interpreted as nil or zero in numeric contexts";
-            NSString* name = [NSString stringWithFormat:@"Invalid enumeration primary expression: %@: %@", constant, reason];
 
-            [NSException exceptionWithName:name reason:reason userInfo:nil];
+        if (index < components.count)
+        {
+            symbolicValue = [[components subarrayWithRange:NSMakeRange(index, components.count - index)] componentsJoinedByString:@"."];
+            if (symbolicValue.length == 0)
+            {
+                symbolicValue = nil;
+            }
         }
     }
     else if (constant != nil)
@@ -70,7 +56,9 @@
         [NSException exceptionWithName:name reason:reason userInfo:nil];
     }
 
-    if (value == nil && symbolicValue.length > 0 && enumerationType.length > 0)
+    id value = nil;
+
+    if (symbolicValue.length > 0 && enumerationType.length > 0)
     {
         NSError* error;
         value = [AKABindingExpressionSpecification resolveEnumeratedValue:symbolicValue
@@ -96,6 +84,22 @@
 
 #pragma mark - Validation
 
+- (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
+                                error:(NSError *__autoreleasing  _Nullable *)error
+{
+    // Enumeration expressions can be used to replace options expressions, at least as far
+    // as standard validation is concerned.
+
+    BOOL result = (expressionType == AKABindingExpressionTypeOptionsConstant);
+
+    if (!result)
+    {
+        result = [super validatePrimaryExpressionType:expressionType error:error];
+    }
+
+    return result;
+}
+
 - (BOOL)validate:(out_NSError)error
 {
     AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
@@ -105,6 +109,15 @@
     if (specification)
     {
         NSString* enumerationType = specification.enumerationType;
+
+        // Fallback to options type if the specified type is an options type.
+        if (specification.enumerationType == nil &&
+            specification.optionsType != nil &&
+            specification.expressionType == AKABindingExpressionTypeOptionsConstant)
+        {
+            enumerationType = specification.optionsType;
+        }
+
 
         if (self.enumerationType == nil)
         {
@@ -186,31 +199,23 @@
 {
     NSString* result = nil;
 
-    if (self.constant)
+    if (self.enumerationType.length > 0)
     {
-        if (self.attributes.count > 0)
+        if (self.symbolicValue.length > 0)
         {
-            NSString* enumerationType = self.enumerationType;
-
-            if (enumerationType == nil)
-            {
-                enumerationType = @"";
-            }
-            NSString* symbolicValue = self.symbolicValue;
-
-            if (symbolicValue == nil)
-            {
-                symbolicValue = @"";
-            }
-            result = [NSString stringWithFormat:@"$%@%@%@%@%@",
-                      [self keyword],
-                      (enumerationType.length > 0 ? @"." : @""),
-                      enumerationType,
-                      (symbolicValue.length > 0 ? @"." : @""),
-                      symbolicValue];
+            result = [NSString stringWithFormat:@"$%@.%@", self.enumerationType, self.symbolicValue];
         }
     }
-    
+    else if (self.symbolicValue.length > 0)
+    {
+        result = [NSString stringWithFormat:@".%@", self.symbolicValue];
+    }
+
+    if (!result)
+    {
+        result = @"$enum";
+    }
+
     return result;
 }
 

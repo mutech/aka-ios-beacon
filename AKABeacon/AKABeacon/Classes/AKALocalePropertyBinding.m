@@ -22,7 +22,7 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":                  self,
+        @{ @"bindingType":                  [AKALocalePropertyBinding class],
            @"targetType":                   [AKAProperty class],
            @"expressionType":               @(AKABindingExpressionTypeString)
            };

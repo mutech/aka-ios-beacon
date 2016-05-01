@@ -87,10 +87,16 @@
 - (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
                                 error:(NSError *__autoreleasing  _Nullable *)error
 {
-    // Enumeration expressions can be used to replace options expressions, at least as far
-    // as standard validation is concerned.
+    // Enumeration expressions can be used in place of all types but Array and None to enable
+    // the use of user defined enumeration types for shared objects.
 
-    BOOL result = (expressionType == AKABindingExpressionTypeOptionsConstant);
+    // TODO: this is too lax, instead it should be possible to specifiy the expression types that
+    // a specific enumeration type can replace when registering an enumeration.
+
+    AKABindingExpressionType nonCoercibleTypes = AKABindingExpressionTypeArray | AKABindingExpressionTypeNone;
+    AKABindingExpressionType coercibleTypes = ~nonCoercibleTypes;
+
+    BOOL result = (expressionType & coercibleTypes) != 0;
 
     if (!result)
     {

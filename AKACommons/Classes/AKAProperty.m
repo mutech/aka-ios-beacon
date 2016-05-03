@@ -37,17 +37,13 @@
 #pragma mark - AKAIndexedProperty (Cluster Interface)
 #pragma mark -
 
-@interface AKAIndexedProperty: AKAProperty
+@interface AKAIndexedProperty()
 
 #pragma mark - Initialization
 
 - (instancetype)initWithWeakTarget:(NSObject*)target
                              index:(NSInteger)index
                     changeObserver:(void(^)(id oldValue, id newValue))valueDidChange;
-
-#pragma mark - Configuration
-
-@property(nonatomic, readonly) NSInteger index;
 
 @end
 
@@ -728,6 +724,17 @@
         _changeObserver = valueDidChange;
     }
     return self;
+}
+
+#pragma mark - Configuration
+
+- (void)setIndex:(NSInteger)index
+{
+    // Please note that no change notifications are send, because we don't cache the previous
+    // value and don't know the semantics of the index change (it can mean a change or an update
+    // to account for an item that has been moved to a different location). It's up to the caller
+    // to send change notifications if they are required.
+    _index = index;
 }
 
 #pragma mark - Value Access

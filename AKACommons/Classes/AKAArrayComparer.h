@@ -99,4 +99,35 @@
         deleteAnimation:(UITableViewRowAnimation)deleteAnimation
         insertAnimation:(UITableViewRowAnimation)insertAnimation;
 
+#pragma mark - Transformed Arrays
+
+/**
+ Applies changes made between old and new array to a third mutable array that contains items obtained
+ by mapping array items. More formally, if the transformed array is:
+ 
+ `{ x in OLD | f(x) }`
+ 
+ then applying changes will lead to the transformed array being:
+ 
+ `{ x in NEW | f(x) }`
+
+ @param transformed              A mutable array containing mapped old array items
+ @param blockBeforeDeleteItem    Called before an item is removed from the transformed array
+ @param blockMappingMovedItem    Called before an item is moved in the transformed array. The block has to return the moved item or a replacement
+ @param blockMappingInsertedItem Called before an item is inserted. The block has to return the mapped item.
+ */
+- (void)applyChangesToTransformedArray:(NSMutableArray* _Nonnull)transformed
+               blockBeforeDeletingItem:(void(^_Nullable)(req_id deletedItem))blockBeforeDeleteItem
+                 blockMappingMovedItem:(req_id(^_Nullable)(req_id sourceItem, req_id transformedItem, NSUInteger oldIndex, NSUInteger newIndex))blockMappingMovedItem
+              blockMappingInsertedItem:(req_id(^_Nullable)(req_id newSourceItem, NSUInteger index))blockMappingInsertedItem;
+
+#pragma mark - Relocated items
+
+/**
+ Enumerates all items that are contained in both the old and new array and changed their location due to insertions, deletions or movements.
+
+ @param block a block taking the item and its old and new index
+ */
+- (void)enumerateRelocatedItemsUsingBlock:(void(^_Nonnull)(req_id item, NSUInteger oldIndex, NSUInteger newIndex))block;
+
 @end

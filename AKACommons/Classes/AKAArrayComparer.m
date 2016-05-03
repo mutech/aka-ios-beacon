@@ -83,9 +83,7 @@
 - (void)recordInsertions
 {
     // Analyze new array identifying insertions
-    //NSMutableDictionary* indexesByItems = [NSMutableDictionary new];
     NSMutableIndexSet* insertedItemIndexes = [NSMutableIndexSet new];
-    //NSMutableSet* insertedItems = [NSMutableSet new]; // not needed
     NSMutableArray* newArrayWithoutInsertions = [NSMutableArray new];
 
     for (NSInteger i=(NSInteger)self.array.count - 1; i >= 0; --i)
@@ -104,7 +102,6 @@
             [newArrayWithoutInsertions insertObject:item atIndex:0];
         }
     }
-    //_indexesByItems = indexesByItems;
     _insertedItemIndexes = insertedItemIndexes;
     _arrayWithoutInsertions = newArrayWithoutInsertions;
 }
@@ -134,6 +131,8 @@
 
 - (void)recordMovements
 {
+    // Note: this implementation ensures that each item that changed its position is moved instead of trying to minimize the number of movements. When it becomes important to optimize this code, please check that optimizations won't break such dependencies. (See AKABinding_UITableView_dataSourceBinding for dynamic sections and applyChangesToTransformedArray:::: for an example of such a dependency)
+
     // Scan for reordered items
     NSAssert(self.oldArrayWithDeletionsApplied.count == self.arrayWithoutInsertions.count,
              @"Intermediate representation inconsistent");
@@ -183,6 +182,61 @@
     return permutation;
 }
 
+- (void)applyChangesToTransformedArray:(NSMutableArray*)transformed
+               blockBeforeDeletingItem:(void(^)(id deletedItem))blockBeforeDeleteItem
+                 blockMappingMovedItem:(id(^)(id sourceItem, id transformedItem, NSUInteger oldIndex, NSUInteger newIndex))blockMappingMovedItem
+              blockMappingInsertedItem:(id(^)(id newSourceItem, NSUInteger index))blockMappingInsertedItem
+{
+    // Note: Relies on implementation of recordMovements to move all items that changed its position
+
+    // Apply deletions
+    [self.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
+                                              usingBlock:
+     ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+     {
+         if (blockBeforeDeleteItem != NULL)
+         {
+             blockBeforeDeleteItem(transformed[idx]);
+         }
+         [transformed removeObjectAtIndex:idx];
+     }];
+
+    // Apply movements
+    for (NSUInteger i=0; i < transformed.count; ++i)
+    {
+        NSInteger offset = self.permutationAfterDeletionsAndBeforeInsertions[i];
+        if (offset != 0)
+        {
+            NSAssert(offset > 0, @"Unexpected negative offset in permutation");
+
+            NSUInteger sourceIndex = i + offset;
+
+            id sourceItem = self.array[i];
+            id transformedItem = transformed[sourceIndex];
+
+            if (blockMappingMovedItem != NULL)
+            {
+                transformedItem = blockMappingMovedItem(sourceItem, transformedItem, i, sourceIndex);
+            }
+            [transformed removeObjectAtIndex:sourceIndex];
+            [transformed insertObject:transformedItem atIndex:i];
+        }
+    }
+
+    // Apply insertions
+    [self.insertedItemIndexes enumerateIndexesUsingBlock:
+     ^(NSUInteger idx, BOOL * _Nonnull stop) {
+         id item = self.array[idx];
+
+         if (blockMappingInsertedItem != NULL)
+         {
+             item = blockMappingInsertedItem(item, idx);
+         }
+
+         [transformed insertObject:item atIndex:idx];
+     }];
+}
+
 - (void)updateTableView:(UITableView*)tableView
                 section:(NSUInteger)section
         deleteAnimation:(UITableViewRowAnimation)deleteAnimation
@@ -228,6 +282,23 @@
          [insertedIndexPaths addObject:indexPath];
      }];
     [tableView insertRowsAtIndexPaths:insertedIndexPaths withRowAnimation:insertAnimation];
+}
+
+- (void)enumerateRelocatedItemsUsingBlock:(void (^)(id _Nonnull, NSUInteger, NSUInteger))block
+{
+    for (int i=0; i < self.oldArray.count; ++i)
+    {
+        if (![self.deletedItemIndexes containsIndex:i])
+        {
+            id item = self.oldArray[i];
+            if (i < self.array.count && self.array[i] != item)
+            {
+                NSUInteger newIndex = [self.array indexOfObject:item];
+
+                block(item, i, newIndex);
+            }
+        }
+    }
 }
 
 @end

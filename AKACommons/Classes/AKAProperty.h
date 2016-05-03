@@ -139,9 +139,6 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
                                     observationStarter:(opt_AKAPropertyObservationStarter)observationStarter
                                     observationStopper:(opt_AKAPropertyObservationStopper)observationStopper;
 
-+ (req_AKAProperty)       propertyOfWeakIndexedTarget:(opt_NSObject)target
-                                                index:(NSInteger)index
-                                       changeObserver:(void(^_Nullable)(opt_id oldValue, opt_id newValue))valueDidChange;
 #pragma mark - Value Access
 
 /**
@@ -198,5 +195,31 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
                                                 setter:(void(^_Nonnull)(opt_id target, opt_id value))setter
                                     observationStarter:(BOOL(^_Nonnull)(opt_id target))observationStarter
                                     observationStopper:(BOOL(^_Nonnull)(opt_id target))observationStopper;
+
+@end
+
+
+#pragma mark - AKAIndexedProperty
+#pragma mark -
+
+@interface AKAIndexedProperty: AKAProperty
+
+#pragma mark - Initialization
+
++ (req_AKAProperty)       propertyOfWeakIndexedTarget:(opt_NSObject)target
+                                                index:(NSInteger)index
+                                       changeObserver:(void(^_Nullable)(opt_id oldValue, opt_id newValue))valueDidChange;
+
+#pragma mark - Configuration
+
+/**
+ The index of the item referenced by this property.
+ 
+ It's possible to change the index to support reordering of items and adaptation of properties
+ to account for relocations. Please note that no change notifications are send as result of an
+ index change. It's up to the caller to notify observers using propertyValueDidChangeFrom:to: if
+ the index change results in a changed value.
+ */
+@property(nonatomic) NSInteger index;
 
 @end

@@ -204,19 +204,23 @@
     // Apply movements
     for (NSUInteger i=0; i < transformed.count; ++i)
     {
-        NSInteger offset = self.permutationAfterDeletionsAndBeforeInsertions[i];
+        NSUInteger offset = self.permutationAfterDeletionsAndBeforeInsertions[i].unsignedIntegerValue;
         if (offset != 0)
         {
             NSAssert(offset > 0, @"Unexpected negative offset in permutation");
 
             NSUInteger sourceIndex = i + offset;
 
-            id sourceItem = self.array[i];
+            id sourceItem = self.oldArrayWithDeletionsApplied[sourceIndex];
+            NSUInteger oldIndex = [self.oldArray indexOfObject:sourceItem];
+            NSUInteger newIndex = [self.array indexOfObject:sourceItem];
+
             id transformedItem = transformed[sourceIndex];
 
             if (blockMappingMovedItem != NULL)
             {
-                transformedItem = blockMappingMovedItem(sourceItem, transformedItem, i, sourceIndex);
+                transformedItem = blockMappingMovedItem(sourceItem, transformedItem,
+                                                        oldIndex, newIndex);
             }
             [transformed removeObjectAtIndex:sourceIndex];
             [transformed insertObject:transformedItem atIndex:i];
@@ -225,7 +229,7 @@
 
     // Apply insertions
     [self.insertedItemIndexes enumerateIndexesUsingBlock:
-     ^(NSUInteger idx, BOOL * _Nonnull stop) {
+     ^(NSUInteger idx, BOOL * _Nonnull stop __unused) {
          id item = self.array[idx];
 
          if (blockMappingInsertedItem != NULL)
@@ -286,13 +290,14 @@
 
 - (void)enumerateRelocatedItemsUsingBlock:(void (^)(id _Nonnull, NSUInteger, NSUInteger))block
 {
-    for (int i=0; i < self.oldArray.count; ++i)
+    for (NSUInteger i=0; i < self.oldArray.count; ++i)
     {
         if (![self.deletedItemIndexes containsIndex:i])
         {
             id item = self.oldArray[i];
             if (i < self.array.count && self.array[i] != item)
             {
+                // TODO: check if it's more efficient to use inserted/deleted/moved data gathered elsewhere
                 NSUInteger newIndex = [self.array indexOfObject:item];
 
                 block(item, i, newIndex);

@@ -141,15 +141,6 @@
 
 #pragma mark - Initialization
 
-+ (AKAProperty*)propertyOfWeakIndexedTarget:(NSObject*)target
-                                       index:(NSInteger)index
-                              changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
-{
-    return [[AKAIndexedProperty alloc] initWithWeakTarget:target
-                                                index:index
-                                       changeObserver:valueDidChange];
-}
-
 + (AKAProperty*)propertyOfWeakKeyValueTarget:(opt_NSObject)target
                                      keyPath:(NSString*)keyPath
                               changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
@@ -301,7 +292,7 @@
 {
     AKAProperty* result = nil;
 
-    result = [AKAProperty propertyOfWeakIndexedTarget:self.value
+    result = [AKAIndexedProperty propertyOfWeakIndexedTarget:self.value
                                                 index:index
                                        changeObserver:valueDidChange];
     [self addDependentProperty:result];
@@ -711,6 +702,15 @@
 @synthesize changeObserver = _changeObserver;
 
 #pragma mark - Initialization
+
++ (instancetype)propertyOfWeakIndexedTarget:(NSObject*)target
+                                      index:(NSInteger)index
+                             changeObserver:(void(^)(id oldValue, id newValue))valueDidChange
+{
+    return [[AKAIndexedProperty alloc] initWithWeakTarget:target
+                                                    index:index
+                                           changeObserver:valueDidChange];
+}
 
 - (instancetype)initWithWeakTarget:(NSObject*)target
                              index:(NSInteger)index

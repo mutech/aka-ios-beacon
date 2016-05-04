@@ -58,4 +58,41 @@
     XCTAssert([replay isEqualToArray:new], @"Reapplying changes failed");
 }
 
+- (void)testApplyChangesToTransformedArray
+{
+    id (^transformItem)(id item, NSUInteger index) = ^id(id item, NSUInteger index) {
+        NSString* result = [NSString stringWithFormat:@"%@@%@", item, @(index)];
+        return result;
+    };
+    NSMutableArray* (^transformArray)(NSArray* items) = ^NSMutableArray*(NSArray* items) {
+        NSMutableArray* result = [NSMutableArray new];
+        NSUInteger i=0;
+        for (id item in items) {
+            [result addObject:transformItem(item , i++)];
+        }
+        return result;
+    };
+
+    AKAArrayComparer* comparer = [[AKAArrayComparer alloc] initWithOldArray:@[ @0, @1, @2 ]
+                                                                   newArray:@[ @2, @1, @3 ]];
+    NSMutableArray* transformedItems = transformArray(comparer.oldArray);
+
+    [comparer applyChangesToTransformedArray:transformedItems
+                     blockBeforeDeletingItem:^(id  _Nonnull deletedItem) {
+                         XCTAssertEqualObjects(transformItem(@0ul, 0),deletedItem);
+                     } blockMappingMovedItem:^id _Nonnull(id  _Nonnull sourceItem, id  _Nonnull transformedItem, NSUInteger oldIndex, NSUInteger newIndex) {
+                         XCTAssertEqual(oldIndex, 2ul);
+                         XCTAssertEqual(newIndex, 0ul);
+                         XCTAssertEqualObjects(transformItem(@2, 2), transformedItem);
+                         return transformItem(sourceItem, 0);
+                     } blockMappingInsertedItem:^id _Nonnull(id  _Nonnull newSourceItem, NSUInteger index) {
+                         XCTAssertEqualObjects(newSourceItem, @3);
+                         XCTAssertEqual(index, 2ul);
+                         return transformItem(newSourceItem, index);
+                     }];
+    XCTAssertEqualObjects(@"2@0", transformedItems[0]);
+    XCTAssertEqualObjects(@"1@1", transformedItems[1]);
+    XCTAssertEqualObjects(@"3@2", transformedItems[2]);
+}
+
 @end

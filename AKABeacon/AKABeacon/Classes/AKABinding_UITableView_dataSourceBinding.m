@@ -35,12 +35,20 @@
 
 #pragma mark - Binding Configuration
 
+@property(nonatomic) AKABindingExpression*                                  dynamicSectionBindingExpression;
+
 @property(nonatomic, readonly) NSArray<AKATableViewSectionDataSourceInfo*>* sections;
 @property(nonatomic) NSMutableArray<AKATableViewCellFactory*>*              defaultCellMapping;
 @property(nonatomic) UITableViewRowAnimation                                insertAnimation;
 @property(nonatomic) UITableViewRowAnimation                                updateAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
 @property(nonatomic, weak) void                                           (^animatorBlock)(void(^)());
+
+#pragma mark - ...
+
+@property(nonatomic) BOOL                                                   usesDynamicSections;
+@property(nonatomic) NSMutableArray<AKATableViewSectionDataSourceInfo*>*    dynamicSections;
+@property(nonatomic) NSArray*                                               dynamicSectionsSource;
 
 #pragma mark - Observation
 
@@ -60,6 +68,60 @@
 @end
 
 
+@interface AKAChildBindingContext: NSObject<AKABindingContextProtocol>
++ (instancetype)bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext;
+@property(nonatomic, weak) id dataContext;
+@property(nonatomic) id<AKABindingContextProtocol> parent;
+@end
+
+@implementation AKAChildBindingContext
+- (instancetype)initWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext
+{
+    if (self = [self init])
+    {
+        _dataContext = dataContext;
+        _parent = bindingContext;
+    }
+    return self;
+}
++ (instancetype)bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext
+{
+    return [[self alloc] initWithParent:bindingContext dataContext:dataContext];
+}
+
+- (id)dataContextValueForKeyPath:(NSString *)keyPath
+{
+    return [self.dataContext valueForKeyPath:keyPath];
+}
+
+- (AKAProperty *)dataContextPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
+{
+    return [AKAProperty propertyOfWeakKeyValueTarget:self.dataContext keyPath:keyPath changeObserver:valueDidChange];
+}
+
+- (id)rootDataContextValueForKeyPath:(NSString *)keyPath
+{
+    return [self.parent rootDataContextValueForKeyPath:keyPath];
+}
+
+- (AKAProperty *)rootDataContextPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
+{
+    return [self.parent rootDataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+}
+
+- (id)controlValueForKeyPath:(NSString *)keyPath
+{
+    return [self.parent controlValueForKeyPath:keyPath];
+}
+
+- (AKAProperty *)controlPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
+{
+    return [self.parent controlPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
+}
+
+@end
+
+
 #pragma mark - AKABinding_UITableView_dataSourceBinding Implementation
 #pragma mark -
 
@@ -68,6 +130,19 @@
 @dynamic delegate;
 
 #pragma mark - Initialization
+
+- (instancetype)                                       init
+{
+    if (self = [super init])
+    {
+        _pendingTableViewChanges = [NSMutableDictionary new];
+
+        _deleteAnimation = UITableViewRowAnimationAutomatic;
+        _insertAnimation = UITableViewRowAnimationAutomatic;
+        _updateAnimation = UITableViewRowAnimationAutomatic;
+    }
+    return self;
+}
 
 + (AKABindingSpecification*)                  specification
 {
@@ -80,13 +155,18 @@
         NSDictionary* spec = @{
             @"bindingType":          [AKABinding_UITableView_dataSourceBinding class],
             @"targetType":           [UITableView class],
-            @"expressionType":       @(AKABindingExpressionTypeArray),
+            @"expressionType":       @(AKABindingExpressionTypeArray | AKABindingExpressionTypeAnyKeyPath),
             @"arrayItemBindingType": [AKATableViewSectionDataSourceInfoPropertyBinding class],
             @"attributes":           @{
                 @"defaultCellMapping":   @{
                     @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class],
                     @"use":                  @(AKABindingAttributeUseBindToBindingProperty)
                 },
+                @"dynamic":             @{
+                        @"bindingType":         [AKATableViewSectionDataSourceInfoPropertyBinding class],
+                        @"use":                 @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                        @"bindingProperty":      @"dynamicSectionBindingExpression"
+                        },
                 @"insertAnimation":      @{
                         @"expressionType":       @((AKABindingExpressionTypeEnumConstant|
                                                     AKABindingExpressionTypeAnyKeyPath)),
@@ -121,19 +201,6 @@
     });
 }
 
-- (instancetype)                                       init
-{
-    if (self = [super init])
-    {
-        _pendingTableViewChanges = [NSMutableDictionary new];
-
-        _deleteAnimation = UITableViewRowAnimationAutomatic;
-        _insertAnimation = UITableViewRowAnimationAutomatic;
-        _updateAnimation = UITableViewRowAnimationAutomatic;
-    }
-    return self;
-}
-
 - (AKAProperty*)          defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
                                              changeObserver:(AKAPropertyChangeObserver)changeObserver
@@ -149,11 +216,212 @@
     return [AKAProperty propertyOfWeakKeyValueTarget:nil keyPath:nil changeObserver:changeObserver];
 }
 
+- (AKAProperty *)               bindingSourceForExpression:(AKABindingExpression *)bindingExpression
+                                                   context:(req_AKABindingContext)bindingContext
+                                            changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                     error:(NSError *__autoreleasing  _Nullable *)error
+{
+    // If the binding uses a key path instead of an array expression, the binding targe value setter
+    // has to know about it, because it will have to update the array item bindings. This flag
+    // indicates which implementation to use:
+    self.usesDynamicSections = (bindingExpression.expressionType != AKABindingExpressionTypeArray);
+
+    return [super bindingSourceForExpression:bindingExpression
+                                     context:bindingContext
+                              changeObserver:changeObserver
+                                       error:error];
+}
+
+- (AKABinding*)                   bindingForDynamicSection:(NSUInteger)section
+                                                inSections:(NSMutableArray*)sectionInfos
+                                     withBindingExpression:(AKABindingExpression*)bindingExpression
+                                               dataContext:(id)dataContext
+{
+    __weak typeof(self) weakSelf = self;
+    AKAProperty* bindingTarget = [AKAIndexedProperty propertyOfWeakIndexedTarget:sectionInfos
+                                                                    index:(NSInteger)section
+                                                           changeObserver:
+                                  ^(id  _Nullable oldValue, id  _Nullable newValue)
+                                  {
+                                      [weakSelf targetArrayItemAtIndex:section
+                                                    valueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
+                                                                    to:newValue == [NSNull null] ? nil : newValue];
+                                  }];
+
+
+    req_AKABindingContext itemBindingContext = [AKAChildBindingContext bindingContextWithParent:self.bindingContext
+                                                                                    dataContext:dataContext];
+
+    Class bindingType = bindingExpression.specification.bindingType;
+    if (bindingType == nil)
+    {
+        bindingType = [AKAPropertyBinding class];
+    }
+
+    AKABinding* binding = [[bindingType alloc] initWithTarget:bindingTarget
+                                                   expression:bindingExpression
+                                                      context:itemBindingContext
+                                                     delegate:weakSelf.delegateForSubBindings
+                                                        error:nil];
+
+    return binding;
+}
+
+- (void)       updateBindingsForDynamicSectionsSourceValue:(NSArray*)oldSourceValue
+                                                  changeTo:(NSArray*)newSourceValue
+{
+    __weak typeof(self) weakSelf = self;
+
+    AKABindingExpression* itemExpression = self.dynamicSectionBindingExpression;
+
+    // Get or create dynamic section infos array
+    NSMutableArray* sectionInfos = self.dynamicSections;
+    if (sectionInfos == nil)
+    {
+        sectionInfos = [NSMutableArray new];
+        self.dynamicSections = sectionInfos;
+    }
+
+    AKAArrayComparer* comparer = [[AKAArrayComparer alloc] initWithOldArray:oldSourceValue
+                                                                   newArray:newSourceValue];
+
+    NSMutableArray* stoppedBindings = [NSMutableArray new];
+
+    // Update indexed binding target properties for relocated section bindings
+    [comparer enumerateRelocatedItemsUsingBlock:
+     ^(id  _Nonnull item __unused, NSUInteger oldIndex, NSUInteger newIndex)
+     {
+         AKABinding* binding = weakSelf.arrayItemBindings[oldIndex];
+         [binding stopObservingChanges];
+         [stoppedBindings addObject:binding];
+
+         NSAssert([binding.bindingTarget isKindOfClass:[AKAIndexedProperty class]],
+                  @"Expected binding %@ target %@ to be an indexed property", binding, binding.bindingTarget);
+
+         AKAIndexedProperty* bindingTarget = (AKAIndexedProperty*)binding.bindingTarget;
+
+         NSAssert(bindingTarget.index == oldIndex, @"Binding target %@'s index %ld does not match old index %ld", bindingTarget, (long)bindingTarget.index, (long)oldIndex);
+
+         bindingTarget.index = (NSInteger)newIndex;
+     }];
+
+    // Update sectionInfos for deleted, moved and inserted sections:
+    [comparer applyChangesToTransformedArray:sectionInfos
+                     blockBeforeDeletingItem:NULL
+                       blockMappingMovedItem:NULL
+                    blockMappingInsertedItem:
+     ^id(id newSourceItem __unused, NSUInteger index __unused)
+     {
+         // Array item bindings will update the value when they start observing changes
+         return [NSNull null];
+     }];
+
+    // Get or create mutable array or array item bindings
+    NSMutableArray<AKABinding*>* arrayItemBindings = ([self.arrayItemBindings isKindOfClass:[NSMutableArray class]]
+                                                      ? (NSMutableArray*)self.arrayItemBindings
+                                                      : [NSMutableArray arrayWithArray:(self.arrayItemBindings
+                                                                                        ? self.arrayItemBindings
+                                                                                        : @[])]);
+    [comparer applyChangesToTransformedArray:arrayItemBindings
+                     blockBeforeDeletingItem:
+     ^(id deletedItem)
+     {
+         [((AKABinding*)deletedItem) stopObservingChanges];
+     }
+                       blockMappingMovedItem:NULL
+                    blockMappingInsertedItem:
+     ^id(id dataContext, NSUInteger section)
+     {
+         AKABinding* binding = [weakSelf bindingForDynamicSection:section
+                                                       inSections:sectionInfos
+                                            withBindingExpression:itemExpression
+                                                      dataContext:dataContext];
+         [stoppedBindings addObject:binding];
+
+         return binding;
+     }];
+
+    // Install array item bindings, if changes were not made inline
+    if (self.arrayItemBindings != arrayItemBindings)
+    {
+        self.arrayItemBindings = arrayItemBindings;
+    }
+
+    for (AKABinding* binding in stoppedBindings)
+    {
+        [binding startObservingChanges];
+    }
+
+    [self reloadTableView];
+}
+
+- (AKAProperty*)         createBindingTargetPropertyForView:(req_UIView)view
+{
+    (void)view;
+
+    return [AKAProperty propertyOfWeakTarget:self
+                                      getter:
+            ^id (id target)
+            {
+                AKABinding_UITableView_dataSourceBinding* binding = target;
+
+                return binding.sections;
+            }
+                                      setter:
+            ^(id target __unused, id value __unused)
+            {
+                if (self.usesDynamicSections && self.dynamicSectionsSource != value)
+                {
+                    [self updateBindingsForDynamicSectionsSourceValue:self.dynamicSectionsSource
+                                                             changeTo:value];
+                }
+            }
+
+                          observationStarter:
+            ^BOOL (id target)
+            {
+                AKABinding_UITableView_dataSourceBinding* binding = target;
+                UITableView* tableView = binding.tableView;
+                if (binding.delegateDispatcher == nil)
+                {
+                    binding->_delegateDispatcher = [[AKATableViewDataSourceAndDelegateDispatcher alloc] initWithTableView:tableView
+                                                                                                     dataSourceOverwrites:binding
+                                                                                                       delegateOverwrites:binding];
+                }
+
+                return binding.isObserving;
+            }
+
+                          observationStopper:
+            ^BOOL (id target)
+            {
+                AKABinding_UITableView_dataSourceBinding* binding = target;
+                UITableView* tableView = binding.tableView;
+
+                if (binding.delegateDispatcher)
+                {
+                    [binding.delegateDispatcher restoreOriginalDataSourceAndDelegate];
+                    binding->_delegateDispatcher = nil;
+
+                    // TODO: deselect currently selected rows, maybe restore previously selected
+                    [tableView reloadData];
+                }
+                
+                return !binding.isObserving;
+            }];
+}
+
 #pragma mark - Properties
+
+- (UITableView*)                                  tableView
+{
+    return (UITableView*)self.view;
+}
 
 - (NSArray<AKATableViewSectionDataSourceInfo *> *)sections
 {
-    return self.syntheticTargetValue;
+    NSArray* result = self.usesDynamicSections ? self.dynamicSections : self.syntheticTargetValue;
+    return result;
 }
 
 #pragma mark - Change Tracking
@@ -284,6 +552,16 @@
     [self.tableView endUpdates];
 }
 
+- (void)                                    reloadTableView
+{
+    [self.pendingTableViewChanges removeAllObjects];
+
+    UITableView* tableView = self.tableView;
+    [tableView reloadData];
+
+    [self updateTableViewRowHeights];
+}
+
 - (void)                          updateTableViewRowHeights
 {
     UITableView* tableView = self.tableView;
@@ -318,7 +596,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf performPendingTableViewUpdates];
         });
-    }}
+    }
+}
 
 - (void)                     performPendingTableViewUpdates
 {
@@ -373,65 +652,7 @@
     }
 }
 
-- (AKAProperty*)         createBindingTargetPropertyForView:(req_UIView)view
-{
-    (void)view;
-
-    return [AKAProperty propertyOfWeakTarget:self
-                                      getter:
-            ^id (id target)
-            {
-                AKABinding_UITableView_dataSourceBinding* binding = target;
-                (void)binding;
-
-                return nil;
-            }
-                                      setter:
-            ^(id target, id value)
-            {
-                AKABinding_UITableView_dataSourceBinding* binding = target;
-                (void)binding;
-                (void)value;
-            }
-
-            observationStarter:
-            ^BOOL (id target)
-            {
-                AKABinding_UITableView_dataSourceBinding* binding = target;
-                UITableView* tableView = binding.tableView;
-                if (binding.delegateDispatcher == nil)
-                {
-                    binding->_delegateDispatcher = [[AKATableViewDataSourceAndDelegateDispatcher alloc] initWithTableView:tableView
-                                                                                                     dataSourceOverwrites:binding
-                                                                                                       delegateOverwrites:binding];
-                }
-
-                return binding.isObserving;
-            }
-
-            observationStopper:
-            ^BOOL (id target)
-            {
-                AKABinding_UITableView_dataSourceBinding* binding = target;
-                UITableView* tableView = binding.tableView;
-
-                if (binding.delegateDispatcher)
-                {
-                    [binding.delegateDispatcher restoreOriginalDataSourceAndDelegate];
-                    binding->_delegateDispatcher = nil;
-
-                    // TODO: deselect currently selected rows, maybe restore previously selected
-                    [tableView reloadData];
-                }
-
-                return !binding.isObserving;
-            }];
-}
-
-- (UITableView*)                                  tableView
-{
-    return (UITableView*)self.view;
-}
+#pragma mark - Table View - Data Mapping
 
 - (UITableViewCell*)                              tableView:(UITableView*)tableView
                                                 cellForItem:(id)item
@@ -653,7 +874,8 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)                                       tableView:(UITableView *)tableView
+                                    heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat result = UITableViewAutomaticDimension;
 
@@ -665,7 +887,8 @@
     return result;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)                                       tableView:(UITableView *)tableView
+                           estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat result = UITableViewAutomaticDimension;
 
@@ -676,7 +899,6 @@
     }
     return result;
 }
-
 
 - (void)                                          tableView:(UITableView*)tableView
                                       willDisplayHeaderView:(nonnull UIView *)view

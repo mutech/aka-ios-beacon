@@ -36,11 +36,11 @@
            @"attributes":           @{
                    @"headerTitle":          @{
                            @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                           @"expressionType":       @(AKABindingExpressionTypeStringConstant)
+                           @"expressionType":       @(AKABindingExpressionTypeString)
                            },
                    @"footerTitle":          @{
                            @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                           @"expressionType":       @(AKABindingExpressionTypeStringConstant)
+                           @"expressionType":       @(AKABindingExpressionTypeString)
                            },
                    @"cellMapping":          @{
                            @"use":                  @(AKABindingAttributeUseBindToTargetProperty),

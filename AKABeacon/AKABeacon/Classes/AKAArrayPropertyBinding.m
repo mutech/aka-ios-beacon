@@ -105,7 +105,7 @@
 
                     __weak typeof(self) weakSelf = self;
                     AKAProperty* arrayItemTargetProperty =
-                    [AKAProperty propertyOfWeakIndexedTarget:targetArray
+                    [AKAIndexedProperty propertyOfWeakIndexedTarget:targetArray
                                                        index:(NSInteger)index
                                               changeObserver:
                          ^(id  _Nullable oldValue, id  _Nullable newValue)

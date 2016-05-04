@@ -72,7 +72,7 @@
 }
 
 - (BOOL)                     initializeManualAttributeWithName:(NSString *)attributeName
-                                                 specification:(req_AKABindingAttributeSpecification)specification
+                                                 specification:(req_AKABindingAttributeSpecification __unused)specification
                                            attributeExpression:(AKABindingExpression *)attributeExpression
                                                 bindingContext:(req_AKABindingContext)bindingContext
                                                          error:(NSError *__autoreleasing  _Nullable *)error
@@ -82,7 +82,8 @@
     {
         if (attributeExpression)
         {
-            UIView* inputView = [super inputViewForCustomKeyboardResponderView:self.triggerView];
+            AKACustomKeyboardResponderView* triggerView = self.triggerView;
+            UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
 
             // Use the picker view provided by the delegate or create a new one:
             if ([inputView isKindOfClass:[UIPickerView class]])
@@ -93,7 +94,7 @@
             {
                 NSAssert(inputView == nil,
                          @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
-                         self, self.triggerView, inputView);
+                         self, triggerView, inputView);
 
                 _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
                 _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;

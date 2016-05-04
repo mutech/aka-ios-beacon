@@ -21,7 +21,7 @@
 #pragma mark - Properties
 
 @property(nonatomic, readonly, nonnull)  id<AKABindingDelegate>     delegateForSubBindings;
-@property(nonatomic, readonly, nullable) NSArray<AKABinding*>*      arrayItemBindings;
+@property(nonatomic, nullable) NSArray<AKABinding*>*                arrayItemBindings;
 @property(nonatomic, readonly, nullable) NSArray<AKABinding*>*      bindingPropertyBindings;
 @property(nonatomic, readonly, nullable) NSArray<AKABinding*>*      targetPropertyBindings;
 @property(nonatomic, nullable) id                                   syntheticTargetValue;

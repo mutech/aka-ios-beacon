@@ -606,6 +606,21 @@
     return _arrayItemBindings;
 }
 
+- (void)setArrayItemBindings:(NSArray<AKABinding *> *)arrayItemBindings
+{
+    if (arrayItemBindings != _arrayItemBindings)
+    {
+        if ([arrayItemBindings isKindOfClass:[NSMutableArray class]])
+        {
+            _arrayItemBindings = (NSMutableArray*)arrayItemBindings;
+        }
+        else
+        {
+            _arrayItemBindings = [NSMutableArray arrayWithArray:arrayItemBindings];
+        }
+    }
+}
+
 - (NSArray<AKABinding *> *)          targetPropertyBindings
 {
     return _targetPropertyBindings;
@@ -761,7 +776,7 @@
 
                     __weak typeof(self) weakSelf = self;
                     AKAProperty* arrayItemTargetProperty =
-                    [AKAProperty propertyOfWeakIndexedTarget:targetArray
+                    [AKAIndexedProperty propertyOfWeakIndexedTarget:targetArray
                                                        index:(NSInteger)index
                                               changeObserver:
                      ^(id  _Nullable oldValue, id  _Nullable newValue)

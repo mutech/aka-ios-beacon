@@ -97,6 +97,77 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>8E38AA921CD8E936004D5FA6</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>8E7BAD211BD5A74400828E52</string>
+				<string>8E7BAD221BD5A74400828E52</string>
+				<string>8E2ED2291C3D53F000FBA44D</string>
+				<string>8E2ED22A1C3D53F000FBA44D</string>
+				<string>8E38AA931CD8E95C004D5FA6</string>
+				<string>8E38AA941CD8E95C004D5FA6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>TableViews</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8E38AA931CD8E95C004D5FA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>DynamicSectionsTableViewBindingViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8E38AA941CD8E95C004D5FA6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>DynamicSectionsTableViewBindingViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8E38AA951CD8E95C004D5FA6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>8E38AA941CD8E95C004D5FA6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>8E49E3791CD974DE00CEDC3D</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>path</key>
+			<string>Podfile</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8E49E37A1CD974DE00CEDC3D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>8E49E3791CD974DE00CEDC3D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>8E4F0A691BE39D29006D8876</key>
 		<dict>
 			<key>fileEncoding</key>
@@ -312,6 +383,7 @@
 		<dict>
 			<key>children</key>
 			<array>
+				<string>8E49E3791CD974DE00CEDC3D</string>
 				<string>8E2115DA1BF5559200A89CFC</string>
 				<string>8E91E73C1BB228A900F7618F</string>
 				<string>8E91E73B1BB228A900F7618F</string>
@@ -391,6 +463,7 @@
 			<string>2147483647</string>
 			<key>files</key>
 			<array>
+				<string>8E38AA951CD8E95C004D5FA6</string>
 				<string>8E91E7641BB22C3300F7618F</string>
 				<string>8E4F0A6B1BE39D29006D8876</string>
 				<string>8E91E7421BB228A900F7618F</string>
@@ -428,6 +501,7 @@
 			<array>
 				<string>8E91E74D1BB228A900F7618F</string>
 				<string>8E91E74A1BB228A900F7618F</string>
+				<string>8E49E37A1CD974DE00CEDC3D</string>
 				<string>8E91E7481BB228A900F7618F</string>
 			</array>
 			<key>isa</key>
@@ -913,12 +987,11 @@
 		<dict>
 			<key>children</key>
 			<array>
+				<string>8E38AA921CD8E936004D5FA6</string>
 				<string>8E91E7621BB22C3300F7618F</string>
 				<string>8E91E7631BB22C3300F7618F</string>
 				<string>8E5720871BBFDD650056A013</string>
 				<string>8E5720881BBFDD650056A013</string>
-				<string>8E7BAD211BD5A74400828E52</string>
-				<string>8E7BAD221BD5A74400828E52</string>
 				<string>8E4F0A691BE39D29006D8876</string>
 				<string>8E4F0A6A1BE39D29006D8876</string>
 				<string>8EE9348E1BE85EA5008948B0</string>
@@ -927,8 +1000,6 @@
 				<string>8E5F34C11C07130000397C2C</string>
 				<string>8ED3FD051C2AA8A500C44412</string>
 				<string>8ED3FD061C2AA8A500C44412</string>
-				<string>8E2ED2291C3D53F000FBA44D</string>
-				<string>8E2ED22A1C3D53F000FBA44D</string>
 				<string>8E7E562A1C667C0B008A8BBD</string>
 				<string>8E7E562B1C667C0B008A8BBD</string>
 				<string>8E8425D41CC4E35C00310CEC</string>

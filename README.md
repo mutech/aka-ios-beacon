@@ -1,15 +1,20 @@
-# AKA Beacon
+# Data Binding for iOS
 
-AKA Beacon is a binding framework for iOS with Interface Builder support. It allows you to connect your views with model objects right from the properties panel in interface builder.
+AKA Beacon is a data binding framework for iOS designed for Interface Builder.
+
+* [What is Data Binding](https://github.com/mutech/aka-ios-beacon/wiki/What-is-Data-Binding)
+* [About View Models](https://github.com/mutech/aka-ios-beacon/wiki/About-View-Models)
+* [What are the advantages of using Data Binding](https://github.com/mutech/aka-ios-beacon/wiki/What-are-the-advantages-of-using-Data-Binding)
+* [How is Beacon different from Data Binding on OS X](https://github.com/mutech/aka-ios-beacon/wiki/How-is-Beacon-different-from-Data-Binding-on-OS-X)
+* [How does Beacon relate to other binding frameworks](https://github.com/mutech/aka-ios-beacon/wiki/How-does-Beacon-relate-to-other-binding-frameworks)
 
 ## News
 
-**Version 0.2**
+**Version 0.2.1**
 
-* New enumeration and options syntax `.Value`, `$EnumType.Value`, `{ .Option1, .Option2 }` or `$OptionType { .Option1 }`; old syntax `$enum.Value` and `$options { Value }` still work. 
-* Enumeration types can now be used to create shared reusable objects such as formatters, color schemes or font dictionaries, see the documentation in the Wiki.
-* Bug fixes
-* Lots of new documentation in the Wiki (it's becoming useful now)
+* Relaxed validation of binding expressions so that [enumeration](https://github.com/mutech/aka-ios-beacon/wiki/Binding-Expression-Syntax-and-Expression-Types#enumeration-constants) values be used anywhere (supporting libraries of shared objects).
+* Experimental support for [dynamic sections](https://github.com/mutech/aka-ios-beacon/wiki/UITableView_dataSourceBinding#example-dynamic-sections-multiple-prototype-cells) in [table view data source bindings](https://github.com/mutech/aka-ios-beacon/wiki/UITableView_dataSourceBinding).
+
 
 ## Contents
 
@@ -23,7 +28,7 @@ AKA Beacon is a binding framework for iOS with Interface Builder support. It all
   - [Picker Keyboards](#picker-keyboards)
   - [Label Binding Demo](#label-binding-demo)
 
-## Installation & Integration
+## Installation and Integration
 
 Beacon is available on CocoaPods. 
 
@@ -32,7 +37,7 @@ To integrate AKABeacon, enable ```use_frameworks!``` in your Podfile and add the
 ```
 use_frameworks!
 ...
-pod 'AKABeacon', '~> 0.2'
+pod 'AKABeacon', '~> 0.2.1'
 ```
 
 If you are using the [CocoaPods try plugin](https://github.com/CocoaPods/cocoapods-try), an easy way to start experimenting with Beacon is:
@@ -52,11 +57,11 @@ Once you integrated the framework into your project, all you have to do to use b
 ### In Interface Builder
 
   - **Design your view hierarchies in Storyboards** or NIB files the same way you did before.
-  - **Define binding expressions in the property inspector for your views**. For example, to bind a text field or label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
+  - **Define** [binding expressions](https://github.com/mutech/aka-ios-beacon/wiki/Supported-Bindings-and-Binding-Types) **in the property inspector for your views**. For example, to bind a text field or label text to a property ```myTextProperty```, simply set the "Text Binding" property to ```myTextProperty```.
 
 ### In Code
 
-  - **Enable binding support** in your view controller. To do that, add ```[AKABindingBehavior addToViewController:self]``` to your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
+  - [Enable binding support](https://github.com/mutech/aka-ios-beacon/wiki/How-To-Enable-Binding-Support) in your view controller. To do that, add ```[AKABindingBehavior addToViewController:self]``` to your ViewController's ```viewDidLoad``` method (You need to ```@import AKABeacon;```).
   - Your view controller is (by default) used as root view model, so it has to **provide the properties for key paths you use in your binding expressions**. For the example above, the binding would expect the view controller to implement a key value coding-compliant property ```myTextProperty```.
 
 The demo project contains a lot of examples for different binding types.
@@ -65,6 +70,8 @@ The demo project contains a lot of examples for different binding types.
 ## Documentation
 
 * [Beacon's Github Wiki](https://github.com/mutech/aka-ios-beacon/wiki)
+* The [API documentation](http://cocoadocs.org/docsets/AKABeacon) is still not in a usable state, mainly because the code base is not yet sufficiently stable. Stay tuned.
+* The most up to date information is [available here](https://github.com/mutech/aka-ios-beacon/tree/master/AKABeacon/AKABeacon/Classes) (, Luke)
 
 ## How Beacon works
 

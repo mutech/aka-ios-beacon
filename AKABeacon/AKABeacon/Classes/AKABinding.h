@@ -20,36 +20,33 @@
 #pragma mark - Initialization
 
 /**
- Initializes a binding with the specified parameters.
- 
- If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
+ Creates a new binding based for the specified arguments.
 
- @param target            the binding target (eg. a view or property)
- @param bindingExpression the binding expression
- @param bindingContext    the context in which the expression is evaluated
- @param delegate          the binding delegate
- @param error             error storage, if undefined, the initializer will throw an exception if an error is encountered.
- @throws NSException if an error occurred and the @c error parameter is nil.
+ @param target            the target property
+ @param bindingExpression the view or conditional binding expression
+ @param bindingContext    the binding context
+ @param delegate          the delegate
+ @param error             error details
 
- @return a new binding
+ @return Either an instance of an AKABinding or AKAConditionalBinding which in turn has/may have a binding at activeClause.binding
  */
-- (opt_instancetype)                                 initWithTarget:(req_AKAProperty)target
-                                                         expression:(req_AKABindingExpression)bindingExpression
-                                                            context:(req_AKABindingContext)bindingContext
-                                                           delegate:(opt_AKABindingDelegate)delegate
-                                                              error:(out_NSError)error;
++ (opt_AKABinding)bindingToTarget:(req_AKAProperty)target
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error;
 
 #pragma mark - Configuration
 
 /**
  Property wrapping the source value of the binding. Bindings which do not support a binding source provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
  */
-@property(nonatomic, readonly, nonnull) AKAProperty*                bindingSource;
+@property(nonatomic, readonly, nonnull) AKAProperty*                          bindingSource;
 
 /**
  Property wrapping the target value of the binding. Bindings which do not support a binding target provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
  */
-@property(nonatomic, readonly, nonnull) AKAProperty*                bindingTarget;
+@property(nonatomic, readonly, nonnull) AKAProperty*                          bindingTarget;
 
 /**
  The context used by the binding to resolve binding expressions.

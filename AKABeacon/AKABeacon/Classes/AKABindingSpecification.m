@@ -701,7 +701,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             }
         }
 
-        return [NSString stringWithString:result];
+        return result ? [NSString stringWithString:result] : nil;
     }
 
     return result;

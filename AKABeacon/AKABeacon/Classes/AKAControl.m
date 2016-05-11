@@ -349,12 +349,11 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                                  property:bindingProperty
                     withBindingExpression:bindingExpression])
          {
-             AKAViewBinding* binding = [bindingType alloc];
-             binding = [binding initWithView:view
-                                  expression:bindingExpression
-                                     context:self
-                                    delegate:self
-                                       error:&localError];
+             AKABinding* binding = [bindingType bindingToView:view
+                                               withExpression:bindingExpression
+                                                      context:self
+                                                     delegate:self
+                                                        error:&localError];
              if (binding)
              {
                  [self       willAddBinding:binding

@@ -18,6 +18,37 @@
  */
 @interface AKABinding (Protected)
 
+#pragma mark - Initialization
+
+/**
+ Initializes a binding with the specified parameters.
+
+ If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
+
+ @param target            the binding target
+ @param bindingExpression the binding expression
+ @param bindingContext    the context in which the expression is evaluated
+ @param delegate          the binding delegate
+ @param error             error storage, if undefined, the initializer will throw an exception if an error is encountered.
+ @throws NSException if an error occurred and the @c error parameter is nil.
+
+ @return a new binding
+ */
+- (opt_instancetype)                                 initWithTarget:(req_AKAProperty)target
+                                                         expression:(req_AKABindingExpression)bindingExpression
+                                                            context:(req_AKABindingContext)bindingContext
+                                                           delegate:(opt_AKABindingDelegate)delegate
+                                                              error:(out_NSError)error;
+
+/**
+ Validates that this binding type matches the specification of the binding expression.
+ 
+ You should not need to override (or otherwise use) this method directly. It's used to transparently
+ replace bindings, currently only to implement validation for AKAConditionalBinding.
+ */
+- (BOOL)validateBindingTypeWithExpression:(opt_AKABindingExpression)bindingExpression
+                                    error:(out_NSError)error;
+
 #pragma mark - Properties
 
 @property(nonatomic, readonly, nonnull)  id<AKABindingDelegate>     delegateForSubBindings;
@@ -29,6 +60,7 @@
 #pragma mark - Sub Bindings
 
 - (void)                                    addArrayItemBinding:(req_AKABinding)binding;
+- (void)                                removeArrayItemBindings;
 
 - (void)                              addBindingPropertyBinding:(req_AKABinding)binding;
 
@@ -230,5 +262,26 @@
  Called after the bindings change observation started.
  */
 - (void)didStartObservingChanges;
+
+
+- (void)willSopObservingChanges;
+
+- (void)willStopObservingBindingPropertyBindings;
+
+- (void)didStopObservingBindingPropertyBindings;
+
+- (void)willStopObservingBindingTarget;
+
+- (void)didStopObservingBindingTarget;
+
+- (void)willStopObservingBindingSource;
+
+- (void)didStopObservingBindingSource;
+
+- (void)willStopObservingBindingTargetPropertyBindings;
+
+- (void)didStopObservingBindingTargetPropertyBindings;
+
+- (void)didStopObservingChanges;
 
 @end

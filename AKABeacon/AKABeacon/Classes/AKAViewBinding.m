@@ -10,13 +10,57 @@
 
 #import "AKAViewBinding.h"
 #import "AKABindingExpression+Accessors.h"
-
+#import "AKAConditionalBinding.h"
 
 @implementation AKAViewBinding
 
 @dynamic delegate;
 
 #pragma mark - Initialization
+
++ (opt_AKABinding)bindingToView:(req_UIView)targetView
+                 withExpression:(req_AKABindingExpression)bindingExpression
+                        context:(req_AKABindingContext)bindingContext
+                       delegate:(opt_AKABindingDelegate)delegate
+                          error:(out_NSError)error
+{
+    if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
+    {
+        AKABindingSpecification* specification = [self specification];
+
+        AKAConditionalBinding* result = [AKAConditionalBinding alloc];
+        result = [result initWithTarget:targetView
+                   resultBindingFactory:
+                  ^AKABinding * _Nullable(req_id                    rTarget,
+                                          req_AKABindingExpression  rExpression,
+                                          req_AKABindingContext     rContext,
+                                          opt_AKABindingDelegate    rDelegate,
+                                          out_NSError               rError)
+                  {
+                      AKAViewBinding* resultBinding = [specification.bindingType alloc];
+                      return [resultBinding initWithView:rTarget
+                                              expression:rExpression
+                                                 context:rContext
+                                                delegate:rDelegate
+                                                   error:rError];
+
+                  }
+                      resultBindingType:self
+                             expression:bindingExpression
+                                context:bindingContext
+                               delegate:delegate
+                                  error:error];
+        return result;
+    }
+    else
+    {
+        return [[self alloc] initWithView:targetView
+                               expression:bindingExpression
+                                  context:bindingContext
+                                 delegate:delegate
+                                    error:error];
+    }
+}
 
 - (instancetype)initWithView:(req_UIView)targetView
                   expression:(req_AKABindingExpression)bindingExpression

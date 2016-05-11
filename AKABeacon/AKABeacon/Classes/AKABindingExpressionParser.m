@@ -25,6 +25,7 @@
 #import "AKACGSizeConstantBindingExpression.h"
 #import "AKACGRectConstantBindingExpression.h"
 #import "AKAKeyPathBindingExpression.h"
+#import "AKAConditionalBindingExpression.h"
 
 @implementation AKABindingExpressionParser
 
@@ -46,6 +47,15 @@
 }
 
 #pragma mark - Configuration
+
+static NSString*const   keywordWhen = @"when";
+static NSString*const   keywordWhenNot = @"whenNot";
+static NSString*const   keywordElse = @"else";
+//static NSString*const   keywordEnd = @"end";
++ (NSString*)           keywordWhen       { return keywordWhen; }
++ (NSString*)           keywordWhenNot    { return keywordWhenNot; }
++ (NSString*)           keywordElse       { return keywordElse; }
+//+ (NSString*)           keywordEnd        { return keywordEnd; }
 
 static NSString*const   keywordTrue = @"true";
 static NSString*const   keywordFalse = @"false";
@@ -94,49 +104,59 @@ static NSString*const   keywordCGRect = @"CGRect";
 
     dispatch_once(&onceToken, ^{
         namedScopes =
-            @{ keywordTrue:    @{ @"value": @(YES),
-                                  @"type":  [AKABooleanConstantBindingExpression class] },
-               keywordFalse:   @{ @"value": @(NO),
-                                  @"type":  [AKABooleanConstantBindingExpression class] },
+        @{ keywordWhen:    @{ @"value": keywordWhen,
+                              @"type":  [AKAConditionalBindingExpression class] },
+           keywordWhenNot: @{ @"value": keywordWhenNot,
+                              @"type":  [AKAConditionalBindingExpression class] },
+           keywordElse:    @{ @"value": keywordElse,
+                              @"type":  [AKAControlStructureBindingExpression class] },
+           //keywordEnd:     @{ @"value": keywordEnd,
+           //                   @"type":  [AKAControlStructureBindingExpression null] },
 
-               keywordEnum:    @{ @"value": [NSNull null],
-                                  @"type":  [AKAEnumConstantBindingExpression class] },
-               keywordOptions: @{ @"value": [NSNull null],
-                                  @"type":  [AKAOptionsConstantBindingExpression class] },
+           keywordTrue:    @{ @"value": @(YES),
+                              @"type":  [AKABooleanConstantBindingExpression class] },
+           
+           keywordFalse:   @{ @"value": @(NO),
+                              @"type":  [AKABooleanConstantBindingExpression class] },
 
-               keywordData:    @{ @"value": [NSNull null],
-                                  @"type":  [AKADataContextKeyPathBindingExpression class] },
-               keywordRoot:    @{ @"value": [NSNull null],
-                                  @"type":  [AKARootDataContextKeyPathBindingExpression class] },
-               keywordControl: @{ @"value": [NSNull null],
-                                  @"type":  [AKAControlKeyPathBindingExpression class] },
+           keywordEnum:    @{ @"value": [NSNull null],
+                              @"type":  [AKAEnumConstantBindingExpression class] },
+           keywordOptions: @{ @"value": [NSNull null],
+                              @"type":  [AKAOptionsConstantBindingExpression class] },
 
-               keywordColor:   @{ @"value": [NSNull null],
-                                  @"type":  [AKAUIColorConstantBindingExpression class] },
-               keywordUIColor: @{ @"value": [NSNull null],
-                                  @"type":  [AKAUIColorConstantBindingExpression class] },
-               keywordCGColor: @{ @"value": [NSNull null],
-                                  @"type":  [AKACGColorConstantBindingExpression class] },
+           keywordData:    @{ @"value": [NSNull null],
+                              @"type":  [AKADataContextKeyPathBindingExpression class] },
+           keywordRoot:    @{ @"value": [NSNull null],
+                              @"type":  [AKARootDataContextKeyPathBindingExpression class] },
+           keywordControl: @{ @"value": [NSNull null],
+                              @"type":  [AKAControlKeyPathBindingExpression class] },
 
-               keywordFont:    @{ @"value": [NSNull null],
-                                  @"type":  [AKAUIFontConstantBindingExpression class] },
-               keywordUIFont:  @{ @"value": [NSNull null],
-                                  @"type":  [AKAUIFontConstantBindingExpression class] },
+           keywordColor:   @{ @"value": [NSNull null],
+                              @"type":  [AKAUIColorConstantBindingExpression class] },
+           keywordUIColor: @{ @"value": [NSNull null],
+                              @"type":  [AKAUIColorConstantBindingExpression class] },
+           keywordCGColor: @{ @"value": [NSNull null],
+                              @"type":  [AKACGColorConstantBindingExpression class] },
 
-               keywordPoint:   @{ @"value": [NSNull null],
-                                  @"type":  [AKACGPointConstantBindingExpression class] },
-               keywordCGPoint: @{ @"value": [NSNull null],
-                                  @"type":  [AKACGPointConstantBindingExpression class] },
+           keywordFont:    @{ @"value": [NSNull null],
+                              @"type":  [AKAUIFontConstantBindingExpression class] },
+           keywordUIFont:  @{ @"value": [NSNull null],
+                              @"type":  [AKAUIFontConstantBindingExpression class] },
 
-               keywordSize:   @{ @"value": [NSNull null],
-                                 @"type":  [AKACGSizeConstantBindingExpression class] },
-               keywordCGSize: @{ @"value": [NSNull null],
-                                 @"type":  [AKACGSizeConstantBindingExpression class] },
+           keywordPoint:   @{ @"value": [NSNull null],
+                              @"type":  [AKACGPointConstantBindingExpression class] },
+           keywordCGPoint: @{ @"value": [NSNull null],
+                              @"type":  [AKACGPointConstantBindingExpression class] },
 
-               keywordRect:    @{ @"value": [NSNull null],
-                                  @"type":  [AKACGRectConstantBindingExpression class] },
-               keywordCGRect:  @{ @"value": [NSNull null],
-                                  @"type":  [AKACGRectConstantBindingExpression class] }, };
+           keywordSize:   @{ @"value": [NSNull null],
+                             @"type":  [AKACGSizeConstantBindingExpression class] },
+           keywordCGSize: @{ @"value": [NSNull null],
+                             @"type":  [AKACGSizeConstantBindingExpression class] },
+
+           keywordRect:    @{ @"value": [NSNull null],
+                              @"type":  [AKACGRectConstantBindingExpression class] },
+           keywordCGRect:  @{ @"value": [NSNull null],
+                              @"type":  [AKACGRectConstantBindingExpression class] }, };
     });
 
     return namedScopes;
@@ -184,99 +204,109 @@ static NSString*const   keywordCGRect = @"CGRect";
                                         type:&bindingExpressionType
                                        error:error];
 
-    // Optionally, parse a key path following a scope.
-    if (result)
+    if (result && [bindingExpressionType isSubclassOfClass:[AKAControlStructureBindingExpression class]])
     {
-        // Order is relevant:
-        BOOL requireKeyPath = [self skipCharacter:'.'];
-        BOOL possiblyKeyPath = [self isAtValidFirstIdentifierCharacter] || [self isAtCharacter:'@'];
+        result = [self parseControlStructure:store
+                                 withKeyword:primaryExpression
+                               specification:specification
+                                       error:error];
+    }
+    else
+    {
+        // Optionally, parse a key path following a scope.
+        if (result)
+        {
+            // Order is relevant:
+            BOOL requireKeyPath = [self skipCharacter:'.'];
+            BOOL possiblyKeyPath = [self isAtValidFirstIdentifierCharacter] || [self isAtCharacter:'@'];
 
-        if (requireKeyPath && !possiblyKeyPath)
-        {
-            result = NO;
-            [self registerParseError:error
-                            withCode:AKAParseErrorUnterminatedKeyPathAfterDot
-                          atPosition:self.scanner.scanLocation
-                              reason:@"Expected a key (path component) following trailing dot."];
-        }
-        else if (possiblyKeyPath)
-        {
-            if (bindingExpressionType != nil &&
-                ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]] &&
-                ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]] &&
-                ![bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]])
+            if (requireKeyPath && !possiblyKeyPath)
             {
+                result = NO;
                 [self registerParseError:error
-                                withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
+                                withCode:AKAParseErrorUnterminatedKeyPathAfterDot
                               atPosition:self.scanner.scanLocation
-                                  reason:[NSString stringWithFormat:@"Key path following expression type '%@' is not supported", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
+                                  reason:@"Expected a key (path component) following trailing dot."];
             }
-            else
+            else if (possiblyKeyPath)
             {
-                result = [self parseKeyPath:&primaryExpression error:error];
-
-                if (result && requireKeyPath &&
-                    ((NSString*)primaryExpression).length &&
-                    [bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
+                if (bindingExpressionType != nil &&
+                    ![bindingExpressionType isSubclassOfClass:[AKAKeyPathBindingExpression class]] &&
+                    ![bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]] &&
+                    ![bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]])
                 {
-                    primaryExpression = [NSString stringWithFormat:@".%@", primaryExpression];
+                    [self registerParseError:error
+                                    withCode:AKAParseErrorKeyPathNotSupportedForExpressionType
+                                  atPosition:self.scanner.scanLocation
+                                      reason:[NSString stringWithFormat:@"Key path following expression type '%@' is not supported", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
                 }
-
-                if (result && bindingExpressionType == nil)
+                else
                 {
-                    bindingExpressionType = [AKAKeyPathBindingExpression class];
+                    result = [self parseKeyPath:&primaryExpression error:error];
+
+                    if (result && requireKeyPath &&
+                        ((NSString*)primaryExpression).length &&
+                        [bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
+                    {
+                        primaryExpression = [NSString stringWithFormat:@".%@", primaryExpression];
+                    }
+
+                    if (result && bindingExpressionType == nil)
+                    {
+                        bindingExpressionType = [AKAKeyPathBindingExpression class];
+                    }
                 }
             }
         }
-    }
 
-    // Parse attributes
-    if (result)
-    {
-        [self skipWhitespaceAndNewlineCharacters];
-
-        if ([self isAtCharacter:'{'])
+        // Parse attributes
+        if (result)
         {
-            BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
-            BOOL hasOptionsValues = NO;
+            [self skipWhitespaceAndNewlineCharacters];
 
-            result = [self parseAttributes:&attributes
-                         withSpecification:specification
-                                 asOptions:isOptions
-                          hasOptionsValues:&hasOptionsValues
-                                     error:error];
-
-            if (hasOptionsValues)
+            if ([self isAtCharacter:'{'])
             {
-                if (bindingExpressionType == nil)
+                BOOL isOptions = [bindingExpressionType isSubclassOfClass:[AKAOptionsConstantBindingExpression class]];
+                BOOL hasOptionsValues = NO;
+
+                result = [self parseAttributes:&attributes
+                             withSpecification:specification
+                                     asOptions:isOptions
+                              hasOptionsValues:&hasOptionsValues
+                                         error:error];
+
+                if (hasOptionsValues)
                 {
-                    bindingExpressionType = [AKAOptionsConstantBindingExpression class];
+                    if (bindingExpressionType == nil)
+                    {
+                        bindingExpressionType = [AKAOptionsConstantBindingExpression class];
+                    }
+                    else if (bindingExpressionType != [AKAOptionsConstantBindingExpression class])
+                    {
+                        result = [self registerParseError:error
+                                                 withCode:AKAParseErrorUnexpectedOptionsValueForNonOptionsExpressionType
+                                               atPosition:self.scanner.scanLocation
+                                                   reason:[NSString stringWithFormat:@"Options constant values are not allowed as attributes for expression type '%@'.", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
+                    }
                 }
-                else if (bindingExpressionType != [AKAOptionsConstantBindingExpression class])
-                {
-                    result = [self registerParseError:error
-                                             withCode:AKAParseErrorUnexpectedOptionsValueForNonOptionsExpressionType
-                                           atPosition:self.scanner.scanLocation
-                                               reason:[NSString stringWithFormat:@"Options constant values are not allowed as attributes for expression type '%@'.", [[NSStringFromClass(bindingExpressionType) stringByReplacingOccurrencesOfString:@"AKA" withString:@""] stringByReplacingOccurrencesOfString:@"BindingExpression" withString:@""]]];
-                }
+            }
+
+            // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
+            if (result && bindingExpressionType == nil)
+            {
+                bindingExpressionType = [AKABindingExpression class];
             }
         }
 
-        // Binding expression consisting of only attributes (no primary) will have the type AKABindingExpression
-        if (result && bindingExpressionType == nil)
+        if (result && store != nil)
         {
-            bindingExpressionType = [AKABindingExpression class];
+            // TODO: add error parameter to binding expression constructor
+            AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
+            bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
+                                                                  attributes:attributes
+                                                               specification:specification];
+            *store = bindingExpression;
         }
-    }
-
-    if (result && store != nil)
-    {
-        // TODO: add error parameter to binding expression constructor
-        AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
-        bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
-                                                              attributes:attributes
-                                                           specification:specification];
-        *store = bindingExpression;
     }
 
     return result;
@@ -465,10 +495,181 @@ static NSString*const   keywordCGRect = @"CGRect";
         }
 
         if (constantStore != nil && ([type isSubclassOfClass:[AKAConstantBindingExpression class]] ||
-                                     [type isSubclassOfClass:[AKAArrayBindingExpression class]]))
+                                     [type isSubclassOfClass:[AKAArrayBindingExpression class]] ||
+                                     [type isSubclassOfClass:[AKAControlStructureBindingExpression class]]))
         {
             *constantStore = constant;
         }
+    }
+
+    return result;
+}
+
+
+- (BOOL)                      parseControlStructure:(out_AKABindingExpression)store
+                                        withKeyword:(req_NSString)keyword
+                                  specification:(opt_AKABindingSpecification)specification
+                                              error:(out_NSError)error
+{
+    BOOL result = NO;
+    if ([keywordWhen isEqualToString:keyword])
+    {
+        result = [self parseConditionalBindingExpression:store
+                                             withKeyword:keyword
+                                           specification:specification
+                                                   error:error];
+    }
+    else if ([keywordWhenNot isEqualToString:keyword])
+    {
+        result = [self parseConditionalBindingExpression:store
+                                             withKeyword:keyword
+                                           specification:specification
+                                                   error:error];
+    }
+    else
+    {
+        // TODO: error handling (invalid keyword to start control structure)
+    }
+
+    return result;
+}
+
+- (BOOL)          parseConditionalBindingExpression:(out_AKABindingExpression)store
+                                        withKeyword:(req_NSString)keyword
+                                      specification:(opt_AKABindingSpecification)specification
+                                              error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    NSMutableArray<AKAConditionalBindingExpressionClause*>* clauses = [NSMutableArray new];
+
+    NSString* nextKeyword = keyword;
+    BOOL done = NO;
+    while (!done)
+    {
+        AKAConditionalBindingExpressionClause* clause = nil;
+
+        result = [self parseConditionalBindingExpressionClause:&clause
+                                                   withKeyword:nextKeyword
+                                                 specification:specification
+                                                         error:error];
+        if (result && clauses.count > 0 && clauses.lastObject.conditionBindingExpression == nil)
+        {
+            result = NO;
+            // TODO: error handling (when after else)
+        }
+
+        if (result)
+        {
+            [clauses addObject:clause];
+
+            done = ![self parseKeyword:&nextKeyword
+                     fromSetOfKeywords:[NSSet setWithObjects:keywordWhen, keywordWhenNot, keywordElse, nil]];
+        }
+        else
+        {
+            done = YES;
+        }
+    }
+
+    if (result && store)
+    {
+        *store = [[AKAConditionalBindingExpression alloc] initWithClauses:clauses
+                                                            specification:specification];
+    }
+    
+    return result;
+}
+
+- (BOOL)    parseConditionalBindingExpressionClause:(AKAConditionalBindingExpressionClause*__autoreleasing* _Nonnull)store
+                                        withKeyword:(req_NSString)keyword
+                                      specification:(opt_AKABindingSpecification)specification
+                                              error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    AKABindingExpression* conditionExpression;
+    AKABindingExpression* resultExpression;
+
+    [self skipWhitespaceCharacters];
+
+    BOOL requiresCondition = ![keywordElse isEqualToString:keyword];
+    BOOL negatedCondition = requiresCondition ? [keywordWhenNot isEqualToString:keyword] : NO;
+
+    if (requiresCondition)
+    {
+        result = [self skipCharacter:'('];
+
+        if (result)
+        {
+            result = [self parseBindingExpression:&conditionExpression
+                                withSpecification:[AKAPredicatePropertyBinding specification]
+                                            error:error];
+        }
+        else
+        {
+            // TODO: error handling (missing opening bracket for condition)
+        }
+
+        if (result)
+        {
+            [self skipWhitespaceCharacters];
+            result = [self skipCharacter:')'];
+            if (!result)
+            {
+                // TODO: error handling (missing closing bracket)
+            }
+        }
+    }
+
+    if (result)
+    {
+        result = [self parseBindingExpression:&resultExpression
+                            withSpecification:specification
+                                        error:error];
+    }
+
+    if (result && store)
+    {
+        if (requiresCondition)
+        {
+            if (negatedCondition)
+            {
+                *store = [AKAConditionalBindingExpressionClause whenNotClauseWithCondition:conditionExpression
+                                                                                expression:resultExpression];
+            }
+            else
+            {
+                *store = [AKAConditionalBindingExpressionClause whenClauseWithCondition:conditionExpression
+                                                                             expression:resultExpression];
+            }
+        }
+        else
+        {
+            *store = [AKAConditionalBindingExpressionClause elseClauseWithExpression:resultExpression];
+        }
+    }
+
+    return result;
+}
+
+- (BOOL)                               parseKeyword:(out_NSString)store
+                                  fromSetOfKeywords:(nonnull NSSet*)keywords
+{
+    NSUInteger savedLocation = self.scanner.scanLocation;
+
+    BOOL result = [self skipCharacter:'$'];
+
+    if (result)
+    {
+        result = [self isAtValidFirstIdentifierCharacter];
+        result = [self parseIdentifier:store
+                                 error:nil];
+    }
+
+    if (!result)
+    {
+        self.scanner.scanLocation = savedLocation;
     }
 
     return result;

@@ -93,9 +93,11 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABinding.h>
 #import <AKABeacon/AKABinding_Protected.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
+#import <AKABeacon/AKAChildBindingContext.h>
 
 // Bindings/ViewBindings
 #import <AKABeacon/AKAViewBinding.h>
+#import <AKABeacon/AKAViewBinding_Protected.h>
 #import <AKABeacon/AKAViewBindingDelegate.h>
 #import <AKABeacon/AKAViewBinding+IBPropertySupport.h>
 #import <AKABeacon/AKAControlViewBinding.h>

@@ -7,6 +7,7 @@
 //
 
 @import UIKit;
+@import AKACommons.AKAProperty;
 #import "AKAControlDelegate.h"
 
 @class AKAFormControl;
@@ -66,5 +67,40 @@
 - (void)addToViewController:(UIViewController*)viewController;
 
 - (void)removeFromViewController:(UIViewController*)viewController;
+
+#pragma mark - Auxiliary Observations
+
+- (void)addObservation:(AKAProperty*)property;
+
+- (void)removeObservation:(AKAProperty*)property;
+
+/**
+ Observes changes of the target's key path and calls the specified block whenever a change occurs.
+
+ The observation will be activated when the view controller appears (by binding behavior's viewWillAppear)
+ and will be deactivated when it disappears (binding behavior's viewWillDisappear).
+
+ The AKAProperty returned is owned by the binding behavior. You can keep a reference to the property
+ and manually call startObservingChanges or stopObservingChanges to control individual observations.
+ 
+ You can also remove the observation using the removeObservation: method.
+
+ @param target         the KVO target. Please note that the property keeps only a weak reference to the target.
+ @param keyPath        the key path to observer
+ @param didChangeValue the change observer block
+
+ @return An instance of AKAProperty controlling the observation or nil if the view controller does not have a binding behavior.
+ */
+- (AKAProperty*)observeWeakTarget:(NSObject*)target
+                          keyPath:(req_NSString)keyPath
+                changesUsingBlock:(void(^)(id _Nullable oldValue, id _Nullable newValue))didChangeValue;
+
+@end
+
+
+
+@interface UIViewController(AKABindingBehavior)
+
+@property(nonatomic, readonly, nullable) AKABindingBehavior* aka_bindingBehavior;
 
 @end

@@ -23,9 +23,9 @@ class UITextViewBindingsSpec: QuickSpec {
                 let bindingType: AKAViewBinding.Type? = expression.specification?.bindingType as? AKAViewBinding.Type;
 
                 // Act
-                let binding = try! bindingType?.init (
-                    view: view,
-                    expression: expression,
+                let binding = try! bindingType?.bindingToView (
+                    view,
+                    withExpression: expression,
                     context: bindingContext,
                     delegate: nil);
                 let textAfterBindingCreation = view.text;

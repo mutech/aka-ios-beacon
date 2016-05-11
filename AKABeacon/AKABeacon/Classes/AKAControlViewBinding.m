@@ -11,6 +11,8 @@
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKAControlViewBinding.h"
+#import "AKAViewBinding_Protected.h"
+#import "AKABindingErrors.h"
 
 @interface AKAControlViewBinding() {
     BOOL _isUpdatingSourceValueForTargetValueChange;
@@ -21,6 +23,32 @@
 @implementation AKAControlViewBinding
 
 @dynamic delegate;
+
++ (opt_AKABinding)bindingToView:(req_UIView)targetView
+                 withExpression:(req_AKABindingExpression)bindingExpression
+                        context:(req_AKABindingContext)bindingContext
+                       delegate:(opt_AKABindingDelegate)delegate
+                          error:(out_NSError)error
+{
+    AKABinding* result = nil;
+    if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
+    {
+        if (error)
+        {
+            *error = [AKABindingErrors       invalidBindingExpression:bindingExpression
+              conditionalExpressionNotSupportedForControlViewBindings:self];
+        }
+    }
+    else
+    {
+        result = [super bindingToView:targetView
+                       withExpression:bindingExpression
+                              context:bindingContext
+                             delegate:delegate
+                                error:error];
+    }
+    return result;
+}
 
 - (instancetype)init
 {

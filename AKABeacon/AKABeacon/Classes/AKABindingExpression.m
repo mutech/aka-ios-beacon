@@ -353,7 +353,8 @@
 
     NSMutableString* result = [NSMutableString new];
 
-    NSString* textForPrimaryExpression = self.textForPrimaryExpression;
+    NSString* textForPrimaryExpression = [self textForPrimaryExpressionWithNestingLevel:level
+                                                                                 indent:indent];
 
     if (textForPrimaryExpression.length > 0)
     {

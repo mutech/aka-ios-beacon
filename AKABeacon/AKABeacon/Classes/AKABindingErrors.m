@@ -120,6 +120,22 @@
     return result;
 }
 
++ (req_NSError)                     invalidBindingExpression:(AKABindingExpression*)bindingExpression
+     conditionalExpressionNotSupportedForControlViewBindings:(req_Class)controlViewBindingType
+{
+    NSString* reason = [NSString stringWithFormat:@"Conditional binding expression '%@' is not supported in control view bindings of type %@",
+                        bindingExpression,
+                        NSStringFromClass(controlViewBindingType)];
+    NSString* description = [NSString stringWithFormat:@"Static binding expression validation failed: %@", reason];
+    NSDictionary* userInfo = @{ NSLocalizedDescriptionKey: description,
+                                NSLocalizedFailureReasonErrorKey: reason };
+
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidConditionalBindingExpressionNotSupportedForControlViewBindings
+                                      userInfo:userInfo];
+    return result;
+}
+
 + (req_NSError)bindingErrorUndefinedBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                      context:(req_AKABindingContext)bindingContext
 {

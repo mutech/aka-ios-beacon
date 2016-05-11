@@ -26,7 +26,7 @@
 #import "AKACGPointConstantBindingExpression.h"
 #import "AKACGSizeConstantBindingExpression.h"
 #import "AKACGRectConstantBindingExpression.h"
-
+#import "AKAConditionalBindingExpression.h"
 
 @interface AKABindingExpressionTest: XCTestCase
 
@@ -85,6 +85,59 @@
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+}
+
+#pragma mark - Conditional Tests
+
+
+- (void)testConditionalExpression
+{
+    NSString* text = @"$when($true) 1 $when($false { a: $false }) 2 { b: $true } $else 3";
+    AKABindingExpressionParser* parser = [AKABindingExpressionParser parserWithString:text];
+
+    AKABindingExpression* expression = nil;
+    AKABindingSpecification* specification =
+    [[AKABindingSpecification alloc] initWithDictionary:@{ @"expressionType": @(AKABindingExpressionTypeIntegerConstant) }
+                                                basedOn:nil];
+    NSError* error;
+    BOOL result = [parser parseBindingExpression:&expression
+                               withSpecification:specification
+                                           error:&error];
+
+    XCTAssert(result,
+              @"Failed to parse valid conditional expression %@: %@",
+              text, error.localizedDescription);
+
+    XCTAssert([expression isKindOfClass:[AKAConditionalBindingExpression class]],
+              @"Parser failed to deliver a conditional binding expression for '%@', got: %@",
+              text, NSStringFromClass(expression.class));
+
+    AKAConditionalBindingExpression* conditional = (id)expression;
+
+    // Serialization & Formatting
+    XCTAssertEqualObjects(text, conditional.text);
+    XCTAssertEqualObjects(@"$when($true)\n\t\t1\n\t$when($false { a: $false })\n\t\t2 {\n\t\t\tb: $true\n\t\t}\n\t$else\n\t\t3", [conditional textWithNestingLevel:1 indent:@"\t"]);
+
+    // Check that everything is there:
+    XCTAssertEqual(conditional.clauses.count, 3);
+    XCTAssertEqual(conditional.clauses[0].conditionBindingExpression.expressionType,
+                   AKABindingExpressionTypeBooleanConstant);
+    XCTAssertEqual(conditional.clauses[1].conditionBindingExpression.expressionType,
+                   AKABindingExpressionTypeBooleanConstant);
+    XCTAssertNil(conditional.clauses[2].conditionBindingExpression);
+
+    XCTAssertEqual(conditional.clauses[0].resultBindingExpression.expressionType,
+                   AKABindingExpressionTypeIntegerConstant);
+    XCTAssertEqual(conditional.clauses[0].resultBindingExpression.attributes.count,
+                   0);
+    XCTAssertEqual(conditional.clauses[1].resultBindingExpression.expressionType,
+                   AKABindingExpressionTypeIntegerConstant);
+    XCTAssertEqual(conditional.clauses[1].resultBindingExpression.attributes.count,
+                   1);
+    XCTAssertEqual(conditional.clauses[2].resultBindingExpression.expressionType,
+                   AKABindingExpressionTypeIntegerConstant);
+    XCTAssertEqual(conditional.clauses[2].resultBindingExpression.attributes.count,
+                   0);
 }
 
 #pragma mark - Key Path Parser Tests

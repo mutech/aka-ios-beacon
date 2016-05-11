@@ -16,8 +16,7 @@
 #import "AKABinding_UIPickerView_valueBinding.h"
 #import "UIPickerView+AKAIBBindingProperties.h"
 
-#import "AKABinding_Protected.h"
-
+#import "AKAViewBinding_Protected.h"
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -

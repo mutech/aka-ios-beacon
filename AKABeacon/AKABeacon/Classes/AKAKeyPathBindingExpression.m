@@ -97,7 +97,8 @@
 
 #pragma mark - Serialization
 
-- (NSString*)textForPrimaryExpression
+- (NSString *)textForPrimaryExpressionWithNestingLevel:(NSUInteger __unused)level
+                                                indent:(NSString *__unused)indent
 {
     static NSString*const kScopeKeyPathSeparator = @".";
 

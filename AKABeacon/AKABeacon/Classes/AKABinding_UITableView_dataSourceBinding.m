@@ -16,6 +16,7 @@
 #import "AKABindingErrors.h"
 #import "AKABindingSpecification.h"
 #import "AKANSEnumerations.h"
+#import "AKAChildBindingContext.h"
 
 #import "AKATableViewCellFactoryArrayPropertyBinding.h"
 #import "AKATableViewCellFactory.h"
@@ -64,60 +65,6 @@
 @property(nonatomic) BOOL                                                   tableViewReloadDispatched;
 @property(nonatomic) NSMutableDictionary<NSNumber*, AKAArrayComparer*>*     pendingTableViewChanges;
 @property(nonatomic) BOOL                                                   startingChangeObservation;
-
-@end
-
-
-@interface AKAChildBindingContext: NSObject<AKABindingContextProtocol>
-+ (instancetype)bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext;
-@property(nonatomic, weak) id dataContext;
-@property(nonatomic) id<AKABindingContextProtocol> parent;
-@end
-
-@implementation AKAChildBindingContext
-- (instancetype)initWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext
-{
-    if (self = [self init])
-    {
-        _dataContext = dataContext;
-        _parent = bindingContext;
-    }
-    return self;
-}
-+ (instancetype)bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext dataContext:(id)dataContext
-{
-    return [[self alloc] initWithParent:bindingContext dataContext:dataContext];
-}
-
-- (id)dataContextValueForKeyPath:(NSString *)keyPath
-{
-    return [self.dataContext valueForKeyPath:keyPath];
-}
-
-- (AKAProperty *)dataContextPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
-{
-    return [AKAProperty propertyOfWeakKeyValueTarget:self.dataContext keyPath:keyPath changeObserver:valueDidChange];
-}
-
-- (id)rootDataContextValueForKeyPath:(NSString *)keyPath
-{
-    return [self.parent rootDataContextValueForKeyPath:keyPath];
-}
-
-- (AKAProperty *)rootDataContextPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
-{
-    return [self.parent rootDataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
-}
-
-- (id)controlValueForKeyPath:(NSString *)keyPath
-{
-    return [self.parent controlValueForKeyPath:keyPath];
-}
-
-- (AKAProperty *)controlPropertyForKeyPath:(NSString *)keyPath withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
-{
-    return [self.parent controlPropertyForKeyPath:keyPath withChangeObserver:valueDidChange];
-}
 
 @end
 
@@ -258,11 +205,11 @@
         bindingType = [AKAPropertyBinding class];
     }
 
-    AKABinding* binding = [[bindingType alloc] initWithTarget:bindingTarget
-                                                   expression:bindingExpression
-                                                      context:itemBindingContext
-                                                     delegate:weakSelf.delegateForSubBindings
-                                                        error:nil];
+    AKABinding* binding = [bindingType bindingToTarget:bindingTarget
+                                        withExpression:bindingExpression
+                                               context:itemBindingContext
+                                              delegate:weakSelf.delegateForSubBindings
+                                                 error:nil];
 
     return binding;
 }
@@ -347,12 +294,17 @@
         self.arrayItemBindings = arrayItemBindings;
     }
 
+    self.dynamicSectionsSource = newSourceValue;
+    
     for (AKABinding* binding in stoppedBindings)
     {
         [binding startObservingChanges];
     }
 
-    [self reloadTableView];
+    if (!self.startingChangeObservation)
+    {
+        [self reloadTableViewAnimated:YES];
+    }
 }
 
 - (AKAProperty*)         createBindingTargetPropertyForView:(req_UIView)view
@@ -403,6 +355,15 @@
                     [binding.delegateDispatcher restoreOriginalDataSourceAndDelegate];
                     binding->_delegateDispatcher = nil;
 
+                    // TODO: cleanup deinitialization:
+                    [self.pendingTableViewChanges removeAllObjects];
+                    if (self.usesDynamicSections)
+                    {
+                        binding.dynamicSections = nil;
+                        binding.dynamicSectionsSource = nil;
+                        [self removeArrayItemBindings];
+                    }
+
                     // TODO: deselect currently selected rows, maybe restore previously selected
                     [tableView reloadData];
                 }
@@ -445,9 +406,7 @@
 
     // Perform a reload of the table view once the change observation start process if finished.
     // From this point on, the binding will synchronize the table view with changes to row data.
-    [self.tableView reloadData];
-
-    [self updateTableViewRowHeights];
+    [self reloadTableViewAnimated:NO];
 }
 
 - (void)                             targetArrayItemAtIndex:(NSUInteger)index
@@ -488,6 +447,27 @@
 }
 
 #pragma mark - Table View Updates
+
+- (void)                      sectionInfosWillChangeContent
+{
+
+}
+
+- (void)sectionInfosDidMoveSection:(NSInteger)oldSectionIndex toSection:(NSInteger)newSectionIndex
+{
+
+}
+
+- (void)sectionInfosDidInsertSection:(AKATableViewSectionDataSourceInfo*)sectionInfo
+                          atSectionIndex:(NSInteger)sectionIndex
+{
+
+}
+
+- (void)                       sectionInfosDidChangeContent
+{
+
+}
 
 - (void)                       sectionInfoWillChangeContent:(AKATableViewSectionDataSourceInfo *)sectionInfo
 {
@@ -552,24 +532,34 @@
     [self.tableView endUpdates];
 }
 
-- (void)                                    reloadTableView
+- (void)                            reloadTableViewAnimated:(BOOL)animated
 {
     [self.pendingTableViewChanges removeAllObjects];
 
     UITableView* tableView = self.tableView;
     [tableView reloadData];
 
-    [self updateTableViewRowHeights];
+    [self updateTableViewRowHeightsAnimated:animated];
 }
 
-- (void)                          updateTableViewRowHeights
+- (void)                  updateTableViewRowHeightsAnimated:(BOOL)animated
 {
     UITableView* tableView = self.tableView;
-    BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
-    [UIView setAnimationsEnabled:NO];
-    [tableView beginUpdates];
-    [tableView endUpdates];
-    [UIView setAnimationsEnabled:animationsWereEnabled];
+    NSLog(@"Tableview dragging or decelerating: %@", @(tableView.isDragging || tableView.isDecelerating));
+    NSLog(@"Binding is starting observations: %@", @(self.startingChangeObservation));
+    if (!animated)
+    {
+        BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
+        [UIView setAnimationsEnabled:NO];
+        [tableView beginUpdates];
+        [tableView endUpdates];
+        [UIView setAnimationsEnabled:animationsWereEnabled];
+    }
+    else
+    {
+        [tableView beginUpdates];
+        [tableView endUpdates];
+    }
 }
 
 - (void)                  dispatchTableViewUpdateForSection:(NSUInteger)section
@@ -607,7 +597,6 @@
         {
             if (!tableView.isDragging && !tableView.isDecelerating)
             {
-                // It's only safe to update if the tableview is not scrolling:
                 [tableView beginUpdates];
                 for (NSNumber* sectionN in self.pendingTableViewChanges.allKeys)
                 {
@@ -624,7 +613,8 @@
 
                 // Perform update for self-sizing cells now to ensure this will be done, disable
                 // deferred updates which have already been scheduled (not necessary if done now).
-                [self updateTableViewRowHeights];
+                [self updateTableViewRowHeightsAnimated:NO];
+
                 self.tableViewUpdateDispatched = NO;
             }
             else
@@ -888,7 +878,7 @@
 }
 
 - (CGFloat)                                       tableView:(UITableView *)tableView
-                           estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+                           estimatedHeightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     CGFloat result = UITableViewAutomaticDimension;
 
@@ -900,12 +890,10 @@
     return result;
 }
 
-- (void)                                          tableView:(UITableView*)tableView
+- (void)                                          tableView:(UITableView*__unused)tableView
                                       willDisplayHeaderView:(nonnull UIView *)view
                                                  forSection:(NSInteger)section
 {
-    (void)tableView;
-
     id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;

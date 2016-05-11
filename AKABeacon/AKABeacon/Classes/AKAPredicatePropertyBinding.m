@@ -77,7 +77,11 @@
                                    {
                                        [weakSelf substitutionValue:oldValue didChangeTo:newValue];
                                    }];
-    AKAPropertyBinding* attributeBinding = [[AKAPropertyBinding alloc] initWithTarget:targetProperty expression:attributeExpression context:bindingContext delegate:weakSelf error:error];
+    AKABinding* attributeBinding = [AKAPropertyBinding bindingToTarget:targetProperty
+                                                        withExpression:attributeExpression
+                                                               context:bindingContext
+                                                              delegate:weakSelf
+                                                                 error:error];
     result = attributeBinding != nil;
     if (result)
     {

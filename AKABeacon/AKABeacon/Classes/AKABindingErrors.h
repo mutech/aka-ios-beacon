@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorInvalidPrimaryBindingExpressionMismatchingEnumerationType,
     AKABindingErrorInvalidPrimaryBindingExpressionNoOptionsType,
     AKABindingErrorInvalidPrimaryBindingExpressionMismatchingOptionsType,
+    AKABindingErrorInvalidConditionalBindingExpressionNotSupportedForControlViewBindings,
     AKABindingErrorInvalidAttriuteBindingExpressionType,
     AKABindingErrorInvalidBindingExpressionMissingRequiredAttribute,
     AKABindingErrorInvalidBindingExpressionUnknownAttribute,
@@ -65,6 +66,9 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 
 + (req_NSError)                       invalidBindingExpression:(req_AKABindingExpression)bindingExpression
                                            optionsTypeMismatch:(req_AKABindingExpressionSpecification)specification;
+
++ (req_NSError)                       invalidBindingExpression:(AKABindingExpression*)bindingExpression
+       conditionalExpressionNotSupportedForControlViewBindings:(req_Class)controlViewBindingType;
 
 #pragma mark - Binding Expression Attribute Validation
 

@@ -46,6 +46,7 @@
 
 @property(nonatomic) AKAFormControl*                        formControl;
 @property(nonatomic) AKABindingBehaviourDelegateDispatcher* delegateDispatcher;
+@property(nonatomic) NSMutableSet<AKAProperty*>*            observations;
 
 @property(nonatomic, readonly, weak) UIScrollView*          scrollView;
 @property(nonatomic, weak) UIResponder*                     activeResponder;
@@ -55,6 +56,8 @@
 
 @property(nonatomic, readonly) NSHashTable<id<AKAContentSizeCategoryChangeListener>>*
                                                             contentSizeCategoryChangeListeners;
+
+@property(nonatomic, readonly) BOOL                         isObservingChanges;
 
 @end
 
@@ -138,18 +141,122 @@
 {
     [super viewWillAppear:animated];
 
-    [self startObservingKeyboardEvents];
-    [self activateFormControlBindings];
-    [self startObservingContentSizeCategoryEvents];
+    [self startObservingChanges];
 }
 
 - (void)                                 viewWillDisappear:(BOOL)animated
 {
-    [self stopObservingContentSizeCategoryEvents];
-    [self deactivateFormControlBindings];
-    [self stopObservingKeyboardEvents];
+    [self stopObservingChanges];
 
     [super viewWillDisappear:animated];
+}
+
+#pragma mark - Change Tracking
+
+- (void)startObservingChanges
+{
+    if (!self.isObservingChanges)
+    {
+        [self startObservingKeyboardEvents];
+        [self activateFormControlBindings];
+        [self.observations enumerateObjectsUsingBlock:
+         ^(AKAProperty * _Nonnull property, BOOL * _Nonnull stop __unused)
+         {
+             [property startObservingChanges];
+         }];
+        [self startObservingContentSizeCategoryEvents];
+        _isObservingChanges = YES;
+    }
+}
+
+- (void)stopObservingChanges
+{
+    if (self.isObservingChanges)
+    {
+        [self stopObservingContentSizeCategoryEvents];
+        [self.observations enumerateObjectsWithOptions:NSEnumerationReverse
+                                            usingBlock:
+         ^(AKAProperty * _Nonnull property, BOOL * _Nonnull stop __unused)
+         {
+             [property stopObservingChanges];
+         }];
+        [self deactivateFormControlBindings];
+        [self stopObservingKeyboardEvents];
+        _isObservingChanges = NO;
+    }
+}
+
+- (void)                      startObservingKeyboardEvents
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillChangeFrameNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillChangeFrame:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)                       stopObservingKeyboardEvents
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillChangeFrameNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+}
+
+- (void)           startObservingContentSizeCategoryEvents
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentSizeCategoryDidChange:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
+}
+
+- (void)            stopObservingContentSizeCategoryEvents
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIContentSizeCategoryDidChangeNotification
+                                                  object:nil];
+}
+
+#pragma mark - Auxilliary Observations
+
+- (AKAProperty *)                       observeWeakTarget:(NSObject *)target
+                                                  keyPath:(NSString *)keyPath
+                                        changesUsingBlock:(void (^)(id _Nullable, id _Nullable))didChangeValue
+{
+    AKAProperty* result = nil;
+
+    result= [AKAProperty propertyOfWeakKeyValueTarget:target
+                                              keyPath:keyPath
+                                       changeObserver:didChangeValue];
+    [self addObservation:result];
+
+    return result;
+}
+
+- (void)                                   addObservation:(AKAProperty*)property
+{
+    if (_observations == nil)
+    {
+        _observations = [NSMutableSet new];
+    }
+    
+    [self.observations addObject:property];
+    if (self.isObservingChanges)
+    {
+        [property startObservingChanges];
+    }
+}
+
+- (void)                                removeObservation:(AKAProperty*)property
+{
+    [property stopObservingChanges];
+    [self.observations removeObject:property];
 }
 
 #pragma mark - Properties
@@ -260,21 +367,6 @@
 
 #pragma mark - Content Size Category Notifications
 
-- (void)           startObservingContentSizeCategoryEvents
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentSizeCategoryDidChange:)
-                                                 name:UIContentSizeCategoryDidChangeNotification
-                                               object:nil];
-}
-
-- (void)            stopObservingContentSizeCategoryEvents
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIContentSizeCategoryDidChangeNotification
-                                                  object:nil];
-}
-
 - (void)                      contentSizeCategoryDidChange:(NSNotification*__unused)notification
 {
     for (id<AKAContentSizeCategoryChangeListener> listener in self.contentSizeCategoryChangeListeners)
@@ -302,28 +394,6 @@
 }
 
 #pragma mark - Keyboard Notifications
-
-- (void)                      startObservingKeyboardEvents
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillChangeFrameNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillChangeFrame:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-}
-
-- (void)                       stopObservingKeyboardEvents
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillChangeFrameNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-}
 
 - (void)                           keyboardWillChangeFrame:(NSNotification*)notification
 {
@@ -465,6 +535,24 @@
                                       frame.size.width,
                                       frame.size.height + 50.0f);
     return friendlyFrame;
+}
+
+@end
+
+
+@implementation UIViewController(AKABindingBehavior)
+
+- (AKABindingBehavior *)aka_bindingBehavior
+{
+    __block AKABindingBehavior* result = nil;
+    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[AKABindingBehavior class]])
+        {
+            *stop = YES;
+            result = obj;
+        }
+    }];
+    return result;
 }
 
 @end

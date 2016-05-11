@@ -12,9 +12,11 @@
 
 + (opt_AKABindingExpression)bindingExpressionForTarget:(id<NSObject>_Nonnull)target
                                               property:(req_SEL)selector;
+
 + (void)                          setBindingExpression:(opt_AKABindingExpression)bindingExpression
                                              forTarget:(id<NSObject>_Nonnull)target
                                               property:(req_SEL)selector;
+
 + (void)          enumerateBindingExpressionsForTarget:(id<NSObject>_Nonnull)target
                                              withBlock:(void (^_Nonnull)(SEL _Nonnull property,
                                                                          req_AKABindingExpression ex,

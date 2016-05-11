@@ -124,6 +124,13 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeArray = (1 << 6),
 
     /**
+       Specifies a conditional expression (e.g. $when(P1) E1 $whenNot(P2) E2 $else E3)
+     
+       @note conditional expressions can be used to replace any other type of expression as long as the result expressions conform to it.
+     */
+    AKABindingExpressionTypeConditional = (1 << 7),
+
+    /**
        Specifies a class primary expression (e.g. <ClassName>)
      */
     AKABindingExpressionTypeClassConstant = (1 << 10),
@@ -262,6 +269,22 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeDouble = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeDoubleConstant),
 
     /**
+     Specifies a options constant or key path expression.
+
+     @note key path expressions might not evaluate to a conforming options value.
+     */
+    AKABindingExpressionTypeOptions = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeOptionsConstant),
+
+
+    /**
+     Specifies a enum constant or key path expression.
+
+     @note key path expressions might not evaluate to a conforming enumerated value.
+     */
+    AKABindingExpressionTypeEnum = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeEnumConstant),
+
+
+    /**
        Specifies a UIColor or CGColor constant expression.
      */
     AKABindingExpressionTypeAnyColorConstant = (AKABindingExpressionTypeUIColorConstant | AKABindingExpressionTypeCGColorConstant),
@@ -303,7 +326,7 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     /**
      Specifies any expression except arrays.
      */
-    AKABindingExpressionTypeAnyNoArray = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeAnyConstant),
+    AKABindingExpressionTypeAnyNoArray = (AKABindingExpressionTypeAnyKeyPath | AKABindingExpressionTypeAnyConstant | AKABindingExpressionTypeConditional),
 
     /**
      Specifies any expression (all supported expression types).

@@ -11,6 +11,7 @@
 @import AKACommons;
 
 #import "AKABinding_Protected.h"
+#import "AKAConditionalBinding.h"
 #import "AKAPropertyBinding.h"
 #import "AKABindingErrors.h"
 #import "AKABindingDelegateDispatcher.h"
@@ -51,6 +52,67 @@
     return self;
 }
 
++ (opt_AKABinding)bindingToTarget:(req_AKAProperty)target
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error
+{
+    if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
+    {
+        AKABindingSpecification* specification = [self specification];
+
+        AKAConditionalBinding* result = [AKAConditionalBinding alloc];
+        result = [result initWithTarget:target
+                   resultBindingFactory:
+                  ^AKABinding * _Nullable(req_id                    rTarget,
+                                          req_AKABindingExpression  rExpression,
+                                          req_AKABindingContext     rContext,
+                                          opt_AKABindingDelegate    rDelegate,
+                                          out_NSError               rError)
+                  {
+                      AKABinding* resultBinding = [specification.bindingType alloc];
+                      return [resultBinding initWithTarget:rTarget
+                                                expression:rExpression
+                                                   context:rContext
+                                                  delegate:rDelegate
+                                                     error:rError];
+
+                  }
+                      resultBindingType:self
+                             expression:bindingExpression
+                                context:bindingContext
+                               delegate:delegate
+                                  error:error];
+        return result;
+    }
+    else
+    {
+        return [[self alloc] initWithTarget:target
+                                 expression:bindingExpression
+                                    context:bindingContext
+                                   delegate:delegate
+                                      error:error];
+    }
+}
+
+- (BOOL)validateBindingTypeWithExpression:(opt_AKABindingExpression)bindingExpression
+                                    error:(out_NSError)error
+{
+    Class specifiedBindingType = bindingExpression.specification.bindingType;
+
+    BOOL result = (specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType]);
+
+    if (!result)
+    {
+        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
+                                                bindingType:self.class
+                           doesNotMatchSpecifiedBindingType:specifiedBindingType];
+    }
+
+    return result;
+}
+
 - (opt_instancetype)                         initWithTarget:(req_AKAProperty)target
                                                  expression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
@@ -62,11 +124,10 @@
     AKABindingSpecification *specification = [self.class specification];
 
     Class specifiedBindingType = bindingExpression.specification.bindingType;
-    if (specifiedBindingType != nil && ![[self class] isSubclassOfClass:specifiedBindingType])
+
+    if (![self validateBindingTypeWithExpression:bindingExpression
+                                           error:&localError])
     {
-        localError = [AKABindingErrors invalidBindingExpression:bindingExpression
-                                                    bindingType:self.class
-                               doesNotMatchSpecifiedBindingType:specifiedBindingType];
         self = nil;
     }
 
@@ -523,19 +584,56 @@
 {
     __block BOOL result = YES;
 
-    for (AKABinding* tpBinding in self.targetPropertyBindings)
-    {
-        result = [tpBinding stopObservingChanges];
-    }
-    result = [self.bindingTarget stopObservingChanges] && result;
-    result = [self.bindingSource stopObservingChanges] && result;
+    result = [self stopObservingBindingTargetPropertyBindings] && result;
+
+    result = [self stopObservingBindingTarget] && result;
+    result = [self stopObservingBindingSource] && result;
+
+    result = [self stopObservingBindingPropertyBindings] && result;
+
+    return result;
+}
+
+- (BOOL)               stopObservingBindingPropertyBindings
+{
+    BOOL result = YES;
+    [self willStopObservingBindingPropertyBindings];
     for (AKABinding* bpBinding in self.bindingPropertyBindings)
     {
         result = [bpBinding stopObservingChanges] && result;
     }
-
+    [self didStopObservingBindingPropertyBindings];
     return result;
 }
+
+- (BOOL)                         stopObservingBindingTarget
+{
+    [self willStopObservingBindingTarget];
+    BOOL result = [self.bindingTarget stopObservingChanges];
+    [self didStopObservingBindingTarget];
+    return result;
+}
+
+- (BOOL)                         stopObservingBindingSource
+{
+    [self willStopObservingBindingSource];
+    BOOL result = [self.bindingSource stopObservingChanges];
+    [self didStopObservingBindingSource];
+    return result;
+}
+
+- (BOOL)         stopObservingBindingTargetPropertyBindings
+{
+    BOOL result = YES;
+    [self willStopObservingBindingTargetPropertyBindings];
+    for (AKABinding* tpBinding in self.targetPropertyBindings)
+    {
+        result = [tpBinding stopObservingChanges] && result;
+    }
+    [self didStopObservingBindingTargetPropertyBindings];
+    return result;
+}
+
 
 - (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                                  toNewValue:(opt_id)newSourceValue
@@ -645,6 +743,15 @@
     {
         [self addTargetPropertyBinding:binding];
     }
+}
+
+- (void)                            removeArrayItemBindings
+{
+    for (AKABinding* binding in self.arrayItemBindings)
+    {
+        [binding stopObservingChanges];
+    }
+    _arrayItemBindings = nil;
 }
 
 - (void)                          addBindingPropertyBinding:(AKABinding*)bpBinding
@@ -791,8 +898,11 @@
                         bindingType = [AKAPropertyBinding class];
                     }
 
-                    AKABinding* binding = (AKABinding*)[bindingType alloc];
-                    binding = [binding initWithTarget:arrayItemTargetProperty expression:sourceExpression context:bindingContext delegate:weakSelf.delegateForSubBindings error:error];
+                    AKABinding* binding = [bindingType bindingToTarget:arrayItemTargetProperty
+                                                        withExpression:sourceExpression
+                                                               context:bindingContext
+                                                              delegate:weakSelf.delegateForSubBindings
+                                                                 error:error];
                     if (binding)
                     {
                         arrayItemBinding = binding;
@@ -1099,12 +1209,11 @@
                                                            value:oldValue
                                              didChangeToNewValue:newValue];
                                    }];
-        AKABinding* propertyBinding =
-        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty
-                                                expression:attributeExpression
-                                                   context:bindingContext
-                                                  delegate:weakSelf.delegateForSubBindings
-                                                     error:error];
+        AKABinding* propertyBinding = [bindingType bindingToTarget:targetProperty
+                                                    withExpression:attributeExpression
+                                                           context:bindingContext
+                                                          delegate:weakSelf.delegateForSubBindings
+                                                             error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -1140,12 +1249,11 @@
                                  value:oldValue
                    didChangeToNewValue:newValue];
          }];
-        AKABinding* propertyBinding =
-        [(AKABinding *) [bindingType alloc] initWithTarget:targetProperty
-                                                expression:attributeExpression
-                                                   context:bindingContext
-                                                  delegate:weakSelf.delegateForSubBindings
-                                                     error:error];
+        AKABinding* propertyBinding = [bindingType bindingToTarget:targetProperty
+                                                    withExpression:attributeExpression
+                                                           context:bindingContext
+                                                          delegate:weakSelf.delegateForSubBindings
+                                                             error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -1193,6 +1301,27 @@
 - (void)willStartObservingBindingTargetPropertyBindings {}
 
 - (void)didStartObservingBindingTargetPropertyBindings {}
+
+
+- (void)willSopObservingChanges {}
+
+- (void)didStopObservingChanges {}
+
+- (void)willStopObservingBindingPropertyBindings {}
+
+- (void)didStopObservingBindingPropertyBindings {}
+
+- (void)willStopObservingBindingTarget {}
+
+- (void)didStopObservingBindingTarget {}
+
+- (void)willStopObservingBindingSource {}
+
+- (void)didStopObservingBindingSource {}
+
+- (void)willStopObservingBindingTargetPropertyBindings {}
+
+- (void)didStopObservingBindingTargetPropertyBindings {}
 
 @end
 

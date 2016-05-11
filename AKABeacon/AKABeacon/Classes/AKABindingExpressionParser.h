@@ -66,13 +66,22 @@ typedef enum AKABindingExpressionParseErrorCode
 
 #pragma mark - Keywords
 
+// Control Structures
++ (req_NSString) keywordWhen;
++ (req_NSString) keywordWhenNot;
++ (req_NSString) keywordElse;
++ (req_NSString) keywordEnd;
+
+// Binding Scopes
++ (req_NSString) keywordData;
++ (req_NSString) keywordRoot;
++ (req_NSString) keywordControl;
+
+// Manifest Constants
 + (req_NSString) keywordTrue;
 + (req_NSString) keywordFalse;
 + (req_NSString) keywordEnum;
 + (req_NSString) keywordOptions;
-+ (req_NSString) keywordData;
-+ (req_NSString) keywordRoot;
-+ (req_NSString) keywordControl;
 + (req_NSString) keywordColor;
 + (req_NSString) keywordUIColor;
 + (req_NSString) keywordCGColor;

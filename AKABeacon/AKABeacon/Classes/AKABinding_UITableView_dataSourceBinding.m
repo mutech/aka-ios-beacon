@@ -23,7 +23,6 @@
 #import "AKATableViewSectionDataSourceInfoPropertyBinding.h"
 #import "AKATableViewDataSourceAndDelegateDispatcher.h"
 
-
 #pragma mark - AKABinding_UITableView_dataSourceBinding Private Interface
 #pragma mark -
 
@@ -105,14 +104,14 @@
             @"expressionType":       @(AKABindingExpressionTypeArray | AKABindingExpressionTypeAnyKeyPath),
             @"arrayItemBindingType": [AKATableViewSectionDataSourceInfoPropertyBinding class],
             @"attributes":           @{
-                @"defaultCellMapping":   @{
+                @"cellMapping":         @{
                     @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class],
                     @"use":                  @(AKABindingAttributeUseBindToBindingProperty)
                 },
                 @"dynamic":             @{
                         @"bindingType":         [AKATableViewSectionDataSourceInfoPropertyBinding class],
                         @"use":                 @(AKABindingAttributeUseAssignExpressionToBindingProperty),
-                        @"bindingProperty":      @"dynamicSectionBindingExpression"
+                        @"bindingProperty":     @"dynamicSectionBindingExpression"
                         },
                 @"insertAnimation":      @{
                         @"expressionType":       @((AKABindingExpressionTypeEnumConstant|
@@ -450,23 +449,23 @@
 
 - (void)                      sectionInfosWillChangeContent
 {
-
+    // TODO: implement table view update in favor to reloads
 }
 
 - (void)sectionInfosDidMoveSection:(NSInteger)oldSectionIndex toSection:(NSInteger)newSectionIndex
 {
-
+    // TODO: implement table view update in favor to reloads
 }
 
 - (void)sectionInfosDidInsertSection:(AKATableViewSectionDataSourceInfo*)sectionInfo
                           atSectionIndex:(NSInteger)sectionIndex
 {
-
+    // TODO: implement table view update in favor to reloads
 }
 
 - (void)                       sectionInfosDidChangeContent
 {
-
+    // TODO: implement table view update in favor to reloads
 }
 
 - (void)                       sectionInfoWillChangeContent:(AKATableViewSectionDataSourceInfo *)sectionInfo

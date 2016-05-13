@@ -7,6 +7,7 @@
 //
 
 #import "AKAEnumConstantBindingExpression.h"
+#import "AKAConstantBindingExpression_Protected.h"
 
 #import "AKABindingErrors.h"
 #import "AKABindingExpressionParser.h"
@@ -84,69 +85,84 @@
 
 #pragma mark - Validation
 
-- (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
-                                error:(NSError *__autoreleasing  _Nullable *)error
+- (BOOL)    validatePrimaryExpressionWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                                 error:(out_NSError)error
 {
-    // Enumeration expressions can be used in place of all types but Array and None to enable
-    // the use of user defined enumeration types for shared objects.
+    BOOL result = YES;
 
-    // TODO: this is too lax, instead it should be possible to specifiy the expression types that
-    // a specific enumeration type can replace when registering an enumeration.
-
-    AKABindingExpressionType nonCoercibleTypes = AKABindingExpressionTypeArray | AKABindingExpressionTypeNone;
-    AKABindingExpressionType coercibleTypes = ~nonCoercibleTypes;
-
-    BOOL result = (expressionType & coercibleTypes) != 0;
-
-    if (!result)
+    if (specification)
     {
-        result = [super validatePrimaryExpressionType:expressionType error:error];
+        AKABindingExpressionType expressionType = specification.expressionType;
+
+        // Enumeration expressions can be used in place of all types but Array and None to enable
+        // the use of user defined enumeration types for shared objects.
+
+        // TODO: this is too lax, instead it should be possible to specifiy the expression types that
+        // a specific enumeration type can replace when registering an enumeration.
+
+        AKABindingExpressionType nonCoercibleTypes = AKABindingExpressionTypeArray | AKABindingExpressionTypeNone;
+        AKABindingExpressionType coercibleTypes = ~nonCoercibleTypes;
+
+        result = (expressionType & coercibleTypes) != 0;
+
+        if (!result)
+        {
+            result = [super validatePrimaryExpressionWithSpecification:specification error:error];
+        }
     }
 
     return result;
 }
 
-- (BOOL)validate:(out_NSError)error
+- (BOOL)                     validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                        overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                 error:(out_NSError)error
+
 {
-    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
-    BOOL result = [super validate:error];
     NSError* localError = nil;
 
-    if (specification)
+    BOOL result = [super validateWithSpecification:specification
+            overrideAllowUnknownAttributes:allowUnknownAttributes
+                                     error:&localError];
+    if (result)
     {
-        NSString* enumerationType = specification.enumerationType;
-
-        // Fallback to options type if the specified type is an options type.
-        if (specification.enumerationType == nil &&
-            specification.optionsType != nil &&
-            specification.expressionType == AKABindingExpressionTypeOptionsConstant)
+        if (specification)
         {
-            enumerationType = specification.optionsType;
-        }
+            NSString* enumerationType = specification.enumerationType;
 
-
-        if (self.enumerationType == nil)
-        {
-            if (enumerationType.length > 0)
+            // Fallback to options type if the specified type is an options type.
+            if (specification.enumerationType == nil &&
+                    specification.optionsType != nil &&
+                    specification.expressionType == AKABindingExpressionTypeOptionsConstant)
             {
-                self.enumerationType = enumerationType;
+                enumerationType = specification.optionsType;
             }
-            else if (self.symbolicValue.length > 0)
+
+
+            if (self.enumerationType == nil)
             {
-                // Only an error if a value is given, otherwise the expression will validly evaluate
-                // to nil.
+                if (enumerationType.length > 0)
+                {
+                    self.enumerationType = enumerationType;
+                }
+                else if (self.symbolicValue.length > 0)
+                {
+                    // Only an error if a value is given, otherwise the expression will validly evaluate
+                    // to nil.
+                    result = NO;
+                    localError = [AKABindingErrors invalidBindingExpression:self
+                                           noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification];
+                }
+            }
+            else if (enumerationType.length > 0 && ![enumerationType isEqualToString:(req_NSString)self.enumerationType])
+            {
                 result = NO;
                 localError = [AKABindingErrors invalidBindingExpression:self
-                                       noEnumerationTypeInSpecification:(req_AKABindingExpressionSpecification)specification];
+                                                enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification];
             }
         }
-        else if (enumerationType.length > 0 && ![enumerationType isEqualToString:(req_NSString)self.enumerationType])
-        {
-            result = NO;
-            localError = [AKABindingErrors invalidBindingExpression:self
-                                            enumerationTypeMismatch:(req_AKABindingExpressionSpecification)specification];
-        }
     }
+
 
     if (!result && localError)
     {
@@ -156,6 +172,7 @@
         }
         else
         {
+            // TODO: error handling, use AKABindingErrors:
             @throw [NSException exceptionWithName:@"UnhandledError"
                                            reason:localError.localizedDescription
                                          userInfo:@{ @"error": localError }];
@@ -179,8 +196,8 @@
     {
         NSError* error = nil;
         self.constant = [AKABindingExpressionSpecification resolveEnumeratedValue:self.symbolicValue
-                                                                         forType:self.enumerationType
-                                                                           error:&error];
+                                                                          forType:self.enumerationType
+                                                                            error:&error];
 
         if (super.constant == nil && error != nil)
         {

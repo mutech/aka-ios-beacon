@@ -19,8 +19,4 @@
 
 @property(nonatomic, readonly, nullable) NSString* textForConstant;
 
-#pragma mark - internal
-
-- (void)setConstant:(opt_id)constant;
-
 @end

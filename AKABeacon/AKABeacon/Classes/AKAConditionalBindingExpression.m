@@ -126,4 +126,45 @@
     return result;
 }
 
+- (BOOL)                          validatePrimaryExpressionWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                                                       error:(out_NSError)error
+{
+    BOOL result = YES;
+
+    if (specification)
+    {
+        for (AKAConditionalBindingExpressionClause* clause in self.clauses)
+        {
+            result = [clause.resultBindingExpression validatePrimaryExpressionWithSpecification:specification
+                                                                                          error:error];
+            if (!result)
+            {
+                break;
+            }
+        }
+    }
+
+    return result;
+}
+
+- (BOOL)validateAttributesWithSpecification:(AKABindingExpressionSpecification*)specification
+             overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                      error:(NSError *_Nullable __autoreleasing *)error
+{
+    BOOL result = YES;
+
+    for (AKAConditionalBindingExpressionClause* clause in self.clauses)
+    {
+        result = [clause.resultBindingExpression validateAttributesWithSpecification:specification
+                                                      overrideAllowUnknownAttributes:allowUnknownAttributes
+                                                                               error:error];
+        if (!result)
+        {
+            break;
+        }
+    }
+
+    return result;
+}
+
 @end

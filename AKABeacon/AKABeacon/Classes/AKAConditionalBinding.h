@@ -13,8 +13,8 @@
 @interface AKAConditionalBindingClause: NSObject
 
 @property(nonatomic, readonly) NSUInteger   expressionClauseIndex;
-@property(nonatomic, readonly) NSPredicate* predicate;
-@property(nonatomic, readonly) AKABinding*  binding;
+@property(nonatomic, readonly, nullable) NSPredicate* predicate;
+@property(nonatomic, readonly, nullable) AKABinding*  binding;
 
 @end
 
@@ -33,8 +33,8 @@
                           delegate:(opt_AKABindingDelegate)delegate
                              error:(out_NSError)error;
 
-@property(nonatomic, readonly) AKAConditionalBindingClause*           activeClause;
+@property(nonatomic, readonly, nullable) AKAConditionalBindingClause*           activeClause;
 
-@property(nonatomic, readonly) NSArray<AKAConditionalBindingClause*>* clauses;
+@property(nonatomic, readonly, nonnull) NSArray<AKAConditionalBindingClause*>* clauses;
 
 @end

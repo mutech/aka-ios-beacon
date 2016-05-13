@@ -45,7 +45,7 @@
 
  @param viewController  the view controller also serving as binding data context and delegate (if it's conforming to AKABindingBehaviorDelegate).
  */
-+ (void)addToViewController:(UIViewController*)viewController;
++ (void)addToViewController:(req_UIViewController)viewController;
 
 /**
  Enables binding support for the specified viewController by creating a binding bahvior instance suitable for the specified view controller and adding it as child view controller.
@@ -58,21 +58,21 @@
  @param dataContext     the data context, used for resolving key paths in binding expressions
  @param delegate        the delegate receiving binding behavior (and thus control-) delegate messages
  */
-+ (void)addToViewController:(UIViewController*)viewController
-            withDataContext:(id)dataContext
-                   delegate:(id<AKABindingBehaviorDelegate>)delegate;
++ (void)addToViewController:(req_UIViewController)viewController
+            withDataContext:(req_id)dataContext
+                   delegate:(id<AKABindingBehaviorDelegate>_Nullable)delegate;
 
 #pragma mark - Activation
 
-- (void)addToViewController:(UIViewController*)viewController;
+- (void)addToViewController:(req_UIViewController)viewController;
 
-- (void)removeFromViewController:(UIViewController*)viewController;
+- (void)removeFromViewController:(req_UIViewController)viewController;
 
 #pragma mark - Auxiliary Observations
 
-- (void)addObservation:(AKAProperty*)property;
+- (void)addObservation:(req_AKAProperty)property;
 
-- (void)removeObservation:(AKAProperty*)property;
+- (void)removeObservation:(req_AKAProperty)property;
 
 /**
  Observes changes of the target's key path and calls the specified block whenever a change occurs.
@@ -91,9 +91,9 @@
 
  @return An instance of AKAProperty controlling the observation or nil if the view controller does not have a binding behavior.
  */
-- (AKAProperty*)observeWeakTarget:(NSObject*)target
-                          keyPath:(req_NSString)keyPath
-                changesUsingBlock:(void(^)(id _Nullable oldValue, id _Nullable newValue))didChangeValue;
+- (opt_AKAProperty)observeWeakTarget:(opt_NSObject)target
+                             keyPath:(req_NSString)keyPath
+                   changesUsingBlock:(void(^_Nonnull)(id _Nullable oldValue, id _Nullable newValue))didChangeValue;
 
 @end
 

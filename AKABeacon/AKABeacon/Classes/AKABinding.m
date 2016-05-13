@@ -99,15 +99,20 @@
 - (BOOL)validateBindingTypeWithExpression:(opt_AKABindingExpression)bindingExpression
                                     error:(out_NSError)error
 {
-    Class specifiedBindingType = bindingExpression.specification.bindingType;
+    BOOL result = YES;
 
-    BOOL result = (specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType]);
-
-    if (!result)
+    if (bindingExpression)
     {
-        *error = [AKABindingErrors invalidBindingExpression:bindingExpression
-                                                bindingType:self.class
-                           doesNotMatchSpecifiedBindingType:specifiedBindingType];
+        Class specifiedBindingType = bindingExpression.specification.bindingType;
+
+        BOOL result = (specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType]);
+
+        if (!result)
+        {
+            *error = [AKABindingErrors invalidBindingExpression:(req_AKABindingExpression)bindingExpression
+                                                    bindingType:self.class
+                               doesNotMatchSpecifiedBindingType:specifiedBindingType];
+        }
     }
 
     return result;
@@ -139,8 +144,9 @@
         BOOL relaxAttributeChecks = self.class != specifiedBindingType;
         if (specification.bindingSourceSpecification)
         {
-            if (![bindingExpression validateOverrideAllowUnknownAttributes:relaxAttributeChecks
-                                                                     error:&localError])
+            if (![bindingExpression validateWithSpecification:bindingExpression.specification.bindingSourceSpecification
+                               overrideAllowUnknownAttributes:relaxAttributeChecks
+                                                        error:&localError])
             {
                 self = nil;
             }

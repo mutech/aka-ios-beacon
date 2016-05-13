@@ -298,7 +298,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clI-pe-ViP">
                                         <rect key="frame" x="0.0" y="0.0" width="79" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
@@ -331,7 +331,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7w-HL-ob8">
                                         <rect key="frame" x="0.0" y="0.0" width="79" height="30"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
@@ -352,7 +352,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YR6-XZ-QBM">
                                 <rect key="frame" x="162" y="195" width="52" height="26"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="fontBinding_aka" value="{}"/>
@@ -365,6 +365,15 @@ $when("0 &lt; $ln.length" {ln: lastName})
 	"Last name defined"
 $else
 	"Neither defined"</string>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="styleBinding_aka">
+                                        <string key="value">{
+	textColor:
+		$when("$fn = 0 AND $ln = 0" {fn: firstName.length, ln: lastName.length})
+			$UIColor{r:255, g:0, b:0}
+		$else
+			$UIColor{r:255, g:0, b:0}
+}</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </label>
@@ -2671,15 +2680,10 @@ The number editor text field uses two different formatters, one for display and 
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="dataSourceBinding_aka">
                                         <string key="value">sections {
-         dynamic: rows {
-		headerTitle: headerTitle
-	},
-	defaultCellMapping: [
-                { predicate: &lt;NSString&gt;,
-                  cellIdentifier: "stringCell" },
-                { predicate: &lt;NSNumber&gt;,
-                  cellIdentifier: "numberCell" }
-	]
+         dynamic: rows { headerTitle: headerTitle },
+	cellMapping:
+		$when(&lt;NSString&gt;)		"stringCell"
+		$when(&lt;NSNumber&gt;)	"numerCell"
 }</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>

@@ -7,7 +7,7 @@
 //
 
 #import "AKABeaconErrors.h"
-#import "AKAConstantBindingExpression.h"
+#import "AKAConstantBindingExpression_Protected.h"
 #import "AKABindingExpression_Internal.h"
 
 
@@ -66,7 +66,8 @@
 
     if (target)
     {
-        result = [AKAProperty propertyOfWeakKeyValueTarget:(req_id)target
+        req_id definedTarget = target;
+        result = [AKAProperty propertyOfWeakKeyValueTarget:definedTarget
                                                    keyPath:nil
                                             changeObserver:changeObserver];
     }
@@ -103,7 +104,8 @@
 - (NSString *)textForPrimaryExpressionWithNestingLevel:(NSUInteger __unused)level
                                                 indent:(NSString *__unused)indent
 {
-    return self.textForConstant ? (req_NSString)self.textForConstant : @"";
+    req_NSString text = self.textForConstant;
+    return text ? text : @"";
 }
 
 @end

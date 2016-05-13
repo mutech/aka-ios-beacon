@@ -9,6 +9,7 @@
 @import AKACommons.NSObject_AKAConcurrencyTools;
 
 #import "AKAOptionsConstantBindingExpression.h"
+#import "AKAConstantBindingExpression_Protected.h"
 #import "AKABooleanConstantBindingExpression.h"
 
 #import "AKABindingErrors.h"
@@ -20,9 +21,9 @@
 
 @implementation AKAOptionsConstantBindingExpression
 
-- (instancetype)initWithConstant:(opt_id)constant
-                      attributes:(opt_AKABindingExpressionAttributes)attributes
-                   specification:(opt_AKABindingSpecification)specification
+- (instancetype)             initWithConstant:(opt_id)constant
+                                   attributes:(opt_AKABindingExpressionAttributes)attributes
+                                specification:(opt_AKABindingSpecification)specification
 {
     NSString* optionsType;
     NSString* symbolicValue;
@@ -111,10 +112,17 @@
 
 #pragma mark - Validation
 
-- (BOOL)validate:(out_NSError)error
+- (BOOL)            validateWithSpecification:(opt_AKABindingExpressionSpecification)specification
+               overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                        error:(out_NSError)error
 {
-    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
-    BOOL result = [super validate:error];
+    // TODO: fix: split validation in validatePrimaryExpressioWith... and validateAttributesWith..
+    // -> a Client might call these for partial validation which would not deliver a correct result
+    // TODO: check option value attributes if possible
+
+    BOOL result = [super validateWithSpecification:specification
+                    overrideAllowUnknownAttributes:allowUnknownAttributes
+                                             error:error];
     NSError* localError = nil;
 
     if (specification)
@@ -131,7 +139,8 @@
             {
                 // Only an error if a value is given, otherwise the expression will validly evaluate to zero.
                 result = NO;
-                localError = [AKABindingErrors invalidBindingExpression:self noOptionsTypeInSpecification:specification];;
+                localError = [AKABindingErrors invalidBindingExpression:self
+                                           noOptionsTypeInSpecification:specification];;
             }
         }
         else if (optionsType.length > 0 && ![optionsType isEqualToString:(req_NSString)self.optionsType])
@@ -161,13 +170,13 @@
 
 #pragma mark - Properties
 
-- (void)setOptionsType:(NSString*)optionsType
+- (void)                       setOptionsType:(NSString*)optionsType
 {
     NSParameterAssert(optionsType == _optionsType || _optionsType == nil);
     _optionsType = optionsType;
 }
 
-- (id)constant
+- (id)                               constant
 {
     if (super.constant == nil && self.optionsType.length > 0 && self.attributes.count > 0)
     {
@@ -185,19 +194,19 @@
     return super.constant;
 }
 
-- (AKABindingExpressionType)expressionType
+- (AKABindingExpressionType)   expressionType
 {
     return AKABindingExpressionTypeOptionsConstant;
 }
 
 #pragma mark - Serialization
 
-- (NSString*)keyword
+- (NSString*)                         keyword
 {
     return [AKABindingExpressionParser keywordOptions];
 }
 
-- (NSString*)textForConstant
+- (NSString*)                 textForConstant
 {
     NSString* result = nil;
 

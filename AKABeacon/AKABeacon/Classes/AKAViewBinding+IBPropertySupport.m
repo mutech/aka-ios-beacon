@@ -20,11 +20,9 @@
     AKABindingExpression* expression = [AKABindingExpression bindingExpressionForTarget:view
                                                                                property:selector];
 
-    Class bindingType = expression.specification.bindingType;
-    NSAssert(bindingType == self.class,
-             @"Binding expression %@.%@ was created by a different provider %@",
-             view, NSStringFromSelector(selector), bindingType);
-    (void)bindingType;
+    NSAssert(expression.specification.bindingType == self.class,
+             @"Binding expression %@.%@ was created for binding type %@ and cannot be used by bindings of type %@",
+             view, NSStringFromSelector(selector), expression.specification.bindingType, self.class);
 
     return expression.text;
 }

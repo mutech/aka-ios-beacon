@@ -9,8 +9,12 @@
 @import Foundation;
 @import AKACommons.AKANullability;
 
+#import "AKABindingExpression.h"
+
+
 #import "AKABinding.h"
 #import "AKABindingExpression.h"
+#import "AKABeaconNullability.h"
 
 typedef enum AKABindingExpressionParseErrorCode
 {
@@ -70,7 +74,6 @@ typedef enum AKABindingExpressionParseErrorCode
 + (req_NSString) keywordWhen;
 + (req_NSString) keywordWhenNot;
 + (req_NSString) keywordElse;
-+ (req_NSString) keywordEnd;
 
 // Binding Scopes
 + (req_NSString) keywordData;
@@ -139,7 +142,7 @@ typedef enum AKABindingExpressionParseErrorCode
 
 #pragma mark - Scanner Tools (Error Reporting)
 
-- (BOOL)        registerParseError:(NSError* __autoreleasing _Nonnull* _Nullable)error
+- (BOOL)        registerParseError:(out_NSError)error
                           withCode:(AKABindingExpressionParseErrorCode)errorCode
                         atPosition:(NSUInteger)position
                             reason:(req_NSString)failureReason;

@@ -9,21 +9,10 @@
 #import "AKABindingExpression_Internal.h"
 #import "AKABindingExpressionParser.h"
 #import "AKABindingErrors.h"
-#import "AKANSEnumerations.h"
-#import "AKABindingSpecification.h"
+#import "NSMutableString+AKATools.h"
 
-#import "AKAConstantBindingExpression.h"
-#import "AKAOptionsConstantBindingExpression.h"
-
-@import AKACommons.AKANullability;
-@import AKACommons.NSMutableString_AKATools;
-@import AKACommons.AKALog;
-@import AKACommons.AKAErrors;
 @import AKACommons.NSObject_AKAConcurrencyTools;
-
-@class AKAProperty;
-@class AKAControl;
-@class AKACompositeControl;
+@import AKACommons.NSMutableString_AKATools;
 
 #pragma mark - AKABindingExpression
 #pragma mark -
@@ -32,9 +21,9 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)bindingExpressionWithString:(req_NSString)expressionText
-                                bindingType:(req_Class)bindingType
-                                      error:(out_NSError)error
++ (instancetype)                     bindingExpressionWithString:(req_NSString)expressionText
+                                                     bindingType:(req_Class)bindingType
+                                                           error:(out_NSError)error
 {
     AKABindingExpressionParser* parser = [AKABindingExpressionParser parserWithString:expressionText];
     AKABindingExpression* result = nil;
@@ -56,7 +45,9 @@
         {
             NSError* localError = nil;
 
-            if (![result validate:&localError])
+            if (![result validateWithSpecification:[bindingType specification].bindingSourceSpecification
+                    overrideAllowUnknownAttributes:NO
+                                             error:&localError])
             {
                 if (error)
                 {
@@ -76,8 +67,8 @@
     return result;
 }
 
-- (instancetype)initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
-                     specification:(opt_AKABindingSpecification)specification
+- (instancetype)                              initWithAttributes:(opt_AKABindingExpressionAttributes)attributes
+                                                   specification:(opt_AKABindingSpecification)specification
 {
     if (self = [super init])
     {
@@ -88,9 +79,9 @@
     return self;
 }
 
-- (instancetype _Nullable)initWithPrimaryExpression:(opt_id)primaryExpression
-                                         attributes:(opt_AKABindingExpressionAttributes)attributes
-                                      specification:(opt_AKABindingSpecification)specification
+- (instancetype _Nullable)             initWithPrimaryExpression:(opt_id)primaryExpression
+                                                      attributes:(opt_AKABindingExpressionAttributes)attributes
+                                                   specification:(opt_AKABindingSpecification)specification
 {
     if (primaryExpression == nil)
     {
@@ -113,76 +104,74 @@
 
 #pragma mark - Validation
 
-- (BOOL)validate:(out_NSError)error
+- (BOOL)                                               validate:(out_NSError)error
 {
-    return [self validateOverrideAllowUnknownAttributes:NO error:error];
+    return [self validateWithSpecification:self.specification.bindingSourceSpecification
+            overrideAllowUnknownAttributes:NO
+                                     error:error];
 }
 
-- (BOOL)validateOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
-                                         error:(out_NSError)error
+- (BOOL)                              validateWithSpecification:(AKABindingExpressionSpecification*)specification
+                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                          error:(out_NSError)error
+{
+    BOOL result;
+
+    if (specification)
+    {
+        result = [self validatePrimaryExpressionWithSpecification:specification
+                                                            error:error];
+    }
+    else
+    {
+        // No validation (assuming success) is ok if no specification is provided:
+        // Good for lazy binding authors, not so good for users. We relax validation here for users
+        // writing binding extensions.
+        result = YES;
+    }
+
+    if (result)
+    {
+        result = [self validateAttributesWithSpecification:specification overrideAllowUnknownAttributes:allowUnknownAttributes
+                                                     error:error];
+    }
+
+    return result;
+}
+
+- (BOOL)             validatePrimaryExpressionWithSpecification:(opt_AKABindingExpressionSpecification)specification
+                                                          error:(out_NSError)error
 {
     BOOL result = YES;
 
-    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
-
-    if (result)
+    if (specification)
     {
-        if (specification)
-        {
-            result = [self validatePrimaryExpressionType:specification.expressionType
-                                                   error:error];
-        }
-        else
-        {
-            // No validation (assuming success) is ok if no specification is provided:
-            // Good for lazy binding authors, not so good for users. We relax validation here for users
-            // writing binding extensions.
-            result = YES;
-        }
-    }
+        AKABindingExpressionType expressionType = specification.expressionType;
+        result = (self.expressionType & expressionType) != 0;
 
-    if (result)
-    {
-        result = [self validateAttributesOverrideAllowUnknownAttributes:allowUnknownAttributes
-                                                                  error:error];
+        if (!result && error)
+        {
+            *error = [AKABindingErrors invalidBindingExpression:self
+                                   invalidPrimaryExpressionType:self.expressionType
+                                                       expected:expressionType];
+        }
     }
 
     return result;
 }
 
-- (BOOL)validatePrimaryExpressionType:(AKABindingExpressionType)expressionType
-                                error:(out_NSError)error
-{
-    BOOL result = (self.expressionType & expressionType) != 0;
-
-    if (!result && error)
-    {
-        *error = [AKABindingErrors invalidBindingExpression:self
-                               invalidPrimaryExpressionType:self.expressionType
-                                                   expected:expressionType];
-    }
-
-    return result;
-}
-
-- (BOOL)validateAttributes:(out_NSError)error
-{
-    return [self validateAttributesOverrideAllowUnknownAttributes:NO
-                                                            error:error];
-}
-
-- (BOOL)validateAttributesOverrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
-                                                   error:(out_NSError)error
+- (BOOL)                    validateAttributesWithSpecification:(AKABindingExpressionSpecification*)specification
+                                 overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
+                                                          error:(out_NSError)error
 {
     __block BOOL result = YES;
     __block NSError* localError = nil;
 
-    AKABindingExpressionSpecification* specification = self.specification.bindingSourceSpecification;
-
     BOOL allowUnspecified = allowUnknownAttributes || specification.allowUnspecifiedAttributes;
 
     // Validation of option values specified as attributes:
-    BOOL isOptionsConstant = (specification.expressionType & AKABindingExpressionTypeOptionsConstant) && specification.optionsType;
+    BOOL isOptionsConstant = ((specification.expressionType & AKABindingExpressionTypeOptionsConstant) &&
+                               specification.optionsType);
     NSSet* options = nil;
     if (isOptionsConstant)
     {
@@ -225,13 +214,9 @@
          // perform attribute validation
          if (result)
          {
-             AKABindingExpressionSpecification* attributeExpressionSpecification =
-                 attributeSpecification.bindingSourceSpecification;
-
-             if (attributeExpressionSpecification)
-             {
-                 result = [bindingExpression validate:&localError];
-             }
+             result = [bindingExpression validateWithSpecification:attributeSpecification.bindingSourceSpecification
+                                    overrideAllowUnknownAttributes:allowUnknownAttributes
+                                                             error:&localError];
          }
          *stop = !result;
      }];
@@ -285,15 +270,15 @@
     return nil;
 }
 
-- (opt_AKAProperty)bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
-                                    changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
+- (opt_AKAProperty)              bindingSourcePropertyInContext:(req_AKABindingContext)bindingContext
+                                                  changeObserer:(opt_AKAPropertyChangeObserver)changeObserver
 {
     (void)bindingContext;
     (void)changeObserver;
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (opt_id)bindingSourceValueInContext:(req_AKABindingContext)bindingContext
+- (opt_id)                          bindingSourceValueInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext;
     // Has to be implemented by subclasses
@@ -302,17 +287,17 @@
 
 #pragma mark - Diagnostics
 
-- (BOOL)isConstant
+- (BOOL)                                             isConstant
 {
     return NO;
 }
 
-- (NSString*)constantStringValueOrDescription
+- (NSString*)                  constantStringValueOrDescription
 {
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (NSString*)description
+- (NSString*)                                       description
 {
     return [self textWithNestingLevel:0
                                indent:@"\t"];
@@ -326,8 +311,8 @@
                                indent:@""];
 }
 
-- (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
-                                               indent:(NSString*)indent
+- (NSString*)          textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
+                                                         indent:(NSString*)indent
 {
     (void)level;
     (void)indent;
@@ -341,8 +326,8 @@
     return [self textForPrimaryExpressionWithNestingLevel:0 indent:@""];
 }
 
-- (NSString*)textWithNestingLevel:(NSUInteger)level
-                           indent:(NSString*)indent
+- (NSString*)                              textWithNestingLevel:(NSUInteger)level
+                                                         indent:(NSString*)indent
 {
     static NSString*const kPrimaryAttributesSeparator = @" ";
 

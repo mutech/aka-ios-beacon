@@ -24,7 +24,7 @@
 @class AKABindingExpression;
 #define req_AKABindingExpression AKABindingExpression*_Nonnull
 #define opt_AKABindingExpression AKABindingExpression*_Nullable
-#define out_AKABindingExpression AKABindingExpression* __autoreleasing _Nullable* _Nullable
+#define out_AKABindingExpression AKABindingExpression* _Nullable __autoreleasing* _Nullable
 
 @class AKABinding;
 #define req_AKABinding AKABinding*_Nonnull

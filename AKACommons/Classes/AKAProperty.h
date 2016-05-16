@@ -114,6 +114,8 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
 
 #pragma mark - Initialization
 
++ (req_AKAProperty)                constantNilProperty;
+
 + (req_AKAProperty)       propertyOfWeakKeyValueTarget:(opt_NSObject)target
                                                keyPath:(opt_NSString)keyPath
                                         changeObserver:(opt_AKAPropertyChangeObserver)valueDidChange;

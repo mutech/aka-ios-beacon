@@ -44,7 +44,7 @@
 #define req_id                      id _Nonnull
 #endif
 #ifndef out_id
-#define out_id                      id __autoreleasing _Nullable * _Nullable
+#define out_id                      id _Nullable __autoreleasing * _Nullable
 #endif
 #ifndef inout_id
 #define inout_id                    out_id

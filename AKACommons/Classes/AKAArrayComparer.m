@@ -73,7 +73,7 @@
 @synthesize permutationAfterDeletionsAndBeforeInsertions = _permutationAfterDeletionsAndBeforeInsertions;
 - (NSArray<NSNumber *> *)permutationAfterDeletionsAndBeforeInsertions
 {
-    if (_permutationAfterDeletionsAndBeforeInsertions == nil)
+    if (_permutationAfterDeletionsAndBeforeInsertions.count == 0)
     {
         [self recordMovements];
     }

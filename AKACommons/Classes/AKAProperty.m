@@ -13,6 +13,18 @@
 #import "AKAErrors.h"
 
 
+#pragma mark - AKAConstantNilProperty (Cluster Interface)
+#pragma mark -
+
+@interface AKAConstantNilProperty: AKAProperty
+
+#pragma mark - Initialization
+
++ (instancetype)sharedInstance;
+
+@end
+
+
 #pragma mark - AKAKVOProperty (Cluster Interface)
 #pragma mark -
 
@@ -112,6 +124,8 @@
 @interface AKAProperty()
 
 @property(nonatomic, weak) id target;
+- (void)setTarget:(id)target bypassKVO:(BOOL)bypassKVO;
+
 @property(nonatomic, strong) NSHashTable* dependentPropertiesStorage;
 @property(nonatomic, strong) NSHashTable* dependencyPropertiesStorage;
 
@@ -140,6 +154,11 @@
 @implementation AKAProperty
 
 #pragma mark - Initialization
+
++ (AKAProperty*)constantNilProperty
+{
+    return [AKAConstantNilProperty sharedInstance];
+}
 
 + (AKAProperty*)propertyOfWeakKeyValueTarget:(opt_NSObject)target
                                      keyPath:(NSString*)keyPath
@@ -310,6 +329,19 @@
 
 #pragma mark - Value Access
 
+// Set target without triggering KVO change notifications
+- (void)setTarget:(id)target bypassKVO:(BOOL)bypassKVO
+{
+    if (bypassKVO)
+    {
+        _target = target;
+    }
+    else
+    {
+        self.target = target;
+    }
+}
+
 - (id)valueWithDefaultTarget:(id)defaultTarget
 {
     if (self.target != nil)
@@ -378,20 +410,20 @@
 
 - (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
+    if (self.isObservingChanges)
+    {
+        [self notifyDependenciesValueDidChangeFrom:oldValue to:newValue];
+    }
+}
+
+- (void)notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue
+{
     for (id dependant in self.dependentPropertiesStorage)
     {
         if (dependant && dependant != [NSNull null])
         {
             [((AKAProperty*)dependant) dependencyDidChangeValueFrom:oldValue to:newValue];
         }
-    }
-}
-
-- (void)notifyDependenciesValueDidChangeFrom:(id)oldValue to:(id)newValue
-{
-    for (AKAProperty* property in self.dependentProperties)
-    {
-        [property dependencyDidChangeValueFrom:oldValue to:newValue];
     }
 }
 
@@ -406,7 +438,7 @@
     }
     else
     {
-        result = [[NSSet alloc] init];
+        result = [NSSet new];
     }
     return result;
 }
@@ -420,7 +452,7 @@
     }
     else
     {
-        result = [[NSSet alloc] init];
+        result = [NSSet new];
     }
     return result;
 }
@@ -472,6 +504,78 @@
     }
     return result;
 }
+
+@end
+
+
+#pragma mark - AKAConstantNilProperty (Implementation)
+#pragma mark -
+
+@implementation AKAConstantNilProperty
+
+#pragma mark - Initialization
+
++ (instancetype)sharedInstance
+{
+    static AKAConstantNilProperty* result;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [[AKAConstantNilProperty alloc] initWithWeakTarget:nil];
+    });
+    return result;
+}
+
+#pragma mark - Value Access
+
+- (id)valueWithDefaultTarget:(id __unused)defaultTarget { return nil; }
+
+- (id)value { return nil; }
+
+- (void)setTarget:(id)target bypassKVO:(BOOL)bypassKVO
+{
+    [NSException exceptionWithName:@"InvalidOperation"
+                            reason:@"Attempt to modify constant property %@"
+                          userInfo:nil];
+}
+
+- (void)setValue:(id)value
+{
+    [NSException exceptionWithName:@"InvalidOperation"
+                            reason:@"Attempt to modify constant property %@"
+                          userInfo:nil];
+}
+
+- (id)targetValueForKey:(NSString *)key { return nil; }
+
+- (id)targetValueForKeyPath:(NSString *)keyPath { return nil; }
+
+#pragma mark - Notifications
+
+- (BOOL)isObservingChanges { return NO; }
+- (BOOL)startObservingChanges { return NO; }
+- (BOOL)stopObservingChanges { return YES; }
+
+- (void)notifyPropertyValueDidChangeFrom:(id __unused)oldValue to:(id __unused)newValue { }
+
+- (void)propertyValueDidChangeFrom:(id __unused)oldValue to:(id __unused)newValue { }
+
+- (void)notifyDependenciesValueDidChangeFrom:(id __unused)oldValue to:(id __unused)newValue { }
+
+#pragma mark - Dependent Properties
+
+- (NSSet*)dependentProperties { return nil; }
+
+- (NSSet*)dependencyProperties { return nil; }
+
+- (void)addDependencyProperty:(AKAProperty*__unused)derived {}
+
+- (void)addDependentProperty:(AKAProperty*__unused)derived {}
+
+- (void)dependencyDidChangeValueFrom:(id __unused)oldValue to:(id __unused)newValue {}
+
+- (NSString*)dependenciesDescription { return @"-"; }
+
+- (id)targetDescription { return @"<nil>"; }
 
 @end
 
@@ -574,11 +678,14 @@
 
 - (void)propertyValueDidChangeFrom:(id)oldValue to:(id)newValue
 {
-    if (self.changeObserver)
+    if (self.isObservingChanges)
     {
-        self.changeObserver(oldValue, newValue);
+        if (self.changeObserver)
+        {
+            self.changeObserver(oldValue, newValue);
+        }
+        [super propertyValueDidChangeFrom:oldValue to:newValue];
     }
-    [super propertyValueDidChangeFrom:oldValue to:newValue];
 }
 
 - (BOOL)isObservingChanges
@@ -652,6 +759,17 @@
 - (void)dependencyDidChangeValueFrom:(id)oldValue to:(id)newValue
 {
     __strong id target = self.target;
+#if YES
+    if (target == oldValue || target == nil)
+    {
+        id myOldValue = self.value;
+        [self setTarget:newValue bypassKVO:YES];
+        if (myOldValue != newValue)
+        {
+            [self propertyValueDidChangeFrom:myOldValue to:myNewValue];
+        }
+    }
+#else
     BOOL wasObservingChanges = self.isObservingChanges;
     if (target == oldValue || target == nil)
     {
@@ -665,13 +783,10 @@
         }
         if (myOldValue != myNewValue)
         {
-            if (self.changeObserver)
-            {
-                self.changeObserver(myOldValue, myNewValue);
-            }
             [self propertyValueDidChangeFrom:myOldValue to:myNewValue];
         }
     }
+#endif
 }
 
 #pragma mark - Diagnostics
@@ -904,10 +1019,17 @@
 - (BOOL)startObservingChanges
 {
     BOOL result = self.isObservingChanges;
-    if (!result && self.observationStarter)
+    if (!result)
     {
-        result = self.observationStarter(self.target);
-        _isObservingChanges = result;
+        if (self.observationStarter)
+        {
+            result = self.observationStarter(self.target);
+            _isObservingChanges = result;
+        }
+        else
+        {
+            _isObservingChanges = YES;
+        }
     }
     return result;
 }
@@ -917,8 +1039,15 @@
     BOOL result = !self.isObservingChanges;
     if (!result)
     {
-        result = self.observationStopper(self.target);
-        _isObservingChanges = !result;
+        if (self.observationStopper)
+        {
+            result = self.observationStopper(self.target);
+            _isObservingChanges = !result;
+        }
+        else
+        {
+            _isObservingChanges = NO;
+        }
     }
     return result;
 }

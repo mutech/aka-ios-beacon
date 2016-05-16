@@ -53,8 +53,12 @@ typedef enum AKABindingExpressionParseErrorCode
 
     // Class errors
     AKAParseErrorUnknownClass,
-    AKAParseErrorUnterminatedClassReference
-    
+    AKAParseErrorUnterminatedClassReference,
+
+    AKAParseErrorUnexpectedConditionalClauseAfterElse,
+    AKAParseErrorMissingOpeningParenthesisForConditionalPredicate,
+    AKAParseErrorMissingClosingParenthesisForConditionalPredicate,
+
 } AKABindingExpressionParseErrorCode;
 
 @interface AKABindingExpressionParser: NSObject

@@ -13,6 +13,9 @@
 
 #pragma mark - Initialization
 
++ (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
+                               dataContextProperty:(req_AKAProperty)dataContextProperty;
+
 + (instancetype)           bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
                                         dataContext:(id)dataContext;
 
@@ -21,7 +24,7 @@
 
 #pragma mark - Properties
 
-@property(nonatomic, weak, readonly) id                       dataContext;
-@property(nonatomic, readonly) id<AKABindingContextProtocol>  parent;
+@property(nonatomic, weak, readonly) id                             dataContext;
+@property(nonatomic, weak, readonly) id<AKABindingContextProtocol>  parent;
 
 @end

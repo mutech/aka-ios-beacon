@@ -8,15 +8,8 @@
 
 #import "AKABinding.h"
 
-/**
- Category on AKABinding that allows sub classes to customize the default implementaiton of many aspects of bindings.
- 
- This mostly covers two areas: The binding's initialization and the change observation start process.
- 
- The initialization of the binding object (based on a binding expression and context), which happens when the binding is initialized. Initialization is typically triggered by controls inspecting the view hierarchy for binding expressions.
-
- */
-@interface AKABinding (Protected)
+// Extension publishing methods available to sub classes only.
+@interface AKABinding()
 
 #pragma mark - Initialization
 
@@ -25,6 +18,8 @@
 
  If an error occurs, the initializer returns nil and sets the error output parameter or, if the error storage is nil, throws an exception.
 
+ Subclasses typically do not need to override this initializer, because most of the initialization process
+ is performed by
  @param target            the binding target
  @param bindingExpression the binding expression
  @param bindingContext    the context in which the expression is evaluated
@@ -42,12 +37,18 @@
 
 /**
  Validates that this binding type matches the specification of the binding expression.
- 
+
  You should not need to override (or otherwise use) this method directly. It's used to transparently
  replace bindings, currently only to implement validation for AKAConditionalBinding.
  */
-- (BOOL)validateBindingTypeWithExpression:(opt_AKABindingExpression)bindingExpression
-                                    error:(out_NSError)error;
+- (BOOL)                          validateBindingTypeWithExpression:(opt_AKABindingExpression)bindingExpression
+                                                              error:(out_NSError)error;
+
+@end
+
+
+
+@interface AKABinding (Protected)
 
 #pragma mark - Properties
 
@@ -67,13 +68,38 @@
 - (void)                               addTargetPropertyBinding:(req_AKABinding)binding;
 
 #pragma mark - Binding Source Initialization
+/// @name Binding Source Initialization
 
+/**
+ * Called by initWithTarget:expression:context:delegate:error: to obtain a binding source property.
+ *
+ * If the binding expression has no defined primary value, this method will call defaultBindingSourceForExpression:context:changeObserver:error:.
+ *
+ * If the binding expression is a manifest array, bindingSourceForArrayExpression:context:changeObserver:error: will be called.
+ */
 - (opt_AKAProperty)                 bindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
                                                 changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                          error:(out_NSError)error;
 
+/**
+ * Called by bindingSourceForExpression:context:changeObserver:error: if the binding expression's type is AKABindingExpression or the binding's expressionType is AKABindingExpressionTypeNone, both indicating that the binding expression does not deliver a primary expression value.
+ *
+ * The default implementation throws an exception. Bindings which accept an empty primary expression (for example because they can synthesize a source value based on attributes such as AKAFormatterPropertyBindings) have to override this method and return an instance of AKAProperty. This property may synthesize a source value, return nil or some other value.
+ *
+ * @param bindingExpression the expression that is an instance of AKABindingExpression or has the expressionType AKABindingExpressionTypeNone
+ * @param bindingContext the context in which expressions are evaluated
+ * @param changeObserver the resulting property is expected to call this block whenever the source value provided by the property changes.
+ * @param error used to store error information explaining why the result is nil.
+ *
+ * @returns A property providing the binding's source value or nil if an error occurred.
+ */
 - (opt_AKAProperty)          defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
+                                                       context:(req_AKABindingContext)bindingContext
+                                                changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
+                                                         error:(out_NSError)error;
+
+- (opt_AKAProperty)            bindingSourceForArrayExpression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
                                                 changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                          error:(out_NSError)error;
@@ -122,7 +148,24 @@
                                                          error:(out_NSError)error;
 
 /**
-   Called by initializeAttributesWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseAssignExpressionToBindingProperty. The default implementation assigns the attribute expression (not the result of its evaluation) to the binding (self)'s property using  bindingProperty as key (KVC).
+ Called by initializeAttributesWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseAssignValueToBindingProperty. The default implementation assignes the result of evaluating the attribute expression in the binding context to the binding (self)'s property using bindingProperty as key (KVC).
+
+ @param specification       the attribute specification
+ @param attributeExpression the binding expression defined for the attribute
+ @param bindingContext      the binding context in which the attribute expression can be evaluated
+ @param bindingProperty     the property name of this object (self) to which the result of evaluating the binding expression is to be assigned to.
+ @param error               storage for error information
+
+ @return YES if the attribute value has been set up successfully.
+ */
+- (BOOL)initializeBindingPropertyEvaluatorAssignmentAttribute:(NSString *)bindingProperty
+                                            withSpecification:(AKABindingAttributeSpecification *)specification
+                                          attributeExpression:(req_AKABindingExpression)attributeExpression
+                                               bindingContext:(req_AKABindingContext)bindingContext
+                                                        error:(out_NSError)error;
+
+/**
+   Called by initializeAttributesWithExpression:bindingContext:error: for attributes with a specified use of AKABindingAttributeUseAssignEvalutorToBindingProperty. The default implementation creates an evaluator for the attribute expression and assigns the result to the binding (self)'s property using bindingProperty as key (KVC).
 
    @param specification       the attribute specification
    @param attributeExpression the binding expression defined for the attribute

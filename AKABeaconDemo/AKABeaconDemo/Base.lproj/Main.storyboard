@@ -2293,22 +2293,23 @@ The number editor text field uses two different formatters, one for display and 
                                         <mutableString key="value">[
 	section1Items {
 		headerTitle: "First section",
-                  cellMapping: [
-			{ predicate: "SELF isKindOfClass:$nsnumber AND SELF &lt; $value" { nsnumber: &lt;NSNumber&gt;, value: 0 },
-                             cellIdentifier: "alternativeNegativeNumberCell" } ] },
+                  cellMapping:
+			$when("SELF isKindOfClass:$nsnumber AND SELF &lt; $value"
+				   { nsnumber: &lt;NSNumber&gt;, value: 0 })
+                           	"alternativeNegativeNumberCell"
+         },
          section2Items {
-		headerTitle: "Second section", footerTitle: "Second section footer" }
+		headerTitle: "Second section",
+		footerTitle: "Second section footer"
+	}
 ] {
-	defaultCellMapping: [
-                { predicate: &lt;NSString&gt;,
-                  cellIdentifier: "stringCell" },
-                { predicate: "SELF isKindOfClass:$nsnumber AND SELF &lt; $value" {
-                                        nsnumber: &lt;NSNumber&gt;, value: 0
-                                    },
-                  cellIdentifier: "negativeNumberCell" },
-                { predicate: &lt;NSNumber&gt;,
-                  cellIdentifier: "numberCell" }
-	]
+	defaultCellMapping:
+		$when(&lt;NSString&gt;)
+			"stringCell"
+		$when("SELF isKindOfClass:$nsnumber AND SELF &lt; $zero" { nsnumber: &lt;NSNumber&gt;, zero: 0 })	
+			"negativeNumberCell"
+		$when(&lt;NSNumber&gt;)
+			{ cellIdentifier: "numberCell" }
 }</mutableString>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
@@ -2681,9 +2682,9 @@ The number editor text field uses two different formatters, one for display and 
                                     <userDefinedRuntimeAttribute type="string" keyPath="dataSourceBinding_aka">
                                         <string key="value">sections {
          dynamic: rows { headerTitle: headerTitle },
-	cellMapping:
+	defaultCellMapping:
 		$when(&lt;NSString&gt;)		"stringCell"
-		$when(&lt;NSNumber&gt;)	"numerCell"
+		$when(&lt;NSNumber&gt;)	"numberCell"
 }</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>

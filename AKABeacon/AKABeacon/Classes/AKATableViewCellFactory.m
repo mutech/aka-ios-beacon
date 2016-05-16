@@ -21,14 +21,13 @@
     return self;
 }
 
-- (BOOL)dataContextSatisfiesPredicate:(opt_id)dataContext
+- (id)copyWithZone:(NSZone * __unused)zone
 {
-    BOOL result = self.predicate == nil;
+    AKATableViewCellFactory* result = [AKATableViewCellFactory new];
 
-    if (!result)
-    {
-        result = [self.predicate evaluateWithObject:dataContext];
-    }
+    result.cellIdentifier = self.cellIdentifier;
+    result.cellType = self.cellType;
+    result.cellStyle = self.cellStyle;
 
     return result;
 }

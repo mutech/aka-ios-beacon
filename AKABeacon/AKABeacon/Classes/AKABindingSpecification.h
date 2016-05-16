@@ -54,6 +54,13 @@ typedef NS_ENUM(NSUInteger, AKABindingAttributeUse)
     AKABindingAttributeUseAssignExpressionToBindingProperty,
 
     /**
+       Creates an instance of AKABindingExpressionEvaluator for the attribute's binding expression and stores it in the owner binding's property designated in the attribute specification bindingProperty.
+     
+       Evaluators are especially useful to evaluate binding expressions with a different data context, for example to obtain a table view cell factory for a table view's row's data context using a cell mapping implemented as conditional binding expression.
+     */
+    AKABindingAttributeUseAssignEvaluatorToBindingProperty,
+
+    /**
        The attribute's binding expression will be evaluated in the current binding context and the resulting value will be stored in the owner binding's property specified in the attribute specification ("bindingProperty" or if not defined, the attribute name).
      */
     AKABindingAttributeUseAssignValueToBindingProperty,

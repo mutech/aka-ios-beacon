@@ -743,6 +743,7 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             case AKABindingAttributeUseAssignValueToBindingProperty:
             case AKABindingAttributeUseAssignValueToTargetProperty:
             case AKABindingAttributeUseAssignExpressionToBindingProperty:
+            case AKABindingAttributeUseAssignEvaluatorToBindingProperty:
             case AKABindingAttributeUseBindToBindingProperty:
             case AKABindingAttributeUseBindToTargetProperty:
             {

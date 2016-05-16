@@ -154,6 +154,7 @@
             }
             else
             {
+                // TODO: error handling: move to AKABindingErrors
                 @throw [NSException exceptionWithName:@"InvalidOperation"
                                                reason:localError.localizedDescription
                                              userInfo:@{ @"error": localError }];

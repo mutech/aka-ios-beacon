@@ -122,7 +122,7 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
 - (BOOL)                          validatePrimaryExpressionWithSpecification:(opt_AKABindingExpressionSpecification)specification
                                                           error:(out_NSError)error;
 
-- (BOOL)                    validateAttributesWithSpecification:(AKABindingExpressionSpecification*)specification
+- (BOOL)                    validateAttributesWithSpecification:(opt_AKABindingExpressionSpecification)specification
                                  overrideAllowUnknownAttributes:(BOOL)allowUnknownAttributes
                                                           error:(out_NSError)error;
 

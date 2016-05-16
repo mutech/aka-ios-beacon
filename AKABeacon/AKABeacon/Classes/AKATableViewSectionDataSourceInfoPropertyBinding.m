@@ -10,11 +10,13 @@
 #import "AKATableViewCellFactoryArrayPropertyBinding.h"
 #import "AKABindingErrors.h"
 #import "AKABinding_Protected.h"
+#import "AKATableViewCellFactoryPropertyBinding.h"
+#import "AKABindingExpressionEvaluator.h"
 
-
-@interface AKATableViewSectionDataSourceInfo()
+@interface AKATableViewSectionDataSourceInfoPropertyBinding()
 
 @property(nonatomic) AKATableViewSectionDataSourceInfo* sectionDataSourceInfo;
+@property(nonatomic) AKABindingExpressionEvaluator* cellMapping;
 
 @end
 
@@ -43,8 +45,8 @@
                            @"expressionType":       @(AKABindingExpressionTypeString)
                            },
                    @"cellMapping":          @{
-                           @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                           @"bindingType":          [AKATableViewCellFactoryArrayPropertyBinding class]
+                           @"bindingType":          [AKATableViewCellFactoryPropertyBinding class],
+                           @"use":                  @(AKABindingAttributeUseAssignEvaluatorToBindingProperty)
                            }
                    }
            };
@@ -77,6 +79,21 @@
 - (void)setSectionDataSourceInfo:(AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
 {
     self.syntheticTargetValue = sectionDataSourceInfo;
+
+    // Forward cellMapping to section info
+    sectionDataSourceInfo.cellMapping = self.cellMapping;
+}
+
+
+- (void)setCellMapping:(AKABindingExpressionEvaluator *)cellMapping
+{
+    _cellMapping = cellMapping;
+    // Forward cellMapping to section info
+    if ([self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]])
+    {
+        AKATableViewSectionDataSourceInfo* sectionInfo = self.syntheticTargetValue;
+        sectionInfo.cellMapping = cellMapping;
+    }
 }
 
 

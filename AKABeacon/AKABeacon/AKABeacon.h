@@ -92,6 +92,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABindingDelegateDispatcher.h>
 #import <AKABeacon/AKABinding.h>
 #import <AKABeacon/AKABinding_Protected.h>
+#import <AKABeacon/AKAConditionalBinding.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
 #import <AKABeacon/AKAChildBindingContext.h>
 
@@ -219,10 +220,46 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKATransitionAnimationParameters.h>
 #import <AKABeacon/AKATransitionAnimationParametersPropertyBinding.h>
 
-// Bindings/Specification
-#import <AKABeacon/AKABindingExpression.h>
+
+#import <AKABeacon/AKATableViewDataSourcePropertyBinding.h>
+
+// Bindings/Expressions
 #import <AKABeacon/AKABindingSpecification.h>
 #import <AKABeacon/AKABindingExpressionParser.h>
+#import <AKABeacon/AKABindingExpression.h>
+
+// Bindings/Expressions/Concrete Binding Expressions
+
+// Bindings/Expressions/Concrete Binding Expressions/Control Structures
+
+#import <AKABeacon/AKAControlStructureBindingExpression.h>
+#import <AKABeacon/AKAConditionalBindingExpression.h>
+
+// Bindings/Expressions/Concrete Binding Expressions/Key Paths
+
+#import <AKABeacon/AKAKeyPathBindingExpression.h>
+
+// Bindings/Expressions/Concrete Binding Expressions/Constants
+
+#import <AKABeacon/AKAConstantBindingExpression.h>
+#import <AKABeacon/AKAArrayBindingExpression.h>
+#import <AKABeacon/AKAConstantBindingExpression_Protected.h>
+#import <AKABeacon/AKAStringConstantBindingExpression.h>
+#import <AKABeacon/AKAEnumConstantBindingExpression.h>
+#import <AKABeacon/AKAOptionsConstantBindingExpression.h>
+#import <AKABeacon/AKANumberConstantBindingExpression.h>
+#import <AKABeacon/AKABooleanConstantBindingExpression.h>
+#import <AKABeacon/AKAIntegerConstantBindingExpression.h>
+#import <AKABeacon/AKADoubleConstantBindingExpression.h>
+#import <AKABeacon/AKAClassConstantBindingExpression.h>
+//#import <AKABeacon/AKAObjectConstantBindingExpression.h> (not yet)
+#import <AKABeacon/AKAColorConstantBindingExpression.h>
+#import <AKABeacon/AKAUIFontConstantBindingExpression.h>
+#import <AKABeacon/AKAStructConstantBindingExpression.h>
+#import <AKABeacon/AKACGPointConstantBindingExpression.h>
+#import <AKABeacon/AKACGSizeConstantBindingExpression.h>
+#import <AKABeacon/AKACGRectConstantBindingExpression.h>
+
 
 // KeyboardActivationSequence
 #import <AKABeacon/AKAKeyboardActivationSequence.h>

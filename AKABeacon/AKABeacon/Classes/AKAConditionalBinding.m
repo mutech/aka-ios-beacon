@@ -8,6 +8,7 @@
 
 #import "AKAConditionalBinding.h"
 #import "AKABinding_Protected.h"
+#import "AKAPredicatePropertyBinding.h"
 
 @interface AKAConditionalBindingClause()
 
@@ -257,6 +258,7 @@
     {
         [clause.predicateBinding stopObservingChanges];
     }
+    self.activeClause = nil;
     [super didStopObservingBindingSource];
 }
 

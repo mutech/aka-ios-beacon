@@ -10,7 +10,7 @@
 @import CoreData;
 
 #import "AKATableViewCellFactory.h"
-
+#import "AKABindingExpressionEvaluator.h"
 
 @class AKATableViewSectionDataSourceInfo;
 
@@ -58,7 +58,7 @@
 @property(nonatomic) id                                 rowsSource;
 @property(nonatomic) NSString*                          headerTitle;
 @property(nonatomic) NSString*                          footerTitle;
-@property(nonatomic) NSArray<AKATableViewCellFactory*>* cellMapping;
+@property(nonatomic) AKABindingExpressionEvaluator*           cellMapping;
 
 @property(nonatomic, readonly) BOOL                     usesFetchedResultsController;
 @property(nonatomic, readonly) NSFetchedResultsController* fetchedResultsController;

@@ -10,15 +10,11 @@
 
 #import "AKABindingContextProtocol.h"
 
-@interface AKATableViewCellFactory : NSObject
-
-@property(nonatomic, nullable) NSPredicate* predicate;
+@interface AKATableViewCellFactory : NSObject<NSCopying>
 
 @property(nonatomic, nullable) NSString*    cellIdentifier;
 @property(nonatomic, nullable) Class        cellType;
 @property(nonatomic) UITableViewCellStyle   cellStyle;
-
-- (BOOL)dataContextSatisfiesPredicate:(opt_id)dataContext;
 
 - (opt_UITableViewCell)tableView:(req_UITableView)tableView
            cellForRowAtIndexPath:(req_NSIndexPath)indexPath;

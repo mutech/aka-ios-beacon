@@ -11,6 +11,7 @@
 #import "AKAViewBinding.h"
 #import "AKABindingExpression+Accessors.h"
 #import "AKAConditionalBinding.h"
+#import "AKABinding_Protected.h"
 
 @implementation AKAViewBinding
 

@@ -18,6 +18,23 @@
 @implementation AKAChildBindingContext
 
 + (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
+                               dataContextProperty:(req_AKAProperty)dataContextProperty
+{
+    return [[self alloc] initWithParent:bindingContext dataContextProperty:dataContextProperty];
+}
+
+- (instancetype)                    initWithParent:(id<AKABindingContextProtocol>)bindingContext
+                               dataContextProperty:(req_AKAProperty)dataContextProperty
+{
+    if (self = [self init])
+    {
+        _dataContextProperty = dataContextProperty;
+        _parent = bindingContext;
+    }
+    return self;
+}
+
++ (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
                                        dataContext:(id)dataContext
 {
     return [[self alloc] initWithParent:bindingContext dataContext:dataContext];
@@ -26,15 +43,12 @@
 - (instancetype)                    initWithParent:(id<AKABindingContextProtocol>)bindingContext
                                        dataContext:(id)dataContext
 {
-    if (self = [self init])
-    {
-        _dataContextProperty = [AKAProperty propertyOfWeakKeyValueTarget:dataContext
-                                                                 keyPath:nil
-                                                          changeObserver:nil];
-        _parent = bindingContext;
-    }
-    return self;
+    return [self initWithParent:bindingContext
+            dataContextProperty:[AKAProperty propertyOfWeakKeyValueTarget:dataContext
+                                                                  keyPath:nil
+                                                           changeObserver:nil]];
 }
+
 
 + (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
                                            keyPath:(NSString*)keyPath
@@ -45,15 +59,12 @@
 - (instancetype)                    initWithParent:(id<AKABindingContextProtocol>)bindingContext
                                            keyPath:(NSString*)keyPath
 {
-    if (self = [self init])
-    {
-        _dataContextProperty = [bindingContext dataContextPropertyForKeyPath:keyPath
-                                                          withChangeObserver:nil];
-        _parent = bindingContext;
-    }
-    return self;
+    return [self initWithParent:bindingContext
+            dataContextProperty:[bindingContext dataContextPropertyForKeyPath:keyPath
+                                                           withChangeObserver:nil]];
 }
 
+#pragma mark - Binding Context Protocol implementation
 
 - (id)dataContext
 {

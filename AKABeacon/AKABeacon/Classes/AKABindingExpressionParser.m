@@ -26,6 +26,7 @@
 #import "AKACGRectConstantBindingExpression.h"
 #import "AKAKeyPathBindingExpression.h"
 #import "AKAConditionalBindingExpression.h"
+#import "AKAPredicatePropertyBinding.h"
 
 @implementation AKABindingExpressionParser
 
@@ -528,7 +529,10 @@ static NSString*const   keywordCGRect = @"CGRect";
     }
     else
     {
-        // TODO: error handling (invalid keyword to start control structure)
+        [self registerParseError:error
+                        withCode:AKAParseErrorUnexpectedConditionalClauseAfterElse
+                      atPosition:self.scanner.scanLocation
+                          reason:[NSString stringWithFormat:@"Control structure expression can not start with keyword '%@'", keyword]];
     }
 
     return result;
@@ -556,7 +560,10 @@ static NSString*const   keywordCGRect = @"CGRect";
         if (result && clauses.count > 0 && clauses.lastObject.conditionBindingExpression == nil)
         {
             result = NO;
-            // TODO: error handling (when after else)
+            [self registerParseError:error
+                            withCode:AKAParseErrorUnexpectedConditionalClauseAfterElse
+                          atPosition:self.scanner.scanLocation
+                              reason:[NSString stringWithFormat:@"Invalid conditional clause '%@' following an else-clause (would never be evaluated)", nextKeyword]];
         }
 
         if (result)
@@ -608,7 +615,10 @@ static NSString*const   keywordCGRect = @"CGRect";
         }
         else
         {
-            // TODO: error handling (missing opening bracket for condition)
+            [self registerParseError:error
+                            withCode:AKAParseErrorMissingOpeningParenthesisForConditionalPredicate
+                          atPosition:self.scanner.scanLocation
+                              reason:[NSString stringWithFormat:@"Missing '(' after '@%@'", keyword]];
         }
 
         if (result)
@@ -617,7 +627,10 @@ static NSString*const   keywordCGRect = @"CGRect";
             result = [self skipCharacter:')'];
             if (!result)
             {
-                // TODO: error handling (missing closing bracket)
+                [self registerParseError:error
+                                withCode:AKAParseErrorMissingClosingParenthesisForConditionalPredicate
+                              atPosition:self.scanner.scanLocation
+                                  reason:[NSString stringWithFormat:@"Missing ')' after predicate in '@%@'-clause", keyword]];
             }
         }
     }

@@ -9,3 +9,5 @@ Documentation/API
 AKABeacon/AKABeacon.xcodeproj/xcuserdata/mu.xcuserdatad/xcschemes/xcschememanagement.plist
 AKABeacon/AKABeaconDemo.xcodeproj/xcuserdata/mu.xcuserdatad/xcschemes/xcschememanagement.plist
 xcuserdata
+AKABeaconDemo/Podfile.lock
+AKABeaconDemo/AKABeaconDemo.xcworkspace

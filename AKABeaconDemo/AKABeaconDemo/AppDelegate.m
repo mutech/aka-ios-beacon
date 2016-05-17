@@ -7,7 +7,6 @@
 //
 
 @import AKABeacon;
-@import Aspects;
 
 #import "AppDelegate.h"
 
@@ -26,19 +25,6 @@
     [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelWarning]; // ASL = Apple System Logs
     [DDLog setLevel:DDLogLevelAll forClass:[AKATVMultiplexedDataSource class]];
 #endif
-    Class header = NSClassFromString(@"_UITableViewHeaderFooterViewBackground");
-    if (header)
-    {
-        NSError* error;
-        id<AspectToken> token = [header aspect_hookSelector:@selector(setBackgroundColor:)
-                                                withOptions:AspectPositionBefore
-                                                 usingBlock:
-                                 ^(id<AspectInfo> aspectInfo, UIColor* color) {
-                                     NSLog(@"Header/Footer %@: setBackgroundColor:%@ called", aspectInfo.instance, color);
-                                 }
-                                                      error:&error];
-        (void)token;
-    }
 
     // Override point for customization after application launch.
     return YES;

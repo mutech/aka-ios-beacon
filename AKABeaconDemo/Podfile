@@ -1,14 +1,13 @@
 # This podfile is used for development and assumes that aka-ios-commons and aka-ios-beacon are
 # checked out side-by-side.
 
-source 'https://github.com/artsy/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+platform :ios, '8.2'
 
 workspace 'AKABeaconDemo.xcworkspace'
 xcodeproj 'AKABeaconDemo.xcodeproj'
 
-use_frameworks!
-
-platform :ios, '8.2'
-
-pod 'AKABeacon', '~> 0.3'
+target 'AKABeaconDemo', :exclusive => true do
+	pod 'AKABeacon', '~> 0.3.1'
+end

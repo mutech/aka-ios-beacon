@@ -6,8 +6,8 @@ use_frameworks!
 platform :ios, '8.2'
 
 workspace 'AKABeaconDemo.xcworkspace'
-xcodeproj 'AKABeaconDemo.xcodeproj'
+xcodeproj 'AKABeaconDemo.xcodeproj' # Will be renamed to project once we drop support for Cocoapods < 1.0
 
-target 'AKABeaconDemo', :exclusive => true do
+target 'AKABeaconDemo' do
 	pod 'AKABeacon', '~> 0.3.1'
 end

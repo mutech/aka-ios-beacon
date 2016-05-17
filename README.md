@@ -10,6 +10,11 @@ AKA Beacon is a data binding framework for iOS designed for Interface Builder.
 
 ## News
 
+**Version 0.3.1**
+
+* Fixes related to Cocoapods 1.0, pod try
+* Fixes in Demo App
+
 **Version 0.3**
 
 * Removed dependencies to AKACommons (merged) and CocoaLumberjack (temporarily until modular podspec is done).

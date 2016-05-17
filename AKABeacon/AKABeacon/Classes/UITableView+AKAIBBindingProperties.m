@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAAssociatedValues;
+#import "NSObject+AKAAssociatedValues.h"
 
 #import "UITableView+AKAIBBindingProperties.h"
 #import "AKABinding_UITableView_dataSourceBinding.h"

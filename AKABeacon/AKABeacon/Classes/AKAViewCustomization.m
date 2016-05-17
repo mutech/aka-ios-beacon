@@ -3,8 +3,8 @@
 // Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAProperty;
-@import AKACommons.AKALog;
+#import "AKAProperty.h"
+#import "AKALog.h"
 
 #import "AKATheme.h"
 #import "AKAViewCustomization.h"

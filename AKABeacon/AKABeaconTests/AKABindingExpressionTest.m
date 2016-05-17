@@ -8,7 +8,6 @@
 
 #import <XCTest/XCTest.h>
 #include <stdio.h>
-@import AKACommons.AKALog;
 
 #import "AKABindingExpression.h"
 #import "AKABindingExpressionParser.h"

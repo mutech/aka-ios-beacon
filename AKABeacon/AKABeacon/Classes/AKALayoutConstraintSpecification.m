@@ -3,7 +3,7 @@
 // Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAReference;
+#import "AKAReference.h"
 
 #import "AKAThemeLayout.h"
 #import "AKATheme.h"

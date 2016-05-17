@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.UIView_AKAHierarchyVisitor;
+#import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKABindingBehavior.h"
 #import "AKAEditorControlView.h"

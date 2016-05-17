@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAMutableOrderedDictionary;
+#import "AKAMutableOrderedDictionary.h"
 
 #import "AKABindingExpressionParser.h"
 

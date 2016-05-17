@@ -56,7 +56,7 @@
  *
  * As a rule of thumb, evaluators should only be used in the main thread.
  */
-- (opt_id)                            valueForDataContext:(id)dataContext;
+- (opt_id)                            valueForDataContext:(opt_id)dataContext;
 
 /**
  * Evaluates the binding expression in the configured binding context.

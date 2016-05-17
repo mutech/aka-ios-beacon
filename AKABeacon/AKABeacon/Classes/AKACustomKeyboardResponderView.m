@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-@import AKACommons.AKAErrors;
+#import "AKAErrors.h"
 
 #import "AKACustomKeyboardResponderView.h"
 #import "AKAControlConfiguration.h"

@@ -8,8 +8,8 @@
 
 #include <objc/runtime.h>
 
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "AKALog.h"
+#import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKABindingSpecification.h"
 #import "AKABindingExpression_Internal.h"

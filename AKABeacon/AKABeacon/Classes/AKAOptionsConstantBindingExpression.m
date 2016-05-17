@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKAOptionsConstantBindingExpression.h"
 #import "AKAConstantBindingExpression_Protected.h"
@@ -140,14 +140,14 @@
                 // Only an error if a value is given, otherwise the expression will validly evaluate to zero.
                 result = NO;
                 localError = [AKABindingErrors invalidBindingExpression:self
-                                           noOptionsTypeInSpecification:specification];;
+                                           noOptionsTypeInSpecification:(req_AKABindingExpressionSpecification)specification];;
             }
         }
         else if (optionsType.length > 0 && ![optionsType isEqualToString:(req_NSString)self.optionsType])
         {
             result = NO;
             localError = [AKABindingErrors invalidBindingExpression:self
-                                                optionsTypeMismatch:specification];
+                                                optionsTypeMismatch:(req_AKABindingExpressionSpecification)specification];
         }
     }
 

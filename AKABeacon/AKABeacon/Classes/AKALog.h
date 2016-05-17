@@ -7,6 +7,27 @@
 //
 
 @import Foundation;
+
+#if 1
+
+// Remove the dependency on Lumberjack. Until modular pods support is there, we'll just use NSLog
+
+#if DEBUG
+#define AKALogError(format, ...)   NSLog(format, ##__VA_ARGS__)
+#define AKALogWarn(format, ...)    NSLog(format, ##__VA_ARGS__)
+#define AKALogInfo(format, ...)    NSLog(format, ##__VA_ARGS__)
+#define AKALogDebug(format, ...)   NSLog(format, ##__VA_ARGS__)
+#define AKALogVerbose(format, ...) NSLog(format, ##__VA_ARGS__)
+#else
+#define AKALogError(format, ...)   NSLog(format, ##__VA_ARGS__)
+#define AKALogWarn(format, ...)
+#define AKALogInfo(format, ...)
+#define AKALogDebug(format, ...)
+#define AKALogVerbose(format, ...)
+#endif
+
+#else
+
 @import CocoaLumberjack;
 
 #ifndef AKA_SUPPORT_DYNAMIC_LOG_LEVELS
@@ -36,3 +57,5 @@
 #endif
 
 @end
+
+#endif

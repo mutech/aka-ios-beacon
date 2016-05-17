@@ -10,8 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import <AKABeacon/AKATheme.h>
-@import AKACommons.AKANullability;
-
+#import <AKABeacon/AKABeaconNullability.h>
 
 @interface AKAThemeTests : XCTestCase
 

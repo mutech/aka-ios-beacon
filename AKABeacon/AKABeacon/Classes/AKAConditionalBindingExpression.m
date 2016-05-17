@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSMutableString_AKATools;
+#import "NSMutableString+AKATools.h"
 
 #import "AKAConditionalBindingExpression.h"
 #import "AKABindingExpression_Internal.h"

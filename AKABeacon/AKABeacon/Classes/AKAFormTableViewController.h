@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "AKAFormControl.h"
-@import AKACommons.AKATVDataSourceSpecification;
+#import "AKATVDataSourceSpecification.h"
 
 @class AKAReference;
 @class AKATableViewCellCompositeControl;

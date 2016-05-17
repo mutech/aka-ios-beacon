@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKALog;
+#import "AKALog.h"
 
 #import "AKAEditorControlView.h"
 #import "AKAThemableContainerView_Protected.h"

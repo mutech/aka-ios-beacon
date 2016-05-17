@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #import "AKAControlConfiguration.h"
 

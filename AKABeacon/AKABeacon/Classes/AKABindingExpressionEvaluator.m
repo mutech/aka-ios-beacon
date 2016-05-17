@@ -6,12 +6,12 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAProperty;
+#import "AKAProperty.h"
 
 #import "AKABindingExpressionEvaluator.h"
 #import "AKAChildBindingContext.h"
 
-@interface AKABindingExpressionEvaluator() <AKABindingContextProtocol>
+@interface AKABindingExpressionEvaluator()
 
 @property(nonatomic, nonnull, readonly) id<AKABindingContextProtocol>  parentBindingContext;
 @property(nonatomic, nonnull) AKAChildBindingContext*                  bindingContext;

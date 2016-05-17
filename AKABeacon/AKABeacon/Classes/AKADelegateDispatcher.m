@@ -6,8 +6,8 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKALog;
-@import AKACommons.AKANullability;
+#import "AKALog.h"
+#import "AKANullability.h"
 
 #import "AKADelegateDispatcher.h"
 #import "AKAProtocolInfo.h"

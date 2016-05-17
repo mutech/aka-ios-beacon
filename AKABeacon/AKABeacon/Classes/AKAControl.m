@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons;
-
 #import <objc/runtime.h>
 
 #import "AKAControl_Internal.h"
@@ -19,6 +17,8 @@
 #import "AKABindingExpression+Accessors.h"
 #import "AKAControl+BindingDelegate.h"
 #import "NSObject+AKAAssociatedValues.h"
+#import "NSObject+AKAConcurrencyTools.h"
+#import "AKAReference.h"
 
 @interface AKAControl()
 {

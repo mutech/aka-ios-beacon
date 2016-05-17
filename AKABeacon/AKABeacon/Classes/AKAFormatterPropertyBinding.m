@@ -6,8 +6,8 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAErrors;
-@import AKACommons.AKALog;
+#import "AKAErrors.h"
+#import "AKALog.h"
 
 #include <objc/runtime.h>
 

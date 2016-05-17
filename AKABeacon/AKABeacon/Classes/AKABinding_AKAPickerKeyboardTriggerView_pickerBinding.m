@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h"
 #import "AKAPickerKeyboardTriggerView.h"

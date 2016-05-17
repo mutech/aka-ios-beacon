@@ -10,11 +10,11 @@ AKA Beacon is a data binding framework for iOS designed for Interface Builder.
 
 ## News
 
-**Version 0.2.1**
+**Version 0.3**
 
-* Relaxed validation of binding expressions so that [enumeration](https://github.com/mutech/aka-ios-beacon/wiki/Binding-Expression-Syntax-and-Expression-Types#enumeration-constants) values be used anywhere (supporting libraries of shared objects).
-* Experimental support for [dynamic sections](https://github.com/mutech/aka-ios-beacon/wiki/UITableView_dataSourceBinding#example-dynamic-sections-multiple-prototype-cells) in [table view data source bindings](https://github.com/mutech/aka-ios-beacon/wiki/UITableView_dataSourceBinding).
-
+* Removed dependencies to AKACommons (merged) and CocoaLumberjack (temporarily until modular podspec is done).
+* Support for conditional binding expressions ($when, $whenNot, $else)
+* Refactored UITableView data source binding to use conditionals in cell mappings
 
 ## Contents
 
@@ -37,7 +37,7 @@ To integrate AKABeacon, enable ```use_frameworks!``` in your Podfile and add the
 ```
 use_frameworks!
 ...
-pod 'AKABeacon', '~> 0.2.1'
+pod 'AKABeacon', '~> 0.3'
 ```
 
 If you are using the [CocoaPods try plugin](https://github.com/CocoaPods/cocoapods-try), an easy way to start experimenting with Beacon is:

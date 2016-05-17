@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAArrayComparer;
+#import "AKAArrayComparer.h"
 @import CoreData;
 
 #import "AKABinding_UITableView_dataSourceBinding.h"
@@ -599,7 +599,7 @@
                                          forChangesFromRows:(NSArray*)oldRows
                                                      toRows:(NSArray*)newRows
 {
-    if (NO)//[self tableViewIsEmpty])
+    if ([self tableViewIsEmpty])
     {
         [self dispatchTableViewReload:YES];
         return;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #import "AKAControl.h"
 #import "AKAControlConfiguration.h"

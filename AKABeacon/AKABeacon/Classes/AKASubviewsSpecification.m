@@ -7,8 +7,8 @@
 //
 
 @import UIKit;
-@import AKACommons.NSString_AKATools;
-@import AKACommons.NSObject_AKASelectorTools;
+#import "NSString+AKATools.h"
+#import "NSObject+AKASelectorTools.h"
 
 #import "AKASubviewsSpecification.h"
 

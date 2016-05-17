@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #ifndef AKABeaconNullability_h
 #define AKABeaconNullability_h

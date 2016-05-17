@@ -7,8 +7,8 @@
 //
 
 @import UIKit;
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "AKALog.h"
+#import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKAControlViewBinding.h"
 #import "AKAViewBinding_Protected.h"

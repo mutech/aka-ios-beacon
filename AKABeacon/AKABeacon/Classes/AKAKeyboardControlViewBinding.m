@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAErrors;
+#import "AKAErrors.h"
 
 #import "AKAKeyboardControlViewBinding.h"
 #import "AKAKeyboardActivationSequenceItemProtocol_Internal.h"

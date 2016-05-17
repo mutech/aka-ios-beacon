@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #import "AKABeaconNullability.h"
 

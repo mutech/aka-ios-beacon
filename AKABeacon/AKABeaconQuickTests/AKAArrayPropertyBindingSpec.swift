@@ -1,7 +1,6 @@
 import Quick
 import Nimble
 import AKABeacon
-import AKACommons
 
 class AKAArrayPropertyBindingSpec: QuickSpec {
 

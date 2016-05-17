@@ -6,8 +6,8 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAProperty;
-@import AKACommons.NSObject_AKAAssociatedValues;
+#import "AKAProperty.h"
+#import "NSObject+AKAAssociatedValues.h"
 
 #import "AKABinding_UIStepper_valueBinding.h"
 #import "AKABindingExpression.h"

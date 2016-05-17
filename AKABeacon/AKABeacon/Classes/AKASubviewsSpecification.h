@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-@import AKACommons.AKAProperty;
+#import "AKAProperty.h"
 
 #import "AKAThemeViewApplicability.h"
 

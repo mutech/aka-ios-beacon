@@ -7,8 +7,8 @@
 //
 
 @import UIKit;
-@import AKACommons.AKANullability;
-@import AKACommons.AKAProperty;
+#import "AKANullability.h"
+#import "AKAProperty.h"
 
 #import "AKABeaconNullability.h"
 #import "AKABindingDelegate.h"
@@ -76,14 +76,6 @@
 
 - (void)                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                                          toNewValue:(opt_id)newSourceValue;
-
-- (void)                                     sourceArrayItemAtIndex:(NSUInteger)index
-                                                 valueDidChangeFrom:(opt_id)oldValue
-                                                                 to:(opt_id)newValue;
-
-- (void)                                     targetArrayItemAtIndex:(NSUInteger)index
-                                                 valueDidChangeFrom:(opt_id)oldValue
-                                                                 to:(opt_id)newValue;
 
 /**
  Starts observing changes to binding property bindings, binding target, binding source and binding target property bindings (typically in this order) and initializes the binding target value (right before starting to observe target property bindings).

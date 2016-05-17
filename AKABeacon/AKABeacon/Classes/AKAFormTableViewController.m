@@ -8,10 +8,10 @@
 
 // TODO: rewrite dynamic placeholder stuff from scratch
 
-@import AKACommons.AKATVMultiplexedDataSource;
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAAssociatedValues;
-@import AKACommons.UIView_AKAHierarchyVisitor;
+#import "AKATVMultiplexedDataSource.h"
+#import "AKALog.h"
+#import "NSObject+AKAAssociatedValues.h"
+#import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKAFormTableViewController.h"
 #import "AKAEditorControlView.h"

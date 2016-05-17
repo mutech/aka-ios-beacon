@@ -47,29 +47,9 @@ typedef enum
 @property(nonatomic, readonly) NSUInteger numberOfSections;
 @property(nonatomic, readonly) AKATVUpdateBatch* updateBatch;
 
-
-#pragma mark - Configuration - Support for per-class log level setting
-
-+ (DDLogLevel)ddLogLevel;
-+ (void)ddSetLogLevel:(DDLogLevel)logLevel;
-
 @end
 
 @implementation AKATVMultiplexedDataSource
-
-#pragma mark - Configuration
-
-static DDLogLevel _ddLogLevel = DDLogLevelWarning;
-
-+ (DDLogLevel)ddLogLevel
-{
-    return _ddLogLevel;
-}
-
-+ (void)ddSetLogLevel:(DDLogLevel)logLevel
-{
-    _ddLogLevel = logLevel;
-}
 
 #pragma mark - Initialization
 

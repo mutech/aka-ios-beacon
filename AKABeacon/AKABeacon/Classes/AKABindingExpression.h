@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 @import Foundation;
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #import "AKABindingContextProtocol.h"
 #import "AKABindingSpecification.h"

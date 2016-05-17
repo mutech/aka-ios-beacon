@@ -9,8 +9,7 @@
 @import Foundation;
 @import UIKit;
 
-@import AKACommons.AKALog;
-@import AKABeacon.AKAControl;
+@import AKABeacon;
 
 #import "DynamicPlaceholderCellTableViewController.h"
 

@@ -8,7 +8,7 @@
 
 @import CoreData;
 
-@import AKACommons.AKAArrayComparer;
+#import "AKAArrayComparer.h"
 #import "AKADelegateDispatcher.h"
 #import "AKATableViewSectionDataSourceInfo.h"
 

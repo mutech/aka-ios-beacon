@@ -7,7 +7,7 @@
 //
 
 #import "AKABeaconErrors_Internal.h"
-@import AKACommons.AKALog;
+#import "AKALog.h"
 
 @implementation AKABeaconErrors
 

@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 @class AKAViewBinding;
 typedef AKAViewBinding*_Nonnull req_AKAViewBinding;

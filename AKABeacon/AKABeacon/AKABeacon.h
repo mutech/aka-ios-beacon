@@ -50,6 +50,32 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAProtocolInfo.h>
 #import <AKABeacon/AKADelegateDispatcher.h>
 
+// Commons/AKACommons (Merged from AKACommons)
+#import <AKABeacon/AKAArrayComparer.h>
+#import <AKABeacon/AKAErrors.h>
+#import <AKABeacon/AKALog.h>
+#import <AKABeacon/AKAMutableOrderedDictionary.h>
+#import <AKABeacon/AKANullability.h>
+#import <AKABeacon/AKAProperty.h>
+#import <AKABeacon/AKAReference.h>
+#import <AKABeacon/AKATVCoordinateMappingProtocol.h>
+#import <AKABeacon/AKATVDataSourceSpecification.h>
+#import <AKABeacon/AKATVMultiplexedDataSource.h>
+#import <AKABeacon/AKATVProxy.h>
+#import <AKABeacon/AKATVRowSegment.h>
+#import <AKABeacon/AKATVSection.h>
+#import <AKABeacon/AKATVUpdateBatch.h>
+#import <AKABeacon/NSIndexPath+AKARowAndSectionAsInteger.h>
+#import <AKABeacon/NSMutableString+AKATools.h>
+#import <AKABeacon/NSObject+AKAAssociatedValues.h>
+#import <AKABeacon/NSObject+AKAConcurrencyTools.h>
+#import <AKABeacon/NSObject+AKASelectorTools.h>
+#import <AKABeacon/NSString+AKAKeyPathUtilities.h>
+#import <AKABeacon/NSString+AKATools.h>
+#import <AKABeacon/UIView+AKAConstraintTools.h>
+#import <AKABeacon/UIView+AKAHierarchyVisitor.h>
+#import <AKABeacon/UIView+AKAReusableViewsSupport.h>
+
 // Behaviors
 #import <AKABeacon/AKABindingBehavior.h>
 

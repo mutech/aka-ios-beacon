@@ -7,8 +7,8 @@
 //
 
 @import UIKit;
-@import AKACommons.AKALog;
-@import AKACommons.AKAReference;
+#import "AKALog.h"
+#import "AKAReference.h"
 
 #import "AKAKeyboardActivationSequence.h"
 #import "AKAKeyboardActivationSequenceAccessoryView.h"

@@ -158,8 +158,8 @@
 
  @return YES if the attribute value has been set up successfully.
  */
-- (BOOL)initializeBindingPropertyEvaluatorAssignmentAttribute:(NSString *)bindingProperty
-                                            withSpecification:(AKABindingAttributeSpecification *)specification
+- (BOOL)initializeBindingPropertyEvaluatorAssignmentAttribute:(req_NSString)bindingProperty
+                                            withSpecification:(req_AKABindingAttributeSpecification)specification
                                           attributeExpression:(req_AKABindingExpression)attributeExpression
                                                bindingContext:(req_AKABindingContext)bindingContext
                                                         error:(out_NSError)error;
@@ -328,3 +328,52 @@
 - (void)didStopObservingChanges;
 
 @end
+
+
+#pragma mark - AKABinding Delegate Support Implementation
+#pragma mark -
+
+// 
+@interface AKABinding(DelegateSupport)
+
+- (void)             targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
+                                     toTargetValueWithError:(opt_NSError)error;
+
+- (void)            targetUpdateFailedToValidateTargetValue:(opt_id)targetValue
+                                   convertedFromSourceValue:(opt_id)sourceValue
+                                                  withError:(opt_NSError)error;
+
+- (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                             toInvalidValue:(opt_id)newSourceValue
+                                                  withError:(opt_NSError)error;
+
+- (BOOL)              shouldUpdateTargetValueForSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue
+                                                validatedTo:(opt_id)sourceValue;
+
+- (BOOL)                            shouldUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue
+                                             forSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue;
+
+- (void)                              willUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
+
+- (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
+                                                         to:(opt_id)newTargetValue;
+
+- (void)                             targetArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue;
+
+- (void)                             sourceArrayItemAtIndex:(NSUInteger)index
+                                         valueDidChangeFrom:(opt_id)oldValue
+                                                         to:(opt_id)newValue;
+
+- (void)                                            binding:(req_AKABinding)binding
+                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                                         to:(opt_id)newSourceValue;
+
+@end
+
+

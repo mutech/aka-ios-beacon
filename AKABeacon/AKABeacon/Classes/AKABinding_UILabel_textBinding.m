@@ -6,7 +6,7 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKABinding_Protected.h"
 #import "AKABinding_UILabel_textBinding.h"

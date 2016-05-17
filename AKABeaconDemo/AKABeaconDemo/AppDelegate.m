@@ -6,10 +6,10 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-#import "AppDelegate.h"
-
-@import AKACommons;
+@import AKABeacon;
 @import Aspects;
+
+#import "AppDelegate.h"
 
 @interface AppDelegate ()
 
@@ -20,11 +20,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if 0
     AKA_LOG_LEVEL_DEF = DDLogLevelAll;
     [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelWarning]; // TTY = Xcode console
     [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelWarning]; // ASL = Apple System Logs
     [DDLog setLevel:DDLogLevelAll forClass:[AKATVMultiplexedDataSource class]];
-
+#endif
     Class header = NSClassFromString(@"_UITableViewHeaderFooterViewBackground");
     if (header)
     {

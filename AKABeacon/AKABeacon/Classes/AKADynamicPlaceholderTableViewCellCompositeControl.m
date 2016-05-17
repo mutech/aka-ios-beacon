@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAAssociatedValues;
-@import AKACommons.AKALog;
+#import "NSObject+AKAAssociatedValues.h"
+#import "AKALog.h"
 
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKADynamicPlaceholderTableViewCell.h"

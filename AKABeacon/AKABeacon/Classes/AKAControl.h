@@ -7,7 +7,7 @@
 //
 
 @import Foundation;
-@import AKACommons.AKAProperty;
+#import "AKAProperty.h"
 
 #import "AKAControlConfiguration.h"
 #import "AKAControlDelegate.h"

@@ -13,18 +13,18 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
++ (req_instancetype)          bindingContextWithParent:(nonnull id<AKABindingContextProtocol>)bindingContext
                                dataContextProperty:(req_AKAProperty)dataContextProperty;
 
-+ (instancetype)           bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
-                                        dataContext:(id)dataContext;
++ (req_instancetype)           bindingContextWithParent:(nonnull id<AKABindingContextProtocol>)bindingContext
+                                        dataContext:(opt_id)dataContext;
 
-+ (instancetype)          bindingContextWithParent:(id<AKABindingContextProtocol>)bindingContext
-                                           keyPath:(NSString*)keyPath;
++ (req_instancetype)          bindingContextWithParent:(nonnull id<AKABindingContextProtocol>)bindingContext
+                                           keyPath:(opt_NSString)keyPath;
 
 #pragma mark - Properties
 
-@property(nonatomic, weak, readonly) id                             dataContext;
-@property(nonatomic, weak, readonly) id<AKABindingContextProtocol>  parent;
+@property(nonatomic, weak, readonly, nullable) id                             dataContext;
+@property(nonatomic, weak, readonly, nullable) id<AKABindingContextProtocol>  parent;
 
 @end

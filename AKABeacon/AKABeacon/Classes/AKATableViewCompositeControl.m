@@ -6,8 +6,8 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKALog;
-@import AKACommons.UIView_AKAHierarchyVisitor;
+#import "AKALog.h"
+#import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKATableViewCompositeControl.h"
 #import "AKAControl_Internal.h"

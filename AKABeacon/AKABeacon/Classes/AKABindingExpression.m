@@ -11,8 +11,8 @@
 #import "AKABindingErrors.h"
 #import "NSMutableString+AKATools.h"
 
-@import AKACommons.NSObject_AKAConcurrencyTools;
-@import AKACommons.NSMutableString_AKATools;
+#import "NSObject+AKAConcurrencyTools.h"
+#import "NSMutableString+AKATools.h"
 
 #pragma mark - AKABindingExpression
 #pragma mark -

@@ -8,7 +8,7 @@
 
 #import "AKABindingExpression.h"
 
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 @interface AKABindingExpression()
 

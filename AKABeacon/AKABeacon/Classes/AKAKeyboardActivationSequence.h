@@ -7,7 +7,7 @@
 //
 
 @import UIKit;
-@import AKACommons.AKANullability;
+#import "AKANullability.h"
 
 #import "AKAKeyboardActivationSequenceItemProtocol.h"
 

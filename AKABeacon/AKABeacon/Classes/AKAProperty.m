@@ -531,23 +531,23 @@
 
 - (id)value { return nil; }
 
-- (void)setTarget:(id)target bypassKVO:(BOOL)bypassKVO
+- (void)setTarget:(id __unused)target bypassKVO:(BOOL __unused)bypassKVO
 {
     [NSException exceptionWithName:@"InvalidOperation"
                             reason:@"Attempt to modify constant property %@"
                           userInfo:nil];
 }
 
-- (void)setValue:(id)value
+- (void)setValue:(id __unused)value
 {
     [NSException exceptionWithName:@"InvalidOperation"
                             reason:@"Attempt to modify constant property %@"
                           userInfo:nil];
 }
 
-- (id)targetValueForKey:(NSString *)key { return nil; }
+- (id)targetValueForKey:(NSString * __unused)key { return nil; }
 
-- (id)targetValueForKeyPath:(NSString *)keyPath { return nil; }
+- (id)targetValueForKeyPath:(NSString * __unused)keyPath { return nil; }
 
 #pragma mark - Notifications
 
@@ -655,7 +655,7 @@
 {
     BOOL result = YES;
     id target = self.target;
-    if (target != nil)
+    if (target != nil && ioValue != nil)
     {
         // Validation is not possible if the target is nil. The target might become defined later on and we probably do not want to reject a then valid value here.
         // TODO: either keep this logic or create a reasonable error message, in this case probably an exception forcing the caller to check if the target is defined and not attempt to validate properties otherwise.

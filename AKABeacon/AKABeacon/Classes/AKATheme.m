@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.UIView_AKAConstraintTools;
+#import "UIView+AKAConstraintTools.h"
 #import "AKATheme.h"
 #import "AKAViewCustomization.h"
 #import "AKAThemeLayout.h"

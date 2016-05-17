@@ -6,8 +6,8 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAProperty;
-@import AKACommons.UIView_AKAHierarchyVisitor;
+#import "AKAProperty.h"
+#import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKABinding_UITextView_textBinding.h"
 

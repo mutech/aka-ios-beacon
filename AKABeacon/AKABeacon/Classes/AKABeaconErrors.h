@@ -7,7 +7,8 @@
 //
 
 @import Foundation;
-@import AKACommons.AKAErrors;
+
+#import "AKAErrors.h"
 
 typedef NS_ENUM(NSInteger, AKAControlsErrorCodes)
 {

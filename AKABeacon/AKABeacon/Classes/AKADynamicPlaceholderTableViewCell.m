@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAErrors;
-@import AKACommons.NSObject_AKAAssociatedValues;
-@import AKACommons.UIView_AKAHierarchyVisitor;
-@import AKACommons.AKATVMultiplexedDataSource;
-@import AKACommons.AKALog;
+#import "AKAErrors.h"
+#import "NSObject+AKAAssociatedValues.h"
+#import "UIView+AKAHierarchyVisitor.h"
+#import "AKATVMultiplexedDataSource.h"
+#import "AKALog.h"
 
 #import "AKADynamicPlaceholderTableViewCell.h"
 

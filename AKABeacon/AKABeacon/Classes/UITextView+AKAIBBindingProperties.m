@@ -6,7 +6,7 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAAssociatedValues;
+#import "NSObject+AKAAssociatedValues.h"
 
 #import "UITextView+AKAIBBindingProperties.h"
 

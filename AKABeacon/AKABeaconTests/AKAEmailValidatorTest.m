@@ -7,7 +7,6 @@
 //
 
 @import UIKit;
-@import AKACommons.AKALog;
 
 #import <XCTest/XCTest.h>
 #import <AKABeacon/AKAEmailValidator.h>

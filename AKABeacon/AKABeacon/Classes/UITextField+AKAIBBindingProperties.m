@@ -6,8 +6,8 @@
 //  Copyright © 2015 AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKANullability;
-@import AKACommons.NSObject_AKAAssociatedValues;
+#import "AKANullability.h"
+#import "NSObject+AKAAssociatedValues.h"
 
 #import "UITextField+AKAIBBindingProperties.h"
 

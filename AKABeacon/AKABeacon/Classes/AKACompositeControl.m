@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKALog;
-@import AKACommons.NSObject_AKAConcurrencyTools;
-@import AKACommons.UIView_AKAHierarchyVisitor;
+#import "AKALog.h"
+#import "NSObject+AKAConcurrencyTools.h"
+#import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKACompositeControl.h"
 #import "AKATableViewCellCompositeControl.h"

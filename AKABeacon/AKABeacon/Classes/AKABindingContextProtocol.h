@@ -7,8 +7,8 @@
 //
 
 @import Foundation;
-@import AKACommons.AKANullability;
-@import AKACommons.AKAProperty;
+#import "AKANullability.h"
+#import "AKAProperty.h"
 
 
 @protocol AKABindingContextProtocol;

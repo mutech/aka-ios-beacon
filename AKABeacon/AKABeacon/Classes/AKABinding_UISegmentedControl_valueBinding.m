@@ -6,7 +6,7 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.NSObject_AKAConcurrencyTools;
+#import "NSObject+AKAConcurrencyTools.h"
 #import "AKABinding_UISegmentedControl_valueBinding.h"
 #import "AKACollectionControlViewBinding.h"
 #import "AKABindingErrors.h"

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-@import AKACommons.AKAErrors;
+#import "AKAErrors.h"
 
 #import "AKABinding_Protected.h"
 #import "AKALocalePropertyBinding.h"

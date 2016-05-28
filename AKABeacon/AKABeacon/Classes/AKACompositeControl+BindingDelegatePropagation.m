@@ -311,10 +311,6 @@
 @end
 
 
-// TODO: replace AKADynamicPlaceholderTableViewCellCompositeControl with AKACollectionControl
-
-#import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
-
 @implementation AKACompositeControl (CollectionControlViewBindingDelegatePropagation)
 
 - (void)                                      control:(req_AKACompositeControl)control

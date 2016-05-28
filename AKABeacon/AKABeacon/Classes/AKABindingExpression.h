@@ -101,7 +101,7 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
  */
 @property(nonatomic, readonly, nonnull) NSString*                   text;
 
-@property(nonatomic, readonly, weak, nullable) AKABindingSpecification* specification;
+@property(nonatomic, readonly, nullable) AKABindingSpecification* specification;
 
 /**
    Additional named binding expressions which are used by the binding type processing this binding expression to setup bindings.

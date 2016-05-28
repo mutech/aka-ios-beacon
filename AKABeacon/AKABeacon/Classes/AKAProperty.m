@@ -366,12 +366,12 @@
 
 - (id)targetValueForKey:(NSString *)key
 {
-    return [self.target valueForKey:key];
+    return key.length ? [self.target valueForKey:key] : self.target;
 }
 
 - (id)targetValueForKeyPath:(NSString *)keyPath
 {
-    return [self.target valueForKeyPath:keyPath];
+    return keyPath.length ? [self.target valueForKeyPath:keyPath] : self.target;
 }
 
 #pragma mark - Validation
@@ -650,7 +650,7 @@
 
 #pragma mark - Validation
 
-- (BOOL)    validateValue:(inout __autoreleasing id *)ioValue
+- (BOOL)    validateValue:(inout_id)ioValue
                     error:(out NSError *__autoreleasing *)outError
 {
     BOOL result = YES;
@@ -661,14 +661,17 @@
         // TODO: either keep this logic or create a reasonable error message, in this case probably an exception forcing the caller to check if the target is defined and not attempt to validate properties otherwise.
         if (self.keyPath.length > 0)
         {
-            // TODO: check if normalizing NSNull to nil is correct.
-            if (ioValue && *ioValue == [NSNull null])
+            if (ioValue)
             {
-                *ioValue = nil;
+                // TODO: check if normalizing NSNull to nil is correct.
+                if (*ioValue == [NSNull null])
+                {
+                    *ioValue = nil;
+                }
+                result = [target validateValue:(id _Nullable* _Nonnull)ioValue
+                                    forKeyPath:self.keyPath
+                                         error:outError];
             }
-            result = [target validateValue:ioValue
-                                forKeyPath:self.keyPath
-                                     error:outError];
         }
     }
     return result;
@@ -699,6 +702,31 @@
 
     if (!self.isObservingChanges)
     {
+        if (self.dependencyPropertiesStorage.count == 1)
+        {
+            AKAProperty* dependency = self.dependencyPropertiesStorage.allObjects.firstObject;
+            if (dependency)
+            {
+                id newTarget = dependency.value;
+                if (newTarget != target)
+                {
+                    id oldValue = self.value;
+                    self.target = newTarget;
+                    id newValue = self.value;
+
+                    _isObservingChanges = YES;
+                    [self propertyValueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
+                                                  to:newValue == [NSNull null] ? nil : newValue];
+
+                    target = newTarget;
+                }
+            }
+            else
+            {
+                // TODO: check why this happens; background: properties depending on other properties now update their target value when they start observing changes (because it may have changed while they were not tracking changes). 
+            }
+        }
+
         if (self.keyPath.length > 0)
         {
             // Can only addObserver if keyPath is defined, otherwise the target itself the value; in this case changing the value results in changing the target, the setter will take care to notify observers

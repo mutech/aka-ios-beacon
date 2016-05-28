@@ -41,13 +41,13 @@
     return result;
 }
 
-- (void)                                    validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    (void)targetView;
-    NSParameterAssert([targetView isKindOfClass:[UISegmentedControl class]]);
+    (void)target;
+    NSParameterAssert([target isKindOfClass:[UISegmentedControl class]]);
 }
 
-- (req_AKAProperty)         createBindingTargetPropertyForView:(req_UIView)view
+- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISegmentedControl class]]);
 

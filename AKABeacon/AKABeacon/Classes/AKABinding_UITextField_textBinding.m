@@ -104,12 +104,12 @@
 
 #pragma mark - Initialization
 
-- (void)validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    NSParameterAssert([targetView isKindOfClass:[UITextField class]]);
+    NSParameterAssert([target isKindOfClass:[UITextField class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
+- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
 {
     NSAssert([view isKindOfClass:[UITextField class]], @"Expected a UITextField, got %@", view);
     (void)view;

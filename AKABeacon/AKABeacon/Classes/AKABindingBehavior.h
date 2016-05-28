@@ -9,13 +9,12 @@
 @import UIKit;
 #import "AKAProperty.h"
 #import "AKAControlDelegate.h"
-
-@class AKAFormControl;
-@class AKABindingBehavior;
+#import "AKABindingController.h"
 
 
-@protocol AKABindingBehaviorDelegate <AKAControlDelegate>
-// See AKAControlDelegate
+@protocol AKABindingBehaviorDelegate <AKABindingControllerDelegate>
+// See AKABindingControllerDelegate
+
 @end
 
 
@@ -94,6 +93,20 @@
 - (opt_AKAProperty)observeWeakTarget:(opt_NSObject)target
                              keyPath:(req_NSString)keyPath
                    changesUsingBlock:(void(^_Nonnull)(id _Nullable oldValue, id _Nullable newValue))didChangeValue;
+
+
+/**
+ Attempts to identify a view associated with the specified sender and then locates the binding controller managing bindings for that view and returns its data context.
+ 
+ @note this mechanism is not (yet) covering all UIKit sender types. If it works for you, it will work in the future, if it does not work, please file an issue at https://github/mutech/aka-ios-beacon
+
+ Supported sender types (as of now): UIView, UIGestureRecognizer
+
+ @param sender an object, typically the sender of an IBAction, that is (or is associated) with a view hierarchy that is managed by the behavior's binding controller or one of its child binding controllers.
+
+ @return the senders associated data context or nil if no binding controller could be found.
+ */
+- (opt_id)dataContextForSender:(req_id)sender;
 
 @end
 

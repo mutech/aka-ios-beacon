@@ -34,9 +34,9 @@
 
 @interface AKAWeakReferenceProxy<__covariant ObjectType>: NSProxy
 
-+ (id)weakReferenceProxyFor:(id)value;
++ (ObjectType)weakReferenceProxyFor:(ObjectType)value;
 
-+ (id)weakReferenceProxyFor:(id)value
-               deallocation:(void(^)())deallocationBlock;
++ (ObjectType)weakReferenceProxyFor:(ObjectType)value
+                       deallocation:(void(^)())deallocationBlock;
 
 @end

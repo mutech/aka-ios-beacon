@@ -18,10 +18,10 @@
 
 #pragma mark - Initialization
 
-- (void)                                    validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    (void)targetView;
-    NSParameterAssert([targetView isKindOfClass:[AKACustomKeyboardResponderView class]]);
+    (void)target;
+    NSParameterAssert([target isKindOfClass:[AKACustomKeyboardResponderView class]]);
 }
 
 #pragma mark - Custom Keyboard Responder View Delegate Attachment

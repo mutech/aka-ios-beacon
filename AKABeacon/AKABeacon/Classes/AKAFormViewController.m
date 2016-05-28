@@ -20,16 +20,15 @@
 {
     [super viewDidLoad];
 
-    //[self setupScrollView];
+    [self setupScrollView];
 
     [AKABindingBehavior addToViewController:self];
 }
 
-#if 0
-
 // Experimental and not working well: Automatic injection of a top-level scroll view:
 - (void) setupScrollView
 {
+#if 0
     if (self.scrollView == nil)
     {
         UIView* rootView = self.view;
@@ -153,7 +152,7 @@
 
         self.scrollView = scrollView;
     }
-}
 #endif
+}
 
 @end

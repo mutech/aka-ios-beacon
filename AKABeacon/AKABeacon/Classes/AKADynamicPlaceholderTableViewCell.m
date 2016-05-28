@@ -128,15 +128,15 @@
 
 #pragma mark - Initialization
 
-- (void)validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    (void)targetView;
-    NSParameterAssert([targetView isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);
+    (void)target;
+    NSParameterAssert([target isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);
 }
 
 #pragma mark - Binding Target
 
-- (req_AKAProperty)createBindingTargetPropertyForView:(req_UIView)view
+- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
 {
     (void)view;
     NSParameterAssert(view == nil || [view isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);

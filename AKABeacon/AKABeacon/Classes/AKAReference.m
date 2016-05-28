@@ -8,6 +8,7 @@
 
 #import "AKAReference.h"
 #import "AKAErrors.h"
+#import "AKADeallocSentinel.h"
 
 #include <objc/runtime.h>
 
@@ -102,50 +103,6 @@
 @end
 
 
-@interface AKADeallocSentinel: NSObject
-
-+ (void)observeObjectLifeCycle:(id)object
-                  deallocation:(void(^)())deallocNotificationBlock;
-
-@end
-
-@interface AKADeallocSentinel()
-
-@property(nonatomic, readonly) void(^deallocNotificationBlock)();
-
-@end
-
-@implementation AKADeallocSentinel
-
-+ (void)observeObjectLifeCycle:(id)object deallocation:(void(^)())deallocNotificationBlock
-{
-    static char sentinelStorageKey;
-
-    AKADeallocSentinel* sentinel = [[AKADeallocSentinel alloc] initWithDeallocNotificationBlock:deallocNotificationBlock];
-
-    objc_setAssociatedObject(object, &sentinelStorageKey, sentinel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (instancetype)initWithDeallocNotificationBlock:(void(^)())deallocNotificationBlock
-{
-    if (self = [self init])
-    {
-        _deallocNotificationBlock = deallocNotificationBlock;
-    }
-    return self;
-}
-
-- (void)dealloc
-{
-    if (self.deallocNotificationBlock)
-    {
-        self.deallocNotificationBlock();
-    }
-}
-
-@end
-
-
 @interface AKAWeakReferenceProxy<__covariant ObjectType>() {
     __weak ObjectType _aka_weakReference;
 }
@@ -213,8 +170,8 @@
     }
     else
     {
-        NSString *types = [NSString stringWithFormat:@"%s%s", @encode(id), @encode(SEL)];
-        methodSignature = [NSMethodSignature signatureWithObjCTypes:[types UTF8String]];
+        const char *types = [[NSString stringWithFormat:@"%s%s", @encode(id), @encode(SEL)] UTF8String];
+        methodSignature = [NSMethodSignature signatureWithObjCTypes:types];
     }
     return methodSignature;
 }

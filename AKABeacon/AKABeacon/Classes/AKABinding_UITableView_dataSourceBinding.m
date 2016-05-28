@@ -198,11 +198,11 @@
         bindingType = [AKAPropertyBinding class];
     }
 
-    AKABinding* binding = [bindingType bindingToTarget:bindingTarget
-                                        withExpression:bindingExpression
-                                               context:itemBindingContext
-                                              delegate:weakSelf.delegateForSubBindings
-                                                 error:nil];
+    AKABinding* binding = [bindingType bindingToTargetProperty:bindingTarget
+                                                withExpression:bindingExpression
+                                                       context:itemBindingContext
+                                                      delegate:weakSelf.delegateForSubBindings
+                                                         error:nil];
 
     return binding;
 }
@@ -301,7 +301,7 @@
     }
 }
 
-- (AKAProperty*)        createBindingTargetPropertyForView:(req_UIView __unused)view
+- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
 {
     // Implementation note: self.sections contains the current array of section infos, which is what
     // the bindingTarget property returns. When dynamic sections change, then the target setter is called
@@ -361,7 +361,7 @@
                     }
 
                     // TODO: deselect currently selected rows, maybe restore previously selected
-                    [tableView reloadData];
+                    [self reloadTableViewAnimated:NO];
                 }
                 
                 return !binding.isObserving;
@@ -476,15 +476,13 @@
     // TODO: defer updates if scrolling
     // TODO: don't begin updates if already updating (increment counter)
 
-    [self.tableView beginUpdates];
+    [self beginUpdatingTableView:self.tableView];
 }
 
 - (void)                                        sectionInfo:(AKATableViewSectionDataSourceInfo *)sectionInfo
                                             didInsertObject:(id)object
                                                  atRowIndex:(NSInteger)index
 {
-    (void)sectionInfo;
-    (void)object;
     // TODO: defer updates if scrolling
 
     NSInteger section = (NSInteger)[self.sections indexOfObject:sectionInfo];
@@ -498,7 +496,6 @@
                                             didUpdateObject:(id)object
                                                  atRowIndex:(NSInteger)index
 {
-    (void)sectionInfo;
     (void)object;
     // TODO: defer updates if scrolling
 
@@ -513,7 +510,6 @@
                                             didDeleteObject:(id)object
                                                  atRowIndex:(NSInteger)index
 {
-    (void)sectionInfo;
     (void)object;
     // TODO: defer updates if scrolling
 
@@ -526,11 +522,10 @@
 
 - (void)                        sectionInfoDidChangeContent:(AKATableViewSectionDataSourceInfo *)sectionInfo
 {
-    (void)sectionInfo;
     // TODO: defer end updates if scrolling
     // TODO: don't end updates if still updating (decrement counter)
 
-    [self.tableView endUpdates];
+    [self endUpdatingTableView:self.tableView];
 }
 
 
@@ -552,6 +547,28 @@
         [tableView reloadData];
     }
     //[self updateTableViewRowHeightsAnimated:NO]; // No animation for row height updates because it looks clumsy to have two successive animations
+}
+
+
+
+- (void)                             beginUpdatingTableView:(UITableView*)tableView
+{
+    id <AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(bindingWillUpdateDynamicBindings:)])
+    {
+        [delegate bindingWillUpdateDynamicBindings:self];
+    }
+    [tableView beginUpdates];
+}
+
+- (void)                               endUpdatingTableView:(UITableView*)tableView
+{
+    [tableView endUpdates];
+    id <AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(bindingDidUpdateDynamicBindings:)])
+    {
+        [delegate bindingDidUpdateDynamicBindings:self];
+    }
 }
 
 - (void)                  updateTableViewRowHeightsAnimated:(BOOL)animated
@@ -684,7 +701,7 @@
             {
                 if (!tableView.isDragging && !tableView.isDecelerating)
                 {
-                    [tableView beginUpdates];
+                    [self beginUpdatingTableView:tableView];
                     for (NSNumber* sectionN in self.pendingTableViewChanges.allKeys)
                     {
                         AKAArrayComparer* pendingChanges = self.pendingTableViewChanges[sectionN];
@@ -695,10 +712,10 @@
                                         insertAnimation:self.insertAnimation];
                         [self.pendingTableViewChanges removeObjectForKey:sectionN];
 
-                        [tableView beginUpdates];
-                        [tableView endUpdates];
+                        [self updateTableViewRowHeightsAnimated:YES];
                     }
-                    [tableView endUpdates];
+                    [self endUpdatingTableView:tableView];
+
 
                     // Perform update for self-sizing cells now to ensure this will be done
                     //[self updateTableViewRowHeightsAnimated:NO];
@@ -927,7 +944,7 @@
                                       willDisplayHeaderView:(nonnull UIView *)view
                                                  forSection:(NSInteger)section
 {
-    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
 
@@ -936,7 +953,7 @@
         [delegate               binding:self
            addDynamicBindingsForSection:section
                              headerView:view
-                            dataContext:dataContext];
+                            dataContext:sectionInfo];
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
@@ -953,7 +970,7 @@
 {
     (void)tableView;
 
-    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
 
@@ -962,7 +979,7 @@
         [delegate               binding:self
            addDynamicBindingsForSection:section
                              footerView:view
-                            dataContext:dataContext];
+                            dataContext:sectionInfo];
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
@@ -980,14 +997,15 @@
     (void)tableView;
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
-    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
 
     if ([delegate respondsToSelector:@selector(binding:removeDynamicBindingsForSection:headerView:dataContext:)])
     {
         [delegate               binding:self
         removeDynamicBindingsForSection:section
                              headerView:view
-                            dataContext:dataContext];
+                            dataContext:sectionInfo];
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
@@ -1005,14 +1023,15 @@
     (void)tableView;
 
     id<AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
-    id dataContext = [self.bindingContext dataContextValueForKeyPath:nil];
+
+    AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
 
     if ([delegate respondsToSelector:@selector(binding:removeDynamicBindingsForSection:footerView:dataContext:)])
     {
         [delegate               binding:self
         removeDynamicBindingsForSection:section
                              footerView:view
-                            dataContext:dataContext];
+                            dataContext:sectionInfo];
     }
 
     id<UITableViewDelegate> original = self.delegateDispatcher.originalDelegate;
@@ -1021,6 +1040,91 @@
     {
         [original tableView:tableView didEndDisplayingFooterView:view forSection:section];
     }
+}
+
+@end
+
+
+#import "AKABindingController+ChildBindingControllers.h"
+
+
+#pragma mark - AKABindingController(BindingDelegate_UITableView_dataSourceBinding) - Interface
+#pragma mark -
+
+@interface AKABindingController(BindingDelegate_UITableView_dataSourceBinding) <AKABindingDelegate_UITableView_dataSourceBinding>
+@end
+
+
+#pragma mark - AKABindingController(BindingDelegate_UITableView_dataSourceBinding) - Implementation
+#pragma mark -
+
+@implementation AKABindingController(BindingDelegate_UITableView_dataSourceBinding)
+
+- (void)                bindingWillUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding
+{
+    [self beginUpdatingChildControllers];
+}
+
+- (void)                bindingDidUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding
+{
+    [self endUpdatingChildControllers];
+}
+
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+      addDynamicBindingsForCell:(UITableViewCell *)cell
+                      indexPath:(NSIndexPath *)indexPath
+                    dataContext:(id)dataContext
+{
+    [self createOrReuseBindingControllerForTargetObjectHierarchy:cell
+                                                 withDataContext:dataContext
+                                                           error:nil];
+}
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+   removeDynamicBindingsForCell:(UITableViewCell *)cell
+                      indexPath:(NSIndexPath *)indexPath
+{
+    [self removeBindingControllerForTargetObjectHierarchy:cell
+                                            enqueForReuse:cell.reuseIdentifier.length > 0];
+}
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+   addDynamicBindingsForSection:(NSInteger)section
+                     headerView:(UIView *)headerView
+                    dataContext:(id)dataContext
+{
+    [self createOrReuseBindingControllerForTargetObjectHierarchy:headerView
+                                                 withDataContext:dataContext
+                                                           error:nil];
+}
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+removeDynamicBindingsForSection:(NSInteger)section
+                     headerView:(UIView *)headerView
+                    dataContext:(id)dataContext
+{
+    [self removeBindingControllerForTargetObjectHierarchy:headerView
+                                            enqueForReuse:NO];
+}
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+   addDynamicBindingsForSection:(NSInteger)section
+                     footerView:(UIView *)footerView
+                    dataContext:(id)dataContext
+{
+    [self createOrReuseBindingControllerForTargetObjectHierarchy:footerView
+                                                 withDataContext:dataContext
+                                                           error:nil];
+}
+
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+removeDynamicBindingsForSection:(NSInteger)section
+                     footerView:(UIView *)headerView
+                    dataContext:(id)dataContext
+{
+    [self removeBindingControllerForTargetObjectHierarchy:headerView
+                                            enqueForReuse:NO];
 }
 
 @end

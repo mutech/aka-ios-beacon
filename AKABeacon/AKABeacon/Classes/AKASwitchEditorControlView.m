@@ -8,7 +8,7 @@
 
 #import "AKASwitchEditorControlView.h"
 #import "AKAEditorControlView_Protected.h"
-#import "UISwitch+AKAIBBindingProperties.h"
+#import "UISwitch+AKAIBBindingProperties_stateBinding.h"
 
 @implementation AKASwitchEditorControlView
 

@@ -24,11 +24,11 @@
 
 @dynamic delegate;
 
-+ (opt_AKABinding)bindingToView:(req_UIView)targetView
-                 withExpression:(req_AKABindingExpression)bindingExpression
-                        context:(req_AKABindingContext)bindingContext
-                       delegate:(opt_AKABindingDelegate)delegate
-                          error:(out_NSError)error
++ (opt_AKABinding)bindingToTarget:(req_id)target
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error
 {
     AKABinding* result = nil;
     if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
@@ -41,11 +41,11 @@
     }
     else
     {
-        result = [super bindingToView:targetView
-                       withExpression:bindingExpression
-                              context:bindingContext
-                             delegate:delegate
-                                error:error];
+        result = [super bindingToTarget:target
+                         withExpression:bindingExpression
+                                context:bindingContext
+                               delegate:delegate
+                                  error:error];
     }
     return result;
 }

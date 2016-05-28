@@ -38,44 +38,18 @@
 
 @implementation AKABinding
 
-#pragma mark - Initialization
+#pragma mark - Initialization with target objects (f.e. views)
 
-- (instancetype)                                       init
-{
-    if (self = [super init])
-    {
-        _isUpdatingTargetValueForSourceValueChange = NO;
-    }
-
-    return self;
-}
-
-+ (opt_AKABinding)                          bindingToTarget:(req_AKAProperty)target
-                                             withExpression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate
-                                                      error:(out_NSError)error
++ (opt_AKABinding)bindingToTarget:(req_id)target
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error
 {
     if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
     {
-        AKABindingSpecification* specification = [self specification];
-        AKAConditionalBinding* result =[AKAConditionalBinding alloc];
+        AKAConditionalBinding* result = [AKAConditionalBinding alloc];
         result = [result initWithTarget:target
-                   resultBindingFactory:
-                  ^AKABinding * _Nullable(req_id                    rTarget,
-                                          req_AKABindingExpression  rExpression,
-                                          req_AKABindingContext     rContext,
-                                          opt_AKABindingDelegate    rDelegate,
-                                          out_NSError               rError)
-                  {
-                      AKABinding* resultBinding = [specification.bindingType alloc];
-                      return [resultBinding initWithTarget:rTarget
-                                                expression:rExpression
-                                                   context:rContext
-                                                  delegate:rDelegate
-                                                     error:rError];
-
-                  }
                       resultBindingType:self
                              expression:bindingExpression
                                 context:bindingContext
@@ -93,11 +67,77 @@
     }
 }
 
-- (opt_instancetype)                         initWithTarget:(req_AKAProperty)target
-                                                 expression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate
-                                                      error:(out_NSError)error
+- (instancetype)initWithTarget:(req_id)target
+                    expression:(req_AKABindingExpression)bindingExpression
+                       context:(req_AKABindingContext)bindingContext
+                      delegate:(opt_AKABindingDelegate)delegate
+                         error:(out_NSError)error
+{
+    [self validateTarget:target];
+
+    self = [self initWithTargetProperty:[self createBindingTargetPropertyForTarget:target]
+                             expression:bindingExpression
+                                context:bindingContext
+                               delegate:delegate
+                                  error:error];
+
+    return self;
+}
+
+- (void)validateTarget:(req_id __unused)target
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id __unused)target
+{
+    AKAErrorAbstractMethodImplementationMissing();
+}
+
+#pragma mark - Initialization with target properties
+
+- (instancetype)                                       init
+{
+    if (self = [super init])
+    {
+        _isUpdatingTargetValueForSourceValueChange = NO;
+    }
+
+    return self;
+}
+
++ (opt_AKABinding)bindingToTargetProperty:(req_AKAProperty)target
+                           withExpression:(req_AKABindingExpression)bindingExpression
+                                  context:(req_AKABindingContext)bindingContext
+                                 delegate:(opt_AKABindingDelegate)delegate
+                                    error:(out_NSError)error
+{
+    if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
+    {
+        AKAConditionalBinding* result = [AKAConditionalBinding alloc];
+        result = [result initWithTargetProperty:target
+                              resultBindingType:self
+                                     expression:bindingExpression
+                                        context:bindingContext
+                                       delegate:delegate
+                                          error:error];
+        return result;
+    }
+    else
+    {
+        return [[self alloc] initWithTargetProperty:target
+                                         expression:bindingExpression
+                                            context:bindingContext
+                                           delegate:delegate
+                                              error:error];
+    }
+}
+
+- (opt_instancetype)initWithTargetProperty:(req_AKAProperty)target
+                                expression:(req_AKABindingExpression)bindingExpression
+                                   context:(req_AKABindingContext)bindingContext
+                                  delegate:(opt_AKABindingDelegate)delegate
+                                     error:(out_NSError)error
 {
     NSError* localError = nil;
 
@@ -195,7 +235,7 @@
     {
         Class specifiedBindingType = bindingExpression.specification.bindingType;
 
-        BOOL result = (specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType]);
+        result = (specifiedBindingType == nil || [[self class] isSubclassOfClass:specifiedBindingType]);
 
         if (!result)
         {
@@ -258,7 +298,7 @@
     {
         result = [self.bindingSource validateValue:&validatedValue error:error];
 
-        if (validatedValue != *sourceValueStore)
+        if (sourceValueStore && validatedValue != *sourceValueStore)
         {
             *sourceValueStore = validatedValue;
         }
@@ -280,7 +320,7 @@
     {
         result = [self.bindingTarget validateValue:&validatedValue error:error];
 
-        if (validatedValue != *targetValueStore)
+        if (targetValueStore && validatedValue != *targetValueStore)
         {
             *targetValueStore = validatedValue;
         }
@@ -517,7 +557,6 @@
                                                       value:(opt_id)oldValue
                                         didChangeToNewValue:(opt_id)newValue
 {
-    AKALogDebug(@"Binding %@ property %@ value %@ changed to %@", self, bindingPropertyName, oldValue, newValue);
 }
 
 #pragma mark - Diagnostics
@@ -914,11 +953,11 @@
                         bindingType = [AKAPropertyBinding class];
                     }
 
-                    AKABinding* binding = [bindingType bindingToTarget:arrayItemTargetProperty
-                                                        withExpression:sourceExpression
-                                                               context:bindingContext
-                                                              delegate:weakSelf.delegateForSubBindings
-                                                                 error:error];
+                    AKABinding* binding = [bindingType bindingToTargetProperty:arrayItemTargetProperty
+                                                                withExpression:sourceExpression
+                                                                       context:bindingContext
+                                                                      delegate:weakSelf.delegateForSubBindings
+                                                                         error:error];
                     if (binding)
                     {
                         arrayItemBinding = binding;
@@ -1272,11 +1311,11 @@
                                                            value:oldValue
                                              didChangeToNewValue:newValue];
                                    }];
-        AKABinding* propertyBinding = [bindingType bindingToTarget:targetProperty
-                                                    withExpression:attributeExpression
-                                                           context:bindingContext
-                                                          delegate:weakSelf.delegateForSubBindings
-                                                             error:error];
+        AKABinding* propertyBinding = [bindingType bindingToTargetProperty:targetProperty
+                                                            withExpression:attributeExpression
+                                                                   context:bindingContext
+                                                                  delegate:weakSelf.delegateForSubBindings
+                                                                     error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -1312,11 +1351,11 @@
                                  value:oldValue
                    didChangeToNewValue:newValue];
          }];
-        AKABinding* propertyBinding = [bindingType bindingToTarget:targetProperty
-                                                    withExpression:attributeExpression
-                                                           context:bindingContext
-                                                          delegate:weakSelf.delegateForSubBindings
-                                                             error:error];
+        AKABinding* propertyBinding = [bindingType bindingToTargetProperty:targetProperty
+                                                            withExpression:attributeExpression
+                                                                   context:bindingContext
+                                                                  delegate:weakSelf.delegateForSubBindings
+                                                                     error:error];
         result = propertyBinding != nil;
         if (result)
         {

@@ -190,7 +190,6 @@ typedef enum
 {
     UITableView* tableView = self.tableView;
 
-    AKALogVerbose(@"[self.updateBatch beginUpdatesForTableView:%p", tableView);
     [self.updateBatch beginUpdatesForTableView:tableView];
 }
 
@@ -198,7 +197,6 @@ typedef enum
 {
     UITableView* tableView = self.tableView;
 
-    AKALogVerbose(@"[self.updateBatch endUpdatesForTableView:%p", tableView);
     [self.updateBatch endUpdatesForTableView:tableView];
 }
 
@@ -310,8 +308,7 @@ typedef enum
     if (tableView)
     {
         NSArray* correctedIndexPaths = [self.updateBatch correctedIndexPaths:indexPaths];
-        AKALogVerbose(@"[tableView:%p reloadRowsAtIndexPaths:@[%@]] withRowAnimation:%ld",
-                      tableView, [correctedIndexPaths componentsJoinedByString:@", "], (long)rowAnimation);
+        
         [tableView reloadRowsAtIndexPaths:correctedIndexPaths
                          withRowAnimation:rowAnimation];
     }
@@ -347,7 +344,6 @@ typedef enum
                     targetRowIndex:&tgtIndexPath
          forBatchUpdateInTableView:tableView
                   recordAsMovedRow:YES];
-        AKALogVerbose(@"[tableView:%p moveRowAtIndexPath:%@ toIndexPath:%@]", tableView, srcIndexPath, tgtIndexPath);
         [tableView moveRowAtIndexPath:srcIndexPath
                           toIndexPath:tgtIndexPath];
     }
@@ -406,7 +402,6 @@ typedef enum
                     targetRowIndex:&tgtIndexPath
          forBatchUpdateInTableView:tableView
                   recordAsMovedRow:YES];
-        AKALogVerbose(@"[tableView:%p moveRowAtIndexPath:%@ toIndexPath:%@]", tableView, srcIndexPath, tgtIndexPath);
         [tableView moveRowAtIndexPath:srcIndexPath
                           toIndexPath:tgtIndexPath];
     }
@@ -452,8 +447,6 @@ typedef enum
                     [indexPaths addObject:correctedIndexPath];
                 }
 
-                AKALogVerbose(@"[tableView:%p insertRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
-                              tableView, [indexPaths componentsJoinedByString:@", "], (long)rowAnimation);
                 [tableView insertRowsAtIndexPaths:indexPaths
                                  withRowAnimation:rowAnimation];
             }
@@ -517,8 +510,6 @@ typedef enum
                                                                inSection:indexPath.section
                                                forBatchUpdateInTableView:tableView
                                                     recordAsDeletedIndex:YES];
-            AKALogVerbose(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
-                          tableView, correctedIndexPath, (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -560,8 +551,6 @@ typedef enum
                                                forBatchUpdateInTableView:tableView
                                                    recordAsInsertedIndex:YES];
 
-            AKALogVerbose(@"[tableView:%p insertRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
-                          tableView, correctedIndexPath, (long)rowAnimation);
             [tableView insertRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -592,8 +581,6 @@ typedef enum
                                                                inSection:indexPath.section
                                                forBatchUpdateInTableView:tableView
                                                     recordAsDeletedIndex:YES];
-            AKALogVerbose(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
-                          tableView, correctedIndexPath, (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
                              withRowAnimation:rowAnimation];
         }
@@ -631,8 +618,6 @@ typedef enum
                 [indexPaths addObject:correctedIndexPath];
             }
 
-            AKALogVerbose(@"[tableView:%p deleteRowsAtIndexPaths:@[%@] withRowAnimation:%ld]",
-                          tableView, [indexPaths componentsJoinedByString:@", "], (long)rowAnimation);
             [tableView deleteRowsAtIndexPaths:indexPaths
                              withRowAnimation:rowAnimation];
         }
@@ -909,7 +894,6 @@ typedef enum
 {
     (void)tableView;
     NSInteger result = (NSInteger)self.numberOfSections;
-    AKALogVerbose(@"[self numberOfSectionsInTableView:%p] (%ld)", tableView, (long)result);
 
     return result;
 }
@@ -927,7 +911,6 @@ typedef enum
         result = [dataSource  tableView:tableView
                   cellForRowAtIndexPath:resolvedIndexPath];
     }
-    AKALogVerbose(@"[tableView:%p cellForRowAtIndexPath:%@] (%@, dataSource = %@)", tableView, indexPath, result, dataSource);
 
     return result;
 }
@@ -944,7 +927,6 @@ typedef enum
     {
         result = (NSInteger)sectionSpecification.numberOfRows;
     }
-    AKALogVerbose(@"[tableView:%p numberOfRowsInSection:%ld] (%ld)", tableView, (long)section, (long)result);
 
     return result;
 }

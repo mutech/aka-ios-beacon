@@ -8,12 +8,12 @@
 
 @import UIKit;
 
-#import "AKAFormControl.h"
+#import "AKABindingController.h"
 
 /**
  Deprecated, use AKABindingBehavior (see AKABeaconDemo project for examples)
  */
-@interface AKAFormViewController: UIViewController<AKAControlDelegate>
+@interface AKAFormViewController: UIViewController<AKABindingControllerDelegate>
 
 #pragma mark - Outlets
 

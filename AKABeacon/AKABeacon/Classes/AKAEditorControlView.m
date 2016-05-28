@@ -11,8 +11,8 @@
 #import "AKAEditorControlView.h"
 #import "AKAThemableContainerView_Protected.h"
 #import "AKAControlViewProtocol.h"
-#import "UITextView+AKAIBBindingProperties.h"
-#import "UILabel+AKAIBBindingProperties.h"
+//#import "UITextView+AKAIBBindingProperties.h"
+#import "UILabel+AKAIBBindingProperties_textBinding.h"
 
 #import "AKABeaconErrors.h"
 #import "AKAProperty.h"

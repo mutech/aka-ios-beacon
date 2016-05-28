@@ -78,41 +78,74 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Behaviors
 #import <AKABeacon/AKABindingBehavior.h>
+#import <AKABeacon/AKAControlBindingBehavior.h>  // Obsolete (support AKAFormTableViewController)
 
 // ViewControllers
 #import <AKABeacon/AKAFormViewController.h>
-#import <AKABeacon/AKAFormTableViewController.h>
+#import <AKABeacon/AKAFormTableViewController.h> // Obsolete
+
 #import <AKABeacon/UIViewController+AKAIBBindingProperties.h>
 
-// Controls
-#import <AKABeacon/AKAControlValidationState.h>
-#import <AKABeacon/AKAControlConfiguration.h>
-#import <AKABeacon/AKAControlDelegate.h>
-#import <AKABeacon/AKAControl.h>
-#import <AKABeacon/AKAControl+BindingDelegate.h>
+// Integration
 
-// ScalarControls
-#import <AKABeacon/AKAScalarControl.h>
-#import <AKABeacon/AKAScalarControl_Protected.h>
-#import <AKABeacon/AKAScalarControl+ControlViewBindingDelegate.h>
-#import <AKABeacon/AKAKeyboardControl.h>
-#import <AKABeacon/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h>
+// Integration/AKABindingTargetContainer
+#import <AKABeacon/AKABindingTargetContainerProtocol.h>
+#import <AKABeacon/UITableView+AKABindingTargetContainer.h>
+#import <AKABeacon/UITableViewCell+AKABindingTargetContainer.h>
+#import <AKABeacon/UIToolbar+AKABindingTargetContainer.h>
+#import <AKABeacon/UIView+AKABindingTargetContainer.h>
+#import <AKABeacon/UIViewController+AKABindingTargetContainer.h>
 
-// ComplexControls
-#import <AKABeacon/AKACompositeControl.h>
-#import <AKABeacon/AKACompositeControl+BindingDelegatePropagation.h>
-#import <AKABeacon/AKATableViewCompositeControl.h>
-#import <AKABeacon/AKATableViewCellCompositeControl.h>
-#import <AKABeacon/AKADynamicPlaceholderTableViewCellCompositeControl.h>
-#import <AKABeacon/AKAFormControl.h>
-#import <AKABeacon/AKAFormControl+BindingDelegatePropagation.h>
+// Integration/AKAIBBindingProperties
 
-#import <AKABeacon/AKAControlViewProtocol.h>
-#import <AKABeacon/AKAControlValidatorProtocol.h>
-#import <AKABeacon/AKAControlConverterProtocol.h>
+// Integration/AKAIBBindingProperties/datasourceBinding
+#import <AKABeacon/UITableView+AKAIBBindingProperties_datasourceBinding.h>
+
+// Integration/AKAIBBindingProperties/enabledBinding
+#import <AKABeacon/UIControl+AKAIBBindingProperties_enabledBinding.h>
+#import <AKABeacon/UIBarButtonItem+AKAIBBindingProperties_enabledBinding.h>
+
+// Integration/AKAIBBindingProperties/fontBinding
+#import <AKABeacon/UILabel+AKAIBBindingProperties_fontBinding.h>
+#import <AKABeacon/UITextField+AKAIBBindingProperties_fontBinding.h>
+#import <AKABeacon/UITextView+AKAIBBindingProperties_fontBinding.h>
+
+// Integration/AKAIBBindingProperties/gesturesBinding
+#import <AKABeacon/UIView+AKAIBBindingProperties_gesturesBinding.h>
+
+// Integration/AKAIBBindingProperties/imageBinding
+#import <AKABeacon/UIImageView+AKAIBBindingProperties_imageBinding.h>
+
+// Integration/AKAIBBindingProperties/stateBinding
+#import <AKABeacon/UISwitch+AKAIBBindingProperties_stateBinding.h>
+
+// Integration/AKAIBBindingProperties/styleBinding
+#import <AKABeacon/UIView+AKAIBBindingProperties_styleBinding.h>
+#import <AKABeacon/UILabel+AKAIBBindingProperties_styleBinding.h>
+
+// Integration/AKAIBBindingProperties/textBinding
+#import <AKABeacon/UILabel+AKAIBBindingProperties_textBinding.h>
+#import <AKABeacon/UITextField+AKAIBBindingProperties_textBinding.h>
+#import <AKABeacon/UITextView+AKAIBBindingProperties_textBinding.h>
+
+// Integration/AKAIBBindingProperties/valueBinding
+#import <AKABeacon/UIPickerView+AKAIBBindingProperties_valueBinding.h>
+#import <AKABeacon/UISegmentedControl+IBBindingProperties_valueBinding.h>
+#import <AKABeacon/UISlider+AKAIBBindingProperties_valueBinding.h>
+#import <AKABeacon/UIStepper+AKAIBBindingProperties_valueBinding.h>
+
+// BindingController
+#import <AKABeacon/AKABindingController.h>
+#import <AKABeacon/AKABindingControllerDelegate.h>
+#import <AKABeacon/AKABindingController+BindingInitialization.h>
+#import <AKABeacon/AKABindingController+ChildBindingControllers.h>
+#import <AKABeacon/AKABindingController+BindingDelegate.h>
+#import <AKABeacon/AKABindingController+BindingDelegatePropagation.h>
+#import <AKABeacon/AKABindingController+BindingContextProtocol.h>
+#import <AKABeacon/AKABindingController+KeyboardActivationSequence.h>
 
 // Bindings
-#import <AKABeacon/AKAbindingExpression+Accessors.h>
+#import <AKABeacon/AKABindingExpression+Accessors.h>
 #import <AKABeacon/AKABindingErrors.h>
 #import <AKABeacon/AKABindingDelegate.h>
 #import <AKABeacon/AKABindingDelegateDispatcher.h>
@@ -132,25 +165,20 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAFontPropertyBinding.h>
 
 // Bindings/ViewBindings/UIView
-#import <AKABeacon/UIView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIView_styleBinding.h>
 #import <AKABeacon/AKABinding_UIView_gesturesBinding.h>
 
 // Bindings/ViewBindings/UIControl
-#import <AKABeacon/UIControl+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIControl_enabledBinding.h>
 
 // Bindings/ViewBindings/UILabel
-#import <AKABeacon/UILabel+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UILabel_textBinding.h>
 #import <AKABeacon/AKABinding_UILabel_styleBinding.h>
 
 // Bindings/ViewBindings/UIImageView
-#import <AKABeacon/UIImageView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIImageView_imageBinding.h>
 
 // Bindings/ViewBindings/UITableView
-#import <AKABeacon/UITableView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UITableView_dataSourceBinding.h>
 #import <AKABeacon/AKATableViewCellFactory.h>
 #import <AKABeacon/AKATableViewCellFactoryArrayPropertyBinding.h>
@@ -160,23 +188,18 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAControlViewBindingDelegate.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISegmentedControl
-#import <AKABeacon/UISegmentedControl+IBBindingProperties.h>
 #import <AKABeacon/AKABinding_UISegmentedControl_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISwitch
-#import <AKABeacon/UISwitch+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UISwitch_stateBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISlider
-#import <AKABeacon/UISlider+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UISlider_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UIStepper
-#import <AKABeacon/UIStepper+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIStepper_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UIPickerView
-#import <AKABeacon/UIPickerView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UIPickerView_valueBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
@@ -184,11 +207,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextField
-#import <AKABeacon/UITextField+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UITextField_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextView
-#import <AKABeacon/UITextView+AKAIBBindingProperties.h>
 #import <AKABeacon/AKABinding_UITextView_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/CustomKeyboard
@@ -292,6 +313,34 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAKeyboardActivationSequenceItemProtocol.h>
 #import <AKABeacon/AKAKeyboardActivationSequenceAccessoryView.h>
 
+//// Soon Obsolete:
+
+// Controls
+#import <AKABeacon/AKAControlValidationState.h>
+#import <AKABeacon/AKAControlConfiguration.h>
+#import <AKABeacon/AKAControlDelegate.h>
+#import <AKABeacon/AKAControl.h>
+#import <AKABeacon/AKAControl+BindingDelegate.h>
+
+// ScalarControls
+#import <AKABeacon/AKAScalarControl.h>
+#import <AKABeacon/AKAScalarControl_Protected.h>
+#import <AKABeacon/AKAScalarControl+ControlViewBindingDelegate.h>
+#import <AKABeacon/AKAKeyboardControl.h>
+#import <AKABeacon/AKAKeyboardControl+KeyboardControlViewBindingDelegate.h>
+
+// ComplexControls
+#import <AKABeacon/AKACompositeControl.h>
+#import <AKABeacon/AKACompositeControl+BindingDelegatePropagation.h>
+#import <AKABeacon/AKATableViewCompositeControl.h>
+#import <AKABeacon/AKATableViewCellCompositeControl.h>
+#import <AKABeacon/AKADynamicPlaceholderTableViewCellCompositeControl.h>
+#import <AKABeacon/AKAFormControl.h>
+#import <AKABeacon/AKAFormControl+BindingDelegatePropagation.h>
+
+#import <AKABeacon/AKAControlViewProtocol.h>
+#import <AKABeacon/AKAControlValidatorProtocol.h>
+#import <AKABeacon/AKAControlConverterProtocol.h>
 
 // AKAControls/Themes
 #import <AKABeacon/AKAThemeProviderProtocol.h>

@@ -364,7 +364,7 @@
     }
 }
 
-- (AKAProperty *)createBindingTargetPropertyForView:(UIView *__unused)targetView
+- (AKAProperty *)createBindingTargetPropertyForTarget:(req_id __unused)targetView
 {
     AKAProperty* result = [AKAProperty propertyOfWeakTarget:self
                                                      getter:

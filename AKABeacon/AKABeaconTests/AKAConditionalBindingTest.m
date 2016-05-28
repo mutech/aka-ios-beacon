@@ -51,11 +51,11 @@
     AKABindingExpression* expression =
         [AKABindingExpression bindingExpressionForTarget:label property:@selector(textBinding_aka)];
 
-    AKABinding* binding = [expression.specification.bindingType bindingToView:label
-                                                               withExpression:expression
-                                                                      context:self
-                                                                     delegate:nil
-                                                                        error:nil];
+    AKABinding* binding = [expression.specification.bindingType bindingToTarget:label
+                                                                 withExpression:expression
+                                                                        context:self
+                                                                       delegate:nil
+                                                                          error:nil];
 
     [binding startObservingChanges];
 

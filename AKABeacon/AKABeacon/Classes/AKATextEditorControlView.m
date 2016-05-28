@@ -9,7 +9,7 @@
 #import "AKATextEditorControlView.h"
 #import "AKAEditorControlView_Protected.h"
 #import "AKABeaconErrors.h"
-#import "UITextField+AKAIBBindingProperties.h"
+#import "UITextField+AKAIBBindingProperties_textBinding.h"
 
 @implementation AKATextEditorControlView
 
@@ -45,7 +45,7 @@
 
 @end
 
-#import "UILabel+AKAIBBindingProperties.h"
+#import "UILabel+AKAIBBindingProperties_textBinding.h"
 
 @implementation AKATextLabelEditorControlView
 

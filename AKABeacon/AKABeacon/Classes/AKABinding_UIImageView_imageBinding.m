@@ -47,9 +47,9 @@
 
 #pragma mark - Initialization
 
-- (void)validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    NSParameterAssert([targetView isKindOfClass:[UIImageView class]]);
+    NSParameterAssert([target isKindOfClass:[UIImageView class]]);
 }
 
 - (UIImage*)imageWithWidth:(CGFloat)width
@@ -65,7 +65,7 @@
     return image;
 }
 
-- (AKAProperty*)createBindingTargetPropertyForView:(req_UIView)view
+- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
 {
     (void)view;
 

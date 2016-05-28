@@ -6,13 +6,17 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+// Enable once AKAControl has been fully replaced by AKABindingController:
+#define USE_BINDING_CONTROLLERS 0
+
 #import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKABindingBehavior.h"
-#import "AKAEditorControlView.h"
-#import "AKAFormControl.h"
 #import "AKADelegateDispatcher.h"
 #import "AKAContentSizeCategoryChangeListener.h"
+
+#pragma mark - AKABindingBehaviourDelegateDispatcher
+#pragma mark -
 
 @interface AKABindingBehaviourDelegateDispatcher : AKADelegateDispatcher<AKABindingBehaviorDelegate>
 
@@ -23,6 +27,9 @@
 
 @end
 
+
+#pragma mark - AKABindingBehaviourDelegateDispatcher
+#pragma mark -
 
 @implementation AKABindingBehaviourDelegateDispatcher
 
@@ -42,9 +49,15 @@
 @end
 
 
-@interface AKABindingBehavior () <AKAControlDelegate>
 
-@property(nonatomic) AKAFormControl*                        formControl;
+#pragma mark - AKABindingBehavior - Private Interface
+#pragma mark -
+
+@interface AKABindingBehavior () <AKABindingControllerDelegate>
+
+@property(nonatomic) AKABindingController*                  bindingController;
+@property(nonatomic, readonly) id                           dataContext;
+
 @property(nonatomic) AKABindingBehaviourDelegateDispatcher* delegateDispatcher;
 @property(nonatomic) NSMutableSet<AKAProperty*>*            observations;
 
@@ -61,6 +74,10 @@
 
 @end
 
+
+#pragma mark - AKABindingBehavior - Implementation
+#pragma mark -
+
 @implementation AKABindingBehavior
 
 #pragma mark - Initialization
@@ -75,7 +92,6 @@
 
     [self addToViewController:viewController withDataContext:viewController delegate:delegate];
 }
-
 
 + (void)                                addToViewController:(UIViewController*)viewController
                                             withDataContext:(id)dataContext
@@ -97,10 +113,31 @@
             self.delegateDispatcher = [[AKABindingBehaviourDelegateDispatcher alloc] initWithBehaviour:self
                                                                                               delegate:delegate];
         }
-        self.formControl = [[AKAFormControl alloc] initWithDataContext:dataContext
-                                                              delegate:self.delegateDispatcher ? self.delegateDispatcher : self];
+
+        _dataContext = dataContext;
     }
     return self;
+}
+
+#pragma mark - Access
+
+- (id)dataContextForSender:(id)sender
+{
+    UIView* view = nil;
+
+    if (sender)
+    {
+        if ([sender isKindOfClass:[UIView class]])
+        {
+            view = sender;
+        }
+        else if ([sender isKindOfClass:[UIGestureRecognizer class]])
+        {
+            view = ((UIGestureRecognizer*)sender).view;
+        }
+    }
+
+    return view ? [self.bindingController dataContextForView:view] : nil;
 }
 
 #pragma mark - Activation
@@ -127,12 +164,12 @@
 {
     if (parent != nil)
     {
-        [self initializeFormControl];
+        [self initializeBindings];
     }
     else
     {
         [self stopObservingContentSizeCategoryEvents];
-        [self deactivateFormControlBindings];
+        [self deactivateBindings];
         [self stopObservingKeyboardEvents];
     }
 }
@@ -151,6 +188,27 @@
     [super viewWillDisappear:animated];
 }
 
+#pragma mark - Form Control
+
+- (void)                                initializeBindings
+{
+    self.bindingController =
+        [AKABindingController bindingControllerForViewController:self.parentViewController
+                                                 withDataContext:self.dataContext
+                                                        delegate:self.delegateDispatcher
+                                                           error:nil];
+}
+
+- (void)                                  activateBindings
+{
+    [self.bindingController startObservingChanges];
+}
+
+- (void)                                deactivateBindings
+{
+    [self.bindingController stopObservingChanges];
+}
+
 #pragma mark - Change Tracking
 
 - (void)startObservingChanges
@@ -158,7 +216,7 @@
     if (!self.isObservingChanges)
     {
         [self startObservingKeyboardEvents];
-        [self activateFormControlBindings];
+        [self activateBindings];
         [self.observations enumerateObjectsUsingBlock:
          ^(AKAProperty * _Nonnull property, BOOL * _Nonnull stop __unused)
          {
@@ -180,7 +238,7 @@
          {
              [property stopObservingChanges];
          }];
-        [self deactivateFormControlBindings];
+        [self deactivateBindings];
         [self stopObservingKeyboardEvents];
         _isObservingChanges = NO;
     }
@@ -277,63 +335,25 @@
     return result;
 }
 
-#pragma mark - Form Control
-
-- (void)                             initializeFormControl
-{
-    // Setup theme name before adding controls for subviews (TODO: order should not matter)
-    [self initializeFormControlTheme];
-
-    [self initializeFormControlMembers];
-}
-
-- (void)                        initializeFormControlTheme
-{
-    [self.formControl setThemeName:@"default" forClass:[AKAEditorControlView class]];
-}
-
-- (void)                      initializeFormControlMembers
-{
-    UIViewController* parent = self.parentViewController;
-    [self.formControl addControlsForControlViewsInViewHierarchy:parent.view
-                                                   excludeViews:[AKACompositeControl viewsToExcludeFromScanningViewController:parent]];
-}
-
-- (void)                       activateFormControlBindings
-{
-    [self.formControl startObservingChanges];
-}
-
-- (void)                     deactivateFormControlBindings
-{
-    [self.formControl stopObservingChanges];
-}
-
 #pragma mark - Form Control Delegate
 
-- (void)                                           control:(req_AKAControl)control
+- (void)                                        controller:(req_AKABindingController)controller
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                      responderWillActivate:(req_UIResponder)responder
 {
-    (void)control;
-    (void)binding;
-
     self.activeResponder = responder;
 
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
     {
-        [delegate control:control binding:binding responderWillActivate:responder];
+        [delegate controller:controller binding:binding responderWillActivate:responder];
     }
 }
 
-- (void)                                           control:(req_AKAControl)control
+- (void)                                        controller:(req_AKABindingController)controller
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                       responderDidActivate:(req_UIResponder)responder
 {
-    (void)control;
-    (void)binding;
-
     if (!self.activeResponder)
     {
         // There is no guarantee that responderWillActivate will be called, so we might have to do it's job here
@@ -344,24 +364,20 @@
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
     {
-        [delegate control:control binding:binding responderDidActivate:responder];
+        [delegate controller:controller binding:binding responderDidActivate:responder];
     }
 }
 
-- (void)                                           control:(req_AKAControl)control
+- (void)                                        controller:(req_AKABindingController)controller
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
                                     responderDidDeactivate:(req_UIResponder)responder
 {
-    (void)control;
-    (void)binding;
-    (void)responder;
-
     self.activeResponder = nil;
 
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
     {
-        [delegate control:control binding:binding responderDidDeactivate:responder];
+        [delegate controller:controller binding:binding responderDidDeactivate:responder];
     }
 }
 
@@ -376,9 +392,9 @@
     [self.parentViewController.view setNeedsLayout];
 }
 
-- (void)                                           control:(AKAControl*__unused)control
-                                             didAddBinding:(AKABinding*)binding
-                                                   forView:(UIView*__unused)view
+- (void)                                        controller:(req_AKABindingController __unused)controller
+                                             didAddBinding:(req_AKABinding)binding
+                                                 forTarget:(req_id __unused)view
                                                   property:(SEL __unused)bindingProperty
                                      withBindingExpression:(AKABindingExpression*__unused)bindingExpression
 {
@@ -539,6 +555,9 @@
 
 @end
 
+
+#pragma mark - UIViewController(AKABindingBehavior) - Implementation
+#pragma mark -
 
 @implementation UIViewController(AKABindingBehavior)
 

@@ -37,7 +37,7 @@
         _deletedRows = [NSMutableDictionary new];
         _insertedRows = [NSMutableDictionary new];
     }
-    AKALogVerbose(@"[tableView:%p beginUpdates] (depth: %ld)", tableView, (long)self.depth);
+
     ++_depth;
     [tableView beginUpdates];
 }
@@ -54,7 +54,7 @@
         _insertedRows = nil;
     }
     --_depth;
-    AKALogVerbose(@"[tableView:%p endUpdates] (depth: %ld)", tableView, (long)self.depth);
+    
     [tableView endUpdates];
 }
 

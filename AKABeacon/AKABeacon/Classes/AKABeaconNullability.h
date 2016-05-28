@@ -60,6 +60,14 @@
 #define opt_AKABindingExpressionAttributes NSDictionary<NSString*, AKABindingExpression*>* _Nullable
 #define req_AKABindingExpressionAttributes NSDictionary<NSString*, AKABindingExpression*>* _Nonnull
 
+@class AKABindingController;
+#define req_AKABindingController AKABindingController* _Nonnull
+#define opt_AKABindingController AKABindingController* _Nullable
+
+@protocol AKABindingControllerDelegate;
+#define req_AKABindingControllerDelegate id<AKABindingControllerDelegate> _Nonnull
+#define opt_AKABindingControllerDelegate id<AKABindingControllerDelegate> _Nullable
+
 #pragma mark - Controls
 
 @class AKAControl;

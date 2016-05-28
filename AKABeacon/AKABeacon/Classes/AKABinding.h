@@ -20,8 +20,29 @@
 #pragma mark - Initialization
 
 /**
- Creates a new binding based for the specified arguments.
+ Creates a new binding to the specified target object using the specified parameters.
 
+ Please note that this factory method is only supported for binding types with specific target support (like for example
+ view bindings) and that the type of the target has to match the binding type's specification.
+
+ @param targetView        the target view
+ @param bindingExpression the view or conditional binding expression
+ @param bindingContext    the binding context
+ @param delegate          the delegate
+ @param error             error details
+
+ @return Either an instance of an AKAViewBinding or AKAConditionalBinding which in turn has/may have a view binding at activeClause.binding
+ */
++ (opt_AKABinding)bindingToTarget:(req_id)target
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error;
+
+/**
+ Creates a new binding to the specified target property using the specified parameters.
+
+ Please note that this factory method is only supported for binding types
  @param target            the target property
  @param bindingExpression the view or conditional binding expression
  @param bindingContext    the binding context
@@ -30,11 +51,11 @@
 
  @return Either an instance of an AKABinding or AKAConditionalBinding which in turn has/may have a binding at activeClause.binding
  */
-+ (opt_AKABinding)bindingToTarget:(req_AKAProperty)target
-                   withExpression:(req_AKABindingExpression)bindingExpression
-                          context:(req_AKABindingContext)bindingContext
-                         delegate:(opt_AKABindingDelegate)delegate
-                            error:(out_NSError)error;
++ (opt_AKABinding)bindingToTargetProperty:(req_AKAProperty)target
+                           withExpression:(req_AKABindingExpression)bindingExpression
+                                  context:(req_AKABindingContext)bindingContext
+                                 delegate:(opt_AKABindingDelegate)delegate
+                                    error:(out_NSError)error;
 
 #pragma mark - Configuration
 

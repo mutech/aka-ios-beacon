@@ -121,11 +121,11 @@
                     }
 
 
-                    AKABinding* binding = [bindingType bindingToTarget:arrayItemTargetProperty
-                                                        withExpression:sourceExpression
-                                                               context:bindingContext
-                                                              delegate:weakSelf.delegateForSubBindings
-                                                                 error:error];
+                    AKABinding* binding = [bindingType bindingToTargetProperty:arrayItemTargetProperty
+                                                                withExpression:sourceExpression
+                                                                       context:bindingContext
+                                                                      delegate:weakSelf.delegateForSubBindings
+                                                                         error:error];
                     if (binding)
                     {
                         if (targetArrayItemBindings == nil)

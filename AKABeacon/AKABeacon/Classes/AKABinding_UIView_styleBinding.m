@@ -36,13 +36,13 @@
 
 #pragma mark - Initialization
 
-- (void)validateTargetView:(req_UIView)targetView
+- (void)validateTarget:(req_id)target
 {
-    NSParameterAssert([targetView isKindOfClass:[UIView class]]);
+    NSParameterAssert([target isKindOfClass:[UIView class]]);
 }
 
 
-- (AKAProperty*)createBindingTargetPropertyForView:(req_UIView)view
+- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
 {
     (void)view;
     // We might want to use some base style/theming mechanism here. For the time

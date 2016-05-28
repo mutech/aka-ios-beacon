@@ -13,6 +13,33 @@
 
 #pragma mark - Initialization
 
+- (opt_instancetype)initWithTarget:(req_id)target
+                        expression:(req_AKABindingExpression)bindingExpression
+                           context:(req_AKABindingContext)bindingContext
+                          delegate:(opt_AKABindingDelegate)delegate
+                             error:(out_NSError)error;
+
+
+
+/**
+ Called by initWithTarget:expression:context:delegate:error to obtain an instance of AKAProperty to be used as binding target.
+
+ The default implementation throws an exception.
+
+ Sub classes, especially AKAViewBinding's implement this method to map the various view specific interfaces and states to the common abstraction of an AKAProperty representing the target 'value' of a binding.
+ */
+- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)target;
+
+/**
+ Called by initWithView:expression:context:delegate, this method can be used to validate
+ the targetView and should throw an exception or fail with an assertion if the targetView
+ is invalid.
+
+ @param targetView the view to validate.
+ */
+- (void)validateTarget:(req_id)target;
+
+
 /**
  Initializes a binding with the specified parameters.
 
@@ -29,11 +56,12 @@
 
  @return a new binding
  */
-- (opt_instancetype)                                 initWithTarget:(req_AKAProperty)target
-                                                         expression:(req_AKABindingExpression)bindingExpression
-                                                            context:(req_AKABindingContext)bindingContext
-                                                           delegate:(opt_AKABindingDelegate)delegate
-                                                              error:(out_NSError)error;
+- (opt_instancetype)initWithTargetProperty:(req_AKAProperty)target
+                                expression:(req_AKABindingExpression)bindingExpression
+                                   context:(req_AKABindingContext)bindingContext
+                                  delegate:(opt_AKABindingDelegate)delegate
+                                     error:(out_NSError)error;
+
 
 /**
  Validates that this binding type matches the specification of the binding expression.
@@ -71,7 +99,7 @@
 /// @name Binding Source Initialization
 
 /**
- * Called by initWithTarget:expression:context:delegate:error: to obtain a binding source property.
+ * Called by initWithTargetProperty:expression:context:delegate:error: to obtain a binding source property.
  *
  * If the binding expression has no defined primary value, this method will call defaultBindingSourceForExpression:context:changeObserver:error:.
  *

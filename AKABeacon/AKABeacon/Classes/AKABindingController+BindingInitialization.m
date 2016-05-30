@@ -107,7 +107,7 @@
  Please note that you have to specify a defined error parameter to distinguish errors from vetoes to add the binding (delegate).
 
  @param target            the target (typically a UIView)
- @param property          the view's property containing the binding expression
+ @param property          the target's property containing the binding expression
  @param bindingExpression the binding expression
  @param error             error details.
 
@@ -123,7 +123,7 @@
 
     Class bindingType = bindingExpression.specification.bindingType;
     NSAssert([bindingType isSubclassOfClass:[AKABinding class]],
-             @"Failed to add binding for view %@: Binding expression %@'s binding type is not an instance of AKABinding", target, bindingExpression);
+             @"Failed to add binding for target %@: Binding expression %@'s binding type is not an instance of AKABinding", target, bindingExpression);
 
     if ([self shouldAddBindingOfType:bindingType
                            forTarget:target

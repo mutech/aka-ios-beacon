@@ -168,7 +168,7 @@
 - (void)                                  updateSourceValueSkipDelegateRequests:(BOOL)skipDelegateRequests
 
 {
-    id targetValue = self.bindingTarget.value;
+    id targetValue = self.targetValueProperty.value;
     [self updateSourceValueForTargetValue:targetValue
                                  changeTo:targetValue
                      skipDelegateRequests:skipDelegateRequests];
@@ -201,7 +201,7 @@
              {
                  NSAssert(!self.isUpdatingSourceValueForTargetValueChange, @"Nested source value update for target value change.");
 
-                 id oldSourceValue = self.bindingSource.value;
+                 id oldSourceValue = self.sourceValueProperty.value;
 
                  if (skipDelegateRequests || [self shouldUpdateSourceValue:oldSourceValue
                                                                         to:sourceValue
@@ -210,7 +210,7 @@
                  {
                      [self willUpdateSourceValue:oldSourceValue to:sourceValue];
 
-                     self.bindingSource.value = sourceValue;
+                     self.sourceValueProperty.value = sourceValue;
 
                      [self didUpdateSourceValue:oldSourceValue to:sourceValue];
                  }

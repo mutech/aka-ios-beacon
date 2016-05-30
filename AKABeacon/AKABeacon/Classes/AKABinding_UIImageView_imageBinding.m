@@ -158,7 +158,7 @@
 
 - (UIImageView *)imageView
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSAssert(result == nil || [result isKindOfClass:[UIImageView class]], @"View for %@ is required to be an instance of UIImageView", self.class);
 

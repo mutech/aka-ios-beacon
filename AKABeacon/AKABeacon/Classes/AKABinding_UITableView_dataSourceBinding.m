@@ -209,11 +209,12 @@
         bindingType = [AKAPropertyBinding class];
     }
 
-    AKABinding* binding = [bindingType bindingToTargetProperty:bindingTarget
-                                                withExpression:bindingExpression
-                                                       context:itemBindingContext
-                                                      delegate:weakSelf.delegateForSubBindings
-                                                         error:nil];
+    AKABinding* binding = [bindingType bindingToTarget:sectionInfos
+                                   targetValueProperty:bindingTarget
+                                        withExpression:bindingExpression
+                                               context:itemBindingContext
+                                              delegate:weakSelf.delegateForSubBindings
+                                                 error:nil];
 
     return binding;
 }
@@ -246,10 +247,10 @@
          [binding stopObservingChanges];
          [stoppedBindings addObject:binding];
 
-         NSAssert([binding.bindingTarget isKindOfClass:[AKAIndexedProperty class]],
-                  @"Expected binding %@ target %@ to be an indexed property", binding, binding.bindingTarget);
+         NSAssert([binding.targetValueProperty isKindOfClass:[AKAIndexedProperty class]],
+                  @"Expected binding %@ target %@ to be an indexed property", binding, binding.targetValueProperty);
 
-         AKAIndexedProperty* bindingTarget = (AKAIndexedProperty*)binding.bindingTarget;
+         AKAIndexedProperty* bindingTarget = (AKAIndexedProperty*)binding.targetValueProperty;
 
          NSAssert(bindingTarget.index == oldIndex, @"Binding target %@'s index %ld does not match old index %ld", bindingTarget, (long)bindingTarget.index, (long)oldIndex);
 
@@ -314,7 +315,7 @@
 - (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
 {
     // Implementation note: self.sections contains the current array of section infos, which is what
-    // the bindingTarget property returns. When dynamic sections change, then the target setter is called
+    // the targetValueProperty returns. When dynamic sections change, then the target setter is called
     // Observation is implemented by assigning the table views data source and delegate.
 
     return [AKAProperty propertyOfWeakTarget:self
@@ -382,7 +383,7 @@
 
 - (UITableView*)                                  tableView
 {
-    return (UITableView*)self.view;
+    return (UITableView*)self.target;
 }
 
 - (NSArray<AKATableViewSectionDataSourceInfo *> *)sections
@@ -419,40 +420,58 @@
     [self reloadTableViewAnimated:NO];
 }
 
+- (void)binding:(AKABinding *)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+{
+    if (!self.startingChangeObservation)
+    {
+        // TODO: use bindingOwner (once implemented) to identify the section instead
+    }
+
+    id<AKABindingDelegate> delegate = self.delegate;
+    if (delegate && [delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
+    {
+        [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];
+    }
+}
+
 - (void)targetArrayItemAtIndex:(NSUInteger)index
                          value:(opt_id)oldValue
                    didChangeTo:(opt_id)newValue
 {
-    AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
-    AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
-
-    if (oldSectionInfo != newSectionInfo)
+    if (oldValue != newValue)
     {
-        if (oldSectionInfo.delegate == self)
+        AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
+        AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
+
+        if (oldSectionInfo != newSectionInfo)
         {
-            oldSectionInfo.delegate = nil;
+            if (oldSectionInfo.delegate == self)
+            {
+                oldSectionInfo.delegate = nil;
+            }
+            if (newSectionInfo.delegate == nil)
+            {
+                newSectionInfo.delegate = self;
+            }
         }
-        if (newSectionInfo.delegate == nil)
+
+        if (!self.startingChangeObservation)
         {
-            newSectionInfo.delegate = self;
+            // Do not update table view if change observation is starting, because this is a rather
+            // fuzzy state. We are going to reload the table as soon as the observation start proceess
+            // completed.
+
+            BOOL expectChangeNotification = (oldSectionInfo == newSectionInfo
+                                             && newSectionInfo.willSendDelegateChangeNotifications);
+            if (!expectChangeNotification && oldSectionInfo.rows != newSectionInfo.rows)
+            {
+                [self dispatchTableViewUpdateForSection:index
+                                     forChangesFromRows:oldSectionInfo.rows
+                                                 toRows:newSectionInfo.rows];
+            }
         }
     }
-    
-    if (!self.startingChangeObservation)
-    {
-        // Do not update table view if change observation is starting, because this is a rather
-        // fuzzy state. We are going to reload the table as soon as the observation start proceess
-        // completed.
 
-        BOOL expectChangeNotification = (oldSectionInfo == newSectionInfo
-                                         && newSectionInfo.willSendDelegateChangeNotifications);
-        if (!expectChangeNotification && oldSectionInfo.rows != newSectionInfo.rows)
-        {
-            [self dispatchTableViewUpdateForSection:index
-                                 forChangesFromRows:oldSectionInfo.rows
-                                             toRows:newSectionInfo.rows];
-        }
-    }
     [super targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
 }
 

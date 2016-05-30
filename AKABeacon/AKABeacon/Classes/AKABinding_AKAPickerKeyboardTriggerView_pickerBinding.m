@@ -72,10 +72,10 @@
     return result;
 }
 
-- (BOOL)                     initializeManualAttributeWithName:(NSString *)attributeName
+- (BOOL)                     initializeManualAttributeWithName:(req_NSString)attributeName
                                                  specification:(req_AKABindingAttributeSpecification __unused)specification
-                                           attributeExpression:(AKABindingExpression *)attributeExpression
-                                                         error:(NSError *__autoreleasing  _Nullable *)error
+                                           attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                         error:(out_NSError)error
 {
     BOOL result = NO;
     if ([@"picker" isEqualToString:attributeName])
@@ -85,7 +85,7 @@
             AKACustomKeyboardResponderView* triggerView = self.triggerView;
             UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
 
-            // Use the picker view provided by the delegate or create a new one:
+            // Use the picker target provided by the delegate or create a new one:
             if ([inputView isKindOfClass:[UIPickerView class]])
             {
                 _pickerView = (UIPickerView*)inputView;
@@ -168,17 +168,17 @@
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
-                return binding.pickerBinding.bindingTarget.value;
+                return binding.pickerBinding.targetValueProperty.value;
             }
                                       setter:
             ^(id target, id value)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
-                [self animateTriggerForValue:binding.pickerBinding.bindingTarget.value
+                [self animateTriggerForValue:binding.pickerBinding.targetValueProperty.value
                                     changeTo:value
                                   animations:^{
-                                      binding.pickerBinding.bindingTarget.value = value;
+                                      binding.pickerBinding.targetValueProperty.value = value;
                                   }];
             }
 
@@ -213,7 +213,7 @@
 {
     id value;
 
-    if ([self.pickerBinding convertTargetValue:self.bindingTarget.value
+    if ([self.pickerBinding convertTargetValue:self.targetValueProperty.value
                                  toSourceValue:&value
                                          error:nil])
     {
@@ -311,7 +311,7 @@
 {
     [super responderWillActivate:responder];
 
-    self.previousValue = self.bindingSource.value;
+    self.previousValue = self.sourceValueProperty.value;
 }
 
 - (void)                               responderDidDeactivate:(req_UIResponder)responder

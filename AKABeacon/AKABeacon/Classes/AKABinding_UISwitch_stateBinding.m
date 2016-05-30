@@ -104,7 +104,7 @@
 
 - (UISwitch *)uiSwitch
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UISwitch class]]);
 
     return (UISwitch*)result;
@@ -143,12 +143,12 @@
     [self targetValueDidChangeFromOldValue:oldValue
                                 toNewValue:newValue];
 
-    // Trigger change notifications for bindingTarget property (for the case that someone
+    // Trigger change notifications for targetValueProperty (for the case that someone
     // created a depedendant property based on the binding target).
     newValue = [self canonicalBool:self.uiSwitch.on]; // the delegate may change the value
     if (newValue.boolValue != oldValue.boolValue)
     {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
     }
 }
 

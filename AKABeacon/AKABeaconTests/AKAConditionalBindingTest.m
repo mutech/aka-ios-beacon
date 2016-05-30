@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "AKAChildBindingContext.h"
 
-#import "UILabel+AKAIBBindingProperties.h"
+#import "UILabel+AKAIBBindingProperties_textBinding.h"
 #import "AKABindingExpression+Accessors.h"
 #import "AKAViewBinding.h"
 

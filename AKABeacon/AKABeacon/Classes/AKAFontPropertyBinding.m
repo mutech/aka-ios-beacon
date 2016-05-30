@@ -319,7 +319,7 @@
 
 - (UIFont*)targetFont
 {
-    return [self.view valueForKey:@"font"];
+    return [self.target valueForKey:@"font"];
 }
 
 - (void)setTargetFont:(UIFont*)targetFont
@@ -330,7 +330,7 @@
     // Think about a clean way to do that.
     if (self.isObserving)
     {
-        UIView* view = self.view;
+        UIView* view = self.target;
         [view setValue:targetFont forKey:@"font"];
 
         // Sigh: Text fields get an implicit height constraint which uses a font independ height of 30
@@ -406,7 +406,7 @@
 
                                if (self.textFieldMinHeightConstraint)
                                {
-                                   [self.view removeConstraint:self.textFieldMinHeightConstraint];
+                                   [self.target removeConstraint:self.textFieldMinHeightConstraint];
                                    self.textFieldMinHeightConstraint = nil;
                                }
 

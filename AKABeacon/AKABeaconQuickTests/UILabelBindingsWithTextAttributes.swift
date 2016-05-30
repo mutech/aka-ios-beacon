@@ -20,9 +20,9 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                 let initialModelValue = bindingContext.textValue;
 
                 let bindingType = expression.specification?.bindingType as? AKAViewBinding.Type;
-                let binding: AKABinding_UILabel_textBinding? = try! bindingType?.bindingToView (
-                    view,
-                    withExpression: expression,
+                let binding: AKABinding_UILabel_textBinding? = try! bindingType?.init(
+                    target: view,
+                    expression: expression,
                     context: bindingContext,
                     delegate: nil) as! AKABinding_UILabel_textBinding;
 
@@ -36,7 +36,7 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                         context("when observing changes") {
                             binding!.startObservingChanges()
                             describe("binding source") {
-                                let bindingSourceProperty = textAttributeFormatterBinding!.bindingSource
+                                let bindingSourceProperty = textAttributeFormatterBinding!.sourceValueProperty
                                 it("is not nil") {
                                     expect(bindingSourceProperty).toNot(beNil())
                                 }
@@ -48,7 +48,7 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                                 }
                             }
                             describe("binding target") {
-                                let bindingTargetProperty = textAttributeFormatterBinding!.bindingTarget
+                                let bindingTargetProperty = textAttributeFormatterBinding!.targetValueProperty
                                 it("is not nil") {
                                     expect(bindingTargetProperty).toNot(beNil())
                                 }

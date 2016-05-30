@@ -44,39 +44,34 @@
 
  Please note that this factory method is only supported for binding types
  @param target            the target property
- @param bindingExpression the view or conditional binding expression
+ @param bindingExpression the binding expression
  @param bindingContext    the binding context
  @param delegate          the delegate
  @param error             error details
 
  @return Either an instance of an AKABinding or AKAConditionalBinding which in turn has/may have a binding at activeClause.binding
  */
-+ (opt_AKABinding)bindingToTargetProperty:(req_AKAProperty)target
-                           withExpression:(req_AKABindingExpression)bindingExpression
-                                  context:(req_AKABindingContext)bindingContext
-                                 delegate:(opt_AKABindingDelegate)delegate
-                                    error:(out_NSError)error;
-
-#pragma mark - Configuration
++ (opt_AKABinding)bindingToTarget:(opt_id)target targetValueProperty:(req_AKAProperty)target withExpression:(req_AKABindingExpression)bindingExpression context:(req_AKABindingContext)bindingContext delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error;
 
 /**
- Property wrapping the source value of the binding. Bindings which do not support a binding source provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
-
- @note TODO: rename to `sourceValueProperty`.
- */
-@property(nonatomic, readonly, nonnull) AKAProperty*                          bindingSource;
-
-/**
- Property wrapping the target value of the binding. Bindings which do not support a binding target provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
-
- @note TODO: rename to `targetValueProperty`.
- */
-@property(nonatomic, readonly, nonnull) AKAProperty*                          bindingTarget;
-
-/**
- The context used by the binding to resolve binding expressions.
+ The context used by the binding to resolve binding expressions (for sourceValueProperty.value and sub bindings).
  */
 @property(nonatomic, readonly, weak, nullable) id<AKABindingContextProtocol>  bindingContext;
+
+/**
+ Property wrapping the source value of the binding. Bindings which do not support a binding source have to provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+ */
+@property(nonatomic, readonly, nonnull) AKAProperty*                          sourceValueProperty;
+
+/**
+ The target object of the binding.
+ */
+@property(nonatomic, readonly, weak, nullable) id                             target;
+
+/**
+ Property wrapping the target value of the binding. Bindings which do not support a binding target have to provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+ */
+@property(nonatomic, readonly, nonnull) AKAProperty*                          targetValueProperty;
 
 /**
  The binding controller owning and managing this binding.

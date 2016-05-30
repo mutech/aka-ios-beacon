@@ -6,6 +6,8 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
+@import Foundation;
+
 #import "AKAConditionalBinding.h"
 
 #import "AKABinding_Protected.h"
@@ -75,15 +77,19 @@
                                   delegate:(opt_AKABindingDelegate)delegate
                                      error:(out_NSError)error
 {
-    self = [self  initWithTarget:target
-            resultBindingFactory:^AKABinding*(id                         rTarget,
-                                              AKABindingExpression*      rExpression,
-                                              req_AKABindingContext      rContext,
-                                              id<AKABindingDelegate>     rDelegate,
-                                              out_NSError                rError)
+    self = [self        initWithTarget:target
+                   targetValueProperty:nil
+                  resultBindingFactory:
+            ^AKABinding*(id                         rTarget,
+                         AKAProperty*               rTargetValueProperty __unused,
+                         AKABindingExpression*      rExpression,
+                         req_AKABindingContext      rContext,
+                         id<AKABindingDelegate>     rDelegate,
+                         out_NSError                rError)
             {
+                NSParameterAssert(rTargetValueProperty == nil);
+                
                 AKABinding* resultBinding = [resultBindingType alloc];
-
                 return [resultBinding initWithTarget:rTarget
                                           expression:rExpression
                                              context:rContext
@@ -98,7 +104,8 @@
     return self;
 }
 
-- (opt_instancetype)initWithTargetProperty:(req_AKAProperty)target
+- (opt_instancetype)        initWithTarget:(opt_id)target
+                       targetValueProperty:(req_AKAProperty)targetValueProperty
                          resultBindingType:(Class)resultBindingType
                                 expression:(req_AKABindingExpression)bindingExpression
                                    context:(req_AKABindingContext)bindingContext
@@ -106,7 +113,9 @@
                                      error:(out_NSError)error
 {
     self = [self  initWithTarget:target
+             targetValueProperty:targetValueProperty
             resultBindingFactory:^AKABinding*(id                         rTarget,
+                                              AKAProperty*               rTargetValueProperty,
                                               AKABindingExpression*      rExpression,
                                               req_AKABindingContext      rContext,
                                               id<AKABindingDelegate>     rDelegate,
@@ -114,12 +123,12 @@
 
             {
                 AKABinding* resultBinding = [resultBindingType alloc];
-
-                return [resultBinding initWithTargetProperty:rTarget
-                                                  expression:rExpression
-                                                     context:rContext
-                                                    delegate:rDelegate
-                                                       error:rError];
+                return [resultBinding initWithTarget:rTarget
+                                 targetValueProperty:rTargetValueProperty
+                                          expression:rExpression
+                                             context:rContext
+                                            delegate:rDelegate
+                                               error:rError];
             }
                       expression:bindingExpression
                          context:bindingContext
@@ -129,35 +138,43 @@
     return self;
 }
 
-- (opt_instancetype)        initWithTarget:(id)targetObjectOrProperty
-                      resultBindingFactory:(opt_AKABinding (^ _Nonnull)(req_id,
-                                                                        req_AKABindingExpression,
-                                                                        req_AKABindingContext,
-                                                                        opt_AKABindingDelegate,
-                                                                        out_NSError))resultBindingFactory
+- (opt_instancetype)        initWithTarget:(opt_id)target
+                       targetValueProperty:(opt_AKAProperty)targetValueProperty
+                      resultBindingFactory:(opt_AKABinding (^ _Nonnull)(opt_id target,
+                                                                        opt_AKAProperty targetValueProperty,
+                                                                        req_AKABindingExpression bindingExpression,
+                                                                        req_AKABindingContext bindingContext,
+                                                                        opt_AKABindingDelegate delegate,
+                                                                        out_NSError error))resultBindingFactory
                                 expression:(req_AKABindingExpression)bindingExpression
                                    context:(req_AKABindingContext)bindingContext
                                   delegate:(opt_AKABindingDelegate)delegate
                                      error:(out_NSError)error
 {
+    NSParameterAssert(target != nil || targetValueProperty != nil);
+    NSParameterAssert([bindingExpression isKindOfClass:[AKAConditionalBindingExpression class]]);
+
     // The outer binding target is this instances activeClause property.
     AKAProperty* conditionBindingTarget = [AKAProperty propertyOfWeakTarget:self
-                                                                     getter:^id _Nullable (id _Nonnull target) {
-                                               return ((AKAConditionalBinding*)target).activeClause;
+                                                                     getter:
+                                           ^id _Nullable (id _Nonnull cbtarget)
+                                           {
+                                               return ((AKAConditionalBinding*)cbtarget).activeClause;
                                            }
-                                                                     setter:^(id _Nonnull target, id _Nullable value) {
-                                               ((AKAConditionalBinding*)target).activeClause = value;
+                                                                     setter:
+                                           ^(id _Nonnull cbtarget, id _Nullable value)
+                                           {
+                                               ((AKAConditionalBinding*)cbtarget).activeClause = value;
                                            }
                                                          observationStarter:nil
                                                          observationStopper:nil];
 
-    if (self = [super initWithTargetProperty:conditionBindingTarget
-                                  expression:bindingExpression
-                                     context:bindingContext
-                                    delegate:delegate
-                                       error:error])
+    if (self = [super initWithTarget:target // use the same target as result bindings
+                 targetValueProperty:conditionBindingTarget
+                          expression:bindingExpression
+                             context:bindingContext
+                            delegate:delegate error:error])
     {
-        NSAssert([bindingExpression isKindOfClass:[AKAConditionalBindingExpression class]], @"AKAConditionalBinding expects a conditional binding expression");
         AKAConditionalBindingExpression* conditionalExpression = (id)bindingExpression;
 
         // Initializes binding clauses
@@ -194,16 +211,13 @@
                       }];
 
                  clause.predicateBinding =
-                     [[AKAPredicatePropertyBinding alloc] initWithTargetProperty:targetPredicateProperty
-                                                                      expression:(req_AKABindingExpression) expressionClause.conditionBindingExpression
-                                                                         context:bindingContext
-                                                                        delegate:delegate
-                                                                           error:error];
+                         [[AKAPredicatePropertyBinding alloc] initWithTarget:NULL targetValueProperty:targetPredicateProperty expression:(req_AKABindingExpression) expressionClause.conditionBindingExpression context:bindingContext delegate:delegate error:error];
              }
 
              AKABindingExpression* resultExpression = expressionClause.resultBindingExpression;
 
-             clause.binding = resultBindingFactory(targetObjectOrProperty,
+             clause.binding = resultBindingFactory(target,
+                                                   targetValueProperty,
                                                    resultExpression,
                                                    bindingContext,
                                                    delegate,
@@ -224,7 +238,7 @@
 {
     if (self.activeClause && index <= self.activeClause.expressionClauseIndex)
     {
-        if ([newPredicate evaluateWithObject:self.bindingSource.value])
+        if ([newPredicate evaluateWithObject:self.sourceValueProperty.value])
         {
             self.activeClause = clause;
         }
@@ -234,7 +248,7 @@
             {
                 AKAConditionalBindingClause* nextClause = self.clauses[i];
 
-                if ([nextClause.predicate evaluateWithObject:self.bindingSource.value])
+                if ([nextClause.predicate evaluateWithObject:self.sourceValueProperty.value])
                 {
                     self.activeClause = nextClause;
                     break;

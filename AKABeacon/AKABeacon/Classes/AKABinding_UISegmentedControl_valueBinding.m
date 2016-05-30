@@ -255,7 +255,7 @@
             actualItems = @[];
         }
 
-        [self binding:binding sourceControllerWillChangeContent:self.bindingSource];
+        [self binding:binding sourceControllerWillChangeContent:self.sourceValueProperty];
 
         NSInteger placeholderContentSection = 0;
 
@@ -275,7 +275,7 @@
 
                     NSIndexPath* oldItemIndexPath = [NSIndexPath indexPathForRow:i
                                                                        inSection:placeholderContentSection];
-                    [self binding:binding sourceController:self.bindingSource
+                    [self binding:binding sourceController:self.sourceValueProperty
                       deletedItem:oldItem
                       atIndexPath:oldItemIndexPath];
                 }
@@ -299,7 +299,7 @@
             // TODO: consider manipulating oldItems to match changes
             if (oldIndex == NSNotFound)
             {
-                [self binding:binding sourceController:self.bindingSource
+                [self binding:binding sourceController:self.sourceValueProperty
                  insertedItem:item
                   atIndexPath:itemIndexPath];
                 ++insertedItemCount;
@@ -314,7 +314,7 @@
                 [NSIndexPath indexPathForRow:(NSInteger)(oldIndex + insertedItemCount)
                                    inSection:placeholderContentSection];
 
-                [self binding:binding sourceController:self.bindingSource
+                [self binding:binding sourceController:self.sourceValueProperty
                     movedItem:item
                 fromIndexPath:itemOldIndexPath
                   toIndexPath:itemIndexPath];
@@ -323,14 +323,14 @@
             else
             {
                 /*
-                [self binding:binding sourceController:self.bindingSource
+                [self binding:binding sourceController:self.sourceValueProperty
                   updatedItem:items[(NSUInteger)itemIndexPath.row]
                   atIndexPath:itemIndexPath];
                  */
             }
         }
         
-        [self binding:binding sourceControllerDidChangeContent:self.bindingSource];
+        [self binding:binding sourceControllerDidChangeContent:self.sourceValueProperty];
     }
 }
 
@@ -461,7 +461,7 @@
 
 - (UISegmentedControl *)                     segmentedControl
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSAssert([result isKindOfClass:[UISegmentedControl class]], @"Internal inconsistency, expected view %@ to be an instance of UISegmentedControl", result);
 

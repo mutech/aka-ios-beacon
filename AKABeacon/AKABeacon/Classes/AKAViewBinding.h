@@ -16,7 +16,14 @@
  */
 @interface AKAViewBinding: AKABinding
 
-@property(nonatomic, readonly, weak, nullable) UIView*                    view;
+/**
+ The bindings target view (redeclared with restricted type UIView).
+ */
+@property(nonatomic, readonly, weak, nullable) UIView*                    target;
+
+/**
+ The binding delegate (redeclared for refined delegate type AKAViewBindingDelegate).
+ */
 @property(nonatomic, readonly, weak, nullable) id<AKAViewBindingDelegate> delegate;
 
 @end

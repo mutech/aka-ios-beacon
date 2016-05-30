@@ -224,7 +224,7 @@
 
 - (UITextField*)                                 textField
 {
-    UIView* view = self.view;
+    UIView* view = self.target;
 
     NSParameterAssert(view == nil || [view isKindOfClass:[UITextField class]]);
 
@@ -586,7 +586,7 @@
 
         if (newValue != oldValue && ![newValue isEqualToString:oldValue])
         {
-            [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+            [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
             self.previousText = newValue;
         }
     }

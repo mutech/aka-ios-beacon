@@ -140,7 +140,7 @@
 
 - (UIPickerView*)                                  pickerView
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSAssert([result isKindOfClass:[UIPickerView class]], @"Internal inconsistency, expected view %@ to be an instance of UIPickerView", result);
     

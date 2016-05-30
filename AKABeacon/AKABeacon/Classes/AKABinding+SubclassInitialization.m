@@ -28,11 +28,12 @@
 {
     [self validateTarget:target];
 
-    self = [self initWithTargetProperty:[self createBindingTargetPropertyForTarget:target]
-                             expression:bindingExpression
-                                context:bindingContext
-                               delegate:delegate
-                                  error:error];
+    self = [self initWithTarget:target
+            targetValueProperty:[self createBindingTargetPropertyForTarget:target]
+                     expression:bindingExpression
+                        context:bindingContext
+                       delegate:delegate
+                          error:error];
 
     return self;
 }
@@ -198,11 +199,12 @@
                         bindingType = [AKAPropertyBinding class];
                     }
 
-                    AKABinding* binding = [bindingType bindingToTargetProperty:arrayItemTargetProperty
-                                                                withExpression:sourceExpression
-                                                                       context:bindingContext
-                                                                      delegate:weakSelf.delegateForSubBindings
-                                                                         error:error];
+                    AKABinding* binding = [bindingType bindingToTarget:targetArray
+                                                   targetValueProperty:arrayItemTargetProperty
+                                                        withExpression:sourceExpression
+                                                               context:bindingContext
+                                                              delegate:weakSelf.delegateForSubBindings
+                                                                 error:error];
                     if (binding)
                     {
                         arrayItemBinding = binding;
@@ -472,7 +474,7 @@
 {
     BOOL result = YES;
 
-    id target = self.bindingTarget.value;
+    id target = self.targetValueProperty.value;
     if (target == nil)
     {
         // If the target does not yet have a defined value, a binding will be created to ensure that the value is not lost.
@@ -513,11 +515,12 @@
                                                            value:oldValue
                                              didChangeToNewValue:newValue];
                                    }];
-        AKABinding* propertyBinding = [bindingType bindingToTargetProperty:targetProperty
-                                                            withExpression:attributeExpression
-                                                                   context:self.bindingContext
-                                                                  delegate:weakSelf.delegateForSubBindings
-                                                                     error:error];
+        AKABinding* propertyBinding = [bindingType bindingToTarget:self
+                                               targetValueProperty:targetProperty
+                                                    withExpression:attributeExpression
+                                                           context:self.bindingContext
+                                                          delegate:weakSelf.delegateForSubBindings
+                                                             error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -544,19 +547,20 @@
     {
         __weak typeof(self) weakSelf = self;
         AKAProperty* targetProperty =
-        [self.bindingTarget propertyAtKeyPath:bindingProperty
-                           withChangeObserver:
-         ^(opt_id oldValue, opt_id newValue)
-         {
-             [weakSelf  targetProperty:bindingProperty
-                                 value:oldValue
-                   didChangeToNewValue:newValue];
-         }];
-        AKABinding* propertyBinding = [bindingType bindingToTargetProperty:targetProperty
-                                                            withExpression:attributeExpression
-                                                                   context:self.bindingContext
-                                                                  delegate:weakSelf.delegateForSubBindings
-                                                                     error:error];
+            [self.targetValueProperty propertyAtKeyPath:bindingProperty
+                                     withChangeObserver:
+             ^(opt_id oldValue, opt_id newValue)
+             {
+                 [weakSelf  targetProperty:bindingProperty
+                                     value:oldValue
+                       didChangeToNewValue:newValue];
+             }];
+        AKABinding* propertyBinding = [bindingType bindingToTarget:self.targetValueProperty
+                                               targetValueProperty:targetProperty
+                                                    withExpression:attributeExpression
+                                                           context:self.bindingContext
+                                                          delegate:weakSelf.delegateForSubBindings
+                                                             error:error];
         result = propertyBinding != nil;
         if (result)
         {

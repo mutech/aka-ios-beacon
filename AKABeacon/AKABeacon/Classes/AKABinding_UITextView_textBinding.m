@@ -126,7 +126,7 @@
 
 - (UITextView*)textView
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSParameterAssert(result == nil || [result isKindOfClass:[UITextView class]]);
 
@@ -156,7 +156,7 @@
 
     if (newValue != oldValue && ![newValue isEqualToString:oldValue])
     {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
         self.previousText = newValue;
     }
 }

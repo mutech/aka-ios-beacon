@@ -18,10 +18,10 @@ class UILabelBindingsSpec: QuickSpec {
                 let initialModelValue = bindingContext.textValue;
 
                 let bindingType = expression.specification?.bindingType as? AKAViewBinding.Type;
-                let binding = try! bindingType?.bindingToView(view,
-                                                              withExpression: expression,
-                                                              context: bindingContext,
-                                                              delegate: nil);
+                let binding = try! bindingType?.init(target:     view,
+                                                     expression: expression,
+                                                     context:    bindingContext,
+                                                     delegate:   nil);
 
                 let textAfterBindingCreation = view.text;
 
@@ -70,9 +70,9 @@ class UILabelBindingsSpec: QuickSpec {
                 let initialFormattedModelValue = bindingContext.dateFormatter.stringFromDate(bindingContext.dateValue);
 
                 let bindingType = expression.specification?.bindingType as? AKAViewBinding.Type;
-                let binding = try! bindingType?.bindingToView (
-                    view,
-                    withExpression: expression,
+                let binding = try! bindingType?.init (
+                    target: view,
+                    expression: expression,
                     context: bindingContext,
                     delegate: nil);
 
@@ -124,9 +124,9 @@ class UILabelBindingsSpec: QuickSpec {
                 let initialFormattedModelValue = bindingContext.numberFormatter.stringFromNumber(bindingContext.doubleValue);
 
                 let bindingType = expression.specification?.bindingType as? AKAViewBinding.Type;
-                let binding = try! bindingType?.bindingToView (
-                    view,
-                    withExpression: expression,
+                let binding = try! bindingType?.init (
+                    target: view,
+                    expression: expression,
                     context: bindingContext,
                     delegate: nil);
 

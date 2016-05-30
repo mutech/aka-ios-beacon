@@ -15,7 +15,7 @@
 @interface AKABinding_UIControl_enabledBinding()
 
 /**
- Convenience property accessing self.view as UIControl.
+ Convenience property accessing self.target as UIControl.
  */
 @property(nonatomic, readonly) UIBarButtonItem* uiControl;
 
@@ -94,7 +94,7 @@
 
 - (UIControl *)                               uiControl
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UIControl class]]);
 
     return (UIControl*)result;
@@ -110,7 +110,7 @@
 @interface AKABinding_UIBarButtonItem_enabledBinding()
 
 /**
- Convenience property accessing self.view as UIBarButtonItem.
+ Convenience property accessing self.target as UIBarButtonItem.
  */
 @property(nonatomic, readonly) UIBarButtonItem* uiBarButtonItem;
 
@@ -189,7 +189,7 @@
 
 - (UIControl *)                               uiBarButtonItem
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UIBarButtonItem class]]);
 
     return (UIControl*)result;

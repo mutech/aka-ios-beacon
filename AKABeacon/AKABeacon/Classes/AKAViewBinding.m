@@ -17,25 +17,15 @@
 @implementation AKAViewBinding
 
 @dynamic delegate;
+@dynamic target;
 
-#pragma mark - Initialization
-
-- (instancetype)initWithTarget:(req_id)target
-                    expression:(req_AKABindingExpression)bindingExpression
-                       context:(req_AKABindingContext)bindingContext
-                      delegate:(opt_AKABindingDelegate)delegate
-                         error:(out_NSError)error
+- (UIView *)target
 {
-    if (self = [super initWithTarget:target
-                          expression:bindingExpression
-                             context:bindingContext
-                            delegate:delegate
-                               error:error])
-    {
-        _view = target;
-    }
+    id result = super.target;
 
-    return self;
+    NSAssert(result == nil || [result isKindOfClass:[UIView class]], @"Internal inconsistency: AKAViewBinding target has to be an instance of UIView");
+
+    return result;
 }
 
 - (void)validateTarget:(req_id)target

@@ -129,7 +129,7 @@
 
 - (UISlider *)uiSlider
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UISlider class]]);
 
     return (UISlider*)result;
@@ -149,12 +149,12 @@
     [self targetValueDidChangeFromOldValue:oldValue
                                 toNewValue:newValue];
 
-    // Trigger change notifications for bindingTarget property (for the case that someone
+    // Trigger change notifications for targetValueProperty  (for the case that someone
     // created a depedendant property based on the binding target).
     newValue = @(self.uiSlider.value);
     if (newValue != oldValue)
     {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
     }
 }
 

@@ -72,30 +72,33 @@
     }
 }
 
-+ (opt_AKABinding)bindingToTargetProperty:(req_AKAProperty)target
-                           withExpression:(req_AKABindingExpression)bindingExpression
-                                  context:(req_AKABindingContext)bindingContext
-                                 delegate:(opt_AKABindingDelegate)delegate
-                                    error:(out_NSError)error
++ (opt_AKABinding)bindingToTarget:(opt_id)target
+              targetValueProperty:(req_AKAProperty)targetValueProperty
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error
 {
     if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
     {
         AKAConditionalBinding* result = [AKAConditionalBinding alloc];
-        result = [result initWithTargetProperty:target
-                              resultBindingType:self
-                                     expression:bindingExpression
-                                        context:bindingContext
-                                       delegate:delegate
-                                          error:error];
+        result = [result initWithTarget:target
+                    targetValueProperty:targetValueProperty
+                      resultBindingType:self
+                             expression:bindingExpression
+                                context:bindingContext
+                               delegate:delegate
+                                  error:error];
         return result;
     }
     else
     {
-        return [[self alloc] initWithTargetProperty:target
-                                         expression:bindingExpression
-                                            context:bindingContext
-                                           delegate:delegate
-                                              error:error];
+        return [[self alloc] initWithTarget:target
+                        targetValueProperty:targetValueProperty
+                                 expression:bindingExpression
+                                    context:bindingContext
+                                   delegate:delegate
+                                      error:error];
     }
 }
 
@@ -112,11 +115,12 @@
 }
 
 
-- (opt_instancetype)initWithTargetProperty:(req_AKAProperty)target
-                                expression:(req_AKABindingExpression)bindingExpression
-                                   context:(req_AKABindingContext)bindingContext
-                                  delegate:(opt_AKABindingDelegate)delegate
-                                     error:(out_NSError)error
+- (opt_instancetype)                         initWithTarget:(opt_id)target
+                                        targetValueProperty:(req_AKAProperty)targetValueProperty
+                                                 expression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error
 {
     NSError* localError = nil;
 
@@ -150,9 +154,11 @@
 
     if (self = [self init])
     {
-        NSAssert(target == nil || [target isKindOfClass:[AKAProperty class]],
-                @"Invalid target %@, expected instance of AKAProperty", target);
-        _bindingTarget = target;
+        NSAssert(targetValueProperty == nil || [targetValueProperty isKindOfClass:[AKAProperty class]],
+                @"Invalid target %@, expected instance of AKAProperty", targetValueProperty);
+        _targetValueProperty = targetValueProperty;
+
+        _target = target;
 
         _bindingContext = bindingContext;
         _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
@@ -169,7 +175,7 @@
                 error:&localError];
         if (bindingSource)
         {
-            _bindingSource = (req_AKAProperty)bindingSource;
+            _sourceValueProperty = (req_AKAProperty)bindingSource;
         }
         else
         {
@@ -265,9 +271,9 @@
 
     id validatedValue = sourceValueStore == nil ? nil : *sourceValueStore;
 
-    if (self.bindingSource != nil)
+    if (self.sourceValueProperty != nil)
     {
-        result = [self.bindingSource validateValue:&validatedValue error:error];
+        result = [self.sourceValueProperty validateValue:&validatedValue error:error];
 
         if (sourceValueStore && validatedValue != *sourceValueStore)
         {
@@ -287,9 +293,9 @@
 
     id validatedValue = targetValueStore == nil ? nil : *targetValueStore;
 
-    if (self.bindingTarget != nil)
+    if (self.targetValueProperty != nil)
     {
-        result = [self.bindingTarget validateValue:&validatedValue error:error];
+        result = [self.targetValueProperty validateValue:&validatedValue error:error];
 
         if (targetValueStore && validatedValue != *targetValueStore)
         {
@@ -304,7 +310,7 @@
 
 - (void)                                  updateTargetValue
 {
-    id sourceValue = self.bindingSource.value;
+    id sourceValue = self.sourceValueProperty.value;
 
     [self updateTargetValueForSourceValue:sourceValue changeTo:sourceValue];
 }
@@ -317,7 +323,7 @@
          id targetValue = nil;
          NSError* error;
 
-         id oldTargetValue = self.bindingTarget.value;
+         id oldTargetValue = self.targetValueProperty.value;
          
          if ([self convertSourceValue:newSourceValue
                         toTargetValue:&targetValue
@@ -338,7 +344,7 @@
                      // source value changes or perform other transformations that would not either.
                      if (oldTargetValue != targetValue || oldSourceValue != newSourceValue)
                      {
-                         self.bindingTarget.value = targetValue;
+                         self.targetValueProperty.value = targetValue;
                      }
 
                      if (oldTargetValue != targetValue || oldSourceValue != newSourceValue)
@@ -406,7 +412,7 @@
 - (BOOL)                        startObservingBindingTarget
 {
     [self willStartObservingBindingTarget];
-    BOOL result = [self.bindingTarget startObservingChanges];
+    BOOL result = [self.targetValueProperty startObservingChanges];
     [self didStartObservingBindingTarget];
     return result;
 }
@@ -414,7 +420,7 @@
 - (BOOL)                        startObservingBindingSource
 {
     [self willStartObservingBindingSource];
-    BOOL result = [self.bindingSource startObservingChanges];
+    BOOL result = [self.sourceValueProperty startObservingChanges];
     [self didStartObservingBindingSource];
     return result;
 }
@@ -467,7 +473,7 @@
 - (BOOL)                         stopObservingBindingTarget
 {
     [self willStopObservingBindingTarget];
-    BOOL result = [self.bindingTarget stopObservingChanges];
+    BOOL result = [self.targetValueProperty stopObservingChanges];
     [self didStopObservingBindingTarget];
     return result;
 }
@@ -475,7 +481,7 @@
 - (BOOL)                         stopObservingBindingSource
 {
     [self willStopObservingBindingSource];
-    BOOL result = [self.bindingSource stopObservingChanges];
+    BOOL result = [self.sourceValueProperty stopObservingChanges];
     [self didStopObservingBindingSource];
     return result;
 }
@@ -570,7 +576,7 @@
 {
     return [NSString stringWithFormat:@"<%@: %p; source=%@, target=%@>",
             self.class, (__bridge void*)self,
-            self.bindingSource, self.bindingTarget];
+            self.sourceValueProperty, self.targetValueProperty];
 }
 
 @end

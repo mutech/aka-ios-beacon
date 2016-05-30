@@ -12,7 +12,7 @@
 
 @implementation AKATapGestureRecognizerBinding
 
-+ (AKABindingSpecification*)                         specification
++ (AKABindingSpecification*)               specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -26,9 +26,8 @@
                    @"target":                   @{
                            @"use":              @(AKABindingAttributeUseBindToBindingProperty),
                            @"expressionType":   @(AKABindingExpressionTypeAnyKeyPath),
-                           // target is required to have a defined value but defaults to the root data context,
-                           // so the corresponding target attribute is not required:
-                           @"required":         @NO
+                           @"bindingProperty":  @"actionTarget",
+                           @"required":         @NO // actionTarget is required to have a defined value but defaults to the root data context, so the corresponding target attribute is not required
                            },
                    @"action":                   @{
                            @"use":              @(AKABindingAttributeUseBindToBindingProperty),
@@ -65,15 +64,18 @@
     return result;
 }
 
-+ (AKABindingAttributeSpecification*)                         defaultAttributeSpecification
++ (AKABindingAttributeSpecification*)defaultAttributeSpecification
 {
     static AKABindingAttributeSpecification* result = nil;
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
 
-        NSDictionary* spec = @{ @"use": @(AKABindingAttributeUseBindToTargetProperty) };
-        result = [[AKABindingAttributeSpecification alloc] initWithDictionary:spec basedOn:[AKAPropertyBinding specification]];
+        NSDictionary* spec =
+            @{ @"use": @(AKABindingAttributeUseBindToTargetProperty) };
+
+        result = [[AKABindingAttributeSpecification alloc] initWithDictionary:spec
+                                                                      basedOn:[AKAPropertyBinding specification]];
     });
 
     return result;
@@ -90,15 +92,16 @@
     (void)bindingContext;
     (void)error;
 
+    // TODO: consider using custom property to avoid crashes if self is deallocated before the property stops observing changes:
     AKAProperty* result = [AKAProperty propertyOfWeakKeyValueTarget:self
                                                             keyPath:@"syntheticTargetValue"
                                                      changeObserver:changeObserver];
     return result;
 }
 
-- (BOOL)initializeUnspecifiedAttribute:(req_NSString)attributeName
-                   attributeExpression:(req_AKABindingExpression)attributeExpression
-                                 error:(out_NSError)error
+- (BOOL)                  initializeUnspecifiedAttribute:(req_NSString)attributeName
+                                     attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                   error:(out_NSError)error
 {
     return [self initializeTargetPropertyBindingAttribute:attributeName
                                         withSpecification:[self.class defaultAttributeSpecification]
@@ -144,32 +147,33 @@
 
 #pragma mark - Properties
 
-- (NSObject *)target
+- (NSObject *)                              actionTarget
 {
-    NSObject* result = _target;
+    NSObject* result = _actionTarget;
     if (result == nil)
     {
-        // If no target was specified, use $root (the root data context which typically is the view
+        // If no target was specified, use $root (the root data context which typically is the target
         // controller) as default:
         result = [self.bindingContext rootDataContextValueForKeyPath:nil];
     }
     return result;
 }
 
-- (SEL)action
+- (SEL)                                           action
 {
     return self.actionSelectorName.length > 0 ? NSSelectorFromString(self.actionSelectorName) : NULL;
 }
 
 #pragma mark - Handling Actions
 
-- (IBAction)handleGestureRecognizerAction:(id)sender
+- (IBAction)               handleGestureRecognizerAction:(id)sender
 {
     // We might not want/need to require this, check if it first happens to fail:
     NSAssert(sender == self.syntheticTargetValue,
-             @"Unexpected sender %@, expected %@", sender, self.syntheticTargetValue);
+             @"Unexpected sender %@, expected %@",
+             sender, self.syntheticTargetValue);
 
-    id target = self.target;
+    id target = self.actionTarget;
     SEL action = self.action;
     if ([target respondsToSelector:action])
     {

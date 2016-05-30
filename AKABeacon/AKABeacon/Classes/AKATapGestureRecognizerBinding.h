@@ -11,7 +11,7 @@
 
 @interface AKATapGestureRecognizerBinding : AKAPropertyBinding
 
-@property(nonatomic, weak) NSObject* target;
+@property(nonatomic, weak) NSObject* actionTarget;
 @property(nonatomic, readonly) SEL action;
 @property(nonatomic) NSString* actionSelectorName;
 

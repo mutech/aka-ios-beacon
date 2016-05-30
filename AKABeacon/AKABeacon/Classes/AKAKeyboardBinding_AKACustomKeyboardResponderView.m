@@ -45,7 +45,7 @@
 
 - (AKACustomKeyboardResponderView*)                triggerView
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[AKACustomKeyboardResponderView class]]);
 
     return (AKACustomKeyboardResponderView*)result;

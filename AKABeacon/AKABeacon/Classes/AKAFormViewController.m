@@ -31,7 +31,7 @@
 #if 0
     if (self.scrollView == nil)
     {
-        UIView* rootView = self.view;
+        UIView* rootView = self.target;
         __block NSMutableArray* layoutSupportViews = [NSMutableArray new];
         __block NSMutableArray* subviews = [NSMutableArray new];
         [rootView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {

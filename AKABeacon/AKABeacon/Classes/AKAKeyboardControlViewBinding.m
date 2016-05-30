@@ -210,7 +210,7 @@
 
 - (opt_UIResponder)    responderForKeyboardActivationSequence
 {
-    return self.view;
+    return self.target;
 }
 
 #pragma mark - Activation (First Responder)

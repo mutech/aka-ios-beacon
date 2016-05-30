@@ -177,7 +177,7 @@
 
 - (AKADynamicPlaceholderTableViewCell *)placeholderCell
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);
 
     return (AKADynamicPlaceholderTableViewCell*)result;
@@ -193,7 +193,7 @@
     NSIndexPath* targetIndexPath = [defaultDS tableViewMappedIndexPath:self.placeholderIndexPath];
     BOOL result = (targetIndexPath != nil);
 
-    NSArray* items = self.bindingSource.value;
+    NSArray* items = self.sourceValueProperty.value;
     if ([items isKindOfClass:[NSSet class]])
     {
         items = [((NSSet*)items) allObjects];
@@ -205,7 +205,7 @@
 
     NSMutableArray* deferredReloadIndexes = NSMutableArray.new;
 
-    [self sourceControllerWillChangeContent:self.bindingSource];
+    [self sourceControllerWillChangeContent:self.sourceValueProperty];
 
     NSInteger placeholderContentSection = 0;
 
@@ -226,7 +226,7 @@
 
                 NSIndexPath* oldItemIndexPath = [NSIndexPath indexPathForRow:i
                                                                    inSection:placeholderContentSection];
-                [self  sourceController:self.bindingSource
+                [self  sourceController:self.sourceValueProperty
                             deletedItem:oldItem
                             atIndexPath:oldItemIndexPath];
             }
@@ -250,7 +250,7 @@
         // TODO: consider manipulating oldItems to match changes
         if (oldIndex == NSNotFound)
         {
-            [self      sourceController:self.bindingSource
+            [self      sourceController:self.sourceValueProperty
                            insertedItem:item
                             atIndexPath:itemIndexPath];
             ++insertedItemCount;
@@ -265,7 +265,7 @@
                 [NSIndexPath indexPathForRow:(NSInteger)(oldIndex + insertedItemCount)
                                    inSection:placeholderContentSection];
 
-            [self      sourceController:self.bindingSource
+            [self      sourceController:self.sourceValueProperty
                               movedItem:item
                           fromIndexPath:itemOldIndexPath
                             toIndexPath:itemIndexPath];
@@ -279,20 +279,20 @@
 
             //[deferredReloadIndexes addObject:itemIndexPath];
 
-            //[self      sourceController:self.bindingSource
+            //[self      sourceController:self.sourceValueProperty
             //                updatedItem:items[(NSUInteger)itemIndexPath.row]
             //                atIndexPath:itemIndexPath];
         }
     }
     _actualItems = items;
 
-    [self sourceControllerDidChangeContent:self.bindingSource];
+    [self sourceControllerDidChangeContent:self.sourceValueProperty];
 
     if (deferredReloadIndexes.count > 0)
     {
         for (NSIndexPath* itemIndexPath in deferredReloadIndexes)
         {
-            [self      sourceController:self.bindingSource
+            [self      sourceController:self.sourceValueProperty
                             updatedItem:items[(NSUInteger)itemIndexPath.row]
                             atIndexPath:itemIndexPath];
         }

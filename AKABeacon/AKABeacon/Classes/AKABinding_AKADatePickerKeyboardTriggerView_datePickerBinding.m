@@ -170,7 +170,7 @@
 
 - (AKADatePickerKeyboardTriggerView*)triggerView
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSParameterAssert(result == nil || [result isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
 

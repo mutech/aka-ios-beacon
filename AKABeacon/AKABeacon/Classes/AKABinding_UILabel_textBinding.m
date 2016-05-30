@@ -221,7 +221,7 @@
 
 - (UILabel*)label
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
 
     NSAssert(result == nil || [result isKindOfClass:[UILabel class]], @"View for %@ is required to be an instance of UILabel", self.class);
 
@@ -301,7 +301,7 @@
     // Update target value if the attribute formatter or its pattern changes (f.e. a search pattern)
     if (self.textAttributeFormatter)
     {
-        id targetValue = binding.bindingTarget.value;
+        id targetValue = binding.targetValueProperty.value;
         if (targetValue == self.textAttributeFormatter ||
             targetValue == self.textAttributeFormatter.pattern)
         {

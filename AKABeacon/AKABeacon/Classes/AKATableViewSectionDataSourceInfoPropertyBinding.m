@@ -76,7 +76,7 @@
 
     if (self.syntheticTargetValue == nil)
     {
-        id targetValue = self.bindingTarget.value;
+        id targetValue = self.targetValueProperty.value;
         if (targetValue != nil && targetValue != [NSNull null])
         {
             self.syntheticTargetValue = targetValue;

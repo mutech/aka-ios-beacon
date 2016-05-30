@@ -14,22 +14,22 @@
 
 - (id)                                      viewValue
 {
-    return self.controlViewBinding.bindingTarget.value;
+    return self.controlViewBinding.targetValueProperty.value;
 }
 
 - (void)                                 setViewValue:(id)viewValue
 {
-    self.controlViewBinding.bindingTarget.value = viewValue;
+    self.controlViewBinding.targetValueProperty.value = viewValue;
 }
 
 - (id)                                     modelValue
 {
-    return self.controlViewBinding.bindingSource.value;
+    return self.controlViewBinding.sourceValueProperty.value;
 }
 
 - (void)                                setModelValue:(id)modelValue
 {
-    self.controlViewBinding.bindingSource.value = modelValue;
+    self.controlViewBinding.sourceValueProperty.value = modelValue;
 }
 
 #pragma mark - Conversion

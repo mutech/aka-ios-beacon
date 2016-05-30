@@ -79,7 +79,7 @@
                                  didUpdateSourceValue:(opt_id)oldSourceValue
                                                    to:(opt_id)newSourceValue
 {
-    // A successful update means both model and view values are valid and in sync
+    // A successful update means both model and target values are valid and in sync
     [self setValidationState:AKAControlValidationStateValid
                    withError:nil];
 

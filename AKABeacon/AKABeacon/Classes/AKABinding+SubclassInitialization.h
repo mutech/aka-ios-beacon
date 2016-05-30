@@ -28,7 +28,7 @@
  
  Subclasses should usually not have to override this initializer and instead customize or override the more specific initialization methods exposed in AKABinding+SubclassInitialization.h.
  
- One reason to override it would be to keep a (weak!) reference to the target object. AKAViewBinding does just that (recording the target UIView in the AKAViewBinding.view property).
+ One reason to override it would be to keep a (weak!) reference to the target object. AKAViewBinding does just that (recording the target UIView in the AKAViewBinding.target property).
 
  @param target            the target object
  @param bindingExpression the binding expression specifying the binding source and other parameters
@@ -84,7 +84,7 @@
 /// @name Binding Source Initialization
 
 /**
- * Called by initWithTargetProperty:expression:context:delegate:error: to obtain a binding source property.
+ * Called by initWithTarget:targetValueProperty:expression:context:delegate:error: to obtain a binding source property.
  *
  * If the binding expression has no defined primary value, this method will call defaultBindingSourceForExpression:context:changeObserver:error:.
  *
@@ -214,9 +214,9 @@
                                                          error:(out_NSError)error;
 
 /**
- Called by initializeAttributesWithExpression:error: for attributes with a specified use of AKABindingAttributeUseBindToTargetProperty. The default implementation creates an attribute binding targeting the binding (self)'s binding target property (self.bindingTarget's value) using bindingProperty as key.
+ Called by initializeAttributesWithExpression:error: for attributes with a specified use of AKABindingAttributeUseBindToTargetProperty. The default implementation creates an attribute binding targeting the binding (self)'s binding target property (self.targetValueProperty's value) using bindingProperty as key.
 
- Please note that the bindingTarget is not necessarily defined at the time when the binding attribute's binding is created.
+ Please note that the targetValueProperty is not necessarily defined at the time when the binding attribute's binding is created.
 
  @param bindingProperty     the property name of this object's binding target that the attribute binding will target.
  @param specification       the attribute specification

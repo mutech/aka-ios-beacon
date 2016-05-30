@@ -259,7 +259,7 @@
     NSString* reason = [NSString stringWithFormat:@"Value out of range [%@..%@]",
                         @(expectedRange.location), @(expectedRange.location + expectedRange.length)];
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ target %@ value %@ failed: %@",
-                             binding, binding.bindingTarget.value, targetValue, reason];
+                             binding, binding.targetValueProperty.value, targetValue, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorConversionOfTargetToSourceFailedTargetOutOfRange
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
@@ -278,7 +278,7 @@
     NSString* reason = [NSString stringWithFormat:@"Invalid type %@,  expected value to be an instance of: %@",
                         targetValue ? NSStringFromClass((Class)[targetValue class]) : @"nil", NSStringFromClass(expectedType)];
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ target %@ value %@ failed: %@",
-                             binding, binding.bindingTarget.value, targetValue, reason];
+                             binding, binding.targetValueProperty.value, targetValue, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorConversionOfTargetToSourceFailedInvalidTargetType
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
@@ -298,7 +298,7 @@
                         sourceValue ? NSStringFromClass((Class)[sourceValue class]) : @"nil",
                         expected];
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ source %@ value %@ failed: %@",
-                             binding, binding.bindingSource.value, sourceValue, reason];
+                             binding, binding.sourceValueProperty.value, sourceValue, reason];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorConversionOfSourceToTargetFailedInvalidSourceType
                                       userInfo:@{ NSLocalizedDescriptionKey: description,
@@ -316,7 +316,7 @@
 {
     NSString* reason = message;
     NSString* description = [NSString stringWithFormat:@"Conversion of binding %@ target %@ value %@ using formatter %@ failed: %@",
-                             binding, binding.bindingTarget.value, targetValue, formatter, message];
+                             binding, binding.targetValueProperty.value, targetValue, formatter, message];
     NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
                                           code:AKABindingErrorConversionOfTargetToSourceUsingFormatterFailed
                                       userInfo:@{ NSLocalizedDescriptionKey: description,

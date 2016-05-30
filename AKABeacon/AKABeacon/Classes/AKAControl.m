@@ -367,14 +367,14 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                      NSAssert(oldCVB == nil, @"Invalid attempt to add control view binding %@ to control %@: control already has a defined control view binding %@", binding, self, oldCVB);
                      if (oldCVB == nil)
                      {
-                         self.view = ((AKAControlViewBinding*)binding).view;
+                         self.view = ((AKAControlViewBinding*)binding).target;
                          result = YES;
                          self->_controlViewBinding = (id)binding;
                      }
                  }
                  else
                  {
-                     // TODO: consider testing if a binding to the same property&view is already present
+                     // TODO: consider testing if a binding to the same property&target is already present
                      result = YES;
                  }
                  
@@ -437,7 +437,7 @@ static NSString* const kRegisteredControlKey = @"aka_control";
                 AKAControlViewBinding* controlViewBinding = self.controlViewBinding;
                 if (binding == controlViewBinding)
                 {
-                    // TODO: what about other bindings? They don't need self.view, but it might
+                    // TODO: what about other bindings? They don't need self.target, but it might
                     // have been set directly. Probably not really a problem
                     self.view = nil;
                     self->_controlViewBinding = nil;

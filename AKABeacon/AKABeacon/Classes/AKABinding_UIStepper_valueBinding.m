@@ -19,7 +19,7 @@
 @interface AKABinding_UIStepper_valueBinding()
 
 /**
- Convenience property accessing self.view as UIStepper.
+ Convenience property accessing self.target as UIStepper.
  */
 @property(nonatomic, readonly) UIStepper* uiStepper;
 
@@ -49,32 +49,32 @@
                @{ @"minimumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.minimumValue"
+                         @"bindingProperty": @"target.minimumValue"
                          },
                   @"maximumValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.maximumValue"
+                         @"bindingProperty": @"target.maximumValue"
                          },
                   @"stepValue":
                       @{ @"expressionType":  @(AKABindingExpressionTypeNumber),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.stepValue"
+                         @"bindingProperty": @"target.stepValue"
                          },
                   @"autorepeat":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.autorepeat"
+                         @"bindingProperty": @"target.autorepeat"
                          },
                   @"continuous":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.continuous"
+                         @"bindingProperty": @"target.continuous"
                          },
                   @"wraps":
                       @{ @"expressionType":  @(AKABindingExpressionTypeBoolean),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
-                         @"bindingProperty": @"view.wraps"
+                         @"bindingProperty": @"target.wraps"
                          },
                   },
            };
@@ -147,7 +147,7 @@
 
 - (UIStepper *)                               uiStepper
 {
-    UIView* result = self.view;
+    UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UIStepper class]]);
 
     return (UIStepper*)result;
@@ -166,13 +166,13 @@
     [self targetValueDidChangeFromOldValue:oldValue
                                 toNewValue:newValue];
 
-    // Trigger change notifications for bindingTarget property (for the case that someone
+    // Trigger change notifications for targetValueProperty (for the case that someone
     // created a depedendant property based on the binding target). Stepper value may have
     // been changed above, so we query it again here:
     newValue = @(self.uiStepper.value);
     if (newValue != oldValue)
     {
-        [self.bindingTarget notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
     }
 }
 

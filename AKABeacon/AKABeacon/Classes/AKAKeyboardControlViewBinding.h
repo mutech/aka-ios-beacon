@@ -44,7 +44,7 @@
 
 /**
  * Subclasses have to override the setter (setResponderInputAccessoryView:) unless 
- * self.view responds to the @c selector(setInputAccessoryView:).
+ * self.target responds to the @c selector(setInputAccessoryView:).
  *
  * This is used by installInputAccessoryView: and restoreInputAccessoryView: 
  */
@@ -86,7 +86,7 @@
 /**
  * The responder participating in the keyboard activation sequence.
  *
- * @return the default implementation returns self.view.
+ * @return the default implementation returns self.target.
  */
 @property(nonatomic, readonly) opt_UIResponder                      responderForKeyboardActivationSequence;
 

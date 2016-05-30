@@ -55,11 +55,12 @@
 
         NSError* localError = nil;
         Class bindingType = bindingExpression.specification.bindingType;
-        AKABinding* factoryBinding = [bindingType bindingToTargetProperty:evaluationResultProperty
-                                                           withExpression:bindingExpression
-                                                                  context:self.bindingContext
-                                                                 delegate:delegate
-                                                                    error:error];
+        AKABinding* factoryBinding = [bindingType bindingToTarget:self
+                                              targetValueProperty:evaluationResultProperty
+                                                   withExpression:bindingExpression
+                                                          context:self.bindingContext
+                                                         delegate:delegate
+                                                            error:error];
         if (factoryBinding)
         {
             _binding = factoryBinding;

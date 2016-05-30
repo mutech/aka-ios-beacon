@@ -7,11 +7,11 @@
 //
 
 @import UIKit;
-#import "AKANullability.h"
 #import "AKAProperty.h"
 
 #import "AKABeaconNullability.h"
 #import "AKABindingDelegate.h"
+#import "AKABindingController.h"
 #import "AKABindingExpression.h"
 #import "AKABindingSpecification.h"
 
@@ -61,11 +61,15 @@
 
 /**
  Property wrapping the source value of the binding. Bindings which do not support a binding source provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+
+ @note TODO: rename to `sourceValueProperty`.
  */
 @property(nonatomic, readonly, nonnull) AKAProperty*                          bindingSource;
 
 /**
  Property wrapping the target value of the binding. Bindings which do not support a binding target provide a property that refers to an undefined (nil) value, changing this value will typically have no effect.
+
+ @note TODO: rename to `targetValueProperty`.
  */
 @property(nonatomic, readonly, nonnull) AKAProperty*                          bindingTarget;
 
@@ -75,7 +79,16 @@
 @property(nonatomic, readonly, weak, nullable) id<AKABindingContextProtocol>  bindingContext;
 
 /**
+ The binding controller owning and managing this binding.
+
+ @note This uses the bindingContext property as storage and will return nil if bindingContext is not an instance of AKABindingController.
+ */
+@property(nonatomic, readonly, weak, nullable) AKABindingController*          controller;
+
+/**
  The binding delegate.
+
+ @note deprecated. Use the binding behavior delegates (public interface). TODO: this property will be made available for sub classes only (or maybe internal).
  */
 @property(nonatomic, readonly, weak, nullable) id<AKABindingDelegate>         delegate;
 
@@ -95,7 +108,7 @@
 
 #pragma mark - Change Tracking
 
-- (void)                           sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+- (void)                       processSourceValueChangeFromOldValue:(opt_id)oldSourceValue
                                                          toNewValue:(opt_id)newSourceValue;
 
 /**

@@ -9,6 +9,7 @@
 #import "AKAErrors.h"
 
 #import "AKAViewBinding.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKABindingExpression+Accessors.h"
 #import "AKAConditionalBinding.h"
 #import "AKABinding_Protected.h"

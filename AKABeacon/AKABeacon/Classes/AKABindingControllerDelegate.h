@@ -66,6 +66,34 @@
 
 #pragma mark - AKABindingDelegate
 
+
+@optional
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
+                                                   to:(id _Nullable)newSourceValue;
+
+@optional
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                       toInvalidValue:(opt_id)newSourceValue
+                                            withError:(opt_NSError)error;
+
+@optional
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                               sourceArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue;
+
+@optional
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                               targetArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue;
+
 @optional
 - (void)                                   controller:(req_AKABindingController)controller
                                               binding:(req_AKABinding)binding
@@ -98,6 +126,7 @@
                                               binding:(req_AKABinding)binding
                                  didUpdateTargetValue:(opt_id)oldTargetValue
                                                    to:(opt_id)newTargetValue;
+
 #pragma mark - AKAControlViewBindingDelegate
 
 @optional
@@ -112,6 +141,13 @@
               sourceUpdateFailedToValidateSourceValue:(opt_id)sourceValue
                              convertedFromTargetValue:(opt_id)targetValue
                                             withError:(opt_NSError)error;
+
+@optional
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKAControlViewBinding)binding
+                           targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                             toInvalidValue:(opt_id)newTargetValue
+                                                  withError:(opt_NSError)error;
 
 @optional
 - (BOOL)                                   controller:(req_AKABindingController)controller
@@ -134,6 +170,20 @@
                                                    to:(opt_id)newSourceValue;
 
 #pragma mark - AKAKeyBoardControlViewBindingDelegate
+
+#pragma mark Keyboard Activation Requests
+
+@optional
+- (BOOL)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKAKeyboardControlViewBinding)binding
+                       responderRequestedActivateNext:(req_UIResponder)responder;
+
+@optional
+- (BOOL)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKAKeyboardControlViewBinding)binding
+                           responderRequestedGoOrDone:(req_UIResponder)responder;
+
+#pragma mark UIResponder Events
 
 @optional
 - (BOOL)                                   controller:(req_AKABindingController)controller
@@ -164,16 +214,6 @@
 - (void)                                   controller:(req_AKABindingController)controller
                                               binding:(req_AKAKeyboardControlViewBinding)binding
                                responderDidDeactivate:(req_UIResponder)responder;
-
-@optional
-- (BOOL)                                   controller:(req_AKABindingController)controller
-                                              binding:(req_AKAKeyboardControlViewBinding)binding
-                       responderRequestedActivateNext:(req_UIResponder)responder;
-
-@optional
-- (BOOL)                                   controller:(req_AKABindingController)controller
-                                              binding:(req_AKAKeyboardControlViewBinding)binding
-                           responderRequestedGoOrDone:(req_UIResponder)responder;
 
 #pragma mark - AKACollectionViewBindingDelegate
 

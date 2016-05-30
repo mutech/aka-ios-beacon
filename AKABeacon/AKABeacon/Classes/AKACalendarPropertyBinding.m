@@ -7,6 +7,7 @@
 //
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKACalendarPropertyBinding.h"
 #import "AKABindingErrors.h"
 

@@ -11,17 +11,17 @@
 #import "AKABinding.h"
 
 
-#pragma mark - AKABindingController Interface
+#pragma mark - AKABindingController - Interface
 #pragma mark -
 
 @interface AKABindingController : NSObject <AKABindingDelegate>
 
 #pragma mark - Initialization
 
-+ (opt_instancetype)                     bindingControllerForViewController:(req_UIViewController)viewController
-                                                            withDataContext:(opt_id)dataContext
-                                                                   delegate:(opt_AKABindingControllerDelegate)delegate
-                                                                      error:(out_NSError)error;
++ (opt_instancetype)    bindingControllerForViewController:(req_UIViewController)viewController
+                                           withDataContext:(opt_id)dataContext
+                                                  delegate:(opt_AKABindingControllerDelegate)delegate
+                                                     error:(out_NSError)error;
 
 #pragma mark - Configuration
 
@@ -37,31 +37,11 @@
 /**
  The target object hierarchy for which this controller manages bindings. This may be a view, a viewController or some other object that may serve as binding target object or container for such.
 
- Typically, the root binding controller references a view controller while child binding controllers manage independent or dynamic view hierarchies (like f.e. table view cells).
+ Typically, root binding controllers reference a view controller while child binding controllers manage independent or dynamic view hierarchies (like f.e. table view cells).
+ 
+
  */
 @property(nonatomic, readonly, weak, nullable) id                           targetObjectHierarchy;
-
-#pragma mark - Convenience Properties (computed)
-
-/**
- targetObjectHierarchy, if it is an instance of UIView or otherwise viewController.view (may be nil).
- */
-@property(nonatomic, weak, readonly, nullable) UIView*                      view;
-
-/**
- targetObjectHierarchy, if it is an instance of UIViewController, parent.viewController if parent is not nil or nil otherwise.
- */
-@property(nonatomic, weak, readonly, nullable) UIViewController*            viewController;
-
-/**
- The data context used by bindings referencing key paths relative to the binding scope `$data'.
-
- @note The dataContext might be changed internally, do not assume that it's constant.
-
- @note This is a strong reference to ensure that observations will be valid during the live time of the binding controller.
- */
-@property(nonatomic, readonly, nullable) id                                 dataContext;
-
 
 #pragma mark - Access
 
@@ -83,9 +63,10 @@
 
  @param block Block with signature `void (^)(AKABinding* binding, BOOL** stop)`
  */
-- (void)enumerateBindingsUsingBlock:(void (^_Nonnull)(AKABinding * _Nonnull, BOOL * _Nonnull))block;
+- (void)enumerateBindingsUsingBlock:(void (^_Nonnull)(req_AKABinding, outreq_BOOL))block;
 
-- (void)enumerateBindingControllersUsingBlock:(void (^_Nonnull)(req_AKABindingController, outreq_BOOL))block;
+- (void)enumerateBindingControllersUsingBlock:(void (^_Nonnull)(req_AKABindingController,
+                                                                outreq_BOOL))block;
 
 #pragma mark - Change Tracking
 
@@ -96,6 +77,43 @@
 @property(nonatomic, readonly) BOOL                                         isObservingChanges;
 
 - (void)startObservingChanges;
+
 - (void)stopObservingChanges;
 
 @end
+
+
+#pragma mark - AKABindingController(Conveniences) - Interface
+#pragma mark -
+
+@interface AKABindingController(Conveniences)
+
+/// @name Conveniences
+
+/**
+ Convenience property that can be used to find the root view of the view hierarchy managed by this controller.
+
+ @return targetObjectHierarchy, if it is an instance of UIView or otherwise viewController.view (may be nil).
+ */
+@property(nonatomic, weak, readonly, nullable) UIView*                      view;
+
+/**
+ Convenience property that can be used to find the view controllers owning the view hierarchy managed by this controller.
+
+ @note that this only works if one of the parent binding controllers has been initialized with a view controller (which is usually the case for controllers created by binding behaviors).
+
+ @return targetObjectHierarchy, if it is an instance of UIViewController, parent.viewController if parent is not nil or nil otherwise.
+ */
+@property(nonatomic, weak, readonly, nullable) UIViewController*            viewController;
+
+/**
+ The data context used by bindings referencing key paths relative to the binding scope `$data'.
+
+ @note The dataContext might be changed internally, do not assume that it's constant.
+
+ @note This is a strong reference to ensure that observations will be valid during the live time of the binding controller.
+ */
+@property(nonatomic, readonly, nullable) id                                 dataContext;
+
+@end
+

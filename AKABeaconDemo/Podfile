@@ -9,5 +9,5 @@ workspace 'AKABeaconDemo.xcworkspace'
 xcodeproj 'AKABeaconDemo.xcodeproj' # Will be renamed to project once we drop support for Cocoapods < 1.0
 
 target 'AKABeaconDemo' do
-	pod 'AKABeacon', '~> 0.3.1'
+    pod 'AKABeacon', :path => 'aka-ios-beacon' #'~> 0.3.1'
 end

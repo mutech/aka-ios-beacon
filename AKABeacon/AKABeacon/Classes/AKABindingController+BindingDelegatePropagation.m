@@ -18,6 +18,66 @@
 
 - (void)                                   controller:(req_AKABindingController)controller
                                               binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
+                                                   to:(id _Nullable)newSourceValue
+{
+    [self.parent controller:controller binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+
+    id<AKABindingControllerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controller:binding:sourceValueDidChangeFromOldValue:to:)])
+    {
+        [delegate controller:controller binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+    }
+}
+
+
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                       toInvalidValue:(opt_id)newSourceValue
+                                            withError:(opt_NSError)error
+{
+    [self.parent controller:controller binding:binding sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
+
+    id<AKABindingControllerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controller:binding:sourceValueDidChangeFromOldValue:toInvalidValue:error:)])
+    {
+        [delegate controller:controller binding:binding sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
+    }
+}
+
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                               sourceArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue
+{
+    [self.parent controller:controller binding:binding sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+
+    id<AKABindingControllerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controller:binding:sourceArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate controller:controller binding:binding sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+    }
+}
+
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
+                               targetArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue;
+{
+    [self.parent controller:controller binding:binding targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+
+    id<AKABindingControllerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controller:binding:targetArrayItemAtIndex:value:didChangeTo:)])
+    {
+        [delegate controller:controller binding:binding targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+    }
+}
+
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKABinding)binding
                targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
                                toTargetValueWithError:(opt_NSError)error
 {
@@ -131,6 +191,21 @@
     }
 }
 
+- (void)                                   controller:(req_AKABindingController)controller
+                                              binding:(req_AKAControlViewBinding)binding
+                     targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                       toInvalidValue:(opt_id)newTargetValue
+                                            withError:(opt_NSError)error;
+{
+    [self.parent controller:controller binding:binding targetValueDidChangeFromOldValue:oldTargetValue toInvalidValue:newTargetValue withError:error];
+
+    id<AKABindingControllerDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(controller:binding:targetValueDidChangeFromOldValue:toInvalidValue:withError:)])
+    {
+        [delegate controller:controller binding:binding targetValueDidChangeFromOldValue:oldTargetValue toInvalidValue:newTargetValue withError:error];
+    }
+}
+
 - (BOOL)                                   controller:(req_AKABindingController)controller
                                         shouldBinding:(req_AKAControlViewBinding)binding
                                     updateSourceValue:(opt_id)oldSourceValue
@@ -184,6 +259,65 @@
 }
 
 #pragma mark - AKAKeyboardControlViewBindingDelegate
+
+
+- (BOOL)                                   controller:(req_AKABindingController __unused)controller
+                                              binding:(req_AKAKeyboardControlViewBinding __unused)binding
+                       responderRequestedActivateNext:(req_UIResponder __unused)responder
+{
+    BOOL result = NO;
+
+    AKABindingController* parent = self.parent;
+    if (parent)
+    {
+        result = [self.parent controller:controller binding:binding responderRequestedActivateNext:responder];
+    }
+
+    if (!result)
+    {
+        id<AKABindingControllerDelegate> delegate = self.delegate;
+        if (delegate && [delegate respondsToSelector:@selector(controller:binding:responderRequestedActivateNext:)])
+        {
+            result =  [delegate controller:controller binding:binding responderRequestedActivateNext:responder];
+        }
+    }
+
+    if (!result)
+    {
+        result = [self.keyboardActivationSequence activateNext];
+    }
+
+    return result;
+}
+
+- (BOOL)                                   controller:(req_AKABindingController __unused)controller
+                                              binding:(req_AKAKeyboardControlViewBinding __unused)binding
+                           responderRequestedGoOrDone:(req_UIResponder __unused)responder
+{
+    BOOL result = NO;
+
+    AKABindingController* parent = self.parent;
+    if (parent)
+    {
+        result = [self.parent controller:controller binding:binding responderRequestedGoOrDone:responder];
+    }
+
+    if (!result)
+    {
+        id<AKABindingControllerDelegate> delegate = self.delegate;
+        if (delegate && [delegate respondsToSelector:@selector(controller:binding:responderRequestedGoOrDone:)])
+        {
+            result =  [delegate controller:controller binding:binding responderRequestedGoOrDone:responder];
+        }
+    }
+
+    if (!result)
+    {
+        result = [self.keyboardActivationSequence deactivate];
+    }
+
+    return result;
+}
 
 - (BOOL)                                   controller:(req_AKABindingController)controller
                                         shouldBinding:(req_AKAKeyboardControlViewBinding)binding
@@ -277,23 +411,6 @@
     {
         [delegate controller:controller binding:binding responderDidDeactivate:responder];
     }
-}
-
-- (BOOL)                                   controller:(req_AKABindingController __unused)controller
-                                              binding:(req_AKAKeyboardControlViewBinding __unused)binding
-                       responderRequestedActivateNext:(req_UIResponder)responder
-{
-    // Don't see a need to propagate event since activation events will fire
-    return [self.keyboardActivationSequence activateNext];
-}
-
-- (BOOL)                                   controller:(req_AKABindingController __unused)controller
-                                              binding:(req_AKAKeyboardControlViewBinding __unused)binding
-                           responderRequestedGoOrDone:(req_UIResponder)responder
-{
-    // Don't see a need to propagate event since activation events will fire
-    // TODO: consider implementing commit form
-    return [self.keyboardActivationSequence deactivate];
 }
 
 #pragma mark - AKACollectionControlViewBindingDelegate

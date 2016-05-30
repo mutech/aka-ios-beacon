@@ -9,6 +9,8 @@
 #import <objc/runtime.h>
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubBindings.h"
+
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
 
@@ -64,10 +66,9 @@
 
 - (BOOL)initializeUnspecifiedAttribute:(NSString *)attributeName
                    attributeExpression:(req_AKABindingExpression)attributeExpression
-                        bindingContext:(req_AKABindingContext)bindingContext
                                  error:(out_NSError)error
 {
-    BOOL result = YES;
+    BOOL result;
     __weak typeof(self) weakSelf = self;
 
     AKAProperty* targetProperty = [AKAProperty propertyOfWeakKeyValueTarget:self.substitutionValues
@@ -79,7 +80,7 @@
                                    }];
     AKABinding* attributeBinding = [AKAPropertyBinding bindingToTargetProperty:targetProperty
                                                                 withExpression:attributeExpression
-                                                                       context:bindingContext
+                                                                       context:self.bindingContext
                                                                       delegate:weakSelf
                                                                          error:error];
     result = attributeBinding != nil;
@@ -91,8 +92,8 @@
 }
 
 - (BOOL)convertSourceValue:(id)sourceValue
-             toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
-                     error:(NSError *__autoreleasing  _Nullable *)error
+             toTargetValue:(out_id)targetValueStore
+                     error:(out_NSError)error
 {
     BOOL result = YES;
     BOOL isConstant = NO;
@@ -148,17 +149,7 @@
             NSError* localError = [AKABindingErrors bindingErrorConversionOfBinding:self
                                                                         sourceValue:sourceValue
                                                       failedWithInvalidTypeExpectedTypes:@[ [NSString class] ]];
-            if (error)
-            {
-                *error = localError;
-            }
-            else
-            {
-                // TODO: error handling: move to AKABindingErrors
-                @throw [NSException exceptionWithName:@"InvalidOperation"
-                                               reason:localError.localizedDescription
-                                             userInfo:@{ @"error": localError }];
-            }
+            AKARegisterErrorInErrorStore(localError, error);
         }
     }
 

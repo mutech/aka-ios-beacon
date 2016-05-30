@@ -7,6 +7,7 @@
 //
 
 #import "AKATransitionAnimationParametersPropertyBinding.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKABinding_Protected.h"
 #import "AKANSEnumerations.h"
 

@@ -19,6 +19,37 @@
 #pragma mark - AKABindingDelegate
 
 - (void)                                      binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                                   to:(opt_id)newSourceValue
+{
+    [self controller:self binding:binding sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+}
+
+- (void)                                      binding:(req_AKABinding)binding
+                     sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
+                                       toInvalidValue:(opt_id)newSourceValue
+                                            withError:(opt_NSError)error
+{
+    [self controller:self binding:binding sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
+}
+
+- (void)                                      binding:(req_AKABinding)binding
+                               sourceArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue
+{
+    [self controller:self binding:binding sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+}
+
+- (void)                                      binding:(req_AKABinding)binding
+                               targetArrayItemAtIndex:(NSUInteger)index
+                                                value:(opt_id)oldValue
+                                          didChangeTo:(opt_id)newValue
+{
+    [self controller:self binding:binding targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+}
+
+- (void)                                      binding:(req_AKABinding)binding
                targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
                                toTargetValueWithError:(opt_NSError)error
 {
@@ -57,6 +88,14 @@
 }
 
 #pragma mark - AKAControlViewBindingDelegate
+
+- (void)                                            binding:(req_AKAControlViewBinding)binding
+                           targetValueDidChangeFromOldValue:(opt_id)oldTargetValue
+                                             toInvalidValue:(opt_id)newTargetValue
+                                                  withError:(opt_NSError)error
+{
+    [self controller:self binding:binding targetValueDidChangeFromOldValue:oldTargetValue toInvalidValue:newTargetValue withError:error];
+}
 
 - (void)                                      binding:(req_AKAControlViewBinding)binding
                sourceUpdateFailedToConvertTargetValue:(opt_id)targetValue

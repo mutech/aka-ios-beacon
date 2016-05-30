@@ -15,43 +15,11 @@
 @protocol AKABindingDelegate<NSObject>
 
 @optional
-/**
- * Informs the delegate, that an attempt to update the
- * target value for a source value change to the specified
- * value failed because the source value could not be converted
- * to a valid target value.
- *
- * @param binding the binding observing source value changes.
- * @param sourceValue the source value that could not be converted
- * @param error an error object providing additional information.
- */
-- (void)                                            binding:(req_AKABinding)binding
-                     targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
-                                     toTargetValueWithError:(opt_NSError)error;
-
-@optional
-/**
- * Informs the delegate, that an attempt to update the
- * target value for a source value change to the specified
- * value failed because the new target value is not valid.
- *
- * @param binding the binding observing the source value change
- * @param targetValue the target value obtained by converstion from the source value.
- * @param sourceValue the source value which itself passed validation.
- * @param error an error object providing additional information.
- */
-- (void)                                            binding:(req_AKABinding)binding
-                    targetUpdateFailedToValidateTargetValue:(opt_id)targetValue
-                                   convertedFromSourceValue:(opt_id)sourceValue
-                                                  withError:(opt_NSError)error;
-
-@optional
 - (void)                                            binding:(req_AKABinding)binding
                            sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
                                                          to:(id _Nullable)newSourceValue;
 
 @optional
-// TODO: support delegate method in AKAControlDelegate propagation:
 /**
  * Informs the delegate, that the source value changed to the specified invalid value.
  * The target value will not be updated. The delegate should react by indicating to the
@@ -88,6 +56,37 @@
                                      targetArrayItemAtIndex:(NSUInteger)index
                                                       value:(opt_id)oldValue
                                                 didChangeTo:(opt_id)newValue;
+
+@optional
+/**
+ * Informs the delegate, that an attempt to update the
+ * target value for a source value change to the specified
+ * value failed because the source value could not be converted
+ * to a valid target value.
+ *
+ * @param binding the binding observing source value changes.
+ * @param sourceValue the source value that could not be converted
+ * @param error an error object providing additional information.
+ */
+- (void)                                            binding:(req_AKABinding)binding
+                     targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
+                                     toTargetValueWithError:(opt_NSError)error;
+
+@optional
+/**
+ * Informs the delegate, that an attempt to update the
+ * target value for a source value change to the specified
+ * value failed because the new target value is not valid.
+ *
+ * @param binding the binding observing the source value change
+ * @param targetValue the target value obtained by converstion from the source value.
+ * @param sourceValue the source value which itself passed validation.
+ * @param error an error object providing additional information.
+ */
+- (void)                                            binding:(req_AKABinding)binding
+                    targetUpdateFailedToValidateTargetValue:(opt_id)targetValue
+                                   convertedFromSourceValue:(opt_id)sourceValue
+                                                  withError:(opt_NSError)error;
 
 @optional
 /**

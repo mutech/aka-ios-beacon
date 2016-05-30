@@ -10,8 +10,6 @@
 #import "AKABindingController_ChildBindingControllersProperties.h"
 #import "AKABindingController_Internal.h"
 
-#import "AKABindingController_BindingContextProtocolProperies.h"
-
 #import <objc/runtime.h>
 
 
@@ -40,14 +38,18 @@ static const char kTargetObjectHierarchyBindingControllerToken = 0;
 
 + (instancetype)bindingControllerManagingView:(UIView*)view
 {
-    AKABindingController* result;
+    AKABindingController* result = nil;
 
     if (view)
     {
         result = objc_getAssociatedObject(view, &kTargetObjectHierarchyBindingControllerToken);
         if (!result)
         {
-            result = [self bindingControllerManagingView:view.superview];
+            UIView* superview = view.superview;
+            if (superview)
+            {
+                result = [self bindingControllerManagingView:superview];
+            }
         }
     }
 
@@ -68,13 +70,76 @@ static const char kTargetObjectHierarchyBindingControllerToken = 0;
     //self.updatedChildBindingControllers = nil;
 }
 
-- (instancetype)createOrReuseBindingControllerForTargetObjectHierarchy:(id)targetObjectHierarchy
-                                                       withDataContext:(id)dataContext
-                                                                 error:(out_NSError)error
+- (opt_instancetype) createOrReuseBindingControllerForTargetObjectHierarchy:(req_id)targetObjectHierarchy
+                                                   withDataContextAtKeyPath:(opt_NSString)keyPath
+                                                                      error:(out_NSError)error
+{
+    if (![self discardRecycledBindingControllerForTargetObjectHierarchy:targetObjectHierarchy])
+    {
+        // TODO: error handling: throw but create exception in AKABeaconErrors
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:@"Attempt to manage a binding target object which is used by a different binding controller."
+                                     userInfo:nil];
+    }
+    AKADependentBindingController* result =
+        [[AKADependentBindingController alloc] initWithParent:self
+                                        targetObjectHierarchy:targetObjectHierarchy
+                                         dataContextAtKeyPath:keyPath
+                                                     delegate:nil
+                                                        error:error];
+
+    if (result != nil)
+    {
+        objc_setAssociatedObject(targetObjectHierarchy,
+                                 &kTargetObjectHierarchyBindingControllerToken,
+                                 result,
+                                 OBJC_ASSOCIATION_RETAIN);
+    }
+
+    if (self.isObservingChanges && !result.isObservingChanges)
+    {
+        [result startObservingChanges];
+    }
+    
+    return result;
+
+}
+
+- (instancetype)bindingControllerForTargetObjectHierarchy:(id)targetObjectHierarchy
+                                          withDataContext:(id)dataContext
+                                   createOrReuseIfMissing:(BOOL)createOrReuseIfMissing
+                                                    error:(out_NSError)error
+{
+    // TODO: implement
+    return nil;
+}
+
+- (AKABindingController*)createOrReuseBindingControllerForTargetObjectHierarchy:(id)targetObjectHierarchy
+                                                                withDataContext:(id)dataContext
+                                                                          error:(out_NSError)error
 {
     NSHashTable<AKABindingController*>* children = [self childBindingControllersCreateIfNeeded:YES];
 
     AKABindingController* result = [self reuseBindingControllerForTargetObjectHierarchy:targetObjectHierarchy];
+
+    // A dependent binding controller does not support updating the data context and thus
+    // cannot be reused here. We will attempt to discard it:
+    if (result && ![result isKindOfClass:[AKAIndependentBindingController class]])
+    {
+        if ([self discardRecycledBindingController:result
+                          forTargetObjectHierarchy:targetObjectHierarchy])
+        {
+            // Done, we'll create a new dependent controller
+            result = nil;
+        }
+        else
+        {
+            // TODO: error handling: throw but create exception in AKABeaconErrors
+            @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                           reason:@"Attempt to manage a binding target object which is used by a different binding controller."
+                                         userInfo:nil];
+        }
+    }
 
     BOOL active = result != nil && [children containsObject:result];
     id previousDataContext = result.dataContext;
@@ -83,11 +148,11 @@ static const char kTargetObjectHierarchyBindingControllerToken = 0;
 
     if (result == nil)
     {
-        result = [[AKABindingController alloc] initWithParent:self
-                                        targetObjectHierarchy:targetObjectHierarchy
-                                                  dataContext:dataContext
-                                                     delegate:nil
-                                                        error:error];
+        result = [[AKAIndependentBindingController alloc] initWithParent:self
+                                                   targetObjectHierarchy:targetObjectHierarchy
+                                                             dataContext:dataContext
+                                                                delegate:nil
+                                                                   error:error];
         if (result != nil)
         {
             isNew = YES;
@@ -112,9 +177,8 @@ static const char kTargetObjectHierarchyBindingControllerToken = 0;
 
     if (!unchanged)
     {
-        id oldDataContext = result.dataContext;
-        result.dataContext = dataContext;
-
+        NSAssert([result isKindOfClass:[AKAIndependentBindingController class]], @"Expected an independent binding controller here");
+        ((AKAIndependentBindingController*)result).dataContext = dataContext;
     }
 
     if (self.isObservingChanges && !result.isObservingChanges)
@@ -251,8 +315,13 @@ static const char kTargetObjectHierarchyBindingControllerToken = 0;
 {
     AKABindingController* controller = objc_getAssociatedObject(targetObjectHierarchy,
                                                                 &kTargetObjectHierarchyBindingControllerToken);
-    return [self discardRecycledBindingController:controller
-                         forTargetObjectHierarchy:targetObjectHierarchy];
+    BOOL result = controller == nil;
+    if (!result)
+    {
+        result = [self discardRecycledBindingController:controller
+                               forTargetObjectHierarchy:targetObjectHierarchy];
+    }
+    return result;
 }
 
 - (BOOL)discardRecycledBindingController:(AKABindingController*)controller

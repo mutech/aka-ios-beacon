@@ -7,6 +7,7 @@
 //
 
 #import "AKATapGestureRecognizerBinding.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKABinding_Protected.h"
 
 @implementation AKATapGestureRecognizerBinding
@@ -97,13 +98,12 @@
 
 - (BOOL)initializeUnspecifiedAttribute:(req_NSString)attributeName
                    attributeExpression:(req_AKABindingExpression)attributeExpression
-                        bindingContext:(req_AKABindingContext)bindingContext
                                  error:(out_NSError)error
 {
     return [self initializeTargetPropertyBindingAttribute:attributeName
                                         withSpecification:[self.class defaultAttributeSpecification]
                                       attributeExpression:attributeExpression
-                                           bindingContext:bindingContext error:error];
+                                                    error:error];
 }
 
 #pragma mark - Conversion

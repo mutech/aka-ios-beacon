@@ -7,7 +7,6 @@
 //
 
 #import "AKABindingController+BindingContextProtocol.h"
-#import "AKABindingController_BindingContextProtocolProperies.h"
 
 
 #pragma mark - AKABindingController(BindingContextProtocol) - Implementation

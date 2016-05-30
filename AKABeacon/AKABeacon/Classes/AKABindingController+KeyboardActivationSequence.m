@@ -19,10 +19,11 @@
 {
     if (!self.keyboardActivationSequenceStorage)
     {
-        // NOTE: we might want to support local sequences for child controllers. If so, just remove if(self.parent) path.
-        if (self.parent)
+        // NOTE: we might want to support local sequences for child controllers. If so, just remove if(parent) path.
+        AKABindingController* parent = self.parent;
+        if (parent)
         {
-            [self.parent initializeKeyboardActivationSequence];
+            [parent initializeKeyboardActivationSequence];
         }
         else
         {

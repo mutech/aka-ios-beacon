@@ -10,7 +10,12 @@
 #import "AKATableViewCellFactoryPropertyBinding.h"
 #import "AKATableViewCellFactory.h"
 #import "AKAPredicatePropertyBinding.h"
+
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
+#import "AKABinding+SubclassObservationEvents.h"
+#import "AKABinding_SubBindingsProperties.h" // TODO: do not use private interface, expose needed functionality
+
 #import "AKABindingErrors.h"
 #import "AKABinding_Protected.h"
 

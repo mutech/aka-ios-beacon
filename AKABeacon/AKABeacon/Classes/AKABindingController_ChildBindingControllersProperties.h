@@ -6,7 +6,7 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <AKABeacon/AKABeacon.h>
+#import "AKABinding.h"
 
 @interface AKABindingController()
 

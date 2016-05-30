@@ -23,12 +23,43 @@ Enclosing these in begin- and endUpdatingChildControllers is required if createO
 
 In such cases, the binding controller will record pairs of removal and creation of child binding contents and will not remove a context that updated its data context in response to a previous createOrReuse call.
  */
-- (void)beginUpdatingChildControllers;
+- (void)                                      beginUpdatingChildControllers;
 
 /**
  See beginUpdatingChildControllers
  */
-- (void)endUpdatingChildControllers;
+- (void)                                        endUpdatingChildControllers;
+
+/**
+ Creates a new or reuses an existing child binding controller managing bindings for the specified targetObjectHierarchy (typically a view hierarchy) using the data context at the specified keyPath (relative to this binding controllers data context).
+
+ The current binding controller will serve as parent binding context (which also means that this and the new binding controller will have the same root data context).
+
+ If there already is a child binding controller for the specified targetObjectHierarchy, then this controller will be returned.
+
+ If a new binding controller has been created, it will scan the target object hierarchy for binding targets and create bindings for them. Otherwise the existing bindings will be reused.
+
+ If this binding controller is observing changes, then the returned child controller will also start observing changes (if it did not already do).
+
+ The primary use case for child binding contexts with key path data context references is to change the data context for bindings or to group bindings and child binding controllers to be able to manage them as unit.
+
+ @note Key path data context binding controllers do not currently support reuse (they will for the time being always create a new binding controller discarding recycled controllers.
+
+ @note Assumption: Changing the data context of a child binding controller (and thus the binding context of all related bindings) is sufficient to update the target object hierarchy correctly. If client code has to perform other manual initialization, it has to ensure that this is done indepently.
+
+ @note If bindings create child binding controllers (f.e. the data source binding of a table view), then they have to remove all child controllers when they stop observing changes and have to be prepared to recreate them when they start observing changes. (TODO: verify if this is really necessary once these bindings are refactored to use binding controllers).
+
+ @note If an error occurs and the error parameter is nil, the controller might throw an exception.
+
+ @param targetObjectHierarchy the root view (or target object) of the view hierarchy
+ @param keyPath               the key path identifying the data context for the child binding controller. May be nil (in which case the child binding controller has the same data context as its parent).
+ @param error                 error details
+
+ @return a binding controller managing the specified targetObjectHierarchy's bindings using the specified data context or nil if an error occurred.
+ */
+- (__kindof opt_AKABindingController) createOrReuseBindingControllerForTargetObjectHierarchy:(req_id)targetObjectHierarchy
+                                                           withDataContextAtKeyPath:(opt_NSString)keyPath
+                                                                              error:(out_NSError)error;
 
 /**
  Creates a new or reuses an existing child binding controller managing bindings for the specified targetObjectHierarchy (typically a view hierarchy) using the specified data context.
@@ -43,6 +74,8 @@ In such cases, the binding controller will record pairs of removal and creation 
 
  The primary use case for child binding contexts is to manage relatively independent view hierarchies which are bound to a different data context, like for example instances of UITableViewCell. Child controllers are typically created by delegate methods such as tableview:willDisplayCellForRowAtIndexPath: or tableview:willDisplayHeaderViewForSection:.
 
+ @note The data context will be strongly referenced during the life time of the result controller.
+
  @note Assumption: Changing the data context of a child binding controller (and thus the binding context of all related bindings) is sufficient to update the target object hierarchy correctly. If client code has to perform other manual initialization, it has to ensure that this is done indepently.
 
  @note If bindings create child binding controllers (f.e. the data source binding of a table view), then they have to remove all child controllers when they stop observing changes and have to be prepared to recreate them when they start observing changes. (TODO: verify once these bindings are refactored to use binding controllers).
@@ -55,7 +88,7 @@ In such cases, the binding controller will record pairs of removal and creation 
 
  @return a binding controller managing the specified targetObjectHierarchy's bindings using the specified data context or nil if an error occurred.
  */
-- (opt_instancetype) createOrReuseBindingControllerForTargetObjectHierarchy:(req_id)targetObjectHierarchy
+- (__kindof opt_AKABindingController) createOrReuseBindingControllerForTargetObjectHierarchy:(req_id)targetObjectHierarchy
                                                             withDataContext:(opt_id)dataContext
                                                                       error:(out_NSError)error;
 
@@ -85,22 +118,9 @@ In such cases, the binding controller will record pairs of removal and creation 
  */
 - (void)                         removeAllBindingControllersEnqueueForReuse:(BOOL)enqueueForReuse;
 
-/**
- Contains all currently active child binding controllers.
+- (void)                     startObservingChangesInChildBindingControllers;
 
- Child binding controllers manage view hierarchies which (typically) use a different data context and/or are only loosely connected to the main view hierarchy, such as for example UITableViewCell or UICollectionViewCell instances.
-
- For reusable view hierarchies, such as table view cells, child binding contexts can also be reused which potentially saves the time to scan views for binding expressions and create bindings.
-
- @note the hash table references child controllers weakly. When creating a child binding controller, the target object hierarchy keeps the only strong reference to the binding controller to ensure that when the target gets released, the binding controller will stop observing changes and release the controller (also when it's enqueued for reuse).
-
- @see createOrReuseBindingControllerForTargetObjectHierarchy:withDataContext:error:
- @see removeBindingControllerForTargetObjectHierarchy:withDataContext:enqueueForReuse:
- */
-//@property(nonatomic, readonly)       NSHashTable<AKABindingController*>*    childBindingControllers;
-
-- (void)startObservingChangesInChildBindingControllers;
-- (void)stopObservingChangesInChildBindingControllers;
+- (void)                      stopObservingChangesInChildBindingControllers;
 
 #pragma mark - Access
 
@@ -111,6 +131,6 @@ In such cases, the binding controller will record pairs of removal and creation 
 
  @return the binding controller managing bindings of the specified view or nil if no binding controller can be found for the view.
  */
-+ (opt_instancetype)bindingControllerManagingView:(req_UIView)view;
++ (opt_instancetype)                          bindingControllerManagingView:(opt_UIView)view;
 
 @end

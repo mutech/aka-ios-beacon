@@ -12,17 +12,24 @@
 #import "AKABinding_UITableView_dataSourceBinding.h"
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
+#import "AKABinding+SubBindings.h"
+#import "AKABinding_SubBindingsProperties.h" // TODO: don't use private interface, define a public interface that supports the required functionality
+#import "AKABinding+DelegateSupport.h"
+
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
 #import "AKABindingSpecification.h"
 #import "AKANSEnumerations.h"
-#import "AKAChildBindingContext.h"
 
 #import "AKATableViewCellFactoryPropertyBinding.h"
 #import "AKABindingExpressionEvaluator.h"
 #import "AKATableViewCellFactory.h"
 #import "AKATableViewSectionDataSourceInfoPropertyBinding.h"
 #import "AKATableViewDataSourceAndDelegateDispatcher.h"
+
+#import "AKABindingController+ChildBindingControllers.h"
+
 
 #pragma mark - AKABinding_UITableView_dataSourceBinding Private Interface
 #pragma mark -
@@ -161,9 +168,7 @@
                                             changeObserver:(AKAPropertyChangeObserver)changeObserver
                                                      error:(NSError *__autoreleasing  _Nullable *)error
 {
-    // If the binding uses a key path instead of an array expression, the binding targe value setter
-    // has to know about it, because it will have to update the array item bindings. This flag
-    // indicates which implementation to use:
+    // Determine whether section infos are static (array constant) or dynamic (key path):
     self.usesDynamicSections = (bindingExpression.expressionType != AKABindingExpressionTypeArray);
 
     return [super bindingSourceForExpression:bindingExpression
@@ -184,13 +189,19 @@
                                   ^(id  _Nullable oldValue, id  _Nullable newValue)
                                   {
                                       [weakSelf targetArrayItemAtIndex:section
-                                                    valueDidChangeFrom:oldValue == [NSNull null] ? nil : oldValue
-                                                                    to:newValue == [NSNull null] ? nil : newValue];
+                                                                 value:oldValue == [NSNull null] ? nil : oldValue
+                                                           didChangeTo:newValue == [NSNull null] ? nil : newValue];
                                   }];
 
 
-    req_AKABindingContext itemBindingContext = [AKAChildBindingContext bindingContextWithParent:self.bindingContext
-                                                                                    dataContext:dataContext];
+    // TODO: manage life cycle of sections binding controllers
+    // TODO: refactor bindingContext to bindingController:
+    AKABindingController* bindingController = (id)self.bindingContext;
+
+    req_AKABindingContext itemBindingContext =
+        [bindingController createOrReuseBindingControllerForTargetObjectHierarchy:sectionInfos[section]
+                                                                  withDataContext:dataContext
+                                                                            error:nil];
 
     Class bindingType = bindingExpression.specification.bindingType;
     if (bindingType == nil)
@@ -252,8 +263,7 @@
                     blockMappingInsertedItem:
      ^id(id newSourceItem __unused, NSUInteger index __unused)
      {
-         // Array item bindings will update the value when they start observing changes
-         return [NSNull null];
+         return [AKATableViewSectionDataSourceInfo new];
      }];
 
     // Get or create mutable array or array item bindings
@@ -409,9 +419,9 @@
     [self reloadTableViewAnimated:NO];
 }
 
-- (void)                             targetArrayItemAtIndex:(NSUInteger)index
-                                         valueDidChangeFrom:(id)oldValue
-                                                         to:(id)newValue
+- (void)targetArrayItemAtIndex:(NSUInteger)index
+                         value:(opt_id)oldValue
+                   didChangeTo:(opt_id)newValue
 {
     AKATableViewSectionDataSourceInfo* oldSectionInfo = oldValue;
     AKATableViewSectionDataSourceInfo* newSectionInfo = newValue;
@@ -443,7 +453,7 @@
                                              toRows:newSectionInfo.rows];
         }
     }
-    [super targetArrayItemAtIndex:index valueDidChangeFrom:oldValue to:newValue];
+    [super targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
 }
 
 #pragma mark - Table View Updates

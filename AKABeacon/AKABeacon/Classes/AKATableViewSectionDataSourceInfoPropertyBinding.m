@@ -10,6 +10,7 @@
 #import "AKATableViewCellFactoryArrayPropertyBinding.h"
 #import "AKABindingErrors.h"
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKATableViewCellFactoryPropertyBinding.h"
 #import "AKABindingExpressionEvaluator.h"
 
@@ -73,6 +74,14 @@
              @"Unexpected type of syntethic target value %@, expected %@",
              self.syntheticTargetValue, NSStringFromClass((req_Class)[self.syntheticTargetValue class]));
 
+    if (self.syntheticTargetValue == nil)
+    {
+        id targetValue = self.bindingTarget.value;
+        if (targetValue != nil && targetValue != [NSNull null])
+        {
+            self.syntheticTargetValue = targetValue;
+        }
+    }
     return self.syntheticTargetValue;
 }
 
@@ -109,7 +118,10 @@
     {
         if (self.sectionDataSourceInfo.rowsSource != sourceValue)
         {
-            self.sectionDataSourceInfo = [AKATableViewSectionDataSourceInfo new];
+            if (self.sectionDataSourceInfo == nil)
+            {
+                self.sectionDataSourceInfo = [AKATableViewSectionDataSourceInfo new];
+            }
             self.sectionDataSourceInfo.rowsSource = sourceValue;
         }
         *targetValueStore = self.sectionDataSourceInfo;

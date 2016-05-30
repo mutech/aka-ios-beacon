@@ -17,6 +17,8 @@
 #import "UIPickerView+AKAIBBindingProperties_valueBinding.h"
 
 #import "AKAViewBinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
+#import "AKABinding+SubBindings.h"
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -
@@ -73,7 +75,6 @@
 - (BOOL)                     initializeManualAttributeWithName:(NSString *)attributeName
                                                  specification:(req_AKABindingAttributeSpecification __unused)specification
                                            attributeExpression:(AKABindingExpression *)attributeExpression
-                                                bindingContext:(req_AKABindingContext)bindingContext
                                                          error:(NSError *__autoreleasing  _Nullable *)error
 {
     BOOL result = NO;
@@ -99,10 +100,15 @@
                 _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
             }
 
+            _pickerBinding = [AKABinding_UIPickerView_valueBinding bindingToTarget:_pickerView
+                                                                    withExpression:attributeExpression
+                                                                           context:self.bindingContext
+                                                                          delegate:self.delegateForSubBindings
+                                                                             error:error];
             // Create the picker binding using the previously obtained picker view as target
             _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
                                                                                expression:attributeExpression
-                                                                                  context:bindingContext
+                                                                                  context:self.bindingContext
                                                                                  delegate:self
                                                                                     error:error];
 

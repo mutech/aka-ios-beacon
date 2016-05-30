@@ -9,6 +9,7 @@
 #import "AKAErrors.h"
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKALocalePropertyBinding.h"
 #import "AKABindingErrors.h"
 

@@ -445,9 +445,11 @@
                 break;
             }
 
+            case UIReturnKeyDefault:
             case UIReturnKeyGo:
             case UIReturnKeyDone:
             {
+                // TODO: refactor KB binding delegate to replace methods with binding:shouldResponder:deactivateForReturnKeyType:
                 id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
 
                 if ([self shouldDeactivate] && [delegate respondsToSelector:@selector(binding:responderRequestedGoOrDone:)])

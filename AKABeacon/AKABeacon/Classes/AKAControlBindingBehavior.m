@@ -544,7 +544,7 @@ contentSizeCategoryChangeListeners;
 - (AKAControlBindingBehavior *)aka_controlBindingBehavior
 {
     __block AKAControlBindingBehavior* result = nil;
-    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx __unused, BOOL * _Nonnull stop) {
         if ([obj isKindOfClass:[AKAControlBindingBehavior class]])
         {
             *stop = YES;

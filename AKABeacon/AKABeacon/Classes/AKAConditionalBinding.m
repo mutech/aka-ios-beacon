@@ -7,7 +7,11 @@
 //
 
 #import "AKAConditionalBinding.h"
+
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
+#import "AKABinding+SubclassObservationEvents.h"
+
 #import "AKAPredicatePropertyBinding.h"
 
 

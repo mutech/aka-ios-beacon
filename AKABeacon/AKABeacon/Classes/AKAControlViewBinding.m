@@ -24,31 +24,6 @@
 
 @dynamic delegate;
 
-+ (opt_AKABinding)bindingToTarget:(req_id)target
-                   withExpression:(req_AKABindingExpression)bindingExpression
-                          context:(req_AKABindingContext)bindingContext
-                         delegate:(opt_AKABindingDelegate)delegate
-                            error:(out_NSError)error
-{
-    AKABinding* result = nil;
-    if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
-    {
-        if (error)
-        {
-            *error = [AKABindingErrors       invalidBindingExpression:bindingExpression
-              conditionalExpressionNotSupportedForControlViewBindings:self];
-        }
-    }
-    else
-    {
-        result = [super bindingToTarget:target
-                         withExpression:bindingExpression
-                                context:bindingContext
-                               delegate:delegate
-                                  error:error];
-    }
-    return result;
-}
 
 - (instancetype)init
 {

@@ -7,6 +7,8 @@
 //
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
+
 #import "AKATimeZonePropertyBinding.h"
 #import "AKABindingErrors.h"
 

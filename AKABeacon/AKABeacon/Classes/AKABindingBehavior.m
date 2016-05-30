@@ -192,11 +192,12 @@
 
 - (void)                                initializeBindings
 {
-    self.bindingController =
-        [AKABindingController bindingControllerForViewController:self.parentViewController
-                                                 withDataContext:self.dataContext
-                                                        delegate:self.delegateDispatcher
-                                                           error:nil];
+    id<AKABindingControllerDelegate> delegate = self.delegateDispatcher ? self.delegateDispatcher : self;
+
+    self.bindingController = [AKABindingController bindingControllerForViewController:self.parentViewController
+                                                                      withDataContext:self.dataContext
+                                                                             delegate:delegate
+                                                                                error:nil];
 }
 
 - (void)                                  activateBindings
@@ -335,7 +336,7 @@
     return result;
 }
 
-#pragma mark - Form Control Delegate
+#pragma mark - Binding Controller Delegate
 
 - (void)                                        controller:(req_AKABindingController)controller
                                                    binding:(req_AKAKeyboardControlViewBinding)binding
@@ -344,7 +345,7 @@
     self.activeResponder = responder;
 
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(control:binding:responderWillActivate:)])
+    if ([delegate respondsToSelector:@selector(controller:binding:responderWillActivate:)])
     {
         [delegate controller:controller binding:binding responderWillActivate:responder];
     }
@@ -362,7 +363,7 @@
     [self scrollViewToVisible:responder animated:YES];
 
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(control:binding:responderDidActivate:)])
+    if ([delegate respondsToSelector:@selector(controller:binding:responderDidActivate:)])
     {
         [delegate controller:controller binding:binding responderDidActivate:responder];
     }
@@ -375,7 +376,7 @@
     self.activeResponder = nil;
 
     id<AKABindingBehaviorDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(control:binding:responderDidDeactivate:)])
+    if ([delegate respondsToSelector:@selector(controller:binding:responderDidDeactivate:)])
     {
         [delegate controller:controller binding:binding responderDidDeactivate:responder];
     }

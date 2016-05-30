@@ -301,8 +301,9 @@
     // Update target value if the attribute formatter or its pattern changes (f.e. a search pattern)
     if (self.textAttributeFormatter)
     {
-        if (binding.bindingTarget.value == self.textAttributeFormatter ||
-            binding.bindingTarget.value == self.textAttributeFormatter.pattern)
+        id targetValue = binding.bindingTarget.value;
+        if (targetValue == self.textAttributeFormatter ||
+            targetValue == self.textAttributeFormatter.pattern)
         {
             [self aka_performBlockInMainThreadOrQueue:^{
                  [self applyTextAttributesToLabelText];

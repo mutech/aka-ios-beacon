@@ -12,10 +12,11 @@
 #include <objc/runtime.h>
 
 #import "AKAFormatterPropertyBinding.h"
+#import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
 #import "AKABindingSpecification.h"
 #import "AKABindingErrors.h"
 #import "AKANSEnumerations.h"
-#import "AKABinding_Protected.h"
 
 @interface AKAFormatterPropertyBinding()
 
@@ -108,10 +109,12 @@
 
 - (BOOL)initializeUnspecifiedAttribute:(NSString *)attributeName
                    attributeExpression:(req_AKABindingExpression)attributeExpression
-                        bindingContext:(req_AKABindingContext)bindingContext
                                  error:(out_NSError)error
 {
-    return [self initializeTargetPropertyBindingAttribute:attributeName withSpecification:[self.class defaultAttributeSpecification] attributeExpression:attributeExpression bindingContext:bindingContext error:error];
+    return [self initializeTargetPropertyBindingAttribute:attributeName
+                                        withSpecification:[self.class defaultAttributeSpecification]
+                                      attributeExpression:attributeExpression
+                                                    error:error];
 }
 
 #pragma mark - Conversion

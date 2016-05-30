@@ -8,6 +8,8 @@
 
 #import "AKAFontPropertyBinding.h"
 #import "AKABinding_Protected.h"
+#import "AKABinding_SubBindingsProperties.h" // TODO: do not use private interface, expose needed functionality
+
 #import "AKANSEnumerations.h"
 
 @interface AKAFontDescriptorAttributes: NSObject

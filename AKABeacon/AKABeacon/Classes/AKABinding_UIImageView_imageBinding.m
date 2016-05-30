@@ -9,6 +9,7 @@
 #import "AKABinding_UIImageView_imageBinding.h"
 #import "AKATransitionAnimationParametersPropertyBinding.h"
 #import "AKABinding_Protected.h"
+#import "AKABinding+SubclassInitialization.h"
 
 @interface AKABinding_UIImageView_imageBinding()
 

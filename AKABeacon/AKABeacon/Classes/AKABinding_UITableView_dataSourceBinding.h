@@ -15,10 +15,10 @@
 @protocol AKABindingDelegate_UITableView_dataSourceBinding <AKAViewBindingDelegate>
 
 @optional
-- (void)bindingWillUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding;
+- (void)bindingWillUpdateDynamicBindings:(nonnull AKABinding_UITableView_dataSourceBinding*)binding;
 
 @optional
-- (void)bindingDidUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding;
+- (void)bindingDidUpdateDynamicBindings:(nonnull AKABinding_UITableView_dataSourceBinding*)binding;
 
 @optional
 - (void)                    binding:(nonnull AKABinding_UITableView_dataSourceBinding*)binding

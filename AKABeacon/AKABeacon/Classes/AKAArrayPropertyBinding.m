@@ -37,8 +37,8 @@
 }
 
 - (void)sourceArrayItemAtIndex:(NSUInteger)index
-            valueDidChangeFrom:(id)oldValue
-                            to:(id)newValue
+                         value:(opt_id)oldValue
+                   didChangeTo:(opt_id)newValue
 {
     if ([self.delegate conformsToProtocol:@protocol(AKAArrayPropertyBindingDelegate)])
     {
@@ -111,8 +111,8 @@
                          ^(id  _Nullable oldValue, id  _Nullable newValue)
                          {
                              [weakSelf sourceArrayItemAtIndex:index
-                                           valueDidChangeFrom:oldValue
-                                                           to:newValue];
+                                                        value:oldValue
+                                                  didChangeTo:newValue];
                          }];
                     Class bindingType = sourceExpression.specification.bindingType;
                     if (bindingType == nil)

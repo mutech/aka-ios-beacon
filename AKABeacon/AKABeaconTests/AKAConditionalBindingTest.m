@@ -54,6 +54,7 @@
     AKABinding* binding = [expression.specification.bindingType bindingToTarget:label
                                                                  withExpression:expression
                                                                         context:self
+                                                                          owner:nil
                                                                        delegate:nil
                                                                           error:nil];
 

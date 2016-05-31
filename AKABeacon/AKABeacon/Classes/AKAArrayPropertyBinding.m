@@ -125,6 +125,7 @@
                                                    targetValueProperty:arrayItemTargetProperty
                                                         withExpression:sourceExpression
                                                                context:bindingContext
+                                                                 owner:self
                                                               delegate:weakSelf.delegateForSubBindings
                                                                  error:error];
                     if (binding)

@@ -47,7 +47,7 @@
     NSParameterAssert([target isKindOfClass:[UISegmentedControl class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISegmentedControl class]]);
 

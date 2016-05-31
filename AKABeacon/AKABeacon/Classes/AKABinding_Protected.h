@@ -28,12 +28,10 @@
 
  @return a new binding
  */
-- (opt_instancetype)                         initWithTarget:(opt_id)target
-                                        targetValueProperty:(req_AKAProperty)targetValueProperty
-                                                 expression:(req_AKABindingExpression)bindingExpression
-                                                    context:(req_AKABindingContext)bindingContext
-                                                   delegate:(opt_AKABindingDelegate)delegate
-                                                      error:(out_NSError)error;
+- (opt_instancetype)initWithTarget:(opt_id)target targetValueProperty:(req_AKAProperty)targetValueProperty
+                        expression:(req_AKABindingExpression)bindingExpression
+                           context:(req_AKABindingContext)bindingContext owner:(opt_AKABindingOwner)owner
+                          delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error;
 
 
 #pragma mark - Obscure

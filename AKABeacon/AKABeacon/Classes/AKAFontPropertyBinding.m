@@ -8,7 +8,7 @@
 
 #import "AKAFontPropertyBinding.h"
 #import "AKABinding_Protected.h"
-#import "AKABinding_SubBindingsProperties.h" // TODO: do not use private interface, expose needed functionality
+#import "AKABinding_BindingOwnerProperties.h"
 
 #import "AKANSEnumerations.h"
 
@@ -366,7 +366,7 @@
     }
 }
 
-- (AKAProperty *)createBindingTargetPropertyForTarget:(req_id __unused)targetView
+- (AKAProperty *)createTargetValuePropertyForTarget:(req_id)targetView
 {
     AKAProperty* result = [AKAProperty propertyOfWeakTarget:self
                                                      getter:

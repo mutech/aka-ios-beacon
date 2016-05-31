@@ -14,7 +14,7 @@
 #import "AKABinding_Protected.h"
 #import "AKABinding+SubclassInitialization.h"
 #import "AKABinding+SubclassObservationEvents.h"
-#import "AKABinding_SubBindingsProperties.h" // TODO: do not use private interface, expose needed functionality
+#import "AKABinding_BindingOwnerProperties.h"
 
 #import "AKABindingErrors.h"
 #import "AKABinding_Protected.h"

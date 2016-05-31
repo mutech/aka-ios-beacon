@@ -14,7 +14,7 @@
 #import "AKAControlValidationState.h"
 #import "AKABindingContextProtocol.h"
 #import "AKAControlViewBinding.h"
-
+#import "AKABindingOwnerProtocol.h"
 
 @interface AKAControl: NSObject
 
@@ -58,7 +58,7 @@
 
 
 #import "AKABinding.h"
-@interface AKAControl(BindingsOwner)
+@interface AKAControl(BindingsOwner)<AKABindingOwnerProtocol>
 
 #pragma mark - Adding and Removing Bindings
 

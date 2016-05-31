@@ -18,7 +18,7 @@
 
 #import "AKAViewBinding_Protected.h"
 #import "AKABinding+SubclassInitialization.h"
-#import "AKABinding+SubBindings.h"
+#import "AKABinding+BindingOwner.h"
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
 #pragma mark -
@@ -103,14 +103,14 @@
             _pickerBinding = [AKABinding_UIPickerView_valueBinding bindingToTarget:_pickerView
                                                                     withExpression:attributeExpression
                                                                            context:self.bindingContext
+                                                                             owner:self
                                                                           delegate:self.delegateForSubBindings
                                                                              error:error];
             // Create the picker binding using the previously obtained picker view as target
             _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
                                                                                expression:attributeExpression
-                                                                                  context:self.bindingContext
-                                                                                 delegate:self
-                                                                                    error:error];
+                                                                                  context:self.bindingContext owner:nil
+                                                                                 delegate:self error:error];
 
             // Ensure that the picker binding is tracking changes
             [self addBindingPropertyBinding:_pickerBinding];
@@ -157,7 +157,7 @@
     NSParameterAssert([target isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
     (void)view;

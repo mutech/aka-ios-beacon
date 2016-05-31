@@ -33,16 +33,18 @@
  @param target            the target object
  @param bindingExpression the binding expression specifying the binding source and other parameters
  @param bindingContext    the binding context in which binding expressions are evaluated
+ @param owner             the object which owns the binding. The owner will receive binding delegate calls if it implements the AKABindingDelegate protocol and is responsible to keep the binding alive for as long as it's needed.
  @param delegate          the binding delegate
  @param error             error details, has to be set whenever (and only if) the initializer returns nil.
 
  @return an instance of this binding type or nil.
  */
-- (opt_instancetype)                            initWithTarget:(req_id)target
-                                                    expression:(req_AKABindingExpression)bindingExpression
-                                                       context:(req_AKABindingContext)bindingContext
-                                                      delegate:(opt_AKABindingDelegate)delegate
-                                                         error:(out_NSError)error;
+- (opt_instancetype)initWithTarget:(req_id)target
+                        expression:(req_AKABindingExpression)bindingExpression
+                           context:(req_AKABindingContext)bindingContext
+                             owner:(opt_AKABindingOwner)owner
+                          delegate:(opt_AKABindingDelegate)delegate
+                             error:(out_NSError)error;
 
 #pragma mark - Binding Type Validation
 
@@ -58,7 +60,7 @@
 #pragma mark - Binding Target Initialization and Validation
 
 /**
- Called by initWithTarget:expression:context:delegate:error: to check that a given target is valid.
+ Called by initWithTarget:expression:context:owner:delegate:error: to check that a given target is valid.
  
  Subclasses which support initialization using targets (as opposed to target properties) have to implement this method and throw an exception if the target is not supported or otherwise invalid for use with the concrete binding type.
  
@@ -69,7 +71,7 @@
 - (void)                                        validateTarget:(req_id)target;
 
 /**
- Called by initWithTarget:expression:context:delegate:error: to obtain an instance of AKAProperty to be used as binding target for initWithTarget:expression:context:delegate:error:
+ Called by initWithTarget:expression:context:delegate:error: to obtain an instance of AKAProperty to be used as binding target for initWithTarget:expression:context:owner:delegate:error:
 
  Subclasses which support initialization using targets (as opposed to target properties) have to implement this method and return a property adapting the target (view or object) to a property which provides read/and/or/write access to the target value. (For example, AKABinding_UITextField_textBinding provides a property mapping the text field to its text value.
 
@@ -77,14 +79,14 @@
 
  The default implementation throws an exception indicating that the sub class failed to implement this method.
  */
-- (req_AKAProperty)       createBindingTargetPropertyForTarget:(req_id)target;
+- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id)target;
 
 
 #pragma mark - Binding Source Initialization
 /// @name Binding Source Initialization
 
 /**
- * Called by initWithTarget:targetValueProperty:expression:context:delegate:error: to obtain a binding source property.
+ * Called by initWithTarget:targetValueProperty:expression:context:owner:delegate:error: to obtain a binding source property.
  *
  * If the binding expression has no defined primary value, this method will call defaultBindingSourceForExpression:context:changeObserver:error:.
  *

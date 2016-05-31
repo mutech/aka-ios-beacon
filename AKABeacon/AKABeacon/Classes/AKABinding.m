@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 
 // Internal Data Properties
-#import "AKABinding_SubBindingsProperties.h"
+#import "AKABinding_BindingOwnerProperties.h"
 #import "AKABinding_TargetValueUpdateProperties.h"
 
 // Subclassing Interface
@@ -45,11 +45,12 @@
 
 #pragma mark - Initialization
 
-+ (opt_AKABinding)bindingToTarget:(req_id)target
-                   withExpression:(req_AKABindingExpression)bindingExpression
-                          context:(req_AKABindingContext)bindingContext
-                         delegate:(opt_AKABindingDelegate)delegate
-                            error:(out_NSError)error
++ (opt_AKABinding)                          bindingToTarget:(req_id)target
+                                             withExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                                      owner:(opt_AKABindingOwner)owner
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error
 {
     if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
     {
@@ -58,26 +59,25 @@
                       resultBindingType:self
                              expression:bindingExpression
                                 context:bindingContext
+                                  owner:owner
                                delegate:delegate
                                   error:error];
         return result;
     }
     else
     {
-        return [[self alloc] initWithTarget:target
-                                 expression:bindingExpression
-                                    context:bindingContext
-                                   delegate:delegate
-                                      error:error];
+        return [[self alloc] initWithTarget:target expression:bindingExpression context:bindingContext owner:nil
+                                   delegate:delegate error:error];
     }
 }
 
-+ (opt_AKABinding)bindingToTarget:(opt_id)target
-              targetValueProperty:(req_AKAProperty)targetValueProperty
-                   withExpression:(req_AKABindingExpression)bindingExpression
-                          context:(req_AKABindingContext)bindingContext
-                         delegate:(opt_AKABindingDelegate)delegate
-                            error:(out_NSError)error
++ (opt_AKABinding)                          bindingToTarget:(opt_id)target
+                                        targetValueProperty:(req_AKAProperty)targetValueProperty
+                                             withExpression:(req_AKABindingExpression)bindingExpression
+                                                    context:(req_AKABindingContext)bindingContext
+                                                      owner:(req_AKABindingOwner)owner
+                                                   delegate:(opt_AKABindingDelegate)delegate
+                                                      error:(out_NSError)error
 {
     if (bindingExpression.expressionType == AKABindingExpressionTypeConditional)
     {
@@ -87,6 +87,7 @@
                       resultBindingType:self
                              expression:bindingExpression
                                 context:bindingContext
+                                  owner:owner
                                delegate:delegate
                                   error:error];
         return result;
@@ -97,6 +98,7 @@
                         targetValueProperty:targetValueProperty
                                  expression:bindingExpression
                                     context:bindingContext
+                                      owner:owner
                                    delegate:delegate
                                       error:error];
     }
@@ -119,6 +121,7 @@
                                         targetValueProperty:(req_AKAProperty)targetValueProperty
                                                  expression:(req_AKABindingExpression)bindingExpression
                                                     context:(req_AKABindingContext)bindingContext
+                                                      owner:(opt_AKABindingOwner)owner
                                                    delegate:(opt_AKABindingDelegate)delegate
                                                       error:(out_NSError)error
 {
@@ -161,6 +164,9 @@
         _target = target;
 
         _bindingContext = bindingContext;
+
+        _owner = owner;
+
         _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
                 delegateOverwrites:self];
 
@@ -240,6 +246,14 @@
         result = self;
     }
     return result;
+}
+
+- (void)                                           setOwner:(id<AKABindingOwnerProtocol>)owner
+{
+    // Guard against unintentional ownership change (have to set to nil before changing owner).
+    NSParameterAssert(owner == _owner || owner == nil || _owner == nil);
+
+    _owner = owner;
 }
 
 #pragma mark - Conversion

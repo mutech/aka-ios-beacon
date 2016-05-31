@@ -42,7 +42,7 @@
 }
 
 
-- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
+- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
 {
     (void)view;
     // We might want to use some base style/theming mechanism here. For the time

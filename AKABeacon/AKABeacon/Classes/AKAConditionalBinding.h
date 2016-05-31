@@ -21,20 +21,15 @@
 
 @interface AKAConditionalBinding: AKABinding
 
-- (opt_instancetype)initWithTarget:(req_id)target
-                 resultBindingType:(req_Class)resultBindingType
+- (opt_instancetype)initWithTarget:(id)target resultBindingType:(Class)resultBindingType
                         expression:(req_AKABindingExpression)bindingExpression
-                           context:(req_AKABindingContext)bindingContext
-                          delegate:(opt_AKABindingDelegate)delegate
-                             error:(out_NSError)error;
+                           context:(req_AKABindingContext)bindingContext owner:(opt_AKABindingOwner)owner
+                          delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error;
 
-- (opt_instancetype) initWithTarget:(opt_id)target
-                targetValueProperty:(req_AKAProperty)targetValueProperty
-                  resultBindingType:(req_Class)resultBindingType
-                         expression:(req_AKABindingExpression)bindingExpression
-                            context:(req_AKABindingContext)bindingContext
-                           delegate:(opt_AKABindingDelegate)delegate
-                              error:(out_NSError)error;
+- (opt_instancetype)initWithTarget:(opt_id)target targetValueProperty:(req_AKAProperty)targetValueProperty
+                 resultBindingType:(req_Class)resultBindingType expression:(req_AKABindingExpression)bindingExpression
+                           context:(req_AKABindingContext)bindingContext owner:(opt_AKABindingOwner)owner
+                          delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error;
 
 @property(nonatomic, readonly, nullable) AKAConditionalBindingClause*           activeClause;
 

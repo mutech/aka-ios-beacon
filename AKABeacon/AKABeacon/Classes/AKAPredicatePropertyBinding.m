@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 
 #import "AKABinding_Protected.h"
-#import "AKABinding+SubBindings.h"
+#import "AKABinding+BindingOwner.h"
 
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
@@ -82,7 +82,9 @@
                                                    targetValueProperty:targetProperty
                                                         withExpression:attributeExpression
                                                                context:self.bindingContext
-                                                              delegate:weakSelf error:error];
+                                                                 owner:self
+                                                              delegate:weakSelf
+                                                                 error:error];
     result = attributeBinding != nil;
     if (result)
     {

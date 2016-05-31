@@ -109,7 +109,7 @@
     NSParameterAssert([target isKindOfClass:[UITextField class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
 {
     NSAssert([view isKindOfClass:[UITextField class]], @"Expected a UITextField, got %@", view);
     (void)view;

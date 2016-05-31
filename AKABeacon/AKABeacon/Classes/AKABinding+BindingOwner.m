@@ -1,15 +1,15 @@
 //
-//  AKABinding+SubBindings.m
+//  AKABinding+BindingOwner.m
 //  AKABeacon
 //
 //  Created by Michael Utech on 28.05.16.
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKABinding+SubBindings.h"
-#import "AKABinding_SubBindingsProperties.h"
+#import "AKABinding+BindingOwner.h"
+#import "AKABinding_BindingOwnerProperties.h"
 
-@implementation AKABinding (SubBindings)
+@implementation AKABinding (BindingOwner)
 
 - (void)                                addArrayItemBinding:(AKABinding*)binding
 {
@@ -17,6 +17,7 @@
     {
         self.arrayItemBindings = [NSMutableArray new];
     }
+    binding.owner = self;
     [self.arrayItemBindings addObject:binding];
 
     if (binding != (id)[NSNull null])
@@ -31,6 +32,7 @@
     {
         [binding stopObservingChanges];
         [self.targetPropertyBindings removeObject:binding];
+        binding.owner = nil;
     }
     self.arrayItemBindings = nil;
 }
@@ -42,17 +44,19 @@
     {
         self.bindingPropertyBindings = [NSMutableArray new];
     }
+    bpBinding.owner = self;
     [self.bindingPropertyBindings addObject:bpBinding];
 }
 
-- (void)                           addTargetPropertyBinding:(AKABinding*)bpBinding
+- (void)                           addTargetPropertyBinding:(AKABinding*)tpBinding
 {
     // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)
     if (self.targetPropertyBindings == nil)
     {
         self.targetPropertyBindings = [NSMutableArray new];
     }
-    [self.targetPropertyBindings addObject:bpBinding];
+    tpBinding.owner = self;
+    [self.targetPropertyBindings addObject:tpBinding];
 }
 
 @end

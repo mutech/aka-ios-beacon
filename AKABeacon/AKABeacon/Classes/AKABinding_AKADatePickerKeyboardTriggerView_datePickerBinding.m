@@ -71,7 +71,7 @@
     NSParameterAssert([target isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
     (void)view;

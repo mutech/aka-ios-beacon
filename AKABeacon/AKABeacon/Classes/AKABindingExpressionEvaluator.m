@@ -59,6 +59,7 @@
                                               targetValueProperty:evaluationResultProperty
                                                    withExpression:bindingExpression
                                                           context:self.bindingContext
+                                                            owner:nil // TODO: add owner parameter and forward to this call?
                                                          delegate:delegate
                                                             error:error];
         if (factoryBinding)

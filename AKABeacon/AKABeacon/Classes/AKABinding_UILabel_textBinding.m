@@ -98,7 +98,7 @@
     NSParameterAssert([target isKindOfClass:[UILabel class]]);
 }
 
-- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
+- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
 {
     (void)view;
 

@@ -9,8 +9,8 @@
 #import "AKABinding_Protected.h"
 #import "AKABinding+SubclassInitialization.h"
 #import "AKABinding+DelegateSupport.h"
-#import "AKABinding+SubBindings.h"
-#import "AKABinding_SubBindingsProperties.h"
+#import "AKABinding+BindingOwner.h"
+#import "AKABinding_BindingOwnerProperties.h"
 
 #import "AKALog.h"
 #import "AKABindingErrors.h"
@@ -20,18 +20,20 @@
 
 #pragma mark - Initialization
 
-- (instancetype)                                initWithTarget:(req_id)target
+- (opt_instancetype)                            initWithTarget:(req_id)target
                                                     expression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
+                                                         owner:(opt_AKABindingOwner)owner
                                                       delegate:(opt_AKABindingDelegate)delegate
                                                          error:(out_NSError)error
 {
     [self validateTarget:target];
 
     self = [self initWithTarget:target
-            targetValueProperty:[self createBindingTargetPropertyForTarget:target]
+            targetValueProperty:[self createTargetValuePropertyForTarget:target]
                      expression:bindingExpression
                         context:bindingContext
+                          owner:owner
                        delegate:delegate
                           error:error];
 
@@ -70,7 +72,7 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (req_AKAProperty)       createBindingTargetPropertyForTarget:(req_id __unused)target
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)target
 {
     AKAErrorAbstractMethodImplementationMissing();
 }
@@ -203,6 +205,7 @@
                                                    targetValueProperty:arrayItemTargetProperty
                                                         withExpression:sourceExpression
                                                                context:bindingContext
+                                                                 owner:self
                                                               delegate:weakSelf.delegateForSubBindings
                                                                  error:error];
                     if (binding)
@@ -519,6 +522,7 @@
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
                                                            context:self.bindingContext
+                                                             owner:self
                                                           delegate:weakSelf.delegateForSubBindings
                                                              error:error];
         result = propertyBinding != nil;
@@ -559,8 +563,8 @@
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
                                                            context:self.bindingContext
-                                                          delegate:weakSelf.delegateForSubBindings
-                                                             error:error];
+                                                             owner:self
+                                                          delegate:weakSelf.delegateForSubBindings error:error];
         result = propertyBinding != nil;
         if (result)
         {

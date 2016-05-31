@@ -356,13 +356,14 @@
 		8EE4B00C1CD34E3F003E2CFC /* AKAStructConstantBindingExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE4B00A1CD34E3F003E2CFC /* AKAStructConstantBindingExpression.m */; };
 		8EE4B00F1CD34F36003E2CFC /* AKAKeyPathBindingExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE4B00D1CD34F36003E2CFC /* AKAKeyPathBindingExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE4B0101CD34F36003E2CFC /* AKAKeyPathBindingExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE4B00E1CD34F36003E2CFC /* AKAKeyPathBindingExpression.m */; };
+		8EE7D14E1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7D14D1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE7DD811CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD7F1CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE7DD821CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7DD801CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.m */; };
 		8EE7DD851CFA49A000726AE4 /* AKABinding+DelegateSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD831CFA49A000726AE4 /* AKABinding+DelegateSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE7DD861CFA49A000726AE4 /* AKABinding+DelegateSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7DD841CFA49A000726AE4 /* AKABinding+DelegateSupport.m */; };
-		8EE7DD891CFA4C4200726AE4 /* AKABinding+SubBindings.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD871CFA4C4200726AE4 /* AKABinding+SubBindings.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8EE7DD8A1CFA4C4200726AE4 /* AKABinding+SubBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7DD881CFA4C4200726AE4 /* AKABinding+SubBindings.m */; };
-		8EE7DD8C1CFA4EB600726AE4 /* AKABinding_SubBindingsProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD8B1CFA4EB600726AE4 /* AKABinding_SubBindingsProperties.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		8EE7DD891CFA4C4200726AE4 /* AKABinding+BindingOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD871CFA4C4200726AE4 /* AKABinding+BindingOwner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8EE7DD8A1CFA4C4200726AE4 /* AKABinding+BindingOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7DD881CFA4C4200726AE4 /* AKABinding+BindingOwner.m */; };
+		8EE7DD8C1CFA4EB600726AE4 /* AKABinding_BindingOwnerProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD8B1CFA4EB600726AE4 /* AKABinding_BindingOwnerProperties.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		8EE7DD931CFA522100726AE4 /* AKABinding+SubclassObservationEvents.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD911CFA522100726AE4 /* AKABinding+SubclassObservationEvents.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8EE7DD941CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE7DD921CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m */; };
 		8EE7DD9A1CFADB8500726AE4 /* AKABinding_TargetValueUpdateProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 8EE7DD991CFADB8500726AE4 /* AKABinding_TargetValueUpdateProperties.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -472,7 +473,7 @@
 		8E14D4691BC1251200A9772F /* AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8E1B4AF21CE6A9A100D900D6 /* AKABindingExpressionEvaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingExpressionEvaluator.h; sourceTree = "<group>"; };
 		8E1B4AF31CE6A9A100D900D6 /* AKABindingExpressionEvaluator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABindingExpressionEvaluator.m; sourceTree = "<group>"; };
-		8E1BBDEC1BCBD5A200B1ECF1 /* AKABeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABeacon.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8E1BBDEC1BCBD5A200B1ECF1 /* AKABeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABeacon.h; sourceTree = "<group>"; };
 		8E2115CA1BF3F75600A89CFC /* AKABeaconQuickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AKABeaconQuickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E2115CE1BF3F75600A89CFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E2115D91BF40EAA00A89CFC /* AKABeacon-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AKABeacon-BridgingHeader.h"; sourceTree = "<group>"; };
@@ -496,7 +497,7 @@
 		8E2DD8D51CA0C20100BB629B /* AKABindingExpression+Accessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABindingExpression+Accessors.m"; sourceTree = "<group>"; };
 		8E2ED20C1C37262A00FBA44D /* AKAPredicatePropertyBindingSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AKAPredicatePropertyBindingSpec.swift; sourceTree = "<group>"; };
 		8E2ED20F1C393A3A00FBA44D /* AKABinding_UITableView_dataSourceBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UITableView_dataSourceBinding.h; sourceTree = "<group>"; };
-		8E2ED2101C393A3A00FBA44D /* AKABinding_UITableView_dataSourceBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UITableView_dataSourceBinding.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8E2ED2101C393A3A00FBA44D /* AKABinding_UITableView_dataSourceBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UITableView_dataSourceBinding.m; sourceTree = "<group>"; };
 		8E2ED2171C399F6700FBA44D /* AKATableViewDataSourcePropertyBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATableViewDataSourcePropertyBinding.h; sourceTree = "<group>"; };
 		8E2ED2181C399F6700FBA44D /* AKATableViewDataSourcePropertyBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATableViewDataSourcePropertyBinding.m; sourceTree = "<group>"; };
 		8E2ED21B1C3A540B00FBA44D /* AKATableViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATableViewCellFactory.h; sourceTree = "<group>"; };
@@ -514,7 +515,7 @@
 		8E31544D1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8E31544E1BC5F358003FD085 /* AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.m; sourceTree = "<group>"; };
 		8E3154521BC726A5003FD085 /* AKABinding_UITextView_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UITextView_textBinding.h; sourceTree = "<group>"; };
-		8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UITextView_textBinding.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8E3154531BC726A5003FD085 /* AKABinding_UITextView_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UITextView_textBinding.m; sourceTree = "<group>"; };
 		8E31545A1BC73291003FD085 /* UITextView+AKAIBBindingProperties_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextView+AKAIBBindingProperties_textBinding.h"; path = "Classes/UITextView+AKAIBBindingProperties_textBinding.h"; sourceTree = "<group>"; };
 		8E31545B1BC73291003FD085 /* UITextView+AKAIBBindingProperties_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = "UITextView+AKAIBBindingProperties_textBinding.m"; path = "Classes/UITextView+AKAIBBindingProperties_textBinding.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8E367A041BBA3C8F0094EF33 /* AKAKeyboardActivationSequenceItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAKeyboardActivationSequenceItemProtocol.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -806,13 +807,14 @@
 		8EE4B00A1CD34E3F003E2CFC /* AKAStructConstantBindingExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAStructConstantBindingExpression.m; sourceTree = "<group>"; };
 		8EE4B00D1CD34F36003E2CFC /* AKAKeyPathBindingExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAKeyPathBindingExpression.h; sourceTree = "<group>"; };
 		8EE4B00E1CD34F36003E2CFC /* AKAKeyPathBindingExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAKeyPathBindingExpression.m; sourceTree = "<group>"; };
+		8EE7D14D1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABindingOwnerProtocol.h; sourceTree = "<group>"; };
 		8EE7DD7F1CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKABinding+SubclassInitialization.h"; sourceTree = "<group>"; };
 		8EE7DD801CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABinding+SubclassInitialization.m"; sourceTree = "<group>"; };
 		8EE7DD831CFA49A000726AE4 /* AKABinding+DelegateSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKABinding+DelegateSupport.h"; sourceTree = "<group>"; };
 		8EE7DD841CFA49A000726AE4 /* AKABinding+DelegateSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABinding+DelegateSupport.m"; sourceTree = "<group>"; };
-		8EE7DD871CFA4C4200726AE4 /* AKABinding+SubBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKABinding+SubBindings.h"; sourceTree = "<group>"; };
-		8EE7DD881CFA4C4200726AE4 /* AKABinding+SubBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABinding+SubBindings.m"; sourceTree = "<group>"; };
-		8EE7DD8B1CFA4EB600726AE4 /* AKABinding_SubBindingsProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_SubBindingsProperties.h; sourceTree = "<group>"; };
+		8EE7DD871CFA4C4200726AE4 /* AKABinding+BindingOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKABinding+BindingOwner.h"; sourceTree = "<group>"; };
+		8EE7DD881CFA4C4200726AE4 /* AKABinding+BindingOwner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABinding+BindingOwner.m"; sourceTree = "<group>"; };
+		8EE7DD8B1CFA4EB600726AE4 /* AKABinding_BindingOwnerProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_BindingOwnerProperties.h; sourceTree = "<group>"; };
 		8EE7DD911CFA522100726AE4 /* AKABinding+SubclassObservationEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AKABinding+SubclassObservationEvents.h"; sourceTree = "<group>"; };
 		8EE7DD921CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AKABinding+SubclassObservationEvents.m"; sourceTree = "<group>"; };
 		8EE7DD991CFADB8500726AE4 /* AKABinding_TargetValueUpdateProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_TargetValueUpdateProperties.h; sourceTree = "<group>"; };
@@ -940,16 +942,17 @@
 				8EE7DD991CFADB8500726AE4 /* AKABinding_TargetValueUpdateProperties.h */,
 				8EE7DD7F1CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.h */,
 				8EE7DD801CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.m */,
-				8EE7DD911CFA522100726AE4 /* AKABinding+SubclassObservationEvents.h */,
-				8EE7DD921CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m */,
-				8EE7DD8B1CFA4EB600726AE4 /* AKABinding_SubBindingsProperties.h */,
-				8EE7DD871CFA4C4200726AE4 /* AKABinding+SubBindings.h */,
-				8EE7DD881CFA4C4200726AE4 /* AKABinding+SubBindings.m */,
+				8EE7D14D1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h */,
+				8EE7DD8B1CFA4EB600726AE4 /* AKABinding_BindingOwnerProperties.h */,
+				8EE7DD871CFA4C4200726AE4 /* AKABinding+BindingOwner.h */,
+				8EE7DD881CFA4C4200726AE4 /* AKABinding+BindingOwner.m */,
+				8EE26D3C1BCD123C003ACCEC /* AKABindingDelegate.h */,
 				8EE7DD831CFA49A000726AE4 /* AKABinding+DelegateSupport.h */,
 				8EE7DD841CFA49A000726AE4 /* AKABinding+DelegateSupport.m */,
 				8E7FE4FD1C6602FD0036349A /* AKABinding_Protected.h */,
-				8EE26D3C1BCD123C003ACCEC /* AKABindingDelegate.h */,
 				8E0714911BAA384E00C1DDC8 /* AKABinding.m */,
+				8EE7DD911CFA522100726AE4 /* AKABinding+SubclassObservationEvents.h */,
+				8EE7DD921CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m */,
 				8E0B569C1CE1E00600B3E407 /* AKAConditionalBinding.h */,
 				8E0B569D1CE1E00600B3E407 /* AKAConditionalBinding.m */,
 				8E7FE4FF1C660E480036349A /* AKABindingDelegateDispatcher.h */,
@@ -1969,8 +1972,9 @@
 				8EFF313B1CF0F8CD00D46060 /* AKADeallocSentinel.h in Headers */,
 				8EE26D541BCD1E06003ACCEC /* AKABinding_UITextField_textBinding.h in Headers */,
 				8EE26D501BCD1D92003ACCEC /* AKABinding_UISwitch_stateBinding.h in Headers */,
+				8EE7D14E1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h in Headers */,
 				8E2ED22E1C3DC6F000FBA44D /* AKAArrayPropertyBinding.h in Headers */,
-				8EE7DD8C1CFA4EB600726AE4 /* AKABinding_SubBindingsProperties.h in Headers */,
+				8EE7DD8C1CFA4EB600726AE4 /* AKABinding_BindingOwnerProperties.h in Headers */,
 				8EE26D4A1BCD1AF6003ACCEC /* AKAKeyboardControlViewBinding.h in Headers */,
 				8E2DD8CE1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.h in Headers */,
 				8EE8FA2A1C203A3A00F1E370 /* AKABinding_UIView_styleBinding.h in Headers */,
@@ -2003,7 +2007,7 @@
 				8E72336D1B0022A200D647A9 /* AKAControlDelegate.h in Headers */,
 				8E7233631B0022A200D647A9 /* AKACompositeControl.h in Headers */,
 				8E5A165E1BBEEC4E008EF06F /* AKACustomKeyboardResponderView.h in Headers */,
-				8EE7DD891CFA4C4200726AE4 /* AKABinding+SubBindings.h in Headers */,
+				8EE7DD891CFA4C4200726AE4 /* AKABinding+BindingOwner.h in Headers */,
 				8E3CE29D1C40E27300B7D2A0 /* AKATableViewCellFactoryArrayPropertyBinding.h in Headers */,
 				8E72339C1B0022A200D647A9 /* AKATableViewCellCompositeControl.h in Headers */,
 				8E72337C1B0022A200D647A9 /* AKAFormControl.h in Headers */,
@@ -2172,12 +2176,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E2115D41BF3F75600A89CFC /* Build configuration list for PBXNativeTarget "AKABeaconQuickTests" */;
 			buildPhases = (
-				D88FF991ABBC1051F10C9B34 /* 📦 Check Pods Manifest.lock */,
+				9074555F779E2DD47202B64C /* 📦 Check Pods Manifest.lock */,
+				D88FF991ABBC1051F10C9B34 /* uD83DuDCE6 Check Pods Manifest.lock */,
 				8E2115C61BF3F75600A89CFC /* Sources */,
 				8E2115C71BF3F75600A89CFC /* Frameworks */,
 				8E2115C81BF3F75600A89CFC /* Resources */,
-				14BA95F2FDDF843B0296D22E /* 📦 Embed Pods Frameworks */,
-				6EB90FB1BC53BD301F817166 /* 📦 Copy Pods Resources */,
+				14BA95F2FDDF843B0296D22E /* uD83DuDCE6 Embed Pods Frameworks */,
+				6EB90FB1BC53BD301F817166 /* uD83DuDCE6 Copy Pods Resources */,
+				E3735EE32258E7F483C03D31 /* 📦 Embed Pods Frameworks */,
+				89C80AE677E60B4ACD75094E /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2193,12 +2200,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E46D4051BEB7394002E497B /* Build configuration list for PBXNativeTarget "AKABeaconTests" */;
 			buildPhases = (
-				842AE963A25F1B3E30E3AD9B /* 📦 Check Pods Manifest.lock */,
+				1E78FDEB4A96D352D1C3A51B /* 📦 Check Pods Manifest.lock */,
+				842AE963A25F1B3E30E3AD9B /* uD83DuDCE6 Check Pods Manifest.lock */,
 				8E46D3F91BEB7394002E497B /* Sources */,
 				8E46D3FA1BEB7394002E497B /* Frameworks */,
 				8E46D3FB1BEB7394002E497B /* Resources */,
-				7CC7421A9A185CC25F201945 /* 📦 Embed Pods Frameworks */,
-				E24AE12BBDF0DD9594D7DE87 /* 📦 Copy Pods Resources */,
+				7CC7421A9A185CC25F201945 /* uD83DuDCE6 Embed Pods Frameworks */,
+				E24AE12BBDF0DD9594D7DE87 /* uD83DuDCE6 Copy Pods Resources */,
+				12C7765CE29D78166390ABD1 /* 📦 Embed Pods Frameworks */,
+				A62720E8C5FF6739E42ADF8E /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2214,12 +2224,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E7233061B00224400D647A9 /* Build configuration list for PBXNativeTarget "AKABeacon" */;
 			buildPhases = (
-				85D42979CA1191C65C2665EF /* 📦 Check Pods Manifest.lock */,
+				073B029B8A43C42A7DE491E6 /* 📦 Check Pods Manifest.lock */,
+				85D42979CA1191C65C2665EF /* uD83DuDCE6 Check Pods Manifest.lock */,
 				8E7232EB1B00224400D647A9 /* Sources */,
 				8E7232EC1B00224400D647A9 /* Frameworks */,
 				8E7232ED1B00224400D647A9 /* Headers */,
 				8E7232EE1B00224400D647A9 /* Resources */,
-				DE12241632E35C7083C93CAD /* 📦 Copy Pods Resources */,
+				DE12241632E35C7083C93CAD /* uD83DuDCE6 Copy Pods Resources */,
+				AAB34B23258EC502340C2E4B /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2298,37 +2310,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		14BA95F2FDDF843B0296D22E /* 📦 Embed Pods Frameworks */ = {
+		073B029B8A43C42A7DE491E6 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		6EB90FB1BC53BD301F817166 /* 📦 Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "📦 Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7CC7421A9A185CC25F201945 /* 📦 Embed Pods Frameworks */ = {
+		12C7765CE29D78166390ABD1 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2343,7 +2340,22 @@
 			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconTests/Pods-AKABeacon-AKABeaconTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		842AE963A25F1B3E30E3AD9B /* 📦 Check Pods Manifest.lock */ = {
+		14BA95F2FDDF843B0296D22E /* uD83DuDCE6 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1E78FDEB4A96D352D1C3A51B /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2358,7 +2370,82 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		85D42979CA1191C65C2665EF /* 📦 Check Pods Manifest.lock */ = {
+		6EB90FB1BC53BD301F817166 /* uD83DuDCE6 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7CC7421A9A185CC25F201945 /* uD83DuDCE6 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconTests/Pods-AKABeacon-AKABeaconTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		842AE963A25F1B3E30E3AD9B /* uD83DuDCE6 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		85D42979CA1191C65C2665EF /* uD83DuDCE6 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		89C80AE677E60B4ACD75094E /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9074555F779E2DD47202B64C /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2373,22 +2460,22 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		D88FF991ABBC1051F10C9B34 /* 📦 Check Pods Manifest.lock */ = {
+		A62720E8C5FF6739E42ADF8E /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconTests/Pods-AKABeacon-AKABeaconTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DE12241632E35C7083C93CAD /* 📦 Copy Pods Resources */ = {
+		AAB34B23258EC502340C2E4B /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2403,19 +2490,64 @@
 			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E24AE12BBDF0DD9594D7DE87 /* 📦 Copy Pods Resources */ = {
+		D88FF991ABBC1051F10C9B34 /* uD83DuDCE6 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "uD83DuDCE6 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DE12241632E35C7083C93CAD /* uD83DuDCE6 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon/Pods-AKABeacon-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E24AE12BBDF0DD9594D7DE87 /* uD83DuDCE6 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "uD83DuDCE6 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconTests/Pods-AKABeacon-AKABeaconTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E3735EE32258E7F483C03D31 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeacon-AKABeaconQuickTests/Pods-AKABeacon-AKABeaconQuickTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2600,7 +2732,7 @@
 				8EFF30F01CF0417E00D46060 /* UIView+AKABindingTargetContainer.m in Sources */,
 				8E7FE4FC1C6376870036349A /* AKATimeZonePropertyBinding.m in Sources */,
 				8EE7DD821CFA1ECB00726AE4 /* AKABinding+SubclassInitialization.m in Sources */,
-				8EE7DD8A1CFA4C4200726AE4 /* AKABinding+SubBindings.m in Sources */,
+				8EE7DD8A1CFA4C4200726AE4 /* AKABinding+BindingOwner.m in Sources */,
 				8EE7DD941CFA522100726AE4 /* AKABinding+SubclassObservationEvents.m in Sources */,
 				8E1264F31C8306CE00C6C2AC /* AKATapGestureRecognizerBinding.m in Sources */,
 				8E2ED21E1C3A540B00FBA44D /* AKATableViewCellFactory.m in Sources */,

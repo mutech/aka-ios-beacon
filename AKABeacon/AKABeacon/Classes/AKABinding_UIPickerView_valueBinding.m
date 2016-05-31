@@ -44,7 +44,7 @@
     NSParameterAssert([target isKindOfClass:[UIPickerView class]]);
 }
 
-- (req_AKAProperty)createBindingTargetPropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UIPickerView class]]);
     (void)view;

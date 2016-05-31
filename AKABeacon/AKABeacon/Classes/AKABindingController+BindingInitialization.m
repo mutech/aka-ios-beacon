@@ -133,6 +133,7 @@
         binding = [bindingType bindingToTarget:target
                                 withExpression:bindingExpression
                                        context:self
+                                         owner:self
                                       delegate:self
                                          error:&localError];
         if (binding)

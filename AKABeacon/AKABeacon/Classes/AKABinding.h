@@ -10,6 +10,7 @@
 #import "AKAProperty.h"
 
 #import "AKABeaconNullability.h"
+#import "AKABindingOwnerProtocol.h"
 #import "AKABindingDelegate.h"
 #import "AKABindingController.h"
 #import "AKABindingExpression.h"
@@ -25,9 +26,10 @@
  Please note that this factory method is only supported for binding types with specific target support (like for example
  view bindings) and that the type of the target has to match the binding type's specification.
 
- @param targetView        the target view
+ @param targetView        the target object.
  @param bindingExpression the view or conditional binding expression
- @param bindingContext    the binding context
+ @param bindingContext    the binding context used to evaluate binding expressions; this is typically a binding controller.
+ @param owner             the binding owner; this is typically a binding controller or another binding.
  @param delegate          the delegate
  @param error             error details
 
@@ -36,22 +38,39 @@
 + (opt_AKABinding)bindingToTarget:(req_id)target
                    withExpression:(req_AKABindingExpression)bindingExpression
                           context:(req_AKABindingContext)bindingContext
+                            owner:(opt_AKABindingOwner)owner
                          delegate:(opt_AKABindingDelegate)delegate
                             error:(out_NSError)error;
 
 /**
  Creates a new binding to the specified target property using the specified parameters.
 
+ Please note that this factory method is only supported for binding types which do not implement a specific target type
+ support and use AKAProperty instances to read and/or write target values.
+
  Please note that this factory method is only supported for binding types
- @param target            the target property
- @param bindingExpression the binding expression
- @param bindingContext    the binding context
+ @param target            the target object. This may be nil.
+ @param targetValueProperty a property providing access to the binding's target value.
+ @param bindingExpression the view or conditional binding expression
+ @param bindingContext    the binding context used to evaluate binding expressions; this is typically a binding controller.
+ @param owner             the binding owner; this is typically a binding controller or another binding.
  @param delegate          the delegate
  @param error             error details
 
  @return Either an instance of an AKABinding or AKAConditionalBinding which in turn has/may have a binding at activeClause.binding
  */
-+ (opt_AKABinding)bindingToTarget:(opt_id)target targetValueProperty:(req_AKAProperty)target withExpression:(req_AKABindingExpression)bindingExpression context:(req_AKABindingContext)bindingContext delegate:(opt_AKABindingDelegate)delegate error:(out_NSError)error;
++ (opt_AKABinding)bindingToTarget:(opt_id)target
+              targetValueProperty:(req_AKAProperty)targetValueProperty
+                   withExpression:(req_AKABindingExpression)bindingExpression
+                          context:(req_AKABindingContext)bindingContext
+                            owner:(req_AKABindingOwner)owner
+                         delegate:(opt_AKABindingDelegate)delegate
+                            error:(out_NSError)error;
+
+/**
+ The object owning this binding. This is typically another binding or a binding controller.
+ */
+@property(nonatomic, readonly, weak, nullable) id<AKABindingOwnerProtocol>    owner;
 
 /**
  The context used by the binding to resolve binding expressions (for sourceValueProperty.value and sub bindings).

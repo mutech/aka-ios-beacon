@@ -30,6 +30,10 @@
 #define req_AKABinding AKABinding*_Nonnull
 #define opt_AKABinding AKABinding*_Nullable
 
+@protocol AKABindingOwnerProtocol;
+#define req_AKABindingOwner id<AKABindingOwnerProtocol>_Nonnull
+#define opt_AKABindingOwner id<AKABindingOwnerProtocol>_Nullable
+
 @protocol AKABindingDelegate;
 #define req_AKABindingDelegate id<AKABindingDelegate>_Nonnull
 #define opt_AKABindingDelegate id<AKABindingDelegate>_Nullable

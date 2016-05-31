@@ -13,8 +13,8 @@
 
 #import "AKABinding_Protected.h"
 #import "AKABinding+SubclassInitialization.h"
-#import "AKABinding+SubBindings.h"
-#import "AKABinding_SubBindingsProperties.h" // TODO: don't use private interface, define a public interface that supports the required functionality
+#import "AKABinding+BindingOwner.h"
+#import "AKABinding_BindingOwnerProperties.h"
 #import "AKABinding+DelegateSupport.h"
 
 #import "AKAPredicatePropertyBinding.h"
@@ -206,6 +206,7 @@
     Class bindingType = bindingExpression.specification.bindingType;
     if (bindingType == nil)
     {
+        // TODO: Should be AKATableViewSectionDataSourceInfoPropertyBinding? Maybe even assert the type
         bindingType = [AKAPropertyBinding class];
     }
 
@@ -213,6 +214,7 @@
                                    targetValueProperty:bindingTarget
                                         withExpression:bindingExpression
                                                context:itemBindingContext
+                                                 owner:self
                                               delegate:weakSelf.delegateForSubBindings
                                                  error:nil];
 
@@ -312,7 +314,7 @@
     }
 }
 
-- (AKAProperty*)createBindingTargetPropertyForTarget:(req_id)view
+- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
 {
     // Implementation note: self.sections contains the current array of section infos, which is what
     // the targetValueProperty returns. When dynamic sections change, then the target setter is called

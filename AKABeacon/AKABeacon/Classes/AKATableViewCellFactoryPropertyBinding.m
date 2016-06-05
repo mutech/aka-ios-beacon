@@ -19,16 +19,19 @@
 #import "AKABindingErrors.h"
 #import "AKABinding_Protected.h"
 
+
 @interface AKATableViewCellFactoryPropertyBinding()
 
-@property(nonatomic, strong)   id                       previousSourceValue;
+@property(nonatomic, strong)   id                                 previousSourceValue;
 
-@property(nonatomic, strong) AKATableViewCellFactory*   targetFactory;
+@property(nonatomic, strong) AKATableViewCellFactory*             targetFactory;
 
 @end
 
 
 @implementation AKATableViewCellFactoryPropertyBinding
+
+#pragma mark - Specification
 
 + (AKABindingSpecification*)                         specification
 {
@@ -68,7 +71,7 @@
     return result;
 }
 
-+ (void)registerEnumerationAndOptionTypes
++ (void)                         registerEnumerationAndOptionTypes
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -83,7 +86,9 @@
     });
 }
 
-- (instancetype)init
+#pragma mark - Initialization
+
+- (instancetype)                                              init
 {
     if (self = [super init])
     {
@@ -92,17 +97,19 @@
     return self;
 }
 
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
-                                           context:(req_AKABindingContext __unused)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver __unused)changeObserver
-                                             error:(out_NSError __unused)error
+- (AKAProperty *)                defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
+                                                           context:(req_AKABindingContext __unused)bindingContext
+                                                    changeObserver:(AKAPropertyChangeObserver __unused)changeObserver
+                                                             error:(out_NSError __unused)error
 {
     return [AKAProperty constantNilProperty];
 }
 
-- (BOOL)                        convertSourceValue:(opt_id)sourceValue
-                                     toTargetValue:(out_id)targetValueStore
-                                             error:(out_NSError)error
+#pragma mark - Conversion
+
+- (BOOL)                                        convertSourceValue:(opt_id)sourceValue
+                                                     toTargetValue:(out_id)targetValueStore
+                                                             error:(out_NSError)error
 {
     BOOL result = YES;
     NSError* localError = nil;
@@ -126,6 +133,7 @@
             {
                 if (hasTargetPropertyBindings)
                 {
+                    // Do not modify the source object (here via target bindings), create a copy instead
                     self.syntheticTargetValue = [sourceValue copy];
                     targetValue = self.syntheticTargetValue;
                 }
@@ -169,20 +177,14 @@
             else
             {
                 result = NO;
-            }
-
-            if (!result && localError == nil)
-            {
                 id tp = [AKATypePattern typePatternWithObject:@[ [NSString class],
                                                                  [NSNumber class],
-                                                                 [[UITableViewCell class] class],
+                                                                 [[UITableViewCell class] class], // Meta class
                                                                  [AKATableViewCellFactory class] ]
                                                      required:YES];
-
                 localError = [AKABindingErrors invalidBinding:self
                                                   sourceValue:sourceValue
                                        expectedInstanceOfType:tp];
-
             }
         }
         else
@@ -204,11 +206,17 @@
         }
         self.previousSourceValue = sourceValue;
     }
+    else
+    {
+        AKARegisterErrorInErrorStore(localError, error);
+    }
 
     return result;
 }
 
-- (void)didStopObservingBindingSource
+#pragma mark - Change Tracking
+
+- (void)                             didStopObservingBindingSource
 {
     [super didStopObservingBindingSource];
 

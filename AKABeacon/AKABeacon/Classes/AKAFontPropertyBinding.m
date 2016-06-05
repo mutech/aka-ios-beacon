@@ -9,6 +9,7 @@
 #import "AKAFontPropertyBinding.h"
 #import "AKABinding_Protected.h"
 #import "AKABinding_BindingOwnerProperties.h"
+#import "AKABinding+DelegateSupport.h"
 
 #import "AKANSEnumerations.h"
 
@@ -32,17 +33,19 @@
 
 @implementation AKAFontDescriptorAttributes
 
-- (instancetype)init
+- (instancetype)                              init
 {
     if (self = [super init])
     {
         self.storage = [NSMutableDictionary new];
         self.storage[UIFontDescriptorTraitsAttribute] = [NSMutableDictionary new];
     }
+
     return self;
 }
 
-- (void)setFontDescriptorAttributeValue:(id)value forKey:(NSString*)key
+- (void)           setFontDescriptorAttributeValue:(id)value
+                                            forKey:(NSString*)key
 {
     if (value == nil)
     {
@@ -54,59 +57,65 @@
     }
 }
 
-- (NSString *)name
+- (NSString*)                                 name
 {
     return self.storage[UIFontDescriptorNameAttribute];
 }
 
-- (void)setName:(NSString *)name
+- (void)                                   setName:(NSString*)name
 {
     [self setFontDescriptorAttributeValue:name forKey:UIFontDescriptorNameAttribute];
 }
 
-- (NSString *)family
+- (NSString*)                               family
 {
     return self.storage[UIFontDescriptorFamilyAttribute];
 }
 
-- (void)setFamily:(NSString *)family
+- (void)                                 setFamily:(NSString*)family
 {
     [self setFontDescriptorAttributeValue:family forKey:UIFontDescriptorFamilyAttribute];
 }
 
-- (NSString *)face
+- (NSString*)                                 face
 {
     return self.storage[UIFontDescriptorFaceAttribute];
 }
 
-- (void)setFace:(NSString *)face
+- (void)                                   setFace:(NSString*)face
 {
     [self setFontDescriptorAttributeValue:face forKey:UIFontDescriptorFaceAttribute];
 }
 
-- (NSString *)visibleName
+- (NSString*)                          visibleName
 {
     return self.storage[UIFontDescriptorVisibleNameAttribute];
 }
 
-- (void)setVisibleName:(NSString *)visibleName
+- (void)                            setVisibleName:(NSString*)visibleName
 {
     [self setFontDescriptorAttributeValue:visibleName forKey:UIFontDescriptorVisibleNameAttribute];
 }
 
-- (CGFloat)size
+- (CGFloat)                                   size
 {
     NSNumber* size = self.storage[UIFontDescriptorSizeAttribute];
+
     return size == nil ? 0.0 : size.floatValue;
 }
 
-- (void)setSize:(CGFloat)size
+- (void)                                   setSize:(CGFloat)size
 {
     [self setFontDescriptorAttributeValue:size > 0.0 ? @(size) : nil
                                    forKey:UIFontDescriptorSizeAttribute];
 }
 
-- (void)setFontDescriptorTrait:(NSString*)traitKey value:(id)value
+- (id)                         fontDescriptorTrait:(NSString*)traitKey
+{
+    return ((NSDictionary*)self.storage[UIFontDescriptorTraitsAttribute])[traitKey];
+}
+
+- (void)                    setFontDescriptorTrait:(NSString*)traitKey value:(id)value
 {
     if (value == nil)
     {
@@ -118,17 +127,12 @@
     }
 }
 
-- (id)fontDescriptorTrait:(NSString*)traitKey
-{
-    return ((NSDictionary*)self.storage[UIFontDescriptorTraitsAttribute])[traitKey];
-}
-
-- (NSNumber *)weightTrait
+- (NSNumber*)                          weightTrait
 {
     return [self fontDescriptorTrait:UIFontWeightTrait];
 }
 
-- (void)setWeightTrait:(NSNumber *)weightTrait
+- (void)                            setWeightTrait:(NSNumber*)weightTrait
 {
     NSAssert(weightTrait == nil ||
              (weightTrait.floatValue >= -1.0 && weightTrait.floatValue <= 1.0),
@@ -137,12 +141,12 @@
     [self setFontDescriptorTrait:UIFontWeightTrait value:weightTrait];
 }
 
-- (NSNumber *)slantTrait
+- (NSNumber*)                           slantTrait
 {
     return [self fontDescriptorTrait:UIFontSlantTrait];
 }
 
-- (void)setSlantTrait:(NSNumber *)slantTrait
+- (void)                             setSlantTrait:(NSNumber*)slantTrait
 {
     NSAssert(slantTrait == nil ||
              (slantTrait.floatValue >= -1.0 && slantTrait.floatValue <= 1.0),
@@ -151,12 +155,12 @@
     [self setFontDescriptorTrait:UIFontSlantTrait value:slantTrait];
 }
 
-- (NSNumber *)widthTrait
+- (NSNumber*)                           widthTrait
 {
     return [self fontDescriptorTrait:UIFontWidthTrait];
 }
 
-- (void)setWidthTrait:(NSNumber *)widthTrait
+- (void)                             setWidthTrait:(NSNumber*)widthTrait
 {
     NSAssert(widthTrait == nil ||
              (widthTrait.floatValue >= -1.0 && widthTrait.floatValue <= 1.0),
@@ -165,14 +169,14 @@
     [self setFontDescriptorTrait:UIFontWidthTrait value:widthTrait];
 }
 
-- (UIFontDescriptorSymbolicTraits)symbolicTraits
+- (UIFontDescriptorSymbolicTraits)  symbolicTraits
 {
     NSNumber* result = [self fontDescriptorTrait:UIFontSymbolicTrait];
 
     return result ? result.unsignedIntValue : 0;
 }
 
-- (void)setSymbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits
+- (void)                         setSymbolicTraits:(UIFontDescriptorSymbolicTraits)symbolicTraits
 {
     [self setFontDescriptorTrait:UIFontSymbolicTrait
                            value:symbolicTraits ? @(symbolicTraits) : nil];
@@ -181,24 +185,26 @@
 @end
 
 
-@interface AKAFontPropertyBinding()
+@interface AKAFontPropertyBinding ()
 
-@property(nonatomic, readonly) AKAFontDescriptorAttributes* fontDescriptorAttributes;
-@property(nonatomic) UIFont* targetFont;
-@property(nonatomic) UIFont* originalTargetFont;
-@property(nonatomic, readonly) UIFontDescriptor* baseFontDescriptor;
-@property(nonatomic) NSLayoutConstraint* textFieldMinHeightConstraint;
+@property(nonatomic, readonly) AKAFontDescriptorAttributes*    fontDescriptorAttributes;
+@property(nonatomic) UIFont*                                   targetFont;
+@property(nonatomic) UIFont*                                   originalTargetFont;
+@property(nonatomic, readonly) UIFontDescriptor*               baseFontDescriptor;
+@property(nonatomic) NSLayoutConstraint*                       textFieldMinHeightConstraint;
 
-@property(nonatomic) BOOL isObserving;
+@property(nonatomic) BOOL                                      isObserving;
 
-@property(nonatomic) BOOL isCustomizationBinding;
+@property(nonatomic) BOOL                                      isCustomizationBinding;
 
 @end
 
 
 @implementation AKAFontPropertyBinding
 
-+ (AKABindingSpecification*)                         specification
+#pragma mark - Specification
+
++ (AKABindingSpecification*)                     specification
 {
     [self registerEnumerationAndOptionTypes];
 
@@ -209,93 +215,93 @@
 
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
-        @{ @"bindingType":      [AKAFontPropertyBinding class],
-           @"targetType":       [AKAProperty class],
-           @"expressionType":   @((AKABindingExpressionTypeAnyKeyPath       |
-                                   AKABindingExpressionTypeNone) ),
-           @"attributes":       @{
+            @{ @"bindingType":      [AKAFontPropertyBinding class],
+               // TODO: Make this a real property binding instead of accessing "font" property in code
+               @"targetType":       [NSObject class], //[AKAProperty class],
+               @"expressionType":   @((AKABindingExpressionTypeAnyKeyPath |
+                                       AKABindingExpressionTypeNone)),
+               @"attributes":       @{
                    @"family":       @{
-                           @"expressionType":   @((AKABindingExpressionTypeStringConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.family"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeStringConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.family"
+                   },
                    @"name":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeStringConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.name"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeStringConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.name"
+                   },
                    @"face":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeStringConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.face"
-
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeStringConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.face"
+                   },
                    @"visibleName":  @{
-                           @"expressionType":   @((AKABindingExpressionTypeStringConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.visibleName"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeStringConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.visibleName"
+                   },
                    @"size":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeNumber)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.size"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeNumber)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.size"
+                   },
                    @"fixedAdvance": @{
-                           @"expressionType":   @((AKABindingExpressionTypeNumber |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.fixedAdvance"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeNumber |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.fixedAdvance"
+                   },
                    @"textStyle":    @{
-                           @"expressionType":   @((AKABindingExpressionTypeEnumConstant)),
-                           @"enumerationType":  @"UIFontTextStyle",
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.textStyle"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeEnumConstant)),
+                       @"enumerationType":  @"UIFontTextStyle",
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.textStyle"
+                   },
 
 
                    @"traits":       @{
-                           @"expressionType":   @((AKABindingExpressionTypeOptionsConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"optionsType":      @"UIFontDescriptorSymbolicTraits",
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.symbolicTraits"
-                           },
-                   @"weight":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeNumber |
-                                                   AKABindingExpressionTypeEnumConstant |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"enumerationType":  @"UIFontWeight",
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.weightTrait"
-                           },
-                   @"width":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeNumber |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.widthTrait"
-                           },
-                   @"slant":         @{
-                           @"expressionType":   @((AKABindingExpressionTypeNumber |
-                                                   AKABindingExpressionTypeAnyKeyPath)),
-                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
-                           @"bindingProperty":  @"fontDescriptorAttributes.slantTrait"
-                           },
+                       @"expressionType":   @((AKABindingExpressionTypeOptionsConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"optionsType":      @"UIFontDescriptorSymbolicTraits",
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.symbolicTraits"
                    },
-           };
+                   @"weight":         @{
+                       @"expressionType":   @((AKABindingExpressionTypeNumber |
+                                               AKABindingExpressionTypeEnumConstant |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"enumerationType":  @"UIFontWeight",
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.weightTrait"
+                   },
+                   @"width":         @{
+                       @"expressionType":   @((AKABindingExpressionTypeNumber |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.widthTrait"
+                   },
+                   @"slant":         @{
+                       @"expressionType":   @((AKABindingExpressionTypeNumber |
+                                               AKABindingExpressionTypeAnyKeyPath)),
+                       @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                       @"bindingProperty":  @"fontDescriptorAttributes.slantTrait"
+                   },
+               }, };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
 
     return result;
 }
 
-+ (void)registerEnumerationAndOptionTypes
++ (void)                     registerEnumerationAndOptionTypes
 {
     static dispatch_once_t onceToken;
+
     dispatch_once(&onceToken, ^{
         [AKABindingExpressionSpecification registerEnumerationType:@"UIFontTextStyle"
                                                   withValuesByName:[AKANSEnumerations
@@ -308,21 +314,167 @@
     });
 }
 
-- (instancetype)init
+#pragma mark - Initialization
+
+- (instancetype)                                          init
 {
     if (self = [super init])
     {
         _fontDescriptorAttributes = [AKAFontDescriptorAttributes new];
     }
+
     return self;
 }
 
-- (UIFont*)targetFont
+#pragma mark - Initialization - Source Value Property
+
+- (AKAProperty*)            defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
+                                                      context:(req_AKABindingContext __unused)bindingContext
+                                               changeObserver:(AKAPropertyChangeObserver)changeObserver
+                                                        error:(out_NSError __unused)error
+{
+    return [AKAProperty propertyOfWeakKeyValueTarget:self
+                                             keyPath:@"originalTargetFont"
+                                      changeObserver:changeObserver];
+}
+
+#pragma mark - Initialization - Target Value Property
+
+- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id __unused)targetView
+                                                         error:(out_NSError __unused)error
+{
+    AKAProperty* result = [AKAProperty propertyOfWeakTarget:self
+                                                     getter:
+                           ^id _Nullable (id _Nonnull target)
+                           {
+                               AKAFontPropertyBinding* binding = target;
+
+                               return binding.targetFont;
+                           }
+                                                     setter:
+                           ^(id _Nonnull target, id _Nullable value)
+                           {
+                               AKAFontPropertyBinding* binding = target;
+
+                               binding.targetFont = value;
+                           }
+                           observationStarter:
+                           ^BOOL (id _Nonnull target)
+                           {
+                               AKAFontPropertyBinding* binding = target;
+
+                               binding.originalTargetFont = binding.targetFont;
+                               binding.isObserving = YES;
+
+                               return binding.isObserving;
+                           }
+                           observationStopper:
+                           ^BOOL (id _Nonnull target)
+                           {
+                               AKAFontPropertyBinding* binding = target;
+
+                               if (binding.isObserving)
+                               {
+                                   binding.isObserving = NO;
+                                   binding.targetFont = binding.originalTargetFont;
+                               }
+
+                               if (self.textFieldMinHeightConstraint)
+                               {
+                                   [self.target removeConstraint:self.textFieldMinHeightConstraint];
+                                   self.textFieldMinHeightConstraint = nil;
+                               }
+
+                               return !binding.isObserving;
+                           }];
+
+    return result;
+}
+
+#pragma mark - Conversion
+
+- (BOOL)                                    convertSourceValue:(id)sourceValue
+                                                 toTargetValue:(id _Nullable __autoreleasing*)targetValueStore
+                                                         error:(out_NSError __unused)error
+{
+    BOOL result = YES;
+
+    UIFontDescriptor* baseDescriptor = nil;
+    UIFontDescriptor* descriptor = nil;
+    UIFont* font = nil;
+
+    if (self.isCustomizationBinding)
+    {
+        if ([sourceValue isKindOfClass:[UIFontDescriptor class]])
+        {
+            baseDescriptor = sourceValue;
+        }
+        else if ([sourceValue isKindOfClass:[UIFont class]])
+        {
+            font = sourceValue;
+            baseDescriptor = font.fontDescriptor;
+
+            NSString* textStyle = baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute];
+
+            if (textStyle)
+            {
+                UIFont* updatedFont = [UIFont preferredFontForTextStyle:textStyle];
+                baseDescriptor = updatedFont.fontDescriptor;
+            }
+
+            if (self.fontDescriptorAttributes.symbolicTraits != 0)
+            {
+                NSString* fontName = baseDescriptor.fontAttributes[UIFontDescriptorNameAttribute];
+
+                if (fontName.length > 0)
+                {
+                    UIFontDescriptor* modifiedBaseDescriptor = [baseDescriptor fontDescriptorWithFamily:font.familyName];
+                    baseDescriptor = modifiedBaseDescriptor;
+                }
+            }
+        }
+        else if ([sourceValue isKindOfClass:[NSDictionary class]])
+        {
+            baseDescriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:sourceValue];
+        }
+    }
+
+    if (baseDescriptor)
+    {
+        descriptor = [baseDescriptor fontDescriptorByAddingAttributes:self.fontDescriptorAttributes.storage];
+    }
+    else
+    {
+        descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:self.fontDescriptorAttributes.storage];
+    }
+
+    if (descriptor)
+    {
+        CGFloat size = 0.0;
+
+        if (self.fontDescriptorAttributes.symbolicTraits != 0 &&
+            self.fontDescriptorAttributes.size != 0.0 &&
+            baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute])
+        {
+            // size attribute will not make it through in this case unless it's specified
+            size = self.fontDescriptorAttributes.size;
+        }
+        font = [UIFont fontWithDescriptor:descriptor size:size];
+    }
+
+    *targetValueStore = font;
+
+    return result;
+}
+
+#pragma mark - Properties
+
+- (UIFont*)                                         targetFont
 {
     return [self.target valueForKey:@"font"];
 }
 
-- (void)setTargetFont:(UIFont*)targetFont
+- (void)                                         setTargetFont:(UIFont*)targetFont
 {
     // TODO: refactor this: not updating target font if not observing, because new target value
     // is based on original target value, which is set in observation starter. So this binding is
@@ -350,158 +502,48 @@
                                                                                     multiplier:1.0
                                                                                       constant:targetFont.pointSize];
                     self.textFieldMinHeightConstraint.priority = 500;
-                    [view addConstraint:self.textFieldMinHeightConstraint];
-                    [view setNeedsLayout];
+//                  [view addConstraint:self.textFieldMinHeightConstraint];
                 }
+                self.textFieldMinHeightConstraint.active = YES;
+                [view setNeedsLayout];
             }
             else
             {
                 if (self.textFieldMinHeightConstraint)
                 {
-                    [view removeConstraint:self.textFieldMinHeightConstraint];
-                    self.textFieldMinHeightConstraint = nil;
+                    //[view removeConstraint:self.textFieldMinHeightConstraint];
+                    //self.textFieldMinHeightConstraint = nil;
+                    self.textFieldMinHeightConstraint.active = NO;
+                    [view setNeedsLayout];
                 }
             }
         }
     }
 }
 
-- (AKAProperty *)createTargetValuePropertyForTarget:(req_id)targetView
-{
-    AKAProperty* result = [AKAProperty propertyOfWeakTarget:self
-                                                     getter:
-                           ^id _Nullable(id  _Nonnull target)
-                           {
-                               AKAFontPropertyBinding* binding = target;
-
-                               return binding.targetFont;
-                           }
-                                                     setter:
-                           ^(id  _Nonnull target, id  _Nullable value)
-                           {
-                               AKAFontPropertyBinding* binding = target;
-
-                               binding.targetFont = value;
-                           }
-                                         observationStarter:
-                           ^BOOL(id  _Nonnull target)
-                           {
-                               AKAFontPropertyBinding* binding = target;
-
-                               binding.originalTargetFont = binding.targetFont;
-                               binding.isObserving = YES;
-
-                               return binding.isObserving;
-                           }
-                                         observationStopper:
-                           ^BOOL(id  _Nonnull target)
-                           {
-                               AKAFontPropertyBinding* binding = target;
-
-                               if (binding.isObserving)
-                               {
-                                   binding.isObserving = NO;
-                                   binding.targetFont = binding.originalTargetFont;
-                               }
-
-                               if (self.textFieldMinHeightConstraint)
-                               {
-                                   [self.target removeConstraint:self.textFieldMinHeightConstraint];
-                                   self.textFieldMinHeightConstraint = nil;
-                               }
-
-                               return !binding.isObserving;
-                           }];
-    return result;
-}
-
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
-                                           context:(req_AKABindingContext __unused)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver)changeObserver
-                                             error:(out_NSError __unused)error
-{
-    return [AKAProperty propertyOfWeakKeyValueTarget:self
-                                             keyPath:@"originalTargetFont"
-                                      changeObserver:changeObserver];
-}
-
-- (BOOL)isCustomizationBinding
+- (BOOL)                                isCustomizationBinding
 {
     return !self.fontDescriptorAttributes.textStyle.length;
 }
 
-- (BOOL)convertSourceValue:(id)sourceValue
-             toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
-                     error:(out_NSError __unused)error
+#pragma mark - AKABindingDelegate
+
+- (BOOL)           shouldReceiveDelegateMessagesForSubBindings
 {
-    BOOL result = YES;
-
-    UIFontDescriptor* baseDescriptor = nil;
-    UIFontDescriptor* descriptor = nil;
-    UIFont* font = nil;
-
-    if (self.isCustomizationBinding)
-    {
-        if ([sourceValue isKindOfClass:[UIFontDescriptor class]])
-        {
-            baseDescriptor = sourceValue;
-        }
-        else if ([sourceValue isKindOfClass:[UIFont class]])
-        {
-            font = sourceValue;
-            baseDescriptor = font.fontDescriptor;
-
-            NSString* textStyle = baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute];
-            if (textStyle)
-            {
-                UIFont* updatedFont = [UIFont preferredFontForTextStyle:textStyle];
-                baseDescriptor = updatedFont.fontDescriptor;
-            }
-
-            if (self.fontDescriptorAttributes.symbolicTraits != 0)
-            {
-                NSString* fontName = baseDescriptor.fontAttributes[UIFontDescriptorNameAttribute];
-                if (fontName.length > 0)
-                {
-                    UIFontDescriptor* modifiedBaseDescriptor = [baseDescriptor fontDescriptorWithFamily:font.familyName];
-                    baseDescriptor = modifiedBaseDescriptor;
-                }
-            }
-        }
-        else if ([sourceValue isKindOfClass:[NSDictionary class]])
-        {
-            baseDescriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:sourceValue];
-        }
-    }
-
-    if (baseDescriptor)
-    {
-        descriptor = [baseDescriptor fontDescriptorByAddingAttributes:self.fontDescriptorAttributes.storage];
-    }
-    else
-    {
-        descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:self.fontDescriptorAttributes.storage];
-    }
-
-    if (descriptor)
-    {
-        CGFloat size = 0.0;
-        if (self.fontDescriptorAttributes.symbolicTraits != 0 &&
-            self.fontDescriptorAttributes.size != 0.0 &&
-            baseDescriptor.fontAttributes[UIFontDescriptorTextStyleAttribute])
-        {
-            // size attribute will not make it through in this case unless it's specified
-            size = self.fontDescriptorAttributes.size;
-        }
-        font = [UIFont fontWithDescriptor:descriptor size:size];
-    }
-
-    *targetValueStore = font;
-
-    return result;
+    return YES;
 }
 
-- (void)binding:(AKABinding *)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+- (BOOL) shouldReceiveDelegateMessagesForTransitiveSubBindings
+{
+    // All bindings affecting the target value are top level children, no need to transitive sub bindings
+    return NO;
+}
+
+- (void)                                               binding:(req_AKABinding)binding
+                                          didUpdateTargetValue:(opt_id)oldTargetValue
+                                                            to:(opt_id)newTargetValue
+                                                forSourceValue:(opt_id __unused)oldSourceValue
+                                                      changeTo:(opt_id __unused)newSourceValue
 {
     if (oldTargetValue != newTargetValue)
     {
@@ -510,15 +552,11 @@
             [self updateTargetValue];
         }
     }
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
-    {
-        [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];
-    }
 }
 
-- (void)contentSizeCategoryChanged
+#pragma mark - AKAContentSizeCategoryChangeListener
+
+- (void)                           contentSizeCategoryChanged
 {
     [self updateTargetValue];
 }

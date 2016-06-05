@@ -14,6 +14,8 @@
 
 @implementation AKABindingController(BindingContextProtocol)
 
+@dynamic dataContextProperty;
+
 - (id)                    dataContextValueForKeyPath:(NSString *)keyPath
 {
     return keyPath.length ? [self.dataContextProperty targetValueForKeyPath:keyPath] : self.dataContextProperty.value;
@@ -27,16 +29,18 @@
 
 - (id)                rootDataContextValueForKeyPath:(NSString *)keyPath
 {
-    return (self.parent
-            ? [self.parent rootDataContextValueForKeyPath:keyPath]
+    AKABindingController* parent = self.parent;
+    return (parent
+            ? [parent rootDataContextValueForKeyPath:keyPath]
             : [self dataContextValueForKeyPath:keyPath]);
 }
 
 - (AKAProperty *)  rootDataContextPropertyForKeyPath:(NSString *)keyPath
                                   withChangeObserver:(AKAPropertyChangeObserver)valueDidChange
 {
-    return (self.parent
-            ? [self.parent rootDataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange]
+    AKABindingController* parent = self.parent;
+    return (parent
+            ? [parent rootDataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange]
             : [self dataContextPropertyForKeyPath:keyPath withChangeObserver:valueDidChange]);
 }
 

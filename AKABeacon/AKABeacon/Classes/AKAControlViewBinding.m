@@ -11,7 +11,7 @@
 #import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKAControlViewBinding.h"
-#import "AKAViewBinding_Protected.h"
+#import "AKABinding_Protected.h"
 #import "AKABindingErrors.h"
 
 @interface AKAControlViewBinding() {

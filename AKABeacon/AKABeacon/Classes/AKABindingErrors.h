@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
     AKABindingErrorUndefinedBindingSource = AKABindingErrorCodesMin,
 
     AKABindingErrorInvalidBindingType,
+    AKABindingErrorInvalidTargetForBindingType,
 
     AKABindingErrorInvalidPrimaryBindingExpressionType,
     AKABindingErrorInvalidPrimaryBindingExpressionNoEnumerationType,
@@ -90,6 +91,12 @@ typedef NS_ENUM(NSInteger, AKABindingErrorCodes)
 + (req_NSError)                unknownSymbolicEnumerationValue:(req_NSString)symbolicValue
                                             forEnumerationType:(req_NSString)enumerationType
                                               withValuesByName:(NSDictionary<NSString*, NSNumber*>*_Nonnull)valuesByName;
+
+#pragma mark - Binding Target Validation Errors
+
++ (req_NSError)                                  invalidTarget:(opt_id)target
+                                              forBindingOfType:(req_Class)bindingType
+                                        expectedInstanceOfType:(req_AKATypePattern)typePattern;
 
 #pragma mark - Binding Source Validation Errors (Runtime validation)
 

@@ -8,7 +8,7 @@
 
 #import "UITextView+AKAIBBindingProperties_fontBinding.h"
 #import "AKAFontPropertyBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 
 @implementation UITextView (AKAIBBindingProperties_fontBinding)

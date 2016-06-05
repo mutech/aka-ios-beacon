@@ -8,7 +8,7 @@
 
 #import "UIBarButtonItem+AKAIBBindingProperties_enabledBinding.h"
 #import "AKABinding_UIControl_enabledBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 
 @implementation UIBarButtonItem (AKAIBBindingProperties_enabledBinding)

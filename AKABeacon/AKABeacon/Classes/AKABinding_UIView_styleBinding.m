@@ -36,14 +36,7 @@
 
 #pragma mark - Initialization
 
-- (void)validateTarget:(req_id)target
-{
-    NSParameterAssert([target isKindOfClass:[UIView class]]);
-}
-
-
-- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
-{
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError)error {
     (void)view;
     // We might want to use some base style/theming mechanism here. For the time
     // being, the primary value is simply ignored and the binding target value too.

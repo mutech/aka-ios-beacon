@@ -15,7 +15,7 @@
 
 #pragma mark - Configuration
 
-@property(nonatomic, readonly, weak, nullable) id<AKAKeyboardControlViewBindingDelegate> delegate;
+@property(nonatomic, weak, nullable) id<AKAKeyboardControlViewBindingDelegate> delegate;
 
 #pragma mark - Binding Configuration
 

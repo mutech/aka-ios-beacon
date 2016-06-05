@@ -31,7 +31,9 @@
 
 @implementation AKABinding_UITextView_textBinding
 
-+ (AKABindingSpecification *)specification
+#pragma mark - Specification
+
++ (AKABindingSpecification *)                specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -49,14 +51,10 @@
     return result;
 }
 
-#pragma mark - Initialization
+#pragma mark - Initialization - Target Value Property
 
-- (void)validateTarget:(req_id)target
-{
-    NSParameterAssert([target isKindOfClass:[UITextView class]]);
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id)view
+                                                     error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UITextView class]]);
     (void)view;
@@ -124,7 +122,7 @@
 
 #pragma mark - Properties
 
-- (UITextView*)textView
+- (UITextView*)                                   textView
 {
     UIView* result = self.target;
 

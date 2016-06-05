@@ -366,12 +366,14 @@
 
 - (id)targetValueForKey:(NSString *)key
 {
-    return key.length ? [self.target valueForKey:key] : self.target;
+    id target = self.target;
+    return key.length ? [target valueForKey:key] : target;
 }
 
 - (id)targetValueForKeyPath:(NSString *)keyPath
 {
-    return keyPath.length ? [self.target valueForKeyPath:keyPath] : self.target;
+    id target = self.target;
+    return keyPath.length ? [target valueForKeyPath:keyPath] : target;
 }
 
 #pragma mark - Validation

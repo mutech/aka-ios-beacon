@@ -20,10 +20,6 @@
 
 #pragma mark - Saved UITextField State
 
-#if RESTORE_BOUND_VIEW_STATE
-@property(nonatomic, nullable) NSString*                   originalPlaceholder;
-@property(nonatomic, nullable) NSString*                   originalText;
-#endif
 @property(nonatomic, weak) id<UITextFieldDelegate>         savedTextViewDelegate;
 @property(nonatomic, nullable) NSString*                   previousText;
 @property(nonatomic) BOOL useEditingFormat;
@@ -40,8 +36,9 @@
 
 @implementation AKABinding_UITextField_textBinding
 
+#pragma mark - Specification
 
-+ (AKABindingSpecification*)specification
++ (AKABindingSpecification*)                 specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -102,14 +99,10 @@
     return result;
 }
 
-#pragma mark - Initialization
+#pragma mark - Initialization - Target Value Property
 
-- (void)validateTarget:(req_id)target
-{
-    NSParameterAssert([target isKindOfClass:[UITextField class]]);
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id)view
+                                                     error:(out_NSError __unused)error
 {
     NSAssert([view isKindOfClass:[UITextField class]], @"Expected a UITextField, got %@", view);
     (void)view;
@@ -220,25 +213,7 @@
             }];
 }
 
-#pragma mark - Properties
-
-- (UITextField*)                                 textField
-{
-    UIView* view = self.target;
-
-    NSParameterAssert(view == nil || [view isKindOfClass:[UITextField class]]);
-
-    return (UITextField*)view;
-}
-
-- (void)                          setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
-{
-    NSAssert(savedTextViewDelegate != self, @"Cannot register text field binding as saved delegate, it already acts as replacement/proxy delegate");
-
-    _savedTextViewDelegate = savedTextViewDelegate;
-}
-
-#pragma mark -
+#pragma mark - Conversion
 
 - (BOOL)                                convertTargetValue:(opt_id)targetValue
                                              toSourceValue:(out_id)sourceValueStore
@@ -369,6 +344,24 @@
     }
 
     return result;
+}
+
+#pragma mark - Properties
+
+- (UITextField*)                                 textField
+{
+    UIView* view = self.target;
+
+    NSParameterAssert(view == nil || [view isKindOfClass:[UITextField class]]);
+
+    return (UITextField*)view;
+}
+
+- (void)                          setSavedTextViewDelegate:(id<UITextFieldDelegate>)savedTextViewDelegate
+{
+    NSAssert(savedTextViewDelegate != self, @"Cannot register text field binding as saved delegate, it already acts as replacement/proxy delegate");
+
+    _savedTextViewDelegate = savedTextViewDelegate;
 }
 
 #pragma mark - UITextFieldDelegate Implementation
@@ -602,7 +595,7 @@
     return result;
 }
 
-- (void)setResponderInputAccessoryView:(UIView*)responderInputAccessoryView
+- (void)                    setResponderInputAccessoryView:(UIView*)responderInputAccessoryView
 {
     self.textField.inputAccessoryView = responderInputAccessoryView;
 }

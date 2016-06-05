@@ -27,17 +27,50 @@
                                                       delegate:(opt_AKABindingDelegate)delegate
                                                          error:(out_NSError)error
 {
-    [self validateTarget:target];
+    if (![self validateTarget:target error:error])
+    {
+        self = nil;
+        return nil;
+    }
 
-    self = [self initWithTarget:target
-            targetValueProperty:[self createTargetValuePropertyForTarget:target]
-                     expression:bindingExpression
-                        context:bindingContext
-                          owner:owner
-                       delegate:delegate
-                          error:error];
+    AKAProperty* targetValueProperty = [self createTargetValuePropertyForTarget:target
+                                                                          error:error];
+
+    if (targetValueProperty)
+    {
+        self = [self initWithTarget:target
+                targetValueProperty:targetValueProperty
+                         expression:bindingExpression
+                            context:bindingContext
+                              owner:owner
+                           delegate:delegate
+                              error:error];
+    }
+    else
+    {
+        self = nil;
+    }
 
     return self;
+}
+
+- (BOOL)                                        validateTarget:(req_id __unused)target
+                                                         error:(out_NSError)error
+{
+    BOOL result = YES;
+    AKATypePattern* targetTypePattern = [self.class specification].bindingTargetSpecification.typePattern;
+    if (targetTypePattern)
+    {
+        if (![targetTypePattern matchesObject:target])
+        {
+            result = NO;
+            NSError* localError = [AKABindingErrors invalidTarget:target
+                                                 forBindingOfType:self.class
+                                           expectedInstanceOfType:targetTypePattern];
+            AKARegisterErrorInErrorStore(localError, error);
+        }
+    }
+    return result;
 }
 
 #pragma mark - Binding Type Validation
@@ -67,12 +100,8 @@
 
 #pragma mark - Binding Target Initialization
 
-- (void)                                        validateTarget:(req_id __unused)target
-{
-    AKAErrorAbstractMethodImplementationMissing();
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)target
+- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id __unused)target
+                                                         error:(out_NSError __unused)error
 {
     AKAErrorAbstractMethodImplementationMissing();
 }
@@ -131,14 +160,12 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-
 - (AKAProperty*)               bindingSourceForArrayExpression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
                                                 changeObserver:(opt_AKAPropertyChangeObserver)changeObserver
                                                          error:(out_NSError)error
 {
-    // Binding source will not be updated (for target changes), so the change observer will not
-    // be used; however, changes in array items will trigger source array item events:
+    // Binding source will not be updated (for target changes), so the change observer will not be used; however, changes in array items will trigger source array item events:
     (void)changeObserver;
 
     BOOL result = YES;
@@ -201,12 +228,14 @@
                         bindingType = [AKAPropertyBinding class];
                     }
 
+                    opt_AKABindingDelegate delegate = [self delegateForArrayItemBindingAtIndex:index
+                                                                           arrayItemExpression:sourceExpression];
                     AKABinding* binding = [bindingType bindingToTarget:targetArray
                                                    targetValueProperty:arrayItemTargetProperty
                                                         withExpression:sourceExpression
                                                                context:bindingContext
                                                                  owner:self
-                                                              delegate:weakSelf.delegateForSubBindings
+                                                              delegate:delegate
                                                                  error:error];
                     if (binding)
                     {
@@ -437,7 +466,7 @@
 }
 
 - (BOOL)initializeBindingPropertyExpressionAssignmentAttribute:(NSString *)bindingProperty
-                                             withSpecification:(AKABindingAttributeSpecification *)specification
+                                             withSpecification:(AKABindingAttributeSpecification *__unused)specification
                                            attributeExpression:(req_AKABindingExpression)attributeExpression
                                                          error:(out_NSError __unused)error
 {
@@ -446,15 +475,22 @@
 }
 
 - (BOOL) initializeBindingPropertyEvaluatorAssignmentAttribute:(NSString *)bindingProperty
-                                             withSpecification:(AKABindingAttributeSpecification *)specification
+                                             withSpecification:(AKABindingAttributeSpecification *__unused)specification
                                            attributeExpression:(req_AKABindingExpression)attributeExpression
                                                          error:(out_NSError)error
 {
     NSError* localError = nil;
+
+    id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+    NSAssert(bindingContext, nil);
+
+    opt_AKABindingDelegate delegate = [self delegateForBindingPropertyEvaluatorAssignmentAttribute:bindingProperty
+                                                                                 withSpecification:specification
+                                                                               attributeExpression:attributeExpression];
     AKABindingExpressionEvaluator* evaluator =
     [[AKABindingExpressionEvaluator alloc] initWithFactoryBindingExpression:attributeExpression
-                                                             bindingContext:self.bindingContext
-                                                            bindingDelegate:self.delegateForSubBindings
+                                                             bindingContext:bindingContext
+                                                            bindingDelegate:delegate
                                                                       error:&localError];
     BOOL result = (evaluator != nil || localError == nil);
 
@@ -494,6 +530,7 @@
     return result;
 }
 
+
 - (BOOL)             initializeBindingPropertyBindingAttribute:(NSString *)bindingProperty
                                              withSpecification:(AKABindingAttributeSpecification *)specification
                                            attributeExpression:(req_AKABindingExpression)attributeExpression
@@ -518,12 +555,15 @@
                                                            value:oldValue
                                              didChangeToNewValue:newValue];
                                    }];
+        opt_AKABindingDelegate delegate = [self delegateForBindingPropertyBinding:bindingProperty
+                                                                withSpecification:specification
+                                                              attributeExpression:attributeExpression];
         AKABinding* propertyBinding = [bindingType bindingToTarget:self
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
                                                            context:self.bindingContext
                                                              owner:self
-                                                          delegate:weakSelf.delegateForSubBindings
+                                                          delegate:delegate
                                                              error:error];
         result = propertyBinding != nil;
         if (result)
@@ -559,12 +599,16 @@
                                      value:oldValue
                        didChangeToNewValue:newValue];
              }];
+        opt_AKABindingDelegate delegate = [self delegateForTargetPropertyBinding:bindingProperty
+                                                               withSpecification:specification
+                                                             attributeExpression:attributeExpression];
         AKABinding* propertyBinding = [bindingType bindingToTarget:self.targetValueProperty
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
                                                            context:self.bindingContext
                                                              owner:self
-                                                          delegate:weakSelf.delegateForSubBindings error:error];
+                                                          delegate:delegate
+                                                             error:error];
         result = propertyBinding != nil;
         if (result)
         {
@@ -580,5 +624,35 @@
 {
     return YES;
 }
+
+#pragma mark Sub Binding Delegates (Private)
+
+- (opt_AKABindingDelegate)  delegateForArrayItemBindingAtIndex:(NSUInteger __unused)index
+                                           arrayItemExpression:(req_AKABindingExpression __unused)arrayItemExpression
+{
+    return nil;
+}
+
+- (opt_AKABindingDelegate)   delegateForBindingPropertyBinding:(req_NSString __unused)bindingProperty
+                                             withSpecification:(req_AKABindingAttributeSpecification __unused)specification
+                                           attributeExpression:(req_AKABindingExpression __unused)attributeExpression
+{
+    return nil;
+}
+
+- (opt_AKABindingDelegate)    delegateForTargetPropertyBinding:(req_NSString __unused)bindingProperty
+                                             withSpecification:(req_AKABindingAttributeSpecification __unused)specification
+                                           attributeExpression:(req_AKABindingExpression __unused)attributeExpression
+{
+    return nil;
+}
+
+- (opt_AKABindingDelegate)delegateForBindingPropertyEvaluatorAssignmentAttribute:(req_NSString __unused)bindingProperty
+                                                               withSpecification:(req_AKABindingAttributeSpecification __unused)specification
+                                                             attributeExpression:(req_AKABindingExpression __unused)attributeExpression
+{
+    return nil;
+}
+
 
 @end

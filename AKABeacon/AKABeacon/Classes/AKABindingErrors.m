@@ -216,6 +216,23 @@
     return result;
 }
 
+#pragma mark - Binding Target Validation Errors
+
++ (req_NSError)                               invalidTarget:(opt_id)target
+                                           forBindingOfType:(req_Class)bindingType
+                                     expectedInstanceOfType:(req_AKATypePattern)typePattern
+{
+    NSString* reason = [NSString stringWithFormat:@"Expected an instance of a type matching %@",
+                        typePattern.description];
+    NSString* description = [NSString stringWithFormat:@"Invalid target %@ for binding of type %@: %@",
+                             target, NSStringFromClass(bindingType), reason];
+    NSError* result = [NSError errorWithDomain:self.akaControlsErrorDomain
+                                          code:AKABindingErrorInvalidTargetForBindingType
+                                      userInfo:@{ NSLocalizedDescriptionKey: description,
+                                                  NSLocalizedFailureReasonErrorKey: reason }];
+    return result;
+}
+
 #pragma mark - Binding Source Validation Errors (Runtime validation)
 
 + (req_NSError)                               invalidBinding:(req_AKABinding)binding

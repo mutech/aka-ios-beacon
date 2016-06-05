@@ -10,7 +10,7 @@
 
 #import "UITableView+AKAIBBindingProperties_datasourceBinding.h"
 #import "AKABinding_UITableView_dataSourceBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKATableViewCompositeControl.h"
 
 

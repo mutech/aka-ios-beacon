@@ -101,6 +101,11 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
  */
 @property(nonatomic, readonly, nonnull) NSString*                   text;
 
+/**
+ The serialized form of the binding expression's primary expression part.
+ */
+@property(nonatomic, readonly, nonnull) NSString*                   textForPrimaryExpression;
+
 @property(nonatomic, readonly, nullable) AKABindingSpecification* specification;
 
 /**

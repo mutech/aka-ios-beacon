@@ -26,7 +26,7 @@
 /**
  Records the target value prior to changing it to be able to pass the old value in change notifications.
  */
-@property(nonatomic) NSNumber*                          previousValue;
+@property(nonatomic) NSNumber* previousValue;
 
 @end
 
@@ -35,6 +35,8 @@
 #pragma mark -
 
 @implementation AKABinding_UIStepper_valueBinding
+
+#pragma mark - Specification
 
 +  (AKABindingSpecification *)            specification
 {
@@ -83,17 +85,10 @@
     return result;
 }
 
-#pragma mark - Initialization
+#pragma mark - Initialization - Target Value Property
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UIStepper class]]);
-}
-
-#pragma mark - Binding Target
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)  createTargetValuePropertyForTarget:(req_id)view
+                                                  error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UIStepper class]]);
 
@@ -155,10 +150,8 @@
 
 #pragma mark - Change Observation
 
-- (void)                     targetValueDidChangeSender:(id)sender
+- (void)                     targetValueDidChangeSender:(id __unused)sender
 {
-    (void)sender; // Not used
-
     NSNumber* newValue = @(self.uiStepper.value);
     NSNumber* oldValue = self.previousValue;
     self.previousValue = newValue;

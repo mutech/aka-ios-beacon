@@ -1,14 +1,14 @@
 //
-//  AKAViewBinding+IBPropertySupport.h
+//  AKABinding+IBPropertySupport.h
 //  AKABeacon
 //
 //  Created by Michael Utech on 24.11.15.
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBinding.h"
+#import "AKABinding.h"
 
-@interface AKAViewBinding (IBPropertySupport)
+@interface AKABinding (IBPropertySupport)
 
 /**
  * Gets the binding expression text associated with the specified property selector

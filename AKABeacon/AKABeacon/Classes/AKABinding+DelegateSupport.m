@@ -14,81 +14,124 @@
 
 @implementation AKABinding(DelegateSupport)
 
+#pragma mark - Binding Delegate Message Propagation
+
+- (void)propagateBindingDelegateMethod:(SEL)selector
+                     usingBlock:(void(^)(id<AKABindingDelegate>, outreq_BOOL))block
+{
+    BOOL stop = NO;
+
+    id<AKABindingDelegate> delegate = self.delegate;
+
+    if ([delegate respondsToSelector:selector])
+    {
+        block(delegate, &stop);
+    }
+
+    AKABinding* binding = self;
+    while (!stop && [binding.owner isKindOfClass:[AKABinding class]])
+    {
+        binding = (AKABinding*)binding.owner;
+        if ([binding respondsToSelector:selector])
+        {
+            if (binding.shouldReceiveDelegateMessagesForSubBindings)
+            {
+                if (binding.shouldReceiveDelegateMessagesForTransitiveSubBindings ||
+                    self.owner == binding)
+                {
+                    block((req_AKABindingDelegate)binding, &stop);
+                }
+            }
+        }
+    }
+
+    AKABindingController* controller = self.controller;
+    if (!stop && [controller respondsToSelector:selector])
+    {
+        block(controller, &stop);
+    }
+}
+
+- (BOOL)shouldReceiveDelegateMessagesForSubBindings
+{
+    return NO;
+}
+
+- (BOOL)shouldReceiveDelegateMessagesForTransitiveSubBindings
+{
+    return NO;
+}
+
+#pragma mark - Delegate Support Methods
+
 - (void)                   sourceValueDidChangeFromOldValue:(id _Nullable)oldSourceValue
                                                          to:(id _Nullable)newSourceValue
 {
-    [self.controller binding:self sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:to:)])
-    {
-        [delegate binding:self sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:sourceValueDidChangeFromOldValue:to:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self sourceValueDidChangeFromOldValue:oldSourceValue to:newSourceValue];
+     }];
 }
 
 - (void)                   sourceValueDidChangeFromOldValue:(opt_id)oldSourceValue
                                              toInvalidValue:(opt_id)newSourceValue
                                                   withError:(opt_NSError)error
 {
-    [self.controller binding:self sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:sourceValueDidChangeFromOldValue:toInvalidValue:withError:)])
-    {
-        [delegate binding:self sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:sourceValueDidChangeFromOldValue:toInvalidValue:withError:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self sourceValueDidChangeFromOldValue:oldSourceValue toInvalidValue:newSourceValue withError:error];
+     }];
 }
 
 - (void)                             sourceArrayItemAtIndex:(NSUInteger)index
                                                       value:(opt_id)oldValue
                                                 didChangeTo:(opt_id)newValue
 {
-    [self.controller binding:self sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)])
-    {
-        [delegate binding:self sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:sourceArrayItemAtIndex:value:didChangeTo:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self sourceArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+     }];
 }
 
 - (void)                             targetArrayItemAtIndex:(NSUInteger)index
                                                       value:(opt_id)oldValue
                                                 didChangeTo:(opt_id)newValue
 {
-    [self.controller binding:self targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:targetArrayItemAtIndex:value:didChangeTo:)])
-    {
-        [delegate binding:self targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:targetArrayItemAtIndex:value:didChangeTo:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self targetArrayItemAtIndex:index value:oldValue didChangeTo:newValue];
+     }];
 }
 
 - (void)             targetUpdateFailedToConvertSourceValue:(opt_id)sourceValue
                                      toTargetValueWithError:(opt_NSError)error
 {
-    [self.controller binding:self targetUpdateFailedToConvertSourceValue:sourceValue
-      toTargetValueWithError:error];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)])
-    {
-        [delegate binding:self targetUpdateFailedToConvertSourceValue:sourceValue toTargetValueWithError:error];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:targetUpdateFailedToConvertSourceValue:toTargetValueWithError:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self targetUpdateFailedToConvertSourceValue:sourceValue toTargetValueWithError:error];
+     }];
 }
 
 - (void)            targetUpdateFailedToValidateTargetValue:(opt_id)targetValue
                                    convertedFromSourceValue:(opt_id)sourceValue
                                                   withError:(opt_NSError)error
 {
-    [self.controller binding:self targetUpdateFailedToValidateTargetValue:targetValue convertedFromSourceValue:sourceValue withError:error];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)])
-    {
-        [delegate binding:self targetUpdateFailedToValidateTargetValue:targetValue convertedFromSourceValue:sourceValue withError:error];
-    }
+    [self propagateBindingDelegateMethod:@selector(binding:targetUpdateFailedToValidateTargetValue:convertedFromSourceValue:withError:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self targetUpdateFailedToValidateTargetValue:targetValue convertedFromSourceValue:sourceValue withError:error];
+     }];
 }
 
 // This is not a delegate method, it serves as a shortcut to prevent updates in subclasses before
@@ -106,19 +149,14 @@
                                              forSourceValue:(opt_id)oldSourceValue
                                                    changeTo:(opt_id)newSourceValue
 {
-    BOOL result = YES;
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(shouldBinding:updateTargetValue:to:forSourceValue:changeTo:)])
-    {
-        result = [delegate shouldBinding:self updateTargetValue:oldTargetValue to:newTargetValue forSourceValue:oldSourceValue changeTo:newSourceValue];
-    }
-
-    AKABindingController* controller = self.controller;
-    if (result && controller)
-    {
-        result = [controller shouldBinding:self updateTargetValue:oldTargetValue to:newTargetValue forSourceValue:oldSourceValue changeTo:newSourceValue];
-    }
+    __block BOOL result = YES;
+    [self propagateBindingDelegateMethod:@selector(shouldBinding:updateTargetValue:to:forSourceValue:changeTo:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop)
+     {
+         result = [delegate shouldBinding:self updateTargetValue:oldTargetValue to:newTargetValue forSourceValue:oldSourceValue changeTo:newSourceValue];
+         *stop = !result;
+     }];
 
     return result;
 }
@@ -128,28 +166,29 @@
                                                          to:(opt_id)newTargetValue
 
 {
+    [self propagateBindingDelegateMethod:@selector(binding:willUpdateTargetValue:to:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
+     }];
+
     self.isUpdatingTargetValueForSourceValueChange = YES;
-
-    [self.controller binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:willUpdateTargetValue:to:)])
-    {
-        [delegate binding:self willUpdateTargetValue:oldTargetValue to:newTargetValue];
-    }
 }
 
 - (void)                               didUpdateTargetValue:(opt_id)oldTargetValue
                                                          to:(opt_id)newTargetValue
+                                             forSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue
 {
-    [self.controller binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
-
-    id<AKABindingDelegate> delegate = self.delegate;
-    if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
-    {
-        [delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue];
-    }
     self.isUpdatingTargetValueForSourceValueChange = NO;
+
+    [self propagateBindingDelegateMethod:@selector(binding:didUpdateTargetValue:to:forSourceValue:changeTo:)
+                       usingBlock:
+     ^(id<AKABindingDelegate> delegate, outreq_BOOL stop __unused)
+     {
+         [delegate binding:self didUpdateTargetValue:oldTargetValue to:newTargetValue forSourceValue:oldSourceValue changeTo:newSourceValue];
+     }];
 }
 
 @end

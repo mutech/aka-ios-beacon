@@ -10,7 +10,7 @@
 
 #import "AKABinding_UIView_gesturesBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 @implementation UIView (AKAIBBindingProperties_gesturesBinding)
 

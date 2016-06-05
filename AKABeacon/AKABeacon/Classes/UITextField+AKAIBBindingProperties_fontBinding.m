@@ -8,7 +8,7 @@
 
 #import "UITextField+AKAIBBindingProperties_fontBinding.h"
 #import "AKAFontPropertyBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 
 @implementation UITextField (AKAIBBindingProperties_fontBinding)

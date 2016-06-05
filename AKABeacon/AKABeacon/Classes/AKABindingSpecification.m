@@ -23,6 +23,7 @@ NSString*const kAKABindingSpecificationArrayItemBindingProviderTypeKey = @"array
 NSString*const kAKABindingSpecificationAttributesKey = @"attributes";
 
 NSString*const kAKABindingAttributesSpecificationRequiredKey = @"required";
+NSString*const kAKABindingAttributesSpecificationPrimaryKey = @"primary";
 NSString*const kAKABindingAttributesSpecificationUseKey = @"use";
 NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingProperty";
 
@@ -296,6 +297,9 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
             _arrayItemBindingType = base.arrayItemBindingType;
         }
 
+        // May be overriden by attribute with primary==YES:
+        _primaryAttribute = base.primaryAttribute;
+
         NSMutableDictionary* attributeSpecifications = [NSMutableDictionary new];
         NSDictionary* attributes = [AKABindingSpecification dictionaryForObject:dictionary[kAKABindingSpecificationAttributesKey]
                                                                        required:NO];
@@ -337,10 +341,20 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
                           @"Invalid type for attribute specification item 'base', expected an instance of AKABindingExpressionSpecification, got %@",
                           expressionBase);
 
-                 attributeSpecifications[attributeName] =
+                 AKABindingAttributeSpecification* attributeSpecification =
                     [[AKABindingAttributeSpecification alloc] initWithDictionary:attributeDictionary
                                                    basedOnAttributeSpecification:attributeBase
                                                          expressionSpecification:expressionBase];
+
+                 attributeSpecifications[attributeName] = attributeSpecification;
+
+                 if (attributeSpecification.primary)
+                 {
+                     NSAssert(self->_primaryAttribute.length == 0 || [self->_primaryAttribute isEqualToString:attributeName],
+                              @"Invalid attempt to mark attribute %@ as primary, specification already has a defined primary attribute %@",
+                              attributeName, self->_primaryAttribute);
+                     self->_primaryAttribute = attributeName;
+                 }
              }
              else
              {
@@ -734,6 +748,8 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     {
         _required = [AKABindingSpecification booleanForObject:dictionary[kAKABindingAttributesSpecificationRequiredKey]
                                                   withDefault:base ? base.required : NO];
+        _primary = [AKABindingSpecification booleanForObject:dictionary [kAKABindingAttributesSpecificationPrimaryKey]
+                                                  withDefault:base ? base.primary : NO];
         _attributeUse = [AKABindingSpecification enumValueForObject:dictionary[kAKABindingAttributesSpecificationUseKey]
                                                        defaultValue:(base
                                                                      ? @(base.attributeUse)

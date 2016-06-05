@@ -8,7 +8,7 @@
 
 #import "UIPickerView+AKAIBBindingProperties_valueBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKABinding_UIPickerView_valueBinding.h"
 
 #import "NSObject+AKAAssociatedValues.h"

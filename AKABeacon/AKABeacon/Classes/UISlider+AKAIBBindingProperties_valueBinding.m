@@ -11,7 +11,7 @@
 #import "UISlider+AKAIBBindingProperties_valueBinding.h"
 
 #import "AKABinding_UISlider_valueBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAControlConfiguration.h"
 #import "AKAScalarControl.h"
 

@@ -12,7 +12,7 @@
 
 @class AKABinding_UITableView_dataSourceBinding;
 
-@protocol AKABindingDelegate_UITableView_dataSourceBinding <AKAViewBindingDelegate>
+@protocol AKABindingDelegate_UITableView_dataSourceBinding <AKABindingDelegate>
 
 @optional
 - (void)bindingWillUpdateDynamicBindings:(nonnull AKABinding_UITableView_dataSourceBinding*)binding;
@@ -60,7 +60,7 @@
 
 @interface AKABinding_UITableView_dataSourceBinding : AKAViewBinding
 
-@property(nonatomic, readonly, weak, nullable) id<AKABindingDelegate_UITableView_dataSourceBinding> delegate;
+@property(nonatomic, weak, nullable) id<AKABindingDelegate_UITableView_dataSourceBinding> delegate;
 
 
 @property(nonatomic, readonly, weak, nullable) UITableView*                                 tableView;

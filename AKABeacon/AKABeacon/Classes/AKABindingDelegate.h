@@ -118,9 +118,24 @@
                                                          to:(opt_id)newTargetValue;
 
 @optional
+/**
+ Called when the bindings target value has been updated from oldTargetValue to newTargetValue as a result of the binding's oldSourceValue changing to newSourceValue.
+
+ @note When the binding initializes the target value as part of startObservingChanges, the old and newSourceValue might have the same value. This may also be the case if the sourceValueProperty fires change events when its value has been çhanged to the same value.
+
+ @note some bindings do not change the target value as response to source value changes but update its state instead.
+
+ @param binding the binding which updated its target value or target value state
+ @param oldTargetValue the target value before the binding updated it
+ @param newTargetValue the new target value
+ @param oldSourceValue the old source value
+ @param newSourceValue the new source value
+ */
 - (void)                                            binding:(req_AKABinding)binding
                                        didUpdateTargetValue:(opt_id)oldTargetValue
-                                                         to:(opt_id)newTargetValue;
+                                                         to:(opt_id)newTargetValue
+                                             forSourceValue:(opt_id)oldSourceValue
+                                                   changeTo:(opt_id)newSourceValue;
 
 @end
 

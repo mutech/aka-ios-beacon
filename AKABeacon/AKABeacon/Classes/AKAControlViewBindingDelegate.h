@@ -10,7 +10,7 @@
 
 #import "AKABeaconNullability.h"
 
-@protocol AKAControlViewBindingDelegate<AKAViewBindingDelegate>
+@protocol AKAControlViewBindingDelegate<AKABindingDelegate>
 
 /**
  * Informs the delegate, that the target (f.e. view-) value changed to the specified

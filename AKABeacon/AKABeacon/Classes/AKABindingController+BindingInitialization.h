@@ -7,11 +7,12 @@
 //
 
 #import "AKABindingController.h"
+#import "AKABindingOwnerProtocol.h"
 
 #pragma mark - AKABindingController(BindingInitialization) - Private Interface
 #pragma mark -
 
-@interface AKABindingController(BindingInitialization)
+@interface AKABindingController(BindingInitialization) <AKABindingOwnerProtocol>
 
 /**
  Scans the targetObjectHierarchy recursively for binding expressions and creates bindings for them.

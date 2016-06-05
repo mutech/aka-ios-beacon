@@ -11,7 +11,7 @@
 #import "AKADatePickerKeyboardTriggerView.h"
 
 #import "AKABinding_AKADatePickerKeyboardTriggerView_datePickerBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
 

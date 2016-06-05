@@ -9,9 +9,11 @@
 #import "AKABindingController+BindingInitialization.h"
 #import "AKABindingController_BindingInitializationProperties.h"
 
-#import "AKABindingController+BindingDelegate.h"
+#import "AKABindingController+BindingDelegatePropagation.h"
 #import "AKABindingController+BindingContextProtocol.h"
 #import "AKABindingController+KeyboardActivationSequence.h"
+
+#import "AKABinding+BindingOwner.h"
 
 #import "AKABindingTargetContainerProtocol.h"
 #import "AKABindingExpression+Accessors.h"
@@ -134,7 +136,7 @@
                                 withExpression:bindingExpression
                                        context:self
                                          owner:self
-                                      delegate:self
+                                      delegate:nil
                                          error:&localError];
         if (binding)
         {

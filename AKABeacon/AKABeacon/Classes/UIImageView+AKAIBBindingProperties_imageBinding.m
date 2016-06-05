@@ -11,7 +11,7 @@
 #import "AKABeaconNullability.h"
 #import "UIImageView+AKAIBBindingProperties_imageBinding.h"
 #import "AKABinding_UIImageView_imageBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 
 @implementation UIImageView (AKAIBBindingProperties_imageBinding)

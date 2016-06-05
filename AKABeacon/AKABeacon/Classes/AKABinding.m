@@ -23,7 +23,6 @@
 #import "AKAPropertyBinding.h"
 
 #import "AKABindingErrors.h"
-#import "AKABindingDelegateDispatcher.h"
 #import "AKABindingExpressionEvaluator.h"
 #import "NSObject+AKAConcurrencyTools.h"
 #import "AKALog.h"
@@ -33,7 +32,6 @@
 
 @interface AKABinding () {
     id                              _syntheticTargetValue;
-    AKABindingDelegateDispatcher*   _delegateDispatcher;
 }
 
 @end
@@ -66,8 +64,12 @@
     }
     else
     {
-        return [[self alloc] initWithTarget:target expression:bindingExpression context:bindingContext owner:nil
-                                   delegate:delegate error:error];
+        return [[self alloc] initWithTarget:target
+                                 expression:bindingExpression
+                                    context:bindingContext
+                                      owner:nil
+                                   delegate:delegate
+                                      error:error];
     }
 }
 
@@ -167,8 +169,7 @@
 
         _owner = owner;
 
-        _delegateDispatcher = [[AKABindingDelegateDispatcher alloc] initWithDelegate:delegate
-                delegateOverwrites:self];
+        _delegate = delegate;
 
         __weak AKABinding *weakSelf = self;
         req_AKAPropertyChangeObserver changeObserver = ^(opt_id oldValue, opt_id newValue) {
@@ -233,25 +234,12 @@
     return _isUpdatingTargetValueForSourceValueChange;
 }
 
-- (id<AKABindingDelegate>)                         delegate
-{
-    return _delegateDispatcher.delegate;
-}
-
-- (id<AKABindingDelegate>)           delegateForSubBindings
-{
-    id<AKABindingDelegate> result = _delegateDispatcher;
-    if (!result)
-    {
-        result = self;
-    }
-    return result;
-}
-
 - (void)                                           setOwner:(id<AKABindingOwnerProtocol>)owner
 {
+    id<AKABindingOwnerProtocol> currentOwner = _owner;
+
     // Guard against unintentional ownership change (have to set to nil before changing owner).
-    NSParameterAssert(owner == _owner || owner == nil || _owner == nil);
+    NSParameterAssert(owner == currentOwner || owner == nil || currentOwner == nil);
 
     _owner = owner;
 }
@@ -371,7 +359,9 @@
 
 
                      [self didUpdateTargetValue:oldTargetValue
-                                             to:targetValue];
+                                             to:targetValue
+                                 forSourceValue:oldSourceValue
+                                       changeTo:newSourceValue];
                  }
              }
              else

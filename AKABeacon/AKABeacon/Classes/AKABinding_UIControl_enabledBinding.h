@@ -12,6 +12,6 @@
 
 @end
 
-@interface AKABinding_UIBarButtonItem_enabledBinding : AKAViewBinding
+@interface AKABinding_UIBarButtonItem_enabledBinding : AKABinding
 
 @end

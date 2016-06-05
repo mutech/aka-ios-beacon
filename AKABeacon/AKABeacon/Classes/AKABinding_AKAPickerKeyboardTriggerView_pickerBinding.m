@@ -16,8 +16,9 @@
 #import "AKABinding_UIPickerView_valueBinding.h"
 #import "UIPickerView+AKAIBBindingProperties_valueBinding.h"
 
-#import "AKAViewBinding_Protected.h"
+#import "AKABinding_Protected.h"
 #import "AKABinding+SubclassInitialization.h"
+#import "AKABinding+DelegateSupport.h"
 #import "AKABinding+BindingOwner.h"
 
 #pragma mark - AKABinding_AKAPickerKeyboardTriggerView_pickerBinding - Private Interface
@@ -29,15 +30,10 @@
     >
 
 @property(nonatomic)                 NSArray*                           choices;
-
 @property(nonatomic, readonly)       AKABindingExpression*              bindingExpression;
-
 @property(nonatomic, readonly, weak) AKAPickerKeyboardTriggerView*      triggerView;
-
 @property(nonatomic, readonly)       UIPickerView*                      pickerView;
-
 @property(nonatomic, readonly) AKABinding_UIPickerView_valueBinding*    pickerBinding;
-
 @property(nonatomic)                 id previousValue;
 
 @end
@@ -47,6 +43,8 @@
 #pragma mark -
 
 @implementation AKABinding_AKAPickerKeyboardTriggerView_pickerBinding
+
+#pragma mark - Specification
 
 + (AKABindingSpecification*)                     specification
 {
@@ -72,55 +70,7 @@
     return result;
 }
 
-- (BOOL)                     initializeManualAttributeWithName:(req_NSString)attributeName
-                                                 specification:(req_AKABindingAttributeSpecification __unused)specification
-                                           attributeExpression:(req_AKABindingExpression)attributeExpression
-                                                         error:(out_NSError)error
-{
-    BOOL result = NO;
-    if ([@"picker" isEqualToString:attributeName])
-    {
-        if (attributeExpression)
-        {
-            AKACustomKeyboardResponderView* triggerView = self.triggerView;
-            UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
-
-            // Use the picker target provided by the delegate or create a new one:
-            if ([inputView isKindOfClass:[UIPickerView class]])
-            {
-                _pickerView = (UIPickerView*)inputView;
-            }
-            else
-            {
-                NSAssert(inputView == nil,
-                         @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
-                         self, triggerView, inputView);
-
-                _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
-                _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-            }
-
-            _pickerBinding = [AKABinding_UIPickerView_valueBinding bindingToTarget:_pickerView
-                                                                    withExpression:attributeExpression
-                                                                           context:self.bindingContext
-                                                                             owner:self
-                                                                          delegate:self.delegateForSubBindings
-                                                                             error:error];
-            // Create the picker binding using the previously obtained picker view as target
-            _pickerBinding = [[AKABinding_UIPickerView_valueBinding alloc] initWithTarget:_pickerView
-                                                                               expression:attributeExpression
-                                                                                  context:self.bindingContext owner:nil
-                                                                                 delegate:self error:error];
-
-            // Ensure that the picker binding is tracking changes
-            [self addBindingPropertyBinding:_pickerBinding];
-
-            result = _pickerBinding != nil;
-        }
-    }
-
-    return result;
-}
+#pragma mark - Source Value Property Initialization
 
 - (AKAProperty *)            defaultBindingSourceForExpression:(req_AKABindingExpression)bindingExpression
                                                        context:(req_AKABindingContext)bindingContext
@@ -151,13 +101,9 @@
     return result;
 }
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
-}
+#pragma mark - Target Value Property Initialization
 
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id)view error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[AKAPickerKeyboardTriggerView class]]);
     (void)view;
@@ -182,7 +128,7 @@
                                   }];
             }
 
-            observationStarter:
+                          observationStarter:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
@@ -194,17 +140,67 @@
                 return YES;
             }
 
-            observationStopper:
+                          observationStopper:
             ^BOOL (id target)
             {
                 AKABinding_AKAPickerKeyboardTriggerView_pickerBinding* binding = target;
 
                 [binding.pickerBinding stopObservingChanges];
-
+                
                 [binding detachFromCustomKeyboardResponderView];
-
+                
                 return YES;
             }];
+}
+
+#pragma mark - Attribute Initialization
+
+- (BOOL)                     initializeManualAttributeWithName:(req_NSString)attributeName
+                                                 specification:(req_AKABindingAttributeSpecification __unused)specification
+                                           attributeExpression:(req_AKABindingExpression)attributeExpression
+                                                         error:(out_NSError)error
+{
+    BOOL result = NO;
+    if ([@"picker" isEqualToString:attributeName])
+    {
+        if (attributeExpression)
+        {
+            id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+            NSAssert(bindingContext, @"Binding context required during initialization");
+
+            AKACustomKeyboardResponderView* triggerView = self.triggerView;
+            UIView* inputView = [super inputViewForCustomKeyboardResponderView:triggerView];
+
+            // Use the picker target provided by the delegate or create a new one:
+            if ([inputView isKindOfClass:[UIPickerView class]])
+            {
+                _pickerView = (UIPickerView*)inputView;
+            }
+            else
+            {
+                NSAssert(inputView == nil,
+                         @"Binding %@ conflicts with delegate defined for view %@: the input view %@ provided by the original delegate is not an instance of UIPickerView.",
+                         self, triggerView, inputView);
+
+                _pickerView = [[UIPickerView alloc] initWithFrame:CGRectZero];
+                _pickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+            }
+
+            _pickerBinding = (id)[AKABinding_UIPickerView_valueBinding bindingToTarget:_pickerView
+                                                                        withExpression:attributeExpression
+                                                                               context:bindingContext
+                                                                                 owner:self
+                                                                              delegate:[self delegateForPickerBinding]
+                                                                                 error:error];
+
+            // Ensure that the picker binding is tracking changes
+            [self addBindingPropertyBinding:_pickerBinding];
+
+            result = _pickerBinding != nil;
+        }
+    }
+
+    return result;
 }
 
 #pragma mark - Change Tracking
@@ -232,7 +228,7 @@
 
 #pragma mark - Properties
 
-- (AKAPickerKeyboardTriggerView*)                 triggerView
+- (AKAPickerKeyboardTriggerView*)                  triggerView
 {
     UIView* result = super.triggerView;
 
@@ -241,13 +237,23 @@
     return (AKAPickerKeyboardTriggerView*)result;
 }
 
-#pragma mark - AKAControlViewBindingDelegate (for picker binding)
+#pragma mark - AKAindingDelegate
 
-- (BOOL)                                        shouldBinding:(req_AKAControlViewBinding)binding
-                                            updateSourceValue:(id)oldSourceValue
-                                                           to:(id)newSourceValue
-                                               forTargetValue:(id)oldTargetValue
-                                                     changeTo:(id)newTargetValue
+- (BOOL)           shouldReceiveDelegateMessagesForSubBindings
+{
+    return NO;
+}
+
+- (id<AKABindingDelegate>)            delegateForPickerBinding
+{
+    return self;
+}
+
+- (BOOL)                                         shouldBinding:(req_AKAControlViewBinding)binding
+                                             updateSourceValue:(id __unused)oldSourceValue
+                                                            to:(id __unused)newSourceValue
+                                                forTargetValue:(id __unused)oldTargetValue
+                                                      changeTo:(id __unused)newTargetValue
 {
     BOOL result = YES;
 
@@ -258,24 +264,16 @@
         // update source value only while keyboard is shown and if live model updates enabled
         if (self.triggerView.isFirstResponder && self.liveModelUpdates)
         {
-            id<AKAControlViewBindingDelegate> delegate = self.delegate;
+            result = YES;
 
-            if ([delegate respondsToSelector:@selector(shouldBinding:updateSourceValue:to:forTargetValue:changeTo:)])
-            {
-                result = [delegate shouldBinding:self
-                               updateSourceValue:oldSourceValue
-                                              to:newSourceValue
-                                  forTargetValue:oldTargetValue
-                                        changeTo:newTargetValue];
-            }
-            else
-            {
-                result = YES;
-            }
+            // We don't need to ask our own delegate/owner/controller, because that's alreay
+            // done by shouldUpdateSourceValue:to:forTargetValue:changeTo:
         }
 
         if (result)
         {
+            // Hijack change and process it in this binding:
+
             // TODO: refactor that, too hacky: Find a good way to handle bindings for composite views
             // where components are not part of the subview hierarchy (these are cleanly handled by controls
             // managing bindings), like with keyboards. Problems:
@@ -283,7 +281,6 @@
             // - Binding expressions (too much nesting versus problems with combined attributes and their definitions)
             // - Alt.: single keyboard trigger view with different possible keyboard type sub bindings
             // - etc.
-            // Hijack change and process it in this binding:
             result = NO;
             [self viewValueDidChange];
         }
@@ -294,7 +291,7 @@
 
 #pragma mark - AKACustomKeyboardResponderDelegate Implementation
 
-- (UIView*)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
+- (UIView*)            inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
 {
     (void)view;
     NSParameterAssert(view == self.triggerView);
@@ -307,14 +304,14 @@
 
 #pragma mark -
 
-- (void)                                responderWillActivate:(req_UIResponder)responder
+- (void)                                 responderWillActivate:(req_UIResponder)responder
 {
     [super responderWillActivate:responder];
 
     self.previousValue = self.sourceValueProperty.value;
 }
 
-- (void)                               responderDidDeactivate:(req_UIResponder)responder
+- (void)                                responderDidDeactivate:(req_UIResponder)responder
 {
     if (!self.liveModelUpdates)
     {
@@ -327,9 +324,9 @@
 
 #pragma mark - Animated Target Value Update
 
-- (void)                               animateTriggerForValue:(id)oldValue
-                                                     changeTo:(id)newValue
-                                                   animations:(void (^)())block
+- (void)                                animateTriggerForValue:(id)oldValue
+                                                      changeTo:(id)newValue
+                                                    animations:(void (^)())block
 {
     if (block)
     {
@@ -365,7 +362,7 @@
     }
 }
 
-- (BOOL)       shouldResignFirstResponderOnSelectedRowChanged
+- (BOOL)        shouldResignFirstResponderOnSelectedRowChanged
 {
     return (self.liveModelUpdates &&
             ![self.inputAccessoryView isKindOfClass:[AKAKeyboardActivationSequenceAccessoryView class]]);

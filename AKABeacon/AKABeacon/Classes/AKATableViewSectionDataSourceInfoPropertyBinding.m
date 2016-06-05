@@ -35,20 +35,25 @@
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
         @{ @"bindingType":          [AKATableViewSectionDataSourceInfoPropertyBinding class],
-           @"expressionType":       @(AKABindingExpressionTypeAnyKeyPath),
+           @"expressionType":       @(AKABindingExpressionTypeForwardToPrimaryAttribute), //AKABindingExpressionTypeAnyKeyPath),
            @"attributes":           @{
+                   @"rows":                 @{
+                       @"primary":              @YES,
+                       @"bindingType":          [AKAArrayPropertyBinding class],
+                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
+                       },
                    @"headerTitle":          @{
-                           @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                           @"expressionType":       @(AKABindingExpressionTypeString)
-                           },
+                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
+                       @"expressionType":       @(AKABindingExpressionTypeString)
+                       },
                    @"footerTitle":          @{
-                           @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
-                           @"expressionType":       @(AKABindingExpressionTypeString)
-                           },
+                       @"use":                  @(AKABindingAttributeUseBindToTargetProperty),
+                       @"expressionType":       @(AKABindingExpressionTypeString)
+                       },
                    @"cellMapping":          @{
-                           @"bindingType":          [AKATableViewCellFactoryPropertyBinding class],
-                           @"use":                  @(AKABindingAttributeUseAssignEvaluatorToBindingProperty)
-                           }
+                       @"bindingType":          [AKATableViewCellFactoryPropertyBinding class],
+                       @"use":                  @(AKABindingAttributeUseAssignEvaluatorToBindingProperty)
+                       }
                    }
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -57,72 +62,30 @@
     return result;
 }
 
-+ (NSSet *)keyPathsForValuesAffectingSectionDataSourceInfo
+- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
+                                           context:(req_AKABindingContext __unused)bindingContext
+                                    changeObserver:(AKAPropertyChangeObserver __unused)changeObserver
+                                             error:(out_NSError __unused)error
 {
-    static NSSet* result;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        result = [NSSet setWithObject:@"syntheticTargetValue"];
-    });
-    return result;
+    return [AKAProperty constantNilProperty];
 }
-
-- (AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
-{
-    NSAssert(self.syntheticTargetValue == nil ||
-             [self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]],
-             @"Unexpected type of syntethic target value %@, expected %@",
-             self.syntheticTargetValue, NSStringFromClass((req_Class)[self.syntheticTargetValue class]));
-
-    if (self.syntheticTargetValue == nil)
-    {
-        id targetValue = self.targetValueProperty.value;
-        if (targetValue != nil && targetValue != [NSNull null])
-        {
-            self.syntheticTargetValue = targetValue;
-        }
-    }
-    return self.syntheticTargetValue;
-}
-
-- (void)setSectionDataSourceInfo:(AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
-{
-    self.syntheticTargetValue = sectionDataSourceInfo;
-
-    // Forward cellMapping to section info
-    sectionDataSourceInfo.cellMapping = self.cellMapping;
-}
-
-
-- (void)setCellMapping:(AKABindingExpressionEvaluator *)cellMapping
-{
-    _cellMapping = cellMapping;
-    // Forward cellMapping to section info
-    if ([self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]])
-    {
-        AKATableViewSectionDataSourceInfo* sectionInfo = self.syntheticTargetValue;
-        sectionInfo.cellMapping = cellMapping;
-    }
-}
-
 
 - (BOOL)convertSourceValue:(id)sourceValue
              toTargetValue:(id _Nullable __autoreleasing*)targetValueStore
                      error:(NSError* __autoreleasing _Nullable*)error
 {
     BOOL result = (sourceValue == nil
-                   || [sourceValue isKindOfClass:[NSArray class]]
-                   || [sourceValue isKindOfClass:[NSFetchedResultsController class]]);
+                   || [sourceValue isKindOfClass:[NSArray class]]);
 
     if (result)
     {
-        if (self.sectionDataSourceInfo.rowsSource != sourceValue)
+        if (self.sectionDataSourceInfo == nil)
         {
-            if (self.sectionDataSourceInfo == nil)
-            {
-                self.sectionDataSourceInfo = [AKATableViewSectionDataSourceInfo new];
-            }
-            self.sectionDataSourceInfo.rowsSource = sourceValue;
+            self.sectionDataSourceInfo = [AKATableViewSectionDataSourceInfo new];
+        }
+        if (self.sectionDataSourceInfo.rows != sourceValue)
+        {
+            self.sectionDataSourceInfo.rows = sourceValue;
         }
         *targetValueStore = self.sectionDataSourceInfo;
     }
@@ -140,17 +103,52 @@
     return result;
 }
 
-- (BOOL)startObservingChanges
+
+- (AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
 {
-    BOOL result = [super startObservingChanges];
-    [self.sectionDataSourceInfo startObservingChanges];
+    NSAssert(self.syntheticTargetValue == nil ||
+             [self.syntheticTargetValue isKindOfClass:[AKATableViewSectionDataSourceInfo class]],
+             @"Unexpected type of syntethic target value %@, expected %@",
+             self.syntheticTargetValue, NSStringFromClass((req_Class)[self.syntheticTargetValue class]));
+
+    if (self.syntheticTargetValue == nil)
+    {
+        id targetValue = self.targetValueProperty.value;
+        if (targetValue != nil && targetValue != [NSNull null])
+        {
+            self.sectionDataSourceInfo = targetValue;
+        }
+    }
+    return self.syntheticTargetValue;
+}
+
+- (void)setSectionDataSourceInfo:(AKATableViewSectionDataSourceInfo *)sectionDataSourceInfo
+{
+    self.syntheticTargetValue = sectionDataSourceInfo;
+
+    // Forward cellMapping to section info
+    sectionDataSourceInfo.cellMapping = self.cellMapping;
+}
+
++ (NSSet *)keyPathsForValuesAffectingSectionDataSourceInfo
+{
+    static NSSet* result;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [NSSet setWithObject:@"syntheticTargetValue"];
+    });
     return result;
 }
 
-- (BOOL)stopObservingChanges
+- (void)setCellMapping:(AKABindingExpressionEvaluator *)cellMapping
 {
-    [self.sectionDataSourceInfo stopObservingChanges];
-    return [super stopObservingChanges];
+    _cellMapping = cellMapping;
+
+    // Forward cellMapping to section info
+    if (self.syntheticTargetValue) // @see sectionDataSourceInfo
+    {
+        self.sectionDataSourceInfo.cellMapping = cellMapping;
+    }
 }
 
 #pragma mark - Binding Delegate

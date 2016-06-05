@@ -65,13 +65,8 @@
 
 #pragma mark - Initialization
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)       createTargetValuePropertyForTarget:(req_id)view
+                                                       error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[AKADatePickerKeyboardTriggerView class]]);
     (void)view;
@@ -140,7 +135,7 @@
             }];
 }
 
-- (void)datePickerDidChangeValue:(id)sender
+- (void)                            datePickerDidChangeValue:(id)sender
 {
     (void)sender;
 
@@ -168,7 +163,7 @@
 
 #pragma mark - Properties
 
-- (AKADatePickerKeyboardTriggerView*)triggerView
+- (AKADatePickerKeyboardTriggerView*)            triggerView
 {
     UIView* result = self.target;
 
@@ -178,7 +173,7 @@
 }
 
 @synthesize pickerView = _pickerView;
-- (UIDatePicker*)                                  pickerView
+- (UIDatePicker*)                                 pickerView
 {
     if (_pickerView == nil)
     {
@@ -202,7 +197,7 @@
 
 #pragma mark - AKACustomKeyboardResponderDelegate Implementation
 
-- (UIView*)           inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
+- (UIView*)          inputViewForCustomKeyboardResponderView:(AKACustomKeyboardResponderView*)view
 {
     (void)view;
     NSParameterAssert(view == self.triggerView);
@@ -215,9 +210,9 @@
 
 #pragma mark - Animated Target Value Update
 
-- (void)animateTriggerForDate:(NSDate*)oldDate
-                     changeTo:(NSDate*)newDate
-                   animations:(void (^)())block
+- (void)                               animateTriggerForDate:(NSDate*)oldDate
+                                                    changeTo:(NSDate*)newDate
+                                                  animations:(void (^)())block
 {
     if (block)
     {
@@ -247,7 +242,7 @@
     }
 }
 
-- (BOOL)shouldResignFirstResponderOnSelectedRowChanged
+- (BOOL)      shouldResignFirstResponderOnSelectedRowChanged
 {
     return NO;
 }
@@ -255,7 +250,8 @@
 #pragma mark - AKACustomKeyboardResponderDelegate Implementation
 
 #pragma mark First Responder Support
-- (void)responderDidDeactivate:(req_UIResponder)responder
+
+- (void)                             responderDidDeactivate:(req_UIResponder)responder
 {
     if (!self.liveModelUpdates)
     {

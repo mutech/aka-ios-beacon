@@ -44,9 +44,10 @@
 
     if (result == nil)
     {
-        if (self.parent)
+        AKABindingController* parent = self.parent;
+        if (parent)
         {
-            result = self.parent.keyboardActivationSequence;
+            result = parent.keyboardActivationSequence;
         }
     }
 
@@ -57,7 +58,7 @@
 {
     NSMutableArray<id<AKAKeyboardActivationSequenceItemProtocol>>* items = [NSMutableArray new];
 
-    [self enumerateBindingsUsingBlock:^(AKABinding * _Nonnull binding, BOOL * _Nonnull stop) {
+    [self enumerateBindingsUsingBlock:^(AKABinding * _Nonnull binding, BOOL * _Nonnull stop __unused) {
         if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
         {
             id<AKAKeyboardActivationSequenceItemProtocol> item = (id)binding;
@@ -69,9 +70,9 @@
     }];
 
     [self enumerateBindingControllersUsingBlock:
-     ^(AKABindingController *controller, BOOL * _Nonnull outerStop)
+     ^(AKABindingController *controller, BOOL * _Nonnull outerStop __unused)
      {
-         [controller enumerateBindingsUsingBlock:^(AKABinding * _Nonnull binding, BOOL * _Nonnull stop) {
+         [controller enumerateBindingsUsingBlock:^(AKABinding * _Nonnull binding, BOOL * _Nonnull stop __unused) {
              if ([binding conformsToProtocol:@protocol(AKAKeyboardActivationSequenceItemProtocol)])
              {
                  id<AKAKeyboardActivationSequenceItemProtocol> item = (id)binding;
@@ -89,24 +90,25 @@
      {
          NSComparisonResult result = NSOrderedSame;
 
-         UIResponder* r1 = [obj1 responderForKeyboardActivationSequence];
-         UIResponder* r2 = [obj2 responderForKeyboardActivationSequence];
+         UIResponder* ur1 = [obj1 responderForKeyboardActivationSequence];
+         UIResponder* ur2 = [obj2 responderForKeyboardActivationSequence];
 
-         if (![r1 isKindOfClass:[UIView class]])
+         if (![ur1 isKindOfClass:[UIView class]])
          {
              result = NSOrderedAscending;
          }
-         else if (![r2 isKindOfClass:[UIView class]])
+         else if (![ur2 isKindOfClass:[UIView class]])
          {
              result = NSOrderedDescending;
          }
          else
          {
-             UIView* v1 = (id)r1;
-             UIView* v2 = (id)r2;
+             UIView* v1 = (id)ur1;
+             UIView* v2 = (id)ur2;
 
-             CGRect r1 = [v1 convertRect:v1.frame toView:self.view];
-             CGRect r2 = [v2 convertRect:v2.frame toView:self.view];
+             UIView* view = self.view;
+             CGRect r1 = [v1 convertRect:v1.frame toView:view];
+             CGRect r2 = [v2 convertRect:v2.frame toView:view];
 
              if (r1.origin.y < r2.origin.y)
              {

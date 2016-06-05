@@ -9,6 +9,7 @@
 #import "NSObject+AKAConcurrencyTools.h"
 
 #import "AKABinding_Protected.h"
+#import "AKABinding+DelegateSupport.h"
 #import "AKABinding_UILabel_textBinding.h"
 #import "AKAFormatterPropertyBinding.h"
 #import "AKANumberFormatterPropertyBinding.h"
@@ -93,12 +94,7 @@
 
 #pragma mark - Initialization
 
-- (void)validateTarget:(req_id)target
-{
-    NSParameterAssert([target isKindOfClass:[UILabel class]]);
-}
-
-- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError __unused)error
 {
     (void)view;
 
@@ -295,7 +291,21 @@
 
 #pragma mark - Binding Delegate implementation
 
-- (void)binding:(req_AKABinding)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+- (BOOL)shouldReceiveDelegateMessagesForSubBindings
+{
+    return YES;
+}
+
+- (BOOL)shouldReceiveDelegateMessagesForTransitiveSubBindings
+{
+    return YES;
+}
+
+- (void)                binding:(req_AKABinding)binding
+           didUpdateTargetValue:(opt_id __unused)oldTargetValue
+                             to:(opt_id __unused)newTargetValue
+                 forSourceValue:(opt_id __unused)oldSourceValue
+                       changeTo:(opt_id __unused)newSourceValue
 {
     // TODO: this is a bit crude, check if there is a more elegant way to do this:
     // Update target value if the attribute formatter or its pattern changes (f.e. a search pattern)
@@ -310,13 +320,6 @@
              }
                                     waitForCompletion:NO];
         }
-    }
-
-    id<AKABindingDelegate> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:didUpdateTargetValue:to:)])
-    {
-        [delegate binding:binding didUpdateTargetValue:oldTargetValue to:newTargetValue];
     }
 }
 

@@ -26,7 +26,7 @@
 		8EA696561CEA535600E32BF6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EA696551CEA535600E32BF6 /* CoreData.framework */; };
 		8ED3FD071C2AA8A500C44412 /* SearchResultHighlightingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */; };
 		8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */; };
-		C4FC6B79C929DB4D51FBAC7E /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C7F1DFE0D88500CEDBE99B /* Pods_AKABeaconDemo.framework */; };
+		B11E9D34FE7710FB57C48CA2 /* Pods_AKABeaconDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AED27FDF9B63D87D876F9F5 /* Pods_AKABeaconDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,10 +43,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1FD8FAB8A7B64C6159095571 /* Pods-AKABeaconDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		56C7F1DFE0D88500CEDBE99B /* Pods_AKABeaconDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeaconDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AED27FDF9B63D87D876F9F5 /* Pods_AKABeaconDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AKABeaconDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5EE7DFAB46B4CDC640EF258D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		82BB42AAD452083912A6140E /* Pods-AKABeaconDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig"; sourceTree = "<group>"; };
 		8E0B56B21CE3AFB600B3E407 /* ConditionalBindingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConditionalBindingsViewController.h; sourceTree = "<group>"; };
 		8E0B56B31CE3AFB600B3E407 /* ConditionalBindingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConditionalBindingsViewController.m; sourceTree = "<group>"; };
 		8E2115DA1BF5559200A89CFC /* BindingExpressionsPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = BindingExpressionsPlayground.playground; path = AKABeaconDemo/BindingExpressionsPlayground.playground; sourceTree = "<group>"; };
@@ -84,6 +82,8 @@
 		8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultHighlightingViewController.m; sourceTree = "<group>"; };
 		8EE9348E1BE85EA5008948B0 /* LabelDemoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelDemoTableViewController.h; sourceTree = "<group>"; };
 		8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelDemoTableViewController.m; sourceTree = "<group>"; };
+		AC38C92C2EB1D1559DB996B7 /* Pods-AKABeaconDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.debug.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		C30DBF25978D7CD1EC16987A /* Pods-AKABeaconDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AKABeaconDemo.release.xcconfig"; path = "../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,13 +92,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				8EA696561CEA535600E32BF6 /* CoreData.framework in Frameworks */,
-				C4FC6B79C929DB4D51FBAC7E /* Pods_AKABeaconDemo.framework in Frameworks */,
+				B11E9D34FE7710FB57C48CA2 /* Pods_AKABeaconDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		47D2F9111AF5BEBBE184B6DA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AC38C92C2EB1D1559DB996B7 /* Pods-AKABeaconDemo.debug.xcconfig */,
+				C30DBF25978D7CD1EC16987A /* Pods-AKABeaconDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		496D7E3F4BC1D8C3B8EB2345 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -106,7 +115,7 @@
 				8E2653321C3060B1001AC635 /* AKABeacon.framework */,
 				8E5386391BB8BB2D0063EDE1 /* AKACommons.framework */,
 				5EE7DFAB46B4CDC640EF258D /* Pods.framework */,
-				56C7F1DFE0D88500CEDBE99B /* Pods_AKABeaconDemo.framework */,
+				3AED27FDF9B63D87D876F9F5 /* Pods_AKABeaconDemo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,7 +141,7 @@
 				8E91E73C1BB228A900F7618F /* AKABeaconDemo */,
 				8E91E73B1BB228A900F7618F /* Products */,
 				496D7E3F4BC1D8C3B8EB2345 /* Frameworks */,
-				9F6FE2D2DADB86AFFF684B42 /* Pods */,
+				47D2F9111AF5BEBBE184B6DA /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -185,15 +194,6 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		9F6FE2D2DADB86AFFF684B42 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1FD8FAB8A7B64C6159095571 /* Pods-AKABeaconDemo.debug.xcconfig */,
-				82BB42AAD452083912A6140E /* Pods-AKABeaconDemo.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -201,13 +201,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8E91E75C1BB228A900F7618F /* Build configuration list for PBXNativeTarget "AKABeaconDemo" */;
 			buildPhases = (
-				741ADA188FFE41BBB3F1AE31 /* 📦 Check Pods Manifest.lock */,
+				4512F91E6AA9AD0CB3B64F40 /* 📦 Check Pods Manifest.lock */,
 				8E91E7361BB228A900F7618F /* Sources */,
 				8E91E7371BB228A900F7618F /* Frameworks */,
 				8E91E7381BB228A900F7618F /* Resources */,
 				8EFBE8591BBC4370004E264F /* Embed Frameworks */,
-				E1DE9F2B3144286903F64526 /* 📦 Embed Pods Frameworks */,
-				5F7BC9BBA18D1844429BB270 /* 📦 Copy Pods Resources */,
+				0925B3C01DCBDBD983302894 /* 📦 Embed Pods Frameworks */,
+				62551CE0E3CFAF8EFDBCF6D6 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -266,22 +266,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5F7BC9BBA18D1844429BB270 /* 📦 Copy Pods Resources */ = {
+		0925B3C01DCBDBD983302894 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		741ADA188FFE41BBB3F1AE31 /* 📦 Check Pods Manifest.lock */ = {
+		4512F91E6AA9AD0CB3B64F40 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -296,19 +296,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		E1DE9F2B3144286903F64526 /* 📦 Embed Pods Frameworks */ = {
+		62551CE0E3CFAF8EFDBCF6D6 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/../../Pods/Target Support Files/Pods-AKABeaconDemo/Pods-AKABeaconDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -447,7 +447,7 @@
 		};
 		8E91E75D1BB228A900F7618F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FD8FAB8A7B64C6159095571 /* Pods-AKABeaconDemo.debug.xcconfig */;
+			baseConfigurationReference = AC38C92C2EB1D1559DB996B7 /* Pods-AKABeaconDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -460,7 +460,7 @@
 		};
 		8E91E75E1BB228A900F7618F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 82BB42AAD452083912A6140E /* Pods-AKABeaconDemo.release.xcconfig */;
+			baseConfigurationReference = C30DBF25978D7CD1EC16987A /* Pods-AKABeaconDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

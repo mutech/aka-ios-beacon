@@ -7,7 +7,10 @@
 //
 
 #import "NSObject+AKAConcurrencyTools.h"
+
 #import "AKABinding_UISegmentedControl_valueBinding.h"
+#import "AKABinding+DelegateSupport.h"
+
 #import "AKACollectionControlViewBinding.h"
 #import "AKABindingErrors.h"
 
@@ -22,6 +25,7 @@
 @property(nonatomic)                 BOOL                               isObserving;
 
 @end
+
 
 @implementation AKABinding_UISegmentedControl_valueBinding
 
@@ -41,13 +45,8 @@
     return result;
 }
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UISegmentedControl class]]);
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)        createTargetValuePropertyForTarget:(req_id)view
+                                                        error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISegmentedControl class]]);
 
@@ -130,9 +129,9 @@
 
 #pragma mark - Conversion
 
-- (BOOL)convertTargetValue:(id)targetValue
-             toSourceValue:(id  _Nullable __autoreleasing *)sourceValueStore
-                     error:(NSError *__autoreleasing  _Nullable *)error
+- (BOOL)                                   convertTargetValue:(opt_id)targetValue
+                                                toSourceValue:(out_id)sourceValueStore
+                                                        error:(out_NSError)error
 {
     BOOL result = YES;
     if (targetValue == nil)
@@ -170,9 +169,9 @@
     return result;
 }
 
-- (BOOL)convertSourceValue:(id)sourceValue
-             toTargetValue:(id  _Nullable __autoreleasing *)targetValueStore
-                     error:(NSError *__autoreleasing  _Nullable *)error
+- (BOOL)                                   convertSourceValue:(opt_id)sourceValue
+                                                toTargetValue:(out_id)targetValueStore
+                                                        error:(out_NSError)error
 {
     (void)error;
 
@@ -192,21 +191,21 @@
 
 #pragma mark - Change Tracking
 
-- (BOOL)startObservingChanges
+- (BOOL)                                startObservingChanges
 {
     BOOL result = [super startObservingChanges];
 
     return result;
 }
 
-- (BOOL)stopObservingChanges
+- (BOOL)                                 stopObservingChanges
 {
     BOOL result = [super stopObservingChanges];
 
     return result;
 }
 
-- (IBAction)viewValueDidChange:(id)sender
+- (IBAction)                               viewValueDidChange:(id)sender
 {
     (void)sender;
 
@@ -218,13 +217,107 @@
     _previouslySelectedRow = row;
 }
 
-- (void)binding:(req_AKABinding)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue
+#pragma mark - Properties
+
+- (UISegmentedControl *)                     segmentedControl
 {
-#if 0
-    if (binding == (req_AKABinding)self.attributeBindings[@"choices"])
-#else
+    UIView* result = self.target;
+
+    NSAssert([result isKindOfClass:[UISegmentedControl class]], @"Internal inconsistency, expected view %@ to be an instance of UISegmentedControl", result);
+
+    return (UISegmentedControl*)result;
+}
+
+@synthesize titleProperty = _titleProperty;
+- (AKAUnboundProperty*)                         titleProperty
+{
+    if (_titleProperty == nil && self.titleBindingExpression != nil)
+    {
+        id<AKABindingContextProtocol> context = self.bindingContext;
+
+        if (context != nil)
+        {
+            _titleProperty = [self.titleBindingExpression bindingSourceUnboundPropertyInContext:context];
+        }
+    }
+
+    return _titleProperty;
+}
+
+@synthesize imageProperty = _imageProperty;
+- (AKAUnboundProperty*)                         imageProperty
+{
+    if (_imageProperty == nil && self.imageBindingExpression != nil)
+    {
+        id<AKABindingContextProtocol> context = self.bindingContext;
+
+        if (context != nil)
+        {
+            _imageProperty = [self.imageBindingExpression bindingSourceUnboundPropertyInContext:context];
+        }
+    }
+
+    return _imageProperty;
+}
+
+#pragma mark - Titles and Images
+
+- (NSString*)                                    titleForItem:(id)item
+                                                  withDefault:(id)defaultValue
+{
+    id title = [self.titleProperty valueForTarget:item];
+    if (title == nil)
+    {
+        title = defaultValue;
+    }
+    if (title != nil && ![title isKindOfClass:[NSString class]])
+    {
+        title = [NSString stringWithFormat:@"%@", title];
+    }
+    return title;
+}
+
+- (UIImage*)                                     imageForItem:(id)item
+{
+    id image = [self.imageProperty valueForTarget:item];
+    if (image != nil && ![image isKindOfClass:[UIImage class]])
+    {
+        if ([image isKindOfClass:[NSString class]])
+        {
+            image = [UIImage imageNamed:(NSString*)image];
+        }
+        else if ([image isKindOfClass:[NSData class]])
+        {
+            image = [UIImage imageWithData:(NSData*)image];
+        }
+        else
+        {
+            // TODO: do something when we can't use the value as image
+            image = nil;
+        }
+    }
+    return image;
+}
+
+#pragma mark - AKABindingDelegate
+
+- (BOOL)          shouldReceiveDelegateMessagesForSubBindings
+{
+    return YES;
+}
+
+- (BOOL)shouldReceiveDelegateMessagesForTransitiveSubBindings
+{
+    return YES;
+}
+
+- (void)                                              binding:(req_AKABinding)binding
+                                         didUpdateTargetValue:(opt_id)oldTargetValue
+                                                           to:(opt_id)newTargetValue
+                                               forSourceValue:(opt_id __unused)oldSourceValue
+                                                     changeTo:(opt_id __unused)newSourceValue
+{
     if (YES)
-#endif
     {
         // TODO: This should be implemented as AKACollectionProperty or AKACollectionBinding or something else which is reusable, review later
         NSArray* items = nil;
@@ -334,7 +427,8 @@
     }
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceControllerWillChangeContent:(id)sourceDataController
+- (void)                                              binding:(req_AKACollectionControlViewBinding)binding
+                            sourceControllerWillChangeContent:(id)sourceDataController
 {
     (void)binding;
     (void)sourceDataController;
@@ -342,7 +436,10 @@
     [UIView beginAnimations:nil context:nil];
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceController:(id)sourceDataController insertedItem:(id)sourceCollectionItem atIndexPath:(NSIndexPath *)indexPath
+- (void)                                              binding:(req_AKACollectionControlViewBinding)binding
+                                             sourceController:(id)sourceDataController
+                                                 insertedItem:(id)sourceCollectionItem
+                                                  atIndexPath:(NSIndexPath *)indexPath
 {
     (void)binding;
     (void)sourceDataController;
@@ -366,20 +463,19 @@
     }
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceController:(id)sourceDataController deletedItem:(id)sourceCollectionItem atIndexPath:(NSIndexPath *)indexPath
+- (void)                                              binding:(req_AKACollectionControlViewBinding __unused)binding
+                                             sourceController:(id __unused)sourceDataController
+                                                  deletedItem:(id __unused)sourceCollectionItem
+                                                  atIndexPath:(NSIndexPath *)indexPath
 {
-    (void)binding;
-    (void)sourceDataController;
-    (void)sourceCollectionItem;
-
     [self.segmentedControl removeSegmentAtIndex:(NSUInteger)indexPath.row animated:YES];
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceController:(id)sourceDataController updatedItem:(id)sourceCollectionItem atIndexPath:(NSIndexPath *)indexPath
+- (void)                                              binding:(req_AKACollectionControlViewBinding __unused)binding
+                                             sourceController:(id __unused)sourceDataController
+                                                  updatedItem:(id)sourceCollectionItem
+                                                  atIndexPath:(NSIndexPath *)indexPath
 {
-    (void)binding;
-    (void)sourceDataController;
-
     id context = sourceCollectionItem;
 
     id image = [self imageForItem:context];
@@ -395,11 +491,12 @@
     }
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceController:(id)sourceDataController movedItem:(id)sourceCollectionItem fromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void)                                              binding:(req_AKACollectionControlViewBinding __unused)binding
+                                             sourceController:(id __unused)sourceDataController
+                                                    movedItem:(id)sourceCollectionItem
+                                                fromIndexPath:(NSIndexPath *)fromIndexPath
+                                                  toIndexPath:(NSIndexPath *)toIndexPath
 {
-    (void)binding;
-    (void)sourceDataController;
-
     NSUInteger fromIndex = (NSUInteger)fromIndexPath.row;
     NSUInteger toIndex = (NSUInteger)toIndexPath.row;
     if (toIndex > fromIndex)
@@ -448,94 +545,11 @@
     }
 }
 
-- (void)binding:(req_AKACollectionControlViewBinding)binding sourceControllerDidChangeContent:(id)sourceDataController
+- (void)                                              binding:(req_AKACollectionControlViewBinding __unused)binding
+                             sourceControllerDidChangeContent:(id __unused)sourceDataController
 {
-    (void)binding;
-    (void)sourceDataController;
-
     [UIView commitAnimations];
     [self updateTargetValue];
-}
-
-#pragma mark - Properties
-
-- (UISegmentedControl *)                     segmentedControl
-{
-    UIView* result = self.target;
-
-    NSAssert([result isKindOfClass:[UISegmentedControl class]], @"Internal inconsistency, expected view %@ to be an instance of UISegmentedControl", result);
-
-    return (UISegmentedControl*)result;
-}
-
-@synthesize titleProperty = _titleProperty;
-- (AKAUnboundProperty*)                         titleProperty
-{
-    if (_titleProperty == nil && self.titleBindingExpression != nil)
-    {
-        id<AKABindingContextProtocol> context = self.bindingContext;
-
-        if (context != nil)
-        {
-            _titleProperty = [self.titleBindingExpression bindingSourceUnboundPropertyInContext:context];
-        }
-    }
-
-    return _titleProperty;
-}
-
-@synthesize imageProperty = _imageProperty;
-- (AKAUnboundProperty*)                         imageProperty
-{
-    if (_imageProperty == nil && self.imageBindingExpression != nil)
-    {
-        id<AKABindingContextProtocol> context = self.bindingContext;
-
-        if (context != nil)
-        {
-            _imageProperty = [self.imageBindingExpression bindingSourceUnboundPropertyInContext:context];
-        }
-    }
-
-    return _imageProperty;
-}
-
-#pragma mark - Titles and Images
-
-- (NSString*)titleForItem:(id)item withDefault:(id)defaultValue
-{
-    id title = [self.titleProperty valueForTarget:item];
-    if (title == nil)
-    {
-        title = defaultValue;
-    }
-    if (title != nil && ![title isKindOfClass:[NSString class]])
-    {
-        title = [NSString stringWithFormat:@"%@", title];
-    }
-    return title;
-}
-
-- (UIImage*)imageForItem:(id)item
-{
-    id image = [self.imageProperty valueForTarget:item];
-    if (image != nil && ![image isKindOfClass:[UIImage class]])
-    {
-        if ([image isKindOfClass:[NSString class]])
-        {
-            image = [UIImage imageNamed:(NSString*)image];
-        }
-        else if ([image isKindOfClass:[NSData class]])
-        {
-            image = [UIImage imageWithData:(NSData*)image];
-        }
-        else
-        {
-            // TODO: do something when we can't use the value as image
-            image = nil;
-        }
-    }
-    return image;
 }
 
 @end

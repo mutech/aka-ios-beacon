@@ -14,6 +14,7 @@
 #import "AKABindingBehavior.h"
 #import "AKADelegateDispatcher.h"
 #import "AKAContentSizeCategoryChangeListener.h"
+#import "AKAViewSizeTransitionListener.h"
 
 #pragma mark - AKABindingBehaviourDelegateDispatcher
 #pragma mark -
@@ -68,7 +69,9 @@
 @property(nonatomic) UIViewAnimationCurve                   rotationAnimationCurve;
 
 @property(nonatomic, readonly) NSHashTable<id<AKAContentSizeCategoryChangeListener>>*
-                                                            contentSizeCategoryChangeListeners;
+contentSizeCategoryChangeListeners;
+@property(nonatomic, readonly) NSHashTable<id<AKAViewSizeTransitionListener>>*
+viewSizeTransitionListeners;
 
 @property(nonatomic, readonly) BOOL                         isObservingChanges;
 
@@ -399,12 +402,25 @@
                                                   property:(SEL __unused)bindingProperty
                                      withBindingExpression:(AKABindingExpression*__unused)bindingExpression
 {
+    // TODO: create another delegate method to capture sub bindings or generalize this one. Alternatively, use controllers to manage sub bindings
+    // TODO: consider creating a common base listener protocol to minimize the number of conformance tests
+
     if ([binding conformsToProtocol:@protocol(AKAContentSizeCategoryChangeListener)])
     {
         id<AKAContentSizeCategoryChangeListener> listener = (id)binding;
         if (!self.contentSizeCategoryChangeListeners)
         {
-            _contentSizeCategoryChangeListeners = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
+            _contentSizeCategoryChangeListeners = [NSHashTable weakObjectsHashTable];
+        }
+        [self.contentSizeCategoryChangeListeners addObject:listener];
+    }
+
+    if ([binding conformsToProtocol:@protocol(AKAViewSizeTransitionListener)])
+    {
+        id<AKAViewSizeTransitionListener> listener = (id)binding;
+        if (!self.viewSizeTransitionListeners)
+        {
+            _viewSizeTransitionListeners = [NSHashTable weakObjectsHashTable];
         }
         [self.contentSizeCategoryChangeListeners addObject:listener];
     }
@@ -463,18 +479,30 @@
 - (void)                          viewWillTransitionToSize:(CGSize)size
                                  withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    // Record animation curve and duration of geometry changes to implement smooth animations alongside geometry changes (rotations):
-
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        self.rotationAnimationCurve = [context completionCurve];
-        self.rotationAnimationDuration = [context transitionDuration];
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        (void)context;
 
-        self.rotationAnimationCurve = 0;
-        self.rotationAnimationDuration = 0.0;
-    }];
+    // Record animation curve and duration of geometry changes to implement smooth animations alongside geometry changes (rotations):
+    [coordinator animateAlongsideTransition:
+     ^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context)
+     {
+         for (id<AKAViewSizeTransitionListener> listener in self.viewSizeTransitionListeners)
+         {
+             if (listener != [NSNull null])
+             {
+                 [listener      viewController:self
+                      viewWillTransitionToSize:size
+                     withTransitionCoordinator:coordinator];
+             }
+         }
+         self.rotationAnimationCurve = [context completionCurve];
+         self.rotationAnimationDuration = [context transitionDuration];
+     }
+                                 completion:
+     ^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context __unused)
+     {
+         self.rotationAnimationCurve = 0;
+         self.rotationAnimationDuration = 0.0;
+     }];
 }
 
 - (void)              adjustViewsForKeyboardHeightChangeTo:(CGFloat)newHeight

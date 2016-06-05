@@ -14,7 +14,7 @@
 
 #import "AKADynamicPlaceholderTableViewCell.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKADynamicPlaceholderTableViewCellCompositeControl.h"
 #import "AKAControl_Internal.h"
 #import "AKABinding.h"
@@ -136,8 +136,7 @@
 
 #pragma mark - Binding Target
 
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
-{
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError)error {
     (void)view;
     NSParameterAssert(view == nil || [view isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);
 
@@ -322,9 +321,10 @@
     NSParameterAssert(indexPath != nil);
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
-    if ([self.delegate respondsToSelector:@selector(binding:sourceController:insertedItem:atIndexPath:)])
+    id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceController:insertedItem:atIndexPath:)])
     {
-        [self.delegate binding:self sourceController:sourceDataController insertedItem:sourceCollectionItem atIndexPath:indexPath];
+        [delegate binding:self sourceController:sourceDataController insertedItem:sourceCollectionItem atIndexPath:indexPath];
     }
 
     NSIndexPath* placeholderTargetIndexPath =
@@ -361,9 +361,10 @@
     NSParameterAssert(indexPath != nil);
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
-    if ([self.delegate respondsToSelector:@selector(binding:sourceController:deletedItem:atIndexPath:)])
+    id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceController:deletedItem:atIndexPath:)])
     {
-        [self.delegate binding:self sourceController:sourceDataController deletedItem:sourceCollectionItem atIndexPath:indexPath];
+        [delegate binding:self sourceController:sourceDataController deletedItem:sourceCollectionItem atIndexPath:indexPath];
     }
 
     NSIndexPath* placeholderTargetIndexPath =
@@ -393,9 +394,10 @@
     NSParameterAssert(indexPath != nil);
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
-    if ([self.delegate respondsToSelector:@selector(binding:sourceController:updatedItem:atIndexPath:)])
+    id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceController:updatedItem:atIndexPath:)])
     {
-        [self.delegate binding:self sourceController:sourceDataController updatedItem:sourceCollectionItem atIndexPath:indexPath];
+        [delegate binding:self sourceController:sourceDataController updatedItem:sourceCollectionItem atIndexPath:indexPath];
     }
 
     NSIndexPath* placeholderTargetIndexPath =
@@ -422,9 +424,10 @@
     NSParameterAssert(fromIndexPath.row >= 0 && fromIndexPath.row != NSNotFound);
     NSParameterAssert(toIndexPath.row >= 0 && toIndexPath.row != NSNotFound);
 
-    if ([self.delegate respondsToSelector:@selector(binding:sourceController:movedItem:fromIndexPath:toIndexPath:)])
+    id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceController:movedItem:fromIndexPath:toIndexPath:)])
     {
-        [self.delegate binding:self sourceController:sourceDataController movedItem:sourceCollectionItem fromIndexPath:fromIndexPath toIndexPath:toIndexPath];
+        [delegate binding:self sourceController:sourceDataController movedItem:sourceCollectionItem fromIndexPath:fromIndexPath toIndexPath:toIndexPath];
     }
 
     AKATVDataSourceSpecification* defaultDS = self.placeholderOriginDataSourceSpecification;
@@ -448,9 +451,10 @@
 
 - (void)                    sourceControllerDidChangeContent:(req_id)sourceDataController
 {
-    if ([self.delegate respondsToSelector:@selector(binding:sourceControllerDidChangeContent:)])
+    id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
+    if ([delegate respondsToSelector:@selector(binding:sourceControllerDidChangeContent:)])
     {
-        [self.delegate binding:self sourceControllerDidChangeContent:sourceDataController];
+        [delegate binding:self sourceControllerDidChangeContent:sourceDataController];
     }
 
     [self.multiplexer endUpdates];

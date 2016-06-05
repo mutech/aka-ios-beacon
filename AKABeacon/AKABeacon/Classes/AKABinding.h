@@ -16,7 +16,7 @@
 #import "AKABindingExpression.h"
 #import "AKABindingSpecification.h"
 
-@interface AKABinding: NSObject<AKABindingDelegate>
+@interface AKABinding: NSObject
 
 #pragma mark - Initialization
 
@@ -101,10 +101,12 @@
 
 /**
  The binding delegate.
-
- @note deprecated. Use the binding behavior delegates (public interface). TODO: this property will be made available for sub classes only (or maybe internal).
+ 
+ Please note that delegate messages are propagated to the binding's controller and from there up to a binding behavior (if present) independent of this property.
+ 
+ The delegate is typically used by owner bindings.
  */
-@property(nonatomic, readonly, weak, nullable) id<AKABindingDelegate>         delegate;
+@property(nonatomic, weak, nullable) id<AKABindingDelegate>         delegate;
 
 #pragma mark - Conversion
 

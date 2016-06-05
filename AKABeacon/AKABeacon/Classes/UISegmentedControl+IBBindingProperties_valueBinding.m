@@ -8,7 +8,7 @@
 
 #import "UISegmentedControl+IBBindingProperties_valueBinding.h"
 #import "AKABinding_UISegmentedControl_valueBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 #import "NSObject+AKAAssociatedValues.h"
 

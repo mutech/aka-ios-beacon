@@ -8,22 +8,22 @@
 
 #import "AKABinding_UISlider_valueBinding.h"
 
+
 @interface AKABinding_UISlider_valueBinding()
 
-
-#if RESTORE_BOUND_VIEW_STATE
-@property(nonatomic) float originalValue;
-@property(nonatomic) float originalMinimumValue;
-@property(nonatomic) float originalMaximumValue;
-#endif
-
+/**
+ uiSlider.value is recorded whenever a change is observed to be able to provide the old value to change notification messages.
+ */
 @property(nonatomic) float previousValue;
 
 @end
 
+
 @implementation AKABinding_UISlider_valueBinding
 
-+ (AKABindingSpecification *)specification
+#pragma mark - Specification
+
++ (AKABindingSpecification *)                specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -50,17 +50,10 @@
     return result;
 }
 
-#pragma mark - Initialization
+#pragma mark - Initialization - Target Value Property
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UISlider class]]);
-}
-
-#pragma mark - Binding Target
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id)view
+                                                     error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISlider class]]);
 
@@ -90,12 +83,6 @@
                     [binding.uiSlider addTarget:binding
                                          action:@selector(targetValueDidChangeSender:)
                                forControlEvents:UIControlEventValueChanged];
-#if RESTORE_BOUND_VIEW_STATE
-                    self.originalValue = self.previousValue = binding.uiSlider.value;
-                    self.originalMinimumValue = binding.uiSlider.minimumValue;
-                    self.originalMaximumValue = binding.uiSlider.maximumValue;
-#endif
-                    
                 }
                 return result;
             }
@@ -109,25 +96,14 @@
                     [binding.uiSlider removeTarget:binding
                                             action:@selector(targetValueDidChangeSender:)
                                   forControlEvents:UIControlEventValueChanged];
-
-#if RESTORE_BOUND_VIEW_STATE
-                    binding.uiSlider.value = binding.originalValue;
-                    binding.uiSlider.minimumValue = binding.originalMinimumValue;
-                    binding.uiSlider.maximumValue = binding.originalMaximumValue;
-#endif
                 }
                 return result;
             }];
 }
 
-- (BOOL)startObservingChanges
-{
-    return [super startObservingChanges];
-}
-
 #pragma mark - Properties
 
-- (UISlider *)uiSlider
+- (UISlider *)                                    uiSlider
 {
     UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UISlider class]]);
@@ -137,10 +113,8 @@
 
 #pragma mark - Change Observation
 
-- (void)                        targetValueDidChangeSender:(id)sender
+- (void)                        targetValueDidChangeSender:(id __unused)sender
 {
-    (void)sender; // Not used
-
     NSNumber* newValue = @(self.uiSlider.value);
     NSNumber* oldValue = @(self.previousValue);
     self.previousValue = newValue.floatValue;
@@ -154,7 +128,8 @@
     newValue = @(self.uiSlider.value);
     if (newValue != oldValue)
     {
-        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+        [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue
+                                                                to:newValue];
     }
 }
 

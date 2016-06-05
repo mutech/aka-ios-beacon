@@ -6,11 +6,11 @@
 //  Copyright © 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKABindingExpression+Accessors.h"
 #import "UIViewController+AKAIBBindingProperties.h"
 
-@implementation AKAViewBinding (IBPropertySupport)
+@implementation AKABinding (IBPropertySupport)
 
 #pragma mark - Interface Builder Property Support
 

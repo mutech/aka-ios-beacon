@@ -8,7 +8,7 @@
 
 #import "UILabel+AKAIBBindingProperties_fontBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAFontPropertyBinding.h"
 
 

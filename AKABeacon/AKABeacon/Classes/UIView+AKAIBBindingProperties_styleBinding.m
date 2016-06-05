@@ -9,7 +9,7 @@
 #import "UIView+AKAIBBindingProperties_styleBinding.h"
 #import "AKABinding_UIView_styleBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 @implementation UIView (AKAIBBindingProperties_styleBinding)
 

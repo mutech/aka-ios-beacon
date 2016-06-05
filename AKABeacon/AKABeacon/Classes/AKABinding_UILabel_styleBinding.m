@@ -18,7 +18,7 @@
     dispatch_once(&onceToken, ^{
         NSDictionary* spec =
         @{ @"bindingType":          [AKABinding_UILabel_styleBinding class],
-           @"targetType":           [UIView class],
+           @"targetType":           [UILabel class],
            @"expressionType":       @(AKABindingExpressionTypeNone),
            @"attributes":
                @{ @"textColor":

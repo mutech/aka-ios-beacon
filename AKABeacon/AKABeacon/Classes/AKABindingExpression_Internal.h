@@ -24,7 +24,7 @@
 
 #pragma mark - Serialization
 
-@property(nonatomic, readonly, nullable)NSString* textForPrimaryExpression;
+//@property(nonatomic, readonly, nullable)NSString* textForPrimaryExpression;
 
 - (req_NSString)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level
                                                   indent:(opt_NSString)indent;

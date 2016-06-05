@@ -35,8 +35,12 @@
 - (AKATVRowSegment*)splitAtOffset:(NSUInteger)offset
 {
     NSParameterAssert(offset > 0 && offset < self.numberOfRows);
+
+    AKATVDataSourceSpecification* dataSource = self.dataSource;
+    NSAssert(dataSource, @"Cannot split rowsegment without data source (check if/why it might have been released unexpectedly)");
+
     AKATVRowSegment* result =
-    [[AKATVRowSegment alloc] initWithDataSource:self.dataSource
+    [[AKATVRowSegment alloc] initWithDataSource:dataSource
                                       indexPath:[NSIndexPath indexPathForRow:self.indexPath.row + (NSInteger)offset
                                                                    inSection:self.indexPath.section]
                                           count:self.numberOfRows - offset];

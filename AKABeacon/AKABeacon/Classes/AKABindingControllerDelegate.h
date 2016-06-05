@@ -25,11 +25,11 @@
 
  @return YES if the binding should be created and added to the binding controller, NO if it should be ignored.
  */
-- (BOOL)                                  shouldController:(req_AKABindingController __unused)controller
+- (BOOL)                                  shouldController:(req_AKABindingController)controller
                                           addBindingOfType:(req_Class)bindingType
                                                  forTarget:(req_id)target
                                                   property:(req_SEL)bindingProperty
-                                         bindingExpression:(req_AKABindingExpression __unused)bindingExpression;
+                                         bindingExpression:(req_AKABindingExpression)bindingExpression;
 
 @optional
 /**
@@ -42,14 +42,14 @@
  @param bindingProperty   the property (getter selector) holding the binding expression (f.e. textBinding_aka)
  @param bindingExpression the binding expression that was used to create the binding.
  */
-- (void)                                        controller:(req_AKABindingController __unused)controller
+- (void)                                        controller:(req_AKABindingController)controller
                                             willAddBinding:(req_AKABinding)binding
-                                                 forTarget:(req_id __unused)view
-                                                  property:(req_SEL __unused)bindingProperty
-                                         bindingExpression:(req_AKABindingExpression __unused)bindingExpression;
+                                                 forTarget:(req_id)view
+                                                  property:(req_SEL)bindingProperty
+                                         bindingExpression:(req_AKABindingExpression)bindingExpression;
 
 @optional
-- (void)                                        controller:(req_AKABindingController __unused)controller
+- (void)                                        controller:(req_AKABindingController)controller
                                failedToCreateBindingOfType:(req_Class)bindingType
                                                  forTarget:(req_id)target
                                                   property:(req_SEL)bindingProperty
@@ -57,15 +57,13 @@
                                                  withError:(req_NSError)error;
 
 @optional
-- (void)                                        controller:(req_AKABindingController __unused)controller
+- (void)                                        controller:(req_AKABindingController)controller
                                              didAddBinding:(req_AKABinding)binding
-                                                 forTarget:(req_id __unused)view
-                                                  property:(req_SEL __unused)bindingProperty
-                                         bindingExpression:(req_AKABindingExpression __unused)bindingExpression;
+                                                 forTarget:(req_id)view
+                                                  property:(req_SEL)bindingProperty
+                                         bindingExpression:(req_AKABindingExpression)bindingExpression;
 
-
-#pragma mark - AKABindingDelegate
-
+#pragma mark - AKABindingDelegate Propagation
 
 @optional
 - (void)                                   controller:(req_AKABindingController)controller
@@ -125,9 +123,9 @@
 - (void)                                   controller:(req_AKABindingController)controller
                                               binding:(req_AKABinding)binding
                                  didUpdateTargetValue:(opt_id)oldTargetValue
-                                                   to:(opt_id)newTargetValue;
-
-#pragma mark - AKAControlViewBindingDelegate
+                                                   to:(opt_id)newTargetValue
+                                       forSourceValue:(opt_id)oldSourceValue
+                                             changeTo:(opt_id)newSourceValue;
 
 @optional
 - (void)                                   controller:(req_AKABindingController)controller

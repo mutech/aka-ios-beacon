@@ -7,6 +7,7 @@
 //
 
 #import "AKABindingDelegateDispatcher.h"
+#import "AKAArrayPropertyBinding.h"
 
 #pragma mark - AKABindingDelegateDispatcher Implementation
 #pragma mark -
@@ -24,7 +25,7 @@
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-        protocols = @[ @protocol(AKABindingDelegate) ];
+        protocols = @[ @protocol(AKABindingDelegate), @protocol(AKAArrayPropertyBindingDelegate) ];
     });
 
 

@@ -8,7 +8,7 @@
 
 #import "UIControl+AKAIBBindingProperties_enabledBinding.h"
 #import "AKABinding_UIControl_enabledBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 
 @implementation UIControl (AKAIBBindingProperties_enabledBinding)

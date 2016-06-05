@@ -16,7 +16,7 @@
 
 #pragma mark - Convenience
 
-@property(nonatomic, readonly) UISwitch*          uiSwitch;
+@property(nonatomic, readonly) UISwitch* uiSwitch;
 
 @end
 
@@ -26,7 +26,9 @@
 
 @implementation AKABinding_UISwitch_stateBinding
 
-+ (AKABindingSpecification *)specification
+#pragma mark - Specification
+
++ (AKABindingSpecification *)                specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -41,17 +43,10 @@
     return result;
 }
 
-#pragma mark - Initialization
-
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UISwitch class]]);
-}
-
 #pragma mark - Binding Target
 
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id)view
+                                                     error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISwitch class]]);
     (void)view;
@@ -102,7 +97,7 @@
 
 #pragma mark - Properties
 
-- (UISwitch *)uiSwitch
+- (UISwitch *)                                    uiSwitch
 {
     UIView* result = self.target;
     NSParameterAssert(result == nil || [result isKindOfClass:[UISwitch class]]);
@@ -111,26 +106,6 @@
 }
 
 #pragma mark - Change Observation
-
-- (NSNumber*)                                canonicalBool:(BOOL)value
-{
-    NSNumber* kYes = (__bridge NSNumber*)kCFBooleanTrue;
-    NSNumber* kNo  = (__bridge NSNumber*)kCFBooleanFalse;
-
-    return value ? kYes : kNo;
-}
-
-- (NSNumber*)                             canonicalBoolean:(NSNumber*)value
-{
-    if (value == nil || value == (id)[NSNull null])
-    {
-        return nil;
-    }
-    else
-    {
-        return [self canonicalBool:value.boolValue];
-    }
-}
 
 - (void)                        targetValueDidChangeSender:(id)sender
 {
@@ -149,6 +124,34 @@
     if (newValue.boolValue != oldValue.boolValue)
     {
         [self.targetValueProperty notifyPropertyValueDidChangeFrom:oldValue to:newValue];
+    }
+}
+
+#pragma mark - Helpers
+
+- (NSNumber*)                                canonicalBool:(BOOL)value
+{
+    static NSNumber* kYes;
+    static NSNumber* kNo;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        kYes = (__bridge NSNumber*)kCFBooleanTrue;
+        kNo  = (__bridge NSNumber*)kCFBooleanFalse;
+    });
+
+    return value ? kYes : kNo;
+}
+
+- (NSNumber*)                             canonicalBoolean:(NSNumber*)value
+{
+    if (value == nil || value == (id)[NSNull null])
+    {
+        return nil;
+    }
+    else
+    {
+        return [self canonicalBool:value.boolValue];
     }
 }
 

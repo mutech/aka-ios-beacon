@@ -47,15 +47,10 @@
 
 #pragma mark - Initialization
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UIControl class]]);
-}
-
-#pragma mark - Binding Target
+#pragma mark - Initialization - Target Value Property
 
 - (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+                                                error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UIControl class]]);
 
@@ -151,6 +146,7 @@
 #pragma mark - Binding Target
 
 - (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+                                                error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UIBarButtonItem class]]);
 

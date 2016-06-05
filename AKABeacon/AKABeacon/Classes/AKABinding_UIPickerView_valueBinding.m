@@ -38,13 +38,8 @@
     return result;
 }
 
-- (void)validateTarget:(req_id)target
-{
-    (void)target;
-    NSParameterAssert([target isKindOfClass:[UIPickerView class]]);
-}
-
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)        createTargetValuePropertyForTarget:(req_id)view
+                                                        error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UIPickerView class]]);
     (void)view;

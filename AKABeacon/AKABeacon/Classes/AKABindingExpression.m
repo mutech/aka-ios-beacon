@@ -147,6 +147,11 @@
     if (specification)
     {
         AKABindingExpressionType expressionType = specification.expressionType;
+        if (expressionType == AKABindingExpressionTypeForwardToPrimaryAttribute)
+        {
+            expressionType = AKABindingExpressionTypeNone;
+        }
+
         result = (self.expressionType & expressionType) != 0;
 
         if (!result && error)

@@ -22,7 +22,9 @@
 
 @implementation AKABinding_UIImageView_imageBinding
 
-+ (AKABindingSpecification*)specification
+#pragma mark - Specification
+
++ (AKABindingSpecification*)              specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -48,14 +50,9 @@
 
 #pragma mark - Initialization
 
-- (void)validateTarget:(req_id)target
-{
-    NSParameterAssert([target isKindOfClass:[UIImageView class]]);
-}
-
-- (UIImage*)imageWithWidth:(CGFloat)width
-                    height:(CGFloat)height
-                     color:(UIColor*)color
+- (UIImage*)                             imageWithWidth:(CGFloat)width
+                                                 height:(CGFloat)height
+                                                  color:(UIColor*)color
 {
     CGSize size = CGSizeMake(width, height);
     UIGraphicsBeginImageContextWithOptions(size, YES, 0);
@@ -66,7 +63,8 @@
     return image;
 }
 
-- (AKAProperty*)createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty  )createTargetValuePropertyForTarget:(req_id)view
+                                                  error:(out_NSError __unused)error
 {
     (void)view;
 
@@ -123,7 +121,7 @@
             }];
 }
 
-- (void)transitionAnimation:(void (^)())animations
+- (void)                            transitionAnimation:(void (^)())animations
 {
     if (self.transitionAnimation.duration > 0.0)
     {
@@ -156,20 +154,21 @@
     }
 }
 
-- (UIImageView *)imageView
+- (UIImageView *)                             imageView
 {
-    UIView* result = self.target;
+    id result = self.target;
 
-    NSAssert(result == nil || [result isKindOfClass:[UIImageView class]], @"View for %@ is required to be an instance of UIImageView", self.class);
+    NSAssert(result == nil || [result isKindOfClass:[UIImageView class]],
+             @"View for %@ is required to be an instance of UIImageView", self.class);
 
-    return (UIImageView*)result;
+    return result;
 }
 
 #pragma mark - Conversion
 
-- (BOOL)convertSourceValue:(opt_id)sourceValue
-             toTargetValue:(out_id)targetValueStore
-                     error:(out_NSError)error
+- (BOOL)                             convertSourceValue:(opt_id)sourceValue
+                                          toTargetValue:(out_id)targetValueStore
+                                                  error:(out_NSError)error
 {
     BOOL result = NO;
 

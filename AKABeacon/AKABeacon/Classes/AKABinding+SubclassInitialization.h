@@ -61,14 +61,13 @@
 
 /**
  Called by initWithTarget:expression:context:owner:delegate:error: to check that a given target is valid.
- 
- Subclasses which support initialization using targets (as opposed to target properties) have to implement this method and throw an exception if the target is not supported or otherwise invalid for use with the concrete binding type.
- 
- The default implementation throws an exception indicating that the sub class failed to implement this method.
+
+ The default implementation uses the type pattern defined in the binding specification to validate the target type.
 
  @param target the target to validate.
  */
-- (void)                                        validateTarget:(req_id)target;
+- (BOOL)                                        validateTarget:(req_id __unused)target
+                                                         error:(out_NSError)error;
 
 /**
  Called by initWithTarget:expression:context:delegate:error: to obtain an instance of AKAProperty to be used as binding target for initWithTarget:expression:context:owner:delegate:error:
@@ -79,8 +78,8 @@
 
  The default implementation throws an exception indicating that the sub class failed to implement this method.
  */
-- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id)target;
-
+- (req_AKAProperty)         createTargetValuePropertyForTarget:(req_id)target
+                                                         error:(out_NSError)error;
 
 #pragma mark - Binding Source Initialization
 /// @name Binding Source Initialization

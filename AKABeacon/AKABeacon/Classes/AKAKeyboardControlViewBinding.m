@@ -9,6 +9,8 @@
 #import "AKAErrors.h"
 
 #import "AKAKeyboardControlViewBinding.h"
+#import "AKAKeyboardControlViewBinding+DelegateSupport.h"
+
 #import "AKAKeyboardActivationSequenceItemProtocol_Internal.h"
 #import "AKAKeyboardActivationSequence.h"
 
@@ -87,86 +89,6 @@
     else
     {
         AKAErrorAbstractMethodImplementationMissing();
-    }
-}
-
-#pragma mark - UIResponder Events
-
-- (BOOL)                              shouldResponderActivate:(req_UIResponder)responder
-{
-    BOOL result = responder != nil;
-
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if (result && [delegate respondsToSelector:@selector(shouldBinding:responderActivate:)])
-    {
-        result = [delegate shouldBinding:self responderActivate:responder];
-    }
-
-    return result;
-}
-
-- (void)                                responderWillActivate:(req_UIResponder)responder
-{
-    [self.keyboardActivationSequence prepareToActivateItem:self];
-
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:responderWillActivate:)])
-    {
-        [delegate binding:self responderWillActivate:responder];
-    }
-}
-
-- (void)                                 responderDidActivate:(req_UIResponder)responder
-{
-    [self.keyboardActivationSequence activateItem:self];
-
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:responderDidActivate:)])
-    {
-        [delegate binding:self responderDidActivate:responder];
-    }
-}
-
-- (BOOL)                            shouldResponderDeactivate:(req_UIResponder)responder
-{
-    BOOL result = responder != nil;
-
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if (result && [delegate respondsToSelector:@selector(shouldBinding:responderDeactivate:)])
-    {
-        result = [delegate shouldBinding:self responderDeactivate:responder];
-    }
-
-    return result;
-}
-
-- (void)                              responderWillDeactivate:(req_UIResponder)responder
-{
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:responderWillDeactivate:)])
-    {
-        [delegate binding:self responderWillDeactivate:responder];
-    }
-}
-
-- (void)                               responderDidDeactivate:(req_UIResponder)responder
-{
-    AKAKeyboardActivationSequence* sequence = self.keyboardActivationSequence;
-
-    if (sequence.activeItem == self)
-    {
-        [sequence deactivate];
-    }
-    id<AKAKeyboardControlViewBindingDelegate> delegate = self.delegate;
-
-    if ([delegate respondsToSelector:@selector(binding:responderDidDeactivate:)])
-    {
-        [delegate binding:self responderDidDeactivate:responder];
     }
 }
 

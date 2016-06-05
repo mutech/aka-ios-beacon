@@ -193,14 +193,14 @@ static NSString*const   keywordCGRect = @"CGRect";
                                   withSpecification:(opt_AKABindingSpecification)specification
                                               error:(out_NSError)error
 {
-    id primaryExpression = nil;
-    NSDictionary* attributes = nil;
+    id primaryExpressionValue = nil;
+    NSMutableDictionary* attributes = nil;
     Class bindingExpressionType = nil;
 
     [self skipWhitespaceAndNewlineCharacters];
 
     // Parse constant of scope
-    BOOL result = [self parseConstantOrScope:&primaryExpression
+    BOOL result = [self parseConstantOrScope:&primaryExpressionValue
                            withSpecification:specification
                                         type:&bindingExpressionType
                                        error:error];
@@ -208,7 +208,7 @@ static NSString*const   keywordCGRect = @"CGRect";
     if (result && [bindingExpressionType isSubclassOfClass:[AKAControlStructureBindingExpression class]])
     {
         result = [self parseControlStructure:store
-                                 withKeyword:primaryExpression
+                                 withKeyword:primaryExpressionValue
                                specification:specification
                                        error:error];
     }
@@ -243,13 +243,13 @@ static NSString*const   keywordCGRect = @"CGRect";
                 }
                 else
                 {
-                    result = [self parseKeyPath:&primaryExpression error:error];
+                    result = [self parseKeyPath:&primaryExpressionValue error:error];
 
                     if (result && requireKeyPath &&
-                        ((NSString*)primaryExpression).length &&
+                        ((NSString*)primaryExpressionValue).length &&
                         [bindingExpressionType isSubclassOfClass:[AKAEnumConstantBindingExpression class]])
                     {
-                        primaryExpression = [NSString stringWithFormat:@".%@", primaryExpression];
+                        primaryExpressionValue = [NSString stringWithFormat:@".%@", primaryExpressionValue];
                     }
 
                     if (result && bindingExpressionType == nil)
@@ -299,11 +299,33 @@ static NSString*const   keywordCGRect = @"CGRect";
             }
         }
 
+        if (specification.bindingSourceSpecification.expressionType == AKABindingExpressionTypeForwardToPrimaryAttribute)
+        {
+            // TODO: consistency checks and error reporting:
+            NSString* primaryAttributeName = specification.bindingSourceSpecification.primaryAttribute;
+            AKABindingAttributeSpecification* attributeSpecification = specification.bindingSourceSpecification.attributes[primaryAttributeName];
+            AKABindingExpression* primaryAttributeExpression = attributes[primaryAttributeName];
+            NSDictionary* primaryAttributeAttributes = primaryAttributeExpression.attributes;
+
+            primaryAttributeExpression = [[bindingExpressionType class] alloc];
+            primaryAttributeExpression = [primaryAttributeExpression initWithPrimaryExpression:primaryExpressionValue
+                                                                                    attributes:primaryAttributeAttributes
+                                                                                 specification:attributeSpecification];
+            if (!attributes)
+            {
+                attributes = [NSMutableDictionary new];
+            }
+            attributes[primaryAttributeName] = primaryAttributeExpression;
+
+            bindingExpressionType = [AKABindingExpression class];
+            primaryExpressionValue = nil;
+        }
+
         if (result && store != nil)
         {
             // TODO: add error parameter to binding expression constructor
             AKABindingExpression* bindingExpression = [bindingExpressionType alloc];
-            bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpression
+            bindingExpression = [bindingExpression initWithPrimaryExpression:primaryExpressionValue
                                                                   attributes:attributes
                                                                specification:specification];
             *store = bindingExpression;
@@ -347,7 +369,7 @@ static NSString*const   keywordCGRect = @"CGRect";
                 [self registerParseError:error
                                 withCode:AKAParseErrorUnterminatedParenthizedExpression
                               atPosition:self.scanner.scanLocation
-                                  reason:@"Unterminated parenthisized expression"];
+                                  reason:@"Unterminated parenthesized expression"];
             }
         }
     }

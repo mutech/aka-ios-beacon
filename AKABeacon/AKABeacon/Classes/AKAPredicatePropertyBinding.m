@@ -69,6 +69,10 @@
                                  error:(out_NSError)error
 {
     BOOL result;
+
+    id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+    NSAssert(bindingContext != nil, @"Binding context released or undefined");
+
     __weak typeof(self) weakSelf = self;
 
     AKAProperty* targetProperty = [AKAProperty propertyOfWeakKeyValueTarget:self.substitutionValues
@@ -81,9 +85,9 @@
     AKABinding *attributeBinding = [AKAPropertyBinding bindingToTarget:self.substitutionValues
                                                    targetValueProperty:targetProperty
                                                         withExpression:attributeExpression
-                                                               context:self.bindingContext
+                                                               context:bindingContext
                                                                  owner:self
-                                                              delegate:weakSelf
+                                                              delegate:nil
                                                                  error:error];
     result = attributeBinding != nil;
     if (result)

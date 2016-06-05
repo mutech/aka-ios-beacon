@@ -9,7 +9,7 @@
 #import "UILabel+AKAIBBindingProperties_textBinding.h"
 #import "UITextView+AKAIBBindingProperties_textBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 
 #import "AKABinding_UILabel_textBinding.h"
 

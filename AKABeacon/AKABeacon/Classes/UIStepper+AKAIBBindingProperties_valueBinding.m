@@ -11,7 +11,7 @@
 #import "UIStepper+AKAIBBindingProperties_valueBinding.h"
 
 #import "AKABinding_UIStepper_valueBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAControlViewProtocol.h"
 #import "AKAScalarControl.h"
 

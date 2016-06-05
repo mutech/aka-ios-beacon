@@ -138,6 +138,13 @@ typedef NS_OPTIONS(uint_fast64_t, AKABindingExpressionType)
     AKABindingExpressionTypeConditional = (1 << 7),
 
     /**
+       Specifies that the primary expression is forwareded to the primary attribute. The effective type is AKABindingExpressionTypeNone.
+     
+       Binding expressions parsed according to this expression type will transform the binding expression so that the primary expression will appear as attribute expression for the attribute specified as primaryAttribute.
+     */
+    AKABindingExpressionTypeForwardToPrimaryAttribute = (1 << 8),
+
+    /**
        Specifies a class primary expression (e.g. <ClassName>)
      */
     AKABindingExpressionTypeClassConstant = (1 << 10),
@@ -467,6 +474,11 @@ FOUNDATION_EXPORT NSString* _Nonnull const kAKABindingSpecificationAttributesKey
 @property(nonatomic, readonly) AKABindingExpressionType        expressionType;
 
 /**
+ Only use if expressionType is AKABindingExpressionTypeForwardToPrimaryAttribute: Specifies the name of the primary attribute to which the primary expression will be forwarded.
+ */
+@property(nonatomic, readonly, nullable) NSString*             primaryAttribute;
+
+/**
  * Specifies which attributes can be defined in a matching binding expression.
  */
 @property(nonatomic, readonly, nonnull)
@@ -621,6 +633,11 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
  Specifies if the attribute has to be provided in matching binding expressions.
  */
 @property(nonatomic, readonly) BOOL                            required;
+
+/**
+ Specifies whether this attribute is the primary attribute to which the enclosing binding expression's primary expression is forwarded.
+ */
+@property(nonatomic, readonly) BOOL                            primary;
 
 /**
  Specifies how the attribute is used to set up the binding.

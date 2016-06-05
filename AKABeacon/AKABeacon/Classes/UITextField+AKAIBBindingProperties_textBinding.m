@@ -13,7 +13,7 @@
 
 #import "AKABinding_UITextField_textBinding.h"
 
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
 

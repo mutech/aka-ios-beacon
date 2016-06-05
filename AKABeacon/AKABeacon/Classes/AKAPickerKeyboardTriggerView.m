@@ -11,7 +11,7 @@
 #import "AKAPickerKeyboardTriggerView.h"
 
 #import "AKABinding_AKAPickerKeyboardTriggerView_pickerBinding.h"
-#import "AKAViewBinding+IBPropertySupport.h"
+#import "AKABinding+IBPropertySupport.h"
 #import "AKAKeyboardControl.h"
 
 

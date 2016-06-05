@@ -68,12 +68,7 @@
 
 #pragma mark - Properties
 
-@property(nonatomic, readonly, nonnull)  id<AKABindingDelegate>     delegateForSubBindings;
-
-#pragma mark - Change Tracking
-
-#pragma mark Observation start process events
-
+//@property(nonatomic, readonly, nonnull)  id<AKABindingDelegate>     delegateForSubBindings;
 
 @end
 

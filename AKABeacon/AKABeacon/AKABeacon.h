@@ -139,7 +139,6 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKABindingControllerDelegate.h>
 #import <AKABeacon/AKABindingController+BindingInitialization.h>
 #import <AKABeacon/AKABindingController+ChildBindingControllers.h>
-#import <AKABeacon/AKABindingController+BindingDelegate.h>
 #import <AKABeacon/AKABindingController+BindingDelegatePropagation.h>
 #import <AKABeacon/AKABindingController+BindingContextProtocol.h>
 #import <AKABeacon/AKABindingController+KeyboardActivationSequence.h>
@@ -147,24 +146,23 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings
 #import <AKABeacon/AKABindingExpression+Accessors.h>
 #import <AKABeacon/AKABindingErrors.h>
+#import <AKABeacon/AKABindingExpressionEvaluator.h>
 #import <AKABeacon/AKABindingDelegate.h>
 #import <AKABeacon/AKABindingOwnerProtocol.h>
 #import <AKABeacon/AKABindingDelegateDispatcher.h>
+#import <AKABeacon/AKABinding_Protected.h>
 #import <AKABeacon/AKABinding+SubclassInitialization.h>
 #import <AKABeacon/AKABinding+SubclassObservationEvents.h>
-#import "AKABinding+BindingOwner.h"
+#import <AKABeacon/AKABinding+BindingOwner.h>
 #import <AKABeacon/AKABinding+DelegateSupport.h>
-#import <AKABeacon/AKABinding_Protected.h>
+#import <AKABeacon/AKABinding+IBPropertySupport.h>
+
 #import <AKABeacon/AKAConditionalBinding.h>
 #import <AKABeacon/AKABindingContextProtocol.h>
 #import <AKABeacon/AKAChildBindingContext.h>
 
 // Bindings/ViewBindings
 #import <AKABeacon/AKAViewBinding.h>
-#import <AKABeacon/AKAViewBinding_Protected.h>
-#import <AKABeacon/AKAViewBindingDelegate.h>
-#import <AKABeacon/AKAViewBinding+IBPropertySupport.h>
-#import <AKABeacon/AKAControlViewBinding.h>
 
 #import <AKABeacon/AKAFontPropertyBinding.h>
 
@@ -189,6 +187,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKATableViewCellFactoryPropertyBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings
+#import <AKABeacon/AKAControlViewBinding.h>
 #import <AKABeacon/AKAControlViewBindingDelegate.h>
 
 // Bindings/ViewBindings/ControlViewBindings/UISegmentedControl
@@ -209,6 +208,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings
 #import <AKABeacon/AKAKeyboardControlViewBinding.h>
 #import <AKABeacon/AKAKeyboardControlViewBindingDelegate.h>
+#import <AKABeacon/AKAKeyboardControlViewBinding+DelegateSupport.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextField
 #import <AKABeacon/AKABinding_UITextField_textBinding.h>

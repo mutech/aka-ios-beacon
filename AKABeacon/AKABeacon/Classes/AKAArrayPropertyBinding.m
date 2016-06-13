@@ -68,7 +68,7 @@
 {
     if (self = [super init])
     {
-        self.generateContentChangeEventsForSourceArrayChanges = YES;
+        self.generateContentChangeEventsForSourceArrayChanges = NO;
     }
     return self;
 }
@@ -197,14 +197,15 @@
 {
     BOOL generateContentChangeEvents = (self.generateContentChangeEventsForSourceArrayChanges &&
                                         [self.collectionController isKindOfClass:[AKAArrayComparer class]]);
-    id<AKAArrayPropertyBindingDelegate> delegate = self.delegate;
 
     if (generateContentChangeEvents)
     {
-        if ([delegate respondsToSelector:@selector(binding:collectionControllerWillChangeContent:)])
-        {
-            [delegate binding:self collectionControllerWillChangeContent:self.collectionController];
-        }
+        [self propagateBindingDelegateMethod:@selector(binding:collectionControllerWillChangeContent:)
+                                  usingBlock:
+         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         {
+             [delegate binding:self collectionControllerWillChangeContent:self.collectionController];
+         }];
     }
 
     [super willUpdateTargetValue:oldTargetValue to:newTargetValue];
@@ -215,60 +216,63 @@
         NSArray* oldTargetArray = arrayComparer.oldArray;
         NSArray* newTargetArray = arrayComparer.array;
 
-        if (delegate)
-        {
-            if ([delegate respondsToSelector:@selector(binding:collectionController:didDeleteObject:atIndex:)])
-            {
-                // Deletions
-                [arrayComparer.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
-                                                                   usingBlock:
-                 ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+        // Deletions
+        [self propagateBindingDelegateMethod:@selector(binding:collectionController:didDeleteObject:atIndex:)
+                                  usingBlock:
+         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         {
+             [arrayComparer.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
+                                                                usingBlock:
+              ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+              {
+                  [delegate          binding:self
+                        collectionController:arrayComparer
+                             didDeleteObject:oldTargetArray[idx]
+                                     atIndex:idx];
+              }];
+         }];
+
+        // Movements
+        [self propagateBindingDelegateMethod:@selector(binding:collectionController:didMoveObject:fromIndex:toIndex:)
+                                  usingBlock:
+         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         {
+             NSArray* permutation = arrayComparer.movementsForTableViews;
+             for (NSUInteger targetIndex=0;
+                  targetIndex < permutation.count;
+                  ++targetIndex)
+             {
+                 NSInteger offset = [permutation[targetIndex] integerValue];
+                 if (offset != 0)
                  {
-                     [delegate          binding:self
-                           collectionController:arrayComparer
-                                didDeleteObject:oldTargetArray[idx]
-                                        atIndex:idx];
-                 }];
-            }
+                     NSUInteger source = (NSUInteger)((NSInteger)targetIndex + offset);
+                     NSUInteger target = targetIndex;
 
-            if ([delegate respondsToSelector:@selector(binding:collectionController:didMoveObject:fromIndex:toIndex:)])
-            {
-                // Movements
-                NSArray* permutation = arrayComparer.movementsForTableViews;
-                for (NSUInteger targetIndex=0;
-                     targetIndex < permutation.count;
-                     ++targetIndex)
-                {
-                    NSInteger offset = [permutation[targetIndex] integerValue];
-                    if (offset != 0)
-                    {
-                        NSUInteger source = (NSUInteger)((NSInteger)targetIndex + offset);
-                        NSUInteger target = targetIndex;
+                     [delegate           binding:self
+                            collectionController:arrayComparer
+                                   didMoveObject:oldTargetArray[source]
+                                       fromIndex:source
+                                         toIndex:target];
+                 }
+             }
+         }];
 
-                        [delegate           binding:self
-                               collectionController:arrayComparer
-                                      didMoveObject:oldTargetArray[source]
-                                          fromIndex:source
-                                            toIndex:target];
-                    }
-                }
-            }
+        // Insertions
+        [self propagateBindingDelegateMethod:@selector(binding:collectionController:didInsertObject:atIndex:)
+                                  usingBlock:
+         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         {
+             [arrayComparer.insertedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
+                                                                 usingBlock:
+              ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+              {
+                  [delegate          binding:self
+                        collectionController:arrayComparer
+                             didInsertObject:newTargetArray[idx]
+                                     atIndex:idx];
+              }];
+         }];
 
-            if ([delegate respondsToSelector:@selector(binding:collectionController:didInsertObject:atIndex:)])
-            {
-                // Insertions
-                [arrayComparer.insertedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
-                                                                    usingBlock:
-                 ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
-                 {
-                     [delegate          binding:self
-                           collectionController:arrayComparer
-                                didInsertObject:newTargetArray[idx]
-                                        atIndex:idx];
-                 }];
-            }
-        }
-        
         NSMutableArray* targetArray = self.syntheticTargetValue;
         [targetArray removeAllObjects];
         [targetArray addObjectsFromArray:arrayComparer.array];
@@ -288,11 +292,12 @@
     if (self.generateContentChangeEventsForSourceArrayChanges &&
         [self.collectionController isKindOfClass:[AKAArrayComparer class]])
     {
-        id<AKAArrayPropertyBindingDelegate> delegate = self.delegate;
-        if ([delegate respondsToSelector:@selector(binding:collectionControllerDidChangeContent:)])
-        {
-            [delegate binding:self collectionControllerDidChangeContent:self.collectionController];
-        }
+        [self propagateBindingDelegateMethod:@selector(binding:collectionControllerDidChangeContent:)
+                                  usingBlock:
+         ^(id<AKAArrayPropertyBindingDelegate> delegate, outreq_BOOL stop __unused)
+         {
+             [delegate binding:self collectionControllerDidChangeContent:self.collectionController];
+         }];
 
         self.collectionController = nil;
     }

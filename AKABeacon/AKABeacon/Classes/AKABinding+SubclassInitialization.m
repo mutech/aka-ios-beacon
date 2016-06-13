@@ -530,7 +530,7 @@
     return result;
 }
 
-
+// TODO: Consider adding changeObserver parameter, so that sub classes may redefine and add their own change observers more easily than via delegate methods
 - (BOOL)             initializeBindingPropertyBindingAttribute:(NSString *)bindingProperty
                                              withSpecification:(AKABindingAttributeSpecification *)specification
                                            attributeExpression:(req_AKABindingExpression)attributeExpression
@@ -546,22 +546,20 @@
 
     if (bindingType != nil)
     {
-        __weak typeof(self) weakSelf = self;
+        id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+        NSAssert(bindingContext, @"Require a defined bindingContext");
+
         AKAProperty* targetProperty =
         [AKAProperty propertyOfWeakKeyValueTarget:self
                                           keyPath:bindingProperty
-                                   changeObserver:^(opt_id oldValue, opt_id newValue) {
-                                       [weakSelf bindingProperty:bindingProperty
-                                                           value:oldValue
-                                             didChangeToNewValue:newValue];
-                                   }];
+                                   changeObserver:nil]; // See todo above
         opt_AKABindingDelegate delegate = [self delegateForBindingPropertyBinding:bindingProperty
                                                                 withSpecification:specification
                                                               attributeExpression:attributeExpression];
         AKABinding* propertyBinding = [bindingType bindingToTarget:self
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
-                                                           context:self.bindingContext
+                                                           context:bindingContext
                                                              owner:self
                                                           delegate:delegate
                                                              error:error];
@@ -574,6 +572,7 @@
     return result;
 }
 
+// TODO: Consider adding changeObserver parameter, so that sub classes may redefine and add their own change observers more easily than via delegate methods
 - (BOOL)              initializeTargetPropertyBindingAttribute:(NSString *)bindingProperty
                                              withSpecification:(AKABindingAttributeSpecification *)specification
                                            attributeExpression:(req_AKABindingExpression)attributeExpression
@@ -589,23 +588,20 @@
 
     if (bindingType != nil)
     {
-        __weak typeof(self) weakSelf = self;
+        id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+        NSAssert(bindingContext, @"Require a defined bindingContext");
+
         AKAProperty* targetProperty =
             [self.targetValueProperty propertyAtKeyPath:bindingProperty
-                                     withChangeObserver:
-             ^(opt_id oldValue, opt_id newValue)
-             {
-                 [weakSelf  targetProperty:bindingProperty
-                                     value:oldValue
-                       didChangeToNewValue:newValue];
-             }];
+                                     withChangeObserver:nil];
+
         opt_AKABindingDelegate delegate = [self delegateForTargetPropertyBinding:bindingProperty
                                                                withSpecification:specification
                                                              attributeExpression:attributeExpression];
         AKABinding* propertyBinding = [bindingType bindingToTarget:self.targetValueProperty
                                                targetValueProperty:targetProperty
                                                     withExpression:attributeExpression
-                                                           context:self.bindingContext
+                                                           context:bindingContext
                                                              owner:self
                                                           delegate:delegate
                                                              error:error];

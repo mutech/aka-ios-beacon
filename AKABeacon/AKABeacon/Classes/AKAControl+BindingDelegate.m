@@ -74,8 +74,12 @@
                              to:newTargetValue];
 }
 
-- (void)binding:(req_AKABinding)binding didUpdateTargetValue:(opt_id)oldTargetValue to:(opt_id)newTargetValue
- forSourceValue:(opt_id)oldSourceValue changeTo:(opt_id)newSourceValue {
+- (void)                                      binding:(req_AKABinding)binding
+                                 didUpdateTargetValue:(opt_id)oldTargetValue
+                                                   to:(opt_id)newTargetValue
+                                       forSourceValue:(opt_id __unused)oldSourceValue
+                                             changeTo:(opt_id __unused)newSourceValue
+{
     // A successful update means both model and view values are valid and in sync
     [self setValidationState:AKAControlValidationStateValid
                    withError:nil];

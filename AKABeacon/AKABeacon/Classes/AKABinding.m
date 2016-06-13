@@ -528,34 +528,6 @@
     }
 }
 
-#pragma mark - Obscure
-
-/**
- Called when a sub binding created from an attribute configured for use AKABindingAttributeUseBindToBindingProperty changed the value of the configured property of this binding.
-
- @param bindingPropertyName the properties name (KVC key).
- @param oldValue            the properties value before the change
- @param newValue            the properties new value
- */
-- (void)                                    bindingProperty:(req_NSString)bindingPropertyName
-                                                      value:(opt_id)oldValue
-                                        didChangeToNewValue:(opt_id)newValue
-{
-}
-
-/**
- Called when a sub binding created from an attribute configured for use AKABindingAttributeUseBindToTargetProperty changed the value of the configured property of this binding's target value.
-
- @param bindingPropertyName the properties name (KVC key).
- @param oldValue            the properties value before the change
- @param newValue            the properties new value
- */
-- (void)                                     targetProperty:(req_NSString)bindingPropertyName
-                                                      value:(opt_id)oldValue
-                                        didChangeToNewValue:(opt_id)newValue
-{
-}
-
 #pragma mark - AKABindingDelegate implementation (for sub bindings)
 
 - (void)                                            binding:(AKABinding*)binding
@@ -590,18 +562,6 @@
 #pragma mark -
 
 @implementation AKABinding(Protected)
-
-#pragma mark - Properties
-
-- (id)                                 syntheticTargetValue
-{
-    return _syntheticTargetValue;
-}
-
-- (void)                            setSyntheticTargetValue:(id)syntheticTargetValue
-{
-    _syntheticTargetValue = syntheticTargetValue;
-}
 
 #pragma mark - Change Tracking
 

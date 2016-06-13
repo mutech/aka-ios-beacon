@@ -28,11 +28,12 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
                     string: expressionText,
                     bindingType: AKAPredicatePropertyBinding.self)
 
-                let binding = try! AKAPredicatePropertyBinding(
-                    target: targetProperty,
-                    expression: expression,
-                    context: bindingContext,
-                    delegate: nil);
+                let binding = try! AKAPredicatePropertyBinding(target: bindingContext,
+                                                               targetValueProperty: targetProperty,
+                                                               expression: expression,
+                                                               context: bindingContext,
+                                                               owner: nil,
+                                                               delegate: nil);
 
                 context("when observing changes") {
                     binding.startObservingChanges()
@@ -100,9 +101,11 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
                     bindingType: AKAPredicatePropertyBinding.self)
 
                 let binding = try! AKAPredicatePropertyBinding(
-                    target: targetProperty,
+                    target: bindingContext,
+                    targetValueProperty: targetProperty,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 context("when observing changes") {
@@ -240,9 +243,11 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
                     bindingType: AKAPredicatePropertyBinding.self)
 
                 let binding = try! AKAPredicatePropertyBinding(
-                    target: targetProperty,
+                    target: bindingContext,
+                    targetValueProperty: targetProperty,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 context("when observing changes") {
@@ -284,9 +289,11 @@ class AKAPredicatePropertyBindingSpec: QuickSpec {
                     bindingType: AKAPredicatePropertyBinding.self)
 
                 let binding = try! AKAPredicatePropertyBinding(
-                    target: targetProperty,
+                    target: bindingContext,
+                    targetValueProperty: targetProperty,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 context("when observing changes") {

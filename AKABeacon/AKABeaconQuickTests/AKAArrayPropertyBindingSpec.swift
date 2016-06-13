@@ -53,9 +53,11 @@ class AKAArrayPropertyBindingSpec: QuickSpec {
                     bindingType: bindingType)
 
                 let binding = try! AKAArrayPropertyBinding(
-                    target: targetProperty,
+                    target: bindingContext,
+                    targetValueProperty: targetProperty,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 context("when observing changes") {

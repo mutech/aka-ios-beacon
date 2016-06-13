@@ -136,7 +136,7 @@
 
 #pragma mark - Binding Target
 
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError)error {
+- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError __unused)error {
     (void)view;
     NSParameterAssert(view == nil || [view isKindOfClass:[AKADynamicPlaceholderTableViewCell class]]);
 

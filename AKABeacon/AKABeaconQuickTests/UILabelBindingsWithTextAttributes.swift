@@ -24,6 +24,7 @@ class UILabelBindingsWithTextAttributes: QuickSpec {
                     target: view,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil) as! AKABinding_UILabel_textBinding;
 
                 /* TODO: refactor test, attributeBindings no longer available

@@ -6,9 +6,6 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-// Enable once AKAControl has been fully replaced by AKABindingController:
-#define USE_BINDING_CONTROLLERS 0
-
 #import "UIView+AKAHierarchyVisitor.h"
 
 #import "AKABindingBehavior.h"

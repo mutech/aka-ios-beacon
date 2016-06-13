@@ -21,6 +21,7 @@ class UILabelBindingsSpec: QuickSpec {
                 let binding = try! bindingType?.init(target:     view,
                                                      expression: expression,
                                                      context:    bindingContext,
+                                                     owner: nil,
                                                      delegate:   nil);
 
                 let textAfterBindingCreation = view.text;
@@ -74,6 +75,7 @@ class UILabelBindingsSpec: QuickSpec {
                     target: view,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 let textAfterBindingCreation = view.text;
@@ -128,6 +130,7 @@ class UILabelBindingsSpec: QuickSpec {
                     target: view,
                     expression: expression,
                     context: bindingContext,
+                    owner: nil,
                     delegate: nil);
 
                 let textAfterBindingCreation = view.text;

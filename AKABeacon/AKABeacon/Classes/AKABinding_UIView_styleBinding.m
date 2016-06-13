@@ -11,7 +11,9 @@
 
 @implementation AKABinding_UIView_styleBinding
 
-+ (AKABindingSpecification *)specification
+#pragma mark - Specification
+
++ (AKABindingSpecification *)            specification
 {
     static AKABindingSpecification* result = nil;
     static dispatch_once_t onceToken;
@@ -34,9 +36,11 @@
     return result;
 }
 
-#pragma mark - Initialization
+#pragma mark - Target Value Property Initialization
 
-- (req_AKAProperty)createTargetValuePropertyForTarget:(req_id)view error:(out_NSError)error {
+- (req_AKAProperty) createTargetValuePropertyForTarget:(req_id)view
+                                                 error:(out_NSError __unused)error
+{
     (void)view;
     // We might want to use some base style/theming mechanism here. For the time
     // being, the primary value is simply ignored and the binding target value too.
@@ -66,10 +70,10 @@
             }];
 }
 
-- (AKAProperty *)defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
-                                           context:(req_AKABindingContext __unused)bindingContext
-                                    changeObserver:(AKAPropertyChangeObserver __unused)changeObserver
-                                             error:(NSError *__autoreleasing  _Nullable * __unused)error
+- (AKAProperty *)    defaultBindingSourceForExpression:(req_AKABindingExpression __unused)bindingExpression
+                                               context:(req_AKABindingContext __unused)bindingContext
+                                        changeObserver:(AKAPropertyChangeObserver __unused)changeObserver
+                                                 error:(out_NSError __unused)error
 {
     return [AKAProperty constantNilProperty];
 }

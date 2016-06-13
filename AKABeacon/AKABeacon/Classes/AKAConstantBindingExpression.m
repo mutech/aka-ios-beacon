@@ -66,7 +66,7 @@
 
     if (target)
     {
-        req_id definedTarget = target;
+        req_id definedTarget = (req_id)target;
         result = [AKAProperty propertyOfWeakKeyValueTarget:definedTarget
                                                    keyPath:nil
                                             changeObserver:changeObserver];
@@ -104,7 +104,7 @@
 - (NSString *)textForPrimaryExpressionWithNestingLevel:(NSUInteger __unused)level
                                                 indent:(NSString *__unused)indent
 {
-    req_NSString text = self.textForConstant;
+    NSString* text = self.textForConstant;
     return text ? text : @"";
 }
 

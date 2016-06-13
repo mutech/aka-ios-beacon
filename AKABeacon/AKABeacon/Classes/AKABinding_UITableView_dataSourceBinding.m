@@ -453,14 +453,14 @@
 
 #pragma mark - AKABindingDelegate (Sub Bindings)
 
-- (BOOL)shouldReceiveDelegateMessagesForImmediateSubBindings
+- (BOOL)shouldReceiveDelegateMessagesForSubBindings
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)shouldReceiveDelegateMessagesForTransitiveSubBindings
 {
-    return NO;
+    return YES;
 }
 
 - (id<AKABindingDelegate>)delegateForSectionInfoBindingForSection:(NSUInteger __unused)section
@@ -753,25 +753,6 @@
 
 #pragma mark - Table View Updates - Row Updates
 
-- (AKATableViewSectionDataSourceInfoPropertyBinding*)sectionInfoBindingForArrayBinding:(AKAArrayPropertyBinding*)binding
-{
-    AKATableViewSectionDataSourceInfoPropertyBinding* result = nil;
-    if ([binding.owner isKindOfClass:[AKATableViewSectionDataSourceInfoPropertyBinding class]])
-    {
-        result = (id)binding.owner;
-        if (result.target != self.sections)
-        {
-            result = nil;
-        }
-    }
-    return result;
-}
-
-- (AKATableViewSectionDataSourceInfo* _Nullable)sectionInfoForArrayBinding:(AKAArrayPropertyBinding*)binding
-{
-    return [self sectionInfoBindingForArrayBinding:binding].targetValueProperty.value;
-}
-
 - (void)                                            binding:(AKAArrayPropertyBinding* __unused)binding
                       collectionControllerWillChangeContent:(opt_id __unused)controller
 {
@@ -871,6 +852,26 @@
     // TODO: don't end updates if still updating (decrement counter)
 
     [self endUpdatingTableView:self.tableView];
+}
+
+
+- (AKATableViewSectionDataSourceInfoPropertyBinding*)sectionInfoBindingForArrayBinding:(AKAArrayPropertyBinding*)binding
+{
+    AKATableViewSectionDataSourceInfoPropertyBinding* result = nil;
+    if ([binding.owner isKindOfClass:[AKATableViewSectionDataSourceInfoPropertyBinding class]])
+    {
+        result = (id)binding.owner;
+        if (result.target != self.sections)
+        {
+            result = nil;
+        }
+    }
+    return result;
+}
+
+- (AKATableViewSectionDataSourceInfo* _Nullable)sectionInfoForArrayBinding:(AKAArrayPropertyBinding*)binding
+{
+    return [self sectionInfoBindingForArrayBinding:binding].targetValueProperty.value;
 }
 
 #pragma mark - Table View - Data Mapping

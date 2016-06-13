@@ -245,7 +245,7 @@
     return result;
 }
 
-+ (NSSet *)         keyPathsForValuesAffectingIsReady
++ (NSSet *)       keyPathsForValuesAffectingIsReady
 {
     static NSSet* result;
     static dispatch_once_t onceToken;
@@ -261,7 +261,7 @@
     return self.state == AKAOperationStateExecuting;
 }
 
-+ (NSSet *)     keyPathsForValuesAffectingIsExecuting
++ (NSSet *)   keyPathsForValuesAffectingIsExecuting
 {
     static NSSet* result;
     static dispatch_once_t onceToken;
@@ -277,7 +277,7 @@
     return self.state == AKAOperationStateFinished;
 }
 
-+ (NSSet *)      keyPathsForValuesAffectingIsFinished
++ (NSSet *)    keyPathsForValuesAffectingIsFinished
 {
     static NSSet* result;
     static dispatch_once_t onceToken;
@@ -354,8 +354,8 @@
      }];
 }
 
-- (void)enumerateConditionsUsingBlock:(void(^)(AKAOperationCondition*_Nonnull condition,
-                                               outreq_BOOL stop))block
+- (void)              enumerateConditionsUsingBlock:(void(^)(AKAOperationCondition*_Nonnull condition,
+                                                             outreq_BOOL stop))block
 {
     BOOL stop;
     AKAOperationCondition* condition = self.condition;
@@ -413,7 +413,7 @@
 
 #pragma mark - Dependencies
 
-- (void)addDependency:(NSOperation *)operation
+- (void)                              addDependency:(NSOperation *)operation
 {
     NSAssert(self.state < AKAOperationStateExecuting, @"Cannot add dependency after execution has begun.");
     NSAssert(![self.dependencies containsObject:operation], @"Cannot add dependency multiple times.");
@@ -423,7 +423,7 @@
 
 #pragma mark - Producing Operations
 
-- (void)produceOperation:(NSOperation*)operation
+- (void)                           produceOperation:(NSOperation*)operation
 {
     NSOperationQueue* operationQueue = self.operationQueue;
     NSAssert(operationQueue != nil, @"Cannot produce a new operation from an operation that is not enqueued. Please verify that you used [AKAOperation addToOperationQueue:] to enqueue an instance of AKAOperationQueue.");
@@ -439,7 +439,7 @@
 
 #pragma mark - Execution
 
-- (void)start
+- (void)                                      start
 {
     [super start];
 
@@ -449,7 +449,7 @@
     }
 }
 
-- (void)main
+- (void)                                       main
 {
     NSAssert(self.state == AKAOperationStateReady, @"The operation is not ready to be executed. Please ensure that this operation is processed on an operation queue.");
 
@@ -478,14 +478,14 @@
     }
 }
 
-- (void)execute
+- (void)                                    execute
 {
     AKAErrorAbstractMethodImplementationMissing();
 }
 
 #pragma mark - Canncellation
 
-- (void)cancelWithError:(NSError*)error
+- (void)                            cancelWithError:(NSError*)error
 {
     if (error)
     {
@@ -497,7 +497,7 @@
     }
 }
 
-- (void)cancelWithErrors:(NSArray<NSError*>*)errors
+- (void)                           cancelWithErrors:(NSArray<NSError*>*)errors
 {
     [self performSynchronizedBlock:^{
         if (self.errors == nil)

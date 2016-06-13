@@ -247,7 +247,7 @@
                     }
                 }
             }
-            if (result)
+            if (result && arrayItemBinding != [NSNull null])
             {
                 [self addArrayItemBinding:arrayItemBinding];
             }

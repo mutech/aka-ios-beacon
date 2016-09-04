@@ -6,15 +6,21 @@
 //  Copyright © 2016 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <AKABeacon/AKABeacon.h>
+#import "AKAErrors.h"
+
+@class AKAOperation;
+@class AKAPresentViewControllerOperation;
 
 @interface AKAOperationErrors : AKAErrors
 
 typedef NS_ENUM(NSUInteger, AKAOperationError)
 {
-    AKAOperationErrorConditionFailed
+    AKAOperationErrorConditionFailed,
+    AKAOperationErrorDependencyFailed,
+
+    AKAPresentViewControllerOperationFailedNoPresenter
 };
 
-FOUNDATION_EXPORT NSString* const kAKAOperationErrorDomain;
++ (NSError *)presentViewControllerOperationFailedNoPresenter:(AKAPresentViewControllerOperation *)presentViewControllerOperation;
 
 @end

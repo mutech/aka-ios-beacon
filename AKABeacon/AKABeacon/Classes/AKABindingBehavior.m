@@ -484,7 +484,7 @@ viewSizeTransitionListeners;
      {
          for (id<AKAViewSizeTransitionListener> listener in self.viewSizeTransitionListeners)
          {
-             if (listener != [NSNull null])
+             if ((id)listener != (id)[NSNull null])
              {
                  [listener      viewController:self
                       viewWillTransitionToSize:size

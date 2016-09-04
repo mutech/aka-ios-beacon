@@ -23,7 +23,7 @@ typedef NS_OPTIONS(NSUInteger, AKAOperationStateSuccessors)
 {
     AKAOperationStateInitializedSuccessors          = AKAOperationStatePending,
     AKAOperationStatePendingSuccessors              = AKAOperationStateEvaluatingConditions | AKAOperationStateReady,
-    AKAOperationStateEvaluatingConditionsSuccessors = AKAOperationStateReady,
+    AKAOperationStateEvaluatingConditionsSuccessors = AKAOperationStateReady | AKAOperationStateFinishing,
     AKAOperationStateReadySuccessors                = AKAOperationStateExecuting | AKAOperationStateFinishing,
     AKAOperationStateExecutingSuccessors            = AKAOperationStateFinishing,
     AKAOperationStateFinishingSuccessors            = AKAOperationStateFinished,

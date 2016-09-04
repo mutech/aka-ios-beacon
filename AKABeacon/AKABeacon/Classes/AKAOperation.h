@@ -9,7 +9,7 @@
 @import Foundation;
 
 #import "AKANullability.h"
-#import "AKAOperationDelegate.h"
+#import "AKAOperationObserver.h"
 #import "AKAOperationCondition.h"
 
 // This is yet another rewrite of Operation from the 2015 WWDC session about advanced operations.
@@ -31,46 +31,78 @@
 
 - (void)                               addCondition:(AKAOperationCondition*_Nonnull)condition;
 
-- (void)enumerateConditionsUsingBlock:(void(^_Nonnull)(AKAOperationCondition*_Nonnull condition,
-                                               outreq_BOOL stop))block;
+- (void)              enumerateConditionsUsingBlock:(void(^_Nonnull)(AKAOperationCondition*_Nonnull condition,
+                                                                     outreq_BOOL stop))block;
+
+#pragma mark - Final State
+
+/**
+ * Determines whether the execution of the operation finished with errors.
+ *
+ * This is equivalent to @code (op.isFinished && op.errors.count) > 0 @endcode
+ */
+@property (nonatomic, readonly) BOOL failed;
+
+@property (nullable, nonatomic, readonly) NSArray<NSError*>* errors;
 
 #pragma mark - Observers
 
-- (void)                                addObserver:(nonnull id<AKAOperationDelegate>)observer;
+- (void)                                addObserver:(nonnull id<AKAOperationObserver>)observer;
 
 #pragma mark - Dependencies
 
-- (void)addDependency:(nonnull NSOperation*)operation;
+- (void)                              addDependency:(nonnull NSOperation*)operation;
 
 #pragma mark - Producing Operations
 
-- (void)produceOperation:(nonnull NSOperation*)operation;
+- (void)                           produceOperation:(nonnull NSOperation*)operation;
 
 #pragma mark - Execution
 
-- (void)start NS_REQUIRES_SUPER;
+- (void)                                      start NS_REQUIRES_SUPER;
 
-- (void)main NS_REQUIRES_SUPER;
+- (void)                                       main NS_REQUIRES_SUPER;
 
-- (void)execute;
+/**
+ Called before execution will begin (and also before operation observers will be notified).
+ */
+- (void)                                willExecute;
 
-#pragma mark - Canncellation
+/**
+ Called by main. This has to be overridden by subclasses to implement the operation
+ */
+- (void)                                    execute;
 
-- (void)cancelWithError:(nullable NSError*)error;
+#pragma mark - Cancellation
 
-- (void)cancelWithErrors:(nullable NSArray<NSError*>*)errors;
+- (void)                            cancelWithError:(nullable NSError*)error;
+
+- (void)                           cancelWithErrors:(nullable NSArray<NSError*>*)errors;
 
 #pragma mark - Finishing
 
-- (void)finish;
+- (void)                                     finish;
 
-- (void)finishWithErrors:(nullable NSArray<NSError*>*)errors;
+- (void)                            finishWithError:(nullable NSError*)error;
+
+- (void)                           finishWithErrors:(nullable NSArray<NSError*>*)errors;
 
 #pragma mark - Operation Queues
 
-+ (void)addOperation:(nonnull NSOperation*)operation
-    toOperationQueue:(nonnull NSOperationQueue*)operationQueue;
++ (void)                               addOperation:(nonnull NSOperation*)operation
+                                   toOperationQueue:(nonnull NSOperationQueue*)operationQueue;
 
-- (void)addToOperationQueue:(nonnull NSOperationQueue*)queue;
+- (void)                        addToOperationQueue:(nonnull NSOperationQueue*)queue;
+
+@end
+
+
+@interface AKAOperation(Subclasses)
+
+#pragma mark - Collection errors
+
+- (void)addError:(nonnull NSError*)error;
+
+- (void)addErrors:(nullable NSArray<NSError*>*)errors;
 
 @end

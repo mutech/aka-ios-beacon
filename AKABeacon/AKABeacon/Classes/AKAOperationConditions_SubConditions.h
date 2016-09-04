@@ -7,7 +7,9 @@
 //
 
 #import "AKAOperation.h"
+#import "AKAOperationConditions.h"
 #import "AKANullability.h"
+
 
 @interface AKAOperationConditions()
 

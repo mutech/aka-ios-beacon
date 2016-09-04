@@ -9,16 +9,14 @@
 #import "AKAOperation.h"
 #import "AKAOperationErrors.h"
 #import "AKAOperationState.h"
-#import "AKAOperationCondition.h"
 #import "AKAOperationConditions.h"
 #import "AKAOperationConditions_SubConditions.h"
 #import "AKAOperationExclusivityController.h"
+#import "AKAOperationQueue.h"
+#import "AKABlockOperationObserver.h"
 
-
-@interface AKAOperation()
-{
+@interface AKAOperation() {
     AKAOperationState _state;
-    NSLock* _stateLock;
 }
 
 #pragma mark - Operation State
@@ -32,7 +30,7 @@
 
 @property(nonatomic, getter=isUserInitiated) BOOL   userInitiated;
 
-@property(nonatomic) NSMutableArray*                errors;
+@property(nonatomic) NSMutableArray*                internalErrors;
 
 #pragma mark - Conditions
 
@@ -43,7 +41,7 @@
 
 #pragma mark - Observers
 
-@property(nonatomic) NSMutableArray<id<AKAOperationDelegate>>* observers;
+@property(nonatomic) NSMutableArray<id<AKAOperationObserver>>* observers;
 
 #pragma mark - Dependencies
 
@@ -64,10 +62,29 @@
     {
         _stateLock = [NSLock new];
         _state = AKAOperationStateInitialized;
-        _errors = [NSMutableArray new];
+        _internalErrors = [NSMutableArray new];
         self.conditionsSatisfied = YES;
     }
     return self;
+}
+
+#pragma mark - Final State
+
+- (BOOL)failed
+{
+    return self.isFinished && self.internalErrors.count > 0;
+}
+
+- (NSArray<NSError*>*)errors
+{
+    NSArray<NSError*>* result = nil;
+
+    if (self.internalErrors.count > 0)
+    {
+        result = [NSArray arrayWithArray:self.internalErrors];
+    }
+
+    return result;
 }
 
 #pragma mark - Operation State
@@ -148,7 +165,7 @@
         result = YES;
         NSAssert([self canTransitionFromCurrentState:_state toState:state],
                  @"Invalid state transition from %lu to %lu",
-                 _state, state);
+        (unsigned long)_state, (unsigned long)state);
         _state = state;
         if (block != NULL)
         {
@@ -177,7 +194,7 @@
 {
     BOOL result = NO;
     [self.stateLock lock];
-    if (predicateBlock(_state))
+    if (predicateBlock == NULL || predicateBlock(_state))
     {
         block();
         result =  YES;
@@ -208,18 +225,36 @@
                 if (self.condition)
                 {
                     __weak typeof(self) weakSelf = self;
-                    [self evaluateConditionsCompletion:^(BOOL satisfied, NSError *error)
+                    [weakSelf evaluateConditionsCompletion:^(BOOL satisfied, NSError *error)
                      {
-                         [self                  setState:AKAOperationStateReady
-                             andPerformSynchronizedBlock:
-                          ^{
-                              __strong typeof(weakSelf) strongSelf = weakSelf;
-                              strongSelf.conditionsSatisfied = satisfied;
-                              if (error)
-                              {
-                                  [strongSelf.errors addObject:error];
-                              }
-                          }];
+                         // This block is called when all conditions evaluated to its
+                         // final state (if a condition is not yet satisfied, it will
+                         // defer calling the completion block until a final result is
+                         // available).
+                         if (satisfied)
+                         {
+                             [weakSelf              setState:AKAOperationStateReady
+                                 andPerformSynchronizedBlock:
+                              ^{
+                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+
+                                  // If a condition is not satisfied, the operation will be
+                                  // cancelled (because it will then never be satisfied).
+                                  strongSelf.conditionsSatisfied = satisfied;
+                              }];
+                         }
+                         else
+                         {
+                             __strong typeof(weakSelf) strongSelf = weakSelf;
+                             if (error)
+                             {
+                                 [strongSelf cancelWithError:error];
+                             }
+                             else
+                             {
+                                 [strongSelf cancel];
+                             }
+                         }
                      }];
                 }
                 else
@@ -238,7 +273,7 @@
             break;
 
         default:
-            result = NO;
+            result = self.state < AKAOperationStateExecuting && self.cancelled;
             break;
     }
 
@@ -250,7 +285,7 @@
     static NSSet* result;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        result = [NSSet setWithObjects:@"state", @"cancelled", nil];
+        result = [NSSet setWithObjects:@"state", @"cancelled", @"isCancelled", nil];
     });
 
     return result;
@@ -357,7 +392,7 @@
 - (void)              enumerateConditionsUsingBlock:(void(^)(AKAOperationCondition*_Nonnull condition,
                                                              outreq_BOOL stop))block
 {
-    BOOL stop;
+    BOOL stop = NO;
     AKAOperationCondition* condition = self.condition;
     if ([condition isKindOfClass:[AKAOperationConditions class]])
     {
@@ -395,11 +430,15 @@
 
 #pragma mark - Observers
 
-- (void)                                addObserver:(id<AKAOperationDelegate>)observer
+- (void)                                addObserver:(id<AKAOperationObserver>)observer
 {
     BOOL added = [self performSynchronizedBlock:
                   ^{
                       NSAssert(![self.observers containsObject:observer], @"Cannot add observer multiple times.");
+                      if (!self.observers)
+                      {
+                          _observers = [NSMutableArray new];
+                      }
                       [self.observers addObject:observer];
                   }
                         ifCurrentStateSatisfies:
@@ -428,7 +467,7 @@
     NSOperationQueue* operationQueue = self.operationQueue;
     NSAssert(operationQueue != nil, @"Cannot produce a new operation from an operation that is not enqueued. Please verify that you used [AKAOperation addToOperationQueue:] to enqueue an instance of AKAOperationQueue.");
     [AKAOperation addOperation:operation toOperationQueue:operationQueue];
-    for (id<AKAOperationDelegate> observer in self.observers)
+    for (id<AKAOperationObserver> observer in self.observers)
     {
         if ([observer respondsToSelector:@selector(operation:didProduceOperation:)])
         {
@@ -463,7 +502,8 @@
 
     if (isExecuting)
     {
-        for (id<AKAOperationDelegate> observer in self.observers)
+        [self willExecute];
+        for (id<AKAOperationObserver> observer in self.observers)
         {
             if ([observer respondsToSelector:@selector(operationDidStart:)])
             {
@@ -478,6 +518,10 @@
     }
 }
 
+- (void)                                willExecute
+{
+}
+
 - (void)                                    execute
 {
     AKAErrorAbstractMethodImplementationMissing();
@@ -489,7 +533,7 @@
 {
     if (error)
     {
-        [self cancelWithErrors:[NSArray arrayWithObject:error]];
+        [self cancelWithErrors:@[error]];
     }
     else
     {
@@ -500,11 +544,7 @@
 - (void)                           cancelWithErrors:(NSArray<NSError*>*)errors
 {
     [self performSynchronizedBlock:^{
-        if (self.errors == nil)
-        {
-            self.errors = [NSMutableArray new];
-        }
-        [self.errors addObjectsFromArray:errors];
+        [self addErrors:errors];
     } ifCurrentStateSatisfies:NULL];
 
     [self cancel];
@@ -514,8 +554,35 @@
 
 - (void)finish
 {
-    [self finishWithErrors:nil];
+    [self finishWithError:nil];
 }
+
+- (void)finishWithError:(NSError*)error
+{
+    __weak typeof(self) weakSelf = self;
+    BOOL isFinishing = [self setState:AKAOperationStateFinishing
+                 ifPredicateSatisfied:^BOOL(AKAOperationState state) {
+                     return state < AKAOperationStateFinishing;
+                 } andPerformSynchronizedBlock:^{
+                     __strong typeof(self) strongSelf = weakSelf;
+                     if (error)
+                     {
+                         [strongSelf addError:error];
+                     }
+                 }];
+    if (isFinishing)
+    {
+        for (id<AKAOperationObserver> observer in self.observers)
+        {
+            if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
+            {
+                [observer operation:self didFinishWithErrors:self.errors];
+            }
+        }
+        self.state = AKAOperationStateFinished;
+    }
+}
+
 
 - (void)finishWithErrors:(NSArray<NSError*>*)errors
 {
@@ -525,18 +592,11 @@
                      return state < AKAOperationStateFinishing;
                  } andPerformSynchronizedBlock:^{
                      __strong typeof(self) strongSelf = weakSelf;
-                     if (errors.count > 0)
-                     {
-                         if (strongSelf.errors == nil)
-                         {
-                             strongSelf.errors = [NSMutableArray new];
-                         }
-                         [strongSelf.errors addObjectsFromArray:errors];
-                     }
+                     [strongSelf addErrors:errors];
                  }];
     if (isFinishing)
     {
-        for (id<AKAOperationDelegate> observer in self.observers)
+        for (id<AKAOperationObserver> observer in self.observers)
         {
             if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
             {
@@ -555,7 +615,7 @@
 
 - (void)waitUntilFinished
 {
-    [self anitPatternNoticeForWaitUntilFinished];
+    //[self anitPatternNoticeForWaitUntilFinished];
     [super waitUntilFinished];
 }
 
@@ -574,7 +634,17 @@
     }
 }
 
-- (void)addToOperationQueue:(NSOperationQueue*)queue
+- (void)addToOperationQueue:(NSOperationQueue*)operationQueue
+{
+    if (![operationQueue isKindOfClass:[AKAOperationQueue class]])
+    {
+        // AKAOperationQueue will call prepareToAddToOperationQueue: itself on addOperation: so we skip it here
+        [self prepareToAddToOperationQueue:operationQueue];
+    }
+    [operationQueue addOperation:self];
+}
+
+- (void)prepareToAddToOperationQueue:(NSOperationQueue*)operationQueue
 {
     self.state = AKAOperationStatePending;
 
@@ -583,19 +653,62 @@
      {
          if ([condition.class isMutuallyExclusive])
          {
+             NSArray* categories = @[ NSStringFromClass(condition.class)];
              [[AKAOperationExclusivityController sharedInstance] addOperation:self
-                                                                 toCategories:@[ NSStringFromClass(condition.class)]];
+                                                                 toCategories:categories];
+             [self addObserver:[[AKABlockOperationObserver alloc] initWithDidStartBlock:nil
+                                                               didProduceOperationBlock:nil
+                                                                         didFinishBlock:
+                                ^(AKAOperation *operation, NSArray<NSError *> *errors)
+                                {
+                                    [[AKAOperationExclusivityController sharedInstance] removeOperation:operation
+                                                                                         fromCategories:categories];
+                                }]];
          }
 
          NSOperation* conditionDependency = [condition dependencyForOperation:self];
          if (conditionDependency)
          {
              [self addDependency:conditionDependency];
-             [AKAOperation addOperation:conditionDependency toOperationQueue:queue];
+             [AKAOperation addOperation:conditionDependency toOperationQueue:operationQueue];
          }
      }];
+}
 
-    [queue addOperation:self];
+@end
+
+
+@implementation AKAOperation(Subclasses)
+
+- (void)addError:(NSError *)error
+{
+    [self willChangeValueForKey:@"errors"];
+    if (self.internalErrors == nil)
+    {
+        self.internalErrors = [NSMutableArray arrayWithObject:error];
+    }
+    else
+    {
+        [self.internalErrors addObject:error];
+    }
+    [self didChangeValueForKey:@"errors"];
+}
+
+- (void)addErrors:(NSArray<NSError *> *)errors
+{
+    if (errors.count > 0)
+    {
+        [self willChangeValueForKey:@"errors"];
+        if (self.internalErrors == nil)
+        {
+            self.internalErrors = [NSMutableArray arrayWithArray:errors];
+        }
+        else
+        {
+            [self.internalErrors addObjectsFromArray:errors];
+        }
+        [self didChangeValueForKey:@"errors"];
+    }
 }
 
 @end

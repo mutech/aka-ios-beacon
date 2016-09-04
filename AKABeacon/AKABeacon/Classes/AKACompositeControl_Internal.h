@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Michael Utech & AKA Sarl. All rights reserved.
 //
 
-#import <AKABeacon/AKAControl.h>
-#import <AKABeacon/AKACompositeControl.h>
+#import "AKAControl.h"
+#import "AKACompositeControl.h"
 
 @interface AKACompositeControl (Internal)
 

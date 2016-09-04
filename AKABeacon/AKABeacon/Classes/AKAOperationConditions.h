@@ -12,11 +12,4 @@
 
 - (nonnull instancetype)initWithConditions:(nonnull NSArray<AKAOperationCondition*>*)conditions;
 
-/**
- Determines whether operations using conditions of this type are exclusive, in the sense that only one such operation can be executed at any time.
-
- @return YES if operations using instances of this condition type have to be executed mutually exclusive.
- */
-+ (BOOL)isMutuallyExclusive;
-
 @end

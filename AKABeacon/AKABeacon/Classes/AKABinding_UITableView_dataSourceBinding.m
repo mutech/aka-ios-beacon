@@ -230,7 +230,7 @@
                                                                                                        delegateOverwrites:binding];
                 }
 
-                return binding.isObserving;
+                return YES;
             }
 
                           observationStopper:
@@ -256,7 +256,7 @@
                     [self reloadTableViewAnimated:NO];
                 }
                 
-                return !binding.isObserving;
+                return YES;
             }];
 }
 
@@ -520,9 +520,9 @@
 
 #pragma mark - AKAViewSizeTransitionListener
 
-- (void)                                     viewController:(UIViewController *)viewController
-                                   viewWillTransitionToSize:(CGSize)size
-                                  withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)                                     viewController:(UIViewController*__unused)viewController
+                                   viewWillTransitionToSize:(CGSize __unused)size
+                                  withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>__unused)coordinator
 {
     [self updateTableViewRowHeightsAnimated:YES];
 }

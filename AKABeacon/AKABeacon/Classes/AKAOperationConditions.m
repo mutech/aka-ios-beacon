@@ -10,9 +10,14 @@
 #import "AKAOperationConditions_SubConditions.h"
 
 #import "AKAOperationErrors.h"
-
+#import "AKAErrors.h"
 
 @implementation AKAOperationConditions
+
++ (BOOL)isMutuallyExclusive
+{
+    return NO;
+}
 
 - (instancetype)init
 {
@@ -84,31 +89,38 @@
 
         dispatch_group_enter(dispatchGroup);
         [condition evaluateForOperation:operation
-                             completion:^(BOOL satisfied, NSError *error) {
-                                 NSAssert(satisfied ? error == nil : YES, @"If condition is satisfied, error has to be nil");
-                                 if (satisfied)
-                                 {
-                                     results[i] = @(YES);
-                                 }
-                                 else if (error)
-                                 {
-                                     results[i] = error;
-                                 }
-                                 else
-                                 {
-                                     results[i] = @(NO);
-                                 }
-                                 dispatch_group_leave(dispatchGroup);
-                             }];
+                             completion:
+         ^(BOOL satisfied, NSError *error)
+         {
+             NSAssert(satisfied ? error == nil : YES,
+                      @"If condition is satisfied, error has to be nil");
+             if (satisfied)
+             {
+                 results[i] = @(YES);
+             }
+             else if (error)
+             {
+                 results[i] = error;
+             }
+             else
+             {
+                 results[i] = @(NO);
+             }
+             dispatch_group_leave(dispatchGroup);
+         }];
     }
 
     dispatch_group_notify(dispatchGroup,
                           dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0),
                           ^{
-                              NSMutableArray* failures = nil;
+                              NSMutableArray<NSError*>* failures = nil;
                               BOOL satisfied = YES;
-                              for (id result in results)
+                              for (NSUInteger i=0; i < results.count; ++i)
                               {
+                                  NSMutableDictionary* userInfo = nil;
+
+                                  id result = results[i];
+                                  AKAOperationCondition* condition = self.conditions[i];
                                   if (result != [NSNull null])
                                   {
                                       if ([result isKindOfClass:[NSNumber class]])
@@ -116,44 +128,38 @@
                                           if (satisfied)
                                           {
                                               satisfied = [result boolValue];
+                                              if (!satisfied)
+                                              {
+                                                  userInfo = [NSMutableDictionary new];
+                                                  userInfo[@"condition"] = condition;
+                                                  userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"Condition %@ failed", condition];
+                                              }
                                           }
                                       }
                                       else if ([result isKindOfClass:[NSError class]])
                                       {
+                                          NSError* error = result;
                                           satisfied = NO;
-                                          if (failures == nil)
-                                          {
-                                              failures = [NSMutableArray new];
-                                          }
-                                          [failures addObject:result];
+                                          userInfo = [NSMutableDictionary new];
+                                          userInfo[@"condition"] = condition;
+                                          userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"Condition %@ failed with error: %@", condition, error.localizedDescription];
+                                          userInfo[NSUnderlyingErrorKey] = error;
                                       }
                                   }
-                              }
-
-                              if (operation.cancelled)
-                              {
-                                  if (failures == nil)
+                                  if (userInfo)
                                   {
-                                      failures = [NSMutableArray new];
+                                      NSError* error = [NSError errorWithDomain:[AKAOperationErrors errorDomain]
+                                                                           code:AKAOperationErrorConditionFailed
+                                                                       userInfo:userInfo];
+                                      if (!failures)
+                                      {
+                                          failures = [NSMutableArray new];
+                                      }
+                                      [failures addObject:error];
                                   }
-                                  [failures addObject:[NSError errorWithDomain:kAKAOperationErrorDomain
-                                                                          code:AKAOperationErrorConditionFailed
-                                                                      userInfo:nil]];
                               }
 
-                              NSError* error = nil;
-                              if (failures.count > 1)
-                              {
-                                  error = [NSError errorWithDomain:kAKAOperationErrorDomain
-                                                              code:AKAOperationErrorConditionFailed
-                                                          userInfo:@{ @"errors": failures }];
-                              }
-                              else if (failures.count == 1)
-                              {
-                                  error = failures.firstObject;
-                              }
-                              completion(satisfied, error);
-                              
+                              completion(satisfied, [AKAErrors errorForMultipleErrors:failures]);
                           });
 }
 

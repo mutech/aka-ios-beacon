@@ -50,6 +50,22 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAProtocolInfo.h>
 #import <AKABeacon/AKADelegateDispatcher.h>
 
+// Commons/Operations
+#import <AKABeacon/AKAOperationErrors.h>
+#import <AKABeacon/AKAOperationQueue.h>
+#import <AKABeacon/AKAOperation.h>
+#import <AKABeacon/AKABlockOperation.h>
+#import <AKABeacon/AKAGroupOperation.h>
+#import <AKABeacon/AKAOperationCondition.h>
+#import <AKABeacon/AKANoFailedDependenciesOperationCondition.h>
+#import <AKABeacon/AKAOperationObserver.h>
+#import <AKABeacon/AKABlockOperationObserver.h>
+
+// Commons/Operations/UIOperations
+#import <AKABeacon/AKAPresentViewControllerOperation.h>
+#import <AKABeacon/AKAAlertOperation.h>
+#import <AKABeacon/AKASendMailOperation.h>
+
 // Commons/AKACommons (Merged from AKACommons)
 #import <AKABeacon/AKAArrayComparer.h>
 #import <AKABeacon/AKAErrors.h>

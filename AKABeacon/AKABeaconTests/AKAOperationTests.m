@@ -12,6 +12,7 @@
 
 #import "AKABlockOperation.h"
 #import "AKAOperationCondition.h"
+#import "AKAGroupOperation.h"
 
 @interface AKAOperationTests : XCTestCase
 
@@ -62,7 +63,6 @@
     }];
 }
 
-
 - (void)testDependencyWithConditionAndConditionDependency
 {
     XCTestExpectation* dependencyExpectation = [self expectationWithDescription:@"Dependency Executed"];
@@ -101,18 +101,65 @@
     
     [operation addToOperationQueue:queue];
     [dependency addToOperationQueue:queue];
-    
-    [self waitForExpectationsWithTimeout:0.001 handler:^(NSError * _Nullable error) {
+
+    // Timeout: debug build without logging breakpoints succeeds reliably in 0.001s, using timeout of 2s to support logging breakpoints
+    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError * _Nullable error) {
         if (error)
         {
             NSLog(@"Failed to wait for expectations (error: %@)", error.localizedDescription);
         }
         else
         {
-            NSLog(@"Failed to wait for expectations (no error)");
+            NSLog(@"Expectations have been fulfilled in time (no error)");
         }
     }];
 }
 
+- (void)testGroupOperation
+{
+    NSArray<XCTestExpectation*>* expectations = @[ [self expectationWithDescription:@"One"],
+                                                   [self expectationWithDescription:@"Two"],
+                                                   [self expectationWithDescription:@"Three"] ];
+    NSArray<AKABlockOperation*>* operations =
+    @[ [[AKABlockOperation alloc] initWithBlock:
+        ^(void (^ _Nonnull finish)())
+        {
+            [expectations[0] fulfill];
+            finish();
+        }],
+       [[AKABlockOperation alloc] initWithBlock:
+        ^(void (^ _Nonnull finish)())
+        {
+            [expectations[1] fulfill];
+            finish();
+        }],
+       [[AKABlockOperation alloc] initWithBlock:
+        ^(void (^ _Nonnull finish)())
+        {
+            [expectations[2] fulfill];
+            finish();
+        }],
+       ];
+    operations[0].name = @"Member operation One";
+    operations[1].name = @"Member operation Two";
+    operations[2].name = @"Member operation Three";
+    [operations[2] addDependency:operations[1]];
+    [operations[1] addDependency:operations[0]];
+    
+    AKAGroupOperation* groupOperation = [[AKAGroupOperation alloc] initWithOperations:operations];
+
+    [groupOperation addToOperationQueue:[NSOperationQueue mainQueue]];
+
+    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError * _Nullable error) {
+        if (error)
+        {
+            NSLog(@"Failed to wait for expectations (error: %@)", error.localizedDescription);
+        }
+        else
+        {
+            NSLog(@"Expectations have been fulfilled in time (no error)");
+        }
+    }];
+}
 
 @end

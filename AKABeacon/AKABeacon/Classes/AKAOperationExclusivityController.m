@@ -33,6 +33,7 @@
     {
         _queue = dispatch_queue_create("AKAOperations.ExclusivityController",
                                        DISPATCH_QUEUE_SERIAL);
+        _operationsByCategory = [NSMutableDictionary new];
     }
     return self;
 }
@@ -44,7 +45,7 @@
     dispatch_once(&onceToken, ^{
         result = [[AKAOperationExclusivityController allocSharedInstance] initSharedInstance];
     });
-    return nil;
+    return result;
 }
 
 #pragma mark - Operations

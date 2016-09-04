@@ -23,6 +23,8 @@
 		8E91E74A1BB228A900F7618F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E7491BB228A900F7618F /* Assets.xcassets */; };
 		8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */; };
 		8E91E7641BB22C3300F7618F /* TextFieldBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */; };
+		8E98C5861D79998600FD81A7 /* OperationDemos.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E98C5851D79998600FD81A7 /* OperationDemos.storyboard */; };
+		8E98C5891D799B0100FD81A7 /* AlertOperationDemosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E98C5881D799B0100FD81A7 /* AlertOperationDemosTableViewController.m */; };
 		8EA696561CEA535600E32BF6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EA696551CEA535600E32BF6 /* CoreData.framework */; };
 		8ED3FD071C2AA8A500C44412 /* SearchResultHighlightingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */; };
 		8EE934901BE85EA5008948B0 /* LabelDemoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8EE9348F1BE85EA5008948B0 /* LabelDemoTableViewController.m */; };
@@ -77,6 +79,9 @@
 		8E91E74E1BB228A900F7618F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E91E7621BB22C3300F7618F /* TextFieldBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindingViewController.h; sourceTree = "<group>"; };
 		8E91E7631BB22C3300F7618F /* TextFieldBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindingViewController.m; sourceTree = "<group>"; };
+		8E98C5851D79998600FD81A7 /* OperationDemos.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = OperationDemos.storyboard; sourceTree = "<group>"; };
+		8E98C5871D799B0100FD81A7 /* AlertOperationDemosTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertOperationDemosTableViewController.h; sourceTree = "<group>"; };
+		8E98C5881D799B0100FD81A7 /* AlertOperationDemosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertOperationDemosTableViewController.m; sourceTree = "<group>"; };
 		8EA696551CEA535600E32BF6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ED3FD051C2AA8A500C44412 /* SearchResultHighlightingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultHighlightingViewController.h; sourceTree = "<group>"; };
 		8ED3FD061C2AA8A500C44412 /* SearchResultHighlightingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultHighlightingViewController.m; sourceTree = "<group>"; };
@@ -162,6 +167,7 @@
 				8E91E7411BB228A900F7618F /* AppDelegate.m */,
 				8E91E7461BB228A900F7618F /* Main.storyboard */,
 				8E91E74B1BB228A900F7618F /* LaunchScreen.storyboard */,
+				8E98C5841D79990600FD81A7 /* Operations */,
 				8E91E7671BB22DAF00F7618F /* ViewControllers */,
 				8E91E7491BB228A900F7618F /* Assets.xcassets */,
 			);
@@ -192,6 +198,16 @@
 				8E0B56B31CE3AFB600B3E407 /* ConditionalBindingsViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		8E98C5841D79990600FD81A7 /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				8E98C5851D79998600FD81A7 /* OperationDemos.storyboard */,
+				8E98C5871D799B0100FD81A7 /* AlertOperationDemosTableViewController.h */,
+				8E98C5881D799B0100FD81A7 /* AlertOperationDemosTableViewController.m */,
+			);
+			name = Operations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +274,7 @@
 			files = (
 				8E91E74D1BB228A900F7618F /* LaunchScreen.storyboard in Resources */,
 				8E91E74A1BB228A900F7618F /* Assets.xcassets in Resources */,
+				8E98C5861D79998600FD81A7 /* OperationDemos.storyboard in Resources */,
 				8E49E37A1CD974DE00CEDC3D /* Podfile in Resources */,
 				8E91E7481BB228A900F7618F /* Main.storyboard in Resources */,
 			);
@@ -327,6 +344,7 @@
 				8E2ED22B1C3D53F000FBA44D /* TableViewBindingViewController.m in Sources */,
 				8E0B56B41CE3AFB600B3E407 /* ConditionalBindingsViewController.m in Sources */,
 				8E7E562C1C667C0B008A8BBD /* ImageViewDemoViewController.m in Sources */,
+				8E98C5891D799B0100FD81A7 /* AlertOperationDemosTableViewController.m in Sources */,
 				8E91E73F1BB228A900F7618F /* main.m in Sources */,
 				8E5720891BBFDD650056A013 /* PickerKeyboardViewController.m in Sources */,
 				8E5F34C21C07130000397C2C /* SegmentedControlViewController.m in Sources */,

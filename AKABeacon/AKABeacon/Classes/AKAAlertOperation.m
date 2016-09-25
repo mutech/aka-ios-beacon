@@ -152,7 +152,8 @@
 
 - (UIAlertController *)alertController
 {
-    return (UIViewController*)self.viewController;
+    NSAssert(self.viewController == nil || [self.viewController isKindOfClass:[UIAlertController class]], nil);
+    return (UIAlertController*)self.viewController;
 }
 
 - (BOOL)tryUpdateConfigurationUsingBlock:(void(^)())block

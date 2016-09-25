@@ -58,6 +58,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     // awakeFromNib is called when outlets are set. If at that point
     // the outlets are nil, default controls will be created here.
     [self valdiateAndSetupSubviews];

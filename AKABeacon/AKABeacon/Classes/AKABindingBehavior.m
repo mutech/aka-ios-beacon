@@ -590,13 +590,15 @@ viewSizeTransitionListeners;
 - (AKABindingBehavior *)aka_bindingBehavior
 {
     __block AKABindingBehavior* result = nil;
-    [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:[AKABindingBehavior class]])
-        {
-            *stop = YES;
-            result = obj;
-        }
-    }];
+    [self.childViewControllers enumerateObjectsUsingBlock:
+     ^(__kindof UIViewController * _Nonnull obj, NSUInteger idx __unused, BOOL * _Nonnull stop)
+     {
+         if ([obj isKindOfClass:[AKABindingBehavior class]])
+         {
+             *stop = YES;
+             result = obj;
+         }
+     }];
     return result;
 }
 

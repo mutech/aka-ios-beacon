@@ -272,50 +272,48 @@
 {
     NSArray* result = nil;
 
-    if (specification[@"format"] != nil)
+    id format = specification[@"format"];
+    
+    id firstItem = specification[@"firstItem"];
+    NSArray* firstItems = specification[@"firstItems"];
+
+    if (format != nil)
     {
         NSLayoutFormatOptions options = ((NSNumber*)specification[@"options"]).unsignedIntegerValue;
 
-        result = [NSLayoutConstraint constraintsWithVisualFormat:specification[@"format"]
+        result = [NSLayoutConstraint constraintsWithVisualFormat:format
                                                          options:options
                                                          metrics:metrics
                                                            views:views];
     }
-    else if (specification[@"firstItem"] != nil || specification[@"firstItems"] != nil)
+    else if (firstItem != nil || firstItems != nil)
     {
         NSMutableArray* constraints = NSMutableArray.new;
 
-        NSArray* firstItems = specification[@"firstItems"];
-        if (firstItems == nil)
+        if (firstItems == nil && firstItem)
         {
-            NSString* item = specification[@"firstItem"];
-            if (item)
-            {
-                firstItems = @[ @{ @"item": item } ];
-            }
+            firstItems = @[ @{ @"item": firstItem } ];
         }
+        
+        id secondItem = specification[@"secondItem"];
         NSArray* secondItems = specification[@"secondItems"];
-        if (secondItems == nil)
+        if (secondItems == nil && secondItem)
         {
-            NSString* item = specification[@"secondItem"];
-            if (item)
-            {
-                secondItems = @[ @{ @"item": item } ];
-            }
+            secondItems = @[ @{ @"item": secondItem } ];
         }
 
         for (NSDictionary* firstItemSpec in firstItems)
         {
             for (NSDictionary* secondItemSpec in secondItems)
             {
-                UIView* firstItem = [self resolveViewSpecification:firstItemSpec[@"item"]
-                                                        inViews:views];
+                UIView* firstView = [self resolveViewSpecification:firstItemSpec[@"item"]
+                                                           inViews:views];
                 NSNumber* firstAttribute = [self resolveKey:@"firstAttribute"
                                                       inTop:specification
                                                       first:firstItemSpec
                                                      second:secondItemSpec];
-                UIView* secondItem = [self resolveViewSpecification:secondItemSpec[@"item"]
-                                                         inViews:views];
+                UIView* secondView = [self resolveViewSpecification:secondItemSpec[@"item"]
+                                                            inViews:views];
                 NSNumber* secondAttribute = [self resolveKey:@"secondAttribute"
                                                       inTop:specification
                                                       first:firstItemSpec
@@ -343,10 +341,10 @@
                                              inMetrics:metrics];
 
                 NSLayoutConstraint* constraint =
-                    [NSLayoutConstraint constraintWithItem:firstItem
+                    [NSLayoutConstraint constraintWithItem:firstView
                                                  attribute:firstAttribute.intValue
                                                  relatedBy:relatedBy.intValue
-                                                    toItem:secondItem
+                                                    toItem:secondView
                                                  attribute:secondAttribute.intValue
                                                 multiplier:multiplier.floatValue
                                                   constant:constant.floatValue];

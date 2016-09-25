@@ -425,7 +425,7 @@
 
     BOOL result = YES;
 
-    if ([secondary respondsToSelector:@selector(searchBarShouldEndEditing::)])
+    if ([secondary respondsToSelector:@selector(searchBarShouldEndEditing:)])
     {
         result &= [secondary searchBarShouldEndEditing:searchBar];
     }

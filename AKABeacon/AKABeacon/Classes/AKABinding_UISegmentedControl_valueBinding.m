@@ -182,7 +182,7 @@
     }
     else
     {
-        NSUInteger index = [self.choices indexOfObject:sourceValue];
+        NSUInteger index = [self.choices indexOfObject:(req_id)sourceValue];
 
         *targetValueStore = index == NSNotFound ? nil : @((NSInteger)index);
     }

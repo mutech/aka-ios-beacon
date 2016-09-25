@@ -387,7 +387,7 @@ typedef enum
             if ([self resolveSectionSpecification:&targetSection
                                      sectionIndex:targetIndexPath.section])
             {
-                [targetSection insertRowSegment:segments.firstObject
+                [targetSection insertRowSegment:(id _Nonnull)segments.firstObject
                                      atRowIndex:(NSUInteger)targetIndexPath.row];
             }
         }

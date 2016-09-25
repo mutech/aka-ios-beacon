@@ -599,11 +599,11 @@
 		8E4F0A761BE3D954006D8876 /* AKABinding_UISlider_valueBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UISlider_valueBinding.m; sourceTree = "<group>"; };
 		8E4F8C8E1C464625008B4F1C /* AKADelegateDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKADelegateDispatcher.h; path = Classes/AKADelegateDispatcher.h; sourceTree = "<group>"; };
 		8E4F8C8F1C464625008B4F1C /* AKADelegateDispatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = AKADelegateDispatcher.m; path = Classes/AKADelegateDispatcher.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		8E593DCA1BD507A80040B391 /* AKAComplexControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKAComplexControlViewBinding.h; path = Classes/AKAComplexControlViewBinding.h; sourceTree = "<group>"; };
-		8E593DCB1BD507A80040B391 /* AKAComplexControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKAComplexControlViewBinding.m; path = Classes/AKAComplexControlViewBinding.m; sourceTree = "<group>"; };
-		8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKACollectionControlViewBinding.h; path = Classes/AKACollectionControlViewBinding.h; sourceTree = "<group>"; };
-		8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKACollectionControlViewBinding.m; path = Classes/AKACollectionControlViewBinding.m; sourceTree = "<group>"; };
-		8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = AKACollectionControlViewBindingDelegate.h; path = Classes/AKACollectionControlViewBindingDelegate.h; sourceTree = "<group>"; };
+		8E593DCA1BD507A80040B391 /* AKAComplexControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAComplexControlViewBinding.h; sourceTree = "<group>"; };
+		8E593DCB1BD507A80040B391 /* AKAComplexControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAComplexControlViewBinding.m; sourceTree = "<group>"; };
+		8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACollectionControlViewBinding.h; sourceTree = "<group>"; };
+		8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACollectionControlViewBinding.m; sourceTree = "<group>"; };
+		8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKACollectionControlViewBindingDelegate.h; sourceTree = "<group>"; };
 		8E59DE591BF838BD003BBC8D /* AKABinding_UILabel_textBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UILabel_textBinding.h; sourceTree = "<group>"; };
 		8E59DE5A1BF838BD003BBC8D /* AKABinding_UILabel_textBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKABinding_UILabel_textBinding.m; sourceTree = "<group>"; };
 		8E5A16581BBEEA43008EF06F /* AKAPickerKeyboardTriggerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAPickerKeyboardTriggerView.h; sourceTree = "<group>"; };
@@ -635,8 +635,8 @@
 		8E72331C1B0022A200D647A9 /* AKABeaconStyleKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKABeaconStyleKit.m; path = Classes/AKABeaconStyleKit.m; sourceTree = "<group>"; };
 		8E72331D1B0022A200D647A9 /* AKAControlValidatorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAControlValidatorProtocol.h; sourceTree = "<group>"; };
 		8E72331E1B0022A200D647A9 /* AKAControlViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = AKAControlViewProtocol.h; path = Classes/AKAControlViewProtocol.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		8E72331F1B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = AKADynamicPlaceholderTableViewCell.h; path = Classes/AKADynamicPlaceholderTableViewCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		8E7233201B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = AKADynamicPlaceholderTableViewCell.m; path = Classes/AKADynamicPlaceholderTableViewCell.m; sourceTree = "<group>"; };
+		8E72331F1B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKADynamicPlaceholderTableViewCell.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8E7233201B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKADynamicPlaceholderTableViewCell.m; sourceTree = "<group>"; };
 		8E7233211B0022A200D647A9 /* AKAEditorControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAEditorControlView.h; sourceTree = "<group>"; };
 		8E7233221B0022A200D647A9 /* AKAEditorControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAEditorControlView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8E7233231B0022A200D647A9 /* AKAEditorControlView_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAEditorControlView_Protected.h; sourceTree = "<group>"; };
@@ -658,14 +658,14 @@
 		8E72333D1B0022A200D647A9 /* AKASubviewsSpecification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKASubviewsSpecification.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8E7233421B0022A200D647A9 /* AKASwitchEditorControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKASwitchEditorControlView.h; sourceTree = "<group>"; };
 		8E7233431B0022A200D647A9 /* AKASwitchEditorControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKASwitchEditorControlView.m; sourceTree = "<group>"; };
-		8E7233441B0022A200D647A9 /* AKATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AKATableViewCell.h; path = Classes/AKATableViewCell.h; sourceTree = "<group>"; };
-		8E7233451B0022A200D647A9 /* AKATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AKATableViewCell.m; path = Classes/AKATableViewCell.m; sourceTree = "<group>"; };
+		8E7233441B0022A200D647A9 /* AKATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATableViewCell.h; sourceTree = "<group>"; };
+		8E7233451B0022A200D647A9 /* AKATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATableViewCell.m; sourceTree = "<group>"; };
 		8E7233461B0022A200D647A9 /* AKATableViewCellCompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATableViewCellCompositeControl.h; sourceTree = "<group>"; };
 		8E7233471B0022A200D647A9 /* AKATableViewCellCompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATableViewCellCompositeControl.m; sourceTree = "<group>"; };
 		8E7233481B0022A200D647A9 /* AKATextEditorControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATextEditorControlView.h; sourceTree = "<group>"; };
 		8E7233491B0022A200D647A9 /* AKATextEditorControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKATextEditorControlView.m; sourceTree = "<group>"; };
 		8E72334F1B0022A200D647A9 /* AKAThemableContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemableContainerView.h; sourceTree = "<group>"; };
-		8E7233501B0022A200D647A9 /* AKAThemableContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAThemableContainerView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8E7233501B0022A200D647A9 /* AKAThemableContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAThemableContainerView.m; sourceTree = "<group>"; };
 		8E7233511B0022A200D647A9 /* AKAThemableContainerView_Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAThemableContainerView_Protected.h; sourceTree = "<group>"; };
 		8E7233521B0022A200D647A9 /* AKATheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKATheme.h; sourceTree = "<group>"; };
 		8E7233531B0022A200D647A9 /* AKATheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKATheme.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1309,6 +1309,15 @@
 		8E593DC51BD507030040B391 /* ComplexControlViewBindings */ = {
 			isa = PBXGroup;
 			children = (
+				8E593DCA1BD507A80040B391 /* AKAComplexControlViewBinding.h */,
+				8E593DCB1BD507A80040B391 /* AKAComplexControlViewBinding.m */,
+				8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */,
+				8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */,
+				8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */,
+				8E7233441B0022A200D647A9 /* AKATableViewCell.h */,
+				8E7233451B0022A200D647A9 /* AKATableViewCell.m */,
+				8E72331F1B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.h */,
+				8E7233201B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m */,
 			);
 			name = ComplexControlViewBindings;
 			path = Classes;
@@ -1408,8 +1417,6 @@
 				8E07148F1BAA383100C1DDC8 /* Bindings */,
 				8EA9AB3F1BABFA8C0070F13E /* BindingExpressions */,
 				8ED9C76A1BD31BC0006410F6 /* KeyboardActivationSequence */,
-				8EFF31551CF4973100D46060 /* Deprecated */,
-				8ED9C7681BD31B90006410F6 /* Obsolete */,
 			);
 			path = AKABeacon;
 			sourceTree = "<group>";
@@ -1442,6 +1449,7 @@
 				8E979A4A1B9FE6B100E0D29C /* AKABooleanTextConverter.m */,
 			);
 			name = Converter;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		8E7233CB1B0034AD00D647A9 /* Validators */ = {
@@ -1452,6 +1460,7 @@
 				8E7233251B0022A200D647A9 /* AKAEmailValidator.m */,
 			);
 			name = Validators;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		8E7BB73D1D928D0C00FC6263 /* UISearchBar */ = {
@@ -1466,16 +1475,16 @@
 		8E7CD75C1D023BDF00E5AFB4 /* REFACTOR_THIS */ = {
 			isa = PBXGroup;
 			children = (
+				8E7233CB1B0034AD00D647A9 /* Validators */,
+				8E7233CA1B00348400D647A9 /* Converter */,
+				8ED9C76B1BD31BE4006410F6 /* Themes */,
+				8E72331E1B0022A200D647A9 /* AKAControlViewProtocol.h */,
+				8E68C5F51BD1392000549A4B /* CompositeControlView */,
+				8EFF31561CF4978100D46060 /* Behaviors */,
+				8EFF31361CF0F7C000D46060 /* TableViewDataSourceMultiplexer */,
+				8ED9C7691BD31BA8006410F6 /* ViewControllers */,
+				8E7233C91B00346500D647A9 /* Controls */,
 				8E593DC51BD507030040B391 /* ComplexControlViewBindings */,
-				8E593DCA1BD507A80040B391 /* AKAComplexControlViewBinding.h */,
-				8E593DCB1BD507A80040B391 /* AKAComplexControlViewBinding.m */,
-				8E593DD21BD5244D0040B391 /* AKACollectionControlViewBindingDelegate.h */,
-				8E593DCE1BD51BFA0040B391 /* AKACollectionControlViewBinding.h */,
-				8E593DCF1BD51BFA0040B391 /* AKACollectionControlViewBinding.m */,
-				8E7233441B0022A200D647A9 /* AKATableViewCell.h */,
-				8E7233451B0022A200D647A9 /* AKATableViewCell.m */,
-				8E72331F1B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.h */,
-				8E7233201B0022A200D647A9 /* AKADynamicPlaceholderTableViewCell.m */,
 			);
 			name = REFACTOR_THIS;
 			sourceTree = "<group>";
@@ -1595,17 +1604,6 @@
 			name = UITextField;
 			sourceTree = "<group>";
 		};
-		8ED9C7681BD31B90006410F6 /* Obsolete */ = {
-			isa = PBXGroup;
-			children = (
-				8E7233CA1B00348400D647A9 /* Converter */,
-				8E7233CB1B0034AD00D647A9 /* Validators */,
-				8ED9C76B1BD31BE4006410F6 /* Themes */,
-			);
-			name = Obsolete;
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		8ED9C7691BD31BA8006410F6 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1655,6 +1653,7 @@
 				8E7233621B0022A200D647A9 /* UIView+AKAThemeProvider.m */,
 			);
 			name = Themes;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		8EDFDC851C6665A9004C79CC /* UIImageView */ = {
@@ -2033,19 +2032,6 @@
 				8EA696001CEA248C00E32BF6 /* AKAMutableOrderedDictionary.m */,
 			);
 			name = Collections;
-			sourceTree = "<group>";
-		};
-		8EFF31551CF4973100D46060 /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				8E72331E1B0022A200D647A9 /* AKAControlViewProtocol.h */,
-				8E68C5F51BD1392000549A4B /* CompositeControlView */,
-				8EFF31561CF4978100D46060 /* Behaviors */,
-				8EFF31361CF0F7C000D46060 /* TableViewDataSourceMultiplexer */,
-				8ED9C7691BD31BA8006410F6 /* ViewControllers */,
-				8E7233C91B00346500D647A9 /* Controls */,
-			);
-			name = Deprecated;
 			sourceTree = "<group>";
 		};
 		8EFF31561CF4978100D46060 /* Behaviors */ = {

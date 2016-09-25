@@ -600,7 +600,7 @@
     return result;
 }
 
-- (void)                            dispatchTableViewReload:(BOOL)animated
+- (void)                            dispatchTableViewReload:(BOOL __unused)animated
 {
     if (!self.tableViewReloadDispatched)
     {
@@ -1183,20 +1183,20 @@
 
 @implementation AKABindingController(BindingDelegate_UITableView_dataSourceBinding)
 
-- (void)                bindingWillUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding
+- (void)                bindingWillUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding*__unused)binding
 {
     [self beginUpdatingChildControllers];
 }
 
-- (void)                bindingDidUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding *)binding
+- (void)                bindingDidUpdateDynamicBindings:(AKABinding_UITableView_dataSourceBinding*__unused)binding
 {
     [self endUpdatingChildControllers];
 }
 
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
       addDynamicBindingsForCell:(UITableViewCell *)cell
-                      indexPath:(NSIndexPath *)indexPath
+                      indexPath:(NSIndexPath* __unused)indexPath
                     dataContext:(id)dataContext
 {
     [self createOrReuseBindingControllerForTargetObjectHierarchy:cell
@@ -1204,16 +1204,16 @@
                                                            error:nil];
 }
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
    removeDynamicBindingsForCell:(UITableViewCell *)cell
-                      indexPath:(NSIndexPath *)indexPath
+                      indexPath:(NSIndexPath*__unused)indexPath
 {
     [self removeBindingControllerForTargetObjectHierarchy:cell
                                             enqueForReuse:cell.reuseIdentifier.length > 0];
 }
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
-   addDynamicBindingsForSection:(NSInteger)section
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
+   addDynamicBindingsForSection:(NSInteger __unused)section
                      headerView:(UIView *)headerView
                     dataContext:(id)dataContext
 {
@@ -1222,17 +1222,17 @@
                                                            error:nil];
 }
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
-removeDynamicBindingsForSection:(NSInteger)section
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
+removeDynamicBindingsForSection:(NSInteger __unused)section
                      headerView:(UIView *)headerView
-                    dataContext:(id)dataContext
+                    dataContext:(id __unused)dataContext
 {
     [self removeBindingControllerForTargetObjectHierarchy:headerView
                                             enqueForReuse:NO];
 }
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
-   addDynamicBindingsForSection:(NSInteger)section
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
+   addDynamicBindingsForSection:(NSInteger __unused)section
                      footerView:(UIView *)footerView
                     dataContext:(id)dataContext
 {
@@ -1241,10 +1241,10 @@ removeDynamicBindingsForSection:(NSInteger)section
                                                            error:nil];
 }
 
-- (void)                binding:(AKABinding_UITableView_dataSourceBinding *)binding
-removeDynamicBindingsForSection:(NSInteger)section
+- (void)                binding:(AKABinding_UITableView_dataSourceBinding*__unused)binding
+removeDynamicBindingsForSection:(NSInteger __unused)section
                      footerView:(UIView *)headerView
-                    dataContext:(id)dataContext
+                    dataContext:(id __unused)dataContext
 {
     [self removeBindingControllerForTargetObjectHierarchy:headerView
                                             enqueForReuse:NO];

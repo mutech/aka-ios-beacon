@@ -81,11 +81,13 @@
 
 #pragma mark - Finishing
 
-- (void)                                     finish;
+- (void)                                 willFinish;
 
-- (void)                            finishWithError:(nullable NSError*)error;
+- (void)                                     finish __attribute__((objc_requires_super));
 
-- (void)                           finishWithErrors:(nullable NSArray<NSError*>*)errors;
+- (void)                            finishWithError:(nullable NSError*)error __attribute__((objc_requires_super));
+
+- (void)                           finishWithErrors:(nullable NSArray<NSError*>*)errors __attribute__((objc_requires_super));
 
 #pragma mark - Operation Queues
 

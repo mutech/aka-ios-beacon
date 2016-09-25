@@ -237,14 +237,20 @@ typedef enum
 
         if (useRowsFromSource)
         {
-            NSUInteger count = (NSUInteger)[dataSource tableView:self.tableView
-                                           numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)];
-            if (count > 0)
+            UITableView* tableView = self.tableView;
+
+            NSUInteger count = 0;
+            if (tableView)
             {
-                [section insertRowsFromDataSource:dataSourceEntry
-                                  sourceIndexPath:[NSIndexPath indexPathForRow:0
-                                                                     inSection:(NSInteger)(sourceSectionIndex + i)]
-                                            count:count                                   atRowIndex:0];
+                count = (NSUInteger)[dataSource tableView:tableView
+                                    numberOfRowsInSection:(NSInteger)(sourceSectionIndex + i)];
+                if (count > 0)
+                {
+                    [section insertRowsFromDataSource:dataSourceEntry
+                                      sourceIndexPath:[NSIndexPath indexPathForRow:0
+                                                                         inSection:(NSInteger)(sourceSectionIndex + i)]
+                                                count:count                                   atRowIndex:0];
+                }
             }
         }
         [self insertSection:section

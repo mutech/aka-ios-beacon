@@ -101,11 +101,10 @@
 
 #pragma mark - Initialization - Target Value Property
 
-- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id)view
+- (req_AKAProperty)     createTargetValuePropertyForTarget:(req_id __unused)view
                                                      error:(out_NSError __unused)error
 {
     NSAssert([view isKindOfClass:[UITextField class]], @"Expected a UITextField, got %@", view);
-    (void)view;
 
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:

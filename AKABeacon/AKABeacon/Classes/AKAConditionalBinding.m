@@ -13,7 +13,7 @@
 #import "AKABinding+SubclassInitialization.h"
 #import "AKABinding+BindingOwner.h"
 #import "AKABinding+SubclassObservationEvents.h"
-
+#import "AKAErrors.h"
 #import "AKAPredicatePropertyBinding.h"
 
 
@@ -189,6 +189,9 @@
 
         // Initializes binding clauses
 
+        __block BOOL failed = NO;
+        __block NSError* blockError;
+
         NSMutableArray<AKAConditionalBindingClause*>* clauses = [NSMutableArray new];
         [conditionalExpression.clauses enumerateObjectsUsingBlock:
          ^(AKAConditionalBindingExpressionClause* _Nonnull expressionClause,
@@ -202,6 +205,7 @@
 
              if (predicateExpression == nil)
              {
+                 // $else part of a conditional binding expression
                  clause.predicate = [NSPredicate predicateWithValue:YES];
                  *stop = YES;
              }
@@ -227,22 +231,46 @@
                                                                      context:bindingContext
                                                                        owner:self
                                                                     delegate:delegate
-                                                                       error:error];
+                                                                       error:&blockError];
+                 if (clause.predicateBinding == nil)
+                 {
+                     failed = YES;
+                     *stop = YES;
+                 }
              }
 
-             AKABindingExpression* resultExpression = expressionClause.resultBindingExpression;
+             if (!failed)
+             {
+                 AKABindingExpression* resultExpression = expressionClause.resultBindingExpression;
 
-             clause.binding = resultBindingFactory(target,
-                                                   targetValueProperty,
-                                                   resultExpression,
-                                                   bindingContext,
-                                                   self,
-                                                   delegate,
-                                                   error);
-
-             [clauses addObject:clause];
+                 clause.binding = resultBindingFactory(target,
+                                                       targetValueProperty,
+                                                       resultExpression,
+                                                       bindingContext,
+                                                       self,
+                                                       delegate,
+                                                       &blockError);
+                 if (clause.binding)
+                 {
+                     [clauses addObject:clause];
+                 }
+                 else
+                 {
+                     failed = YES;
+                     *stop = YES;
+                 }
+             }
          }];
-        _clauses = clauses;
+
+        if (failed)
+        {
+            AKARegisterErrorInErrorStore(blockError, error);
+            self = nil;
+        }
+        else
+        {
+            _clauses = clauses;
+        }
     }
 
     return self;

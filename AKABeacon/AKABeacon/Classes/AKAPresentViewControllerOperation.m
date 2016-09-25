@@ -180,7 +180,7 @@
 - (instancetype)initWithViewController:(UIViewController *)viewController
                    presentationContext:(UIViewController *)presenter
 {
-    if (self = [self init])
+    if (self = [super init])
     {
         _viewController = viewController;
         _presenter = presenter;

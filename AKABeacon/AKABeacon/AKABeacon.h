@@ -58,8 +58,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAGroupOperation.h>
 #import <AKABeacon/AKAOperationCondition.h>
 #import <AKABeacon/AKANoFailedDependenciesOperationCondition.h>
+#import <AKABeacon/AKADelayedOperationCondition.h>
 #import <AKABeacon/AKAOperationObserver.h>
 #import <AKABeacon/AKABlockOperationObserver.h>
+#import <AKABeacon/AKANetworkOperationObserver.h>
 
 // Commons/Operations/UIOperations
 #import <AKABeacon/AKAPresentViewControllerOperation.h>
@@ -143,6 +145,10 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/UILabel+AKAIBBindingProperties_textBinding.h>
 #import <AKABeacon/UITextField+AKAIBBindingProperties_textBinding.h>
 #import <AKABeacon/UITextView+AKAIBBindingProperties_textBinding.h>
+#import <AKABeacon/UISearchBar+AKAIBBindingProperties_textBinding.h>
+
+// Integration/AKAIBBindingProperties/titleBinding
+#import <AKABeacon/UIBarButtonItem+AKAIBBindingProperties_titleBinding.h>
 
 // Integration/AKAIBBindingProperties/valueBinding
 #import <AKABeacon/UIPickerView+AKAIBBindingProperties_valueBinding.h>
@@ -181,6 +187,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKAViewBinding.h>
 
 #import <AKABeacon/AKAFontPropertyBinding.h>
+
+// Bindings/ViewBindings/UIBarButtonItem
+#import <AKABeacon/AKABinding_UIBarButtonBinding_titleBinding.h>
 
 // Bindings/ViewBindings/UIView
 #import <AKABeacon/AKABinding_UIView_styleBinding.h>
@@ -231,6 +240,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UITextView
 #import <AKABeacon/AKABinding_UITextView_textBinding.h>
+
+// Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/UISearchBar
+#import <AKABeacon/AKABinding_UISearchBar_textBinding.h>
 
 // Bindings/ViewBindings/ControlViewBindings/KeyboardControlViewBindings/CustomKeyboard
 #import <AKABeacon/AKACustomKeyboardResponderView.h>

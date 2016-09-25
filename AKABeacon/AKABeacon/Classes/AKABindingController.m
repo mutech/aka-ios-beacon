@@ -127,12 +127,12 @@
     return result;
 }
 
-- (void)enumerateBindingsUsingBlock:(void (^)(AKABinding * _Nonnull, BOOL * _Nonnull))block
+- (void)                   enumerateBindingsUsingBlock:(void (^)(AKABinding * _Nonnull, BOOL * _Nonnull))block
 {
     [self.bindings enumerateObjectsUsingBlock:block];
 }
 
-- (void)enumerateBindingControllersUsingBlock:(void (^)(AKABindingController *, BOOL * _Nonnull))block
+- (void)         enumerateBindingControllersUsingBlock:(void (^)(AKABindingController *, BOOL * _Nonnull))block
 {
     BOOL stop = NO;
     for (AKABindingController* childController in self.childBindingControllers.objectEnumerator)
@@ -273,12 +273,15 @@
                                               delegate:(opt_AKABindingControllerDelegate)delegate
                                                  error:(out_NSError)error
 {
+    AKAProperty* dataContextProperty = [parent dataContextPropertyForKeyPath:keyPath
+                                                          withChangeObserver:nil];
+    NSAssert(dataContextProperty != nil, @"Parent binding controller %@ does not provide a datacontext property for key path %@", parent, keyPath);
+    
     if (self = [self initWithParent:parent
               targetObjectHierarchy:targetObjectHierarchy
                            delegate:delegate])
     {
-        self.dataContextProperty = [parent dataContextPropertyForKeyPath:keyPath
-                                                      withChangeObserver:nil];
+        self.dataContextProperty = dataContextProperty;
 
         if ([self addBindingsForTargetObjectHierarchy:targetObjectHierarchy
                                  excludeTargetObjects:self.excludedTargetObjectHieraries

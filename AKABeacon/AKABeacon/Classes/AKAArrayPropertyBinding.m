@@ -223,7 +223,7 @@
          {
              [arrayComparer.deletedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
                                                                 usingBlock:
-              ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+              ^(NSUInteger idx, BOOL * _Nonnull __unused localStop)
               {
                   [delegate          binding:self
                         collectionController:arrayComparer
@@ -264,7 +264,7 @@
          {
              [arrayComparer.insertedItemIndexes enumerateIndexesWithOptions:NSEnumerationReverse
                                                                  usingBlock:
-              ^(NSUInteger idx, BOOL * _Nonnull __unused stop)
+              ^(NSUInteger idx, BOOL * _Nonnull __unused localStop)
               {
                   [delegate          binding:self
                         collectionController:arrayComparer

@@ -919,16 +919,17 @@
 {
     NSMutableArray* effectiveTarget = [self targetAsMutableArray:target];
 
+    NSAssert(self.index >= 0, nil);
     if (self.isObservingChanges && target == self.target)
     {
         id oldValue = [self valueForTarget:target];
-        effectiveTarget[self.index] = value == nil ? [NSNull null] : value;
+        effectiveTarget[(NSUInteger)self.index] = value == nil ? [NSNull null] : value;
 
         [self propertyValueDidChangeFrom:oldValue to:value];
     }
     else
     {
-        effectiveTarget[self.index] = value == nil ? [NSNull null] : value;
+        effectiveTarget[(NSUInteger)self.index] = value == nil ? [NSNull null] : value;
     }
 }
 

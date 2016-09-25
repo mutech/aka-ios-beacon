@@ -9,9 +9,7 @@
 
 #import "AlertOperationDemosTableViewController.h"
 @import MessageUI;
-@import AKABeacon.AKAOperationQueue;
-@import AKABeacon.AKAAlertOperation;
-@import AKABeacon.AKASendMailOperation;
+@import AKABeacon;
 
 @interface AlertOperationDemosTableViewController ()
 

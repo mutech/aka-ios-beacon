@@ -28,7 +28,7 @@
     return result;
 }
 
-- (void)validateTarget:(req_id)target
+- (void)validateTarget:(req_id __unused)target
 {
     (void)target;
     NSParameterAssert([target isKindOfClass:[UIView class]]);

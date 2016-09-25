@@ -117,6 +117,9 @@ typedef NS_ENUM(NSUInteger, AKAVCLifeCycleState)
  some implementations will not work (properly) with monitoring enabled, for example MFMailComposeViewController.
  Subclasses supporting such view controllers should redefine this method to return NO and use delegation
  or other means to determine when the presentation has finished.
+ 
+ Such implementations have to call -viewControllerHasBeenDismissed: to notify the operation about
+ the dismissal. Failure to do so will leave the operation in executing state.
  */
 - (BOOL)shouldMonitorPresentedViewControllersLifeCycleEvents;
 

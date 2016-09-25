@@ -285,7 +285,7 @@
     static NSSet* result;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        result = [NSSet setWithObjects:@"state", @"cancelled", @"isCancelled", nil];
+        result = [NSSet setWithObjects:@"state", @"isCancelled", nil];
     });
 
     return result;
@@ -552,6 +552,14 @@
 
 #pragma mark - Finishing
 
+- (void)willFinish
+{
+}
+
+- (void)didFinish
+{
+}
+
 - (void)finish
 {
     [self finishWithError:nil];
@@ -572,6 +580,7 @@
                  }];
     if (isFinishing)
     {
+        [self willFinish];
         for (id<AKAOperationObserver> observer in self.observers)
         {
             if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
@@ -580,6 +589,7 @@
             }
         }
         self.state = AKAOperationStateFinished;
+        [self didFinish];
     }
 }
 
@@ -596,6 +606,7 @@
                  }];
     if (isFinishing)
     {
+        [self willFinish];
         for (id<AKAOperationObserver> observer in self.observers)
         {
             if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
@@ -604,6 +615,7 @@
             }
         }
         self.state = AKAOperationStateFinished;
+        [self didFinish];
     }
 }
 

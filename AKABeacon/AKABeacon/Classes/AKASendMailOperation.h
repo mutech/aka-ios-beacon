@@ -14,6 +14,9 @@
 
 @interface AKASendMailOperation: AKAPresentViewControllerOperation
 
+- (nonnull instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
+                            presentationContext:(nullable UIViewController *)presenter;
+
 + (nonnull instancetype)operationForController:(nonnull MFMailComposeViewController*)controller
                            presentationContext:(nullable UIViewController*)presenter;
 

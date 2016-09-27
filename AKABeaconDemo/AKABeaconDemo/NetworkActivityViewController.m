@@ -83,36 +83,9 @@
 
 @interface NetworkOperation: AKATimerOperation
 
-@property(nonatomic, readonly) UIColor* statusColor;
-
 @end
 
 @implementation NetworkOperation
-
-- (UIColor *)statusColor
-{
-    if (self.isFinished)
-    {
-        return [UIColor greenColor];
-    }
-    else if (self.isExecuting)
-    {
-        return [UIColor blueColor];
-    }
-    else if (self.isReady)
-    {
-        return [UIColor yellowColor];
-    }
-    else
-    {
-        return [UIColor lightGrayColor];
-    }
-}
-
-+ (NSSet *)keyPathsForValuesAffectingStatusColor
-{
-    return [NSSet setWithObjects:@"isExecuting", @"isReady", @"isFinished", nil];
-}
 
 @end
 
@@ -240,17 +213,6 @@
                             }]];
     [AKANetworkOperationObserver showNetworkActivityIndicatorWhileOperationIsRunning:operation];
     [operation addToOperationQueue:self.queue];
-}
-
-- (void)controller:(AKABindingController *)controller binding:(AKABinding *)binding sourceValueDidChangeFromOldValue:(id)oldSourceValue to:(id)newSourceValue
-{
-    NSLog(@"data context=%@ - target=%@ - value change: %@ -> %@", controller.dataContext, NSStringFromClass([binding.target class]), oldSourceValue, newSourceValue);
-
-}
-
-- (void)_controller:(AKABindingController *)controller binding:(AKABinding *)binding didUpdateTargetValue:(id)oldTargetValue to:(id)newTargetValue forSourceValue:(id)oldSourceValue changeTo:(id)newSourceValue
-{
-    NSLog(@"data context=%@ - target=%@ - value change: %@ -> %@ (%@ -> %@)", controller.dataContext, NSStringFromClass([binding.target class]), oldTargetValue, newTargetValue, oldSourceValue, newSourceValue);
 }
 
 @end

@@ -25,6 +25,8 @@
 
 - (void)                              addBindingPropertyBinding:(req_AKABinding)binding;
 
+- (BOOL)                           removeBindingPropertyBinding:(req_AKABinding)binding;
+
 - (void)                               addTargetPropertyBinding:(req_AKABinding)binding;
 
 @end

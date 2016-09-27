@@ -22,7 +22,7 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "NO"
+            buildForRunning = "YES"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "NO">
@@ -31,6 +31,20 @@
                BlueprintIdentifier = "8E46D3FC1BEB7394002E497B"
                BuildableName = "AKABeaconTests.xctest"
                BlueprintName = "AKABeaconTests"
+               ReferencedContainer = "container:AKABeacon.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8E2115C91BF3F75600A89CFC"
+               BuildableName = "AKABeaconQuickTests.xctest"
+               BlueprintName = "AKABeaconQuickTests"
                ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -50,16 +64,6 @@
                BlueprintIdentifier = "8E46D3FC1BEB7394002E497B"
                BuildableName = "AKABeaconTests.xctest"
                BlueprintName = "AKABeaconTests"
-               ReferencedContainer = "container:AKABeacon.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8E2115C91BF3F75600A89CFC"
-               BuildableName = "AKABeaconQuickTests.xctest"
-               BlueprintName = "AKABeaconQuickTests"
                ReferencedContainer = "container:AKABeacon.xcodeproj">
             </BuildableReference>
          </TestableReference>

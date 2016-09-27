@@ -12,25 +12,25 @@ import AKABeacon
 @objc
 class TestModel: NSObject, AKABindingContextProtocol {
     dynamic var textValue: String
-    dynamic var dateValue: NSDate
+    dynamic var dateValue: Date
     dynamic var doubleValue: Double
 
-    dynamic var numberFormatter: NSNumberFormatter
-    dynamic var dateFormatter: NSDateFormatter
+    dynamic var numberFormatter: NumberFormatter
+    dynamic var dateFormatter: DateFormatter
 
     dynamic var pattern: String?
-    dynamic var patternOptions: NSStringCompareOptions
+    dynamic var patternOptions: NSString.CompareOptions
 
     dynamic var matchingSearchResultBackgroundColor: UIColor?
 
     init(
         text: String = "Default text",
-        date: NSDate = NSDate(),
+        date: Date = Date(),
         double: Double = 12345.678,
-        numberFormatter: NSNumberFormatter = NSNumberFormatter(),
-        dateFormatter: NSDateFormatter = NSDateFormatter(),
+        numberFormatter: NumberFormatter = NumberFormatter(),
+        dateFormatter: DateFormatter = DateFormatter(),
         pattern: String? = nil,
-        patternOptions: NSStringCompareOptions = .LiteralSearch)
+        patternOptions: NSString.CompareOptions = .literal)
     {
         self.textValue = text
         self.dateValue = date
@@ -49,27 +49,27 @@ class TestModel: NSObject, AKABindingContextProtocol {
             alpha: 1.0)
     }
 
-    func dataContextPropertyForKeyPath(keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+    func dataContextProperty(forKeyPath keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
         return AKAProperty.init(ofWeakKeyValueTarget: self, keyPath: keyPath, changeObserver: valueDidChange);
     }
 
-    func dataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
-        return dataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
+    func dataContextValue(forKeyPath keyPath: String?) -> AnyObject? {
+        return dataContextProperty(forKeyPath: keyPath, withChangeObserver: nil)?.value as AnyObject?;
     }
 
-    func rootDataContextPropertyForKeyPath(keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
-        return self.dataContextPropertyForKeyPath(keyPath, withChangeObserver: valueDidChange);
+    func rootDataContextProperty(forKeyPath keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+        return self.dataContextProperty(forKeyPath: keyPath, withChangeObserver: valueDidChange);
     }
 
-    func rootDataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
-        return rootDataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
+    func rootDataContextValue(forKeyPath keyPath: String?) -> AnyObject? {
+        return rootDataContextProperty(forKeyPath: keyPath, withChangeObserver: nil)?.value as AnyObject?;
     }
 
-    func controlPropertyForKeyPath(keyPath: String, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+    func controlProperty(forKeyPath keyPath: String, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
         return nil;
     }
 
-    func controlValueForKeyPath(keyPath: String?) -> AnyObject? {
+    func controlValue(forKeyPath keyPath: String?) -> AnyObject? {
         return nil;
     }
 }

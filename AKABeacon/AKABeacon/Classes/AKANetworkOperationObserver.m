@@ -142,12 +142,12 @@
 
 - (NSTimeInterval)hidingDelay
 {
-    return 0.5;
+    return 0.7;
 }
 
 - (NSTimeInterval)hidingDelayTolerance
 {
-    return 3.0;
+    return 0;
 }
 
 - (void)showNetworkActivityIndicator
@@ -177,7 +177,7 @@
 
 @interface AKANetworkActivityIndicatorCounter()
 
-@property (nonatomic) NSTimer* visibilityTimer;
+@property(nonatomic) BOOL isHideNetworkActivityIndicatorScheduled;
 
 @end
 
@@ -241,41 +241,40 @@
 
 #pragma mark - Indicator Update Scheduling
 
-- (BOOL)isHideNetworkActivityIndicatorScheduled
+- (void)scheduleHideNetworkActivityIndicator
 {
     NSAssert([NSThread isMainThread], nil);
 
-    return self.visibilityTimer.isValid;
-}
-
-- (void)scheduleHideNetworkActivityIndicator
-{
-    id<AKANetworkActivityIndicatorProtocol> indicator =
-        self.networkActivityIndicator;
-    if (isnan(indicator.hidingDelay))
+    if (!self.isHideNetworkActivityIndicatorScheduled)
     {
-        [self hideNetworkActivityIndicator];
-    }
-    else
-    {
-        self.visibilityTimer = [NSTimer timerWithTimeInterval:indicator.hidingDelay
-                                                       target:self
-                                                     selector:@selector(hideNetworkActivityIndicator)
-                                                     userInfo:nil
-                                                      repeats:NO];
-        if (!isnan(indicator.hidingDelayTolerance))
+        id<AKANetworkActivityIndicatorProtocol> indicator = self.networkActivityIndicator;
+        if (isnan(indicator.hidingDelay) || indicator.hidingDelay <= 0)
         {
-            self.visibilityTimer.tolerance = indicator.hidingDelayTolerance;
+            [self hideNetworkActivityIndicator];
         }
-        [[NSRunLoop mainRunLoop] addTimer:self.visibilityTimer
-                                  forMode:NSDefaultRunLoopMode];
+        else
+        {
+            self.isHideNetworkActivityIndicatorScheduled = YES;
+
+            __weak AKANetworkActivityIndicatorCounter* weakSelf = self;
+            dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(indicator.hidingDelay * NSEC_PER_SEC));
+            dispatch_after(time, dispatch_get_main_queue(), ^{
+                __strong AKANetworkActivityIndicatorCounter* strongSelf = weakSelf;
+                if (strongSelf.isHideNetworkActivityIndicatorScheduled)
+                {
+                    [strongSelf hideNetworkActivityIndicator];
+                    strongSelf.isHideNetworkActivityIndicatorScheduled = NO;
+                }
+            });
+        }
     }
 }
 
 - (void)cancelTimer
 {
-    [self.visibilityTimer invalidate];
-    self.visibilityTimer = nil;
+    NSAssert([NSThread isMainThread], nil);
+
+    self.isHideNetworkActivityIndicatorScheduled = NO;
 }
 
 @end

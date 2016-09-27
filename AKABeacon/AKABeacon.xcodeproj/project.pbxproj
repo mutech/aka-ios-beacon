@@ -50,6 +50,7 @@
 		8E2653311C2E940F001AC635 /* UILabelBindingsWithTextAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2653301C2E940F001AC635 /* UILabelBindingsWithTextAttributes.swift */; };
 		8E26A51C1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E26A51A1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E26A51D1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E26A51B1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.m */; };
+		8E28BF871D99D12F009B6311 /* AKAPredicatePropertyBindingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E28BF861D99D12F009B6311 /* AKAPredicatePropertyBindingTest.m */; };
 		8E2DD8CE1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2DD8CC1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E2DD8CF1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E2DD8CD1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.m */; };
 		8E2DD8D21CA027F900BB629B /* AKABinding_UIControl_enabledBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8E2DD8D01CA027F900BB629B /* AKABinding_UIControl_enabledBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -540,6 +541,7 @@
 		8E2653301C2E940F001AC635 /* UILabelBindingsWithTextAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabelBindingsWithTextAttributes.swift; sourceTree = "<group>"; };
 		8E26A51A1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKANumberFormatterPropertyBinding.h; sourceTree = "<group>"; };
 		8E26A51B1BC18E1C003D133C /* AKANumberFormatterPropertyBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKANumberFormatterPropertyBinding.m; sourceTree = "<group>"; };
+		8E28BF861D99D12F009B6311 /* AKAPredicatePropertyBindingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAPredicatePropertyBindingTest.m; sourceTree = "<group>"; };
 		8E2DD8CC1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIControl+AKAIBBindingProperties_enabledBinding.h"; path = "Classes/UIControl+AKAIBBindingProperties_enabledBinding.h"; sourceTree = "<group>"; };
 		8E2DD8CD1CA0279B00BB629B /* UIControl+AKAIBBindingProperties_enabledBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIControl+AKAIBBindingProperties_enabledBinding.m"; path = "Classes/UIControl+AKAIBBindingProperties_enabledBinding.m"; sourceTree = "<group>"; };
 		8E2DD8D01CA027F900BB629B /* AKABinding_UIControl_enabledBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UIControl_enabledBinding.h; sourceTree = "<group>"; };
@@ -1232,18 +1234,16 @@
 		8E46D3FE1BEB7394002E497B /* AKABeaconTests */ = {
 			isa = PBXGroup;
 			children = (
+				8E46D4011BEB7394002E497B /* Info.plist */,
+				8E4F61CA1D9A455A004BDB91 /* Obsolete */,
+				8E46D3FF1BEB7394002E497B /* AKABeaconTests.m */,
+				8EA9BE2F1D0C4FE000FC1A17 /* AKAOperationTests.m */,
 				8ECD35F01CE4D84900DFCAE5 /* AKABindingTestBase.h */,
 				8ECD35F11CE4D84900DFCAE5 /* AKABindingTestBase.m */,
-				8E46D3FF1BEB7394002E497B /* AKABeaconTests.m */,
-				8EBC854B1BD1B2B10048950B /* AKAControlTests.m */,
-				8E7233B91B00240200D647A9 /* AKAEmailValidatorTest.m */,
-				8E7233BA1B00240200D647A9 /* AKAThemeTests.m */,
+				8E28BF861D99D12F009B6311 /* AKAPredicatePropertyBindingTest.m */,
 				8E225FDE1BADBED000BC070F /* AKABindingExpressionTest.m */,
 				8EB1BCA11BB5911E0006CBDD /* AKABindingExpressionSpecificationTest.m */,
-				8E46D4011BEB7394002E497B /* Info.plist */,
-				8E9DE5A51C43AC8500FCC6AF /* AKARuntimeTests.m */,
 				8E0B56AC1CE37A8C00B3E407 /* AKAConditionalBindingTest.m */,
-				8EA9BE2F1D0C4FE000FC1A17 /* AKAOperationTests.m */,
 			);
 			path = AKABeaconTests;
 			sourceTree = "<group>";
@@ -1304,6 +1304,17 @@
 				8E4F0A761BE3D954006D8876 /* AKABinding_UISlider_valueBinding.m */,
 			);
 			name = UISilder;
+			sourceTree = "<group>";
+		};
+		8E4F61CA1D9A455A004BDB91 /* Obsolete */ = {
+			isa = PBXGroup;
+			children = (
+				8E9DE5A51C43AC8500FCC6AF /* AKARuntimeTests.m */,
+				8EBC854B1BD1B2B10048950B /* AKAControlTests.m */,
+				8E7233B91B00240200D647A9 /* AKAEmailValidatorTest.m */,
+				8E7233BA1B00240200D647A9 /* AKAThemeTests.m */,
+			);
+			name = Obsolete;
 			sourceTree = "<group>";
 		};
 		8E593DC51BD507030040B391 /* ComplexControlViewBindings */ = {
@@ -2423,6 +2434,7 @@
 				TargetAttributes = {
 					8E2115C91BF3F75600A89CFC = {
 						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = PUB728ZT9Y;
 						LastSwiftMigration = 0800;
 					};
 					8E46D3FC1BEB7394002E497B = {
@@ -2743,6 +2755,7 @@
 			files = (
 				8E46D4091BEB73D6002E497B /* AKAEmailValidatorTest.m in Sources */,
 				8E46D40A1BEB73D6002E497B /* AKAThemeTests.m in Sources */,
+				8E28BF871D99D12F009B6311 /* AKAPredicatePropertyBindingTest.m in Sources */,
 				8E0B56AD1CE37A8C00B3E407 /* AKAConditionalBindingTest.m in Sources */,
 				8EA9BE301D0C4FE000FC1A17 /* AKAOperationTests.m in Sources */,
 				8E9DE5A61C43AC8500FCC6AF /* AKARuntimeTests.m in Sources */,
@@ -2979,6 +2992,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = PUB728ZT9Y;
 				INFOPLIST_FILE = AKABeaconQuickTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2995,6 +3009,7 @@
 			baseConfigurationReference = 3E27DC7458AC419D6F1B0366 /* Pods-AKABeacon-AKABeaconQuickTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = PUB728ZT9Y;
 				INFOPLIST_FILE = AKABeaconQuickTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

@@ -48,6 +48,23 @@
     [self.bindingPropertyBindings addObject:bpBinding];
 }
 
+- (BOOL)                       removeBindingPropertyBinding:(AKABinding*)bpBinding
+{
+    BOOL result = NO;
+    if (self.bindingPropertyBindings)
+    {
+        NSUInteger index = [self.bindingPropertyBindings indexOfObject:bpBinding];
+        result = (index != NSNotFound);
+        if (result)
+        {
+            [bpBinding stopObservingChanges];
+            [self.bindingPropertyBindings removeObjectAtIndex:index];
+            bpBinding.owner = nil;
+        }
+    }
+    return result;
+}
+
 - (void)                           addTargetPropertyBinding:(AKABinding*)tpBinding
 {
     // TODO: check conflicting bindingProperty/attributeName declarations (only one attribute allowed for bindingProperty)

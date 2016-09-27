@@ -10,27 +10,27 @@ class AKAArrayPropertyBindingSpec: QuickSpec {
         dynamic var stringValue: NSString?
         dynamic var booleanValue: Bool = true
 
-        func dataContextPropertyForKeyPath(keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+        func dataContextProperty(forKeyPath keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
             return AKAProperty.init(ofWeakKeyValueTarget: self, keyPath: keyPath, changeObserver: valueDidChange);
         }
 
-        func dataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
-            return dataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
+        func dataContextValue(forKeyPath keyPath: String?) -> AnyObject? {
+            return dataContextProperty(forKeyPath: keyPath, withChangeObserver: nil)?.value as AnyObject?;
         }
 
-        func rootDataContextPropertyForKeyPath(keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
-            return self.dataContextPropertyForKeyPath(keyPath, withChangeObserver: valueDidChange);
+        func rootDataContextProperty(forKeyPath keyPath: String?, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+            return self.dataContextProperty(forKeyPath: keyPath, withChangeObserver: valueDidChange);
         }
 
-        func rootDataContextValueForKeyPath(keyPath: String?) -> AnyObject? {
-            return rootDataContextPropertyForKeyPath(keyPath, withChangeObserver: nil)?.value;
+        func rootDataContextValue(forKeyPath keyPath: String?) -> AnyObject? {
+            return rootDataContextProperty(forKeyPath: keyPath, withChangeObserver: nil)?.value as AnyObject?;
         }
 
-        func controlPropertyForKeyPath(keyPath: String, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
+        func controlProperty(forKeyPath keyPath: String, withChangeObserver valueDidChange: AKAPropertyChangeObserver?) -> AKAProperty? {
             return nil;
         }
 
-        func controlValueForKeyPath(keyPath: String?) -> AnyObject? {
+        func controlValue(forKeyPath keyPath: String?) -> AnyObject? {
             return nil;
         }
     }

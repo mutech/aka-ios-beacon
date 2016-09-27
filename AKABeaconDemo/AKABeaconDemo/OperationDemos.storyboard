@@ -249,7 +249,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZSW-Eh-dnO" id="hzg-nI-SVz">
-                                            <frame key="frameInset" width="343" height="44"/>
+                                            <frame key="frameInset" width="343" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVY-B6-ubb">
@@ -260,7 +260,11 @@
                                                         <userDefinedRuntimeAttribute type="string" keyPath="textBinding_aka" value="name"/>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="styleBinding_aka">
                                                             <string key="value">{
-  backgroundColor: statusColor
+  backgroundColor:
+    $when(isFinished)		$UIColor{r:0,     g:255, b:0}
+    $when(isExecuting)	$UIColor{r:100, g:100, b:255}
+    $when(isReady)		$UIColor{r:255, g:255, b:0}
+    $else				$UIColor{r:200, g:200, b:200}
 }</string>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
@@ -278,7 +282,9 @@
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="dataSourceBinding_aka">
                                         <string key="value">[ items ] {
-  defaultCellMapping: "DefaultCell"
+  defaultCellMapping: "DefaultCell",
+  insertAnimation: .Bottom,
+  deleteAnimation: .Right
 }</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>

@@ -10,19 +10,21 @@
 
 typedef NS_OPTIONS(NSUInteger, AKAOperationState)
 {
-    AKAOperationStateInitialized            =  1,
-    AKAOperationStatePending                =  2,
-    AKAOperationStateEvaluatingConditions   =  4,
-    AKAOperationStateReady                  =  8,
-    AKAOperationStateExecuting              = 16,
-    AKAOperationStateFinishing              = 32,
-    AKAOperationStateFinished               = 64,
+    AKAOperationStateInitialized            =   1,
+    AKAOperationStateEnqueuing              =   2,
+    AKAOperationStatePending                =   4,
+    AKAOperationStateEvaluatingConditions   =   8,
+    AKAOperationStateReady                  =  16,
+    AKAOperationStateExecuting              =  32,
+    AKAOperationStateFinishing              =  64,
+    AKAOperationStateFinished               = 128,
 };
 
 typedef NS_OPTIONS(NSUInteger, AKAOperationStateSuccessors)
 {
-    AKAOperationStateInitializedSuccessors          = AKAOperationStatePending,
-    AKAOperationStatePendingSuccessors              = AKAOperationStateEvaluatingConditions | AKAOperationStateReady,
+    AKAOperationStateInitializedSuccessors          = AKAOperationStateEnqueuing,
+    AKAOperationStateEnqueuingSuccessors            = AKAOperationStatePending,
+    AKAOperationStatePendingSuccessors              = AKAOperationStateEvaluatingConditions | AKAOperationStateReady | AKAOperationStateFinishing,
     AKAOperationStateEvaluatingConditionsSuccessors = AKAOperationStateReady | AKAOperationStateFinishing,
     AKAOperationStateReadySuccessors                = AKAOperationStateExecuting | AKAOperationStateFinishing,
     AKAOperationStateExecutingSuccessors            = AKAOperationStateFinishing,

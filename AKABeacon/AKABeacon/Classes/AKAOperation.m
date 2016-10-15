@@ -14,6 +14,7 @@
 #import "AKAOperationExclusivityController.h"
 #import "AKAOperationQueue.h"
 #import "AKABlockOperationObserver.h"
+#import "AKABlockOperation.h"
 
 @interface AKAOperation() {
     AKAOperationState _state;
@@ -68,6 +69,64 @@
     return self;
 }
 
++ (AKAOperation*)operationWithBlock:(void(^_Nonnull)(void(^_Nonnull finish)()))block
+{
+    return [[AKABlockOperation alloc] initWithBlock:block];
+}
+
++ (AKAOperation*)operationFailingWithError:(nonnull NSError*)error
+{
+    AKABlockOperation* result;
+    __weak AKABlockOperation* weakResult = result;
+    result = [self operationWithBlock:^(void (^ _Nonnull finish)()) {
+        [weakResult cancelWithError:error];
+        finish();
+    }];
+    return result;
+}
+
+#pragma mark - Diagnostics
+
+- (NSString *)description
+{
+    NSString* stateText = @"unknown";
+    switch (_state)
+    {
+        case AKAOperationStateInitialized:
+            stateText = @"initialized";
+            break;
+
+        case AKAOperationStateEnqueuing:
+            stateText = @"enqueuing";
+            break;
+
+        case AKAOperationStatePending:
+            stateText = @"pending";
+            break;
+
+        case AKAOperationStateEvaluatingConditions:
+            stateText = @"evaluating conditions";
+            break;
+
+        case AKAOperationStateReady:
+            stateText = @"ready";
+            break;
+
+        case AKAOperationStateExecuting:
+            stateText = @"executing";
+            break;
+
+        case AKAOperationStateFinishing:
+            stateText = @"finishing";
+            break;
+
+        case AKAOperationStateFinished:
+            stateText = @"finished";
+            break;
+    }
+    return [NSString stringWithFormat:@"<%@:%p>{name = '%@'; state = %@}", self.class, self, self.name, stateText];
+}
+
 #pragma mark - Final State
 
 - (BOOL)failed
@@ -100,6 +159,10 @@
             result = state & AKAOperationStateInitializedSuccessors;
             break;
 
+        case AKAOperationStateEnqueuing:
+            result = state & AKAOperationStateEnqueuingSuccessors;
+            break;
+
         case AKAOperationStatePending:
             result = state & AKAOperationStatePendingSuccessors;
             break;
@@ -122,6 +185,28 @@
 
         case AKAOperationStateFinished:
             result = state & AKAOperationStateFinishedSuccessors;
+            break;
+
+        default:
+            NSAssert(NO, @"Invalid unknown state %@", currentState);
+            result = NO;
+    }
+
+    switch (state)
+    {
+        case AKAOperationStateInitialized:
+        case AKAOperationStateEnqueuing:
+        case AKAOperationStatePending:
+        case AKAOperationStateEvaluatingConditions:
+        case AKAOperationStateReady:
+        case AKAOperationStateExecuting:
+        case AKAOperationStateFinishing:
+        case AKAOperationStateFinished:
+            break;
+
+        default:
+            NSAssert(NO, @"Invalid unknown state %@", state);
+            result = NO;
             break;
     }
 
@@ -165,7 +250,7 @@
         result = YES;
         NSAssert([self canTransitionFromCurrentState:_state toState:state],
                  @"Invalid state transition from %lu to %lu",
-        (unsigned long)_state, (unsigned long)state);
+                 (unsigned long)_state, (unsigned long)state);
         _state = state;
         if (block != NULL)
         {
@@ -210,6 +295,7 @@
     switch(self.state)
     {
         case AKAOperationStateInitialized:
+        case AKAOperationStateEnqueuing:
             result = self.cancelled;
             break;
 
@@ -234,13 +320,19 @@
                          if (satisfied)
                          {
                              [weakSelf              setState:AKAOperationStateReady
-                                 andPerformSynchronizedBlock:
-                              ^{
-                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                                        ifPredicateSatisfied:
+                              ^BOOL(AKAOperationState state)
+                              {
+                                  return state == AKAOperationStateEvaluatingConditions;
+                              }
+                                andPerformSynchronizedBlock:
+                              ^void()
+                              {
+                                  //__strong typeof(weakSelf) strongSelf = weakSelf;
 
                                   // If a condition is not satisfied, the operation will be
                                   // cancelled (because it will then never be satisfied).
-                                  strongSelf.conditionsSatisfied = satisfied;
+                                  weakSelf.conditionsSatisfied = satisfied;
                               }];
                          }
                          else
@@ -423,12 +515,46 @@
     }
     else
     {
-        [self.condition evaluateForOperation:self
-                                  completion:completion];
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
+            [self.condition evaluateForOperation:self
+                                      completion:completion];
+        });
     }
 }
 
 #pragma mark - Observers
+
+- (void)               addDidStartObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation))block
+{
+    [self addObserverWithDidStartBlock:block
+              didProduceOperationBlock:nil
+                        didFinishBlock:nil];
+}
+
+- (void)              addDidProduceOperationObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
+                                                                               NSOperation*_Nonnull producedOperation))block
+{
+    [self addObserverWithDidStartBlock:nil
+              didProduceOperationBlock:block
+                        didFinishBlock:nil];
+}
+
+- (void)              addDidFinishObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
+                                                                     NSArray<NSError*>*_Nullable errors))block
+{
+    [self addObserverWithDidStartBlock:nil
+              didProduceOperationBlock:nil
+                        didFinishBlock:block];
+}
+
+- (void)               addObserverWithDidStartBlock:(void (^_Nullable)(AKAOperation *))didStartBlock
+                           didProduceOperationBlock:(void (^_Nullable)(AKAOperation *, NSOperation *))didProduceOperationBlock
+                                     didFinishBlock:(void (^_Nullable)(AKAOperation *, NSArray<NSError *> *))didFinishBlock
+{
+    [self addObserver:[[AKABlockOperationObserver alloc] initWithDidStartBlock:didStartBlock
+                                                      didProduceOperationBlock:didProduceOperationBlock
+                                                                didFinishBlock:didFinishBlock]];
+}
 
 - (void)                                addObserver:(id<AKAOperationObserver>)observer
 {
@@ -480,6 +606,7 @@
 
 - (void)                                      start
 {
+    // TODO: documentation says: must not call super at any time. However, code in advanced operations and most or all derived frameworks do just that. Their comment is that [super start] does important work that should not be left out. Nobody mentions what it does and why you're not supposed to do it or what excatly has to be done. 
     [super start];
 
     if (self.cancelled)
@@ -490,7 +617,8 @@
 
 - (void)                                       main
 {
-    NSAssert(self.state == AKAOperationStateReady, @"The operation is not ready to be executed. Please ensure that this operation is processed on an operation queue.");
+    NSAssert(self.state == AKAOperationStateReady,
+             @"The operation is not ready to be executed. Please ensure that this operation is processed on an operation queue.");
 
     __block BOOL isExecuting = NO;
     [self           setState:AKAOperationStateExecuting
@@ -528,6 +656,11 @@
 }
 
 #pragma mark - Canncellation
+
+- (void)cancel
+{
+    [super cancel];
+}
 
 - (void)                            cancelWithError:(NSError*)error
 {
@@ -658,8 +791,10 @@
 
 - (void)prepareToAddToOperationQueue:(NSOperationQueue*)operationQueue
 {
-    self.state = AKAOperationStatePending;
+    self.state = AKAOperationStateEnqueuing;
 
+    // Conditions have to be added before the state is set to pending, because updating the state
+    // will trigger a call to isReady which needs dependencies added by conditions.
     [self enumerateConditionsUsingBlock:^(AKAOperationCondition * _Nonnull condition,
                                           BOOL * _Nonnull stop __unused)
      {
@@ -685,6 +820,8 @@
              [AKAOperation addOperation:conditionDependency toOperationQueue:operationQueue];
          }
      }];
+
+    self.state = AKAOperationStatePending;
 }
 
 @end

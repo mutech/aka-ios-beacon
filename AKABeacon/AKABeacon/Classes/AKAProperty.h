@@ -141,6 +141,22 @@ typedef opt_id(^AKAPropertyComputation)(opt_id value);
                                     observationStarter:(opt_AKAPropertyObservationStarter)observationStarter
                                     observationStopper:(opt_AKAPropertyObservationStopper)observationStopper;
 
+/**
+ * Creates a new custom property with the specified with the specified getter and setter.
+ *
+ * Please note that this factory method does not provide any observation functionality assuming that
+ * the properties value only changes manually through the specified setter block. This can f.e. be
+ * used for binding target properties in one-way bindings.
+ *
+ * @param getter a block returning the value of the property
+ * @param setter a block changing the value of the property
+ *
+ * @return a new property.
+ */
++ (req_AKAProperty)               propertyOfWeakTarget:(opt_id)target
+                                                getter:(opt_AKAPropertyGetter)getter
+                                                setter:(opt_AKAPropertySetter)setter;
+
 #pragma mark - Value Access
 
 /**

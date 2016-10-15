@@ -29,7 +29,13 @@
                          @"use":             @(AKABindingAttributeUseBindToTargetProperty),
                          @"bindingProperty": @"backgroundColor"
                          },
-                  },
+                  @"hidden":
+                      @{ @"bindingType":    [AKAPropertyBinding class],
+                         @"expressionType": @(AKABindingExpressionTypeBoolean),
+                         @"use":             @(AKABindingAttributeUseBindToTargetProperty),
+                         @"bindingProperty": @"hidden"
+                         },
+              },
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });

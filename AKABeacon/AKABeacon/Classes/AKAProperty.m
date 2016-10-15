@@ -182,6 +182,27 @@
                                       observationStopper:observationStopper];
 }
 
++ (AKAProperty*)propertyOfWeakTarget:(id)target
+                              getter:(id(^)(id target))getter
+                              setter:(void(^)(id target, id value))setter
+{
+    return [self propertyOfWeakTarget:target
+                               getter:getter
+                               setter:setter
+                   observationStarter:
+            ^BOOL (id __unused t)
+    {
+        // Read-only binding
+        return YES;
+    }
+                   observationStopper:
+            ^BOOL (id __unused t)
+    {
+        // Read-only binding
+        return YES;
+    }];
+}
+
 - (instancetype)initWithWeakTarget:(id)target
 {
     self = [super init];

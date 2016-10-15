@@ -12,7 +12,6 @@
 
 @interface AKAGroupOperation() <AKAOperationQueueDelegate>
 
-@property(nonatomic, readonly) AKAOperationQueue* internalQueue;
 @property(nonatomic, readonly) AKAOperation* startOperation;
 @property(nonatomic, readonly) AKAOperation* finishOperation;
 
@@ -22,6 +21,15 @@
 @implementation AKAGroupOperation
 
 #pragma mark - Initialization
+
+
++ (AKAOperation*)createStartOperationForGroup:(AKAGroupOperation*__unused)operation
+
+{
+    return [[AKABlockOperation alloc] initWithBlock:^(void (^ _Nonnull finish)()) {
+        finish();
+    }];
+}
 
 + (AKAOperation*)createFinishOperationForGroup:(AKAGroupOperation*__unused)operation
 
@@ -35,9 +43,7 @@
 {
     if (self = [self init])
     {
-        _startOperation = [[AKABlockOperation alloc] initWithBlock:^(void (^ _Nonnull finish)()) {
-            finish();
-        }];
+        _startOperation = [self.class createStartOperationForGroup:self];
         self.startOperation.name = [NSString stringWithFormat:@"Group start operation"];
         _finishOperation = [self.class createFinishOperationForGroup:self];
         self.finishOperation.name = [NSString stringWithFormat:@"Group finish operation"];
@@ -72,6 +78,14 @@
 - (void)addOperation:(NSOperation*)operation
 {
     [self.internalQueue addOperation:operation];
+}
+
+- (void)addOperations:(NSArray<NSOperation*>*)operations
+{
+    for (NSOperation* operation in operations)
+    {
+        [self addOperation:operation];
+    }
 }
 
 - (void)                operation:(NSOperation*__unused)operation

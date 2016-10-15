@@ -28,7 +28,7 @@
     AKAErrorAbstractMethodImplementationMissing();
 }
 
-- (nullable NSOperation*)dependencyForOperation:(nonnull NSOperation* __unused)operation
+- (nullable NSOperation*)dependencyForOperation:(nonnull AKAOperation* __unused)operation
 {
     return nil;
 }

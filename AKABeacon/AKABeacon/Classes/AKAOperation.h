@@ -22,10 +22,20 @@
  
  There are some differences in our implementation:
 
- - We do not override NSOperationQueue and instead require operations to be added via addToOperationQueue:
+ - We do not override NSOperationQueue and instead require operations to be added via addToOperationQueue.
+
+ - We use our framework prefix for not to conflict with others.
+
+ - We fixed some bugs and certainly introduced some new.
 
  */
 @interface AKAOperation : NSOperation
+
+#pragma mark - Initialization
+
++ (nonnull AKAOperation*)operationWithBlock:(void(^_Nonnull)(void(^_Nonnull finish)()))block;
+
++ (nonnull AKAOperation*)operationFailingWithError:(nonnull NSError*)error;
 
 #pragma mark - Conditions
 
@@ -37,9 +47,9 @@
 #pragma mark - Final State
 
 /**
- * Determines whether the execution of the operation finished with errors.
- *
- * This is equivalent to @code (op.isFinished && op.errors.count) > 0 @endcode
+ Determines whether the execution of the operation finished with errors.
+
+ This is equivalent to @code (op.isFinished && op.errors.count) > 0 @endcode
  */
 @property (nonatomic, readonly) BOOL failed;
 
@@ -48,6 +58,20 @@
 #pragma mark - Observers
 
 - (void)                                addObserver:(nonnull id<AKAOperationObserver>)observer;
+
+- (void)               addObserverWithDidStartBlock:(void (^_Nullable)(AKAOperation*_Nonnull op))didStartBlock
+                           didProduceOperationBlock:(void (^_Nullable)(AKAOperation*_Nonnull op,
+                                                                      NSOperation*_Nonnull producedOp))didProduceOperationBlock
+                                     didFinishBlock:(void (^_Nullable)(AKAOperation*_Nonnull op,
+                                                                      NSArray<NSError*>*_Nullable errors))didFinishBlock;
+
+- (void)               addDidStartObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation))block;
+
+- (void)    addDidProduceOperationObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
+                                                                     NSOperation*_Nonnull producedOperation))block;
+
+- (void)              addDidFinishObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
+                                                                     NSArray<NSError*>*_Nullable errors))block;
 
 #pragma mark - Dependencies
 

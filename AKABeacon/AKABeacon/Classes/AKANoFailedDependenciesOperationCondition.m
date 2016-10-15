@@ -17,6 +17,16 @@
     return NO;
 }
 
++ (instancetype)sharedInstance
+{
+    static AKANoFailedDependenciesOperationCondition* result;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [AKANoFailedDependenciesOperationCondition new];
+    });
+    return result;
+}
+
 - (NSOperation *)dependencyForOperation:(NSOperation*__unused)operation
 {
     return nil;

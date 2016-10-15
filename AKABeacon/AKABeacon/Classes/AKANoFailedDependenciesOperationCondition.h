@@ -10,4 +10,6 @@
 
 @interface AKANoFailedDependenciesOperationCondition : AKAOperationCondition
 
++ (instancetype)sharedInstance;
+
 @end

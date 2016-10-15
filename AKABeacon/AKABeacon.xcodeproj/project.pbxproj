@@ -306,6 +306,10 @@
 		8ECD35F21CE4D84900DFCAE5 /* AKABindingTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECD35F11CE4D84900DFCAE5 /* AKABindingTestBase.m */; };
 		8ECEEC421BA08F4000B73FC0 /* AKACompositeControlView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8ECEEC431BA08F4000B73FC0 /* AKACompositeControlView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */; };
+		8ECF5DB41DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ECF5DB21DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8ECF5DB51DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5DB31DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m */; };
+		8ECF5DB81DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ECF5DB61DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8ECF5DB91DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ECF5DB71DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.m */; };
 		8ED3FCFF1C24031100C44412 /* AKAAttributedFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ED3FCFD1C24031000C44412 /* AKAAttributedFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8ED3FD001C24031100C44412 /* AKAAttributedFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8ED3FCFE1C24031100C44412 /* AKAAttributedFormatter.m */; };
 		8ED3FD031C255FD100C44412 /* AKAAttributedFormatterPropertyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ED3FD011C255FD100C44412 /* AKAAttributedFormatterPropertyBinding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -802,6 +806,10 @@
 		8ECD35F11CE4D84900DFCAE5 /* AKABindingTestBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABindingTestBase.m; sourceTree = "<group>"; };
 		8ECEEC401BA08F4000B73FC0 /* AKACompositeControlView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACompositeControlView.h; sourceTree = "<group>"; };
 		8ECEEC411BA08F4000B73FC0 /* AKACompositeControlView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKACompositeControlView.m; sourceTree = "<group>"; };
+		8ECF5DB21DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h"; path = "Classes/UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h"; sourceTree = "<group>"; };
+		8ECF5DB31DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m"; path = "Classes/UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m"; sourceTree = "<group>"; };
+		8ECF5DB61DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKABinding_UIActivityIndicatorView_animatesBinding.h; sourceTree = "<group>"; };
+		8ECF5DB71DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKABinding_UIActivityIndicatorView_animatesBinding.m; sourceTree = "<group>"; };
 		8ED3FCFD1C24031000C44412 /* AKAAttributedFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAAttributedFormatter.h; sourceTree = "<group>"; };
 		8ED3FCFE1C24031100C44412 /* AKAAttributedFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAAttributedFormatter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8ED3FD011C255FD100C44412 /* AKAAttributedFormatterPropertyBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAAttributedFormatterPropertyBinding.h; sourceTree = "<group>"; };
@@ -1293,6 +1301,7 @@
 				8ED585481BB9873C00378565 /* UITextField */,
 				8E3154511BC7265A003FD085 /* UITextView */,
 				8E0FFC351BC53C4300CEDACD /* CustomKeyboard */,
+				8ECF5DBA1DB11A6800BEAFFB /* UIActivityIndicatorView */,
 			);
 			name = ViewBindings;
 			sourceTree = "<group>";
@@ -1606,6 +1615,24 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		8ECF5DB11DB118C900BEAFFB /* animatesBinding */ = {
+			isa = PBXGroup;
+			children = (
+				8ECF5DB21DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h */,
+				8ECF5DB31DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m */,
+			);
+			name = animatesBinding;
+			sourceTree = "<group>";
+		};
+		8ECF5DBA1DB11A6800BEAFFB /* UIActivityIndicatorView */ = {
+			isa = PBXGroup;
+			children = (
+				8ECF5DB61DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.h */,
+				8ECF5DB71DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.m */,
+			);
+			name = UIActivityIndicatorView;
+			sourceTree = "<group>";
+		};
 		8ED585481BB9873C00378565 /* UITextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -1855,6 +1882,7 @@
 		8EFF310D1CF0574300D46060 /* AKAIBBindingProperties */ = {
 			isa = PBXGroup;
 			children = (
+				8ECF5DB11DB118C900BEAFFB /* animatesBinding */,
 				8EFF31281CF079F800D46060 /* datasourceBinding */,
 				8EFF31151CF059F300D46060 /* enabledBinding */,
 				8EFF31181CF05B8600D46060 /* fontBinding */,
@@ -2129,6 +2157,7 @@
 				8EE596541D04B2200074934E /* AKAKeyboardControlViewBinding+DelegateSupport.h in Headers */,
 				8EE26D541BCD1E06003ACCEC /* AKABinding_UITextField_textBinding.h in Headers */,
 				8EE26D501BCD1D92003ACCEC /* AKABinding_UISwitch_stateBinding.h in Headers */,
+				8ECF5DB81DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.h in Headers */,
 				8EE7D14E1CFCC8C9005FA234 /* AKABindingOwnerProtocol.h in Headers */,
 				8EFE88101D234DDF0090291E /* AKAGroupOperation.h in Headers */,
 				8E2ED22E1C3DC6F000FBA44D /* AKAArrayPropertyBinding.h in Headers */,
@@ -2270,6 +2299,7 @@
 				8EC0F1611BADB64A0066890A /* AKABindingExpressionParser.h in Headers */,
 				8EFF31771CF5BFBB00D46060 /* AKABindingController+BindingInitialization.h in Headers */,
 				8E7233A51B0022A200D647A9 /* AKAThemableContainerView.h in Headers */,
+				8ECF5DB41DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h in Headers */,
 				8EE4AFD71CD3461F003E2CFC /* AKAClassConstantBindingExpression.h in Headers */,
 				8EE4B0071CD34E0A003E2CFC /* AKACGRectConstantBindingExpression.h in Headers */,
 				8E9DE5AB1C43F40D00FCC6AF /* AKAProtocolInfo.h in Headers */,
@@ -2789,6 +2819,7 @@
 				8EE26D5D1BCDA931003ACCEC /* AKACompositeControl+BindingDelegatePropagation.m in Sources */,
 				8E3CE2961C40552500B7D2A0 /* AKATableViewCellFactoryPropertyBinding.m in Sources */,
 				8E2ED2281C3D3F1B00FBA44D /* UITableView+AKAIBBindingProperties_datasourceBinding.m in Sources */,
+				8ECF5DB91DB11A6000BEAFFB /* AKABinding_UIActivityIndicatorView_animatesBinding.m in Sources */,
 				8EE26D551BCD1E06003ACCEC /* AKABinding_UITextField_textBinding.m in Sources */,
 				8E0B56A71CE1F37D00B3E407 /* AKAConditionalBindingExpression.m in Sources */,
 				8EFF30F61CF04FC500D46060 /* UITableView+AKABindingTargetContainer.m in Sources */,
@@ -2874,6 +2905,7 @@
 				8EA6962E1CEA248C00E32BF6 /* AKATVMultiplexedDataSource.m in Sources */,
 				8EA6963E1CEA248C00E32BF6 /* NSObject+AKAConcurrencyTools.m in Sources */,
 				8E0714931BAA384E00C1DDC8 /* AKABinding.m in Sources */,
+				8ECF5DB51DB1195100BEAFFB /* UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.m in Sources */,
 				8EE4B0041CD34C88003E2CFC /* AKACGSizeConstantBindingExpression.m in Sources */,
 				8EE4AFD41CD34498003E2CFC /* AKAConstantBindingExpression.m in Sources */,
 				8EE5966E1D084B1C0074934E /* AKAOperationCondition.m in Sources */,

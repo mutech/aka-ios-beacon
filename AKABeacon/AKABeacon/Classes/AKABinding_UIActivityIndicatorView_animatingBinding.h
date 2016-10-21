@@ -1,5 +1,5 @@
 //
-//  AKABinding_UIActivityIndicatorView_animatesBinding.h
+//  AKABinding_UIActivityIndicatorView_animatingBinding.h
 //  AKABeacon
 //
 //  Created by Michael Utech on 14/10/2016.
@@ -8,6 +8,6 @@
 
 #import "AKAViewBinding.h"
 
-@interface AKABinding_UIActivityIndicatorView_animatesBinding : AKAViewBinding
+@interface AKABinding_UIActivityIndicatorView_animatingBinding : AKAViewBinding
 
 @end

@@ -327,7 +327,7 @@
 
          id oldTargetValue = self.targetValueProperty.value;
          
-         if ([self convertSourceValue:newSourceValue
+         if ([self convertSourceValue:self.sourceValueProperty.value //newSourceValue (if change is triggered in another thread and source value changed meanwhile)
                         toTargetValue:&targetValue
                                 error:&error])
          {

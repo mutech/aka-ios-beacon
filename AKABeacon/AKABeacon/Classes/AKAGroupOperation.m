@@ -43,6 +43,18 @@
 {
     if (self = [self init])
     {
+        for (NSOperation* operation in operations)
+        {
+            [self addOperation:operation];
+        }
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
         _startOperation = [self.class createStartOperationForGroup:self];
         self.startOperation.name = [NSString stringWithFormat:@"Group start operation"];
         _finishOperation = [self.class createFinishOperationForGroup:self];
@@ -53,10 +65,6 @@
         self.internalQueue.delegate = self;
 
         [self.startOperation addToOperationQueue:self.internalQueue];
-        for (NSOperation* operation in operations)
-        {
-            [self addOperation:operation];
-        }
     }
     return self;
 }
@@ -71,8 +79,8 @@
 
 - (void)execute
 {
-    self.internalQueue.suspended = NO;
     [self addOperation:self.finishOperation];
+    self.internalQueue.suspended = NO;
 }
 
 - (void)addOperation:(NSOperation*)operation

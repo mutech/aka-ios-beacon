@@ -105,6 +105,11 @@
 
 #pragma mark - Finishing
 
+/**
+ * This is true while the operation notified observers that the operation did finish. Not that isFinished will be true after the observers are notified and before didFinish is called.
+ */
+@property(nonatomic, readonly) BOOL                isFinishing;
+
 - (void)                                 willFinish;
 
 - (void)                                     finish __attribute__((objc_requires_super));

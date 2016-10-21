@@ -117,7 +117,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Integration/AKAIBBindingProperties
 
 // Integration/AKAIBBindingProperties/animatesBinding
-#import <AKABeacon/UIActivityIndicatorView+AKAIBBindingProperties_animatesBinding.h>
+#import "UIActivityIndicatorView+AKAIBBindingProperties_animatingBinding.h"
 
 // Integration/AKAIBBindingProperties/datasourceBinding
 #import <AKABeacon/UITableView+AKAIBBindingProperties_datasourceBinding.h>
@@ -136,6 +136,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 
 // Integration/AKAIBBindingProperties/imageBinding
 #import <AKABeacon/UIImageView+AKAIBBindingProperties_imageBinding.h>
+
+// Integration/AKAIBBindingPropertyies/progressBinding
+#import <AKABeacon/UIProgressView+AKAIBBindingProperties_progressBinding.h>
 
 // Integration/AKAIBBindingProperties/stateBinding
 #import <AKABeacon/UISwitch+AKAIBBindingProperties_stateBinding.h>
@@ -208,6 +211,9 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 // Bindings/ViewBindings/UIImageView
 #import <AKABeacon/AKABinding_UIImageView_imageBinding.h>
 
+// Bindings/ViewBindings/UIProgressView
+#import <AKABeacon/AKABinding_UIProgressView_progressBinding.h>
+
 // Bindings/ViewBindings/UITableView
 #import <AKABeacon/AKABinding_UITableView_dataSourceBinding.h>
 #import <AKABeacon/AKATableViewCellFactory.h>
@@ -215,7 +221,7 @@ FOUNDATION_EXPORT const unsigned char AKABeaconVersionString[];
 #import <AKABeacon/AKATableViewCellFactoryPropertyBinding.h>
 
 // Bindings/ViewBindings/UIActivityIndicatorView
-#import <AKABeacon/AKABinding_UIActivityIndicatorView_animatesBinding.h>
+#import "AKABinding_UIActivityIndicatorView_animatingBinding.h"
 
 // Bindings/ViewBindings/ControlViewBindings
 #import <AKABeacon/AKAControlViewBinding.h>

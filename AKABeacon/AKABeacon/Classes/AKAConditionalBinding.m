@@ -78,7 +78,8 @@
                                   delegate:(opt_AKABindingDelegate)delegate
                                      error:(out_NSError)error
 {
-    self = [self initWithTarget:target targetValueProperty:nil
+    self = [self initWithTarget:target
+            targetValueProperty:nil
            resultBindingFactory:^AKABinding *(id rTarget,
                                               AKAProperty*              rTargetValueProperty __unused,
                                               req_AKABindingExpression  rExpression,
@@ -144,20 +145,20 @@
     return self;
 }
 
-- (opt_instancetype)initWithTarget:(opt_id)target
-               targetValueProperty:(opt_AKAProperty)targetValueProperty
-              resultBindingFactory:(opt_AKABinding (^ _Nonnull)(opt_id target,
-                                                                opt_AKAProperty targetValueProperty,
-                                                                req_AKABindingExpression bindingExpression,
-                                                                req_AKABindingContext bindingContext,
-                                                                opt_AKABindingOwner owner,
-                                                                opt_AKABindingDelegate delegate,
-                                                                out_NSError error))resultBindingFactory
-                        expression:(req_AKABindingExpression)bindingExpression
-                           context:(req_AKABindingContext)bindingContext
-                             owner:(opt_AKABindingOwner)owner
-                          delegate:(opt_AKABindingDelegate)delegate
-                             error:(out_NSError)error
+- (opt_instancetype)        initWithTarget:(opt_id)target
+                       targetValueProperty:(opt_AKAProperty)targetValueProperty
+                      resultBindingFactory:(opt_AKABinding (^ _Nonnull)(opt_id target,
+                                                                        opt_AKAProperty targetValueProperty,
+                                                                        req_AKABindingExpression bindingExpression,
+                                                                        req_AKABindingContext bindingContext,
+                                                                        opt_AKABindingOwner owner,
+                                                                        opt_AKABindingDelegate delegate,
+                                                                        out_NSError error))resultBindingFactory
+                                expression:(req_AKABindingExpression)bindingExpression
+                                   context:(req_AKABindingContext)bindingContext
+                                     owner:(opt_AKABindingOwner)owner
+                                  delegate:(opt_AKABindingDelegate)delegate
+                                     error:(out_NSError)error
 {
     NSParameterAssert(target != nil || targetValueProperty != nil);
     NSParameterAssert([bindingExpression isKindOfClass:[AKAConditionalBindingExpression class]]);
@@ -348,6 +349,11 @@
         {
             [activeClause.binding startObservingChanges];
         }
+    }
+    // TODO: this is a hack: 1. Investigate why sometimes [self startObservingChanges] does not cause activeClause to start observing if set; 2. define binding.isObservingChanges (in all bindings) to that we can decide whether or not to we need starting here
+    else if (activeClause && self.isObservingChanges && !activeClause.binding.sourceValueProperty.isObservingChanges)
+    {
+        [activeClause.binding startObservingChanges];
     }
 }
 

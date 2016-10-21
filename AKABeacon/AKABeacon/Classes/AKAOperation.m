@@ -33,6 +33,8 @@
 
 @property(nonatomic) NSMutableArray*                internalErrors;
 
+@property(nonatomic) BOOL                           isFinishing;
+
 #pragma mark - Conditions
 
 // Note: multiple conditions are implemented using (private) AKAOperationConditions
@@ -44,11 +46,9 @@
 
 @property(nonatomic) NSMutableArray<id<AKAOperationObserver>>* observers;
 
-#pragma mark - Dependencies
-
 #pragma mark - Operation Queues
 
-@property(nonatomic, weak, readonly) NSOperationQueue* operationQueue;
+@property(nonatomic, weak) NSOperationQueue*        operationQueue;
 
 @end
 
@@ -351,7 +351,13 @@
                 }
                 else
                 {
-                    self.state = AKAOperationStateReady;
+                    [self                   setState:AKAOperationStateReady
+                                ifPredicateSatisfied:^BOOL(AKAOperationState state) {
+                                    // if isReady is triggered from multiple sources, it's possible
+                                    // that the state has already been set to ready (and then maybe advanced)
+                                    return state == AKAOperationStatePending;
+                                }
+                         andPerformSynchronizedBlock:NULL];
                 }
             }
             else
@@ -506,7 +512,11 @@
  */
 - (void)               evaluateConditionsCompletion:(void(^)(BOOL satisfied, NSError* error))completion
 {
-    self.state = AKAOperationStateEvaluatingConditions;
+    [self                       setState:AKAOperationStateEvaluatingConditions
+                    ifPredicateSatisfied:^BOOL(AKAOperationState state) {
+                        return state != AKAOperationStateEvaluatingConditions;
+                    }
+             andPerformSynchronizedBlock:NULL];
     if (!self.condition)
     {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{
@@ -592,7 +602,12 @@
 {
     NSOperationQueue* operationQueue = self.operationQueue;
     NSAssert(operationQueue != nil, @"Cannot produce a new operation from an operation that is not enqueued. Please verify that you used [AKAOperation addToOperationQueue:] to enqueue an instance of AKAOperationQueue.");
-    [AKAOperation addOperation:operation toOperationQueue:operationQueue];
+    if (![operationQueue isKindOfClass:[AKAOperationQueue class]])
+    {
+        // AKAOperationQueues are aware of produced operations and will add them automatically.
+        // Standard opertion queues won't and need this:
+        [AKAOperation addOperation:operation toOperationQueue:operationQueue];
+    }
     for (id<AKAOperationObserver> observer in self.observers)
     {
         if ([observer respondsToSelector:@selector(operation:didProduceOperation:)])
@@ -713,6 +728,7 @@
                  }];
     if (isFinishing)
     {
+        self.isFinishing = YES;
         [self willFinish];
         for (id<AKAOperationObserver> observer in self.observers)
         {
@@ -721,7 +737,9 @@
                 [observer operation:self didFinishWithErrors:self.errors];
             }
         }
-        self.state = AKAOperationStateFinished;
+        [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
+            self.isFinishing = NO;
+        }];
         [self didFinish];
     }
 }
@@ -739,6 +757,7 @@
                  }];
     if (isFinishing)
     {
+        self.isFinishing = YES;
         [self willFinish];
         for (id<AKAOperationObserver> observer in self.observers)
         {
@@ -747,7 +766,9 @@
                 [observer operation:self didFinishWithErrors:self.errors];
             }
         }
-        self.state = AKAOperationStateFinished;
+        [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
+            self.isFinishing = NO;
+        }];
         [self didFinish];
     }
 }
@@ -792,6 +813,7 @@
 - (void)prepareToAddToOperationQueue:(NSOperationQueue*)operationQueue
 {
     self.state = AKAOperationStateEnqueuing;
+    self.operationQueue = operationQueue;
 
     // Conditions have to be added before the state is set to pending, because updating the state
     // will trigger a call to isReady which needs dependencies added by conditions.

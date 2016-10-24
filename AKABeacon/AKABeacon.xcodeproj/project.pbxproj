@@ -631,7 +631,7 @@
 		8E7232F01B00224400D647A9 /* AKABeacon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AKABeacon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E7232F41B00224400D647A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8E72330D1B0022A200D647A9 /* AKACompositeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKACompositeControl.h; sourceTree = "<group>"; };
-		8E72330E1B0022A200D647A9 /* AKACompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKACompositeControl.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		8E72330E1B0022A200D647A9 /* AKACompositeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKACompositeControl.m; sourceTree = "<group>"; };
 		8E72330F1B0022A200D647A9 /* AKACompositeControl_Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKACompositeControl_Internal.h; sourceTree = "<group>"; };
 		8E7233121B0022A200D647A9 /* AKAControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAControl.h; sourceTree = "<group>"; };
 		8E7233131B0022A200D647A9 /* AKAControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAControl.m; sourceTree = "<group>"; };
@@ -654,7 +654,7 @@
 		8E7233251B0022A200D647A9 /* AKAEmailValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKAEmailValidator.m; sourceTree = "<group>"; };
 		8E7233261B0022A200D647A9 /* AKAFormControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKAFormControl.h; sourceTree = "<group>"; };
 		8E7233271B0022A200D647A9 /* AKAFormControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAFormControl.m; sourceTree = "<group>"; };
-		8E7233281B0022A200D647A9 /* AKAFormTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAFormTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		8E7233281B0022A200D647A9 /* AKAFormTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAFormTableViewController.h; sourceTree = "<group>"; };
 		8E7233291B0022A200D647A9 /* AKAFormTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAFormTableViewController.m; sourceTree = "<group>"; };
 		8E72332A1B0022A200D647A9 /* AKAKeyboardActivationSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AKAKeyboardActivationSequence.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		8E72332B1B0022A200D647A9 /* AKAKeyboardActivationSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AKAKeyboardActivationSequence.m; sourceTree = "<group>"; };

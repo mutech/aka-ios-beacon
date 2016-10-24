@@ -48,13 +48,15 @@
 
 #pragma mark - Hiding and Unhinding Rows
 
+- (BOOL)isRowControlHidden:(AKATableViewCellCompositeControl*)rowControl;
+
 /**
  * Hides all rows bound to controls contained in the specified rowControls array.
  *
  * @param rowControls an array containing row controls
  * @param rowAnimation the animation to be used
  */
-- (void)hideRowControls:(NSArray*)rowControls
+- (void)hideRowControls:(NSArray<AKATableViewCellCompositeControl*>*)rowControls
        withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
 /**
@@ -63,7 +65,7 @@
  * @param rowControls an array containing row controls
  * @param rowAnimation the animation to use
  */
-- (void)unhideRowControls:(NSArray*)rowControls
+- (void)unhideRowControls:(NSArray<AKATableViewCellCompositeControl*>*)rowControls
          withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
 @end

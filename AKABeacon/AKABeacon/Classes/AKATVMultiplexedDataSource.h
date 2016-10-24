@@ -230,6 +230,12 @@
                          inDataSource:(AKATVDataSourceSpecification*__nonnull)dataSource
                      withRowAnimation:(UITableViewRowAnimation)rowAnimation;
 
+/**
+ * Experimental: determines if the specified row has been excluded.
+ */
+- (BOOL)isRowExcludedAtSourceIndexPath:(NSIndexPath*)sourceIndexPath
+                          inDataSource:(AKATVDataSourceSpecification*)dataSource;
+
 #pragma mark - Updating rows
 
 - (void)reloadRowsAtIndexPaths:(NSArray*__nonnull)indexPaths

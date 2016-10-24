@@ -40,7 +40,13 @@ IB_DESIGNABLE
  */
 @property(nonatomic) IBInspectable NSString* controlRole;
 
-#pragma mark - Outlets
+/**
+ * Binding expression determining if the table view cell is excluded from display. This is a
+ * temporary solution to simplify exclusions of individual cells and only works in static
+ * table views controlled by AKAFormTableViewController. It will be replaced by a more general
+ * mechanism using AKABinding_UITableView_dataSourceBinding.
+ */
+@property(nonatomic) IBInspectable NSString* excludedBinding_aka;
 
 @end
 

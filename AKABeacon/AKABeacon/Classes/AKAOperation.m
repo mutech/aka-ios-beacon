@@ -35,6 +35,10 @@
 
 @property(nonatomic) BOOL                           isFinishing;
 
+#pragma mark - Progress
+
+@property(nonatomic, readonly) NSLock*              progressLock;
+
 #pragma mark - Conditions
 
 // Note: multiple conditions are implemented using (private) AKAOperationConditions
@@ -59,11 +63,20 @@
 
 - (instancetype)                               init
 {
+    return [self initWithWorkload:1.0];
+}
+
+- (instancetype)                               initWithWorkload:(CGFloat)workload
+{
     if (self = [super init])
     {
         _stateLock = [NSLock new];
         _state = AKAOperationStateInitialized;
         _internalErrors = [NSMutableArray new];
+        _workload = workload;
+        _progress = 0.0;
+        _progressLock = [NSLock new];
+
         self.conditionsSatisfied = YES;
     }
     return self;
@@ -537,23 +550,23 @@
 - (void)               addDidStartObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation))block
 {
     [self addObserverWithDidStartBlock:block
-              didProduceOperationBlock:nil
-                        didFinishBlock:nil];
+              didProduceOperationBlock:NULL
+                        didFinishBlock:NULL];
 }
 
 - (void)              addDidProduceOperationObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
                                                                                NSOperation*_Nonnull producedOperation))block
 {
-    [self addObserverWithDidStartBlock:nil
+    [self addObserverWithDidStartBlock:NULL
               didProduceOperationBlock:block
-                        didFinishBlock:nil];
+                        didFinishBlock:NULL];
 }
 
 - (void)              addDidFinishObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
                                                                      NSArray<NSError*>*_Nullable errors))block
 {
-    [self addObserverWithDidStartBlock:nil
-              didProduceOperationBlock:nil
+    [self addObserverWithDidStartBlock:NULL
+              didProduceOperationBlock:NULL
                         didFinishBlock:block];
 }
 
@@ -561,9 +574,29 @@
                            didProduceOperationBlock:(void (^_Nullable)(AKAOperation *, NSOperation *))didProduceOperationBlock
                                      didFinishBlock:(void (^_Nullable)(AKAOperation *, NSArray<NSError *> *))didFinishBlock
 {
+    [self addObserverWithDidStartBlock:didStartBlock
+              didProduceOperationBlock:didProduceOperationBlock
+                didUpdateProgressBlock:NULL
+                        didFinishBlock:didFinishBlock];
+}
+
+- (void)               addObserverWithDidStartBlock:(void (^_Nullable)(AKAOperation *))didStartBlock
+                           didProduceOperationBlock:(void (^_Nullable)(AKAOperation *, NSOperation *))didProduceOperationBlock
+                             didUpdateProgressBlock:(void (^_Nullable)(AKAOperation *, CGFloat progress, CGFloat workload))didUpdateProgressBlock
+                                     didFinishBlock:(void (^_Nullable)(AKAOperation *, NSArray<NSError *> *))didFinishBlock
+{
     [self addObserver:[[AKABlockOperationObserver alloc] initWithDidStartBlock:didStartBlock
                                                       didProduceOperationBlock:didProduceOperationBlock
+                                                        didUpdateProgressBlock:didUpdateProgressBlock
                                                                 didFinishBlock:didFinishBlock]];
+}
+
+- (void)addDidUpdateProgressObserverWithBlock:(void (^)(AKAOperation * _Nonnull, CGFloat, CGFloat))block
+{
+    [self addObserverWithDidStartBlock:NULL
+              didProduceOperationBlock:NULL
+                didUpdateProgressBlock:block
+                        didFinishBlock:NULL];
 }
 
 - (void)                                addObserver:(id<AKAOperationObserver>)observer
@@ -584,6 +617,106 @@
                   }];
     (void)added; // unused if assertions are disabled.
     NSAssert(added, @"Cannot add observer after execution has begun.");
+}
+
+- (void)notifyObserversOperationDidStart
+{
+    for (id<AKAOperationObserver> observer in self.observers)
+    {
+        if ([observer respondsToSelector:@selector(operationDidStart:)])
+        {
+            [observer operationDidStart:self];
+        }
+    }
+}
+
+- (void)notifyObserversOperationDidProduceOperation:(NSOperation*)operation
+{
+    for (id<AKAOperationObserver> observer in self.observers)
+    {
+        if ([observer respondsToSelector:@selector(operation:didProduceOperation:)])
+        {
+            [observer operation:self didProduceOperation:operation];
+        }
+    }
+}
+
+- (void)notifyObserversOperationDidUpdateProgress:(CGFloat)progress andWorkload:(CGFloat)workload
+{
+    for (id<AKAOperationObserver> observer in self.observers)
+    {
+        if ([observer respondsToSelector:@selector(operation:didUpdateProgress:workload:)])
+        {
+            [observer operation:self didUpdateProgress:progress workload:workload];
+        }
+    }
+}
+
+- (void)notifyObserversOperationDidFinish
+{
+    for (id<AKAOperationObserver> observer in self.observers)
+    {
+        if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
+        {
+            [observer operation:self didFinishWithErrors:self.errors];
+        }
+    }
+}
+
+#pragma mark - Progress
+
+- (void)updateProgressAndWorkloadUsingBlock:(void(^_Nonnull)(CGFloat*_Nonnull progressReference,
+                                                             CGFloat*_Nonnull workloadReference))block
+{
+    NSParameterAssert(block != NULL);
+
+    BOOL progressChanged = NO;
+    BOOL workloadChanged = NO;
+
+    [self.progressLock lock];
+
+    CGFloat progress = self.progress;
+    CGFloat workload = self.workload;
+    block (&progress, &workload);
+    NSAssert(progress >= 0.0 && progress <= 1.0,
+             @"%@: Invalid progress update to %f, expect value in range 0 .. 1.0", self, progress);
+    NSAssert(workload >= 0.0,
+             @"%@: Invalid workload update to %f, expected a value greater than or equal to 0", self, workload);
+
+    CGFloat progressDifference = progress - self.progress;
+    CGFloat workloadDifference = workload - self.workload;
+
+    progressChanged = progressDifference != 0.0;
+    workloadChanged = workloadDifference != 0.0;
+
+    if (workloadChanged)
+    {
+        [self willChangeValueForKey:@"workload"];
+        _workload = workload;
+    }
+    if (progressChanged)
+    {
+        [self willChangeValueForKey:@"progress"];
+        _progress = progress;
+    }
+
+    // Unlock before KVO or operation observers are notified about the change!
+    [self.progressLock unlock];
+
+    if (workloadChanged)
+    {
+        [self didChangeValueForKey:@"workload"];
+    }
+    if (progressChanged)
+    {
+        [self didChangeValueForKey:@"progress"];
+    }
+
+    if (progressChanged || workloadChanged)
+    {
+        [self notifyObserversOperationDidUpdateProgress:progressDifference
+                                            andWorkload:workloadDifference];
+    }
 }
 
 #pragma mark - Dependencies
@@ -608,13 +741,7 @@
         // Standard opertion queues won't and need this:
         [AKAOperation addOperation:operation toOperationQueue:operationQueue];
     }
-    for (id<AKAOperationObserver> observer in self.observers)
-    {
-        if ([observer respondsToSelector:@selector(operation:didProduceOperation:)])
-        {
-            [observer operation:self didProduceOperation:operation];
-        }
-    }
+    [self notifyObserversOperationDidProduceOperation:operation];
 }
 
 #pragma mark - Execution
@@ -646,13 +773,7 @@
     if (isExecuting)
     {
         [self willExecute];
-        for (id<AKAOperationObserver> observer in self.observers)
-        {
-            if ([observer respondsToSelector:@selector(operationDidStart:)])
-            {
-                [observer operationDidStart:self];
-            }
-        }
+        [self notifyObserversOperationDidStart];
         [self execute];
     }
     else
@@ -730,15 +851,12 @@
     {
         self.isFinishing = YES;
         [self willFinish];
-        for (id<AKAOperationObserver> observer in self.observers)
-        {
-            if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
-            {
-                [observer operation:self didFinishWithErrors:self.errors];
-            }
-        }
+        [self notifyObserversOperationDidFinish];
         [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
             self.isFinishing = NO;
+        }];
+        [self updateProgressAndWorkloadUsingBlock:^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference) {
+            *progressReference = 1.0;
         }];
         [self didFinish];
     }
@@ -759,15 +877,12 @@
     {
         self.isFinishing = YES;
         [self willFinish];
-        for (id<AKAOperationObserver> observer in self.observers)
-        {
-            if ([observer respondsToSelector:@selector(operation:didFinishWithErrors:)])
-            {
-                [observer operation:self didFinishWithErrors:self.errors];
-            }
-        }
+        [self notifyObserversOperationDidFinish];
         [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
             self.isFinishing = NO;
+        }];
+        [self updateProgressAndWorkloadUsingBlock:^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference) {
+            *progressReference = 1.0;
         }];
         [self didFinish];
     }

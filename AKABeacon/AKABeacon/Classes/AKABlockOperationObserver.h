@@ -12,13 +12,19 @@
 
 @interface AKABlockOperationObserver : NSObject<AKAOperationObserver>
 
-@property(nonatomic, readonly) void(^didStartBlock)(AKAOperation*);
-@property(nonatomic, readonly) void(^didProduceOperationBlock)(AKAOperation*, NSOperation*);
-@property(nonatomic, readonly) void(^didFinishBlock)(AKAOperation*, NSArray<NSError*>*);
+@property(nonatomic, readonly) void(^didStartBlock)(AKAOperation* operation);
+@property(nonatomic, readonly) void(^didProduceOperationBlock)(AKAOperation* operation,NSOperation* producedOperation);
+@property(nonatomic, readonly) void(^didUpdateProgressBlock)(AKAOperation* operation, CGFloat progressDifference, CGFloat workloadDifference);
+@property(nonatomic, readonly) void(^didFinishBlock)(AKAOperation* operation, NSArray<NSError*>* errors);
 
 - (instancetype)initWithDidStartBlock:(void(^)(AKAOperation*))didStartBlock
              didProduceOperationBlock:(void(^)(AKAOperation*, NSOperation*))didProduceOperationBlock
                        didFinishBlock:(void(^)(AKAOperation*, NSArray<NSError*>*))didFinishBlock;
+
+- (instancetype)initWithDidStartBlock:(void (^)(AKAOperation *))didStartBlock
+             didProduceOperationBlock:(void (^)(AKAOperation *, NSOperation *))didProduceOperationBlock
+               didUpdateProgressBlock:(void (^)(AKAOperation *, CGFloat progressDifference, CGFloat workloadDifference))didUpdateProgressBlock
+                       didFinishBlock:(void (^)(AKAOperation *, NSArray<NSError *> *))didFinishBlock;
 
 + (instancetype)didFinishBlockObserver:(void(^)(AKAOperation*, NSArray<NSError*>*))didFinishBlock;
 

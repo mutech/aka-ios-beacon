@@ -37,12 +37,31 @@
 
 + (nonnull AKAOperation*)operationFailingWithError:(nonnull NSError*)error;
 
+- (nonnull instancetype)initWithWorkload:(CGFloat)workload;
+
 #pragma mark - Conditions
 
 - (void)                               addCondition:(AKAOperationCondition*_Nonnull)condition;
 
 - (void)              enumerateConditionsUsingBlock:(void(^_Nonnull)(AKAOperationCondition*_Nonnull condition,
                                                                      outreq_BOOL stop))block;
+
+#pragma mark - Progress
+
+/**
+ * A number in range 0 .. 1.0 determining the progress of the operation.
+ */
+@property (nonatomic, readonly) CGFloat progress;
+
+/**
+ * Indicator for the amount of work to be performed by the operation. This is used by AKAGroupOperation (and possibly other parties) to estimate the contribution of an operation to the overall progress.
+ *
+ * The default implementation returns 1.0. Composite operations (f.e. AKAGroupOperation) are expected to add up the work loads of their constituents.
+ *
+ * Please note that the absolute value is by itself arbitrary, however the relative workload values of operations grouped together determines how steady the progress grows with time. Values should ideally be adjusted such that the growth is constant to provide users with a meaningful feedback when the progress is displayed (f.e. as UIProgressBar).
+ */
+@property (nonatomic, readonly) CGFloat workload;
+
 
 #pragma mark - Final State
 
@@ -72,6 +91,10 @@
 
 - (void)              addDidFinishObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
                                                                      NSArray<NSError*>*_Nullable errors))block;
+
+- (void)      addDidUpdateProgressObserverWithBlock:(void(^_Nonnull)(AKAOperation*_Nonnull operation,
+                                                                     CGFloat progressDifference,
+                                                                     CGFloat workloadDifference))block;
 
 #pragma mark - Dependencies
 
@@ -130,6 +153,15 @@
 
 @interface AKAOperation(Subclasses)
 
+#pragma mark - Updating progress and workload
+
+/**
+ * Calls the specified block that may update either or both of the progress and workload references (which are referring to the respective current values of progress and workload).
+ *
+ * The block is executed exclusively and may not directly or indirectly trigger a nested call of this method (for this operation).
+ */
+- (void)updateProgressAndWorkloadUsingBlock:(void(^_Nonnull)(CGFloat*_Nonnull progressReference,
+                                                             CGFloat*_Nonnull workloadReference))block;
 #pragma mark - Collection errors
 
 - (void)addError:(nonnull NSError*)error;

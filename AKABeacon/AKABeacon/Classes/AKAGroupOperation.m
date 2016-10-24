@@ -10,15 +10,47 @@
 #import "AKABlockOperation.h"
 #import "AKAOperationQueue.h"
 
+
+@interface AKAGroupOperationProgressRecord: NSObject
+
+@property(nonatomic, readonly, weak) NSOperation* operation;
+@property(nonatomic) CGFloat recordedWorkload;
+@property(nonatomic) CGFloat workloadFactor;
+
+@end
+
+
+@implementation AKAGroupOperationProgressRecord: NSObject
+
++ (AKAGroupOperationProgressRecord*)recordForOperation:(NSOperation*)operation
+                                    withWorkloadFactor:(CGFloat)workloadFactor
+{
+    AKAGroupOperationProgressRecord* result = [AKAGroupOperationProgressRecord new];
+    result->_operation = operation;
+    result->_workloadFactor = workloadFactor;
+    result->_recordedWorkload = 0.0;
+
+    return result;
+}
+
+@end
+
+
 @interface AKAGroupOperation() <AKAOperationQueueDelegate>
 
 @property(nonatomic, readonly) AKAOperation* startOperation;
 @property(nonatomic, readonly) AKAOperation* finishOperation;
 
+// TODO: this array is not needed (addOperation:withWorkloadFactor captures the records), this is used to help debugging. Remove it once the code is stable.
+@property(nonatomic, readonly) NSMutableArray<AKAGroupOperationProgressRecord*>* progressRecords;
+@property(nonatomic, readwrite) CGFloat workloadDone;
+
 @end
 
 
 @implementation AKAGroupOperation
+
+@dynamic progress;
 
 #pragma mark - Initialization
 
@@ -53,12 +85,20 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
+    if (self = [super initWithWorkload:0])
     {
+        _progressRecords = [NSMutableArray new];
+
         _startOperation = [self.class createStartOperationForGroup:self];
-        self.startOperation.name = [NSString stringWithFormat:@"Group start operation"];
+        if (self.startOperation.name.length == 0)
+        {
+            self.startOperation.name = [NSString stringWithFormat:@"Group start operation"];
+        }
         _finishOperation = [self.class createFinishOperationForGroup:self];
-        self.finishOperation.name = [NSString stringWithFormat:@"Group finish operation"];
+        if (self.finishOperation.name.length == 0)
+        {
+            self.finishOperation.name = [NSString stringWithFormat:@"Group finish operation"];
+        }
 
         _internalQueue = [AKAOperationQueue new];
         self.internalQueue.suspended = YES;
@@ -69,22 +109,76 @@
     return self;
 }
 
-#pragma mark - Cancellation
-
-- (void)cancel
-{
-    [self.internalQueue cancelAllOperations];
-    [super cancel];
-}
-
-- (void)execute
-{
-    [self addOperation:self.finishOperation];
-    self.internalQueue.suspended = NO;
-}
+#pragma mark - Adding Member Operations
 
 - (void)addOperation:(NSOperation*)operation
 {
+    [self addOperation:operation withWorkloadFactor:1.0];
+}
+
+- (void)addOperation:(NSOperation*)operation
+  withWorkloadFactor:(CGFloat)workloadFactor
+{
+    AKAGroupOperationProgressRecord* progressRecord =
+        [AKAGroupOperationProgressRecord recordForOperation:operation withWorkloadFactor:workloadFactor];
+    [self.progressRecords addObject:progressRecord];
+
+    __weak AKAGroupOperation* weakSelf = self;
+    if ([operation isKindOfClass:[AKAOperation class]])
+    {
+        AKAOperation* akaOperation = (AKAOperation*)operation;
+        [akaOperation addDidUpdateProgressObserverWithBlock:
+         ^(AKAOperation * _Nonnull op, CGFloat progressDifference, CGFloat workloadDifference)
+         {
+             NSParameterAssert(operation == op);
+
+             [weakSelf updateProgressForOperation:op
+                               withProgressRecord:progressRecord
+                               progressDifference:progressDifference
+                               workloadDifference:workloadDifference];
+         }];
+    }
+    else
+    {
+        // Non-AKAOperation instances transition from 0 -> 1.0 progress once they are finished:
+        __weak NSOperation* weakOperation = operation;
+        void (^completion)() = ^{
+            __strong NSOperation* strongOperation = weakOperation;
+            __strong AKAGroupOperation* strongSelf = weakSelf;
+
+            if (strongOperation && strongSelf)
+            {
+                [weakSelf updateProgressForOperation:strongOperation
+                                  withProgressRecord:progressRecord
+                                  progressDifference:1.0
+                                  workloadDifference:0.0];
+            }
+        };
+
+        if (operation.completionBlock == NULL)
+        {
+            operation.completionBlock = completion;
+        }
+        else
+        {
+            void (^previousCompletionBlock)() = operation.completionBlock;
+            operation.completionBlock = ^{
+                previousCompletionBlock();
+                completion();
+            };
+        }
+    }
+
+    // Update workload for added operation
+    CGFloat workload = [self workloadForOperation:operation] * progressRecord.workloadFactor;
+    CGFloat progress = [self progressOfOperation:operation];
+    NSAssert(progress == 0.0, nil);
+
+    [self updateProgressForOperation:operation
+                  withProgressRecord:progressRecord
+                  progressDifference:progress   // 0->progress (=0 in this state)
+                  workloadDifference:workload]; // 0->workload
+
     [self.internalQueue addOperation:operation];
 }
 
@@ -96,13 +190,132 @@
     }
 }
 
+#pragma mark - Progress
+
+- (CGFloat)progressOfOperation:(NSOperation*)operation
+{
+    CGFloat result;
+
+    if ([operation isKindOfClass:[AKAOperation class]])
+    {
+        result = ((AKAOperation*)operation).progress;
+    }
+    else
+    {
+        result = operation.isFinished ? 1.0 : 0.0;
+    }
+
+    return result;
+}
+
+- (CGFloat)workloadForGroupStartOperation
+{
+    return 0.0;
+}
+
+- (CGFloat)workloadForGroupFinishOperation
+{
+    return 0.0;
+}
+
+- (CGFloat)workloadForOperation:(NSOperation*)operation
+{
+    CGFloat result;
+    if (operation == self.startOperation)
+    {
+        result = [self workloadForGroupStartOperation];
+    }
+    else if (operation == self.finishOperation)
+    {
+        result = [self workloadForGroupFinishOperation];
+    }
+    else if ([operation isKindOfClass:[AKAOperation class]])
+    {
+        result = ((AKAOperation*)operation).workload;
+        NSAssert(result >= 0, nil);
+    }
+    else
+    {
+        result = 1.0;
+    }
+    return result;
+}
+
+- (void)updateProgressForOperation:(nonnull NSOperation*)operation
+                withProgressRecord:(AKAGroupOperationProgressRecord*)progressRecord
+                progressDifference:(CGFloat)progressDifference
+                workloadDifference:(CGFloat)workloadDifference
+{
+    if (progressRecord)
+    {
+        [self updateProgressAndWorkloadUsingBlock:
+         ^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference)
+         {
+             CGFloat groupProgress = *progressReference;
+             CGFloat groupWorkload = *workloadReference;
+
+             if (workloadDifference != 0.0)
+             {
+                 CGFloat normalizedWorkloadDifference = (workloadDifference
+                                                         * progressRecord.workloadFactor);
+                 groupWorkload += normalizedWorkloadDifference;
+                 progressRecord.recordedWorkload += normalizedWorkloadDifference;
+             }
+
+             if (progressDifference != 0.0)
+             {
+                 self.workloadDone += (progressDifference * progressRecord.recordedWorkload);
+             }
+
+             if (self.workload > 0)
+             {
+                 groupProgress = self.workloadDone / self.workload;
+                 if (groupProgress < 0)
+                 {
+                     groupProgress = 0;
+                 }
+                 else if (groupProgress > 1.0)
+                 {
+                     groupProgress = 1.0;
+                 }
+             }
+
+             *progressReference = groupProgress;
+             *workloadReference = groupWorkload;
+         }];
+    }
+}
+
+#pragma mark - Cancellation
+
+- (void)cancel
+{
+    [self.internalQueue cancelAllOperations];
+    [super cancel];
+}
+
+#pragma mark - Execution
+
+- (void)execute
+{
+    [self addOperation:self.finishOperation];
+    self.internalQueue.suspended = NO;
+}
+
+#pragma mark - Execution Events
+
+- (void)        operationDidStart:(NSOperation*__unused)operation
+{
+    // Can be overridden by subclasses to get notified of child operations finishing execution
+}
+
 - (void)                operation:(NSOperation*__unused)operation
               didFinishWithErrors:(NSArray<NSError*>*__unused)errors
 {
     // Can be overridden by subclasses to get notified of child operations finishing execution
 }
 
-#pragma mark - Delegate
+#pragma mark - Operation Queue Delegate
 
 - (void)operationQueue:(AKAOperationQueue *__unused)operationQueue
       willAddOperation:(NSOperation *)operation

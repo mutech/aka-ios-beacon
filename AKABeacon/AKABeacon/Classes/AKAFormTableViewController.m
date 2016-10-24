@@ -125,6 +125,11 @@ static NSString*const defaultDataSourceKey = @"default";
     return [multiplexedDataSource dataSourceForKey:key];
 }
 
+- (AKATVDataSourceSpecification *)defaultDataSource
+{
+    return [self dataSourceForKey:defaultDataSourceKey inMultiplexer:self.multiplexedDataSource];
+}
+
 #pragma mark - Managing Activation
 
 - (NSIndexPath*)                    indexPathForInvisibleCell:(UITableViewCell*)cell
@@ -288,6 +293,17 @@ static NSString*const defaultDataSourceKey = @"default";
     return result;
 }
 
+- (BOOL)                                  isRowControlHidden:(AKATableViewCellCompositeControl*)rowControl
+{
+    AKATVDataSourceSpecification* defaultDataSource = self.defaultDataSource;
+    NSParameterAssert(defaultDataSource.dataSource == rowControl.dataSource);
+
+    BOOL result = [self.multiplexedDataSource isRowExcludedAtSourceIndexPath:rowControl.indexPath
+                                                                inDataSource:defaultDataSource];
+
+    return result;
+}
+
 - (BOOL)                                       hideRowControl:(AKATableViewCellCompositeControl*)rowControl
                                                 withAnimation:(UITableViewRowAnimation)rowAnimation
 {
@@ -388,6 +404,26 @@ static NSString*const defaultDataSourceKey = @"default";
 
         [collectionBinding startObservingChanges];
     }
+    else if ([memberControl isKindOfClass:[AKATableViewCellCompositeControl class]])
+    {
+        AKATableViewCellCompositeControl* tvcControl = (id)memberControl;
+        if ([tvcControl.view isKindOfClass:[AKATableViewCell class]])
+        {
+            AKATableViewCell* cell = (id)tvcControl.view;
+
+            if (cell.excludedBinding_aka.length > 0)
+            {
+                AKATVDataSourceSpecification* defaultDataSource = [self dataSourceForKey:@"default"
+                                                                           inMultiplexer:self.multiplexedDataSource];
+                id<UITableViewDataSource> dataSource = tvcControl.dataSource;
+
+                if (dataSource == defaultDataSource.dataSource)
+                {
+                    tvcControl.tableViewController = self;
+                }
+            }
+        }
+    }
 }
 
 - (void)                                              control:(AKACompositeControl*)compositeControl
@@ -404,6 +440,14 @@ static NSString*const defaultDataSourceKey = @"default";
         [self.dynamicPlaceholderCellControls removeObject:(AKADynamicPlaceholderTableViewCellCompositeControl*)memberControl];
 
         // TODO: remove dynamic rows if any
+    }
+    else if ([memberControl isKindOfClass:[AKATableViewCellCompositeControl class]])
+    {
+        AKATableViewCellCompositeControl* tvcControl = (id)memberControl;
+        if ([tvcControl.view isKindOfClass:[AKATableViewCell class]])
+        {
+            tvcControl.tableViewController = nil;
+        }
     }
 }
 

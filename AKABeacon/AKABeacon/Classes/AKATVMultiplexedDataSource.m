@@ -417,6 +417,28 @@ typedef enum
 
 #pragma mark - Adding and Removing Rows to/from Sections
 
+- (BOOL)isRowExcludedAtSourceIndexPath:(NSIndexPath*)sourceIndexPath
+                          inDataSource:(AKATVDataSourceSpecification*)dataSource
+{
+    AKATVSection* section = nil;
+    AKATVRowSegment* rowSegment = nil;
+    NSUInteger rowSegmentIndex = NSNotFound;
+    NSIndexPath* indexPath = nil;
+
+    BOOL result = [self resolveSectionSpecification:&section
+                                         rowSegment:&rowSegment
+                                    rowSegmentIndex:&rowSegmentIndex
+                                          indexPath:&indexPath
+                                 forSourceIndexPath:sourceIndexPath
+                                       inDataSource:dataSource];
+    if (result)
+    {
+        result = rowSegment.isExcluded && rowSegment.numberOfRows == 0;
+    }
+
+    return result;
+}
+
 - (void)insertRowsFromDataSource:(NSString*)dataSourceKey
                  sourceIndexPath:(NSIndexPath*)sourceIndexPath
                            count:(NSUInteger)numberOfRows
@@ -489,35 +511,41 @@ typedef enum
                          inDataSource:(AKATVDataSourceSpecification*)dataSource
                      withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    AKATVSection* section = nil;
-    AKATVRowSegment* rowSegment = nil;
-    NSUInteger rowSegmentIndex = NSNotFound;
-    NSIndexPath* indexPath = nil;
+    BOOL result = YES;
 
-    BOOL result = [self resolveSectionSpecification:&section
-                                         rowSegment:&rowSegment
-                                    rowSegmentIndex:&rowSegmentIndex
-                                          indexPath:&indexPath
-                                 forSourceIndexPath:sourceIndexPath
-                                       inDataSource:dataSource];
-
-    if (result)
+    if (![self isRowExcludedAtSourceIndexPath:sourceIndexPath
+                                 inDataSource:dataSource])
     {
-        NSUInteger offsetInSegment = (NSUInteger)(sourceIndexPath.row - rowSegment.indexPath.row);
-        result = [section excludeRowAtOffset:offsetInSegment
-                                inRowSegment:rowSegment
-                              atSegmentIndex:rowSegmentIndex];
-        UITableView* tableView = self.tableView;
+        AKATVSection* section = nil;
+        AKATVRowSegment* rowSegment = nil;
+        NSUInteger rowSegmentIndex = NSNotFound;
+        NSIndexPath* indexPath = nil;
 
-        if (result && tableView)
+        BOOL result = [self resolveSectionSpecification:&section
+                                             rowSegment:&rowSegment
+                                        rowSegmentIndex:&rowSegmentIndex
+                                              indexPath:&indexPath
+                                     forSourceIndexPath:sourceIndexPath
+                                           inDataSource:dataSource];
+
+        if (result)
         {
-            NSIndexPath* correctedIndexPath = [self.updateBatch
-                                                 deletionIndexPathForRow:indexPath.row
-                                                               inSection:indexPath.section
-                                               forBatchUpdateInTableView:tableView
-                                                    recordAsDeletedIndex:YES];
-            [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
-                             withRowAnimation:rowAnimation];
+            NSUInteger offsetInSegment = (NSUInteger)(sourceIndexPath.row - rowSegment.indexPath.row);
+            result = [section excludeRowAtOffset:offsetInSegment
+                                    inRowSegment:rowSegment
+                                  atSegmentIndex:rowSegmentIndex];
+            UITableView* tableView = self.tableView;
+
+            if (result && tableView)
+            {
+                NSIndexPath* correctedIndexPath = [self.updateBatch
+                                                   deletionIndexPathForRow:indexPath.row
+                                                   inSection:indexPath.section
+                                                   forBatchUpdateInTableView:tableView
+                                                   recordAsDeletedIndex:YES];
+                [tableView deleteRowsAtIndexPaths:@[ correctedIndexPath ]
+                                 withRowAnimation:rowAnimation];
+            }
         }
     }
 
@@ -528,37 +556,43 @@ typedef enum
                          inDataSource:(AKATVDataSourceSpecification*)dataSource
                      withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    AKATVSection* section = nil;
-    AKATVRowSegment* rowSegment = nil;
-    NSUInteger rowSegmentIndex = NSNotFound;
-    NSIndexPath* indexPath = nil;
+    BOOL result = YES;
 
-    BOOL result = [self resolveSectionSpecification:&section
-                                         rowSegment:&rowSegment
-                                    rowSegmentIndex:&rowSegmentIndex
-                                          indexPath:&indexPath
-                                 forSourceIndexPath:sourceIndexPath
-                                       inDataSource:dataSource];
-
-    if (result)
+    if ([self isRowExcludedAtSourceIndexPath:sourceIndexPath
+                                inDataSource:dataSource])
     {
-        NSAssert(rowSegment.isExcluded && rowSegment.numberOfRows == 0, @"Expected %@ to be an excluded row segment with numberOfRows==0", rowSegment);
+        AKATVSection* section = nil;
+        AKATVRowSegment* rowSegment = nil;
+        NSUInteger rowSegmentIndex = NSNotFound;
+        NSIndexPath* indexPath = nil;
 
-        result = [section includeRowSegment:rowSegment
-                             atSegmentIndex:rowSegmentIndex];
+        result = [self resolveSectionSpecification:&section
+                                        rowSegment:&rowSegment
+                                   rowSegmentIndex:&rowSegmentIndex
+                                         indexPath:&indexPath
+                                forSourceIndexPath:sourceIndexPath
+                                      inDataSource:dataSource];
 
-        UITableView* tableView = self.tableView;
-
-        if (result && tableView)
+        if (result)
         {
-            NSIndexPath* correctedIndexPath = [self.updateBatch
-                                                insertionIndexPathForRow:indexPath.row
-                                                               inSection:indexPath.section
-                                               forBatchUpdateInTableView:tableView
+            NSAssert(rowSegment.isExcluded && rowSegment.numberOfRows == 0, @"Expected %@ to be an excluded row segment with numberOfRows==0", rowSegment);
+
+            result = [section includeRowSegment:rowSegment
+                                 atSegmentIndex:rowSegmentIndex];
+
+            UITableView* tableView = self.tableView;
+
+            if (result && tableView)
+            {
+                NSIndexPath* correctedIndexPath = [self.updateBatch
+                                                   insertionIndexPathForRow:indexPath.row
+                                                   inSection:indexPath.section
+                                                   forBatchUpdateInTableView:tableView
                                                    recordAsInsertedIndex:YES];
 
-            [tableView insertRowsAtIndexPaths:@[ correctedIndexPath ]
-                             withRowAnimation:rowAnimation];
+                [tableView insertRowsAtIndexPaths:@[ correctedIndexPath ]
+                                 withRowAnimation:rowAnimation];
+            }
         }
     }
 

@@ -8,11 +8,15 @@
 
 #import "AKACompositeControl.h"
 
+@class AKAFormTableViewController;
 
 @interface AKATableViewCellCompositeControl : AKACompositeControl
 
 @property(nonatomic, weak) UITableView*                 tableView;
 @property(nonatomic, weak) id<UITableViewDataSource>    dataSource;
 @property(nonatomic) NSIndexPath*                       indexPath;
+
+// TODO: hack, need a way to reach this in order to exclude cell from table view for excludeBinding
+@property(nonatomic, weak) AKAFormTableViewController*  tableViewController;
 
 @end

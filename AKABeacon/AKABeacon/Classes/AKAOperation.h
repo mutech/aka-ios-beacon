@@ -62,6 +62,11 @@
  */
 @property (nonatomic, readonly) CGFloat workload;
 
+/**
+ * The workload already completed. This property is KVO conformant.
+ */
+@property (nonatomic, readonly) CGFloat workloadDone;
+
 
 #pragma mark - Final State
 

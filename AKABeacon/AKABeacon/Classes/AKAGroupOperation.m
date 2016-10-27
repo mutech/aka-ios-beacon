@@ -251,37 +251,41 @@
         [self updateProgressAndWorkloadUsingBlock:
          ^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference)
          {
-             CGFloat groupProgress = *progressReference;
-             CGFloat groupWorkload = *workloadReference;
+             CGFloat oldGroupProgress = *progressReference;
+             CGFloat oldGroupWorkload = *workloadReference;
+             CGFloat oldGroupWorkloadDone = oldGroupProgress * oldGroupWorkload;
+
+             CGFloat newGroupProgress = oldGroupProgress;
+             CGFloat newGroupWorkload = oldGroupWorkload;
+             CGFloat newGroupWorkloadDone = oldGroupWorkloadDone;
 
              if (workloadDifference != 0.0)
              {
-                 CGFloat normalizedWorkloadDifference = (workloadDifference
-                                                         * progressRecord.workloadFactor);
-                 groupWorkload += normalizedWorkloadDifference;
-                 progressRecord.recordedWorkload += normalizedWorkloadDifference;
+                 CGFloat weightedWorkloadDifference = (workloadDifference * progressRecord.workloadFactor);
+                 newGroupWorkload += weightedWorkloadDifference;
+                 progressRecord.recordedWorkload += weightedWorkloadDifference;
              }
 
              if (progressDifference != 0.0)
              {
-                 self.workloadDone += (progressDifference * progressRecord.recordedWorkload);
+                 newGroupWorkloadDone += (progressDifference * progressRecord.recordedWorkload);
              }
 
-             if (self.workload > 0)
+             if (newGroupWorkload > 0)
              {
-                 groupProgress = self.workloadDone / self.workload;
-                 if (groupProgress < 0)
+                 newGroupProgress = newGroupWorkloadDone / newGroupWorkload;
+                 if (newGroupProgress < 0)
                  {
-                     groupProgress = 0;
+                     newGroupProgress = 0;
                  }
-                 else if (groupProgress > 1.0)
+                 else if (newGroupProgress > 1.0)
                  {
-                     groupProgress = 1.0;
+                     newGroupProgress = 1.0;
                  }
              }
 
-             *progressReference = groupProgress;
-             *workloadReference = groupWorkload;
+             *progressReference = newGroupProgress;
+             *workloadReference = newGroupWorkload;
          }];
     }
 }

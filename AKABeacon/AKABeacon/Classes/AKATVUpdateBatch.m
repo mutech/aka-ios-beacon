@@ -44,9 +44,12 @@
 
 - (void)endUpdatesForTableView:(UITableView*)tableView
 {
+    NSIndexPath* bottomMostInsertedIndexPath = nil;
+
     NSParameterAssert(tableView == _tableView);
     if (self.depth == 1)
     {
+        bottomMostInsertedIndexPath = [self indexPathOfBottomMostInsertedRow];
         _tableView = nil;
         _deletedSections = nil;
         _insertedSections = nil;
@@ -56,6 +59,32 @@
     --_depth;
     
     [tableView endUpdates];
+
+    if (bottomMostInsertedIndexPath)
+    {
+        [tableView scrollToRowAtIndexPath:bottomMostInsertedIndexPath
+                         atScrollPosition:UITableViewScrollPositionBottom
+                                 animated:YES];
+    }
+}
+
+- (NSIndexPath*)indexPathOfBottomMostInsertedRow
+{
+    NSIndexPath* result;
+    __block NSUInteger* section = -1;
+    __block NSIndexSet* indexes = nil;
+    [self.insertedRows enumerateKeysAndObjectsUsingBlock:^(NSNumber*  _Nonnull key, NSIndexSet*  _Nonnull obj, BOOL * _Nonnull stop) {
+        if (indexes == nil || section < key.integerValue)
+        {
+            indexes = obj;
+            section = key.integerValue;
+        }
+    }];
+    if (indexes != nil)
+    {
+        result = [NSIndexPath indexPathForRow:indexes.lastIndex inSection:section];
+    }
+    return result;
 }
 
 #pragma mark - Insertions and Deletions of Sections

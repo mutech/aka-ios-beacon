@@ -14,10 +14,9 @@
 
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
-
 @interface AKAPredicatePropertyBinding()
 
-@property(nonatomic, readonly) NSMutableDictionary<NSString*, id>* substitutionValues;
+@property(nonatomic, readonly) NSMutableDictionary* substitutionValues;
 @property(nonatomic, readonly) id predicateSource;
 @property(nonatomic, readonly) NSPredicate* predicate;
 
@@ -122,6 +121,7 @@
 
         if ([sourceValue isKindOfClass:[NSString class]])
         {
+            // A string source value is used as format string for a predicate.
             _predicateSource = sourceValue;
             if (error)
             {
@@ -141,7 +141,7 @@
             }
             else
             {
-                // If error store is not, let the exception pass through
+                // If error store is nil, let exceptions pass through
                 _predicate = [NSPredicate predicateWithFormat:sourceValue];
             }
         }
@@ -243,9 +243,12 @@
     {
         // Assumption: dynamic variables are only added to and possibly removed all together. So we can use the count as variable name.
         variableName = [NSString stringWithFormat:@"kp_%lu", self.dynamicSubstitutionVariablesByKeyPath.count + 1];
+        NSAssert(self.substitutionValues[variableName] == nil,
+                 @"%@.substitutionVariables[%@] already defined: %@", self, variableName, self.substitutionValues[variableName]);
+        [self.substitutionValues setValue:[NSNull null] forKey:variableName];
     }
 
-    BOOL result = self.propertyBindingsByDynamicSubstitutionVariables[variableName];
+    BOOL result = (self.propertyBindingsByDynamicSubstitutionVariables[variableName] != nil);
 
     if (!result)
     {
@@ -254,17 +257,38 @@
 
         __weak typeof(self) weakSelf = self;
 
-        AKAProperty* targetProperty = [AKAProperty propertyOfWeakKeyValueTarget:self.substitutionValues
-                                                                        keyPath:variableName
-                                                                 changeObserver:
-                                       ^(id  _Nullable oldValue, id  _Nullable newValue)
-                                       {
-                                           if (self.bindingPropertiesAreObservingChanges &&
-                                               !self.isRewritingExpressions)
-                                           {
-                                               [weakSelf substitutionValue:oldValue didChangeTo:newValue];
-                                           }
-                                       }];
+        NSAssert(self.substitutionValues != nil, @"Substitution values undefined");
+        AKAProperty* targetProperty = [AKAProperty propertyOfWeakTarget:self.substitutionValues
+                                                                 getter:^id _Nullable(id  _Nonnull target) {
+                                                                     NSMutableDictionary* values = target;
+
+                                                                     id result = values[variableName];
+                                                                     if (result == [NSNull null])
+                                                                     {
+                                                                         result = nil;
+                                                                     }
+
+                                                                     return result;
+                                                                 }
+                                                                 setter:^(id  _Nonnull target, id  _Nullable value) {
+                                                                     NSMutableDictionary* values = target;
+
+                                                                     id oldValue = values[variableName];
+                                                                     if (oldValue == [NSNull null])
+                                                                     {
+                                                                         oldValue = nil;
+                                                                     }
+
+                                                                     id newValue = value ? value : [NSNull null];
+                                                                     values[variableName] = newValue;
+
+                                                                     __strong AKAPredicatePropertyBinding* strongSelf = weakSelf;
+                                                                     if (strongSelf.bindingPropertiesAreObservingChanges && !strongSelf.isRewritingExpressions)
+                                                                     {
+                                                                         [strongSelf substitutionValue:oldValue didChangeTo:newValue];
+                                                                     }
+                                                                 }];
+
         AKABindingExpression* keyPathExpression =
         [AKABindingExpression bindingExpressionWithString:keyPath
                                               bindingType:[AKABinding class]

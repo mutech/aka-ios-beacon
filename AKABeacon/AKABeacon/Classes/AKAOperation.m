@@ -665,6 +665,21 @@
 
 #pragma mark - Progress
 
+- (CGFloat)workloadDone
+{
+    return self.progress * self.workload;
+}
+
++ (NSSet *)keyPathsForValuesAffectingWorkloadDone
+{
+    static NSSet* result;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        result = [NSSet setWithObjects:@"progress", @"workload", nil];
+    });
+    return result;
+}
+
 - (void)updateProgressAndWorkloadUsingBlock:(void(^_Nonnull)(CGFloat*_Nonnull progressReference,
                                                              CGFloat*_Nonnull workloadReference))block
 {
@@ -689,31 +704,35 @@
     progressChanged = progressDifference != 0.0;
     workloadChanged = workloadDifference != 0.0;
 
-    if (workloadChanged)
+    if (workloadChanged || progressChanged)
     {
-        [self willChangeValueForKey:@"workload"];
-        _workload = workload;
-    }
-    if (progressChanged)
-    {
-        [self willChangeValueForKey:@"progress"];
-        _progress = progress;
+        [self willChangeValueForKey:@"workloadDone"];
+        if (workloadChanged)
+        {
+            [self willChangeValueForKey:@"workload"];
+            _workload = workload;
+        }
+        if (progressChanged)
+        {
+            [self willChangeValueForKey:@"progress"];
+            _progress = progress;
+        }
     }
 
     // Unlock before KVO or operation observers are notified about the change!
     [self.progressLock unlock];
 
-    if (workloadChanged)
+    if (workloadChanged || progressChanged)
     {
-        [self didChangeValueForKey:@"workload"];
-    }
-    if (progressChanged)
-    {
-        [self didChangeValueForKey:@"progress"];
-    }
-
-    if (progressChanged || workloadChanged)
-    {
+        if (workloadChanged)
+        {
+            [self didChangeValueForKey:@"workload"];
+        }
+        if (progressChanged)
+        {
+            [self didChangeValueForKey:@"progress"];
+        }
+        [self didChangeValueForKey:@"workloadDone"];
         [self notifyObserversOperationDidUpdateProgress:progressDifference
                                             andWorkload:workloadDifference];
     }

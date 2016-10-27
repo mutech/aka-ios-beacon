@@ -43,7 +43,6 @@
 
 // TODO: this array is not needed (addOperation:withWorkloadFactor captures the records), this is used to help debugging. Remove it once the code is stable.
 @property(nonatomic, readonly) NSMutableArray<AKAGroupOperationProgressRecord*>* progressRecords;
-@property(nonatomic, readwrite) CGFloat workloadDone;
 
 @end
 

@@ -669,17 +669,6 @@
 {
     return self.progress * self.workload;
 }
-
-+ (NSSet *)keyPathsForValuesAffectingWorkloadDone
-{
-    static NSSet* result;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        result = [NSSet setWithObjects:@"progress", @"workload", nil];
-    });
-    return result;
-}
-
 - (void)updateProgressAndWorkloadUsingBlock:(void(^_Nonnull)(CGFloat*_Nonnull progressReference,
                                                              CGFloat*_Nonnull workloadReference))block
 {

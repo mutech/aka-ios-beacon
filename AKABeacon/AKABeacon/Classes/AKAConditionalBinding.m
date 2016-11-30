@@ -22,10 +22,11 @@
 
 @interface AKAConditionalBindingClause ()
 
-@property(nonatomic) NSUInteger expressionClauseIndex;
-@property(nonatomic) NSPredicate*                   predicate;
+@property(nonatomic) NSUInteger                     expressionClauseIndex;
 
+@property(nonatomic) NSPredicate*                   predicate;
 @property(nonatomic) AKAPredicatePropertyBinding*   predicateBinding;
+
 @property(nonatomic) AKABinding*                    binding;
 
 @end
@@ -212,14 +213,15 @@
              }
              else
              {
-                 __weak typeof(self) weakSelf = self;
+                 __weak AKAConditionalBinding* weakSelf = self;
+                 __weak AKAConditionalBindingClause* weakClause = clause;
                  AKAProperty* targetPredicateProperty =
                      [AKAProperty propertyOfWeakKeyValueTarget:clause
                                                        keyPath:@"predicate"
                                                 changeObserver:
                       ^(id _Nullable oldValue, id _Nullable newValue)
                       {
-                          [weakSelf predicateForClause:clause
+                          [weakSelf predicateForClause:weakClause
                                                atIndex:index
                                            changedFrom:oldValue
                                                     to:newValue];

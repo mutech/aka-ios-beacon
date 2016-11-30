@@ -379,10 +379,10 @@
                                    binding.targetFont = binding.originalTargetFont;
                                }
 
-                               if (self.textFieldMinHeightConstraint)
+                               if (binding.textFieldMinHeightConstraint)
                                {
-                                   [self.target removeConstraint:self.textFieldMinHeightConstraint];
-                                   self.textFieldMinHeightConstraint = nil;
+                                   [binding.target removeConstraint:binding.textFieldMinHeightConstraint];
+                                   binding.textFieldMinHeightConstraint = nil;
                                }
 
                                return !binding.isObserving;

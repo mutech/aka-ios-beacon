@@ -14,6 +14,8 @@
 
 #import "AKAPredicatePropertyBinding.h"
 #import "AKABindingErrors.h"
+
+
 @interface AKAPredicatePropertyBinding()
 
 @property(nonatomic, readonly) NSMutableDictionary* substitutionValues;
@@ -197,7 +199,7 @@
                                        NSDictionary<NSString *,id> * _Nullable bindings)
                                  {
                                      BOOL presult = NO;
-                                     typeof(self)strongSelf = weakSelf;
+                                     AKAPredicatePropertyBinding* strongSelf = weakSelf;
                                      NSPredicate* predicate = strongSelf.predicate;
                                      if (predicate)
                                      {

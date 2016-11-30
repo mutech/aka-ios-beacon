@@ -79,7 +79,9 @@
 #pragma mark - UITableView updates
 
 @property(nonatomic) BOOL                                                   tableViewUpdateDispatched;
+@property(nonatomic) BOOL                                                   animateDispatchedTableViewUpdate;
 @property(nonatomic) BOOL                                                   tableViewReloadDispatched;
+@property(nonatomic) BOOL                                                   tableViewRowHeightsUpdateDispatched;
 @property(nonatomic) NSMutableDictionary<NSNumber*, AKAArrayComparer*>*     pendingTableViewChanges;
 
 @end
@@ -560,13 +562,19 @@
         BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
         [UIView setAnimationsEnabled:NO];
         [tableView reloadData];
+        [self updateTableViewRowHeightsAnimated:YES]; // Will not animate, using YES to avoid extra code to disable animation
         [UIView setAnimationsEnabled:animationsWereEnabled];
     }
     else
     {
+        //[CATransaction begin];
+        //[CATransaction setCompletionBlock:^{
+            //[self updateTableViewRowHeightsAnimated:NO];
+        //}];
         [tableView reloadData];
+        //[CATransaction commit];
+        [self updateTableViewRowHeightsAnimated:NO];
     }
-    //[self updateTableViewRowHeightsAnimated:NO]; // No animation for row height updates because it looks clumsy to have two successive animations
 }
 
 - (void)                  updateTableViewRowHeightsAnimated:(BOOL)animated
@@ -579,11 +587,6 @@
         [tableView beginUpdates];
         [tableView endUpdates];
         [UIView setAnimationsEnabled:animationsWereEnabled];
-    }
-    else
-    {
-        [tableView beginUpdates];
-        [tableView endUpdates];
     }
 }
 
@@ -598,6 +601,20 @@
                    (tableView.numberOfSections == 1 && [tableView numberOfRowsInSection:0] == 0));
 
     return result;
+}
+
+- (void)                  dispatchUpdateTableViewRowHeights:(BOOL)animated
+{
+    self.animateDispatchedTableViewUpdate = animated;
+    if (!self.tableViewUpdateDispatched)
+    {
+        self.tableViewRowHeightsUpdateDispatched = YES;
+
+        __weak typeof(self) weakSelf = self;
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [weakSelf performPendingTableViewRowHeightUpdate];
+        }];
+    }
 }
 
 - (void)                            dispatchTableViewReload:(BOOL __unused)animated
@@ -651,6 +668,27 @@
     }
 }
 
+- (void)             performPendingTableViewRowHeightUpdate
+{
+    if (self.tableViewRowHeightsUpdateDispatched)
+    {
+        UITableView* tableView = self.tableView;
+
+        // Defer the row-heights update if a reload or update is dispatched or if the table view is scrolling.
+        if (self.tableViewReloadDispatched || self.tableViewUpdateDispatched ||
+            tableView.isDragging || tableView.isDecelerating)
+        {
+            self.tableViewRowHeightsUpdateDispatched = NO; // Set to NO before dispatch (otherwise nothing will happen)
+            [self dispatchUpdateTableViewRowHeights:self.animateDispatchedTableViewUpdate];
+        }
+        else
+        {
+            [self updateTableViewRowHeightsAnimated:self.animateDispatchedTableViewUpdate];
+            self.tableViewRowHeightsUpdateDispatched = NO; // Set to NO after update to prevent new updates while this one is active
+        }
+    }
+}
+
 - (void)                      performPendingTableViewReload
 {
     if (self.tableViewReloadDispatched)
@@ -667,6 +705,8 @@
                 if (!tableView.isDragging && !tableView.isDecelerating)
                 {
                     [self reloadTableViewAnimated:YES];
+                    [self dispatchUpdateTableViewRowHeights:NO];
+
                     self.tableViewReloadDispatched = NO;
                 }
                 else
@@ -714,14 +754,9 @@
                                         deleteAnimation:self.deleteAnimation
                                         insertAnimation:self.insertAnimation];
                         [self.pendingTableViewChanges removeObjectForKey:sectionN];
-
-                        [self updateTableViewRowHeightsAnimated:YES];
                     }
+                    [self dispatchUpdateTableViewRowHeights:NO];
                     [self endUpdatingTableView:tableView];
-
-
-                    // Perform update for self-sizing cells now to ensure this will be done
-                    //[self updateTableViewRowHeightsAnimated:NO];
 
                     // Everything is up to date, disable already dispatched updates.
                     self.tableViewUpdateDispatched = NO;
@@ -881,7 +916,7 @@
 {
     (void)tableView;
 
-    id result = self.sections[(NSUInteger)section];
+    id result = self.sections.count <= section ? nil : self.sections[(NSUInteger)section];
 
     if (result == [NSNull null])
     {

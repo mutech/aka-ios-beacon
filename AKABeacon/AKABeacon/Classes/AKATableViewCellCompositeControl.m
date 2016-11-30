@@ -100,7 +100,6 @@
                                                                            setter:
                                                  ^(id  _Nonnull target, id  _Nullable value)
                                                  {
-                                                     NSParameterAssert(value == nil || [value isKindOfClass:[NSNumber class]]);
                                                      AKATableViewCellCompositeControl* control = target;
                                                      control.excluded = [value boolValue];
                                                  }];

@@ -46,6 +46,6 @@
  */
 @interface AKAOperationQueue : NSOperationQueue
 
-@property(nonatomic) id<AKAOperationQueueDelegate> delegate;
+@property(nonatomic, weak) id<AKAOperationQueueDelegate> delegate;
 
 @end

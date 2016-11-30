@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, AKAVCLifeCycleState)
 #pragma mark - Initialization
 
 - (nonnull instancetype)initWithViewController:(nonnull UIViewController *)viewController
-                           presentationContext:(nullable UIViewController *)presenter;
+                           presentationContext:(nullable id)presenter;
 
 /**
  Creates a new operation that will present the specified view controller from the specified presenter.
@@ -104,7 +104,7 @@ typedef NS_ENUM(NSUInteger, AKAVCLifeCycleState)
  @return a new operation
  */
 + (nonnull instancetype)operationForController:(nonnull UIViewController *)viewController
-                           presentationContext:(nullable UIViewController *)presenter;
+                           presentationContext:(nullable id)presenter;
 
 #pragma mark - Configuration
 
@@ -113,22 +113,34 @@ typedef NS_ENUM(NSUInteger, AKAVCLifeCycleState)
  
  The default implementation returns YES.
  
- Since life cycle event monitoring adds a child view controller to the presented view controller,
- some implementations will not work (properly) with monitoring enabled, for example MFMailComposeViewController.
- Subclasses supporting such view controllers should redefine this method to return NO and use delegation
- or other means to determine when the presentation has finished.
+ Since life cycle event monitoring adds a child view controller to the presented view controller, some implementations will not work (properly) with monitoring enabled, for example MFMailComposeViewController.
+
+ Subclasses supporting such view controllers should redefine this method to return NO and use delegation or other means to determine when the presentation has finished.
  
- Such implementations have to call -viewControllerHasBeenDismissed: to notify the operation about
- the dismissal. Failure to do so will leave the operation in executing state.
+ Such implementations have to call -viewControllerHasBeenDismissed: to notify the operation about the dismissal. Failure to do so will leave the operation in executing state (indefinitely).
  */
 - (BOOL)shouldMonitorPresentedViewControllersLifeCycleEvents;
+
+/**
+ Determines whether the operation should create a presentation window if no presenter has been configured. If NO, the operation will use the current key window's rootViewController as presenter. (see presenter).
+ 
+ The default implementation returns YES.
+ */
+- (BOOL)shouldCreatePresentationWindow;
 
 @property(nonatomic, readonly, nonnull) UIViewController* viewController;
 
 /**
- The presenting view controller. If no presenter was specified when the operation was created,
- the operation will try to find a suitable presenter and update this property on execution.
+ The presenting view controller.
+
+ If the operation can tell that the presenter is not a proper view controller capable of presentation, it will recursively apply this algorithm to locate the presenting view controller:
+
+ - If presenter is a view, the operation traverses the responder chain to locate its view controller.
+ - If presenter is a UINavigationController, the operation uses its visibleViewController
+ - If presenter is a UITabBarController, the operation uses its selectedViewController
  */
-@property(nonatomic, readonly, nullable) UIViewController* presenter;
+@property(nonatomic, readonly, nullable, weak) id presenter;
+
+@property(nonatomic, readonly, nullable, weak) UIView* popoverAnchor;
 
 @end

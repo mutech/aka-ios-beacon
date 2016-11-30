@@ -15,6 +15,7 @@
 #import "AKAOperationQueue.h"
 #import "AKABlockOperationObserver.h"
 #import "AKABlockOperation.h"
+#import "AKALog.h"
 
 @interface AKAOperation() {
     AKAOperationState _state;
@@ -80,6 +81,11 @@
         self.conditionsSatisfied = YES;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    //AKALogDebug(@"Deallocating %@", self);
 }
 
 + (AKAOperation*)operationWithBlock:(void(^_Nonnull)(void(^_Nonnull finish)()))block
@@ -844,30 +850,7 @@
 
 - (void)finishWithError:(NSError*)error
 {
-    __weak typeof(self) weakSelf = self;
-    BOOL isFinishing = [self setState:AKAOperationStateFinishing
-                 ifPredicateSatisfied:^BOOL(AKAOperationState state) {
-                     return state < AKAOperationStateFinishing;
-                 } andPerformSynchronizedBlock:^{
-                     __strong typeof(self) strongSelf = weakSelf;
-                     if (error)
-                     {
-                         [strongSelf addError:error];
-                     }
-                 }];
-    if (isFinishing)
-    {
-        self.isFinishing = YES;
-        [self willFinish];
-        [self notifyObserversOperationDidFinish];
-        [self setState:AKAOperationStateFinished andPerformSynchronizedBlock:^{
-            self.isFinishing = NO;
-        }];
-        [self updateProgressAndWorkloadUsingBlock:^(CGFloat * _Nonnull progressReference, CGFloat * _Nonnull workloadReference) {
-            *progressReference = 1.0;
-        }];
-        [self didFinish];
-    }
+    [self finishWithErrors:(error ? @[ error ] : nil)];
 }
 
 
@@ -893,6 +876,7 @@
             *progressReference = 1.0;
         }];
         [self didFinish];
+        self.observers = nil;
     }
 }
 

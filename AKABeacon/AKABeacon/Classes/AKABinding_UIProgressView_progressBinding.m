@@ -7,13 +7,21 @@
 //
 
 #import "AKABinding_UIProgressView_progressBinding.h"
-
+#import "AKAPropertyBinding.h"
 
 @interface AKABinding_UIProgressView_progressBinding()
 
 @property(nonatomic, readonly) UIProgressView* progressView;
+@property(nonatomic) NSNumber* workload;
+
+@property(nonatomic) NSLayoutConstraint* workloadChangeAnimationConstraint;
+
+@property(nonatomic) BOOL animatingWorkloadChange;
+@property(nonatomic) NSNumber* pendingWorkloadUpdate;
+@property(nonatomic) NSNumber* pendingProgressUpdate;
 
 @end
+
 
 @implementation AKABinding_UIProgressView_progressBinding
 
@@ -28,6 +36,13 @@
         @{ @"bindingType":              [AKABinding_UIProgressView_progressBinding class],
            @"targetType":               [UIProgressView class],
            @"expressionType":           @(AKABindingExpressionTypeNumber),
+           @"attributes": @{
+                   @"workload": @{
+                           @"bindingType":      [AKAPropertyBinding class],
+                           @"use":              @(AKABindingAttributeUseBindToBindingProperty),
+                           @"expressionType":   @(AKABindingExpressionTypeNumber)
+                           },
+                   },
            };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
     });
@@ -54,7 +69,14 @@
                 AKABinding_UIProgressView_progressBinding* binding = target;
                 if ([value isKindOfClass:[NSNumber class]])
                 {
-                    binding.progressView.progress = ((NSNumber*)value).floatValue;
+                    if (!binding.animatingWorkloadChange)
+                    {
+                        binding.progressView.progress = ((NSNumber*)value).floatValue;
+                    }
+                    else
+                    {
+                        binding.pendingProgressUpdate = value;
+                    }
                 }
             }
                           observationStarter:
@@ -77,6 +99,126 @@
     NSParameterAssert(result == nil || [result isKindOfClass:[UIProgressView class]]);
 
     return (UIProgressView*)result;
+}
+
+- (NSLayoutConstraint*)layoutConstraintForWorkflowAnimation
+{
+    NSLayoutConstraint* result = nil;
+
+    for (NSLayoutConstraint* constraint in self.progressView.superview.constraints)
+    {
+        if (constraint.relation == NSLayoutRelationEqual && constraint.constant == 0.0 && constraint.priority >= 999)
+        {
+            if (constraint.multiplier == 1.0)
+            {
+                if ((constraint.firstItem == self.progressView &&
+                     constraint.firstAttribute == NSLayoutAttributeTrailing)
+                    ||
+                    (constraint.secondItem == self.progressView &&
+                     constraint.secondAttribute == NSLayoutAttributeTrailing))
+                {
+                    result = constraint;
+                    break;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+- (void)setWorkload:(NSNumber*)workload
+{
+    if (self.animatingWorkloadChange)
+    {
+        self.pendingWorkloadUpdate = workload;
+    }
+    else
+    {
+        CGFloat currentWorkload = self.workload.floatValue;
+        if (currentWorkload > 0.0 && workload.floatValue > currentWorkload)
+        {
+            if (!self.workloadChangeAnimationConstraint)
+            {
+                self.workloadChangeAnimationConstraint = [self layoutConstraintForWorkflowAnimation];
+            }
+
+            if (self.workloadChangeAnimationConstraint)
+            {
+                self.animatingWorkloadChange = YES;
+
+                CGFloat workloadChange = currentWorkload / workload.floatValue;
+                [self animateWorkloadChange:workloadChange completion:^{
+                    NSNumber* pendingWorkloadUpdate = self.pendingWorkloadUpdate;
+                    NSNumber* pendingProgressUpdate = self.pendingProgressUpdate;
+                    self.pendingWorkloadUpdate = nil;
+                    self.pendingProgressUpdate = nil;
+
+                    self.animatingWorkloadChange = NO;
+                    if (pendingProgressUpdate)
+                    {
+                        self.targetValueProperty.value = pendingProgressUpdate;
+                    }
+                    if (pendingWorkloadUpdate)
+                    {
+                        self.workload = pendingWorkloadUpdate;
+                    }
+                }];
+            }
+        }
+        _workload = workload;
+    }
+}
+
+- (void)animateWorkloadChange:(CGFloat)workloadChange
+                   completion:(void(^)())completionBlock
+{
+    CGFloat animatedWidth = self.progressView.frame.size.width * workloadChange;
+    CGFloat constant = self.progressView.frame.size.width - animatedWidth;
+    if (self.workloadChangeAnimationConstraint.firstItem == self.progressView)
+    {
+        constant = -constant;
+    }
+
+    UIProgressView* background = [[UIProgressView alloc] initWithFrame:self.progressView.frame];
+    background.alpha = 0.7;
+    background.progress = 0.0;
+    background.backgroundColor = [UIColor yellowColor];
+    [self.progressView.superview insertSubview:background belowSubview:self.progressView];
+
+    [UIView animateWithDuration:0.1
+                          delay:0
+                        options:0
+                     animations:
+     ^ {
+         background.alpha = 1.0;
+         self.workloadChangeAnimationConstraint.constant = constant;
+         [self.progressView setNeedsLayout];
+         [self.progressView layoutIfNeeded];
+         [self.progressView.superview setNeedsLayout];
+         [self.progressView.superview layoutIfNeeded];
+     }
+                     completion:
+     ^(BOOL finished) {
+         [UIView animateWithDuration:1.25
+                               delay:0
+                             options:0
+                          animations:
+          ^{
+              background.alpha = 0;
+              self.workloadChangeAnimationConstraint.constant = 0;
+              [self.progressView setNeedsLayout];
+              [self.progressView layoutIfNeeded];
+              [self.progressView.superview setNeedsLayout];
+              [self.progressView.superview layoutIfNeeded];
+          }
+                          completion:^(BOOL finished) {
+                              [background removeFromSuperview];
+                              if (completionBlock != NULL)
+                              {
+                                  completionBlock();
+                              }
+                          }];
+     }];
 }
 
 @end

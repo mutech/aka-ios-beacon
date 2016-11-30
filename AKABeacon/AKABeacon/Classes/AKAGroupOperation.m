@@ -11,6 +11,7 @@
 #import "AKAOperationQueue.h"
 
 
+
 @interface AKAGroupOperationProgressRecord: NSObject
 
 @property(nonatomic, readonly, weak) NSOperation* operation;
@@ -33,6 +34,21 @@
     return result;
 }
 
+- (NSString *)description
+{
+    return self.operation.description;
+}
+
+@end
+
+
+@interface AKAGroupOperationMembersFinishedCondition: AKAOperationCondition
+
+- (instancetype)initWithGroupOperation:(AKAGroupOperation*)groupOperation;
+
+@property(nonatomic, readonly, weak) AKAGroupOperation* groupOperation;
+@property(nonatomic, readonly) dispatch_group_t dispatchGroup;
+
 @end
 
 
@@ -43,6 +59,49 @@
 
 // TODO: this array is not needed (addOperation:withWorkloadFactor captures the records), this is used to help debugging. Remove it once the code is stable.
 @property(nonatomic, readonly) NSMutableArray<AKAGroupOperationProgressRecord*>* progressRecords;
+
+@property(nonatomic, readonly) AKAGroupOperationMembersFinishedCondition* finishedCondition;
+
+@end
+
+
+@implementation AKAGroupOperationMembersFinishedCondition
+
+- (instancetype)initWithGroupOperation:(AKAGroupOperation*)groupOperation
+{
+    if (self = [super init])
+    {
+        _groupOperation = groupOperation;
+        _dispatchGroup = dispatch_group_create();
+    }
+    return self;
+}
+
+- (void)groupWillAddOperation:(NSOperation*)operation
+{
+    dispatch_group_enter(self.dispatchGroup);
+}
+
+- (void)groupMemberOperationDidFinish:(NSOperation*)operation
+{
+    dispatch_group_leave(self.dispatchGroup);
+}
+
+- (void)evaluateForOperation:(AKAOperation *)operation completion:(void (^)(BOOL, NSError * _Nullable))completion
+{
+    NSAssert(operation == self.groupOperation.finishOperation,
+             @"Internal inconsistency, AKAGroupOperationMembersFinishedCondition can only be evaluated for its group operation");
+    __weak AKAGroupOperationMembersFinishedCondition* weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_group_wait(weakSelf.dispatchGroup, DISPATCH_TIME_FOREVER);
+        completion(YES, nil);
+    });
+}
+
++ (BOOL)isMutuallyExclusive
+{
+    return NO;
+}
 
 @end
 
@@ -84,10 +143,15 @@
 
 - (instancetype)init
 {
-    if (self = [super initWithWorkload:0])
+    return [self initWithWorkload:0];
+}
+
+- (instancetype)initWithWorkload:(CGFloat)workload
+{
+    if (self = [super initWithWorkload:workload])
     {
         _progressRecords = [NSMutableArray new];
-
+        
         _startOperation = [self.class createStartOperationForGroup:self];
         if (self.startOperation.name.length == 0)
         {
@@ -98,6 +162,8 @@
         {
             self.finishOperation.name = [NSString stringWithFormat:@"Group finish operation"];
         }
+        _finishedCondition = [[AKAGroupOperationMembersFinishedCondition alloc] initWithGroupOperation:self];
+        [self.finishOperation addCondition:self.finishedCondition];
 
         _internalQueue = [AKAOperationQueue new];
         self.internalQueue.suspended = YES;
@@ -118,6 +184,7 @@
 - (void)addOperation:(NSOperation*)operation
   withWorkloadFactor:(CGFloat)workloadFactor
 {
+    __weak NSOperation* weakOperation = operation;
     AKAGroupOperationProgressRecord* progressRecord =
         [AKAGroupOperationProgressRecord recordForOperation:operation withWorkloadFactor:workloadFactor];
     [self.progressRecords addObject:progressRecord];
@@ -129,7 +196,7 @@
         [akaOperation addDidUpdateProgressObserverWithBlock:
          ^(AKAOperation * _Nonnull op, CGFloat progressDifference, CGFloat workloadDifference)
          {
-             NSParameterAssert(operation == op);
+             NSParameterAssert(weakOperation == op);
 
              [weakSelf updateProgressForOperation:op
                                withProgressRecord:progressRecord
@@ -140,7 +207,6 @@
     else
     {
         // Non-AKAOperation instances transition from 0 -> 1.0 progress once they are finished:
-        __weak NSOperation* weakOperation = operation;
         void (^completion)() = ^{
             __strong NSOperation* strongOperation = weakOperation;
             __strong AKAGroupOperation* strongSelf = weakSelf;
@@ -307,13 +373,13 @@
 
 #pragma mark - Execution Events
 
-- (void)        operationDidStart:(NSOperation*__unused)operation
+- (void)        operationDidStart:(NSOperation*__unused)operation __attribute__((objc_requires_super))
 {
     // Can be overridden by subclasses to get notified of child operations finishing execution
 }
 
 - (void)                operation:(NSOperation*__unused)operation
-              didFinishWithErrors:(NSArray<NSError*>*__unused)errors
+              didFinishWithErrors:(NSArray<NSError*>*__unused)errors __attribute__((objc_requires_super))
 {
     // Can be overridden by subclasses to get notified of child operations finishing execution
 }
@@ -329,7 +395,17 @@
 
     if (operation != self.finishOperation)
     {
-        [self.finishOperation addDependency:operation];
+        if ([operation isKindOfClass:[AKAOperation class]] && self.finishedCondition)
+        {
+            if (operation != self.startOperation && operation != self.finishOperation)
+            {
+                [self.finishedCondition groupWillAddOperation:operation];
+            }
+        }
+        else
+        {
+            [self.finishOperation addDependency:operation];
+        }
     }
 
     // Finish operation already depends on start operation:
@@ -359,7 +435,29 @@
     else if (operation != self.startOperation)
     {
         [self operation:operation didFinishWithErrors:errors];
+        if ([operation isKindOfClass:[AKAOperation class]] && self.finishedCondition)
+        {
+            if (operation != self.startOperation && operation != self.finishOperation)
+            {
+                [self.finishedCondition groupMemberOperationDidFinish:operation];
+            }
+        }
     }
+}
+
+@end
+
+
+@implementation AKASerializedGroupOperation
+
+- (void)addOperation:(NSOperation*)operation withWorkloadFactor:(CGFloat)workloadFactor
+{
+    NSOperation* lastOperation = self.progressRecords.lastObject.operation;
+    if (lastOperation && lastOperation != self.startOperation && operation != self.finishOperation)
+    {
+        [operation addDependency:lastOperation];
+    }
+    [super addOperation:operation withWorkloadFactor:workloadFactor];
 }
 
 @end

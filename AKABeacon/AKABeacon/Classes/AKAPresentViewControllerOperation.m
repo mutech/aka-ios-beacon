@@ -15,6 +15,11 @@
 #pragma mark - AKAVCLifeCycleNotificationBehavior
 #pragma mark -
 
+@interface AKAVCLifeCycleNotificationBehavior()
+
+@property(nonatomic, weak) UIViewController* previousParentViewController;
+
+@end
 
 @implementation AKAVCLifeCycleNotificationBehavior
 
@@ -55,6 +60,7 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent
 {
+    self.previousParentViewController = self.parentViewController;
     [super willMoveToParentViewController:parent];
 }
 
@@ -72,8 +78,9 @@
     {
         if ([delegate respondsToSelector:@selector(notificationBehavior:didStopObservingEventsForController:)])
         {
-            [delegate notificationBehavior:self didStopObservingEventsForController:parent];
+            [delegate notificationBehavior:self didStopObservingEventsForController:self.previousParentViewController];
         }
+        self.previousParentViewController = nil;
     }
 }
 
@@ -168,7 +175,12 @@
 
 @interface AKAPresentViewControllerOperation()
 
+@property(nonatomic, readwrite, nullable, weak) id presenter;
+
 @property(nonatomic) AKAVCLifeCycleNotificationBehavior* notifyBehavior;
+
+@property(nonatomic) UIWindow* presentationWindow;
+@property(nonatomic, weak) UIWindow* originalKeyWindow;
 
 @end
 
@@ -199,6 +211,12 @@
                                                          presentationContext:presenter];
 }
 
+#pragma mark - Configuration
+
+- (BOOL)shouldCreatePresentationWindow
+{
+    return YES;
+}
 
 - (BOOL)shouldMonitorPresentedViewControllersLifeCycleEvents
 {
@@ -210,13 +228,21 @@
 - (void)execute
 {
     [self aka_performBlockInMainThreadOrQueue:^{
+        [self createPresentationWindowIfNeeded];
         UIViewController* presenter = [self presenterInContext:self.presenter];
         if (self->_presenter == nil)
         {
             self->_presenter = presenter;
         }
+
         if (presenter)
         {
+            if (self.popoverAnchor)
+            {
+                UIPopoverPresentationController* popoverPresenter = self.viewController.popoverPresentationController;
+                popoverPresenter.sourceView = self.popoverAnchor;
+                popoverPresenter.sourceRect = self.popoverAnchor.bounds;
+            }
             [presenter presentViewController:self.viewController
                                     animated:YES
                                   completion:nil];
@@ -230,14 +256,21 @@
 
 - (void)finish
 {
-    [super finish];
     [self aka_performBlockInMainThreadOrQueue:^{
+        [self.notifyBehavior removeFromController:self.viewController];
+        self.notifyBehavior = nil;
+
+        // Typically, finish has been called as a result of the view controller being dismissed.
+        // This only covers cases where the operation has been manually finished.
         [self.viewController.presentingViewController dismissViewControllerAnimated:YES
-                                                                          completion:
-         ^{
-             [self.notifyBehavior removeFromController:self.viewController];
-             self.notifyBehavior = nil;
-         }];
+                                                                         completion:NULL];
+
+        // TODO: this might disrupt the dismissal animation:
+        [self removePresentationWindow];
+
+        // Ensure that finish is called after the presentation windows has been removed.
+        [super finish];
+
     } waitForCompletion:NO];
 }
 
@@ -290,7 +323,7 @@
 - (void)notificationBehavior:(AKAVCLifeCycleNotificationBehavior *)behavior didStopObservingEventsForController:(UIViewController *)controller
 {
     NSParameterAssert(behavior == self.notifyBehavior);
-    NSParameterAssert(controller == self.viewController);
+    NSParameterAssert(controller == nil || controller == self.viewController);
     [self cancel];
     if (self.viewController.presentingViewController == self.presenter &&
         self.presenter != nil)
@@ -304,6 +337,50 @@
 }
 
 #pragma mark - Implementation
+
+- (void)createPresentationWindowIfNeeded
+{
+    if (self.presenter == nil && self.presentationWindow == nil && [self shouldCreatePresentationWindow])
+    {
+        UIApplication* app = [UIApplication sharedApplication];
+        self.originalKeyWindow = app.keyWindow;
+
+        CGFloat maxWindowLevel = 0;
+        for (UIWindow* window in app.windows)
+        {
+            if (window.windowLevel > maxWindowLevel)
+            {
+                maxWindowLevel = window.windowLevel;
+            }
+        }
+
+        self.presentationWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.presentationWindow.windowLevel = maxWindowLevel + 1.0;
+        self.presentationWindow.rootViewController = [UIViewController new];
+        //self.presentationWindow.rootViewController.view.alpha = 0.0;
+        
+        self.presenter = self.presentationWindow.rootViewController;
+
+        [self.presentationWindow makeKeyAndVisible];
+    }
+}
+
+- (void)removePresentationWindow
+{
+    if (self.presentationWindow)
+    {
+        [self.presentationWindow.rootViewController dismissViewControllerAnimated:NO completion:NULL];
+        self.presentationWindow.hidden = YES;
+        self.presentationWindow = nil;
+
+        /*
+        if (self.originalKeyWindow && !self.originalKeyWindow.isKeyWindow)
+        {
+            [self.originalKeyWindow makeKeyWindow];
+        }
+        */
+    }
+}
 
 - (UIViewController*)presenterInContext:(id)presentationContext
 {
@@ -323,6 +400,19 @@
     else if ([presentationContext isKindOfClass:[UIViewController class]])
     {
         result = presentationContext;
+    }
+    else if ([presentationContext isKindOfClass:[UIView class]])
+    {
+        UIView* view = presentationContext;
+        _popoverAnchor = view;
+        for (UIResponder* responder = view.nextResponder; responder; responder = responder.nextResponder)
+        {
+            if ([responder isKindOfClass:[UIViewController class]])
+            {
+                result = (id)responder;
+                break;
+            }
+        }
     }
 
     return result;

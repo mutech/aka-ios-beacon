@@ -19,12 +19,12 @@
  If no presenter is specified, the operation will inspect the current key window and use it's root view controller (resolving UINavigationContoller and UITabBarController instances to their visible or selected view controllers).
 
  @param alertController the alert controller to be presented.
- @param presenter       the presenting view controller or nil to let the operation find a suitable view controller for presentation.
+ @param presenter       the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
 
  @return a new operation
  */
 + (nonnull instancetype)      operationForController:(nonnull UIAlertController *)alertController
-                                 presentationContext:(nullable UIViewController *)presenter;
+                                 presentationContext:(nullable id)presenter;
 
 /**
  Creates a new instance of UIAlertViewController configued with the specified parameters and an operation that will present if from the specified presenter.
@@ -35,7 +35,7 @@
  @param message   the alert's message
  @param style     the alert's preferred style
  @param actions   alert actions.
- @param presenter       the presenting view controller or nil to let the operation find a suitable view controller for presentation.
+ @param presenter the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
 
  @return a new operation
  */
@@ -43,7 +43,7 @@
                                              message:(nullable NSString *)message
                                       preferredStyle:(UIAlertControllerStyle)style
                                              actions:(nullable NSArray<UIAlertAction *> *)actions
-                                 presentationContext:(nullable UIViewController*)presenter;
+                                 presentationContext:(nullable id)presenter;
 
 /**
  Creates a new operation presenting a new alert controller configured with the specified parameters and adds the operation to the main operation queue.
@@ -54,7 +54,7 @@
  @param message   the alert's message
  @param style     the alert's preferred style
  @param actions   alert actions.
- @param presenter       the presenting view controller or nil to let the operation find a suitable view controller for presentation.
+ @param presenter the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
 
  @return the new operation
  */
@@ -62,7 +62,7 @@
                                              message:(nullable NSString*)message
                                       preferredStyle:(UIAlertControllerStyle)style
                                              actions:(nullable NSArray<UIAlertAction*>*)actions
-                                 presentationContext:(nullable UIViewController*)presenter;
+                                 presentationContext:(nullable id)presenter;
 
 + (nonnull AKAAlertOperation*)presentAlertController:(nonnull UIAlertController*)alertController
                                  presentationContext:(nullable UIViewController*)presenter;

@@ -29,7 +29,8 @@
                           delegate:(opt_AKABindingDelegate)delegate
                              error:(out_NSError)error;
 
-- (opt_instancetype)initWithTarget:(opt_id)target targetValueProperty:(req_AKAProperty)targetValueProperty
+- (opt_instancetype)initWithTarget:(opt_id)target
+               targetValueProperty:(req_AKAProperty)targetValueProperty
                  resultBindingType:(req_Class)resultBindingType
                         expression:(req_AKABindingExpression)bindingExpression
                            context:(req_AKABindingContext)bindingContext

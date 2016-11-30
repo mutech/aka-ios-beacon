@@ -47,7 +47,7 @@
 #pragma mark - Initialization
 
 + (instancetype)operationForController:(UIAlertController *)alertController
-                   presentationContext:(UIViewController *)presenter
+                   presentationContext:(id)presenter
 {
     AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:alertController
                                                                presentationContext:presenter];
@@ -58,7 +58,7 @@
                                          message:(NSString *)message
                                   preferredStyle:(UIAlertControllerStyle)style
                                          actions:(NSArray<UIAlertAction *> *)actions
-                             presentationContext:(UIViewController*)presenter
+                             presentationContext:(id)presenter
 {
     UIAlertController* alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
@@ -73,7 +73,7 @@
 }
 
 + (AKAAlertOperation*)presentAlertController:(UIAlertController *)alertController
-                         presentationContext:(UIViewController *)presenter
+                         presentationContext:(id)presenter
 {
     AKAAlertOperation* operation = [AKAAlertOperation operationForController:alertController
                                                          presentationContext:presenter];
@@ -88,7 +88,7 @@
                                     message:(NSString *)message
                              preferredStyle:(UIAlertControllerStyle)style
                                     actions:(NSArray<UIAlertAction *> *)actions
-                        presentationContext:(UIViewController *)presenter
+                        presentationContext:(id)presenter
 {
     UIAlertController* alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
@@ -102,7 +102,7 @@
 }
 
 - (instancetype)initWithViewController:(UIAlertController *)alertController
-                   presentationContext:(UIViewController *)presenter
+                   presentationContext:(id)presenter
 {
     if (self = [super initWithViewController:alertController
                          presentationContext:presenter])

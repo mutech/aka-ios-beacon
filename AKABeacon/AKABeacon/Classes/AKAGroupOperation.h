@@ -100,3 +100,7 @@ __attribute__((objc_requires_super));
 __attribute__((objc_requires_super));
 
 @end
+
+
+@interface AKASerializedGroupOperation: AKAGroupOperation
+@end

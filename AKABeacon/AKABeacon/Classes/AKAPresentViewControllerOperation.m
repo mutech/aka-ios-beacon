@@ -169,33 +169,36 @@
 @end
 
 
-#pragma mark - AKAPresentViewControllerOperation
+#pragma mark - AKAPresentViewControllerOperation (Private Interface)
 #pragma mark -
 
 
 @interface AKAPresentViewControllerOperation()
 
-@property(nonatomic, readwrite, nullable, weak) id presenter;
+@property(nonatomic, nullable, weak) UIViewController*      presentingViewController;
+@property(nonatomic, readonly, weak) UIView*                sourceView;
+@property(nonatomic, readonly) CGRect                       sourceRect;
+@property(nonatomic, readonly, weak) UIBarButtonItem*       barButtonItem;
 
-@property(nonatomic) AKAVCLifeCycleNotificationBehavior* notifyBehavior;
+@property(nonatomic) AKAVCLifeCycleNotificationBehavior*    notifyBehavior;
 
-@property(nonatomic) UIWindow* presentationWindow;
-@property(nonatomic, weak) UIWindow* originalKeyWindow;
+@property(nonatomic) UIWindow*                              presentationWindow;
 
 @end
 
+
+#pragma mark - AKAPresentViewControllerOperation (Implementation)
+#pragma mark -
 
 @implementation AKAPresentViewControllerOperation
 
 #pragma mark - Initialization
 
-- (instancetype)initWithViewController:(UIViewController *)viewController
-                   presentationContext:(UIViewController *)presenter
+- (instancetype)                      initWithViewController:(UIViewController *)viewController
 {
-    if (self = [super init])
+    if (self = [self init])
     {
         _viewController = viewController;
-        _presenter = presenter;
         if ([self shouldMonitorPresentedViewControllersLifeCycleEvents])
         {
             [AKAVCLifeCycleNotificationBehavior addToController:self.viewController
@@ -205,15 +208,43 @@
     return self;
 }
 
-+ (instancetype)operationForController:(UIViewController *)viewController presentationContext:(UIViewController *)presenter
+- (instancetype)                      initWithViewController:(UIViewController *)viewController
+                                    presentingViewController:(UIViewController *)presenter
 {
-    return [[AKAPresentViewControllerOperation alloc] initWithViewController:viewController
-                                                         presentationContext:presenter];
+    if (self = [self initWithViewController:viewController])
+    {
+        _presentingViewController = presenter;
+    }
+    return self;
+}
+
+- (instancetype)                      initWithViewController:(UIViewController *)viewController
+                                    presentingViewController:(UIViewController *)presenter
+                                                  sourceView:(UIView *)sourceView
+                                                  sourceRect:(CGRect)sourceRect
+{
+    if (self = [self initWithViewController:viewController presentingViewController:presenter])
+    {
+        _sourceView = sourceView;
+        _sourceRect = sourceRect;
+    }
+    return self;
+}
+
+- (instancetype)                      initWithViewController:(UIViewController*)viewController
+                                    presentingViewController:(UIViewController*)presenter
+                                                  sourceView:(UIView*)sourceView
+{
+    self = [self initWithViewController:viewController
+               presentingViewController:presenter
+                             sourceView:sourceView
+                             sourceRect:sourceView.bounds];
+    return self;
 }
 
 #pragma mark - Configuration
 
-- (BOOL)shouldCreatePresentationWindow
+- (BOOL)                      shouldCreatePresentationWindow
 {
     return YES;
 }
@@ -229,23 +260,31 @@
 {
     [self aka_performBlockInMainThreadOrQueue:^{
         [self createPresentationWindowIfNeeded];
-        UIViewController* presenter = [self presenterInContext:self.presenter];
-        if (self->_presenter == nil)
+        UIViewController* presenter = [self presenterInContext:self.presentingViewController];
+        if (self.presentingViewController == nil)
         {
-            self->_presenter = presenter;
+            self.presentingViewController = presenter;
         }
 
         if (presenter)
         {
-            if (self.popoverAnchor)
-            {
-                UIPopoverPresentationController* popoverPresenter = self.viewController.popoverPresentationController;
-                popoverPresenter.sourceView = self.popoverAnchor;
-                popoverPresenter.sourceRect = self.popoverAnchor.bounds;
-            }
             [presenter presentViewController:self.viewController
                                     animated:YES
                                   completion:nil];
+            if (self.viewController.modalPresentationStyle == UIModalPresentationPopover)
+            {
+                UIPopoverPresentationController* popoverPresenter = self.viewController.popoverPresentationController;
+
+                if (self.barButtonItem)
+                {
+                    popoverPresenter.barButtonItem = self.barButtonItem;
+                }
+                else if (self.sourceView)
+                {
+                    popoverPresenter.sourceView = self.sourceView;
+                    popoverPresenter.sourceRect = self.sourceRect;
+                }
+            }
         }
         else
         {
@@ -257,11 +296,15 @@
 - (void)finish
 {
     [self aka_performBlockInMainThreadOrQueue:^{
+
+        // TODO: handle direct calls to -[finish] seperate from UI triggered dismissal of presented view
+
+        // Remove this first to decrease likelyhood of interference from view events if finish was
+        // called directly.
         [self.notifyBehavior removeFromController:self.viewController];
         self.notifyBehavior = nil;
 
-        // Typically, finish has been called as a result of the view controller being dismissed.
-        // This only covers cases where the operation has been manually finished.
+        // Dismiss view controller if finish was called directly (otherwise the
         [self.viewController.presentingViewController dismissViewControllerAnimated:YES
                                                                          completion:NULL];
 
@@ -274,7 +317,82 @@
     } waitForCompletion:NO];
 }
 
-#pragma mark - Alert Controller View Life Cycle Notifications
+#pragma mark - Implementation
+
+- (void)createPresentationWindowIfNeeded
+{
+    if (self.presentingViewController == nil &&
+        self.presentationWindow == nil &&
+        [self shouldCreatePresentationWindow])
+    {
+        UIApplication* app = [UIApplication sharedApplication];
+
+        CGFloat maxWindowLevel = 0;
+        for (UIWindow* window in app.windows)
+        {
+            if (window.windowLevel > maxWindowLevel)
+            {
+                maxWindowLevel = window.windowLevel;
+            }
+        }
+
+        self.presentationWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.presentationWindow.windowLevel = maxWindowLevel + 1.0;
+        self.presentationWindow.rootViewController = [UIViewController new];
+
+        self.presentingViewController = self.presentationWindow.rootViewController;
+
+        [self.presentationWindow makeKeyAndVisible];
+    }
+}
+
+- (void)removePresentationWindow
+{
+    if (self.presentationWindow)
+    {
+        [self.presentationWindow.rootViewController dismissViewControllerAnimated:NO completion:NULL];
+        self.presentationWindow.hidden = YES;
+        self.presentationWindow = nil;
+    }
+}
+
+- (UIViewController*)presenterInContext:(id)presentationContext
+{
+    UIViewController* result = nil;
+    if (presentationContext == nil)
+    {
+        result = [self presenterInContext:[UIApplication sharedApplication].keyWindow.rootViewController];
+    }
+    else if ([presentationContext isKindOfClass:[UINavigationController class]])
+    {
+        result = [self presenterInContext:[(UINavigationController*)presentationContext visibleViewController]];
+    }
+    else if ([presentationContext isKindOfClass:[UITabBarController class]])
+    {
+        result = [self presenterInContext:[(UITabBarController*)presentationContext selectedViewController]];
+    }
+    else if ([presentationContext isKindOfClass:[UIViewController class]])
+    {
+        result = presentationContext;
+    }
+    else if ([presentationContext isKindOfClass:[UIView class]])
+    {
+        UIView* view = presentationContext;
+        _popoverAnchor = view;
+        for (UIResponder* responder = view.nextResponder; responder; responder = responder.nextResponder)
+        {
+            if ([responder isKindOfClass:[UIViewController class]])
+            {
+                result = (id)responder;
+                break;
+            }
+        }
+    }
+    
+    return result;
+}
+
+#pragma mark - View Life Cycle Notifications
 
 - (void)notificationBehavior:(AKAVCLifeCycleNotificationBehavior *)behavior didStartObservingEventsForController:(UIViewController *)controller
 {
@@ -312,12 +430,7 @@
 
 - (void)viewControllerHasBeenDismissed:(UIViewController *__unused)viewController
 {
-    if (!self.isCancelled && self.isExecuting)
-    {
-        // UIAlertController did disappear while operation was in executing state, finish it
-        // to ensure it's not left dangling around and blocking it's queue
-        [self finish];
-    }
+    [self finish];
 }
 
 - (void)notificationBehavior:(AKAVCLifeCycleNotificationBehavior *)behavior didStopObservingEventsForController:(UIViewController *)controller
@@ -325,97 +438,15 @@
     NSParameterAssert(behavior == self.notifyBehavior);
     NSParameterAssert(controller == nil || controller == self.viewController);
     [self cancel];
-    if (self.viewController.presentingViewController == self.presenter &&
-        self.presenter != nil)
+    if (self.viewController.presentingViewController == self.presentingViewController &&
+        self.presentingViewController != nil)
     {
-        [self.presenter dismissViewControllerAnimated:YES completion:nil];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
     else
     {
         [self.viewController dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-#pragma mark - Implementation
-
-- (void)createPresentationWindowIfNeeded
-{
-    if (self.presenter == nil && self.presentationWindow == nil && [self shouldCreatePresentationWindow])
-    {
-        UIApplication* app = [UIApplication sharedApplication];
-        self.originalKeyWindow = app.keyWindow;
-
-        CGFloat maxWindowLevel = 0;
-        for (UIWindow* window in app.windows)
-        {
-            if (window.windowLevel > maxWindowLevel)
-            {
-                maxWindowLevel = window.windowLevel;
-            }
-        }
-
-        self.presentationWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        self.presentationWindow.windowLevel = maxWindowLevel + 1.0;
-        self.presentationWindow.rootViewController = [UIViewController new];
-        //self.presentationWindow.rootViewController.view.alpha = 0.0;
-        
-        self.presenter = self.presentationWindow.rootViewController;
-
-        [self.presentationWindow makeKeyAndVisible];
-    }
-}
-
-- (void)removePresentationWindow
-{
-    if (self.presentationWindow)
-    {
-        [self.presentationWindow.rootViewController dismissViewControllerAnimated:NO completion:NULL];
-        self.presentationWindow.hidden = YES;
-        self.presentationWindow = nil;
-
-        /*
-        if (self.originalKeyWindow && !self.originalKeyWindow.isKeyWindow)
-        {
-            [self.originalKeyWindow makeKeyWindow];
-        }
-        */
-    }
-}
-
-- (UIViewController*)presenterInContext:(id)presentationContext
-{
-    UIViewController* result = nil;
-    if (presentationContext == nil)
-    {
-        result = [self presenterInContext:[UIApplication sharedApplication].keyWindow.rootViewController];
-    }
-    else if ([presentationContext isKindOfClass:[UINavigationController class]])
-    {
-        result = [self presenterInContext:[(UINavigationController*)presentationContext visibleViewController]];
-    }
-    else if ([presentationContext isKindOfClass:[UITabBarController class]])
-    {
-        result = [self presenterInContext:[(UITabBarController*)presentationContext selectedViewController]];
-    }
-    else if ([presentationContext isKindOfClass:[UIViewController class]])
-    {
-        result = presentationContext;
-    }
-    else if ([presentationContext isKindOfClass:[UIView class]])
-    {
-        UIView* view = presentationContext;
-        _popoverAnchor = view;
-        for (UIResponder* responder = view.nextResponder; responder; responder = responder.nextResponder)
-        {
-            if ([responder isKindOfClass:[UIViewController class]])
-            {
-                result = (id)responder;
-                break;
-            }
-        }
-    }
-
-    return result;
 }
 
 @end

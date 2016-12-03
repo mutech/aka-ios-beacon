@@ -90,21 +90,23 @@ typedef NS_ENUM(NSUInteger, AKAVCLifeCycleState)
 
 #pragma mark - Initialization
 
-- (nonnull instancetype)initWithViewController:(nonnull UIViewController *)viewController
-                           presentationContext:(nullable id)presenter;
+- (nonnull instancetype)initWithViewController:(nonnull UIViewController*)viewController;
 
-/**
- Creates a new operation that will present the specified view controller from the specified presenter.
+- (nonnull instancetype)initWithViewController:(nonnull UIViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter;
 
- If no presenter is specified, the operation will inspect the current key window and use it's root view controller (resolving UINavigationContoller and UITabBarController instances to their visible or selected view controllers).
+- (nonnull instancetype)initWithViewController:(nonnull UIViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                 barButtonItem:(nonnull UIBarButtonItem*)popoverAnchor;
 
- @param viewController  the view controller to be presented.
- @param presenter       the presenting view controller or nil to let the operation find a suitable view controller for presentation.
+- (nonnull instancetype)initWithViewController:(nonnull UIViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                    sourceView:(nonnull UIView*)sourceView;
 
- @return a new operation
- */
-+ (nonnull instancetype)operationForController:(nonnull UIViewController *)viewController
-                           presentationContext:(nullable id)presenter;
+- (nonnull instancetype)initWithViewController:(nonnull UIViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                    sourceView:(nonnull UIView*)sourceView
+                                    sourceRect:(CGRect)sourceRect;
 
 #pragma mark - Configuration
 

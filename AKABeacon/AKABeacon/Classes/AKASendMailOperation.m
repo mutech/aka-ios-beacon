@@ -35,7 +35,8 @@
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        if (self = [super initWithViewController:viewController presentationContext:presenter])
+        if (self = [super initWithViewController:viewController
+                        presentingViewController:presenter])
         {
             _mailComposeResult = (MFMailComposeResult)NSNotFound;
 

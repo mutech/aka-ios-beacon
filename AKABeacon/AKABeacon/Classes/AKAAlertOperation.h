@@ -14,81 +14,112 @@
 #pragma mark - Initialization
 
 /**
- Creates a new operation that will present the specified alert controller from the specified presenter.
+ Creates a new operation presenting a new alert controller configured with the specified parameters.
 
- If no presenter is specified, the operation will inspect the current key window and use it's root view controller (resolving UINavigationContoller and UITabBarController instances to their visible or selected view controllers).
+ @param title           the alert's title
+ @param message         the alert's message
 
- @param alertController the alert controller to be presented.
- @param presenter       the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
-
- @return a new operation
- */
-+ (nonnull instancetype)      operationForController:(nonnull UIAlertController *)alertController
-                                 presentationContext:(nullable id)presenter;
-
-/**
- Creates a new instance of UIAlertViewController configued with the specified parameters and an operation that will present if from the specified presenter.
-
- If no presenter is specified, the operation will inspect the current key window and use it's root view controller (resolving UINavigationContoller and UITabBarController instances to their visible or selected view controllers).
-
- @param title     the alert's title
- @param message   the alert's message
- @param style     the alert's preferred style
- @param actions   alert actions.
- @param presenter the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
-
- @return a new operation
- */
-+ (nonnull instancetype)  operationForAlertWithTitle:(nullable NSString *)title
-                                             message:(nullable NSString *)message
-                                      preferredStyle:(UIAlertControllerStyle)style
-                                             actions:(nullable NSArray<UIAlertAction *> *)actions
-                                 presentationContext:(nullable id)presenter;
-
-/**
- Creates a new operation presenting a new alert controller configured with the specified parameters and adds the operation to the main operation queue.
-
- If no presenter is specified, the operation will inspect the current key window and use it's root view controller (resolving UINavigationContoller and UITabBarController instances to their visible or selected view controllers).
-
- @param title     the alert's title
- @param message   the alert's message
- @param style     the alert's preferred style
- @param actions   alert actions.
- @param presenter the presenting view controller, view (used as anchor for popover presentation) or nil to let the operation find a suitable view controller for presentation.
+ @note To show the alert, call -[present] on the operation or add it to the main operation queue.
+ @note The alert will be presented from a new window on top of all existing windows.
+ @note If another alert operation is active, the operation will be enqueued.
 
  @return the new operation
  */
-+ (nonnull AKAAlertOperation*) presentAlertWithTitle:(nullable NSString*)title
-                                             message:(nullable NSString*)message
-                                      preferredStyle:(UIAlertControllerStyle)style
-                                             actions:(nullable NSArray<UIAlertAction*>*)actions
-                                 presentationContext:(nullable id)presenter;
++ (nonnull AKAAlertOperation*)       alertWithTitle:(nullable NSString*)title
+                                            message:(nullable NSString*)message;
 
-+ (nonnull AKAAlertOperation*)presentAlertController:(nonnull UIAlertController*)alertController
-                                 presentationContext:(nullable UIViewController*)presenter;
+/**
+ Creates a new operation presenting a new action sheet alert controller configured with the specified parameters.
+
+ @note To show the action sheet, call -[present] on the operation or add it to the main operation queue.
+
+ @param title           the alert's title
+ @param message         the alert's message
+ @param presenter       the presenting view controller.
+ @param barButtonItem   the bar button item to use as popover anchor
+
+ @return the new operation
+ */
++ (nonnull AKAAlertOperation*) actionSheetWithTitle:(nullable NSString*)title
+                                            message:(nullable NSString*)message
+                                 fromViewController:(nonnull UIViewController*)presenter
+                                      barButtonItem:(nonnull UIBarButtonItem*)barButtonItem;
+
+/**
+ Creates a new operation presenting a new action sheet alert controller configured with the specified parameters.
+
+ To show the action sheet, call -[present] on the operation or add it to the main operation queue.
+
+ The operation will use the sourceView's bounds as source rectangle.
+
+ @param title     the alert's title
+ @param message   the alert's message
+ @param presenter the presenting view controller.
+ @param sourceView the view used as anchor for popover presentation.
+
+ @return the new operation
+ */
++ (nonnull AKAAlertOperation*) actionSheetWithTitle:(nullable NSString*)title
+                                            message:(nullable NSString*)message
+                                 fromViewController:(nonnull UIViewController*)presenter
+                                         sourceView:(nonnull UIView*)sourceView;
+
+/**
+ Creates a new operation presenting a new action sheet alert controller configured with the specified parameters and adds the operation to the main operation queue.
+
+ @param title     the alert's title
+ @param message   the alert's message
+ @param presenter the presenting view controller.
+ @param sourceView the view used as anchor for popover presentation.
+ @param sourceRect the source rectangle to use for popover presentation.
+
+ @return the new operation
+ */
++ (nonnull AKAAlertOperation*) actionSheetWithTitle:(nullable NSString*)title
+                                            message:(nullable NSString*)message
+                                 fromViewController:(nonnull UIViewController*)presenter
+                                         sourceView:(nonnull UIView*)sourceView
+                                         sourceRect:(CGRect)sourceRect;
+
+/**
+ Creates a new operation presenting a new action sheet alert controller configured with the specified parameters and adds the operation to the main operation queue.
+
+ @param title     the alert's title
+ @param message   the alert's message
+ @param presenter the presenting view controller.
+ @param sender    a view or bar button item used as anchor for popover presentation
+
+ @return the new operation
+ */
++ (nonnull AKAAlertOperation*) actionSheetWithTitle:(nullable NSString*)title
+                                            message:(nullable NSString*)message
+                                 fromViewController:(nonnull UIViewController*)presenter
+                                             sender:(nullable id)sender;
+
+
+#pragma mark - Presentation
+
+- (void)present;
 
 #pragma mark - Configuration
 
-/**
- The alert controller's title. The effect of setting this property once the operation has been added to an operation queue is undefined.
- */
-@property(nonatomic, nullable) NSString*             alertTitle;
+@property(nonatomic, readonly, nonnull) UIAlertController* alertController;
 
-/**
- The alert controller's message. The effect of setting this property once the operation has been added to an operation queue is undefined.
- */
-@property(nonatomic, nullable) NSString*             alertMessage;
+#pragma mark - Fluent Configuration
 
-/**
- The alert controller's actions.
- */
-@property(nonatomic, readonly, nullable) NSArray<UIAlertAction*>* alertActions;
+@property(nonatomic, readonly, nonnull, getter=setTitle)
+    AKAAlertOperation*_Nonnull (^setTitle)(NSString*_Nonnull title);
 
-/**
- Adds the specified action to the alert controller. The effect of adding an action once the operation has been added to an operation queue is undefined.
+@property(nonatomic, readonly, nonnull, getter=setMessage)
+    AKAAlertOperation* (^setMessage)(NSString*_Nonnull message);
 
- @param action the alert action to add to the alert controller.
- */
-- (void)                                   addAction:(nonnull UIAlertAction*)action;
+@property(nonatomic, readonly, nonnull)
+    AKAAlertOperation* (^addAction)(NSString*_Nonnull actionTitle, void(^_Nullable block)(UIAlertAction*_Nonnull action));
+
+@property(nonatomic, readonly, nonnull)
+    AKAAlertOperation* (^addCancelAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
+
+@property(nonatomic, readonly, nonnull)
+    AKAAlertOperation* (^addDestructiveAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
 
 @end

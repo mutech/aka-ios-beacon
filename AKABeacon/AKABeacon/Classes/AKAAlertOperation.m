@@ -35,77 +35,121 @@
 #pragma mark - AKAAlertOperation
 #pragma mark -
 
-@interface AKAAlertOperation()
-
-@property(nonatomic, readonly, nonnull) UIAlertController* alertController;
-
-@end
-
-
 @implementation AKAAlertOperation
 
 #pragma mark - Initialization
 
-+ (instancetype)operationForController:(UIAlertController *)alertController
-                   presentationContext:(id)presenter
++ (UIAlertController*) alertControllerWithTitle:(NSString *)title
+                                        message:(NSString *)message
+                                 preferredStyle:(UIAlertControllerStyle)style
+                                        actions:(NSArray<UIAlertAction*>*)actions
 {
-    AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:alertController
-                                                               presentationContext:presenter];
+    UIAlertController* controller = [UIAlertController alertControllerWithTitle:title
+                                                                        message:message
+                                                                 preferredStyle:style];
+    for (UIAlertAction* action in actions)
+    {
+        [controller addAction:action];
+    }
+
+    return controller;
+}
+
++ (AKAAlertOperation *)          alertWithTitle:(NSString *)title
+                                        message:(NSString *)message
+{
+    UIAlertController* controller = [self alertControllerWithTitle:title
+                                                           message:message
+                                                    preferredStyle:UIAlertControllerStyleAlert
+                                                           actions:nil];
+    AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:controller];
+
     return result;
 }
 
-+ (AKAAlertOperation*)operationForAlertWithTitle:(NSString *)title
-                                         message:(NSString *)message
-                                  preferredStyle:(UIAlertControllerStyle)style
-                                         actions:(NSArray<UIAlertAction *> *)actions
-                             presentationContext:(id)presenter
++ (AKAAlertOperation *)    actionSheetWithTitle:(NSString *)title
+                                        message:(NSString *)message
+                             fromViewController:(UIViewController *)presenter
+                                  barButtonItem:(UIBarButtonItem *)barButtonItem
 {
-    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:style];
-    for (UIAlertAction* action in actions)
-    {
-        [alertController addAction:action];
-    }
+    UIAlertController* controller = [self alertControllerWithTitle:title
+                                                           message:message
+                                                    preferredStyle:UIAlertControllerStyleActionSheet
+                                                           actions:nil];
+    AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:controller
+                                 presentingViewController:presenter
+                                 barButtonItem:barButtonItem];
 
-    return [AKAAlertOperation operationForController:alertController
-                                 presentationContext:presenter];
+    return result;
 }
 
-+ (AKAAlertOperation*)presentAlertController:(UIAlertController *)alertController
-                         presentationContext:(id)presenter
++ (AKAAlertOperation *)    actionSheetWithTitle:(NSString *)title
+                                        message:(NSString *)message
+                             fromViewController:(UIViewController *)presenter
+                                     sourceView:(UIView *)sourceView
 {
-    AKAAlertOperation* operation = [AKAAlertOperation operationForController:alertController
-                                                         presentationContext:presenter];
-    if (operation)
-    {
-        [operation addToOperationQueue:[NSOperationQueue mainQueue]];
-    }
-    return operation;
+    UIAlertController* controller = [self alertControllerWithTitle:title
+                                                           message:message
+                                                    preferredStyle:UIAlertControllerStyleActionSheet
+                                                           actions:nil];
+    AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:controller
+                                                         presentingViewController:presenter
+                                                                       sourceView:sourceView];
+    
+    return result;
 }
 
-+ (AKAAlertOperation*)presentAlertWithTitle:(NSString *)title
-                                    message:(NSString *)message
-                             preferredStyle:(UIAlertControllerStyle)style
-                                    actions:(NSArray<UIAlertAction *> *)actions
-                        presentationContext:(id)presenter
++ (AKAAlertOperation *)    actionSheetWithTitle:(NSString *)title
+                                        message:(NSString *)message
+                             fromViewController:(UIViewController *)presenter
+                                     sourceView:(UIView *)sourceView
+                                     sourceRect:(CGRect)sourceRect
 {
-    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:style];
-    for (UIAlertAction* action in actions)
-    {
-        [alertController addAction:action];
-    }
+    UIAlertController* controller = [self alertControllerWithTitle:title
+                                                           message:message
+                                                    preferredStyle:UIAlertControllerStyleActionSheet
+                                                           actions:nil];
+    AKAAlertOperation* result = [[AKAAlertOperation alloc] initWithViewController:controller
+                                                         presentingViewController:presenter
+                                                                       sourceView:sourceView
+                                                                       sourceRect:sourceRect];
 
-    return [self presentAlertController:alertController presentationContext:presenter];
+    return result;
+}
+
++ (AKAAlertOperation *)    actionSheetWithTitle:(NSString *)title
+                                        message:(NSString *)message
+                             fromViewController:(UIViewController *)presenter
+                                         sender:(id)sender
+{
+    AKAAlertOperation* result = nil;
+    if ([sender isKindOfClass:[UIView class]])
+    {
+        result = [self actionSheetWithTitle:title
+                                    message:message
+                         fromViewController:presenter
+                                 sourceView:(UIView*)sender];
+    }
+    else if ([sender isKindOfClass:[UIBarButtonItem class]])
+    {
+        result = [self actionSheetWithTitle:title
+                                    message:message
+                         fromViewController:presenter
+                              barButtonItem:(UIBarButtonItem*)sender];
+    }
+    else if (presenter != nil)
+    {
+        result = [self actionSheetWithTitle:title
+                                    message:message
+                         fromViewController:presenter
+                                 sourceView:presenter.view];
+    }
+    return result;
 }
 
 - (instancetype)initWithViewController:(UIAlertController *)alertController
-                   presentationContext:(id)presenter
 {
-    if (self = [super initWithViewController:alertController
-                         presentationContext:presenter])
+    if (self = [super initWithViewController:alertController])
     {
         [self addCondition:[AKAAlertControllerCondition new]];
     }
@@ -117,6 +161,64 @@
     return YES;
 }
 
+#pragma mark - Presentation
+
+- (void)present
+{
+    [self addToOperationQueue:[NSOperationQueue mainQueue]];
+}
+
+#pragma mark - Fluent Configuration
+
+- (AKAAlertOperation *(^)(NSString *))setTitle
+{
+    return ^AKAAlertOperation*(NSString* title) {
+        self.alertController.title = title;
+        return self;
+    };
+}
+
+- (AKAAlertOperation *(^)(NSString *))setMessage
+{
+    return ^AKAAlertOperation*(NSString* message) {
+        self.alertController.message = message;
+        return self;
+    };
+}
+
+- (AKAAlertOperation *(^)(NSString *, void (^block)(UIAlertAction*_Nonnull)))addAction
+{
+    return ^AKAAlertOperation*(NSString* title, void(^block)()) {
+        UIAlertAction* action = [UIAlertAction actionWithTitle:title
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:block];
+        [self.alertController addAction:action];
+        return self;
+    };
+}
+
+- (AKAAlertOperation *(^)(NSString *, void (^block)(UIAlertAction*_Nonnull)))addCancelAction
+{
+    return ^AKAAlertOperation*(NSString* title, void(^block)()) {
+        UIAlertAction* action = [UIAlertAction actionWithTitle:title
+                                                         style:UIAlertActionStyleCancel
+                                                       handler:block];
+        [self.alertController addAction:action];
+        return self;
+    };
+}
+
+- (AKAAlertOperation *(^)(NSString *, void (^block)(UIAlertAction*_Nonnull)))addDestructiveAction
+{
+    return ^AKAAlertOperation*(NSString* title, void(^block)()) {
+        UIAlertAction* action = [UIAlertAction actionWithTitle:title
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:block];
+        [self.alertController addAction:action];
+        return self;
+    };
+}
+
 #pragma mark - Name
 
 - (NSString *)name
@@ -124,10 +226,10 @@
     NSString* result = [super name];
     if (result.length == 0)
     {
-        NSString* title = self.alertTitle.length == 0 ? @"" : [NSString stringWithFormat:@" Title=\"%@\"", self.alertTitle];
-        NSString* message = self.alertMessage.length == 0 ? @"" : [NSString stringWithFormat:@" Message=\"%@\"", self.alertMessage];
+        NSString* title = self.alertController.title.length == 0 ? @"" : [NSString stringWithFormat:@" Title=\"%@\"", self.alertController.title];
+        NSString* message = self.alertController.message.length == 0 ? @"" : [NSString stringWithFormat:@" Message=\"%@\"", self.alertController.message];
         NSString* actions = @"";
-        for (UIAlertAction* action in self.alertActions)
+        for (UIAlertAction* action in self.alertController.actions)
         {
             if (actions.length == 0)
             {
@@ -154,49 +256,6 @@
 {
     NSAssert(self.viewController == nil || [self.viewController isKindOfClass:[UIAlertController class]], nil);
     return (UIAlertController*)self.viewController;
-}
-
-- (BOOL)tryUpdateConfigurationUsingBlock:(void(^)())block
-{
-    __block BOOL result = NO;
-    [self performSynchronizedBlock:^{
-        block();
-        result = YES;
-    }
-           ifCurrentStateSatisfies:^BOOL(AKAOperationState state) {
-               return state < AKAOperationStatePending;
-           }];
-    return result;
-}
-
-- (NSString *)alertTitle
-{
-    return self.alertController.title;
-}
-
-- (void)setAlertTitle:(NSString *)alertTitle
-{
-    [self tryUpdateConfigurationUsingBlock:^{ self.alertController.title = alertTitle; }];
-}
-
-- (NSString *)alertMessage
-{
-    return self.alertController.message;
-}
-
-- (void)setAlertMessage:(NSString *)alertMessage
-{
-    [self tryUpdateConfigurationUsingBlock:^{ self.alertController.message = alertMessage; }];
-}
-
-- (NSArray<UIAlertAction *> *)alertActions
-{
-    return self.alertController.actions;
-}
-
-- (void)addAction:(UIAlertAction *)action
-{
-    [self tryUpdateConfigurationUsingBlock:^{ [self.alertController addAction:action]; }];
 }
 
 @end

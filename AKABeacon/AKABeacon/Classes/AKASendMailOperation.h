@@ -15,10 +15,23 @@
 @interface AKASendMailOperation: AKAPresentViewControllerOperation
 
 - (nonnull instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
-                            presentationContext:(nullable UIViewController *)presenter;
+                      presentingViewController:(nonnull UIViewController*)presenter;
+
+- (nonnull instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                 barButtonItem:(nonnull UIBarButtonItem*)popoverAnchor;
+
+- (nonnull instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                    sourceView:(nonnull UIView*)sourceView;
+
+- (nonnull instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
+                      presentingViewController:(nonnull UIViewController*)presenter
+                                    sourceView:(nonnull UIView*)sourceView
+                                    sourceRect:(CGRect)sourceRect;
 
 + (nonnull instancetype)operationForController:(nonnull MFMailComposeViewController*)controller
-                           presentationContext:(nullable UIViewController*)presenter;
+                      presentingViewController:(nonnull UIViewController*)presenter;
 
 /**
  The result of the mail compose controller. 

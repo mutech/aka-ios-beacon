@@ -196,7 +196,7 @@
 
 - (instancetype)                      initWithViewController:(UIViewController *)viewController
 {
-    if (self = [self init])
+    if (self = [super init])
     {
         _viewController = viewController;
         if ([self shouldMonitorPresentedViewControllersLifeCycleEvents])
@@ -265,7 +265,7 @@
         {
             self.presentingViewController = presenter;
         }
-
+        
         if (presenter)
         {
             [presenter presentViewController:self.viewController

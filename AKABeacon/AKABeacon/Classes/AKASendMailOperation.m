@@ -23,20 +23,18 @@
 @implementation AKASendMailOperation
 
 + (instancetype)operationForController:(nonnull MFMailComposeViewController*)controller
-                   presentationContext:(nullable UIViewController*)presenter
+              presentingViewController:(nonnull UIViewController*)presenter
 {
     AKASendMailOperation* result = [[AKASendMailOperation alloc] initWithViewController:controller
-                                                                    presentationContext:presenter];
+                                                               presentingViewController:presenter];
     return result;
 }
 
-- (instancetype)initWithViewController:(nonnull MFMailComposeViewController*)viewController
-                   presentationContext:(UIViewController *)presenter
+- (instancetype)initWithViewController:(MFMailComposeViewController *)viewController
 {
     if ([MFMailComposeViewController canSendMail])
     {
-        if (self = [super initWithViewController:viewController
-                        presentingViewController:presenter])
+        if (self = [super initWithViewController:viewController])
         {
             _mailComposeResult = (MFMailComposeResult)NSNotFound;
 
@@ -87,7 +85,7 @@
     if (controller.presentingViewController &&
         controller.presentingViewController.presentedViewController == controller)
     {
-        [self.presenter dismissViewControllerAnimated:YES completion:^{
+        [controller.presentingViewController dismissViewControllerAnimated:YES completion:^{
             [self viewControllerHasBeenDismissed:controller];
         }];
     }

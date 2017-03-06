@@ -14,5 +14,6 @@
 @property(nonatomic, nullable) NSFormatter* editingFormatter;
 @property(nonatomic, nullable) NSString*    textForUndefinedValue;
 @property(nonatomic) BOOL                   treatEmptyTextAsUndefined;
+@property(nonatomic) BOOL                   showCancelButtonWhileEditiing;
 
 @end

@@ -97,7 +97,7 @@
 
 #pragma mark - Properties
 
-- (AKABindingExpressionType)expressionType
+- (AKABindingExpressionType)                      expressionType
 {
     return AKABindingExpressionTypeNone;
 }
@@ -267,6 +267,12 @@
 
 #pragma mark - Binding Support
 
+- (id)evaluateInBindingContext:(id<AKABindingContextProtocol>)bindingContext error:(NSError *__autoreleasing  _Nullable *)error
+{
+    // Implemented by subclasses if supported
+    return nil;
+}
+
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext
 {
     (void)bindingContext;
@@ -310,7 +316,7 @@
 
 #pragma mark - Serialization
 
-- (NSString*)text
+- (NSString*)                                              text
 {
     return [self textWithNestingLevel:0
                                indent:@""];
@@ -326,7 +332,7 @@
     return nil;
 }
 
-- (NSString*)textForPrimaryExpression
+- (NSString*)                          textForPrimaryExpression
 {
     return [self textForPrimaryExpressionWithNestingLevel:0 indent:@""];
 }

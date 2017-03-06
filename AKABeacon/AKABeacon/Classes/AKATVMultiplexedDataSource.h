@@ -233,8 +233,8 @@
 /**
  * Experimental: determines if the specified row has been excluded.
  */
-- (BOOL)isRowExcludedAtSourceIndexPath:(NSIndexPath*)sourceIndexPath
-                          inDataSource:(AKATVDataSourceSpecification*)dataSource;
+- (BOOL)isRowExcludedAtSourceIndexPath:(NSIndexPath*_Nonnull)sourceIndexPath
+                          inDataSource:(AKATVDataSourceSpecification*_Nonnull)dataSource;
 
 #pragma mark - Updating rows
 

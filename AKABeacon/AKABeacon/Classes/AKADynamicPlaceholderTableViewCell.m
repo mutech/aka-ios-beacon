@@ -309,6 +309,8 @@
 
 - (void)                   sourceControllerWillChangeContent:(req_id)sourceDataController
 {
+    NSLog(@"[sourceControllerWillChangeContent:%@]", self);
+
     (void)sourceDataController;
 
     [self.multiplexer beginUpdates];
@@ -318,7 +320,9 @@
                                                 insertedItem:(opt_id)sourceCollectionItem
                                                  atIndexPath:(req_NSIndexPath)indexPath
 {
+    NSLog(@"[sourceController:%@ insertedItem:%@ atIndexPath:%@]", self, sourceCollectionItem, indexPath);
     NSParameterAssert(indexPath != nil);
+
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
     id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
@@ -358,6 +362,8 @@
                                                  deletedItem:(opt_id)sourceCollectionItem
                                                  atIndexPath:(req_NSIndexPath)indexPath
 {
+    NSLog(@"[sourceController:%@ deletedItem:%@ atIndexPath:%@]", self, sourceCollectionItem, indexPath);
+
     NSParameterAssert(indexPath != nil);
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
@@ -391,6 +397,8 @@
                                                  updatedItem:(opt_id)sourceCollectionItem
                                                  atIndexPath:(req_NSIndexPath)indexPath
 {
+    NSLog(@"[sourceController:%@ updatedItem:%@ atIndexPath:%@]", self, sourceCollectionItem, indexPath);
+
     NSParameterAssert(indexPath != nil);
     NSParameterAssert(indexPath.section == 0 && indexPath.row >= 0 && indexPath.row != NSNotFound);
 
@@ -419,6 +427,8 @@
                                                fromIndexPath:(req_NSIndexPath)fromIndexPath
                                                  toIndexPath:(req_NSIndexPath)toIndexPath
 {
+    NSLog(@"[sourceController:%@ movedItem:%@ fromIndexPath:%@ toIndexPath:%@]", self, sourceCollectionItem, fromIndexPath, toIndexPath);
+
     NSParameterAssert(fromIndexPath != nil && toIndexPath != nil);
     NSParameterAssert(fromIndexPath.section == 0 && toIndexPath.section == 0);
     NSParameterAssert(fromIndexPath.row >= 0 && fromIndexPath.row != NSNotFound);
@@ -451,6 +461,9 @@
 
 - (void)                    sourceControllerDidChangeContent:(req_id)sourceDataController
 {
+    NSLog(@"[sourceControllerDidChangeContent:%@]", self);
+
+
     id<AKACollectionControlViewBindingDelegate> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(binding:sourceControllerDidChangeContent:)])
     {

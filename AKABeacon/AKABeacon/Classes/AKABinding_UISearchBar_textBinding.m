@@ -18,6 +18,7 @@
 @property(nonatomic, weak) id<UISearchBarDelegate>         savedSearchBarDelegate;
 @property(nonatomic, nullable) NSString*                   previousText;
 @property(nonatomic) BOOL                                  useEditingFormat;
+@property(nonatomic) BOOL                                  cancelButtonWasShown;
 
 #pragma mark - Convenience
 
@@ -81,6 +82,11 @@
                                                @"expressionType":      @(AKABindingExpressionTypeBoolean),
                                                @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
                                                @"bindingProperty":     @"treatEmptyTextAsUndefined"
+                                               },
+                                       @"showCancelButtonWhileEditiing": @{
+                                               @"expressionType":      @(AKABindingExpressionTypeBoolean),
+                                               @"use":                 @(AKABindingAttributeUseAssignValueToBindingProperty),
+                                               @"bindingProperty":     @"showCancelButtonWhileEditiing"
                                                }
                                        }
                                };
@@ -353,6 +359,8 @@
 
 - (BOOL)                      searchBarShouldBeginEditing:(UISearchBar*)searchBar
 {
+    self.cancelButtonWasShown = searchBar.showsCancelButton;
+
     id<UISearchBarDelegate> secondary = self.savedSearchBarDelegate;
 
     BOOL result = YES;
@@ -381,6 +389,11 @@
     {
         // update unless the current state may be the result of a clear button press, in which case the update would undo the clear action.
         [self updateTargetValue];
+    }
+
+    if (self.showCancelButtonWhileEditiing && !self.searchBar.showsCancelButton)
+    {
+        searchBar.showsCancelButton = YES;
     }
 
     [self responderDidActivate:self.searchBar];
@@ -418,6 +431,13 @@
     [self viewValueDidChange];
 }
 
+- (void)                     searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar setText:nil];
+    [self viewValueDidChange];
+    [searchBar resignFirstResponder];
+}
+
 - (BOOL)                        searchBarShouldEndEditing:(UISearchBar*)searchBar
 {
     NSParameterAssert(searchBar == self.searchBar);
@@ -448,6 +468,11 @@
 
     // Update source
     [self viewValueDidChange];
+
+    if (self.showCancelButtonWhileEditiing)
+    {
+        searchBar.showsCancelButton = self.cancelButtonWasShown;
+    }
 
     // Notify delegates
     [self responderDidDeactivate:searchBar];

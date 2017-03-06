@@ -51,6 +51,7 @@
 
 @property(nonatomic, readonly) NSArray<AKATableViewSectionDataSourceInfo*>* sections;
 @property(nonatomic) AKABindingExpressionEvaluator*                         defaultCellMapping;
+@property(nonatomic) id                                                     selectedItem;
 @property(nonatomic) UITableViewRowAnimation                                insertAnimation;
 @property(nonatomic) UITableViewRowAnimation                                updateAnimation;
 @property(nonatomic) UITableViewRowAnimation                                deleteAnimation;
@@ -82,6 +83,7 @@
 @property(nonatomic) BOOL                                                   animateDispatchedTableViewUpdate;
 @property(nonatomic) BOOL                                                   tableViewReloadDispatched;
 @property(nonatomic) BOOL                                                   tableViewRowHeightsUpdateDispatched;
+@property(nonatomic) BOOL                                                   applySelectionsDispatched;
 @property(nonatomic) NSMutableDictionary<NSNumber*, AKAArrayComparer*>*     pendingTableViewChanges;
 
 @end
@@ -113,6 +115,10 @@
                                        @"defaultCellMapping":  @{
                                                @"bindingType":         [AKATableViewCellFactoryPropertyBinding class],
                                                @"use":                 @(AKABindingAttributeUseAssignEvaluatorToBindingProperty)
+                                               },
+                                       @"selectedItem": @{
+                                               @"bindingType":         [AKAPropertyBinding class],
+                                               @"use":                 @(AKABindingAttributeUseBindToBindingProperty)
                                                },
                                        @"dynamic":             @{
                                                @"bindingType":         [AKATableViewSectionDataSourceInfoPropertyBinding class],
@@ -254,8 +260,15 @@
                         [self removeArrayItemBindings];
                     }
 
-                    // TODO: deselect currently selected rows, maybe restore previously selected
+                    // Reload tableView to let original delegate take over (if defined, otherwise
+                    // the table will be empty.
+                    [self.tableView reloadData];
+
+                    /* Do not perform any additional logic
+                    [self removeSelectionsAnimated:NO];
+
                     [self reloadTableViewAnimated:NO];
+                     */
                 }
                 
                 return YES;
@@ -448,14 +461,14 @@
     [self reloadTableViewAnimated:NO];
 }
 
-- (void)                            willStopObservingChanges
+- (void)                           willStopObservingChanges
 {
     self.isObserving = NO;
 }
 
 #pragma mark - AKABindingDelegate (Sub Bindings)
 
-- (BOOL)shouldReceiveDelegateMessagesForSubBindings
+- (BOOL)        shouldReceiveDelegateMessagesForSubBindings
 {
     return YES;
 }
@@ -538,12 +551,18 @@
     {
         [delegate bindingWillUpdateDynamicBindings:self];
     }
+
+    [self removeSelectionsAnimated:NO];
+
     [tableView beginUpdates];
 }
 
 - (void)                               endUpdatingTableView:(UITableView*)tableView
 {
     [tableView endUpdates];
+
+    [self dispatchApplySelections];
+
     id <AKABindingDelegate_UITableView_dataSourceBinding> delegate = self.delegate;
     if ([delegate respondsToSelector:@selector(bindingDidUpdateDynamicBindings:)])
     {
@@ -562,38 +581,133 @@
         BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
         [UIView setAnimationsEnabled:NO];
         [tableView reloadData];
-        [self updateTableViewRowHeightsAnimated:YES]; // Will not animate, using YES to avoid extra code to disable animation
+        [self updateTableViewRowHeightsAnimated:animated];
         [UIView setAnimationsEnabled:animationsWereEnabled];
     }
     else
     {
-        //[CATransaction begin];
-        //[CATransaction setCompletionBlock:^{
-            //[self updateTableViewRowHeightsAnimated:NO];
-        //}];
         [tableView reloadData];
-        //[CATransaction commit];
-        [self updateTableViewRowHeightsAnimated:NO];
+        [self updateTableViewRowHeightsAnimated:animated];
     }
+    [self dispatchApplySelections];
+    //[self applySelectionsAnimated:animated scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)                  updateTableViewRowHeightsAnimated:(BOOL)animated
 {
     UITableView* tableView = self.tableView;
-    if (!animated)
+    if ([self.tableView numberOfRowsInSection:0] > 0 || [self.tableView numberOfSections] > 1)
     {
-        BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
-        [UIView setAnimationsEnabled:NO];
-        [tableView beginUpdates];
-        [tableView endUpdates];
-        [UIView setAnimationsEnabled:animationsWereEnabled];
+        if (animated)
+        {
+            [tableView beginUpdates];
+            [tableView endUpdates];
+        }
+        else
+        {
+            BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
+            [UIView setAnimationsEnabled:NO];
+            [tableView beginUpdates];
+            [tableView endUpdates];
+            [UIView setAnimationsEnabled:animationsWereEnabled];
+        }
+    }
+}
+
+#pragma mark - Selections
+
+- (void)                            enumerateItemsWithBlock:(void(^)(NSUInteger section, NSUInteger row, id item, outreq_BOOL stop))block
+{
+    if (block != NULL)
+    {
+        BOOL stop = NO;
+        UITableView* tableView = self.tableView;
+        NSUInteger sectionCount = [self numberOfSectionsInTableView:tableView];
+
+        if (sectionCount == self.sections.count)
+        {
+            for (NSUInteger section = 0; !stop && section < sectionCount; ++section)
+            {
+                AKATableViewSectionDataSourceInfo* sectionInfo = [self tableView:tableView infoForSection:section];
+                NSUInteger rowCount = [tableView numberOfRowsInSection:section];
+                if (sectionInfo.rows.count == rowCount)
+                {
+                    for (NSUInteger row = 0; !stop && row < rowCount; ++row)
+                    {
+                        id item = sectionInfo.rows[row];
+                        block(section, row, item, &stop);
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void)                                    setSelectedItem:(id)selectedItem
+{
+    if (_selectedItem != selectedItem)
+    {
+        _selectedItem = selectedItem;
+    }
+    [self dispatchApplySelections];
+}
+
+- (void)                            dispatchApplySelections
+{
+    if (!self.applySelectionsDispatched)
+    {
+        self.applySelectionsDispatched = YES;
+        __weak typeof(self) weakSelf = self;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            typeof(weakSelf) strongSelf = weakSelf;
+            if (strongSelf.applySelectionsDispatched)
+            {
+                // reload and update will take care of applying selections, so if any is scheduled
+                // applySelections will be skipped here.
+                if (!strongSelf.tableViewReloadDispatched && !strongSelf.tableViewUpdateDispatched)
+                {
+                    [strongSelf applySelectionsAnimated:NO
+                                         scrollPosition:UITableViewScrollPositionNone];
+                }
+                strongSelf.applySelectionsDispatched = NO;
+            }
+        });
+    }
+}
+
+- (void)                            applySelectionsAnimated:(BOOL)animated
+                                             scrollPosition:(UITableViewScrollPosition)scrollPosition
+{
+    // TODO: support multiple selections
+    if (self.selectedItem)
+    {
+        //[self removeSelectionsAnimated:animated];
+        [self enumerateItemsWithBlock:^(NSUInteger section, NSUInteger row, id item, BOOL * _Nonnull stop) {
+            if (self.selectedItem == item)
+            {
+                NSIndexPath* indexPath = [NSIndexPath indexPathForRow:(NSInteger)row inSection:(NSInteger)section];
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:animated
+                                      scrollPosition:UITableViewScrollPositionNone];
+                *stop = YES;
+            }
+        }];
+    }
+}
+
+- (void)                           removeSelectionsAnimated:(BOOL)animated
+{
+    for (NSIndexPath* indexPath in self.tableView.indexPathsForSelectedRows)
+    {
+        //[self.tableView deselectRowAtIndexPath:indexPath animated:animated];
     }
 }
 
 #pragma mark - Table View Updates - Delayed Updates
 
 
-- (BOOL)tableViewIsEmpty
+- (BOOL)                                   tableViewIsEmpty
 {
     UITableView* tableView = self.tableView;
 

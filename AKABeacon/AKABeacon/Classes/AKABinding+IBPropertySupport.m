@@ -19,8 +19,7 @@
 {
     AKABindingExpression* expression = [AKABindingExpression bindingExpressionForTarget:view
                                                                                property:selector];
-
-    NSAssert(expression.specification.bindingType == self.class,
+    NSAssert(expression == nil || expression.specification.bindingType == self.class,
              @"Binding expression %@.%@ was created for binding type %@ and cannot be used by bindings of type %@",
              view, NSStringFromSelector(selector), expression.specification.bindingType, self.class);
 

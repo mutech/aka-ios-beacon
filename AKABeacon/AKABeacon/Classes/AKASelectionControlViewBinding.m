@@ -28,12 +28,12 @@
            @"attributes":
                @{ @"choices":
                       @{ @"required":        @YES,
-                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath),
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath|AKABindingExpressionTypeArray),
                          @"use":             @(AKABindingAttributeUseBindToBindingProperty),
                          @"bindingProperty": @"choices"
                          },
                   @"title":
-                      @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath),
+                      @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath|AKABindingExpressionTypeConditional|AKABindingExpressionTypeStringConstant),
                          @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
                          @"bindingProperty": @"titleBindingExpression",
                          @"attributes":      labelBindingSpec.bindingSourceSpecification.attributes ? labelBindingSpec.bindingSourceSpecification.attributes : @{},

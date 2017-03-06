@@ -16,7 +16,17 @@
     [self.items enumerateObjectsUsingBlock:
      ^(UIBarButtonItem * _Nonnull barButtonItem, NSUInteger idx __unused, BOOL * _Nonnull stop)
      {
-         block(barButtonItem, stop);
+         BOOL localStop = NO;
+
+         block(barButtonItem, &localStop);
+         if (!localStop && barButtonItem.customView)
+         {
+             block(barButtonItem.customView, &localStop);
+         }
+         if (localStop)
+         {
+             *stop = YES;
+         }
      }];
 }
 

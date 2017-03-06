@@ -83,11 +83,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    //AKALogDebug(@"Deallocating %@", self);
-}
-
 + (AKAOperation*)operationWithBlock:(void(^_Nonnull)(void(^_Nonnull finish)()))block
 {
     return [[AKABlockOperation alloc] initWithBlock:block];

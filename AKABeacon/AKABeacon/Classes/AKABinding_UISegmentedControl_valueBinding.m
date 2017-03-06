@@ -13,6 +13,7 @@
 
 #import "AKACollectionControlViewBinding.h"
 #import "AKABindingErrors.h"
+#import "AKAConditionalBindingExpression.h"
 
 @interface AKABinding_UISegmentedControl_valueBinding() <AKACollectionControlViewBindingDelegate>
 
@@ -265,7 +266,23 @@
 - (NSString*)                                    titleForItem:(id)item
                                                   withDefault:(id)defaultValue
 {
-    id title = [self.titleProperty valueForTarget:item];
+    AKAUnboundProperty* titleProperty = self.titleProperty;
+    id title; // = [self.titleProperty valueForTarget:item];
+    if (titleProperty == nil && [self.titleBindingExpression isKindOfClass:[AKAConditionalBindingExpression class]])
+    {
+        AKABindingController* controller =
+            [AKABindingController bindingControllerForViewController:nil
+                                                     withDataContext:item
+                                                            delegate:nil
+                                                               error:nil];
+        title = [self.titleBindingExpression evaluateInBindingContext:controller error:nil];
+    }
+    else
+    {
+        title = [self.titleProperty valueForTarget:item];
+
+    }
+    
     if (title == nil)
     {
         title = defaultValue;

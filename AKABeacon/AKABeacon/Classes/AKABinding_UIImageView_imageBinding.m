@@ -14,8 +14,16 @@
 @interface AKABinding_UIImageView_imageBinding()
 
 @property(nonatomic) BOOL isObserving;
+
 @property(nonatomic) AKATransitionAnimationParameters* transitionAnimation;
 @property(nonatomic, readonly) BOOL isTransitionAnimationActive;
+
+@property(nonatomic) NSString* adjustAspectRatioConstraint;
+@property(nonatomic) NSLayoutConstraint* aspectRatioConstraint;
+@property(nonatomic) NSLayoutConstraint* originalAspectRatioConstraint;
+
+@property(nonatomic) NSNumber* maxWidth;
+@property(nonatomic) NSNumber* maxHeight;
 
 @end
 
@@ -40,6 +48,21 @@
                                                @"bindingType":     [AKATransitionAnimationParametersPropertyBinding class],
                                                @"use":             @(AKABindingAttributeUseBindToBindingProperty)
                                                },
+                                       @"adjustAspectRatioConstraint": @{
+                                               @"bindingType":     [AKAPropertyBinding class],
+                                               @"expressionType":  @(AKABindingExpressionTypeString),
+                                               @"use":             @(AKABindingAttributeUseBindToBindingProperty)
+                                               },
+                                       @"maxHeight": @{
+                                               @"bindingType":     [AKAPropertyBinding class],
+                                               @"expressionType": @(AKABindingExpressionTypeAnyNumberConstant),
+                                               @"use": @(AKABindingAttributeUseAssignValueToBindingProperty)
+                                               },
+                                       @"maxWidth": @{
+                                               @"bindingType":     [AKAPropertyBinding class],
+                                               @"expressionType": @(AKABindingExpressionTypeAnyNumberConstant),
+                                               @"use": @(AKABindingAttributeUseAssignValueToBindingProperty)
+                                               }
                                        }
                                };
         result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
@@ -61,6 +84,30 @@
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
+}
+
++ (UIImage *)resizeImage:(UIImage*)image scale:(CGFloat)scale
+{
+    return [self resizeImage:image
+                     newSize:CGSizeMake(image.size.width * scale,
+                                        image.size.height * scale)];
+}
+
++ (UIImage *)resizeImage:(UIImage*)image newSize:(CGSize)newSize
+{
+    UIGraphicsBeginImageContext(newSize);
+
+    // Draw the scaled image in the current context
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+
+    // Create a new image from current context
+    UIImage* scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    // Pop the current context from the stack
+    UIGraphicsEndImageContext();
+
+    // Return our new scaled image
+    return scaledImage;
 }
 
 - (req_AKAProperty  )createTargetValuePropertyForTarget:(req_id)view
@@ -85,6 +132,24 @@
                 if ([value isKindOfClass:[UIImage class]])
                 {
                     image = value;
+                    if (self.maxWidth || self.maxHeight)
+                    {
+                        CGFloat vscale = 1.0;
+                        CGFloat hscale = 1.0;
+                        if (self.maxHeight && self.maxHeight.floatValue < image.size.height)
+                        {
+                            vscale = self.maxHeight.floatValue / image.size.height;
+                        }
+                        if (self.maxWidth && self.maxWidth.floatValue < image.size.width)
+                        {
+                            hscale = self.maxWidth.floatValue / image.size.width;
+                        }
+                        CGFloat scale = MIN(vscale, hscale);
+                        if (scale < 1.0)
+                        {
+                            image = [self.class resizeImage:image scale:scale];
+                        }
+                    }
                 }
                 else if (value == nil || value == [NSNull null])
                 {
@@ -92,7 +157,9 @@
                 }
 
                 [binding transitionAnimation:^{
+                    [binding adjustAspectRatioForImage:image];
                     binding.imageView.image = image;
+                    [binding.imageView layoutIfNeeded];
                 }];
             }
                           observationStarter:
@@ -119,6 +186,63 @@
 
                 return !binding.isObserving;
             }];
+}
+
+- (void)adjustAspectRatioForImage:(UIImage*)image
+{
+    if (self.adjustAspectRatioConstraint.length > 0)
+    {
+        CGFloat ratio = 0.0;
+        if (image.size.height != 0)
+        {
+            ratio = image.size.width / image.size.height;
+        }
+
+        if (self.aspectRatioConstraint == nil)
+        {
+            NSMutableArray* potentialConflicts = nil;
+            for (NSLayoutConstraint* constraint in self.imageView.constraints)
+            {
+                if (constraint.identifier && [self.adjustAspectRatioConstraint isEqualToString:constraint.identifier])
+                {
+                    self.originalAspectRatioConstraint = constraint;
+                    self.aspectRatioConstraint = constraint;
+                }
+                else if (constraint.firstItem == constraint.secondItem &&
+                         constraint.firstAttribute != constraint.secondAttribute &&
+                         (constraint.firstAttribute == NSLayoutAttributeWidth ||
+                          constraint.firstAttribute == NSLayoutAttributeHeight) &&
+                         (constraint.secondAttribute == NSLayoutAttributeWidth ||
+                          constraint.secondAttribute == NSLayoutAttributeHeight))
+                {
+                    if (potentialConflicts == nil)
+                    {
+                        potentialConflicts = [NSMutableArray new];
+                    }
+                    [potentialConflicts addObject:constraint];
+                }
+            }
+        }
+
+        if (self.aspectRatioConstraint != nil)
+        {
+            self.aspectRatioConstraint.active = NO;
+        }
+        CGFloat constant = self.aspectRatioConstraint.constant;
+        self.aspectRatioConstraint = [NSLayoutConstraint constraintWithItem:self.imageView
+                                                                  attribute:NSLayoutAttributeWidth
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.imageView
+                                                                  attribute:NSLayoutAttributeHeight
+                                                                 multiplier:ratio
+                                                                   constant:constant];
+        CGRect bounds;
+        bounds.origin = CGPointZero;
+        bounds.size = image.size;
+        self.imageView.bounds = bounds;
+        [self.imageView addConstraint:self.aspectRatioConstraint];
+        [self.imageView setNeedsLayout];
+    }
 }
 
 - (void)                            transitionAnimation:(void (^)())animations

@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol AKAAttributedStringFormatterProtocol <NSObject>
+
+- (NSAttributedString *)attributedStringForObjectValue:(id)obj
+                                 withDefaultAttributes:(NSDictionary<NSString *,id> *)defaultAttributes;
+
+@end
+
 /**
  Formatter that applies text attributes to ranges of text matching a pattern.
  
@@ -18,7 +25,7 @@
  will most probably change (to support more flexible pattern matching, also the name
  should reflect the pattern matching functionality).
  */
-@interface AKAAttributedFormatter : NSFormatter
+@interface AKAAttributedFormatter: NSFormatter<AKAAttributedStringFormatterProtocol>
 
 @property(nonatomic) NSString* pattern;
 
@@ -29,5 +36,18 @@
 // TODO: make this immutable and support updating the dictionary instead of its contents in attributedFormatter binding:
 
 @property(nonatomic) NSMutableDictionary<NSString *,id>* attributes;
+
+- (NSAttributedString *)attributedStringForObjectValue:(id)obj
+                                 withDefaultAttributes:(NSDictionary<NSString *,id> *)defaultAttributes;
+
+@end
+
+
+@interface AKARtfFormatter: NSFormatter<AKAAttributedStringFormatterProtocol>
+
+@property(nonatomic) NSDictionary<NSString *,id>* defaultAttributes;
+
+- (NSAttributedString *)attributedStringForObjectValue:(id)obj
+                                 withDefaultAttributes:(NSDictionary<NSString *,id> *)defaultAttributes;
 
 @end

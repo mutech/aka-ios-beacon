@@ -111,15 +111,15 @@
     AKAAlertOperation*_Nonnull (^setTitle)(NSString*_Nonnull title);
 
 @property(nonatomic, readonly, nonnull, getter=setMessage)
-    AKAAlertOperation* (^setMessage)(NSString*_Nonnull message);
+    AKAAlertOperation*_Nonnull (^setMessage)(NSString*_Nonnull message);
 
 @property(nonatomic, readonly, nonnull)
-    AKAAlertOperation* (^addAction)(NSString*_Nonnull actionTitle, void(^_Nullable block)(UIAlertAction*_Nonnull action));
+    AKAAlertOperation*_Nonnull (^ addAction)(NSString*_Nonnull actionTitle, void(^_Nullable block)(UIAlertAction*_Nonnull action));
 
 @property(nonatomic, readonly, nonnull)
-    AKAAlertOperation* (^addCancelAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
+    AKAAlertOperation*_Nonnull (^ addCancelAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
 
 @property(nonatomic, readonly, nonnull)
-    AKAAlertOperation* (^addDestructiveAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
+    AKAAlertOperation*_Nonnull (^ addDestructiveAction)(NSString*_Nonnull actionTitle, void(^_Nullable action)(UIAlertAction*_Nonnull action));
 
 @end

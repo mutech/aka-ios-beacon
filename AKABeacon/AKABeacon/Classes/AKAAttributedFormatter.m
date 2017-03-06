@@ -95,3 +95,88 @@
 }
 
 @end
+
+
+@implementation AKARtfFormatter
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        self.defaultAttributes = nil;
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    (void)zone;
+    AKARtfFormatter* result = [AKARtfFormatter new];
+    result.defaultAttributes = self.defaultAttributes;
+    return result;
+}
+
+- (NSString *)stringForObjectValue:(id)obj
+{
+    NSString* text = nil;
+
+    if ([obj isKindOfClass:[NSString class]])
+    {
+        text = (id)obj;
+        if ([text containsString:@"{\\rtf1"])
+        {
+            text = [text stringByReplacingOccurrencesOfString:@"\nouicompat" withString:@"\\nouicompat"];
+            NSData* data = [text dataUsingEncoding:NSUTF8StringEncoding];
+
+            NSError* error = nil;
+            text = [[NSAttributedString alloc] initWithData:data
+                                                    options:@{NSDocumentTypeDocumentAttribute:NSRTFTextDocumentType}
+                                         documentAttributes:nil
+                                                      error:&error].string;
+        }
+    }
+    else
+    {
+        text = [obj description];
+    }
+    return text;
+}
+
+- (NSAttributedString *)attributedStringForObjectValue:(id)obj
+                                 withDefaultAttributes:(NSDictionary<NSString *,id> *)defaultAttributes
+{
+    NSAttributedString* result = nil;
+    NSString* text = nil;
+
+    if ([obj isKindOfClass:[NSString class]])
+    {
+        text = (id)obj;
+        [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if ([text rangeOfString:@"{\\rtf" options:NSCaseInsensitiveSearch].location != NSNotFound)
+        {
+            text = [text stringByReplacingOccurrencesOfString:@"\nouicompat" withString:@"\\nouicompat"];
+            NSData* data = [text dataUsingEncoding:NSUTF8StringEncoding];
+
+            NSError* error = nil;
+            result =
+                [[NSAttributedString alloc] initWithData:data
+                                                 options:@{NSDocumentTypeDocumentAttribute:NSRTFTextDocumentType}
+                                      documentAttributes:nil
+                                                   error:&error];
+        }
+    }
+    else
+    {
+        text = [obj description];
+    }
+
+    if (result == nil && text != nil)
+    {
+        result = [[NSMutableAttributedString alloc] initWithString:text
+                                                        attributes:defaultAttributes];
+
+    }
+    return result;
+}
+
+@end

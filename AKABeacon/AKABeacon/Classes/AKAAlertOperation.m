@@ -123,7 +123,19 @@
                                          sender:(id)sender
 {
     AKAAlertOperation* result = nil;
-    if ([sender isKindOfClass:[UIView class]])
+    if ([sender isKindOfClass:[UIGestureRecognizer class]])
+    {
+        UIGestureRecognizer* gr = sender;
+        UIView* view = gr.view;
+        if (view)
+        {
+            result = [self actionSheetWithTitle:title
+                                        message:message
+                             fromViewController:presenter
+                                         sender:view];
+        }
+    }
+    else if ([sender isKindOfClass:[UIView class]])
     {
         result = [self actionSheetWithTitle:title
                                     message:message

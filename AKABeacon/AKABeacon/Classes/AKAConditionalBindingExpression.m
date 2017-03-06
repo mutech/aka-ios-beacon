@@ -12,6 +12,9 @@
 #import "AKABindingExpression_Internal.h"
 #import "AKABindingExpressionParser.h" // keywords
 
+#import "AKAConditionalBinding.h"
+#import "AKAPropertyBinding.h"
+
 @implementation AKAConditionalBindingExpressionClause
 
 + (instancetype)whenClauseWithCondition:(req_AKABindingExpression)condition
@@ -71,6 +74,30 @@
 - (AKABindingExpressionType)expressionType
 {
     return AKABindingExpressionTypeConditional;
+}
+
+- (id)evaluateInBindingContext:(id<AKABindingContextProtocol>)bindingContext
+                         error:(out_NSError)error
+{
+    id result = nil;
+    __block id tmpValue = nil;
+    AKAProperty* targetProperty = [AKAProperty propertyOfWeakTarget:self
+                                                             getter:^id _Nullable(id  _Nonnull target) {
+                                                                 return tmpValue;
+                                                             } setter:^(id  _Nonnull target, id  _Nullable value) {
+                                                                 tmpValue = value;
+                                                             } observationStarter:NULL observationStopper:NULL];
+    AKABinding* binding = [AKAPropertyBinding bindingToTarget:self
+                                          targetValueProperty:targetProperty
+                                               withExpression:self
+                                                      context:bindingContext
+                                                        owner:nil
+                                                     delegate:nil
+                                                        error:error];
+    [binding startObservingChanges];
+    result = tmpValue;
+    [binding stopObservingChanges];
+    return result;
 }
 
 - (NSString*)textForPrimaryExpressionWithNestingLevel:(NSUInteger)level

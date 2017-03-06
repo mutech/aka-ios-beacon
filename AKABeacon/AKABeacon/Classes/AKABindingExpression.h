@@ -171,4 +171,8 @@ typedef enum AKABindingExpressionScope* _Nullable out_AKABindingExpressionScope;
  */
 - (opt_AKAUnboundProperty)bindingSourceUnboundPropertyInContext:(req_AKABindingContext)bindingContext;
 
+
+- (opt_id)evaluateInBindingContext:(id<AKABindingContextProtocol>_Nonnull)bindingContext
+                         error:(out_NSError)error;
+
 @end

@@ -15,6 +15,8 @@
 #import "AKABindingErrors.h"
 #import "AKAConditionalBindingExpression.h"
 
+#import "AKABinding_UILabel_textBinding.h"
+
 @interface AKABinding_UISegmentedControl_valueBinding() <AKACollectionControlViewBindingDelegate>
 
 @property(nonatomic, readonly)       UISegmentedControl*                segmentedControl;
@@ -24,6 +26,8 @@
 @property(nonatomic, readonly)       AKAUnboundProperty*                imageProperty;
 @property(nonatomic)                 NSInteger                          previouslySelectedRow;
 @property(nonatomic)                 BOOL                               isObserving;
+
+@property(nonatomic)                 BOOL                               shouldUpdateSegments;
 
 @end
 
@@ -36,14 +40,53 @@
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
+        req_AKABindingSpecification labelBindingSpec = [AKABinding_UILabel_textBinding specification];
+
         NSDictionary* spec =
         @{ @"bindingType":              [AKABinding_UISegmentedControl_valueBinding class],
            @"targetType":               [UISegmentedControl class],
+           @"expressionType":           @(AKABindingExpressionTypeAnyNoArray),
+           @"attributes":
+               @{ @"choices":
+                      @{ @"required":        @NO,
+                         @"expressionType":  @(AKABindingExpressionTypeAnyKeyPath|AKABindingExpressionTypeArray),
+                         @"use":             @(AKABindingAttributeUseBindToBindingProperty),
+                         @"bindingProperty": @"choices"
+                         },
+                  @"updateSegments":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeBooleanConstant),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         @"bindingProperty": @"shouldUpdateSegments"
+                         },
+                  @"title":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeUnqualifiedKeyPath|AKABindingExpressionTypeConditional|AKABindingExpressionTypeStringConstant),
+                         @"use":             @(AKABindingAttributeUseAssignExpressionToBindingProperty),
+                         @"bindingProperty": @"titleBindingExpression",
+                         @"attributes":      labelBindingSpec.bindingSourceSpecification.attributes ? labelBindingSpec.bindingSourceSpecification.attributes : @{},
+                         },
+                  @"titleForUndefinedValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         },
+                  @"titleForOtherValue":
+                      @{ @"expressionType":  @(AKABindingExpressionTypeString),
+                         @"use":             @(AKABindingAttributeUseAssignValueToBindingProperty),
+                         }
+                  }
            };
-        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[super specification]];
+        result = [[AKABindingSpecification alloc] initWithDictionary:spec basedOn:[AKAControlViewBinding specification]];
     });
 
     return result;
+}
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        self.shouldUpdateSegments = YES;
+    }
+    return self;
 }
 
 - (req_AKAProperty)        createTargetValuePropertyForTarget:(req_id)view
@@ -53,7 +96,10 @@
 
     UISegmentedControl* segmentedControl = (UISegmentedControl*)view;
     segmentedControl.selectedSegmentIndex = NSNotFound;
-    [segmentedControl removeAllSegments];
+    if (self.shouldUpdateSegments)
+    {
+        [segmentedControl removeAllSegments];
+    }
 
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
@@ -334,7 +380,7 @@
                                                forSourceValue:(opt_id __unused)oldSourceValue
                                                      changeTo:(opt_id __unused)newSourceValue
 {
-    if (YES)
+    if (self.shouldUpdateSegments) // TODO: check binding applies
     {
         // TODO: This should be implemented as AKACollectionProperty or AKACollectionBinding or something else which is reusable, review later
         NSArray* items = nil;

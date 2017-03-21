@@ -132,22 +132,22 @@
                 if ([value isKindOfClass:[UIImage class]])
                 {
                     image = value;
-                    if (self.maxWidth || self.maxHeight)
+                    if (binding.maxWidth || binding.maxHeight)
                     {
                         CGFloat vscale = 1.0;
                         CGFloat hscale = 1.0;
-                        if (self.maxHeight && self.maxHeight.floatValue < image.size.height)
+                        if (binding.maxHeight && binding.maxHeight.floatValue < image.size.height)
                         {
-                            vscale = self.maxHeight.floatValue / image.size.height;
+                            vscale = binding.maxHeight.floatValue / image.size.height;
                         }
-                        if (self.maxWidth && self.maxWidth.floatValue < image.size.width)
+                        if (binding.maxWidth && binding.maxWidth.floatValue < image.size.width)
                         {
-                            hscale = self.maxWidth.floatValue / image.size.width;
+                            hscale = binding.maxWidth.floatValue / image.size.width;
                         }
                         CGFloat scale = MIN(vscale, hscale);
                         if (scale < 1.0)
                         {
-                            image = [self.class resizeImage:image scale:scale];
+                            image = [binding.class resizeImage:image scale:scale];
                         }
                     }
                 }

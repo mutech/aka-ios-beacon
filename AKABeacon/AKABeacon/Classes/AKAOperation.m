@@ -758,11 +758,15 @@
 - (void)                                      start
 {
     // TODO: documentation says: must not call super at any time. However, code in advanced operations and most or all derived frameworks do just that. Their comment is that [super start] does important work that should not be left out. Nobody mentions what it does and why you're not supposed to do it or what excatly has to be done. 
-    [super start];
+    //[super start];
 
     if (self.cancelled)
     {
         [self finish];
+    }
+    else
+    {
+        [self main];
     }
 }
 

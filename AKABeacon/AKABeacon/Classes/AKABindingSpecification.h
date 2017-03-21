@@ -533,6 +533,8 @@ NSDictionary<NSString*, AKABindingAttributeSpecification*>*    attributes;
 
 + (BOOL)                              isEnumerationTypeDefined:(req_NSString)enumerationType;
 
++ (nullable NSDictionary<NSString*, id>*)enumeratedValuesForEnumerationType:(req_NSString)enumerationType;
+
 /**
  Registers a name/value mapping for the options type with the specified options (enum) type name.
 

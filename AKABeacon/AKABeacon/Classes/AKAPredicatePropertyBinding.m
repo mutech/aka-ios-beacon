@@ -236,6 +236,41 @@
     return result;
 }
 
+- (void)addDynamicSubstitutionVariableForRewrittenExpressionWithValues:(NSDictionary*)enumeratedValue
+                                                    forEnumerationType:(req_NSString)enumerationType
+{
+    NSString* pseudoKeyPath = [NSString stringWithFormat:@"$%@", enumerationType];
+
+    NSString* variableName = self.dynamicSubstitutionVariablesByKeyPath[enumerationType];
+    if (variableName == nil)
+    {
+        // Assumption: dynamic variables are only added to and possibly removed all together. So we can use the count as variable name.
+        variableName = enumerationType;
+        if (enumeratedValue)
+        {
+            [self.substitutionValues setValue:enumeratedValue forKey:variableName];
+        }
+    }
+
+    BOOL result = (self.propertyBindingsByDynamicSubstitutionVariables[variableName] != nil);
+
+    if (!result)
+    {
+        id<AKABindingContextProtocol> bindingContext = self.bindingContext;
+        NSAssert(bindingContext != nil, @"Binding context released or undefined");
+
+        __weak typeof(self) weakSelf = self;
+
+        if (result)
+        {
+            if (self.dynamicSubstitutionVariablesByKeyPath == nil)
+            {
+                self.dynamicSubstitutionVariablesByKeyPath = [NSMutableDictionary new];
+            }
+            self.dynamicSubstitutionVariablesByKeyPath[enumerationType] = enumerationType;
+        }
+    }
+}
 
 - (NSString*)addDynamicSubstitutionVariableForRewrittenExpressionWithKeyPath:(req_NSString)keyPath
                                                                        error:(out_NSError)error
@@ -375,7 +410,9 @@
                     }
 
                     default:
-                        blockResult = expression;
+                        blockResult = [self rewriteExpressionTree:expression usingBlock:^NSExpression * _Nonnull(NSExpression * _Nonnull expression) {
+                            return expression;
+                        }];
                         break;
                 }
 
@@ -396,10 +433,25 @@
 
     switch (expression.expressionType)
     {
+        case NSVariableExpressionType:
+            result = expression;
+            if (self.substitutionValues[expression.variable] == nil)
+            {
+                if ([AKABindingExpressionSpecification isEnumerationTypeDefined:expression.variable])
+                {
+                    NSDictionary* enumeratedValues = [AKABindingExpressionSpecification enumeratedValuesForEnumerationType:expression.variable];
+                    if (enumeratedValues)
+                    {
+                        [self addDynamicSubstitutionVariableForRewrittenExpressionWithValues:enumeratedValues
+                                                                          forEnumerationType:expression.variable];
+                    }
+                }
+            }
+            break;
+
         case NSConstantValueExpressionType:
         case NSEvaluatedObjectExpressionType:
         case NSKeyPathExpressionType:
-        case NSVariableExpressionType:
         case NSAnyKeyExpressionType:
             result = expression;
             break;
@@ -426,9 +478,37 @@
             break;
 
         case NSFunctionExpressionType:
-            // arguments
+        {
             result = expression;
+            NSMutableArray<NSExpression*>* arguments = [NSMutableArray new];
+            NSExpression* operand = [self rewriteExpressionTree:expression.operand
+                                                     usingBlock:block];
+            BOOL changed = operand != expression.operand;
+
+            for (NSExpression* e in expression.arguments)
+            {
+                NSException* replacement = [self rewriteExpressionTree:e usingBlock:block];
+                if (replacement != e)
+                {
+                    changed = YES;
+                }
+            }
+            if (changed)
+            {
+                if (operand)
+                {
+                    result = [NSExpression expressionForFunction:operand
+                                                    selectorName:expression.function
+                                                       arguments:arguments];
+                }
+                else
+                {
+                    result = [NSExpression expressionForFunction:expression.function
+                                                       arguments:arguments];
+                }
+            }
             break;
+        }
 
         case NSConditionalExpressionType:
             result = expression;

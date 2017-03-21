@@ -319,14 +319,17 @@ static NSString*const defaultDataSourceKey = @"default";
 - (void)                                      hideRowControls:(NSArray*)rowControls
                                              withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedDescending];
-
-    [self.multiplexedDataSource beginUpdates];
-    for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
+    if (rowControls.count > 0)
     {
-        [self hideRowControl:rowControl withAnimation:rowAnimation];
+        NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedDescending];
+
+        [self.multiplexedDataSource beginUpdates];
+        for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
+        {
+            [self hideRowControl:rowControl withAnimation:rowAnimation];
+        }
+        [self.multiplexedDataSource endUpdates];
     }
-    [self.multiplexedDataSource endUpdates];
 }
 
 - (BOOL)                                     unhideRowControl:(AKATableViewCellCompositeControl*)rowControl
@@ -349,14 +352,17 @@ static NSString*const defaultDataSourceKey = @"default";
 - (void)                                    unhideRowControls:(NSArray*)rowControls
                                              withRowAnimation:(UITableViewRowAnimation)rowAnimation
 {
-    NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedAscending];
-
-    [self.multiplexedDataSource beginUpdates];
-    for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
+    if (rowControls.count > 0)
     {
-        [self unhideRowControl:rowControl withAnimation:rowAnimation];
+        NSArray* sortedByIndexPath = [self rowControls:rowControls sortedInOrder:NSOrderedAscending];
+
+        [self.multiplexedDataSource beginUpdates];
+        for (AKATableViewCellCompositeControl* rowControl in sortedByIndexPath)
+        {
+            [self unhideRowControl:rowControl withAnimation:rowAnimation];
+        }
+        [self.multiplexedDataSource endUpdates];
     }
-    [self.multiplexedDataSource endUpdates];
 }
 
 #pragma mark - Control Membership Delegate (Setup for Controls)

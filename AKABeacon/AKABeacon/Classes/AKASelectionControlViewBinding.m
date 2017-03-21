@@ -12,7 +12,7 @@
 
 @implementation AKASelectionControlViewBinding
 
-// This is an abstract binding provider, so it does not defined a sharedInstance method.
+// This is an abstract binding provider, so it does not define a sharedInstance method.
 
 + (AKABindingSpecification *)                   specification
 {

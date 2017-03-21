@@ -482,6 +482,11 @@ NSString*const kAKABindingAttributesSpecificationBindingPropertyKey = @"bindingP
     return result;
 }
 
++ (NSDictionary<NSString*, id>*)enumeratedValuesForEnumerationType:(req_NSString)enumerationType
+{
+    return [self registry][enumerationType];
+}
+
 + (void)registerEnumerationType:(req_NSString)enumerationType
                withValuesByName:(NSDictionary<NSString*, id>* _Nonnull)valuesByName
 {

@@ -16,6 +16,7 @@
 #import "AKAConditionalBindingExpression.h"
 
 #import "AKABinding_UILabel_textBinding.h"
+#import "AKABinding+SubclassObservationEvents.h"
 
 @interface AKABinding_UISegmentedControl_valueBinding() <AKACollectionControlViewBindingDelegate>
 
@@ -28,6 +29,7 @@
 @property(nonatomic)                 BOOL                               isObserving;
 
 @property(nonatomic)                 BOOL                               shouldUpdateSegments;
+@property(nonatomic)                 BOOL                               didRemoveOriginalSegments;
 
 @end
 
@@ -89,17 +91,11 @@
     return self;
 }
 
+
 - (req_AKAProperty)        createTargetValuePropertyForTarget:(req_id)view
                                                         error:(out_NSError __unused)error
 {
     NSParameterAssert(view == nil || [view isKindOfClass:[UISegmentedControl class]]);
-
-    UISegmentedControl* segmentedControl = (UISegmentedControl*)view;
-    segmentedControl.selectedSegmentIndex = NSNotFound;
-    if (self.shouldUpdateSegments)
-    {
-        [segmentedControl removeAllSegments];
-    }
 
     return [AKAProperty propertyOfWeakTarget:self
                                       getter:
@@ -382,6 +378,13 @@
 {
     if (self.shouldUpdateSegments) // TODO: check binding applies
     {
+        if (!self.didRemoveOriginalSegments)
+        {
+            self.segmentedControl.selectedSegmentIndex = NSNotFound;
+            [self.segmentedControl removeAllSegments];
+            self.didRemoveOriginalSegments = YES;
+        }
+        
         // TODO: This should be implemented as AKACollectionProperty or AKACollectionBinding or something else which is reusable, review later
         NSArray* items = nil;
         if ([newTargetValue isKindOfClass:[NSSet class]])

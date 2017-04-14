@@ -242,6 +242,17 @@
     return self;
 }
 
+- (nonnull instancetype)              initWithViewController:(UIViewController*)viewController
+                                    presentingViewController:(UIViewController*)presenter
+                                               barButtonItem:(UIBarButtonItem*)popoverAnchor
+{
+    if (self = [self initWithViewController:viewController presentingViewController:presenter])
+    {
+        _barButtonItem = popoverAnchor;
+    }
+    return self;
+}
+
 #pragma mark - Configuration
 
 - (BOOL)                      shouldCreatePresentationWindow

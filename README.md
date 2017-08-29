@@ -8,12 +8,6 @@ AKA Beacon is a data binding framework for iOS designed for Interface Builder.
 * [How is Beacon different from Data Binding on OS X](https://github.com/mutech/aka-ios-beacon/wiki/How-is-Beacon-different-from-Data-Binding-on-OS-X)
 * [How does Beacon relate to other binding frameworks](https://github.com/mutech/aka-ios-beacon/wiki/How-does-Beacon-relate-to-other-binding-frameworks)
 
-## Caution
-
-This framework was a lot of fun to develop and it's working great for the projects I am using it for, but it looks like I am the only user. I spend enormous amounts of time on this project and I can't continue to do that. There is a lot to be done (most importantly: documentation, tests, demos, maintainance and a few important views to support). I will keep maintaining the framework for my own purposes but I probably will not go much further.
-
-So unless someone misses data binding on iOS as much as I did and wants to participate in or take over the project, it's probably not a wise choice to use it. If that bothers you, please contact me (or create an issue). I would love to change my mind and continue to work on this one, but I would need some incentive.
-
 ## News
 
 **Version 0.3.1**

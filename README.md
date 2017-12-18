@@ -1,3 +1,11 @@
+## Moving on
+
+I am not going to maintain this project anymore because it doesn't fit well into the Swift landscape and Swift is taking over the iOS community much faster than I have anticipated.
+
+I still believe that data binding from IB is a feature that should exist, so I will probably work on a similar project based on ReactiveSwift adding binding expressions in IB.
+
+If you want to use Beacon in your project, contact me, I'll be happy to help if I've got the time. Also, if you find the idea of having declarative binding in IB for Swift appealing, let me know.
+
 # Data Binding for iOS
 
 AKA Beacon is a data binding framework for iOS designed for Interface Builder.
